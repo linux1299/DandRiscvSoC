@@ -1,0 +1,16 @@
+1685331220925:compile
+1685334625070:runMain mylib.MyTopLevelVerilog
+1685334633142:ll
+1685334654918:runMain
+1685334688695:runMain\\
+1685334784331:runMain projectname.MyTopLevelVerilog
+1685334875029:~ runMain mylib.MyTopLevelVerilog
+1685334900957:~ runMain projectname.MyTopLevelVerilog
+1685347973620:~ runMain projectname.MyTopLevelSim
+1685351332262:runMain projectname.MyTopLevelSim
+1685351380231:runMain projectname.MyTopLevelVerilog
+1685351405183:runMain projectname.MyTopLevelSim
+1685352073642:doSim
+1686289950302:runMain projectname.MyTopLevelVerilog
+1687693885076:runMain
+1687693902778:runMain dandriscv.MyTopLevelVerilog ;

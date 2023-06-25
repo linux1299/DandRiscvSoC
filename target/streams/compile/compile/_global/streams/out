@@ -1,0 +1,4 @@
+[0m[[0m[31merror[0m] [0m[0m/home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/DandRiscvCpu.scala:26:3: not found: value Config[0m
+[0m[[0m[31merror[0m] [0m[0m  Config.spinal.generateVerilog(MyTopLevel())[0m
+[0m[[0m[31merror[0m] [0m[0m  ^[0m
+[0m[[0m[31merror[0m] [0m[0mone error found[0m
