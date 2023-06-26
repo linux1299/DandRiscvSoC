@@ -1,6 +1,6 @@
 [0m[[0m[0mdebug[0m] [0m[0m[zinc] IncrementalCompile -----------[0m
 [0m[[0m[0mdebug[0m] [0m[0mIncrementalCompile.incrementalCompile[0m
-[0m[[0m[0mdebug[0m] [0m[0mprevious = Stamps for: 35 products, 6 sources, 3 libraries[0m
-[0m[[0m[0mdebug[0m] [0m[0mcurrent source = Set(${BASE}/hw/spinal/projectname/MyTopLevelFormal.scala, ${BASE}/hw/spinal/projectname/MyTopLevel.scala, ${BASE}/hw/spinal/dandriscv/Config.scala, ${BASE}/hw/spinal/dandriscv/DandRiscvCpu.scala, ${BASE}/hw/spinal/projectname/Config.scala, ${BASE}/hw/spinal/projectname/MyTopLevelSim.scala)[0m
+[0m[[0m[0mdebug[0m] [0m[0mprevious = Stamps for: 112 products, 7 sources, 4 libraries[0m
+[0m[[0m[0mdebug[0m] [0m[0mcurrent source = Set(${BASE}/hw/spinal/dandriscv/plugin/Plugin.scala, ${BASE}/hw/spinal/dandriscv/Riscv.scala, ${BASE}/hw/spinal/dandriscv/plugin/IntAluPlugin.scala, ${BASE}/hw/spinal/dandriscv/DandRiscvCpu.scala, ${BASE}/hw/spinal/dandriscv/Stage.scala, ${BASE}/hw/spinal/dandriscv/Pipeline.scala, ${BASE}/hw/spinal/dandriscv/genCPU/GenSmallest.scala)[0m
 [0m[[0m[0mdebug[0m] [0m[0m> initialChanges = InitialChanges(Changes(added = Set(), removed = Set(), changed = Set(), unmodified = ...),Set(),Set(),API Changes: Set())[0m
 [0m[[0m[0mdebug[0m] [0m[0mNo changes[0m

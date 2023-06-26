@@ -14,3 +14,5 @@
 1686289950302:runMain projectname.MyTopLevelVerilog
 1687693885076:runMain
 1687693902778:runMain dandriscv.MyTopLevelVerilog ;
+1687780746903:runMain
+1687780938822:runMain dandriscv.demo.GenSmallest

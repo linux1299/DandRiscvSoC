@@ -1,4 +1,7 @@
-[0m[[0m[31merror[0m] [0m[0m/home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/DandRiscvCpu.scala:26:3: not found: value Config[0m
-[0m[[0m[31merror[0m] [0m[0m  Config.spinal.generateVerilog(MyTopLevel())[0m
-[0m[[0m[31merror[0m] [0m[0m  ^[0m
-[0m[[0m[31merror[0m] [0m[0mone error found[0m
+[0m[[0m[33mwarn[0m] [0m[0m/home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/DandRiscvCpu.scala:36:17: match may not be exhaustive.[0m
+[0m[[0m[33mwarn[0m] [0m[0mIt would fail on the following input: None[0m
+[0m[[0m[33mwarn[0m] [0m[0m    plugins.find(_.getClass == clazz) match {[0m
+[0m[[0m[33mwarn[0m] [0m[0m                ^[0m
+[0m[[0m[33mwarn[0m] [0m[0m19 deprecations; re-run with -deprecation for details[0m
+[0m[[0m[33mwarn[0m] [0m[0mone feature warning; re-run with -feature for details[0m
+[0m[[0m[33mwarn[0m] [0m[0mthree warnings found[0m

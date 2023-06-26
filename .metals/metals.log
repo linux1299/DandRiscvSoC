@@ -29,3 +29,1151 @@ INFO: Successfully applied 4 migrations to schema "PUBLIC", now at version v4 (e
 2023.06.25 20:21:02 WARN  Build server is not auto-connectable.[0m
 Jun 25, 2023 8:21:17 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
 INFO: Unsupported notification method: $/setTrace
+2023.06.25 20:38:49 ERROR Unexpected error initializing server: 
+scala.concurrent.Future$$anon$2: Future.filter predicate is not satisfied
+[0m
+Jun 25, 2023 9:01:29 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+2023.06.25 21:03:00 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/DandRiscvCpu.scala[0m
+2023.06.25 21:03:02 INFO  no build target found for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/DandRiscvCpu.scala. Using presentation compiler with project's scala-library version: 3.2.2[0m
+2023.06.25 21:03:03 INFO  time: code lens generation in 2.33s[0m
+2023.06.25 21:19:52 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Riscv.scala[0m
+2023.06.25 21:20:05 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/DandRiscvCpu.scala[0m
+2023.06.25 21:20:11 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Riscv.scala[0m
+2023.06.25 21:21:50 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Riscv.scala[0m
+2023.06.25 21:22:15 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Riscv.scala[0m
+2023.06.25 21:22:41 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Riscv.scala[0m
+2023.06.25 21:22:46 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Riscv.scala[0m
+Jun 25, 2023 9:22:46 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 118
+2023.06.25 21:22:46 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Riscv.scala[0m
+2023.06.25 21:22:46 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Riscv.scala[0m
+Jun 25, 2023 9:23:03 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+2023.06.25 21:23:13 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/DandRiscvCpu.scala[0m
+2023.06.26 19:42:27 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/DandRiscvCpu.scala[0m
+2023.06.26 19:42:29 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Pipeline.scala[0m
+2023.06.26 19:42:37 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/DandRiscvCpu.scala[0m
+2023.06.26 19:42:39 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Pipeline.scala[0m
+2023.06.26 19:42:40 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Pipeline.scala[0m
+2023.06.26 19:42:47 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Pipeline.scala[0m
+2023.06.26 19:43:05 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/DandRiscvCpu.scala[0m
+2023.06.26 19:43:07 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Pipeline.scala[0m
+2023.06.26 19:43:28 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Pipeline.scala[0m
+2023.06.26 19:43:31 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Pipeline.scala[0m
+error while checking  extends Area {
+  import stage_3.*
+  insert(RESULT_SUB) := input(RESULT_AND).asUInt - null
+}
+error while checking new Area {
+  import stage_3.*
+  insert(RESULT_SUB) := input(RESULT_AND).asUInt - null
+}
+error while checking stage_3 plug 
+  new Area {
+    import stage_3.*
+    insert(RESULT_SUB) := input(RESULT_AND).asUInt - null
+  }
+error while checking  extends Area {
+  import stage_1.*
+  insert(RESULT_XOR) := 
+    slaveBus.datain(31 downto 0) ^ slaveBus.datain(31 downto 0)
+  stage_2 plug 
+    new Area {
+      import stage_2.*
+      insert(RESULT_AND) := input(RESULT_XOR) & input(RESULT_XOR)
+    }
+  stage_3 plug 
+    new Area {
+      import stage_3.*
+      insert(RESULT_SUB) := input(RESULT_AND).asUInt - null
+    }
+}
+error while checking new Area {
+  import stage_1.*
+  insert(RESULT_XOR) := 
+    slaveBus.datain(31 downto 0) ^ slaveBus.datain(31 downto 0)
+  stage_2 plug 
+    new Area {
+      import stage_2.*
+      insert(RESULT_AND) := input(RESULT_XOR) & input(RESULT_XOR)
+    }
+  stage_3 plug 
+    new Area {
+      import stage_3.*
+      insert(RESULT_SUB) := input(RESULT_AND).asUInt - null
+    }
+}
+error while checking stage_1 plug 
+  new Area {
+    import stage_1.*
+    insert(RESULT_XOR) := 
+      slaveBus.datain(31 downto 0) ^ slaveBus.datain(31 downto 0)
+    stage_2 plug 
+      new Area {
+        import stage_2.*
+        insert(RESULT_AND) := input(RESULT_XOR) & input(RESULT_XOR)
+      }
+    stage_3 plug 
+      new Area {
+        import stage_3.*
+        insert(RESULT_SUB) := input(RESULT_AND).asUInt - null
+      }
+  }
+error while checking {
+  import pipeline.*
+  import pipeline.config.*
+  import spinal.lib.bus.amba4.axi
+  val axiConfig = 
+    Axi4Config(addressWidth = 16, dataWidth = 64, idWidth = 4, useId = false, 
+      useLast = false
+    , useRegion = false, useBurst = false, useLock = false, useCache = false, 
+      useSize = false
+    , useQos = false, useLen = false, useResp = false, useProt = false, 
+      useStrb = false
+    )
+  val slaveBus = slave(dBusClass()).setName("slaveBus")
+  val masterBus = master(dBusClass()).setName("masterBus")
+  masterBus.dataout := B(0, 32 bits null)
+  stage_1 plug 
+    new Area {
+      import stage_1.*
+      insert(RESULT_XOR) := 
+        slaveBus.datain(31 downto 0) ^ slaveBus.datain(31 downto 0)
+      stage_2 plug 
+        new Area {
+          import stage_2.*
+          insert(RESULT_AND) := input(RESULT_XOR) & input(RESULT_XOR)
+        }
+      stage_3 plug 
+        new Area {
+          import stage_3.*
+          insert(RESULT_SUB) := input(RESULT_AND).asUInt - null
+        }
+    }
+}
+error while checking override def build(pipeline: VexRiscv): Unit = 
+  {
+    import pipeline.*
+    import pipeline.config.*
+    import spinal.lib.bus.amba4.axi
+    val axiConfig = 
+      Axi4Config(addressWidth = 16, dataWidth = 64, idWidth = 4, useId = false, 
+        useLast = false
+      , useRegion = false, useBurst = false, useLock = false, useCache = false, 
+        useSize = false
+      , useQos = false, useLen = false, useResp = false, useProt = false, 
+        useStrb = false
+      )
+    val slaveBus = slave(dBusClass()).setName("slaveBus")
+    val masterBus = master(dBusClass()).setName("masterBus")
+    masterBus.dataout := B(0, 32 bits null)
+    stage_1 plug 
+      new Area {
+        import stage_1.*
+        insert(RESULT_XOR) := 
+          slaveBus.datain(31 downto 0) ^ slaveBus.datain(31 downto 0)
+        stage_2 plug 
+          new Area {
+            import stage_2.*
+            insert(RESULT_AND) := input(RESULT_XOR) & input(RESULT_XOR)
+          }
+        stage_3 plug 
+          new Area {
+            import stage_3.*
+            insert(RESULT_SUB) := input(RESULT_AND).asUInt - null
+          }
+      }
+  }
+error while checking  extends Plugin[VexRiscv] {
+  import IntAluPlugin.*
+  override def setup(pipeline: VexRiscv): Unit = 
+    {
+      import Riscv.*
+      import pipeline.config.*
+      <empty>
+    }
+  override def build(pipeline: VexRiscv): Unit = 
+    {
+      import pipeline.*
+      import pipeline.config.*
+      import spinal.lib.bus.amba4.axi
+      val axiConfig = 
+        Axi4Config(addressWidth = 16, dataWidth = 64, idWidth = 4, useId = false
+          , 
+        useLast = false, useRegion = false, useBurst = false, useLock = false, 
+          useCache = false
+        , useSize = false, useQos = false, useLen = false, useResp = false, 
+          useProt = false
+        , useStrb = false)
+      val slaveBus = slave(dBusClass()).setName("slaveBus")
+      val masterBus = master(dBusClass()).setName("masterBus")
+      masterBus.dataout := B(0, 32 bits null)
+      stage_1 plug 
+        new Area {
+          import stage_1.*
+          insert(RESULT_XOR) := 
+            slaveBus.datain(31 downto 0) ^ slaveBus.datain(31 downto 0)
+          stage_2 plug 
+            new Area {
+              import stage_2.*
+              insert(RESULT_AND) := input(RESULT_XOR) & input(RESULT_XOR)
+            }
+          stage_3 plug 
+            new Area {
+              import stage_3.*
+              insert(RESULT_SUB) := input(RESULT_AND).asUInt - null
+            }
+        }
+    }
+}
+error while checking class IntAluPlugin extends Plugin[VexRiscv] {
+  import IntAluPlugin.*
+  override def setup(pipeline: VexRiscv): Unit = 
+    {
+      import Riscv.*
+      import pipeline.config.*
+      <empty>
+    }
+  override def build(pipeline: VexRiscv): Unit = 
+    {
+      import pipeline.*
+      import pipeline.config.*
+      import spinal.lib.bus.amba4.axi
+      val axiConfig = 
+        Axi4Config(addressWidth = 16, dataWidth = 64, idWidth = 4, useId = false
+          , 
+        useLast = false, useRegion = false, useBurst = false, useLock = false, 
+          useCache = false
+        , useSize = false, useQos = false, useLen = false, useResp = false, 
+          useProt = false
+        , useStrb = false)
+      val slaveBus = slave(dBusClass()).setName("slaveBus")
+      val masterBus = master(dBusClass()).setName("masterBus")
+      masterBus.dataout := B(0, 32 bits null)
+      stage_1 plug 
+        new Area {
+          import stage_1.*
+          insert(RESULT_XOR) := 
+            slaveBus.datain(31 downto 0) ^ slaveBus.datain(31 downto 0)
+          stage_2 plug 
+            new Area {
+              import stage_2.*
+              insert(RESULT_AND) := input(RESULT_XOR) & input(RESULT_XOR)
+            }
+          stage_3 plug 
+            new Area {
+              import stage_3.*
+              insert(RESULT_SUB) := input(RESULT_AND).asUInt - null
+            }
+        }
+    }
+}
+error while checking package dandriscv.plugin {
+  import dandriscv.*
+  import spinal.core.*
+  import spinal.lib.*
+  module object IntAluPlugin {
+    module object RESULT_XOR extends Stageable(Bits(32 bits null)) {}
+    module object RESULT_AND extends Stageable(Bits(32 bits null)) {}
+    module object RESULT_SUB extends Stageable(UInt(32 bits null)) {}
+    module object RESULT_OUT extends Stageable(UInt(32 bits null)) {}
+  }
+  case class dBusClass() extends Bundle, IMasterSlave {
+    val dataout = Bits(32 bits null)
+    val datain = Bits(32 bits null)
+    override def asMaster: Unit = 
+      {
+        out(dataout)
+      }
+    override def asSlave: Unit = 
+      {
+        in(datain)
+      }
+  }
+  class IntAluPlugin extends Plugin[VexRiscv] {
+    import IntAluPlugin.*
+    override def setup(pipeline: VexRiscv): Unit = 
+      {
+        import Riscv.*
+        import pipeline.config.*
+        <empty>
+      }
+    override def build(pipeline: VexRiscv): Unit = 
+      {
+        import pipeline.*
+        import pipeline.config.*
+        import spinal.lib.bus.amba4.axi
+        val axiConfig = 
+          Axi4Config(addressWidth = 16, dataWidth = 64, idWidth = 4, 
+            useId = false
+          , useLast = false, useRegion = false, useBurst = false, 
+            useLock = false
+          , useCache = false, useSize = false, useQos = false, useLen = false, 
+            useResp = false
+          , useProt = false, useStrb = false)
+        val slaveBus = slave(dBusClass()).setName("slaveBus")
+        val masterBus = master(dBusClass()).setName("masterBus")
+        masterBus.dataout := B(0, 32 bits null)
+        stage_1 plug 
+          new Area {
+            import stage_1.*
+            insert(RESULT_XOR) := 
+              slaveBus.datain(31 downto 0) ^ slaveBus.datain(31 downto 0)
+            stage_2 plug 
+              new Area {
+                import stage_2.*
+                insert(RESULT_AND) := input(RESULT_XOR) & input(RESULT_XOR)
+              }
+            stage_3 plug 
+              new Area {
+                import stage_3.*
+                insert(RESULT_SUB) := input(RESULT_AND).asUInt - null
+              }
+          }
+      }
+  }
+}
+Jun 26, 2023 7:44:15 PM scala.meta.internal.pc.CompilerAccess handleError
+SEVERE: assertion failed: position error, parent span does not contain child span
+parent      =  extends Area {
+  import stage_3.*
+  insert(RESULT_SUB) := input(RESULT_AND).asUInt - null
+} # -1,
+parent span = <1939..2027>,
+child       = insert(RESULT_SUB) := input(RESULT_AND).asUInt - null # -1,
+child span  = [1979..1998..2028]
+java.lang.AssertionError: assertion failed: position error, parent span does not contain child span
+parent      =  extends Area {
+  import stage_3.*
+  insert(RESULT_SUB) := input(RESULT_AND).asUInt - null
+} # -1,
+parent span = <1939..2027>,
+child       = insert(RESULT_SUB) := input(RESULT_AND).asUInt - null # -1,
+child span  = [1979..1998..2028]
+	at scala.runtime.Scala3RunTime$.assertFailed(Scala3RunTime.scala:8)
+	at dotty.tools.dotc.ast.Positioned.check$1(Positioned.scala:172)
+	at dotty.tools.dotc.ast.Positioned.check$1$$anonfun$3(Positioned.scala:202)
+	at scala.runtime.function.JProcedure1.apply(JProcedure1.java:15)
+	at scala.runtime.function.JProcedure1.apply(JProcedure1.java:10)
+	at scala.collection.immutable.List.foreach(List.scala:333)
+	at dotty.tools.dotc.ast.Positioned.check$1(Positioned.scala:202)
+	at dotty.tools.dotc.ast.Positioned.checkPos(Positioned.scala:223)
+	at dotty.tools.dotc.ast.Positioned.check$1(Positioned.scala:197)
+	at dotty.tools.dotc.ast.Positioned.checkPos(Positioned.scala:223)
+	at dotty.tools.dotc.ast.Positioned.check$1(Positioned.scala:197)
+	at dotty.tools.dotc.ast.Positioned.checkPos(Positioned.scala:223)
+	at dotty.tools.dotc.ast.Positioned.check$1(Positioned.scala:197)
+	at dotty.tools.dotc.ast.Positioned.check$1$$anonfun$3(Positioned.scala:202)
+	at scala.runtime.function.JProcedure1.apply(JProcedure1.java:15)
+	at scala.runtime.function.JProcedure1.apply(JProcedure1.java:10)
+	at scala.collection.immutable.List.foreach(List.scala:333)
+	at dotty.tools.dotc.ast.Positioned.check$1(Positioned.scala:202)
+	at dotty.tools.dotc.ast.Positioned.checkPos(Positioned.scala:223)
+	at dotty.tools.dotc.ast.Positioned.check$1(Positioned.scala:197)
+	at dotty.tools.dotc.ast.Positioned.checkPos(Positioned.scala:223)
+	at dotty.tools.dotc.ast.Positioned.check$1(Positioned.scala:197)
+	at dotty.tools.dotc.ast.Positioned.checkPos(Positioned.scala:223)
+	at dotty.tools.dotc.ast.Positioned.check$1(Positioned.scala:197)
+	at dotty.tools.dotc.ast.Positioned.checkPos(Positioned.scala:223)
+	at dotty.tools.dotc.ast.Positioned.check$1(Positioned.scala:197)
+	at dotty.tools.dotc.ast.Positioned.checkPos(Positioned.scala:223)
+	at dotty.tools.dotc.ast.Positioned.check$1(Positioned.scala:197)
+	at dotty.tools.dotc.ast.Positioned.check$1$$anonfun$3(Positioned.scala:202)
+	at scala.runtime.function.JProcedure1.apply(JProcedure1.java:15)
+	at scala.runtime.function.JProcedure1.apply(JProcedure1.java:10)
+	at scala.collection.immutable.List.foreach(List.scala:333)
+	at dotty.tools.dotc.ast.Positioned.check$1(Positioned.scala:202)
+	at dotty.tools.dotc.ast.Positioned.checkPos(Positioned.scala:223)
+	at dotty.tools.dotc.ast.Positioned.check$1(Positioned.scala:197)
+	at dotty.tools.dotc.ast.Positioned.checkPos(Positioned.scala:223)
+	at dotty.tools.dotc.ast.Positioned.check$1(Positioned.scala:197)
+	at dotty.tools.dotc.ast.Positioned.check$1$$anonfun$3(Positioned.scala:202)
+	at scala.runtime.function.JProcedure1.apply(JProcedure1.java:15)
+	at scala.runtime.function.JProcedure1.apply(JProcedure1.java:10)
+	at scala.collection.immutable.List.foreach(List.scala:333)
+	at dotty.tools.dotc.ast.Positioned.check$1(Positioned.scala:202)
+	at dotty.tools.dotc.ast.Positioned.checkPos(Positioned.scala:223)
+	at dotty.tools.dotc.parsing.Parser.parse$$anonfun$1(ParserPhase.scala:38)
+	at dotty.tools.dotc.parsing.Parser.parse$$anonfun$adapted$1(ParserPhase.scala:39)
+	at scala.Function0.apply$mcV$sp(Function0.scala:42)
+	at dotty.tools.dotc.core.Phases$Phase.monitor(Phases.scala:429)
+	at dotty.tools.dotc.parsing.Parser.parse(ParserPhase.scala:39)
+	at dotty.tools.dotc.parsing.Parser.runOn$$anonfun$1(ParserPhase.scala:48)
+	at scala.runtime.function.JProcedure1.apply(JProcedure1.java:15)
+	at scala.runtime.function.JProcedure1.apply(JProcedure1.java:10)
+	at scala.collection.immutable.List.foreach(List.scala:333)
+	at dotty.tools.dotc.parsing.Parser.runOn(ParserPhase.scala:48)
+	at dotty.tools.dotc.Run.runPhases$1$$anonfun$1(Run.scala:238)
+	at scala.runtime.function.JProcedure1.apply(JProcedure1.java:15)
+	at scala.runtime.function.JProcedure1.apply(JProcedure1.java:10)
+	at scala.collection.ArrayOps$.foreach$extension(ArrayOps.scala:1321)
+	at dotty.tools.dotc.Run.runPhases$1(Run.scala:249)
+	at dotty.tools.dotc.Run.compileUnits$$anonfun$1(Run.scala:257)
+	at dotty.tools.dotc.Run.compileUnits$$anonfun$adapted$1(Run.scala:266)
+	at dotty.tools.dotc.util.Stats$.maybeMonitored(Stats.scala:68)
+	at dotty.tools.dotc.Run.compileUnits(Run.scala:266)
+	at dotty.tools.dotc.Run.compileSources(Run.scala:190)
+	at dotty.tools.dotc.interactive.InteractiveDriver.run(InteractiveDriver.scala:165)
+	at scala.meta.internal.pc.MetalsDriver.run(MetalsDriver.scala:45)
+	at scala.meta.internal.pc.HoverProvider$.hover(HoverProvider.scala:34)
+
+error while checking  extends Area {
+  import stage_3.*
+  insert(RESULT_SUB) := input(RESULT_AND).asUInt - null
+}
+error while checking new Area {
+  import stage_3.*
+  insert(RESULT_SUB) := input(RESULT_AND).asUInt - null
+}
+error while checking stage_3 plug 
+  new Area {
+    import stage_3.*
+    insert(RESULT_SUB) := input(RESULT_AND).asUInt - null
+  }
+error while checking  extends Area {
+  import stage_1.*
+  insert(RESULT_XOR) := 
+    slaveBus.datain(31 downto 0) ^ slaveBus.datain(31 downto 0)
+  stage_2 plug 
+    new Area {
+      import stage_2.*
+      insert(RESULT_AND) := input(RESULT_XOR) & input(RESULT_XOR)
+    }
+  stage_3 plug 
+    new Area {
+      import stage_3.*
+      insert(RESULT_SUB) := input(RESULT_AND).asUInt - null
+    }
+}
+error while checking new Area {
+  import stage_1.*
+  insert(RESULT_XOR) := 
+    slaveBus.datain(31 downto 0) ^ slaveBus.datain(31 downto 0)
+  stage_2 plug 
+    new Area {
+      import stage_2.*
+      insert(RESULT_AND) := input(RESULT_XOR) & input(RESULT_XOR)
+    }
+  stage_3 plug 
+    new Area {
+      import stage_3.*
+      insert(RESULT_SUB) := input(RESULT_AND).asUInt - null
+    }
+}
+error while checking stage_1 plug 
+  new Area {
+    import stage_1.*
+    insert(RESULT_XOR) := 
+      slaveBus.datain(31 downto 0) ^ slaveBus.datain(31 downto 0)
+    stage_2 plug 
+      new Area {
+        import stage_2.*
+        insert(RESULT_AND) := input(RESULT_XOR) & input(RESULT_XOR)
+      }
+    stage_3 plug 
+      new Area {
+        import stage_3.*
+        insert(RESULT_SUB) := input(RESULT_AND).asUInt - null
+      }
+  }
+error while checking {
+  import pipeline.*
+  import pipeline.config.*
+  import spinal.lib.bus.amba4.axi
+  val axiConfig = 
+    Axi4Config(addressWidth = 16, dataWidth = 64, idWidth = 4, useId = false, 
+      useLast = false
+    , useRegion = false, useBurst = false, useLock = false, useCache = false, 
+      useSize = false
+    , useQos = false, useLen = false, useResp = false, useProt = false, 
+      useStrb = false
+    )
+  val slaveBus = slave(dBusClass()).setName("slaveBus")
+  val masterBus = master(dBusClass()).setName("masterBus")
+  masterBus.dataout := B(0, 32 bits null)
+  stage_1 plug 
+    new Area {
+      import stage_1.*
+      insert(RESULT_XOR) := 
+        slaveBus.datain(31 downto 0) ^ slaveBus.datain(31 downto 0)
+      stage_2 plug 
+        new Area {
+          import stage_2.*
+          insert(RESULT_AND) := input(RESULT_XOR) & input(RESULT_XOR)
+        }
+      stage_3 plug 
+        new Area {
+          import stage_3.*
+          insert(RESULT_SUB) := input(RESULT_AND).asUInt - null
+        }
+    }
+}
+error while checking override def build(pipeline: VexRiscv): Unit = 
+  {
+    import pipeline.*
+    import pipeline.config.*
+    import spinal.lib.bus.amba4.axi
+    val axiConfig = 
+      Axi4Config(addressWidth = 16, dataWidth = 64, idWidth = 4, useId = false, 
+        useLast = false
+      , useRegion = false, useBurst = false, useLock = false, useCache = false, 
+        useSize = false
+      , useQos = false, useLen = false, useResp = false, useProt = false, 
+        useStrb = false
+      )
+    val slaveBus = slave(dBusClass()).setName("slaveBus")
+    val masterBus = master(dBusClass()).setName("masterBus")
+    masterBus.dataout := B(0, 32 bits null)
+    stage_1 plug 
+      new Area {
+        import stage_1.*
+        insert(RESULT_XOR) := 
+          slaveBus.datain(31 downto 0) ^ slaveBus.datain(31 downto 0)
+        stage_2 plug 
+          new Area {
+            import stage_2.*
+            insert(RESULT_AND) := input(RESULT_XOR) & input(RESULT_XOR)
+          }
+        stage_3 plug 
+          new Area {
+            import stage_3.*
+            insert(RESULT_SUB) := input(RESULT_AND).asUInt - null
+          }
+      }
+  }
+error while checking  extends Plugin[VexRiscv] {
+  import IntAluPlugin.*
+  override def setup(pipeline: VexRiscv): Unit = 
+    {
+      import Riscv.*
+      import pipeline.config.*
+      <empty>
+    }
+  override def build(pipeline: VexRiscv): Unit = 
+    {
+      import pipeline.*
+      import pipeline.config.*
+      import spinal.lib.bus.amba4.axi
+      val axiConfig = 
+        Axi4Config(addressWidth = 16, dataWidth = 64, idWidth = 4, useId = false
+          , 
+        useLast = false, useRegion = false, useBurst = false, useLock = false, 
+          useCache = false
+        , useSize = false, useQos = false, useLen = false, useResp = false, 
+          useProt = false
+        , useStrb = false)
+      val slaveBus = slave(dBusClass()).setName("slaveBus")
+      val masterBus = master(dBusClass()).setName("masterBus")
+      masterBus.dataout := B(0, 32 bits null)
+      stage_1 plug 
+        new Area {
+          import stage_1.*
+          insert(RESULT_XOR) := 
+            slaveBus.datain(31 downto 0) ^ slaveBus.datain(31 downto 0)
+          stage_2 plug 
+            new Area {
+              import stage_2.*
+              insert(RESULT_AND) := input(RESULT_XOR) & input(RESULT_XOR)
+            }
+          stage_3 plug 
+            new Area {
+              import stage_3.*
+              insert(RESULT_SUB) := input(RESULT_AND).asUInt - null
+            }
+        }
+    }
+}
+error while checking class IntAluPlugin extends Plugin[VexRiscv] {
+  import IntAluPlugin.*
+  override def setup(pipeline: VexRiscv): Unit = 
+    {
+      import Riscv.*
+      import pipeline.config.*
+      <empty>
+    }
+  override def build(pipeline: VexRiscv): Unit = 
+    {
+      import pipeline.*
+      import pipeline.config.*
+      import spinal.lib.bus.amba4.axi
+      val axiConfig = 
+        Axi4Config(addressWidth = 16, dataWidth = 64, idWidth = 4, useId = false
+          , 
+        useLast = false, useRegion = false, useBurst = false, useLock = false, 
+          useCache = false
+        , useSize = false, useQos = false, useLen = false, useResp = false, 
+          useProt = false
+        , useStrb = false)
+      val slaveBus = slave(dBusClass()).setName("slaveBus")
+      val masterBus = master(dBusClass()).setName("masterBus")
+      masterBus.dataout := B(0, 32 bits null)
+      stage_1 plug 
+        new Area {
+          import stage_1.*
+          insert(RESULT_XOR) := 
+            slaveBus.datain(31 downto 0) ^ slaveBus.datain(31 downto 0)
+          stage_2 plug 
+            new Area {
+              import stage_2.*
+              insert(RESULT_AND) := input(RESULT_XOR) & input(RESULT_XOR)
+            }
+          stage_3 plug 
+            new Area {
+              import stage_3.*
+              insert(RESULT_SUB) := input(RESULT_AND).asUInt - null
+            }
+        }
+    }
+}
+error while checking package dandriscv.plugin {
+  import dandriscv.*
+  import spinal.core.*
+  import spinal.lib.*
+  module object IntAluPlugin {
+    module object RESULT_XOR extends Stageable(Bits(32 bits null)) {}
+    module object RESULT_AND extends Stageable(Bits(32 bits null)) {}
+    module object RESULT_SUB extends Stageable(UInt(32 bits null)) {}
+    module object RESULT_OUT extends Stageable(UInt(32 bits null)) {}
+  }
+  case class dBusClass() extends Bundle, IMasterSlave {
+    val dataout = Bits(32 bits null)
+    val datain = Bits(32 bits null)
+    override def asMaster: Unit = 
+      {
+        out(dataout)
+      }
+    override def asSlave: Unit = 
+      {
+        in(datain)
+      }
+  }
+  class IntAluPlugin extends Plugin[VexRiscv] {
+    import IntAluPlugin.*
+    override def setup(pipeline: VexRiscv): Unit = 
+      {
+        import Riscv.*
+        import pipeline.config.*
+        <empty>
+      }
+    override def build(pipeline: VexRiscv): Unit = 
+      {
+        import pipeline.*
+        import pipeline.config.*
+        import spinal.lib.bus.amba4.axi
+        val axiConfig = 
+          Axi4Config(addressWidth = 16, dataWidth = 64, idWidth = 4, 
+            useId = false
+          , useLast = false, useRegion = false, useBurst = false, 
+            useLock = false
+          , useCache = false, useSize = false, useQos = false, useLen = false, 
+            useResp = false
+          , useProt = false, useStrb = false)
+        val slaveBus = slave(dBusClass()).setName("slaveBus")
+        val masterBus = master(dBusClass()).setName("masterBus")
+        masterBus.dataout := B(0, 32 bits null)
+        stage_1 plug 
+          new Area {
+            import stage_1.*
+            insert(RESULT_XOR) := 
+              slaveBus.datain(31 downto 0) ^ slaveBus.datain(31 downto 0)
+            stage_2 plug 
+              new Area {
+                import stage_2.*
+                insert(RESULT_AND) := input(RESULT_XOR) & input(RESULT_XOR)
+              }
+            stage_3 plug 
+              new Area {
+                import stage_3.*
+                insert(RESULT_SUB) := input(RESULT_AND).asUInt - null
+              }
+          }
+      }
+  }
+}
+Jun 26, 2023 7:44:15 PM scala.meta.internal.pc.CompilerAccess handleError
+SEVERE: assertion failed: position error, parent span does not contain child span
+parent      =  extends Area {
+  import stage_3.*
+  insert(RESULT_SUB) := input(RESULT_AND).asUInt - null
+} # -1,
+parent span = <1939..2027>,
+child       = insert(RESULT_SUB) := input(RESULT_AND).asUInt - null # -1,
+child span  = [1979..1998..2028]
+java.lang.AssertionError: assertion failed: position error, parent span does not contain child span
+parent      =  extends Area {
+  import stage_3.*
+  insert(RESULT_SUB) := input(RESULT_AND).asUInt - null
+} # -1,
+parent span = <1939..2027>,
+child       = insert(RESULT_SUB) := input(RESULT_AND).asUInt - null # -1,
+child span  = [1979..1998..2028]
+	at scala.runtime.Scala3RunTime$.assertFailed(Scala3RunTime.scala:8)
+	at dotty.tools.dotc.ast.Positioned.check$1(Positioned.scala:172)
+	at dotty.tools.dotc.ast.Positioned.check$1$$anonfun$3(Positioned.scala:202)
+	at scala.runtime.function.JProcedure1.apply(JProcedure1.java:15)
+	at scala.runtime.function.JProcedure1.apply(JProcedure1.java:10)
+	at scala.collection.immutable.List.foreach(List.scala:333)
+	at dotty.tools.dotc.ast.Positioned.check$1(Positioned.scala:202)
+	at dotty.tools.dotc.ast.Positioned.checkPos(Positioned.scala:223)
+	at dotty.tools.dotc.ast.Positioned.check$1(Positioned.scala:197)
+	at dotty.tools.dotc.ast.Positioned.checkPos(Positioned.scala:223)
+	at dotty.tools.dotc.ast.Positioned.check$1(Positioned.scala:197)
+	at dotty.tools.dotc.ast.Positioned.checkPos(Positioned.scala:223)
+	at dotty.tools.dotc.ast.Positioned.check$1(Positioned.scala:197)
+	at dotty.tools.dotc.ast.Positioned.check$1$$anonfun$3(Positioned.scala:202)
+	at scala.runtime.function.JProcedure1.apply(JProcedure1.java:15)
+	at scala.runtime.function.JProcedure1.apply(JProcedure1.java:10)
+	at scala.collection.immutable.List.foreach(List.scala:333)
+	at dotty.tools.dotc.ast.Positioned.check$1(Positioned.scala:202)
+	at dotty.tools.dotc.ast.Positioned.checkPos(Positioned.scala:223)
+	at dotty.tools.dotc.ast.Positioned.check$1(Positioned.scala:197)
+	at dotty.tools.dotc.ast.Positioned.checkPos(Positioned.scala:223)
+	at dotty.tools.dotc.ast.Positioned.check$1(Positioned.scala:197)
+	at dotty.tools.dotc.ast.Positioned.checkPos(Positioned.scala:223)
+	at dotty.tools.dotc.ast.Positioned.check$1(Positioned.scala:197)
+	at dotty.tools.dotc.ast.Positioned.checkPos(Positioned.scala:223)
+	at dotty.tools.dotc.ast.Positioned.check$1(Positioned.scala:197)
+	at dotty.tools.dotc.ast.Positioned.checkPos(Positioned.scala:223)
+	at dotty.tools.dotc.ast.Positioned.check$1(Positioned.scala:197)
+	at dotty.tools.dotc.ast.Positioned.check$1$$anonfun$3(Positioned.scala:202)
+	at scala.runtime.function.JProcedure1.apply(JProcedure1.java:15)
+	at scala.runtime.function.JProcedure1.apply(JProcedure1.java:10)
+	at scala.collection.immutable.List.foreach(List.scala:333)
+	at dotty.tools.dotc.ast.Positioned.check$1(Positioned.scala:202)
+	at dotty.tools.dotc.ast.Positioned.checkPos(Positioned.scala:223)
+	at dotty.tools.dotc.ast.Positioned.check$1(Positioned.scala:197)
+	at dotty.tools.dotc.ast.Positioned.checkPos(Positioned.scala:223)
+	at dotty.tools.dotc.ast.Positioned.check$1(Positioned.scala:197)
+	at dotty.tools.dotc.ast.Positioned.check$1$$anonfun$3(Positioned.scala:202)
+	at scala.runtime.function.JProcedure1.apply(JProcedure1.java:15)
+	at scala.runtime.function.JProcedure1.apply(JProcedure1.java:10)
+	at scala.collection.immutable.List.foreach(List.scala:333)
+	at dotty.tools.dotc.ast.Positioned.check$1(Positioned.scala:202)
+	at dotty.tools.dotc.ast.Positioned.checkPos(Positioned.scala:223)
+	at dotty.tools.dotc.parsing.Parser.parse$$anonfun$1(ParserPhase.scala:38)
+	at dotty.tools.dotc.parsing.Parser.parse$$anonfun$adapted$1(ParserPhase.scala:39)
+	at scala.Function0.apply$mcV$sp(Function0.scala:42)
+	at dotty.tools.dotc.core.Phases$Phase.monitor(Phases.scala:429)
+	at dotty.tools.dotc.parsing.Parser.parse(ParserPhase.scala:39)
+	at dotty.tools.dotc.parsing.Parser.runOn$$anonfun$1(ParserPhase.scala:48)
+	at scala.runtime.function.JProcedure1.apply(JProcedure1.java:15)
+	at scala.runtime.function.JProcedure1.apply(JProcedure1.java:10)
+	at scala.collection.immutable.List.foreach(List.scala:333)
+	at dotty.tools.dotc.parsing.Parser.runOn(ParserPhase.scala:48)
+	at dotty.tools.dotc.Run.runPhases$1$$anonfun$1(Run.scala:238)
+	at scala.runtime.function.JProcedure1.apply(JProcedure1.java:15)
+	at scala.runtime.function.JProcedure1.apply(JProcedure1.java:10)
+	at scala.collection.ArrayOps$.foreach$extension(ArrayOps.scala:1321)
+	at dotty.tools.dotc.Run.runPhases$1(Run.scala:249)
+	at dotty.tools.dotc.Run.compileUnits$$anonfun$1(Run.scala:257)
+	at dotty.tools.dotc.Run.compileUnits$$anonfun$adapted$1(Run.scala:266)
+	at dotty.tools.dotc.util.Stats$.maybeMonitored(Stats.scala:68)
+	at dotty.tools.dotc.Run.compileUnits(Run.scala:266)
+	at dotty.tools.dotc.Run.compileSources(Run.scala:190)
+	at dotty.tools.dotc.interactive.InteractiveDriver.run(InteractiveDriver.scala:165)
+	at scala.meta.internal.pc.MetalsDriver.run(MetalsDriver.scala:45)
+	at scala.meta.internal.pc.PcCollector.<init>(PcCollector.scala:41)
+	at scala.meta.internal.pc.PcDocumentHighlightProvider.<init>(PcDocumentHighlightProvider.scala:16)
+
+error while checking  extends Area {
+  import stage_3.*
+  insert(RESULT_SUB) := input(RESULT_AND).asUInt - null
+}
+error while checking new Area {
+  import stage_3.*
+  insert(RESULT_SUB) := input(RESULT_AND).asUInt - null
+}
+error while checking stage_3 plug 
+  new Area {
+    import stage_3.*
+    insert(RESULT_SUB) := input(RESULT_AND).asUInt - null
+  }
+error while checking  extends Area {
+  import stage_1.*
+  insert(RESULT_XOR) := 
+    slaveBus.datain(31 downto 0) ^ slaveBus.datain(31 downto 0)
+  stage_2 plug 
+    new Area {
+      import stage_2.*
+      insert(RESULT_AND) := input(RESULT_XOR) & input(RESULT_XOR)
+    }
+  stage_3 plug 
+    new Area {
+      import stage_3.*
+      insert(RESULT_SUB) := input(RESULT_AND).asUInt - null
+    }
+}
+error while checking new Area {
+  import stage_1.*
+  insert(RESULT_XOR) := 
+    slaveBus.datain(31 downto 0) ^ slaveBus.datain(31 downto 0)
+  stage_2 plug 
+    new Area {
+      import stage_2.*
+      insert(RESULT_AND) := input(RESULT_XOR) & input(RESULT_XOR)
+    }
+  stage_3 plug 
+    new Area {
+      import stage_3.*
+      insert(RESULT_SUB) := input(RESULT_AND).asUInt - null
+    }
+}
+error while checking stage_1 plug 
+  new Area {
+    import stage_1.*
+    insert(RESULT_XOR) := 
+      slaveBus.datain(31 downto 0) ^ slaveBus.datain(31 downto 0)
+    stage_2 plug 
+      new Area {
+        import stage_2.*
+        insert(RESULT_AND) := input(RESULT_XOR) & input(RESULT_XOR)
+      }
+    stage_3 plug 
+      new Area {
+        import stage_3.*
+        insert(RESULT_SUB) := input(RESULT_AND).asUInt - null
+      }
+  }
+error while checking {
+  import pipeline.*
+  import pipeline.config.*
+  import spinal.lib.bus.amba4.axi
+  val axiConfig = 
+    Axi4Config(addressWidth = 16, dataWidth = 64, idWidth = 4, useId = false, 
+      useLast = false
+    , useRegion = false, useBurst = false, useLock = false, useCache = false, 
+      useSize = false
+    , useQos = false, useLen = false, useResp = false, useProt = false, 
+      useStrb = false
+    )
+  val slaveBus = slave(dBusClass()).setName("slaveBus")
+  val masterBus = master(dBusClass()).setName("masterBus")
+  masterBus.dataout := B(0, 32 bits null)
+  stage_1 plug 
+    new Area {
+      import stage_1.*
+      insert(RESULT_XOR) := 
+        slaveBus.datain(31 downto 0) ^ slaveBus.datain(31 downto 0)
+      stage_2 plug 
+        new Area {
+          import stage_2.*
+          insert(RESULT_AND) := input(RESULT_XOR) & input(RESULT_XOR)
+        }
+      stage_3 plug 
+        new Area {
+          import stage_3.*
+          insert(RESULT_SUB) := input(RESULT_AND).asUInt - null
+        }
+    }
+}
+error while checking override def build(pipeline: VexRiscv): Unit = 
+  {
+    import pipeline.*
+    import pipeline.config.*
+    import spinal.lib.bus.amba4.axi
+    val axiConfig = 
+      Axi4Config(addressWidth = 16, dataWidth = 64, idWidth = 4, useId = false, 
+        useLast = false
+      , useRegion = false, useBurst = false, useLock = false, useCache = false, 
+        useSize = false
+      , useQos = false, useLen = false, useResp = false, useProt = false, 
+        useStrb = false
+      )
+    val slaveBus = slave(dBusClass()).setName("slaveBus")
+    val masterBus = master(dBusClass()).setName("masterBus")
+    masterBus.dataout := B(0, 32 bits null)
+    stage_1 plug 
+      new Area {
+        import stage_1.*
+        insert(RESULT_XOR) := 
+          slaveBus.datain(31 downto 0) ^ slaveBus.datain(31 downto 0)
+        stage_2 plug 
+          new Area {
+            import stage_2.*
+            insert(RESULT_AND) := input(RESULT_XOR) & input(RESULT_XOR)
+          }
+        stage_3 plug 
+          new Area {
+            import stage_3.*
+            insert(RESULT_SUB) := input(RESULT_AND).asUInt - null
+          }
+      }
+  }
+error while checking  extends Plugin[VexRiscv] {
+  import IntAluPlugin.*
+  override def setup(pipeline: VexRiscv): Unit = 
+    {
+      import Riscv.*
+      import pipeline.config.*
+      <empty>
+    }
+  override def build(pipeline: VexRiscv): Unit = 
+    {
+      import pipeline.*
+      import pipeline.config.*
+      import spinal.lib.bus.amba4.axi
+      val axiConfig = 
+        Axi4Config(addressWidth = 16, dataWidth = 64, idWidth = 4, useId = false
+          , 
+        useLast = false, useRegion = false, useBurst = false, useLock = false, 
+          useCache = false
+        , useSize = false, useQos = false, useLen = false, useResp = false, 
+          useProt = false
+        , useStrb = false)
+      val slaveBus = slave(dBusClass()).setName("slaveBus")
+      val masterBus = master(dBusClass()).setName("masterBus")
+      masterBus.dataout := B(0, 32 bits null)
+      stage_1 plug 
+        new Area {
+          import stage_1.*
+          insert(RESULT_XOR) := 
+            slaveBus.datain(31 downto 0) ^ slaveBus.datain(31 downto 0)
+          stage_2 plug 
+            new Area {
+              import stage_2.*
+              insert(RESULT_AND) := input(RESULT_XOR) & input(RESULT_XOR)
+            }
+          stage_3 plug 
+            new Area {
+              import stage_3.*
+              insert(RESULT_SUB) := input(RESULT_AND).asUInt - null
+            }
+        }
+    }
+}
+error while checking class IntAluPlugin extends Plugin[VexRiscv] {
+  import IntAluPlugin.*
+  override def setup(pipeline: VexRiscv): Unit = 
+    {
+      import Riscv.*
+      import pipeline.config.*
+      <empty>
+    }
+  override def build(pipeline: VexRiscv): Unit = 
+    {
+      import pipeline.*
+      import pipeline.config.*
+      import spinal.lib.bus.amba4.axi
+      val axiConfig = 
+        Axi4Config(addressWidth = 16, dataWidth = 64, idWidth = 4, useId = false
+          , 
+        useLast = false, useRegion = false, useBurst = false, useLock = false, 
+          useCache = false
+        , useSize = false, useQos = false, useLen = false, useResp = false, 
+          useProt = false
+        , useStrb = false)
+      val slaveBus = slave(dBusClass()).setName("slaveBus")
+      val masterBus = master(dBusClass()).setName("masterBus")
+      masterBus.dataout := B(0, 32 bits null)
+      stage_1 plug 
+        new Area {
+          import stage_1.*
+          insert(RESULT_XOR) := 
+            slaveBus.datain(31 downto 0) ^ slaveBus.datain(31 downto 0)
+          stage_2 plug 
+            new Area {
+              import stage_2.*
+              insert(RESULT_AND) := input(RESULT_XOR) & input(RESULT_XOR)
+            }
+          stage_3 plug 
+            new Area {
+              import stage_3.*
+              insert(RESULT_SUB) := input(RESULT_AND).asUInt - null
+            }
+        }
+    }
+}
+error while checking package dandriscv.plugin {
+  import dandriscv.*
+  import spinal.core.*
+  import spinal.lib.*
+  module object IntAluPlugin {
+    module object RESULT_XOR extends Stageable(Bits(32 bits null)) {}
+    module object RESULT_AND extends Stageable(Bits(32 bits null)) {}
+    module object RESULT_SUB extends Stageable(UInt(32 bits null)) {}
+    module object RESULT_OUT extends Stageable(UInt(32 bits null)) {}
+  }
+  case class dBusClass() extends Bundle, IMasterSlave {
+    val dataout = Bits(32 bits null)
+    val datain = Bits(32 bits null)
+    override def asMaster: Unit = 
+      {
+        out(dataout)
+      }
+    override def asSlave: Unit = 
+      {
+        in(datain)
+      }
+  }
+  class IntAluPlugin extends Plugin[VexRiscv] {
+    import IntAluPlugin.*
+    override def setup(pipeline: VexRiscv): Unit = 
+      {
+        import Riscv.*
+        import pipeline.config.*
+        <empty>
+      }
+    override def build(pipeline: VexRiscv): Unit = 
+      {
+        import pipeline.*
+        import pipeline.config.*
+        import spinal.lib.bus.amba4.axi
+        val axiConfig = 
+          Axi4Config(addressWidth = 16, dataWidth = 64, idWidth = 4, 
+            useId = false
+          , useLast = false, useRegion = false, useBurst = false, 
+            useLock = false
+          , useCache = false, useSize = false, useQos = false, useLen = false, 
+            useResp = false
+          , useProt = false, useStrb = false)
+        val slaveBus = slave(dBusClass()).setName("slaveBus")
+        val masterBus = master(dBusClass()).setName("masterBus")
+        masterBus.dataout := B(0, 32 bits null)
+        stage_1 plug 
+          new Area {
+            import stage_1.*
+            insert(RESULT_XOR) := 
+              slaveBus.datain(31 downto 0) ^ slaveBus.datain(31 downto 0)
+            stage_2 plug 
+              new Area {
+                import stage_2.*
+                insert(RESULT_AND) := input(RESULT_XOR) & input(RESULT_XOR)
+              }
+            stage_3 plug 
+              new Area {
+                import stage_3.*
+                insert(RESULT_SUB) := input(RESULT_AND).asUInt - null
+              }
+          }
+      }
+  }
+}
+Jun 26, 2023 7:44:16 PM scala.meta.internal.pc.CompilerAccess handleError
+SEVERE: assertion failed: position error, parent span does not contain child span
+parent      =  extends Area {
+  import stage_3.*
+  insert(RESULT_SUB) := input(RESULT_AND).asUInt - null
+} # -1,
+parent span = <1939..2027>,
+child       = insert(RESULT_SUB) := input(RESULT_AND).asUInt - null # -1,
+child span  = [1979..1998..2028]
+java.lang.AssertionError: assertion failed: position error, parent span does not contain child span
+parent      =  extends Area {
+  import stage_3.*
+  insert(RESULT_SUB) := input(RESULT_AND).asUInt - null
+} # -1,
+parent span = <1939..2027>,
+child       = insert(RESULT_SUB) := input(RESULT_AND).asUInt - null # -1,
+child span  = [1979..1998..2028]
+	at scala.runtime.Scala3RunTime$.assertFailed(Scala3RunTime.scala:8)
+	at dotty.tools.dotc.ast.Positioned.check$1(Positioned.scala:172)
+	at dotty.tools.dotc.ast.Positioned.check$1$$anonfun$3(Positioned.scala:202)
+	at scala.runtime.function.JProcedure1.apply(JProcedure1.java:15)
+	at scala.runtime.function.JProcedure1.apply(JProcedure1.java:10)
+	at scala.collection.immutable.List.foreach(List.scala:333)
+	at dotty.tools.dotc.ast.Positioned.check$1(Positioned.scala:202)
+	at dotty.tools.dotc.ast.Positioned.checkPos(Positioned.scala:223)
+	at dotty.tools.dotc.ast.Positioned.check$1(Positioned.scala:197)
+	at dotty.tools.dotc.ast.Positioned.checkPos(Positioned.scala:223)
+	at dotty.tools.dotc.ast.Positioned.check$1(Positioned.scala:197)
+	at dotty.tools.dotc.ast.Positioned.checkPos(Positioned.scala:223)
+	at dotty.tools.dotc.ast.Positioned.check$1(Positioned.scala:197)
+	at dotty.tools.dotc.ast.Positioned.check$1$$anonfun$3(Positioned.scala:202)
+	at scala.runtime.function.JProcedure1.apply(JProcedure1.java:15)
+	at scala.runtime.function.JProcedure1.apply(JProcedure1.java:10)
+	at scala.collection.immutable.List.foreach(List.scala:333)
+	at dotty.tools.dotc.ast.Positioned.check$1(Positioned.scala:202)
+	at dotty.tools.dotc.ast.Positioned.checkPos(Positioned.scala:223)
+	at dotty.tools.dotc.ast.Positioned.check$1(Positioned.scala:197)
+	at dotty.tools.dotc.ast.Positioned.checkPos(Positioned.scala:223)
+	at dotty.tools.dotc.ast.Positioned.check$1(Positioned.scala:197)
+	at dotty.tools.dotc.ast.Positioned.checkPos(Positioned.scala:223)
+	at dotty.tools.dotc.ast.Positioned.check$1(Positioned.scala:197)
+	at dotty.tools.dotc.ast.Positioned.checkPos(Positioned.scala:223)
+	at dotty.tools.dotc.ast.Positioned.check$1(Positioned.scala:197)
+	at dotty.tools.dotc.ast.Positioned.checkPos(Positioned.scala:223)
+	at dotty.tools.dotc.ast.Positioned.check$1(Positioned.scala:197)
+	at dotty.tools.dotc.ast.Positioned.check$1$$anonfun$3(Positioned.scala:202)
+	at scala.runtime.function.JProcedure1.apply(JProcedure1.java:15)
+	at scala.runtime.function.JProcedure1.apply(JProcedure1.java:10)
+	at scala.collection.immutable.List.foreach(List.scala:333)
+	at dotty.tools.dotc.ast.Positioned.check$1(Positioned.scala:202)
+	at dotty.tools.dotc.ast.Positioned.checkPos(Positioned.scala:223)
+	at dotty.tools.dotc.ast.Positioned.check$1(Positioned.scala:197)
+	at dotty.tools.dotc.ast.Positioned.checkPos(Positioned.scala:223)
+	at dotty.tools.dotc.ast.Positioned.check$1(Positioned.scala:197)
+	at dotty.tools.dotc.ast.Positioned.check$1$$anonfun$3(Positioned.scala:202)
+	at scala.runtime.function.JProcedure1.apply(JProcedure1.java:15)
+	at scala.runtime.function.JProcedure1.apply(JProcedure1.java:10)
+	at scala.collection.immutable.List.foreach(List.scala:333)
+	at dotty.tools.dotc.ast.Positioned.check$1(Positioned.scala:202)
+	at dotty.tools.dotc.ast.Positioned.checkPos(Positioned.scala:223)
+	at dotty.tools.dotc.parsing.Parser.parse$$anonfun$1(ParserPhase.scala:38)
+	at dotty.tools.dotc.parsing.Parser.parse$$anonfun$adapted$1(ParserPhase.scala:39)
+	at scala.Function0.apply$mcV$sp(Function0.scala:42)
+	at dotty.tools.dotc.core.Phases$Phase.monitor(Phases.scala:429)
+	at dotty.tools.dotc.parsing.Parser.parse(ParserPhase.scala:39)
+	at dotty.tools.dotc.parsing.Parser.runOn$$anonfun$1(ParserPhase.scala:48)
+	at scala.runtime.function.JProcedure1.apply(JProcedure1.java:15)
+	at scala.runtime.function.JProcedure1.apply(JProcedure1.java:10)
+	at scala.collection.immutable.List.foreach(List.scala:333)
+	at dotty.tools.dotc.parsing.Parser.runOn(ParserPhase.scala:48)
+	at dotty.tools.dotc.Run.runPhases$1$$anonfun$1(Run.scala:238)
+	at scala.runtime.function.JProcedure1.apply(JProcedure1.java:15)
+	at scala.runtime.function.JProcedure1.apply(JProcedure1.java:10)
+	at scala.collection.ArrayOps$.foreach$extension(ArrayOps.scala:1321)
+	at dotty.tools.dotc.Run.runPhases$1(Run.scala:249)
+	at dotty.tools.dotc.Run.compileUnits$$anonfun$1(Run.scala:257)
+	at dotty.tools.dotc.Run.compileUnits$$anonfun$adapted$1(Run.scala:266)
+	at dotty.tools.dotc.util.Stats$.maybeMonitored(Stats.scala:68)
+	at dotty.tools.dotc.Run.compileUnits(Run.scala:266)
+	at dotty.tools.dotc.Run.compileSources(Run.scala:190)
+	at dotty.tools.dotc.interactive.InteractiveDriver.run(InteractiveDriver.scala:165)
+	at scala.meta.internal.pc.MetalsDriver.run(MetalsDriver.scala:45)
+	at scala.meta.internal.pc.PcDefinitionProvider.definitions(PcDefinitionProvider.scala:43)
+	at scala.meta.internal.pc.PcDefinitionProvider.definitions(PcDefinitionProvider.scala:33)
+
+2023.06.26 19:44:21 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Pipeline.scala[0m
+2023.06.26 19:44:33 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Pipeline.scala[0m
+2023.06.26 19:44:45 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Pipeline.scala[0m
+2023.06.26 19:45:17 WARN  Using indexes to guess the definition of RESULT_SUB[0m
+2023.06.26 19:45:36 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Pipeline.scala[0m
+2023.06.26 19:46:10 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Pipeline.scala[0m
+2023.06.26 19:46:28 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Stage.scala[0m
+2023.06.26 19:46:31 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Pipeline.scala[0m
+2023.06.26 19:46:35 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Stage.scala[0m
+2023.06.26 19:48:31 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/DandRiscvCpu.scala[0m
+2023.06.26 19:49:38 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/DandRiscvCpu.scala[0m
+2023.06.26 19:49:46 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/DandRiscvCpu.scala[0m
+2023.06.26 19:50:30 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/DandRiscvCpu.scala[0m
+2023.06.26 19:50:30 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/DandRiscvCpu.scala[0m
+2023.06.26 19:50:40 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/DandRiscvCpu.scala[0m
+2023.06.26 19:52:19 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/genCPU/GenSmallest.scala[0m
+2023.06.26 19:52:32 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Stage.scala[0m
+2023.06.26 19:52:36 WARN  Using indexes to guess the definition of VexRiscv[0m
+2023.06.26 19:52:36 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/genCPU/GenSmallest.scala[0m
+2023.06.26 19:52:36 WARN  Using indexes to guess the definition of VexRiscv[0m
+2023.06.26 19:52:36 WARN  Using indexes to guess the definition of VexRiscvConfig[0m
+2023.06.26 19:52:49 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/DandRiscvCpu.scala[0m
+2023.06.26 19:52:58 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/DandRiscvCpu.scala[0m
+2023.06.26 19:53:11 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/DandRiscvCpu.scala[0m
+2023.06.26 19:53:23 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Pipeline.scala[0m
+2023.06.26 19:53:36 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/genCPU/GenSmallest.scala[0m
+2023.06.26 19:54:45 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin/IntAluPlugin.scala[0m
+2023.06.26 19:54:46 WARN  Using indexes to guess the definition of Stageable[0m
+2023.06.26 19:54:50 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Pipeline.scala[0m
+2023.06.26 19:54:53 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin/IntAluPlugin.scala[0m
+2023.06.26 19:56:54 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Pipeline.scala[0m
+2023.06.26 19:58:16 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/genCPU/GenSmallest.scala[0m
+2023.06.26 19:58:24 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/genCPU/GenSmallest.scala[0m
+2023.06.26 20:00:26 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin/Plugin.scala[0m
+2023.06.26 20:00:36 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin/Plugin.scala[0m
+2023.06.26 20:00:41 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin/Plugin.scala[0m
+Jun 26, 2023 8:01:11 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 1420
+2023.06.26 20:01:18 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/DandRiscvCpu.scala[0m
+2023.06.26 20:01:18 WARN  Using indexes to guess the definition of plugins[0m
+2023.06.26 20:01:47 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin/IntAluPlugin.scala[0m
+Jun 26, 2023 8:06:32 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 1517
