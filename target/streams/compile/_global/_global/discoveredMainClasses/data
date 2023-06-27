@@ -1,1 +1,1 @@
-["dandriscv.demo.GenSmallest"]
+["dandriscv.genCPU.GenSimple","dandriscv.genCPU.GenSmallest"]

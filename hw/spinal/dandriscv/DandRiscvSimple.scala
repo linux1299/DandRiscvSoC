@@ -1,39 +1,33 @@
-/*
- * @Author: mikey.zhaopeng 
- * @Date: 2023-06-27 15:23:08 
- * @Last Modified by:   mikey.zhaopeng 
- * @Last Modified time: 2023-06-27 15:23:08 
- */
-
-
 package dandriscv
 
 import dandriscv.plugin._
+import dandriscv.plugin_simple._
 import spinal.core._
 
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.Seq
 
-object DandRiscvConfig{
-  def apply(withMemoryStage : Boolean, withWriteBackStage : Boolean, plugins : Seq[Plugin[DandRiscv]]): DandRiscvConfig = {
-    val config = DandRiscvConfig()
+object DandRiscvSimpleConfig{
+  def apply(withMemoryStage : Boolean, withWriteBackStage : Boolean, plugins : Seq[Plugin[DandRiscvSimple]]): DandRiscvSimpleConfig = {
+    val config = DandRiscvSimpleConfig()
     config.plugins ++= plugins
     config.withMemoryStage = withMemoryStage
     config.withWriteBackStage = withWriteBackStage
     config
   }
 
-  def apply(plugins : Seq[Plugin[DandRiscv]] = ArrayBuffer()) : DandRiscvConfig = apply(true,true,plugins)
+  def apply(plugins : Seq[Plugin[DandRiscvSimple]] = ArrayBuffer()) : DandRiscvSimpleConfig = apply(true,true,plugins)
+
 }
-trait DandRiscvRegressionArg{
-  def getDandRiscvRegressionArgs() : Seq[String]
+trait DandRiscvSimpleRegressionArg{
+  def getDandRiscvSimpleRegressionArgs() : Seq[String]
 }
-case class DandRiscvConfig(){
+case class DandRiscvSimpleConfig(){
   var withMemoryStage = true
   var withWriteBackStage = true
-  val plugins = ArrayBuffer[Plugin[DandRiscv]]()
+  val plugins = ArrayBuffer[Plugin[DandRiscvSimple]]()
 
-  def add(that : Plugin[DandRiscv]) : this.type = {plugins += that;this}
+  def add(that : Plugin[DandRiscvSimple]) : this.type = {plugins += that;this}
   def find[T](clazz: Class[T]): Option[T] = {
     plugins.find(_.getClass == clazz) match {
       case Some(x) => Some(x.asInstanceOf[T])
@@ -45,10 +39,16 @@ case class DandRiscvConfig(){
       case Some(x) => x.asInstanceOf[T]
     }
   }
+  
+  object INST_TEST extends Stageable(Bits(32 bits))
+  object INSTRUCTION extends Stageable(Bits(32 bits))
+  object INST_EXE extends Stageable(Bits(32 bits))
+
 }
 
-class DandRiscv(val config : DandRiscvConfig) extends Component with Pipeline{
-  type  T = DandRiscv
+
+class DandRiscvSimple(val config : DandRiscvSimpleConfig) extends Component with Pipeline{
+  type  T = DandRiscvSimple
   import config._
 
   //Define stages

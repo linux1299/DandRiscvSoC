@@ -1,6 +1,8 @@
-package dandriscv.demo
+package dandriscv.genCPU
 
 import dandriscv.plugin._
+import dandriscv.plugin_simple._
+import dandriscv.plugin_simple
 import dandriscv.{plugin, DandRiscv, DandRiscvConfig}
 import spinal.core._
 
@@ -11,7 +13,7 @@ object GenSmallest extends App{
   def cpu() = new DandRiscv(
     config = DandRiscvConfig(
       plugins = List(
-        new IntAluPlugin
+        new PluginTest
       )
     )
   )

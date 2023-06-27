@@ -16,3 +16,8 @@
 1687693902778:runMain dandriscv.MyTopLevelVerilog ;
 1687780746903:runMain
 1687780938822:runMain dandriscv.demo.GenSmallest
+1687871779819:runMain dandriscv.genCPU.GenSimple
+1687872490754:runMain dandriscv.genCPU.GenSmallest
+1687873185505:runMain dandriscv.genCPU.GenSimple
+1687873189562:runMain dandriscv.genCPU.GenSmallest
+1687873234881:runMain dandriscv.genCPU.GenSimple
