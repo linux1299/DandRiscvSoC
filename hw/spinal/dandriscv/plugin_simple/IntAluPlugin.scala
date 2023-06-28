@@ -1,9 +1,11 @@
-package dandriscv.plugin
+package dandriscv.plugin_simple
 
-import dandriscv._
 import spinal.core._
 import spinal.lib._
+
+import dandriscv._
 import dandriscv.plugin._
+import dandriscv.plugin_simple._
 
 object IntAluPlugin{
   object RESULT_XOR extends Stageable(Bits(32 bits))

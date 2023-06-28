@@ -1,23 +1,36 @@
 package dandriscv.plugin_simple
 
-import dandriscv._
 import spinal.core._
 import spinal.lib._
-import dandriscv.plugin_simple._
-import dandriscv.plugin._
 
-object ICachePlugin{
-  object INST_TEST extends Stageable(Bits(32 bits))
-  object INSTRUCTION extends Stageable(Bits(32 bits))
-}
+import dandriscv._
+import dandriscv.plugin._
+import dandriscv.plugin_simple._
 
 trait ICacheAccessService {
-    def newICacheAccess() : ICacheAccess
+  def newICacheAccess() : ICacheAccess
+}
+trait NextLevelAccessService {
+  def newNextLevelAccessService() : NextLevelAccess
 }
 
-case class ICacheAccess() extends Bundle {
-  val cmd = Stream(Bits(8 bits))
-  val rsp = Flow(Bits(8 bits))
+case class ICacheAccessCmd(AW: Int) extends Bundle {
+  val address = UInt(AW bits)
+  val size    = UInt(3 bits)
+}
+
+case class ICacheAccessRsp(DW: Int) extends Bundle {
+  val data = Bits(DW bits)
+}
+
+case class ICacheAccess(AW: Int, DW: Int) extends Bundle {
+  val cmd = Stream(ICacheAccessCmd(AW))
+  val rsp = Flow(ICacheAccessRsp(DW))
+}
+
+case class NextLevelAccess(AW: Int, DW: Int) extends Bundle {
+  val cmd = Stream(ICacheAccessCmd(AW))
+  val rsp = Flow(ICacheAccessRsp(DW))
 }
 
 
@@ -29,7 +42,9 @@ class ICachePlugin extends Plugin[DandRiscvSimple]{
   override def setup(pipeline: DandRiscvSimple): Unit = {
     import Riscv._
     import pipeline.config._
+
     icache_access = pipeline.service(classOf[ICacheAccessService]).newICacheAccess
+    nextlevel_access = pipeline.service(classOf[NextLevelAccessService]).newNextLevelAccessService
   }
 
    override def build(pipeline: DandRiscvSimple): Unit = {
@@ -41,12 +56,7 @@ class ICachePlugin extends Plugin[DandRiscvSimple]{
     icache_access.cmd.payload := B(1, 8 bits)
     icache_access.rsp.valid := False
     icache_access.rsp.payload := B(1, 8 bits)
-
-    decode plug new Area{
-      import decode._
-      insert(INST_TEST) := input(INSTRUCTION)
-      //insert(INST_TEST) := B(0, 32 bits)
-    }
+    
 
    }
   

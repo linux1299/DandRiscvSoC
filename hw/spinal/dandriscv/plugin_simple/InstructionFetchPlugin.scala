@@ -1,16 +1,11 @@
 package dandriscv.plugin_simple
 
-import dandriscv._
 import spinal.core._
 import spinal.lib._
+
+import dandriscv._
 import dandriscv.plugin._
 import dandriscv.plugin_simple._
-
-//object InstructionFetchPlugin{
-//  //object INSTRUCTION extends Stageable(Bits(32 bits))
-//  //object INST_TEST extends Stageable(Bits(32 bits))
-//  //object INST_EXE extends Stageable(Bits(32 bits))
-//}
 
 case class inoutClass() extends Bundle with IMasterSlave{
   val dataout = Bits(32 bits)
@@ -53,12 +48,6 @@ class InstructionFetchPlugin extends Plugin[DandRiscvSimple] with ICacheAccessSe
 
       insert(INSTRUCTION) := slaveBus.datain
     }
-
-    //decode plug new Area{
-    //  import decode._
-//
-    //  insert(INST_TEST) := input(INSTRUCTION)
-    //}
 
     execute plug new Area{
       import execute._

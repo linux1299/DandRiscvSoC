@@ -1,4 +1,4 @@
-package dandriscv.genCPU
+package dandriscv.gencpu
 
 import dandriscv.plugin_simple._
 import dandriscv.{plugin_simple, DandRiscvSimple, DandRiscvSimpleConfig}
