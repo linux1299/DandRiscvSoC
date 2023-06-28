@@ -23,6 +23,8 @@ case class ICacheConfig(cacheSize : Int,
   def tagRange = (addressWidth-1) downto (offsetWidth+setWidth)
   def bankNum = wayCount
   def bankAddrWidth = log2Up(bankDepth)
+  def lineCount = cacheSize/bytePerLine
+  def wayLineConut = lineCount/wayCount
 }
 
 // ================= sram ports as master================
@@ -92,8 +94,13 @@ case class ICache(p : ICacheConfig) extends Component{
   case class LineMeta() extends Bundle{
     val valid = Bool
     val tag = Bool
-    val replace_info = Bits(p.wayCount bits)
+    val replace_info = Bits(wayCount bits)
   }
 
-  
+  val ways = Seq.fill(wayCount)(new Area{
+    val metas = Mem(LineMeta(), wayLineConut)
+    metas.initBigInt(List.fill(wayLineCount)(BigInt(0)))
+  })
+
+
 }
