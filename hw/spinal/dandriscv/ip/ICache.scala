@@ -14,30 +14,33 @@ case class ICacheConfig(cacheSize : Int,
                         bankWidth : Int,
                         busDataWidth : Int){
 
-  def burstSize = bytePerLine*8/bankWidth  
+  def busBurstSize = bytePerLine*8/busDataWidth
   def bankDepth = cacheSize/wayCount/bankWidth
+  def bankDepthBits = log2Up(bankDepth)
   def offsetWidth = log(bytePerLine)
   def offsetRange = (offsetWidth-1) downto 0
   def setWidth = offsetRange
   def setRange = (offsetWidth+setWidth-1) downto offsetWidth
+  def tagWidth = addressWidth-setRange-offsetWidth
   def tagRange = (addressWidth-1) downto (offsetWidth+setWidth)
   def bankNum = wayCount
-  def bankAddrWidth = log2Up(bankDepth)
+  def bankOffset = log2Up(bankWidth/8)
+  def bankOffsetRange = (bankOffset-1) : 0
+  def bankAddrRange  = (bankDepthBits+bankOffset-1) downto bankOffset
   def lineCount = cacheSize/bytePerLine
   def wayLineConut = lineCount/wayCount
 }
 
 // ================= sram ports as master================
 case class ICacheSramCmd(p : ICacheConfig) extends Bundle{
-  val addr = UInt(p.bankAddrWidth bit)
-  val cen = Bool()
+  val addr = UInt(p.bankDepthBits bit)
   val wen = Bool()
 }
 case class ICacheSramRsp(p : ICacheConfig) extends Bundle{
   val data = Bits(p.bankWidth bit)
 }
 case class ICacheSramPorts(p : ICacheConfig) extends Bundle{
-  val cmd = Stream(ICacheSramCmd(p))
+  val cmd = Flow(ICacheSramCmd(p))
   val rsp = Flow(ICacheSramRsp(p))
 
   override asMaster(): Unit = {
@@ -49,7 +52,6 @@ case class ICacheSramPorts(p : ICacheConfig) extends Bundle{
 // ================ cpu ports as slave ==============
 case class ICacheCpuCmd(p : ICacheConfig) extends Bundle{
   val addr = UInt(p.addressWidth bit)
-  val cen = Bool()
 }
 case class ICacheCpuRsp(p : ICacheConfig) extends Bundle{
   val data = Bits(p.cpuDataWidth bit)
@@ -67,7 +69,6 @@ case class ICacheCpuPorts(p : ICacheConfig) extends Bundle{
 // ================ next level ports as master ==============
 case class ICacheNextLevelCmd(p : ICacheConfig) extends Bundle{
   val addr = UInt(p.addressWidth bit)
-  val valid = Bool()
 }
 case class ICacheNextLevelRsp(p : ICacheConfig) extends Bundle{
   val data = Bits(p.busDataWidth bit)
@@ -87,7 +88,9 @@ case class ICache(p : ICacheConfig) extends Component{
   val io = new Bundle{
     val flush = in Bool()
     val cpu = slave(ICacheCpuPorts(p))
-    val sram = master(ICacheSramPorts(p))
+    val sram = for(i<-0 until bankNum) yield new Area{
+      master(ICacheSramPorts(p))
+    }
     val next_level = master(ICacheNextLevelPorts(p))
   }
 
@@ -101,6 +104,29 @@ case class ICache(p : ICacheConfig) extends Component{
     val metas = Mem(LineMeta(), wayLineConut)
     metas.initBigInt(List.fill(wayLineCount)(BigInt(0)))
   })
+
+  val cpu_tag = cpu.cmd.addr(tagRange)
+
+  val cpu_bank_offset = cpu.cmd.addr(bankOffsetRange)
+  val cpu_bank_addr   = cpu.cmd.addr(bankAddrRange)
+  val cpu_bank_sel    = 
+
+  val icache_tag = Vec(UInt(tagWidth bits), wayCount)
+  val icache_hit = Vec(Bool(), wayCount)
+
+  // read metas to decide cache hit, acccess sram
+  for(wayId <- 0 until wayCount){
+    icache_tag(wayId) := ways(wayId).metas.mem(cpu_set)
+    icache_hit(wayId) := (icache_tag === cpu_tag) & cpu.cmd.valid
+    sram(wayId).cmd.payload.addr := icache_hit(wayId) ? cpu_bank_addr : U(0, bankDepthBits bits)
+    sram(wayId).cmd.valid        := icache_hit(wayId)
+    sram(wayId).cmd.payload.wen  := False
+  }
+
+  // resp to cpu ports
+  cpu.rsp.payload.data := 
+
+  // write metas 
 
 
 }
