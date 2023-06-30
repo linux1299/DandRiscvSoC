@@ -85,14 +85,13 @@ case class ICacheNextLevelPorts(p : ICacheConfig) extends Bundle{
 
 case class ICache(p : ICacheConfig) extends Component{
   import p._
-  val io = new Bundle{
-    val flush = in Bool()
-    val cpu = slave(ICacheCpuPorts(p))
-    val sram = for(i<-0 until bankNum) yield new Area{
-      master(ICacheSramPorts(p))
-    }
-    val next_level = master(ICacheNextLevelPorts(p))
+
+  val flush = in Bool()
+  val cpu = slave(ICacheCpuPorts(p))
+  val sram = for(i<-0 until bankNum) yield new Area{
+    master(ICacheSramPorts(p))
   }
+  val next_level = master(ICacheNextLevelPorts(p))
 
   case class LineMeta() extends Bundle{
     val valid = Bool
@@ -109,7 +108,7 @@ case class ICache(p : ICacheConfig) extends Component{
 
   val cpu_bank_offset = cpu.cmd.addr(bankOffsetRange)
   val cpu_bank_addr   = cpu.cmd.addr(bankAddrRange)
-  val cpu_bank_sel    = 
+  val cpu_bank_sel    = cpu.cmd.addr
 
   val icache_tag = Vec(UInt(tagWidth bits), wayCount)
   val icache_hit = Vec(Bool(), wayCount)
@@ -124,7 +123,11 @@ case class ICache(p : ICacheConfig) extends Component{
   }
 
   // resp to cpu ports
-  cpu.rsp.payload.data := 
+  cpu.rsp.payload.data := sram(waySel).rsp.payload.data()
+  cpu.rsp.valid := sram(waySel).rsp.valid
+
+  // cmd to next level cache
+
 
   // write metas 
 

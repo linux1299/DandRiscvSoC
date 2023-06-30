@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="jna-5.12.11">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/target/bg-jobs/sbt_e421da1e/target/8949b660/5e7caf9d/jna-5.12.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

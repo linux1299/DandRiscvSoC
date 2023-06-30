@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="scala-compiler-2.12.16">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/target/bg-jobs/sbt_f9886622/target/ace76f74/a357a7a8/scala-compiler-2.12.16.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

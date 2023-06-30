@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="scala-xml_2.12-1.0.6">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/target/bg-jobs/sbt_e421da1e/target/8cb87a9d/9a06ab94/scala-xml_2.12-1.0.6.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="slf4j-simple-2.0.51">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/target/bg-jobs/sbt_d704bc79/target/08a40f8b/aad16aa5/slf4j-simple-2.0.5.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
