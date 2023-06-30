@@ -11,22 +11,22 @@ case class inoutClass() extends Bundle with IMasterSlave{
   val dataout = Bits(32 bits)
   val datain = Bits(32 bits)
 
-  override def asMaster: Unit = {
+  override def asMaster(): Unit = {
     out(dataout)
   }
 
-  override def asSlave: Unit = {
+  override def asSlave(): Unit = {
     in(datain)
   }
 }
 
-class InstructionFetchPlugin extends Plugin[DandRiscvSimple] with ICacheAccessService{
+class InstructionFetchPlugin() extends Plugin[DandRiscvSimple] with ICacheAccessService{
   //import InstructionFetchPlugin._
 
   @dontName var icache_access : ICacheAccess = null
   override def newICacheAccess(): ICacheAccess = {
-    assert(icache_access == null)
-    icache_access = ICacheAccess()
+    //assert(icache_access == null)
+    icache_access = ICacheAccess(64, 32)
     icache_access
   }
 
@@ -52,7 +52,7 @@ class InstructionFetchPlugin extends Plugin[DandRiscvSimple] with ICacheAccessSe
     execute plug new Area{
       import execute._
 
-      insert(INST_EXE) := input(INST_TEST)
+      //insert(INST_EXE) := input(INST_TEST)
     }
 
     if(icache_access != null) pipeline plug new Area{

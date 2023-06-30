@@ -1,6 +1,7 @@
 package dandriscv.gencpu
 
 import dandriscv.plugin_simple._
+import dandriscv.ip._
 import dandriscv.{plugin_simple, DandRiscvSimple, DandRiscvSimpleConfig}
 import spinal.core._
 
@@ -12,7 +13,15 @@ object GenSimple extends App{
     config = DandRiscvSimpleConfig(
       plugins = List(
         new InstructionFetchPlugin,
-        new ICachePlugin
+        new ICachePlugin(config = ICacheConfig(
+          cacheSize = 4096,
+          bytePerLine =64,
+          wayCount = 2,
+          addressWidth = 64,
+          cpuDataWidth = 32,
+          bankWidth = 256,
+          busDataWidth = 256
+        ))
       )
     )
   )
