@@ -39,7 +39,7 @@ class ICachePlugin(val config : ICacheConfig) extends Plugin[DandRiscvSimple]{
   import config._
 
   var icache_access : ICacheAccess = null
-  //var nextlevel_access : NextLevelAccess = null
+  var nextlevel_access : NextLevelAccess = null
 
   override def setup(pipeline: DandRiscvSimple): Unit = {
     import Riscv._

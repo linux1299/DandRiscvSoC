@@ -1263,3 +1263,6 @@ WARNING: Unmatched cancel notification for request id 975
 2023.06.30 20:04:42 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
 Jun 30, 2023 8:05:17 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
 INFO: Unsupported notification method: $/setTrace
+2023.06.30 20:22:31 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.06.30 20:23:18 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.06.30 20:24:47 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/DandRiscvCpu.scala[0m
