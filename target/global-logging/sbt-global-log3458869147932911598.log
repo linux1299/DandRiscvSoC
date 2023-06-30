@@ -1,0 +1,33 @@
+[0m[[0m[0mdebug[0m] [0m[0m> Exec(runMain dandriscv.genCPU.GenSimple, Some(6eb14f7f-fc52-4612-a8c6-f36bdd9d5840), Some(CommandSource(console0)))[0m
+[0m[[0m[0mdebug[0m] [0m[0mEvaluating tasks: Compile / runMain[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning task... Cancel: Signal, check cycles: false, forcegc: true[0m
+[0m[[0m[0minfo[0m] [0m[0mcompiling 3 Scala sources to D:\MyWork\ScalaProj\DandRiscvSoC\target\scala-2.13\classes ...[0m
+[0m[[0m[31merror[0m] [0m[0mD:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\gencpu\GenSimple.scala:15:35: not found: value ICacheConfig[0m
+[0m[[0m[31merror[0m] [0m[0m        new ICachePlugin(config = ICacheConfig([0m
+[0m[[0m[31merror[0m] [0m[0m                                  ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\gencpu\GenSimple.scala:16:11: not found: value cacheSize[0m
+[0m[[0m[31merror[0m] [0m[0m          cacheSize = 4096,[0m
+[0m[[0m[31merror[0m] [0m[0m          ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\gencpu\GenSimple.scala:17:11: not found: value bytePerLine[0m
+[0m[[0m[31merror[0m] [0m[0m          bytePerLine =64,[0m
+[0m[[0m[31merror[0m] [0m[0m          ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\gencpu\GenSimple.scala:18:11: not found: value wayCount[0m
+[0m[[0m[31merror[0m] [0m[0m          wayCount = 2,[0m
+[0m[[0m[31merror[0m] [0m[0m          ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\gencpu\GenSimple.scala:19:11: not found: value addressWidth[0m
+[0m[[0m[31merror[0m] [0m[0m          addressWidth = 64,[0m
+[0m[[0m[31merror[0m] [0m[0m          ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\gencpu\GenSimple.scala:20:11: not found: value cpuDataWidth[0m
+[0m[[0m[31merror[0m] [0m[0m          cpuDataWidth = 32,[0m
+[0m[[0m[31merror[0m] [0m[0m          ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\gencpu\GenSimple.scala:21:11: not found: value bankWidth[0m
+[0m[[0m[31merror[0m] [0m[0m          bankWidth = 256,[0m
+[0m[[0m[31merror[0m] [0m[0m          ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\gencpu\GenSimple.scala:22:11: not found: value busDataWidth[0m
+[0m[[0m[31merror[0m] [0m[0m          busDataWidth = 256[0m
+[0m[[0m[31merror[0m] [0m[0m          ^[0m
+[0m[[0m[31merror[0m] [0m[0m8 errors found[0m
+[0m[[0m[0mdebug[0m] [0m[0mForcing garbage collection...[0m
+[0m[[0m[31merror[0m] [0m[0m(Compile / [31mcompileIncremental[0m) Compilation failed[0m
+[0m[[0m[31merror[0m] [0m[0mTotal time: 1 s, completed 2023-6-30 17:27:36[0m
+[0m[[0m[0mdebug[0m] [0m[0m> Exec(shell, None, None)[0m
