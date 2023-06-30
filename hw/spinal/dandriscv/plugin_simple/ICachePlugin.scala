@@ -5,6 +5,7 @@ import spinal.core._
 import spinal.lib._
 import dandriscv.plugin_simple._
 import dandriscv.plugin._
+import dandriscv.ip._
 
 object ICachePlugin{
   object INST_TEST extends Stageable(Bits(32 bits))
@@ -21,7 +22,7 @@ case class ICacheAccess() extends Bundle {
 }
 
 
-class ICachePlugin extends Plugin[DandRiscvSimple]{
+class ICachePlugin(val config : ICacheConfig) extends Plugin[DandRiscvSimple]{
   import ICachePlugin._
 
   var icache_access : ICacheAccess = null
@@ -37,10 +38,12 @@ class ICachePlugin extends Plugin[DandRiscvSimple]{
     import pipeline.config._
     import Riscv._
 
-    icache_access.cmd.valid := False
-    icache_access.cmd.payload := B(1, 8 bits)
-    icache_access.rsp.valid := False
-    icache_access.rsp.payload := B(1, 8 bits)
+    val icache = new ICache(ICachePlugin.this.config)
+
+    //icache_access.cmd.valid := False
+    //icache_access.cmd.payload := B(1, 8 bits)
+    //icache_access.rsp.valid := False
+    //icache_access.rsp.payload := B(1, 8 bits)
 
     decode plug new Area{
       import decode._

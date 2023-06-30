@@ -56,7 +56,6 @@ class InstructionFetchPlugin extends Plugin[DandRiscvSimple] with ICacheAccessSe
 
     //decode plug new Area{
     //  import decode._
-//
     //  insert(INST_TEST) := input(INSTRUCTION)
     //}
 
