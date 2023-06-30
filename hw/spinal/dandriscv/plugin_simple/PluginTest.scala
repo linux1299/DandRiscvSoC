@@ -49,13 +49,14 @@ class PluginTest extends Plugin[DandRiscv]{
 
     val slaveBus = slave(dBusClass()).setName("slaveBus")
     val masterBus = master(dBusClass()).setName("masterBus")
-    masterBus.dataout := B(0, 32 bits)
+    masterBus.dataout := B(222, 32 bits)
 
     stage_1 plug new Area{
       import stage_1._
 
       //insert(RESULT_XOR) := dbus.r.data(31 downto 0) ^ dbus.r.data(31 downto 0)
       insert(RESULT_XOR) := slaveBus.datain(31 downto 0) ^ slaveBus.datain(31 downto 0)
+      //input(RESULT_XOR) := slaveBus.datain(31 downto 0) ^ slaveBus.datain(31 downto 0)
       }
 
       stage_2 plug new Area{

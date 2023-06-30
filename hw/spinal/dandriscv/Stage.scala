@@ -65,6 +65,9 @@ class Stage() extends Area{
   val outputs  = mutable.LinkedHashMap[Stageable[Data],Data]()
   val signals  = mutable.LinkedHashMap[Stageable[Data],Data]()
   val inserts  = mutable.LinkedHashMap[Stageable[Data],Data]()
+  inserts.foreach(single=>{
+      println(s"key:${single._1} value:${single._2}")
+    })
 
   val inputsDefault   = mutable.LinkedHashMap[Stageable[Data],Data]()
   val outputsDefault  = mutable.LinkedHashMap[Stageable[Data],Data]()

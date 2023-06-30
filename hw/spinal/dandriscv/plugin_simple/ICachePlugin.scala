@@ -51,8 +51,8 @@ class ICachePlugin(val config : ICacheConfig) extends Plugin[DandRiscvSimple] wi
     import Riscv._
     import pipeline.config._
 
-    icache_access = pipeline.service(classOf[ICacheAccessService]).newICacheAccess
-    nextlevel_access = pipeline.service(classOf[NextLevelAccessService]).newNextLevelAccess
+    //icache_access = pipeline.service(classOf[ICacheAccessService]).newICacheAccess
+    //nextlevel_access = pipeline.service(classOf[NextLevelAccessService]).newNextLevelAccess
   }
 
    override def build(pipeline: DandRiscvSimple): Unit = {
@@ -65,6 +65,11 @@ class ICachePlugin(val config : ICacheConfig) extends Plugin[DandRiscvSimple] wi
     
     icache.sram(0).ports.rsp.valid := True
     icache.sram(1).ports.rsp.valid := True
+
+    decode plug new Area{
+      import decode._
+      //input(INSTRUCTION) := B(0, 32 bits)
+    }
     
    }
   

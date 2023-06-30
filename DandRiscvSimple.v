@@ -1,6 +1,6 @@
 // Generator : SpinalHDL v1.8.1    git head : 2a7592004363e5b40ec43e1f122ed8641cd8965b
 // Component : DandRiscvSimple
-// Git hash  : 0cdf215407779b0779cd7be4a7cf65ac016d4114
+// Git hash  : 3bf8a49af887f1647dce6c5f08dc35e9067b6df6
 
 `timescale 1ns/1ps
 
@@ -83,12 +83,6 @@ module DandRiscvSimple (
   wire                writeback_arbitration_isFlushed;
   wire                writeback_arbitration_isMoving;
   wire                writeback_arbitration_isFiring;
-  wire                ICachePlugin_icache_access_cmd_valid;
-  wire                ICachePlugin_icache_access_cmd_ready;
-  wire       [63:0]   ICachePlugin_icache_access_cmd_payload_address;
-  wire       [2:0]    ICachePlugin_icache_access_cmd_payload_size;
-  wire                ICachePlugin_icache_access_rsp_valid;
-  wire       [31:0]   ICachePlugin_icache_access_rsp_payload_data;
   wire       [31:0]   slaveBus_dataout;
   wire       [31:0]   masterBus_datain;
   wire                when_Pipeline_l151;
@@ -178,8 +172,7 @@ module DandRiscvSimple (
 
   assign writeback_arbitration_flushIt = 1'b0;
   assign writeback_arbitration_flushNext = 1'b0;
-  assign masterBus_dataout = 32'h00000001;
-  assign ICachePlugin_icache_access_cmd_ready = 1'b1;
+  assign masterBus_dataout = 32'h00000002;
   assign fetch_arbitration_isFlushed = (({writeback_arbitration_flushNext,{memaccess_arbitration_flushNext,{execute_arbitration_flushNext,decode_arbitration_flushNext}}} != 4'b0000) || ({writeback_arbitration_flushIt,{memaccess_arbitration_flushIt,{execute_arbitration_flushIt,{decode_arbitration_flushIt,fetch_arbitration_flushIt}}}} != 5'h0));
   assign decode_arbitration_isFlushed = (({writeback_arbitration_flushNext,{memaccess_arbitration_flushNext,execute_arbitration_flushNext}} != 3'b000) || ({writeback_arbitration_flushIt,{memaccess_arbitration_flushIt,{execute_arbitration_flushIt,decode_arbitration_flushIt}}} != 4'b0000));
   assign execute_arbitration_isFlushed = (({writeback_arbitration_flushNext,memaccess_arbitration_flushNext} != 2'b00) || ({writeback_arbitration_flushIt,{memaccess_arbitration_flushIt,execute_arbitration_flushIt}} != 3'b000));

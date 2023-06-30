@@ -41,18 +41,19 @@ class InstructionFetchPlugin() extends Plugin[DandRiscvSimple] with ICacheAccess
 
     val slaveBus = slave(inoutClass()).setName("slaveBus")
     val masterBus = master(inoutClass()).setName("masterBus")
-    masterBus.dataout := B(1, 32 bits)
+    masterBus.dataout := B(2, 32 bits)
 
     fetch plug new Area{
       import fetch._
 
       insert(INSTRUCTION) := slaveBus.datain
+      
     }
 
     execute plug new Area{
       import execute._
 
-      //insert(INST_EXE) := input(INST_TEST)
+      insert(INST_EXE) := B(1, 32 bits)
     }
 
     if(icache_access != null) pipeline plug new Area{

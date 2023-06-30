@@ -1,6 +1,6 @@
 // Generator : SpinalHDL v1.8.1    git head : 2a7592004363e5b40ec43e1f122ed8641cd8965b
 // Component : DandRiscv
-// Git hash  : 7c5f83d9f14502b51f686446e974a9b78700b1bb
+// Git hash  : 3bf8a49af887f1647dce6c5f08dc35e9067b6df6
 
 `timescale 1ns/1ps
 
@@ -96,7 +96,7 @@ module DandRiscv (
 
   assign stage_3_arbitration_flushIt = 1'b0;
   assign stage_3_arbitration_flushNext = 1'b0;
-  assign masterBus_dataout = 32'h0;
+  assign masterBus_dataout = 32'h000000de;
   assign when_Pipeline_l124 = (! stage_2_arbitration_isStuck);
   assign when_Pipeline_l124_1 = (! stage_3_arbitration_isStuck);
   assign stage_1_arbitration_isFlushed = (({stage_3_arbitration_flushNext,stage_2_arbitration_flushNext} != 2'b00) || ({stage_3_arbitration_flushIt,{stage_2_arbitration_flushIt,stage_1_arbitration_flushIt}} != 3'b000));
