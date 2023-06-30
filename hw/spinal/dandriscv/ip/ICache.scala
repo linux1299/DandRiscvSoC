@@ -90,21 +90,20 @@ case class ICache(p : ICacheConfig) extends Component{
   import p._
 
   val flush = in Bool()
-  val cpu = slave(ICacheCpuPorts(p))
+  val cpu = master(ICacheCpuPorts(p))
   val sram = for(i<-0 until bankNum) yield new Area{
     val ports = master(ICacheSramPorts(p))
   }
   val next_level = master(ICacheNextLevelPorts(p))
 
   case class LineMeta() extends Bundle{
-    val valid = Bool
-    val tag = UInt(tagWidth bits)
-    val replace_info = Bool()
+    val valid = Reg(Bool()) init(False)
+    val tag = Reg(UInt(tagWidth bits)) init(0)
+    val replace_info = Reg(Bool()) init(False)
   }
 
   val ways = Seq.fill(wayCount)(new Area{
-    val metas = Mem(LineMeta(), wayLineCount)
-    metas.initBigInt(List.fill(wayLineCount)(BigInt(0)))
+    val metas = Vec(LineMeta(), wayLineCount)
   })
 
   val cpu_tag = cpu.cmd.addr(tagRange)
@@ -117,23 +116,26 @@ case class ICache(p : ICacheConfig) extends Component{
   val icache_hit = Vec(Bool(), wayCount)
   val icache_replace_info = Vec(Bool(), wayCount)
 
-  var hitWayId = 0
-  val replaceWayId = 0
+  val hit_way_id = UInt(log2Up(wayCount) bits)
   val replace_info_full = icache_replace_info.asBits.andR
   val is_hit = icache_hit.asBits.orR & cpu.cmd.fire
   val is_miss= !icache_hit.asBits.orR & cpu.cmd.fire
-  val sram_to_cpu_data = sram(hitWayId).ports.rsp.payload.data.subdivideIn(cpuDataWidth bits)(cpu_bank_sel)
+  val sram_banks_data = Vec(Bits(bankWidth bits), wayCount)
+  val sram_banks_valid = Vec(Bool(), wayCount)
+  val sram_to_cpu_data = sram_banks_data(hit_way_id).subdivideIn(cpuDataWidth bits)(cpu_bank_sel)
   
 
   // read metas to decide cache hit, acccess sram, update replace_info
+  hit_way_id := OHToUInt(icache_hit)
   for(wayId <- 0 until wayCount){
+
     icache_tag(wayId) := ways(wayId).metas(cpu_set).tag
     icache_hit(wayId) := (icache_tag(wayId) === cpu_tag) & ways(wayId).metas(cpu_set).valid
     icache_replace_info(wayId) := ways(wayId).metas(cpu_set).replace_info
-    when(icache_hit(wayId)){
-      hitWayId = wayId
-    }
 
+    // sram
+    sram_banks_data(wayId) := sram(wayId).ports.rsp.payload.data
+    sram_banks_valid(wayId):= sram(wayId).ports.rsp.valid
     when(is_hit){
       sram(wayId).ports.cmd.payload.addr := icache_hit(wayId) ? cpu_bank_addr | U(0, bankDepthBits bits)
       sram(wayId).ports.cmd.valid        := icache_hit(wayId) & cpu.cmd.fire
@@ -150,19 +152,22 @@ case class ICache(p : ICacheConfig) extends Component{
     }
 
     when(is_hit && replace_info_full){
-      if(wayId==hitWayId)
+      when(icache_hit(wayId)) {
         ways(wayId).metas(cpu_set).replace_info := True
-      else 
+      } .otherwise {
         ways(wayId).metas(cpu_set).replace_info := False
+      }
     }
     .elsewhen(is_hit){
-      ways(hitWayId).metas(cpu_set).replace_info := True
+      when(icache_hit(wayId)) {
+        ways(wayId).metas(cpu_set).replace_info := True
+      }
     }
   }
 
   // resp to cpu ports
-  //cpu.rsp.payload.data := sram_to_cpu_data
-  //cpu.rsp.valid := sram(hitWayId).ports.rsp.valid
+  cpu.rsp.payload.data := sram_to_cpu_data
+  cpu.rsp.valid := sram_banks_valid(hit_way_id)
 
   // cmd to next level cache
   next_level.cmd.payload.addr := cpu.cmd.addr

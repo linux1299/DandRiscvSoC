@@ -16,7 +16,7 @@ object GenSimple extends App{
         new ICachePlugin(config = ICacheConfig(
           cacheSize = 4096,
           bytePerLine =64,
-          wayCount = 2,
+          wayCount = 4,
           addressWidth = 64,
           cpuDataWidth = 32,
           bankWidth = 256,

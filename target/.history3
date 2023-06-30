@@ -30,3 +30,6 @@
 1688114895022:runMain dandriscv.gencpu.GenSimple
 1688114969012:runMain dandriscv.gencpu.GenSmallest
 1688115092550:runMain dandriscv.gencpu.GenSimple
+1688130152195:[200~printPruned[201~
+1688130161227:printPruned
+1688130423630:runMain dandriscv.gencpu.GenSimple

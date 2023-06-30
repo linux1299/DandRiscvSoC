@@ -1,2 +1,6 @@
-[0m[[0m[33mwarn[0m] [0m[0m1 deprecation (since 2.13.3); re-run with -deprecation for details[0m
-[0m[[0m[33mwarn[0m] [0m[0mone warning found[0m
+[0m[[0m[31merror[0m] [0m[0m/home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala:164:13: missing argument list for method apply in class TraversableOnceAnyPimped[0m
+[0m[[0m[31merror[0m] [0m[0mUnapplied methods are only converted to functions when a function type is expected.[0m
+[0m[[0m[31merror[0m] [0m[0mYou can make this conversion explicit by writing `apply _` or `apply(_)(_)` instead of `apply`.[0m
+[0m[[0m[31merror[0m] [0m[0m        ways(hit_way_id).metas(cpu_set).replace_info := True[0m
+[0m[[0m[31merror[0m] [0m[0m            ^[0m
+[0m[[0m[31merror[0m] [0m[0mone error found[0m
