@@ -1,6 +1,6 @@
 // Generator : SpinalHDL v1.8.1    git head : 2a7592004363e5b40ec43e1f122ed8641cd8965b
 // Component : DandRiscvSimple
-// Git hash  : 3bf8a49af887f1647dce6c5f08dc35e9067b6df6
+// Git hash  : 083424ce37af3af7b9fb0fb3d5a4ebe4ea320a50
 
 `timescale 1ns/1ps
 
@@ -15,6 +15,10 @@ module DandRiscvSimple (
   wire                iCache_1_cpu_cmd_ready;
   wire                iCache_1_cpu_rsp_valid;
   wire       [31:0]   iCache_1_cpu_rsp_payload_data;
+  wire                iCache_1_sram_0_ports_rsp_valid;
+  wire       [255:0]  iCache_1_sram_0_ports_rsp_payload_data;
+  wire                iCache_1_sram_1_ports_rsp_valid;
+  wire       [255:0]  iCache_1_sram_1_ports_rsp_payload_data;
   wire                iCache_1_next_level_cmd_ready;
   wire                iCache_1_next_level_rsp_valid;
   wire       [255:0]  iCache_1_next_level_rsp_payload_data;
@@ -83,6 +87,12 @@ module DandRiscvSimple (
   wire                writeback_arbitration_isFlushed;
   wire                writeback_arbitration_isMoving;
   wire                writeback_arbitration_isFiring;
+  wire                ICachePlugin_icache_access_cmd_valid;
+  wire                ICachePlugin_icache_access_cmd_ready;
+  wire       [63:0]   ICachePlugin_icache_access_cmd_payload_address;
+  wire       [2:0]    ICachePlugin_icache_access_cmd_payload_size;
+  wire                ICachePlugin_icache_access_rsp_valid;
+  wire       [31:0]   ICachePlugin_icache_access_rsp_payload_data;
   wire       [31:0]   slaveBus_dataout;
   wire       [31:0]   masterBus_datain;
   wire                when_Pipeline_l151;
@@ -95,27 +105,27 @@ module DandRiscvSimple (
   wire                when_Pipeline_l154_3;
 
   ICache iCache_1 (
-    .flush                         (iCache_1_flush                             ), //i
-    .cpu_cmd_valid                 (iCache_1_cpu_cmd_valid                     ), //o
-    .cpu_cmd_ready                 (iCache_1_cpu_cmd_ready                     ), //i
-    .cpu_cmd_payload_addr          (iCache_1_cpu_cmd_payload_addr[63:0]        ), //o
-    .cpu_rsp_valid                 (iCache_1_cpu_rsp_valid                     ), //i
-    .cpu_rsp_payload_data          (iCache_1_cpu_rsp_payload_data[31:0]        ), //i
-    .sram_0_ports_cmd_valid        (iCache_1_sram_0_ports_cmd_valid            ), //o
-    .sram_0_ports_cmd_payload_addr (iCache_1_sram_0_ports_cmd_payload_addr[2:0]), //o
-    .sram_0_ports_cmd_payload_wen  (iCache_1_sram_0_ports_cmd_payload_wen      ), //o
-    .sram_0_ports_rsp_valid        (1'b1                                       ), //i
-    .sram_0_ports_rsp_payload_data (256'h0                                     ), //i
-    .sram_1_ports_cmd_valid        (iCache_1_sram_1_ports_cmd_valid            ), //o
-    .sram_1_ports_cmd_payload_addr (iCache_1_sram_1_ports_cmd_payload_addr[2:0]), //o
-    .sram_1_ports_cmd_payload_wen  (iCache_1_sram_1_ports_cmd_payload_wen      ), //o
-    .sram_1_ports_rsp_valid        (1'b1                                       ), //i
-    .sram_1_ports_rsp_payload_data (256'h0                                     ), //i
-    .next_level_cmd_valid          (iCache_1_next_level_cmd_valid              ), //o
-    .next_level_cmd_ready          (iCache_1_next_level_cmd_ready              ), //i
-    .next_level_cmd_payload_addr   (iCache_1_next_level_cmd_payload_addr[63:0] ), //o
-    .next_level_rsp_valid          (iCache_1_next_level_rsp_valid              ), //i
-    .next_level_rsp_payload_data   (iCache_1_next_level_rsp_payload_data[255:0])  //i
+    .flush                         (iCache_1_flush                               ), //i
+    .cpu_cmd_valid                 (iCache_1_cpu_cmd_valid                       ), //o
+    .cpu_cmd_ready                 (iCache_1_cpu_cmd_ready                       ), //i
+    .cpu_cmd_payload_addr          (iCache_1_cpu_cmd_payload_addr[63:0]          ), //o
+    .cpu_rsp_valid                 (iCache_1_cpu_rsp_valid                       ), //i
+    .cpu_rsp_payload_data          (iCache_1_cpu_rsp_payload_data[31:0]          ), //i
+    .sram_0_ports_cmd_valid        (iCache_1_sram_0_ports_cmd_valid              ), //o
+    .sram_0_ports_cmd_payload_addr (iCache_1_sram_0_ports_cmd_payload_addr[2:0]  ), //o
+    .sram_0_ports_cmd_payload_wen  (iCache_1_sram_0_ports_cmd_payload_wen        ), //o
+    .sram_0_ports_rsp_valid        (iCache_1_sram_0_ports_rsp_valid              ), //i
+    .sram_0_ports_rsp_payload_data (iCache_1_sram_0_ports_rsp_payload_data[255:0]), //i
+    .sram_1_ports_cmd_valid        (iCache_1_sram_1_ports_cmd_valid              ), //o
+    .sram_1_ports_cmd_payload_addr (iCache_1_sram_1_ports_cmd_payload_addr[2:0]  ), //o
+    .sram_1_ports_cmd_payload_wen  (iCache_1_sram_1_ports_cmd_payload_wen        ), //o
+    .sram_1_ports_rsp_valid        (iCache_1_sram_1_ports_rsp_valid              ), //i
+    .sram_1_ports_rsp_payload_data (iCache_1_sram_1_ports_rsp_payload_data[255:0]), //i
+    .next_level_cmd_valid          (iCache_1_next_level_cmd_valid                ), //o
+    .next_level_cmd_ready          (iCache_1_next_level_cmd_ready                ), //i
+    .next_level_cmd_payload_addr   (iCache_1_next_level_cmd_payload_addr[63:0]   ), //o
+    .next_level_rsp_valid          (iCache_1_next_level_rsp_valid                ), //i
+    .next_level_rsp_payload_data   (iCache_1_next_level_rsp_payload_data[255:0]  )  //i
   );
   assign fetch_arbitration_haltItself = 1'b0;
   assign fetch_arbitration_haltByOther = 1'b0;
@@ -173,6 +183,7 @@ module DandRiscvSimple (
   assign writeback_arbitration_flushIt = 1'b0;
   assign writeback_arbitration_flushNext = 1'b0;
   assign masterBus_dataout = 32'h00000002;
+  assign ICachePlugin_icache_access_cmd_ready = 1'b1;
   assign fetch_arbitration_isFlushed = (({writeback_arbitration_flushNext,{memaccess_arbitration_flushNext,{execute_arbitration_flushNext,decode_arbitration_flushNext}}} != 4'b0000) || ({writeback_arbitration_flushIt,{memaccess_arbitration_flushIt,{execute_arbitration_flushIt,{decode_arbitration_flushIt,fetch_arbitration_flushIt}}}} != 5'h0));
   assign decode_arbitration_isFlushed = (({writeback_arbitration_flushNext,{memaccess_arbitration_flushNext,execute_arbitration_flushNext}} != 3'b000) || ({writeback_arbitration_flushIt,{memaccess_arbitration_flushIt,{execute_arbitration_flushIt,decode_arbitration_flushIt}}} != 4'b0000));
   assign execute_arbitration_isFlushed = (({writeback_arbitration_flushNext,memaccess_arbitration_flushNext} != 2'b00) || ({writeback_arbitration_flushIt,{memaccess_arbitration_flushIt,execute_arbitration_flushIt}} != 3'b000));

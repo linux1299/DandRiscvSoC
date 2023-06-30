@@ -1,7 +1,2 @@
-[0m[[0m[33mwarn[0m] [0m[0mD:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\PluginTest.scala:20:16: method without a parameter list overrides a method with a single empty one[0m
-[0m[[0m[33mwarn[0m] [0m[0m  override def asMaster: Unit = {[0m
-[0m[[0m[33mwarn[0m] [0m[0m               ^[0m
-[0m[[0m[33mwarn[0m] [0m[0mD:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\PluginTest.scala:24:16: method without a parameter list overrides a method with a single empty one[0m
-[0m[[0m[33mwarn[0m] [0m[0m  override def asSlave: Unit = {[0m
-[0m[[0m[33mwarn[0m] [0m[0m               ^[0m
-[0m[[0m[33mwarn[0m] [0m[0mtwo warnings found[0m
+[0m[[0m[33mwarn[0m] [0m[0m1 deprecation (since 2.13.3); re-run with -deprecation for details[0m
+[0m[[0m[33mwarn[0m] [0m[0mone warning found[0m

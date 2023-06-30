@@ -1,0 +1,11 @@
+[0m[[0m[0mdebug[0m] [0m[0m> Exec(runMain dandriscv.gencpu.GenSimple, Some(6577a3da-f4c3-4917-93dc-69e09abb62f3), Some(CommandSource(console0)))[0m
+[0m[[0m[0mdebug[0m] [0m[0mEvaluating tasks: Compile / runMain[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning task... Cancel: Signal, check cycles: false, forcegc: true[0m
+[0m[[0m[0minfo[0m] [0m[0mcompiling 3 Scala sources to /home/lin/SpinalProjects/DandRiscvSoC/target/scala-2.13/classes ...[0m
+[0m[[0m[33mwarn[0m] [0m[0m1 deprecation (since 2.13.3); re-run with -deprecation for details[0m
+[0m[[0m[33mwarn[0m] [0m[0mone warning found[0m
+[0m[[0m[0minfo[0m] [0m[0mcompiling 1 Scala source to /home/lin/SpinalProjects/DandRiscvSoC/target/scala-2.13/classes ...[0m
+[0m[[0m[31merror[0m] [0m[0mNonzero exit code returned from runner: 1[0m
+[0m[[0m[31merror[0m] [0m[0m(Compile / [31mrunMain[0m) Nonzero exit code returned from runner: 1[0m
+[0m[[0m[31merror[0m] [0m[0mTotal time: 2 s, completed Jun 30, 2023, 8:03:42 PM[0m
+[0m[[0m[0mdebug[0m] [0m[0m> Exec(shell, None, None)[0m

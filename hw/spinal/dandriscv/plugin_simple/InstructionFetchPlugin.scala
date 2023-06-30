@@ -21,11 +21,10 @@ case class inoutClass() extends Bundle with IMasterSlave{
 }
 
 class InstructionFetchPlugin() extends Plugin[DandRiscvSimple] with ICacheAccessService{
-  //import InstructionFetchPlugin._
 
   @dontName var icache_access : ICacheAccess = null
   override def newICacheAccess(): ICacheAccess = {
-    //assert(icache_access == null)
+    assert(icache_access == null)
     icache_access = ICacheAccess(64, 32)
     icache_access
   }

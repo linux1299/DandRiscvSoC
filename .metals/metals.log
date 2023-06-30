@@ -1177,3 +1177,89 @@ WARNING: Unmatched cancel notification for request id 1420
 2023.06.26 20:01:47 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin/IntAluPlugin.scala[0m
 Jun 26, 2023 8:06:32 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
 WARNING: Unmatched cancel notification for request id 1517
+2023.06.30 19:42:40 INFO  Started: Metals version 0.11.12 in workspace '/home/lin/SpinalProjects/DandRiscvSoC' for client Visual Studio Code 1.79.2.[0m
+Jun 30, 2023 7:42:41 PM org.flywaydb.core.internal.license.VersionPrinter printVersionOnly
+INFO: Flyway Community Edition 9.16.3 by Redgate
+Jun 30, 2023 7:42:41 PM org.flywaydb.core.internal.license.VersionPrinter printVersion
+INFO: See release notes here: https://rd.gt/416ObMi
+Jun 30, 2023 7:42:41 PM org.flywaydb.core.internal.license.VersionPrinter printVersion
+INFO: 
+Jun 30, 2023 7:42:44 PM org.flywaydb.core.internal.database.base.BaseDatabaseType createDatabase
+INFO: Database: jdbc:h2:file:/home/lin/SpinalProjects/DandRiscvSoC/.metals/metals (H2 2.1)
+Jun 30, 2023 7:42:44 PM org.flywaydb.core.internal.command.DbValidate validate
+INFO: Successfully validated 4 migrations (execution time 00:00.016s)
+Jun 30, 2023 7:42:44 PM org.flywaydb.core.internal.command.DbMigrate migrateGroup
+INFO: Current version of schema "PUBLIC": 4
+Jun 30, 2023 7:42:44 PM org.flywaydb.core.internal.command.DbMigrate logSummary
+INFO: Schema "PUBLIC" is up to date. No migration necessary.
+2023.06.30 19:42:44 INFO  time: initialize in 3.75s[0m
+2023.06.30 19:42:46 WARN  Build server is not auto-connectable.[0m
+2023.06.30 19:42:46 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/DandRiscvCpu.scala[0m
+2023.06.30 19:42:48 INFO  no build target found for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/DandRiscvCpu.scala. Using presentation compiler with project's scala-library version: 3.2.2[0m
+2023.06.30 19:42:49 INFO  time: code lens generation in 3.21s[0m
+2023.06.30 19:43:33 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gencpu/GenSimple.scala[0m
+2023.06.30 19:43:34 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gencpu/GenSmallest.scala[0m
+2023.06.30 19:43:35 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gencpu/GenSimple.scala[0m
+2023.06.30 19:43:36 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/DandRiscvCpu.scala[0m
+2023.06.30 19:43:38 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/DandRiscvSimple.scala[0m
+2023.06.30 19:44:49 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.06.30 19:45:30 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.06.30 19:45:53 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.06.30 19:45:53 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+Jun 30, 2023 7:46:01 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 102
+2023.06.30 19:46:06 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.06.30 19:46:14 WARN  Using indexes to guess the definition of nextlevel_access[0m
+2023.06.30 19:46:20 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/InstructionFetchPlugin.scala[0m
+Jun 30, 2023 7:46:24 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 147
+2023.06.30 19:48:31 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gencpu/GenSimple.scala[0m
+2023.06.30 19:49:40 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.06.30 19:49:44 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.06.30 19:50:39 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.06.30 19:51:11 WARN  Using indexes to guess the definition of icache_access[0m
+2023.06.30 19:51:11 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.06.30 19:54:22 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.06.30 19:54:42 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.06.30 19:54:48 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.06.30 19:55:19 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.06.30 19:56:20 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.06.30 19:56:56 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.06.30 19:57:03 WARN  Using indexes to guess the definition of icache_access[0m
+2023.06.30 19:57:03 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.06.30 19:57:21 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/InstructionFetchPlugin.scala[0m
+2023.06.30 19:58:05 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/InstructionFetchPlugin.scala[0m
+2023.06.30 19:58:57 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/InstructionFetchPlugin.scala[0m
+Jun 30, 2023 8:00:38 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 715
+2023.06.30 20:00:59 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/InstructionFetchPlugin.scala[0m
+2023.06.30 20:01:00 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/InstructionFetchPlugin.scala[0m
+Jun 30, 2023 8:01:09 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 756
+Jun 30, 2023 8:01:28 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 770
+2023.06.30 20:01:47 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.06.30 20:02:12 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Pipeline.scala[0m
+2023.06.30 20:02:44 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Pipeline.scala[0m
+2023.06.30 20:02:59 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Pipeline.scala[0m
+2023.06.30 20:03:21 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.06.30 20:03:21 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.06.30 20:03:21 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.06.30 20:03:21 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.06.30 20:03:27 WARN  Using indexes to guess the definition of ICacheAccessService[0m
+2023.06.30 20:03:29 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/InstructionFetchPlugin.scala[0m
+2023.06.30 20:03:29 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/InstructionFetchPlugin.scala[0m
+2023.06.30 20:03:39 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/InstructionFetchPlugin.scala[0m
+2023.06.30 20:03:58 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/InstructionFetchPlugin.scala[0m
+Jun 30, 2023 8:03:59 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 975
+2023.06.30 20:03:59 WARN  Using indexes to guess the definition of ICacheAccessService[0m
+2023.06.30 20:04:00 WARN  Using indexes to guess the definition of ICacheAccessService[0m
+2023.06.30 20:04:00 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/InstructionFetchPlugin.scala[0m
+2023.06.30 20:04:07 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/InstructionFetchPlugin.scala[0m
+2023.06.30 20:04:09 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/InstructionFetchPlugin.scala[0m
+2023.06.30 20:04:14 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/InstructionFetchPlugin.scala[0m
+2023.06.30 20:04:38 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.06.30 20:04:42 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+Jun 30, 2023 8:05:17 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
