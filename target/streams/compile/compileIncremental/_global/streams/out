@@ -1,28 +1,28 @@
 [0m[[0m[0mdebug[0m] [0m[0m[zinc] IncrementalCompile -----------[0m
 [0m[[0m[0mdebug[0m] [0m[0mIncrementalCompile.incrementalCompile[0m
-[0m[[0m[0mdebug[0m] [0m[0mprevious = Stamps for: 173 products, 16 sources, 4 libraries[0m
-[0m[[0m[0mdebug[0m] [0m[0mcurrent source = Set(${BASE}/hw/spinal/dandriscv/ip/ICache.scala, ${BASE}/hw/spinal/dandriscv/plugin/Plugin.scala, ${BASE}/hw/spinal/dandriscv/plugin_simple/IntAluPlugin.scala, ${BASE}/hw/spinal/dandriscv/gencpu/GenSmallest.scala, ${BASE}/hw/spinal/dandriscv/plugin/InstructionFetchPlugin.scala, ${BASE}/hw/spinal/dandriscv/Riscv.scala, ${BASE}/hw/spinal/dandriscv/Services.scala, ${BASE}/hw/spinal/dandriscv/plugin_simple/PluginTest.scala, ${BASE}/hw/spinal/dandriscv/gencpu/GenSimple.scala, ${BASE}/hw/spinal/dandriscv/plugin/IntAluPlugin.scala, ${BASE}/hw/spinal/dandriscv/DandRiscvCpu.scala, ${BASE}/hw/spinal/dandriscv/Stage.scala, ${BASE}/hw/spinal/dandriscv/plugin_simple/InstructionFetchPlugin.scala, ${BASE}/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala, ${BASE}/hw/spinal/dandriscv/Pipeline.scala, ${BASE}/hw/spinal/dandriscv/DandRiscvSimple.scala)[0m
-[0m[[0m[0mdebug[0m] [0m[0m> initialChanges = InitialChanges(Changes(added = Set(), removed = Set(), changed = Set(${BASE}/hw/spinal/dandriscv/gencpu/GenSimple.scala), unmodified = ...),Set(),Set(),API Changes: Set())[0m
+[0m[[0m[0mdebug[0m] [0m[0mprevious = Stamps for: 179 products, 18 sources, 5 libraries[0m
+[0m[[0m[0mdebug[0m] [0m[0mcurrent source = Set(${BASE}/hw/spinal/dandriscv/ip/ICache.scala, ${BASE}/hw/spinal/dandriscv/plugin/Plugin.scala, ${BASE}/hw/spinal/dandriscv/plugin_simple/IntAluPlugin.scala, ${BASE}/hw/spinal/dandriscv/gencpu/GenSmallest.scala, ${BASE}/hw/spinal/dandriscv/plugin/InstructionFetchPlugin.scala, ${BASE}/hw/spinal/dandriscv/Riscv.scala, ${BASE}/hw/spinal/dandriscv/Services.scala, ${BASE}/hw/spinal/dandriscv/plugin_simple/PluginTest.scala, ${BASE}/hw/spinal/dandriscv/gencpu/GenSimple.scala, ${BASE}/hw/spinal/dandriscv/plugin/IntAluPlugin.scala, ${BASE}/hw/spinal/dandriscv/DandRiscvCpu.scala, ${BASE}/hw/spinal/dandriscv/Stage.scala, ${BASE}/hw/spinal/dandriscv/plugin_simple/InstructionFetchPlugin.scala, ${BASE}/hw/spinal/sim/Config.scala, ${BASE}/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala, ${BASE}/hw/spinal/sim/SimICache.scala, ${BASE}/hw/spinal/dandriscv/Pipeline.scala, ${BASE}/hw/spinal/dandriscv/DandRiscvSimple.scala)[0m
+[0m[[0m[0mdebug[0m] [0m[0m> initialChanges = InitialChanges(Changes(added = Set(), removed = Set(), changed = Set(${BASE}/hw/spinal/dandriscv/ip/ICache.scala), unmodified = ...),Set(),Set(),API Changes: Set())[0m
 [0m[[0m[0mdebug[0m] [0m[0m[0m
 [0m[[0m[0mdebug[0m] [0m[0mInitial source changes:[0m
 [0m[[0m[0mdebug[0m] [0m[0m	removed: Set()[0m
 [0m[[0m[0mdebug[0m] [0m[0m	added: Set()[0m
-[0m[[0m[0mdebug[0m] [0m[0m	modified: Set(${BASE}/hw/spinal/dandriscv/gencpu/GenSimple.scala)[0m
+[0m[[0m[0mdebug[0m] [0m[0m	modified: Set(${BASE}/hw/spinal/dandriscv/ip/ICache.scala)[0m
 [0m[[0m[0mdebug[0m] [0m[0mInvalidated products: Set()[0m
 [0m[[0m[0mdebug[0m] [0m[0mExternal API changes: API Changes: Set()[0m
 [0m[[0m[0mdebug[0m] [0m[0mModified binary dependencies: Set()[0m
-[0m[[0m[0mdebug[0m] [0m[0mInitial directly invalidated classes: Set(dandriscv.gencpu.GenSimple)[0m
+[0m[[0m[0mdebug[0m] [0m[0mInitial directly invalidated classes: Set(dandriscv.ip.ICacheCpuRsp, dandriscv.ip.ICacheNextLevelCmd, dandriscv.ip.ICacheSramCmd, dandriscv.ip.ICacheCpuCmd, dandriscv.ip.ICacheCpuPorts, dandriscv.ip.ICacheSramRsp, dandriscv.ip.ICacheSramPorts, dandriscv.ip.ICache.LineMeta, dandriscv.ip.ICacheNextLevelRsp, dandriscv.ip.ICache, dandriscv.ip.ICacheConfig, dandriscv.ip.ICacheNextLevelPorts)[0m
 [0m[[0m[0mdebug[0m] [0m[0mSources indirectly invalidated by:[0m
 [0m[[0m[0mdebug[0m] [0m[0m	product: Set()[0m
 [0m[[0m[0mdebug[0m] [0m[0m	binary dep: Set()[0m
 [0m[[0m[0mdebug[0m] [0m[0m	external source: Set()[0m
-[0m[[0m[0mdebug[0m] [0m[0mAll initially invalidated classes: Set(dandriscv.gencpu.GenSimple)[0m
-[0m[[0m[0mdebug[0m] [0m[0mAll initially invalidated sources:Set(${BASE}/hw/spinal/dandriscv/gencpu/GenSimple.scala)[0m
-[0m[[0m[0mdebug[0m] [0m[0mInitial set of included nodes: dandriscv.gencpu.GenSimple[0m
+[0m[[0m[0mdebug[0m] [0m[0mAll initially invalidated classes: Set(dandriscv.ip.ICacheCpuRsp, dandriscv.ip.ICacheNextLevelCmd, dandriscv.ip.ICacheSramCmd, dandriscv.ip.ICacheCpuCmd, dandriscv.ip.ICacheCpuPorts, dandriscv.ip.ICacheSramRsp, dandriscv.ip.ICacheSramPorts, dandriscv.ip.ICache.LineMeta, dandriscv.ip.ICacheNextLevelRsp, dandriscv.ip.ICache, dandriscv.ip.ICacheConfig, dandriscv.ip.ICacheNextLevelPorts)[0m
+[0m[[0m[0mdebug[0m] [0m[0mAll initially invalidated sources:Set(${BASE}/hw/spinal/dandriscv/ip/ICache.scala)[0m
+[0m[[0m[0mdebug[0m] [0m[0mInitial set of included nodes: dandriscv.ip.ICacheCpuRsp, dandriscv.ip.ICacheNextLevelCmd, dandriscv.ip.ICacheSramCmd, dandriscv.ip.ICacheCpuCmd, dandriscv.ip.ICacheCpuPorts, dandriscv.ip.ICacheSramRsp, dandriscv.ip.ICacheSramPorts, dandriscv.ip.ICache.LineMeta, dandriscv.ip.ICacheNextLevelRsp, dandriscv.ip.ICache, dandriscv.ip.ICacheConfig, dandriscv.ip.ICacheNextLevelPorts[0m
 [0m[[0m[0mdebug[0m] [0m[0mcompilation cycle 1[0m
 [0m[[0m[0minfo[0m] [0m[0mcompiling 1 Scala source to /home/lin/SpinalProjects/DandRiscvSoC/target/scala-2.13/classes ...[0m
 [0m[[0m[0mdebug[0m] [0m[0mGetting org.scala-sbt:compiler-bridge_2.13:1.6.0:compile for Scala 2.13.11[0m
-[0m[[0m[0mdebug[0m] [0m[0m[zinc] Running cached compiler 68e75b48 for Scala compiler version 2.13.11[0m
+[0m[[0m[0mdebug[0m] [0m[0m[zinc] Running cached compiler 8304bb7 for Scala compiler version 2.13.11[0m
 [0m[[0m[0mdebug[0m] [0m[0m[zinc] The Scala compiler is invoked with:[0m
 [0m[[0m[0mdebug[0m] [0m[0m	-Xplugin:/home/lin/.cache/coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-idsl-plugin_2.13/1.8.1/spinalhdl-idsl-plugin_2.13-1.8.1.jar[0m
 [0m[[0m[0mdebug[0m] [0m[0m	-bootclasspath[0m
@@ -35,5 +35,5 @@
 [0m[[0m[0mdebug[0m] [0m[0mFinal step, transitive dependencies:[0m
 [0m[[0m[0mdebug[0m] [0m[0m	Set()[0m
 [0m[[0m[0mdebug[0m] [0m[0mNo classes were invalidated.[0m
-[0m[[0m[0mdebug[0m] [0m[0mScala compilation took 0.126085978 s[0m
+[0m[[0m[0mdebug[0m] [0m[0mScala compilation took 0.656163849 s[0m
 [0m[[0m[0mdebug[0m] [0m[0mdone compiling[0m

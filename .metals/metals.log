@@ -1527,3 +1527,1271 @@ Jun 30, 2023 9:55:55 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellat
 WARNING: Unmatched cancel notification for request id 4510
 2023.06.30 21:56:43 WARN  Using indexes to guess the definition of icache_tag[0m
 2023.06.30 21:57:08 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gencpu/GenSimple.scala[0m
+Jul 01, 2023 11:22:16 AM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 4608
+2023.07.01 11:22:16 WARN  Using indexes to guess the definition of inoutClass[0m
+2023.07.01 11:22:16 WARN  Using indexes to guess the definition of inoutClass[0m
+2023.07.01 11:22:33 WARN  Using indexes to guess the definition of inoutClass[0m
+2023.07.01 11:22:33 WARN  Using indexes to guess the definition of ICacheAccess[0m
+2023.07.01 11:23:34 WARN  Using indexes to guess the definition of dataout[0m
+2023.07.01 11:23:35 WARN  Using indexes to guess the definition of inoutClass[0m
+2023.07.01 11:24:00 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.07.01 11:27:25 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.07.01 11:28:05 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.07.01 11:28:18 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/InstructionFetchPlugin.scala[0m
+2023.07.01 11:40:08 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.07.01 11:40:12 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.07.01 11:41:16 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/DandRiscvSimple.scala[0m
+Jul 01, 2023 11:42:53 AM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 4959
+2023.07.01 11:43:55 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.07.01 11:44:21 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.07.01 11:45:10 WARN  Using indexes to guess the definition of ICache[0m
+2023.07.01 11:45:10 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.07.01 11:45:10 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.07.01 11:45:17 WARN  Using indexes to guess the definition of ICache[0m
+2023.07.01 11:45:41 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/InstructionFetchPlugin.scala[0m
+2023.07.01 11:45:56 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/InstructionFetchPlugin.scala[0m
+2023.07.01 11:45:56 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/InstructionFetchPlugin.scala[0m
+2023.07.01 11:45:56 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/InstructionFetchPlugin.scala[0m
+2023.07.01 11:45:58 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.07.01 11:45:58 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.07.01 11:45:58 WARN  Using indexes to guess the definition of DW[0m
+2023.07.01 11:46:01 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/InstructionFetchPlugin.scala[0m
+2023.07.01 14:50:52 WARN  Using indexes to guess the definition of sram_to_cpu_data[0m
+2023.07.01 14:50:52 WARN  Using indexes to guess the definition of hit_way_id[0m
+2023.07.01 14:50:52 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 14:51:00 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+Jul 01, 2023 3:01:14 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 5316
+2023.07.01 15:01:17 WARN  Using indexes to guess the definition of bankDepthBits[0m
+Jul 01, 2023 3:02:30 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 5449
+2023.07.01 15:04:05 WARN  Using indexes to guess the definition of cmd[0m
+2023.07.01 15:04:07 WARN  Using indexes to guess the definition of cmd[0m
+2023.07.01 15:04:07 WARN  Using indexes to guess the definition of addr[0m
+Jul 01, 2023 3:04:32 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 5576
+2023.07.01 15:04:36 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:04:59 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:05:00 WARN  Using indexes to guess the definition of wayCount[0m
+2023.07.01 15:05:00 WARN  Using indexes to guess the definition of wayCount[0m
+2023.07.01 15:05:01 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:05:16 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:08:03 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:08:03 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:08:03 WARN  Using indexes to guess the definition of wayCount[0m
+2023.07.01 15:08:03 WARN  Using indexes to guess the definition of wayLineCount[0m
+2023.07.01 15:08:04 WARN  Using indexes to guess the definition of bankOffsetRange[0m
+2023.07.01 15:08:03 WARN  Using indexes to guess the definition of bankAddrRange[0m
+2023.07.01 15:08:09 WARN  Using indexes to guess the definition of next_level[0m
+2023.07.01 15:08:09 WARN  Using indexes to guess the definition of cmd[0m
+2023.07.01 15:08:13 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+Jul 01, 2023 3:08:21 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 5746
+2023.07.01 15:08:26 WARN  Using indexes to guess the definition of icache_hit[0m
+2023.07.01 15:08:26 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:08:26 WARN  Using indexes to guess the definition of next_level[0m
+2023.07.01 15:08:26 WARN  Using indexes to guess the definition of rsp[0m
+2023.07.01 15:08:27 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:09:04 WARN  Using indexes to guess the definition of wayCount[0m
+2023.07.01 15:09:04 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:16:26 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+Jul 01, 2023 3:16:35 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 5844
+2023.07.01 15:16:38 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:16:38 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:16:38 WARN  Using indexes to guess the definition of bankWidth[0m
+2023.07.01 15:16:41 WARN  Using indexes to guess the definition of icache_hit[0m
+2023.07.01 15:16:41 WARN  Using indexes to guess the definition of rsp[0m
+2023.07.01 15:16:41 WARN  Using indexes to guess the definition of valid[0m
+2023.07.01 15:16:41 WARN  Using indexes to guess the definition of valid[0m
+2023.07.01 15:16:41 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:17:12 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:17:12 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:17:12 WARN  Using indexes to guess the definition of bankWidth[0m
+2023.07.01 15:17:14 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:17:14 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:17:14 WARN  Using indexes to guess the definition of wayCount[0m
+2023.07.01 15:17:50 WARN  Using indexes to guess the definition of icache_tag[0m
+2023.07.01 15:17:50 WARN  Using indexes to guess the definition of icache_hit[0m
+2023.07.01 15:17:50 WARN  Using indexes to guess the definition of icache_hit[0m
+2023.07.01 15:17:50 WARN  Using indexes to guess the definition of icache_repl[0m
+2023.07.01 15:19:09 WARN  Using indexes to guess the definition of ways[0m
+2023.07.01 15:19:09 WARN  Using indexes to guess the definition of ways[0m
+2023.07.01 15:19:10 WARN  Using indexes to guess the definition of cpu_set[0m
+2023.07.01 15:19:10 WARN  Using indexes to guess the definition of valid[0m
+2023.07.01 15:19:30 WARN  Using indexes to guess the definition of cmd[0m
+2023.07.01 15:19:30 WARN  Using indexes to guess the definition of addr[0m
+2023.07.01 15:19:30 WARN  Using indexes to guess the definition of bankDataSelRange[0m
+2023.07.01 15:19:30 WARN  Using indexes to guess the definition of addr[0m
+2023.07.01 15:19:30 WARN  Using indexes to guess the definition of is_miss[0m
+2023.07.01 15:19:45 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:19:54 WARN  Using indexes to guess the definition of setRange[0m
+2023.07.01 15:19:54 WARN  Using indexes to guess the definition of addr[0m
+2023.07.01 15:19:54 WARN  Using indexes to guess the definition of cpu[0m
+2023.07.01 15:19:54 WARN  Using indexes to guess the definition of cpu[0m
+2023.07.01 15:19:55 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:19:58 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:20:01 WARN  Using indexes to guess the definition of cpu_set[0m
+2023.07.01 15:20:01 WARN  Using indexes to guess the definition of valid[0m
+2023.07.01 15:20:01 WARN  Using indexes to guess the definition of valid[0m
+2023.07.01 15:20:01 WARN  Using indexes to guess the definition of valid[0m
+2023.07.01 15:20:01 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:20:58 WARN  Using indexes to guess the definition of replace_info[0m
+2023.07.01 15:21:12 WARN  Using indexes to guess the definition of cpu_set_d1[0m
+2023.07.01 15:21:33 WARN  Using indexes to guess the definition of valid[0m
+2023.07.01 15:21:40 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:21:55 WARN  Using indexes to guess the definition of icache_repl[0m
+2023.07.01 15:21:55 WARN  Using indexes to guess the definition of ways[0m
+2023.07.01 15:22:14 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:22:38 WARN  Using indexes to guess the definition of icache_repl[0m
+2023.07.01 15:22:40 WARN  Using indexes to guess the definition of valid[0m
+2023.07.01 15:22:41 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:23:03 WARN  Using indexes to guess the definition of icache_repl[0m
+2023.07.01 15:23:03 WARN  Using indexes to guess the definition of icache_repl[0m
+2023.07.01 15:23:07 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:23:42 WARN  Using indexes to guess the definition of valid[0m
+2023.07.01 15:23:44 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:23:58 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:24:05 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:24:10 WARN  Using indexes to guess the definition of icache_repl[0m
+2023.07.01 15:24:10 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:24:10 WARN  Using indexes to guess the definition of icache_repl[0m
+2023.07.01 15:25:00 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:25:01 WARN  Using indexes to guess the definition of wayCount[0m
+2023.07.01 15:25:01 WARN  Using indexes to guess the definition of wayCount[0m
+2023.07.01 15:25:10 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+Jul 01, 2023 3:25:55 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 6610
+2023.07.01 15:25:57 WARN  Using indexes to guess the definition of hit_way_id[0m
+2023.07.01 15:25:57 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:25:57 WARN  Using indexes to guess the definition of hit_way_id[0m
+2023.07.01 15:25:57 WARN  Using indexes to guess the definition of hit_way_id[0m
+2023.07.01 15:27:05 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+Jul 01, 2023 3:27:46 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 6742
+2023.07.01 15:27:46 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+Jul 01, 2023 3:27:55 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 6779
+2023.07.01 15:27:56 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:28:07 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:28:40 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:28:55 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:29:00 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:29:54 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:30:21 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:30:21 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:30:21 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:30:21 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+Jul 01, 2023 3:30:22 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 7068
+2023.07.01 15:30:27 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:30:27 WARN  Using indexes to guess the definition of is_miss[0m
+Jul 01, 2023 3:30:31 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 7115
+2023.07.01 15:30:32 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:31:02 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:31:02 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:31:02 WARN  Using indexes to guess the definition of LineMeta[0m
+2023.07.01 15:31:02 WARN  Using indexes to guess the definition of tagRange[0m
+2023.07.01 15:31:09 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:31:16 WARN  Using indexes to guess the definition of next_level[0m
+2023.07.01 15:31:24 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:31:44 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:32:10 WARN  Using indexes to guess the definition of cpu_set[0m
+2023.07.01 15:32:10 WARN  Using indexes to guess the definition of cpu_tag[0m
+2023.07.01 15:32:12 WARN  Using indexes to guess the definition of cpu_addr_d1[0m
+2023.07.01 15:32:12 WARN  Using indexes to guess the definition of cpu_addr_d1[0m
+2023.07.01 15:32:12 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:34:15 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:34:53 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:34:55 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:34:55 WARN  Using indexes to guess the definition of addr[0m
+2023.07.01 15:34:55 WARN  Using indexes to guess the definition of bankOffsetRange[0m
+2023.07.01 15:34:59 WARN  Using indexes to guess the definition of cpu_cmd_ready[0m
+2023.07.01 15:35:05 WARN  Using indexes to guess the definition of sram[0m
+Jul 01, 2023 3:35:17 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 7529
+2023.07.01 15:36:37 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:36:48 WARN  Using indexes to guess the definition of cpu_cmd_ready[0m
+2023.07.01 15:37:12 WARN  Using indexes to guess the definition of data[0m
+2023.07.01 15:37:12 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:37:13 WARN  Using indexes to guess the definition of hit_way_id[0m
+2023.07.01 15:37:29 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:37:55 WARN  Using indexes to guess the definition of wayCount[0m
+2023.07.01 15:37:56 WARN  Using indexes to guess the definition of tagWidth[0m
+2023.07.01 15:37:57 WARN  Using indexes to guess the definition of wayCount[0m
+2023.07.01 15:37:59 WARN  Using indexes to guess the definition of wayCount[0m
+2023.07.01 15:37:59 WARN  Using indexes to guess the definition of wayCount[0m
+2023.07.01 15:37:59 WARN  Using indexes to guess the definition of wayCount[0m
+2023.07.01 15:37:59 WARN  Using indexes to guess the definition of tagWidth[0m
+2023.07.01 15:37:59 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:37:59 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:37:59 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:38:02 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 15:38:06 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+Jul 01, 2023 3:42:26 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 7936
+2023.07.01 15:46:00 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/MyTopLevelSim.scala[0m
+Jul 01, 2023 3:46:08 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 7961
+2023.07.01 15:46:08 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/MyTopLevelSim.scala[0m
+2023.07.01 15:46:34 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/sim_icache.scala[0m
+2023.07.01 15:46:44 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/simICache.scala[0m
+2023.07.01 15:47:17 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/simICache.scala[0m
+2023.07.01 15:49:37 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 15:49:41 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 15:50:37 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/Config.scala[0m
+2023.07.01 15:50:37 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/Config.scala[0m
+2023.07.01 15:50:44 WARN  Using indexes to guess the definition of spinal[0m
+2023.07.01 15:50:44 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/Config.scala[0m
+2023.07.01 15:51:11 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/Config.scala[0m
+2023.07.01 15:51:45 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/Config.scala[0m
+2023.07.01 15:52:40 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gencpu/GenSmallest.scala[0m
+Jul 01, 2023 3:52:42 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 8296
+2023.07.01 15:53:44 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 15:53:52 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 15:54:03 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+Jul 01, 2023 3:54:04 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint fallbackResponseError
+SEVERE: Internal error: java.lang.StringIndexOutOfBoundsException: String index out of range: 770
+java.util.concurrent.CompletionException: java.lang.StringIndexOutOfBoundsException: String index out of range: 770
+	at java.base/java.util.concurrent.CompletableFuture.encodeThrowable(CompletableFuture.java:331)
+	at java.base/java.util.concurrent.CompletableFuture.completeThrowable(CompletableFuture.java:346)
+	at java.base/java.util.concurrent.CompletableFuture$UniAccept.tryFire(CompletableFuture.java:704)
+	at java.base/java.util.concurrent.CompletableFuture.postComplete(CompletableFuture.java:506)
+	at java.base/java.util.concurrent.CompletableFuture.completeExceptionally(CompletableFuture.java:2088)
+	at scala.meta.internal.metals.CancelTokens$.$anonfun$future$1(CancelTokens.scala:40)
+	at scala.meta.internal.metals.CancelTokens$.$anonfun$future$1$adapted(CancelTokens.scala:38)
+	at scala.concurrent.impl.Promise$Transformation.run(Promise.scala:484)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+Caused by: java.lang.StringIndexOutOfBoundsException: String index out of range: 770
+	at java.base/java.lang.StringLatin1.charAt(StringLatin1.java:47)
+	at java.base/java.lang.String.charAt(String.java:693)
+	at scala.collection.StringOps$.apply$extension(StringOps.scala:188)
+	at scala.meta.internal.metals.codeactions.ExtractValueCodeAction.$anonfun$contribute$13(ExtractValueCodeAction.scala:60)
+	at scala.Option.map(Option.scala:242)
+	at scala.meta.internal.metals.codeactions.ExtractValueCodeAction.$anonfun$contribute$12(ExtractValueCodeAction.scala:57)
+	at scala.Option.flatMap(Option.scala:283)
+	at scala.meta.internal.metals.codeactions.ExtractValueCodeAction.$anonfun$contribute$9(ExtractValueCodeAction.scala:55)
+	at scala.Option$WithFilter.flatMap(Option.scala:283)
+	at scala.meta.internal.metals.codeactions.ExtractValueCodeAction.$anonfun$contribute$7(ExtractValueCodeAction.scala:52)
+	at scala.Option.flatMap(Option.scala:283)
+	at scala.meta.internal.metals.codeactions.ExtractValueCodeAction.$anonfun$contribute$6(ExtractValueCodeAction.scala:51)
+	at scala.collection.immutable.List.flatMap(List.scala:293)
+	at scala.meta.internal.metals.codeactions.ExtractValueCodeAction.$anonfun$contribute$1(ExtractValueCodeAction.scala:49)
+	at scala.concurrent.Future$.$anonfun$apply$1(Future.scala:678)
+	at scala.concurrent.impl.Promise$Transformation.run(Promise.scala:467)
+	... 3 more
+
+Jul 01, 2023 3:54:05 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint fallbackResponseError
+SEVERE: Internal error: java.lang.StringIndexOutOfBoundsException: String index out of range: 770
+java.util.concurrent.CompletionException: java.lang.StringIndexOutOfBoundsException: String index out of range: 770
+	at java.base/java.util.concurrent.CompletableFuture.encodeThrowable(CompletableFuture.java:331)
+	at java.base/java.util.concurrent.CompletableFuture.completeThrowable(CompletableFuture.java:346)
+	at java.base/java.util.concurrent.CompletableFuture$UniAccept.tryFire(CompletableFuture.java:704)
+	at java.base/java.util.concurrent.CompletableFuture.postComplete(CompletableFuture.java:506)
+	at java.base/java.util.concurrent.CompletableFuture.completeExceptionally(CompletableFuture.java:2088)
+	at scala.meta.internal.metals.CancelTokens$.$anonfun$future$1(CancelTokens.scala:40)
+	at scala.meta.internal.metals.CancelTokens$.$anonfun$future$1$adapted(CancelTokens.scala:38)
+	at scala.concurrent.impl.Promise$Transformation.run(Promise.scala:484)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+Caused by: java.lang.StringIndexOutOfBoundsException: String index out of range: 770
+	at java.base/java.lang.StringLatin1.charAt(StringLatin1.java:47)
+	at java.base/java.lang.String.charAt(String.java:693)
+	at scala.collection.StringOps$.apply$extension(StringOps.scala:188)
+	at scala.meta.internal.metals.codeactions.ExtractValueCodeAction.$anonfun$contribute$13(ExtractValueCodeAction.scala:60)
+	at scala.Option.map(Option.scala:242)
+	at scala.meta.internal.metals.codeactions.ExtractValueCodeAction.$anonfun$contribute$12(ExtractValueCodeAction.scala:57)
+	at scala.Option.flatMap(Option.scala:283)
+	at scala.meta.internal.metals.codeactions.ExtractValueCodeAction.$anonfun$contribute$9(ExtractValueCodeAction.scala:55)
+	at scala.Option$WithFilter.flatMap(Option.scala:283)
+	at scala.meta.internal.metals.codeactions.ExtractValueCodeAction.$anonfun$contribute$7(ExtractValueCodeAction.scala:52)
+	at scala.Option.flatMap(Option.scala:283)
+	at scala.meta.internal.metals.codeactions.ExtractValueCodeAction.$anonfun$contribute$6(ExtractValueCodeAction.scala:51)
+	at scala.collection.immutable.List.flatMap(List.scala:293)
+	at scala.meta.internal.metals.codeactions.ExtractValueCodeAction.$anonfun$contribute$1(ExtractValueCodeAction.scala:49)
+	at scala.concurrent.Future$.$anonfun$apply$1(Future.scala:678)
+	at scala.concurrent.impl.Promise$Transformation.run(Promise.scala:467)
+	... 3 more
+
+Jul 01, 2023 3:54:05 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint fallbackResponseError
+SEVERE: Internal error: java.lang.StringIndexOutOfBoundsException: String index out of range: 770
+java.util.concurrent.CompletionException: java.lang.StringIndexOutOfBoundsException: String index out of range: 770
+	at java.base/java.util.concurrent.CompletableFuture.encodeThrowable(CompletableFuture.java:331)
+	at java.base/java.util.concurrent.CompletableFuture.completeThrowable(CompletableFuture.java:346)
+	at java.base/java.util.concurrent.CompletableFuture$UniAccept.tryFire(CompletableFuture.java:704)
+	at java.base/java.util.concurrent.CompletableFuture.postComplete(CompletableFuture.java:506)
+	at java.base/java.util.concurrent.CompletableFuture.completeExceptionally(CompletableFuture.java:2088)
+	at scala.meta.internal.metals.CancelTokens$.$anonfun$future$1(CancelTokens.scala:40)
+	at scala.meta.internal.metals.CancelTokens$.$anonfun$future$1$adapted(CancelTokens.scala:38)
+	at scala.concurrent.impl.Promise$Transformation.run(Promise.scala:484)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+Caused by: java.lang.StringIndexOutOfBoundsException: String index out of range: 770
+	at java.base/java.lang.StringLatin1.charAt(StringLatin1.java:47)
+	at java.base/java.lang.String.charAt(String.java:693)
+	at scala.collection.StringOps$.apply$extension(StringOps.scala:188)
+	at scala.meta.internal.metals.codeactions.ExtractValueCodeAction.$anonfun$contribute$13(ExtractValueCodeAction.scala:60)
+	at scala.Option.map(Option.scala:242)
+	at scala.meta.internal.metals.codeactions.ExtractValueCodeAction.$anonfun$contribute$12(ExtractValueCodeAction.scala:57)
+	at scala.Option.flatMap(Option.scala:283)
+	at scala.meta.internal.metals.codeactions.ExtractValueCodeAction.$anonfun$contribute$9(ExtractValueCodeAction.scala:55)
+	at scala.Option$WithFilter.flatMap(Option.scala:283)
+	at scala.meta.internal.metals.codeactions.ExtractValueCodeAction.$anonfun$contribute$7(ExtractValueCodeAction.scala:52)
+	at scala.Option.flatMap(Option.scala:283)
+	at scala.meta.internal.metals.codeactions.ExtractValueCodeAction.$anonfun$contribute$6(ExtractValueCodeAction.scala:51)
+	at scala.collection.immutable.List.flatMap(List.scala:293)
+	at scala.meta.internal.metals.codeactions.ExtractValueCodeAction.$anonfun$contribute$1(ExtractValueCodeAction.scala:49)
+	at scala.concurrent.Future$.$anonfun$apply$1(Future.scala:678)
+	at scala.concurrent.impl.Promise$Transformation.run(Promise.scala:467)
+	... 3 more
+
+2023.07.01 15:54:06 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 15:56:43 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 15:57:09 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 15:57:37 WARN  Using indexes to guess the definition of spinal[0m
+2023.07.01 15:57:40 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 15:58:07 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+Jul 01, 2023 3:58:16 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 8692
+2023.07.01 15:58:18 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 15:58:21 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 15:58:29 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 15:58:33 WARN  Using indexes to guess the definition of cacheSize[0m
+2023.07.01 15:58:33 WARN  Using indexes to guess the definition of bytePerLine[0m
+2023.07.01 15:58:33 WARN  Using indexes to guess the definition of wayCount[0m
+2023.07.01 15:58:33 WARN  Using indexes to guess the definition of addressWidth[0m
+2023.07.01 15:58:33 WARN  Using indexes to guess the definition of bankWidth[0m
+2023.07.01 15:58:33 WARN  Using indexes to guess the definition of busDataWidth[0m
+Jul 01, 2023 3:58:39 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 8765
+2023.07.01 15:58:39 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 15:58:53 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+Jul 01, 2023 3:58:54 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 8787
+2023.07.01 15:59:01 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 15:59:31 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 15:59:35 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 15:59:50 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 16:00:19 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 16:00:39 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 16:00:39 WARN  Using indexes to guess the definition of ICacheSramPorts[0m
+2023.07.01 16:00:39 WARN  Using indexes to guess the definition of ICacheNextLevelPorts[0m
+2023.07.01 16:00:43 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 16:00:43 WARN  Using indexes to guess the definition of ICacheCpuPorts[0m
+2023.07.01 16:01:19 WARN  Using indexes to guess the definition of cpu_cmd_ready[0m
+2023.07.01 16:01:19 WARN  Using indexes to guess the definition of cpu_cmd_ready[0m
+2023.07.01 16:01:21 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 16:01:37 WARN  Using indexes to guess the definition of cpu_cmd_ready[0m
+2023.07.01 16:01:38 WARN  Using indexes to guess the definition of cpu_cmd_ready[0m
+2023.07.01 16:01:50 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 16:02:36 WARN  Using indexes to guess the definition of bankDepthBits[0m
+2023.07.01 16:02:36 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 16:03:14 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 16:03:16 WARN  Using indexes to guess the definition of flush[0m
+2023.07.01 16:03:17 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 16:03:19 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 16:03:19 WARN  Using indexes to guess the definition of ICacheCpuPorts[0m
+2023.07.01 16:03:20 WARN  Using indexes to guess the definition of flush[0m
+2023.07.01 16:03:20 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 16:03:35 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 16:03:50 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 16:04:38 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/Config.scala[0m
+2023.07.01 16:05:32 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+Jul 01, 2023 4:15:43 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 9486
+2023.07.01 16:15:45 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 16:17:37 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 16:17:39 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 16:18:55 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 16:19:09 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 16:19:12 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 16:22:39 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 16:22:42 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 16:22:46 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 16:23:20 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 16:23:24 WARN  Using indexes to guess the definition of cpu[0m
+2023.07.01 16:23:24 WARN  Using indexes to guess the definition of valid[0m
+2023.07.01 16:23:24 WARN  Using indexes to guess the definition of valid[0m
+2023.07.01 16:23:44 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 16:23:45 WARN  Using indexes to guess the definition of wayLineCount[0m
+2023.07.01 16:24:23 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 16:24:36 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 16:25:32 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 16:25:35 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 16:25:38 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 16:25:44 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+Jul 01, 2023 4:25:48 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 9936
+2023.07.01 16:25:53 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 16:26:36 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 16:28:10 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 16:31:58 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 16:32:01 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 16:32:07 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 16:32:12 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 16:33:06 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 16:39:01 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 16:39:02 WARN  Using indexes to guess the definition of tagWidth[0m
+2023.07.01 16:39:02 WARN  Using indexes to guess the definition of wayLineCount[0m
+2023.07.01 16:39:34 WARN  Using indexes to guess the definition of next_level[0m
+Jul 01, 2023 4:42:08 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 10302
+2023.07.01 16:42:09 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 16:42:28 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 16:42:56 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 16:42:58 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 16:43:06 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 16:43:26 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+Jul 01, 2023 4:44:05 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 10492
+2023.07.01 16:44:06 WARN  Using indexes to guess the definition of next_level[0m
+2023.07.01 16:44:07 WARN  Using indexes to guess the definition of next_level[0m
+2023.07.01 16:44:07 WARN  Using indexes to guess the definition of next_level[0m
+2023.07.01 16:44:07 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 16:44:07 WARN  Using indexes to guess the definition of valid[0m
+Jul 01, 2023 4:45:23 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 10514
+2023.07.01 16:45:34 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 16:47:27 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 16:49:05 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 16:51:10 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 16:56:13 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+Jul 01, 2023 4:57:57 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 10759
+2023.07.01 16:58:08 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+Jul 01, 2023 5:02:22 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 10798
+2023.07.01 17:02:37 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 17:02:41 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 17:02:44 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 17:03:21 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 17:03:30 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 17:03:48 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 17:05:57 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 17:06:10 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 17:06:59 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 17:07:04 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 17:07:13 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 17:07:49 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 17:11:02 WARN  Using indexes to guess the definition of next_level[0m
+2023.07.01 17:11:07 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+Jul 01, 2023 5:13:02 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 11138
+2023.07.01 17:13:31 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 17:17:20 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+Jul 01, 2023 5:17:22 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 11192
+2023.07.01 17:17:32 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 17:18:09 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.01 17:19:48 WARN  Using indexes to guess the definition of data[0m
+2023.07.01 17:20:12 WARN  Using indexes to guess the definition of sram_banks_valid[0m
+2023.07.01 21:27:40 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 21:27:41 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 21:27:41 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 21:27:41 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 21:27:41 WARN  Using indexes to guess the definition of wayLineCount[0m
+Jul 01, 2023 9:27:41 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 11337
+2023.07.01 21:28:23 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 21:29:14 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+Jul 01, 2023 9:30:24 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 11488
+2023.07.01 21:30:36 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 21:30:36 WARN  Using indexes to guess the definition of wayCount[0m
+2023.07.01 21:30:39 WARN  Using indexes to guess the definition of cpu_addr_d1[0m
+2023.07.01 21:30:39 WARN  Using indexes to guess the definition of cpu_addr_d1[0m
+2023.07.01 21:30:39 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 21:30:48 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 21:32:10 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 21:32:10 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 21:32:10 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 21:32:10 WARN  Using indexes to guess the definition of bytePerLine[0m
+2023.07.01 21:32:11 WARN  Using indexes to guess the definition of bankWidth[0m
+2023.07.01 21:32:23 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 21:32:32 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 21:32:48 WARN  Using indexes to guess the definition of wen[0m
+2023.07.01 21:33:02 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 21:33:38 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 21:33:58 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 21:34:18 WARN  Using indexes to guess the definition of valid[0m
+2023.07.01 21:34:19 WARN  Using indexes to guess the definition of cpu_bank_addr[0m
+2023.07.01 21:34:27 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 21:34:30 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+Jul 01, 2023 9:34:43 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 11905
+2023.07.01 21:34:53 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 21:37:42 WARN  Using indexes to guess the definition of bankWidth[0m
+2023.07.01 21:37:43 WARN  Using indexes to guess the definition of cpuDataBytesWidth[0m
+2023.07.01 21:37:53 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+Jul 01, 2023 9:42:16 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 12031
+2023.07.01 21:42:17 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 21:42:17 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 21:42:17 WARN  Using indexes to guess the definition of addr[0m
+2023.07.01 21:42:17 WARN  Using indexes to guess the definition of addr[0m
+Jul 01, 2023 9:42:17 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 12038
+2023.07.01 21:42:17 WARN  Using indexes to guess the definition of setRange[0m
+2023.07.01 21:42:25 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 21:42:25 WARN  Using indexes to guess the definition of setRange[0m
+Jul 01, 2023 9:42:36 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 12087
+2023.07.01 21:42:38 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 21:42:39 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 21:43:18 WARN  Using indexes to guess the definition of cpu_set[0m
+2023.07.01 21:43:18 WARN  Using indexes to guess the definition of replace_info_full[0m
+2023.07.01 21:43:18 WARN  Using indexes to guess the definition of valid[0m
+2023.07.01 21:43:18 WARN  Using indexes to guess the definition of cmd[0m
+2023.07.01 21:43:25 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 21:43:30 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 21:44:11 WARN  Using indexes to guess the definition of is_hit[0m
+2023.07.01 21:44:11 WARN  Using indexes to guess the definition of icache_hit[0m
+2023.07.01 21:44:11 WARN  Using indexes to guess the definition of icache_hit[0m
+2023.07.01 21:44:12 WARN  Using indexes to guess the definition of icache_victim[0m
+2023.07.01 21:44:12 WARN  Using indexes to guess the definition of valid[0m
+2023.07.01 21:44:25 WARN  Using indexes to guess the definition of valid[0m
+2023.07.01 21:44:25 WARN  Using indexes to guess the definition of rsp[0m
+2023.07.01 21:44:26 WARN  Using indexes to guess the definition of cpu_set_d1[0m
+2023.07.01 21:45:56 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 21:46:50 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 21:48:01 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 21:48:05 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 21:48:39 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 21:54:15 WARN  Using indexes to guess the definition of wayCount[0m
+2023.07.01 21:54:15 WARN  Using indexes to guess the definition of bytePerLine[0m
+2023.07.01 21:54:15 WARN  Using indexes to guess the definition of wayLineCount[0m
+Jul 01, 2023 9:54:15 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 12531
+2023.07.01 21:54:15 WARN  Using indexes to guess the definition of setWidth[0m
+2023.07.01 21:54:15 WARN  Using indexes to guess the definition of bankWidth[0m
+2023.07.01 21:54:16 WARN  Using indexes to guess the definition of cpuDataBytesWidth[0m
+2023.07.01 21:54:24 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 21:54:24 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 21:54:24 WARN  Using indexes to guess the definition of bankDepth[0m
+2023.07.01 21:54:24 WARN  Using indexes to guess the definition of wayLineCount[0m
+2023.07.01 21:54:24 WARN  Using indexes to guess the definition of setWidth[0m
+2023.07.01 21:54:24 WARN  Using indexes to guess the definition of bankWidth[0m
+2023.07.01 21:54:25 WARN  Using indexes to guess the definition of cpuDataBytesWidth[0m
+2023.07.01 21:54:26 WARN  Using indexes to guess the definition of cpuDataBytesWidth[0m
+2023.07.01 21:54:28 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 21:54:32 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 21:54:32 WARN  Using indexes to guess the definition of bankWidth[0m
+2023.07.01 21:54:32 WARN  Using indexes to guess the definition of bankWidth[0m
+2023.07.01 21:54:32 WARN  Using indexes to guess the definition of cpuDataBytesWidth[0m
+2023.07.01 21:55:34 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 21:55:41 WARN  Using indexes to guess the definition of lineBusDataNum[0m
+2023.07.01 21:55:41 WARN  Using indexes to guess the definition of lineBusDataNum[0m
+2023.07.01 21:55:41 WARN  Using indexes to guess the definition of lineBusDataNum[0m
+2023.07.01 21:55:41 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 21:56:04 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.01 21:56:04 WARN  Using indexes to guess the definition of cmd[0m
+Jul 01, 2023 9:57:22 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 12790
+2023.07.01 21:57:27 WARN  Using indexes to guess the definition of cmd[0m
+2023.07.01 21:57:31 WARN  Using indexes to guess the definition of bankWidth[0m
+2023.07.01 21:59:34 WARN  Using indexes to guess the definition of bytePerLine[0m
+2023.07.01 21:59:34 WARN  Using indexes to guess the definition of wayCount[0m
+2023.07.01 21:59:34 WARN  Using indexes to guess the definition of busDataWidth[0m
+2023.07.01 21:59:34 WARN  Using indexes to guess the definition of bankDepth[0m
+2023.07.01 21:59:34 WARN  Using indexes to guess the definition of offsetWidth[0m
+2023.07.01 21:59:34 WARN  Using indexes to guess the definition of offsetWidth[0m
+2023.07.01 22:00:28 WARN  Using indexes to guess the definition of busDataWidth[0m
+2023.07.01 22:00:28 WARN  Using indexes to guess the definition of busDataWidth[0m
+2023.07.01 22:00:28 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 09:12:28 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 09:12:28 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 09:12:28 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 09:12:28 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 09:12:28 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 09:12:28 WARN  Using indexes to guess the definition of bytePerLine[0m
+2023.07.02 09:12:28 WARN  Using indexes to guess the definition of busDataWidth[0m
+2023.07.02 09:12:28 WARN  Using indexes to guess the definition of wayCount[0m
+Jul 02, 2023 9:12:28 AM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint fallbackResponseError
+SEVERE: Internal error: java.lang.reflect.InvocationTargetException
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint.lambda$null$0(GenericEndpoint.java:67)
+	at org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint.request(GenericEndpoint.java:120)
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.handleRequest(RemoteEndpoint.java:261)
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.consume(RemoteEndpoint.java:190)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.handleMessage(StreamMessageProducer.java:194)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.listen(StreamMessageProducer.java:94)
+	at org.eclipse.lsp4j.jsonrpc.json.ConcurrentMessageProcessor.run(ConcurrentMessageProcessor.java:113)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:515)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+Caused by: java.lang.reflect.InvocationTargetException
+	at jdk.internal.reflect.GeneratedMethodAccessor12.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint.lambda$null$0(GenericEndpoint.java:65)
+	... 11 more
+Caused by: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala:37: error: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala:37: error: expected identifier; obtained rbrace
+}
+^
+}
+^
+	at scala.meta.internal.mtags.ScalaToplevelMtags.fail(ScalaToplevelMtags.scala:638)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.methodIdentifier(ScalaToplevelMtags.scala:605)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.emitTerm(ScalaToplevelMtags.scala:493)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.$anonfun$loop$10(ScalaToplevelMtags.scala:225)
+	at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.scala:18)
+	at scala.meta.internal.mtags.MtagsIndexer.withOwner(MtagsIndexer.scala:48)
+	at scala.meta.internal.mtags.MtagsIndexer.withOwner$(MtagsIndexer.scala:45)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.withOwner(ScalaToplevelMtags.scala:41)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.loop(ScalaToplevelMtags.scala:225)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.indexRoot(ScalaToplevelMtags.scala:53)
+	at scala.meta.internal.mtags.MtagsIndexer.index(MtagsIndexer.scala:19)
+	at scala.meta.internal.mtags.MtagsIndexer.index$(MtagsIndexer.scala:18)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.index(ScalaToplevelMtags.scala:41)
+	at scala.meta.internal.mtags.Mtags$.allToplevels(Mtags.scala:100)
+	at scala.meta.internal.metals.DefinitionProvider.fromMtags(DefinitionProvider.scala:371)
+	at scala.meta.internal.metals.DefinitionProvider.$anonfun$positionOccurrence$3(DefinitionProvider.scala:291)
+	at scala.Option.orElse(Option.scala:477)
+	at scala.meta.internal.metals.DefinitionProvider.$anonfun$positionOccurrence$1(DefinitionProvider.scala:291)
+	at scala.Option.flatMap(Option.scala:283)
+	at scala.meta.internal.metals.DefinitionProvider.positionOccurrence(DefinitionProvider.scala:286)
+	at scala.meta.internal.metals.MetalsLspService.$anonfun$definitionOrReferences$1(MetalsLspService.scala:2693)
+	at scala.Option.map(Option.scala:242)
+	at scala.meta.internal.metals.MetalsLspService.definitionOrReferences(MetalsLspService.scala:2689)
+	at scala.meta.internal.metals.MetalsLspService.$anonfun$definition$1(MetalsLspService.scala:1526)
+	at scala.meta.internal.metals.CancelTokens$.future(CancelTokens.scala:38)
+	at scala.meta.internal.metals.MetalsLspService.definition(MetalsLspService.scala:1525)
+	at scala.meta.metals.lsp.DelegatingScalaService.definition(DelegatingScalaService.scala:69)
+	... 15 more
+
+Jul 02, 2023 9:12:28 AM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 13033
+2023.07.02 09:12:28 WARN  Using indexes to guess the definition of setWidth[0m
+Jul 02, 2023 9:12:28 AM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint fallbackResponseError
+SEVERE: Internal error: java.lang.reflect.InvocationTargetException
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint.lambda$null$0(GenericEndpoint.java:67)
+	at org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint.request(GenericEndpoint.java:120)
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.handleRequest(RemoteEndpoint.java:261)
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.consume(RemoteEndpoint.java:190)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.handleMessage(StreamMessageProducer.java:194)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.listen(StreamMessageProducer.java:94)
+	at org.eclipse.lsp4j.jsonrpc.json.ConcurrentMessageProcessor.run(ConcurrentMessageProcessor.java:113)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:515)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+Caused by: java.lang.reflect.InvocationTargetException
+	at jdk.internal.reflect.GeneratedMethodAccessor12.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint.lambda$null$0(GenericEndpoint.java:65)
+	... 11 more
+Caused by: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala:37: error: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala:37: error: expected identifier; obtained rbrace
+}
+^
+}
+^
+	at scala.meta.internal.mtags.ScalaToplevelMtags.fail(ScalaToplevelMtags.scala:638)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.methodIdentifier(ScalaToplevelMtags.scala:605)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.emitTerm(ScalaToplevelMtags.scala:493)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.$anonfun$loop$10(ScalaToplevelMtags.scala:225)
+	at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.scala:18)
+	at scala.meta.internal.mtags.MtagsIndexer.withOwner(MtagsIndexer.scala:48)
+	at scala.meta.internal.mtags.MtagsIndexer.withOwner$(MtagsIndexer.scala:45)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.withOwner(ScalaToplevelMtags.scala:41)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.loop(ScalaToplevelMtags.scala:225)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.indexRoot(ScalaToplevelMtags.scala:53)
+	at scala.meta.internal.mtags.MtagsIndexer.index(MtagsIndexer.scala:19)
+	at scala.meta.internal.mtags.MtagsIndexer.index$(MtagsIndexer.scala:18)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.index(ScalaToplevelMtags.scala:41)
+	at scala.meta.internal.mtags.Mtags$.allToplevels(Mtags.scala:100)
+	at scala.meta.internal.metals.DefinitionProvider.fromMtags(DefinitionProvider.scala:371)
+	at scala.meta.internal.metals.DefinitionProvider.$anonfun$positionOccurrence$3(DefinitionProvider.scala:291)
+	at scala.Option.orElse(Option.scala:477)
+	at scala.meta.internal.metals.DefinitionProvider.$anonfun$positionOccurrence$1(DefinitionProvider.scala:291)
+	at scala.Option.flatMap(Option.scala:283)
+	at scala.meta.internal.metals.DefinitionProvider.positionOccurrence(DefinitionProvider.scala:286)
+	at scala.meta.internal.metals.MetalsLspService.$anonfun$definitionOrReferences$1(MetalsLspService.scala:2693)
+	at scala.Option.map(Option.scala:242)
+	at scala.meta.internal.metals.MetalsLspService.definitionOrReferences(MetalsLspService.scala:2689)
+	at scala.meta.internal.metals.MetalsLspService.$anonfun$definition$1(MetalsLspService.scala:1526)
+	at scala.meta.internal.metals.CancelTokens$.future(CancelTokens.scala:38)
+	at scala.meta.internal.metals.MetalsLspService.definition(MetalsLspService.scala:1525)
+	at scala.meta.metals.lsp.DelegatingScalaService.definition(DelegatingScalaService.scala:69)
+	... 15 more
+
+Jul 02, 2023 9:12:28 AM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint fallbackResponseError
+SEVERE: Internal error: java.lang.reflect.InvocationTargetException
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint.lambda$null$0(GenericEndpoint.java:67)
+	at org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint.request(GenericEndpoint.java:120)
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.handleRequest(RemoteEndpoint.java:261)
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.consume(RemoteEndpoint.java:190)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.handleMessage(StreamMessageProducer.java:194)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.listen(StreamMessageProducer.java:94)
+	at org.eclipse.lsp4j.jsonrpc.json.ConcurrentMessageProcessor.run(ConcurrentMessageProcessor.java:113)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:515)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+Caused by: java.lang.reflect.InvocationTargetException
+	at jdk.internal.reflect.GeneratedMethodAccessor12.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint.lambda$null$0(GenericEndpoint.java:65)
+	... 11 more
+Caused by: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala:37: error: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala:37: error: expected identifier; obtained rbrace
+}
+^
+}
+^
+	at scala.meta.internal.mtags.ScalaToplevelMtags.fail(ScalaToplevelMtags.scala:638)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.methodIdentifier(ScalaToplevelMtags.scala:605)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.emitTerm(ScalaToplevelMtags.scala:493)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.$anonfun$loop$10(ScalaToplevelMtags.scala:225)
+	at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.scala:18)
+	at scala.meta.internal.mtags.MtagsIndexer.withOwner(MtagsIndexer.scala:48)
+	at scala.meta.internal.mtags.MtagsIndexer.withOwner$(MtagsIndexer.scala:45)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.withOwner(ScalaToplevelMtags.scala:41)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.loop(ScalaToplevelMtags.scala:225)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.indexRoot(ScalaToplevelMtags.scala:53)
+	at scala.meta.internal.mtags.MtagsIndexer.index(MtagsIndexer.scala:19)
+	at scala.meta.internal.mtags.MtagsIndexer.index$(MtagsIndexer.scala:18)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.index(ScalaToplevelMtags.scala:41)
+	at scala.meta.internal.mtags.Mtags$.allToplevels(Mtags.scala:100)
+	at scala.meta.internal.metals.DefinitionProvider.fromMtags(DefinitionProvider.scala:371)
+	at scala.meta.internal.metals.DefinitionProvider.$anonfun$positionOccurrence$3(DefinitionProvider.scala:291)
+	at scala.Option.orElse(Option.scala:477)
+	at scala.meta.internal.metals.DefinitionProvider.$anonfun$positionOccurrence$1(DefinitionProvider.scala:291)
+	at scala.Option.flatMap(Option.scala:283)
+	at scala.meta.internal.metals.DefinitionProvider.positionOccurrence(DefinitionProvider.scala:286)
+	at scala.meta.internal.metals.MetalsLspService.$anonfun$definitionOrReferences$1(MetalsLspService.scala:2693)
+	at scala.Option.map(Option.scala:242)
+	at scala.meta.internal.metals.MetalsLspService.definitionOrReferences(MetalsLspService.scala:2689)
+	at scala.meta.internal.metals.MetalsLspService.$anonfun$definition$1(MetalsLspService.scala:1526)
+	at scala.meta.internal.metals.CancelTokens$.future(CancelTokens.scala:38)
+	at scala.meta.internal.metals.MetalsLspService.definition(MetalsLspService.scala:1525)
+	at scala.meta.metals.lsp.DelegatingScalaService.definition(DelegatingScalaService.scala:69)
+	... 15 more
+
+2023.07.02 09:12:48 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 09:12:48 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+Jul 02, 2023 9:12:57 AM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint fallbackResponseError
+SEVERE: Internal error: java.lang.reflect.InvocationTargetException
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint.lambda$null$0(GenericEndpoint.java:67)
+	at org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint.request(GenericEndpoint.java:120)
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.handleRequest(RemoteEndpoint.java:261)
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.consume(RemoteEndpoint.java:190)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.handleMessage(StreamMessageProducer.java:194)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.listen(StreamMessageProducer.java:94)
+	at org.eclipse.lsp4j.jsonrpc.json.ConcurrentMessageProcessor.run(ConcurrentMessageProcessor.java:113)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:515)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+Caused by: java.lang.reflect.InvocationTargetException
+	at jdk.internal.reflect.GeneratedMethodAccessor12.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint.lambda$null$0(GenericEndpoint.java:65)
+	... 11 more
+Caused by: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala:37: error: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala:37: error: expected identifier; obtained rbrace
+}
+^
+}
+^
+	at scala.meta.internal.mtags.ScalaToplevelMtags.fail(ScalaToplevelMtags.scala:638)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.methodIdentifier(ScalaToplevelMtags.scala:605)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.emitTerm(ScalaToplevelMtags.scala:493)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.$anonfun$loop$10(ScalaToplevelMtags.scala:225)
+	at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.scala:18)
+	at scala.meta.internal.mtags.MtagsIndexer.withOwner(MtagsIndexer.scala:48)
+	at scala.meta.internal.mtags.MtagsIndexer.withOwner$(MtagsIndexer.scala:45)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.withOwner(ScalaToplevelMtags.scala:41)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.loop(ScalaToplevelMtags.scala:225)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.indexRoot(ScalaToplevelMtags.scala:53)
+	at scala.meta.internal.mtags.MtagsIndexer.index(MtagsIndexer.scala:19)
+	at scala.meta.internal.mtags.MtagsIndexer.index$(MtagsIndexer.scala:18)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.index(ScalaToplevelMtags.scala:41)
+	at scala.meta.internal.mtags.Mtags$.allToplevels(Mtags.scala:100)
+	at scala.meta.internal.metals.DefinitionProvider.fromMtags(DefinitionProvider.scala:371)
+	at scala.meta.internal.metals.DefinitionProvider.$anonfun$positionOccurrence$3(DefinitionProvider.scala:291)
+	at scala.Option.orElse(Option.scala:477)
+	at scala.meta.internal.metals.DefinitionProvider.$anonfun$positionOccurrence$1(DefinitionProvider.scala:291)
+	at scala.Option.flatMap(Option.scala:283)
+	at scala.meta.internal.metals.DefinitionProvider.positionOccurrence(DefinitionProvider.scala:286)
+	at scala.meta.internal.metals.MetalsLspService.$anonfun$definitionOrReferences$1(MetalsLspService.scala:2693)
+	at scala.Option.map(Option.scala:242)
+	at scala.meta.internal.metals.MetalsLspService.definitionOrReferences(MetalsLspService.scala:2689)
+	at scala.meta.internal.metals.MetalsLspService.$anonfun$definition$1(MetalsLspService.scala:1526)
+	at scala.meta.internal.metals.CancelTokens$.future(CancelTokens.scala:38)
+	at scala.meta.internal.metals.MetalsLspService.definition(MetalsLspService.scala:1525)
+	at scala.meta.metals.lsp.DelegatingScalaService.definition(DelegatingScalaService.scala:69)
+	... 15 more
+
+Jul 02, 2023 9:13:43 AM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint fallbackResponseError
+SEVERE: Internal error: java.lang.reflect.InvocationTargetException
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint.lambda$null$0(GenericEndpoint.java:67)
+	at org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint.request(GenericEndpoint.java:120)
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.handleRequest(RemoteEndpoint.java:261)
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.consume(RemoteEndpoint.java:190)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.handleMessage(StreamMessageProducer.java:194)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.listen(StreamMessageProducer.java:94)
+	at org.eclipse.lsp4j.jsonrpc.json.ConcurrentMessageProcessor.run(ConcurrentMessageProcessor.java:113)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:515)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+Caused by: java.lang.reflect.InvocationTargetException
+	at jdk.internal.reflect.GeneratedMethodAccessor12.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint.lambda$null$0(GenericEndpoint.java:65)
+	... 11 more
+Caused by: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala:37: error: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala:37: error: expected identifier; obtained rbrace
+}
+^
+}
+^
+	at scala.meta.internal.mtags.ScalaToplevelMtags.fail(ScalaToplevelMtags.scala:638)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.methodIdentifier(ScalaToplevelMtags.scala:605)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.emitTerm(ScalaToplevelMtags.scala:493)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.$anonfun$loop$10(ScalaToplevelMtags.scala:225)
+	at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.scala:18)
+	at scala.meta.internal.mtags.MtagsIndexer.withOwner(MtagsIndexer.scala:48)
+	at scala.meta.internal.mtags.MtagsIndexer.withOwner$(MtagsIndexer.scala:45)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.withOwner(ScalaToplevelMtags.scala:41)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.loop(ScalaToplevelMtags.scala:225)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.indexRoot(ScalaToplevelMtags.scala:53)
+	at scala.meta.internal.mtags.MtagsIndexer.index(MtagsIndexer.scala:19)
+	at scala.meta.internal.mtags.MtagsIndexer.index$(MtagsIndexer.scala:18)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.index(ScalaToplevelMtags.scala:41)
+	at scala.meta.internal.mtags.Mtags$.allToplevels(Mtags.scala:100)
+	at scala.meta.internal.metals.DefinitionProvider.fromMtags(DefinitionProvider.scala:371)
+	at scala.meta.internal.metals.DefinitionProvider.$anonfun$positionOccurrence$3(DefinitionProvider.scala:291)
+	at scala.Option.orElse(Option.scala:477)
+	at scala.meta.internal.metals.DefinitionProvider.$anonfun$positionOccurrence$1(DefinitionProvider.scala:291)
+	at scala.Option.flatMap(Option.scala:283)
+	at scala.meta.internal.metals.DefinitionProvider.positionOccurrence(DefinitionProvider.scala:286)
+	at scala.meta.internal.metals.MetalsLspService.$anonfun$definitionOrReferences$1(MetalsLspService.scala:2693)
+	at scala.Option.map(Option.scala:242)
+	at scala.meta.internal.metals.MetalsLspService.definitionOrReferences(MetalsLspService.scala:2689)
+	at scala.meta.internal.metals.MetalsLspService.$anonfun$definition$1(MetalsLspService.scala:1526)
+	at scala.meta.internal.metals.CancelTokens$.future(CancelTokens.scala:38)
+	at scala.meta.internal.metals.MetalsLspService.definition(MetalsLspService.scala:1525)
+	at scala.meta.metals.lsp.DelegatingScalaService.definition(DelegatingScalaService.scala:69)
+	... 15 more
+
+Jul 02, 2023 9:13:43 AM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint fallbackResponseError
+SEVERE: Internal error: java.lang.reflect.InvocationTargetException
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint.lambda$null$0(GenericEndpoint.java:67)
+	at org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint.request(GenericEndpoint.java:120)
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.handleRequest(RemoteEndpoint.java:261)
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.consume(RemoteEndpoint.java:190)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.handleMessage(StreamMessageProducer.java:194)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.listen(StreamMessageProducer.java:94)
+	at org.eclipse.lsp4j.jsonrpc.json.ConcurrentMessageProcessor.run(ConcurrentMessageProcessor.java:113)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:515)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+Caused by: java.lang.reflect.InvocationTargetException
+	at jdk.internal.reflect.GeneratedMethodAccessor12.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint.lambda$null$0(GenericEndpoint.java:65)
+	... 11 more
+Caused by: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala:37: error: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala:37: error: expected identifier; obtained rbrace
+}
+^
+}
+^
+	at scala.meta.internal.mtags.ScalaToplevelMtags.fail(ScalaToplevelMtags.scala:638)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.methodIdentifier(ScalaToplevelMtags.scala:605)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.emitTerm(ScalaToplevelMtags.scala:493)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.$anonfun$loop$10(ScalaToplevelMtags.scala:225)
+	at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.scala:18)
+	at scala.meta.internal.mtags.MtagsIndexer.withOwner(MtagsIndexer.scala:48)
+	at scala.meta.internal.mtags.MtagsIndexer.withOwner$(MtagsIndexer.scala:45)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.withOwner(ScalaToplevelMtags.scala:41)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.loop(ScalaToplevelMtags.scala:225)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.indexRoot(ScalaToplevelMtags.scala:53)
+	at scala.meta.internal.mtags.MtagsIndexer.index(MtagsIndexer.scala:19)
+	at scala.meta.internal.mtags.MtagsIndexer.index$(MtagsIndexer.scala:18)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.index(ScalaToplevelMtags.scala:41)
+	at scala.meta.internal.mtags.Mtags$.allToplevels(Mtags.scala:100)
+	at scala.meta.internal.metals.DefinitionProvider.fromMtags(DefinitionProvider.scala:371)
+	at scala.meta.internal.metals.DefinitionProvider.$anonfun$positionOccurrence$3(DefinitionProvider.scala:291)
+	at scala.Option.orElse(Option.scala:477)
+	at scala.meta.internal.metals.DefinitionProvider.$anonfun$positionOccurrence$1(DefinitionProvider.scala:291)
+	at scala.Option.flatMap(Option.scala:283)
+	at scala.meta.internal.metals.DefinitionProvider.positionOccurrence(DefinitionProvider.scala:286)
+	at scala.meta.internal.metals.MetalsLspService.$anonfun$definitionOrReferences$1(MetalsLspService.scala:2693)
+	at scala.Option.map(Option.scala:242)
+	at scala.meta.internal.metals.MetalsLspService.definitionOrReferences(MetalsLspService.scala:2689)
+	at scala.meta.internal.metals.MetalsLspService.$anonfun$definition$1(MetalsLspService.scala:1526)
+	at scala.meta.internal.metals.CancelTokens$.future(CancelTokens.scala:38)
+	at scala.meta.internal.metals.MetalsLspService.definition(MetalsLspService.scala:1525)
+	at scala.meta.metals.lsp.DelegatingScalaService.definition(DelegatingScalaService.scala:69)
+	... 15 more
+
+Jul 02, 2023 9:13:44 AM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint fallbackResponseError
+SEVERE: Internal error: java.lang.reflect.InvocationTargetException
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint.lambda$null$0(GenericEndpoint.java:67)
+	at org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint.request(GenericEndpoint.java:120)
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.handleRequest(RemoteEndpoint.java:261)
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.consume(RemoteEndpoint.java:190)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.handleMessage(StreamMessageProducer.java:194)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.listen(StreamMessageProducer.java:94)
+	at org.eclipse.lsp4j.jsonrpc.json.ConcurrentMessageProcessor.run(ConcurrentMessageProcessor.java:113)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:515)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+Caused by: java.lang.reflect.InvocationTargetException
+	at jdk.internal.reflect.GeneratedMethodAccessor12.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint.lambda$null$0(GenericEndpoint.java:65)
+	... 11 more
+Caused by: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala:37: error: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala:37: error: expected identifier; obtained rbrace
+}
+^
+}
+^
+	at scala.meta.internal.mtags.ScalaToplevelMtags.fail(ScalaToplevelMtags.scala:638)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.methodIdentifier(ScalaToplevelMtags.scala:605)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.emitTerm(ScalaToplevelMtags.scala:493)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.$anonfun$loop$10(ScalaToplevelMtags.scala:225)
+	at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.scala:18)
+	at scala.meta.internal.mtags.MtagsIndexer.withOwner(MtagsIndexer.scala:48)
+	at scala.meta.internal.mtags.MtagsIndexer.withOwner$(MtagsIndexer.scala:45)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.withOwner(ScalaToplevelMtags.scala:41)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.loop(ScalaToplevelMtags.scala:225)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.indexRoot(ScalaToplevelMtags.scala:53)
+	at scala.meta.internal.mtags.MtagsIndexer.index(MtagsIndexer.scala:19)
+	at scala.meta.internal.mtags.MtagsIndexer.index$(MtagsIndexer.scala:18)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.index(ScalaToplevelMtags.scala:41)
+	at scala.meta.internal.mtags.Mtags$.allToplevels(Mtags.scala:100)
+	at scala.meta.internal.metals.DefinitionProvider.fromMtags(DefinitionProvider.scala:371)
+	at scala.meta.internal.metals.DefinitionProvider.$anonfun$positionOccurrence$3(DefinitionProvider.scala:291)
+	at scala.Option.orElse(Option.scala:477)
+	at scala.meta.internal.metals.DefinitionProvider.$anonfun$positionOccurrence$1(DefinitionProvider.scala:291)
+	at scala.Option.flatMap(Option.scala:283)
+	at scala.meta.internal.metals.DefinitionProvider.positionOccurrence(DefinitionProvider.scala:286)
+	at scala.meta.internal.metals.MetalsLspService.$anonfun$definitionOrReferences$1(MetalsLspService.scala:2693)
+	at scala.Option.map(Option.scala:242)
+	at scala.meta.internal.metals.MetalsLspService.definitionOrReferences(MetalsLspService.scala:2689)
+	at scala.meta.internal.metals.MetalsLspService.$anonfun$definition$1(MetalsLspService.scala:1526)
+	at scala.meta.internal.metals.CancelTokens$.future(CancelTokens.scala:38)
+	at scala.meta.internal.metals.MetalsLspService.definition(MetalsLspService.scala:1525)
+	at scala.meta.metals.lsp.DelegatingScalaService.definition(DelegatingScalaService.scala:69)
+	... 15 more
+
+Jul 02, 2023 9:13:44 AM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint fallbackResponseError
+SEVERE: Internal error: java.lang.reflect.InvocationTargetException
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint.lambda$null$0(GenericEndpoint.java:67)
+	at org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint.request(GenericEndpoint.java:120)
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.handleRequest(RemoteEndpoint.java:261)
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.consume(RemoteEndpoint.java:190)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.handleMessage(StreamMessageProducer.java:194)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.listen(StreamMessageProducer.java:94)
+	at org.eclipse.lsp4j.jsonrpc.json.ConcurrentMessageProcessor.run(ConcurrentMessageProcessor.java:113)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:515)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+Caused by: java.lang.reflect.InvocationTargetException
+	at jdk.internal.reflect.GeneratedMethodAccessor12.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint.lambda$null$0(GenericEndpoint.java:65)
+	... 11 more
+Caused by: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala:37: error: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala:37: error: expected identifier; obtained rbrace
+}
+^
+}
+^
+	at scala.meta.internal.mtags.ScalaToplevelMtags.fail(ScalaToplevelMtags.scala:638)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.methodIdentifier(ScalaToplevelMtags.scala:605)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.emitTerm(ScalaToplevelMtags.scala:493)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.$anonfun$loop$10(ScalaToplevelMtags.scala:225)
+	at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.scala:18)
+	at scala.meta.internal.mtags.MtagsIndexer.withOwner(MtagsIndexer.scala:48)
+	at scala.meta.internal.mtags.MtagsIndexer.withOwner$(MtagsIndexer.scala:45)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.withOwner(ScalaToplevelMtags.scala:41)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.loop(ScalaToplevelMtags.scala:225)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.indexRoot(ScalaToplevelMtags.scala:53)
+	at scala.meta.internal.mtags.MtagsIndexer.index(MtagsIndexer.scala:19)
+	at scala.meta.internal.mtags.MtagsIndexer.index$(MtagsIndexer.scala:18)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.index(ScalaToplevelMtags.scala:41)
+	at scala.meta.internal.mtags.Mtags$.allToplevels(Mtags.scala:100)
+	at scala.meta.internal.metals.DefinitionProvider.fromMtags(DefinitionProvider.scala:371)
+	at scala.meta.internal.metals.DefinitionProvider.$anonfun$positionOccurrence$3(DefinitionProvider.scala:291)
+	at scala.Option.orElse(Option.scala:477)
+	at scala.meta.internal.metals.DefinitionProvider.$anonfun$positionOccurrence$1(DefinitionProvider.scala:291)
+	at scala.Option.flatMap(Option.scala:283)
+	at scala.meta.internal.metals.DefinitionProvider.positionOccurrence(DefinitionProvider.scala:286)
+	at scala.meta.internal.metals.MetalsLspService.$anonfun$definitionOrReferences$1(MetalsLspService.scala:2693)
+	at scala.Option.map(Option.scala:242)
+	at scala.meta.internal.metals.MetalsLspService.definitionOrReferences(MetalsLspService.scala:2689)
+	at scala.meta.internal.metals.MetalsLspService.$anonfun$definition$1(MetalsLspService.scala:1526)
+	at scala.meta.internal.metals.CancelTokens$.future(CancelTokens.scala:38)
+	at scala.meta.internal.metals.MetalsLspService.definition(MetalsLspService.scala:1525)
+	at scala.meta.metals.lsp.DelegatingScalaService.definition(DelegatingScalaService.scala:69)
+	... 15 more
+
+Jul 02, 2023 9:13:44 AM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint fallbackResponseError
+SEVERE: Internal error: java.lang.reflect.InvocationTargetException
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint.lambda$null$0(GenericEndpoint.java:67)
+	at org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint.request(GenericEndpoint.java:120)
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.handleRequest(RemoteEndpoint.java:261)
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.consume(RemoteEndpoint.java:190)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.handleMessage(StreamMessageProducer.java:194)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.listen(StreamMessageProducer.java:94)
+	at org.eclipse.lsp4j.jsonrpc.json.ConcurrentMessageProcessor.run(ConcurrentMessageProcessor.java:113)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:515)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+Caused by: java.lang.reflect.InvocationTargetException
+	at jdk.internal.reflect.GeneratedMethodAccessor12.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint.lambda$null$0(GenericEndpoint.java:65)
+	... 11 more
+Caused by: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala:37: error: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala:37: error: expected identifier; obtained rbrace
+}
+^
+}
+^
+	at scala.meta.internal.mtags.ScalaToplevelMtags.fail(ScalaToplevelMtags.scala:638)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.methodIdentifier(ScalaToplevelMtags.scala:605)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.emitTerm(ScalaToplevelMtags.scala:493)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.$anonfun$loop$10(ScalaToplevelMtags.scala:225)
+	at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.scala:18)
+	at scala.meta.internal.mtags.MtagsIndexer.withOwner(MtagsIndexer.scala:48)
+	at scala.meta.internal.mtags.MtagsIndexer.withOwner$(MtagsIndexer.scala:45)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.withOwner(ScalaToplevelMtags.scala:41)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.loop(ScalaToplevelMtags.scala:225)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.indexRoot(ScalaToplevelMtags.scala:53)
+	at scala.meta.internal.mtags.MtagsIndexer.index(MtagsIndexer.scala:19)
+	at scala.meta.internal.mtags.MtagsIndexer.index$(MtagsIndexer.scala:18)
+	at scala.meta.internal.mtags.ScalaToplevelMtags.index(ScalaToplevelMtags.scala:41)
+	at scala.meta.internal.mtags.Mtags$.allToplevels(Mtags.scala:100)
+	at scala.meta.internal.metals.DefinitionProvider.fromMtags(DefinitionProvider.scala:371)
+	at scala.meta.internal.metals.DefinitionProvider.$anonfun$positionOccurrence$3(DefinitionProvider.scala:291)
+	at scala.Option.orElse(Option.scala:477)
+	at scala.meta.internal.metals.DefinitionProvider.$anonfun$positionOccurrence$1(DefinitionProvider.scala:291)
+	at scala.Option.flatMap(Option.scala:283)
+	at scala.meta.internal.metals.DefinitionProvider.positionOccurrence(DefinitionProvider.scala:286)
+	at scala.meta.internal.metals.MetalsLspService.$anonfun$definitionOrReferences$1(MetalsLspService.scala:2693)
+	at scala.Option.map(Option.scala:242)
+	at scala.meta.internal.metals.MetalsLspService.definitionOrReferences(MetalsLspService.scala:2689)
+	at scala.meta.internal.metals.MetalsLspService.$anonfun$definition$1(MetalsLspService.scala:1526)
+	at scala.meta.internal.metals.CancelTokens$.future(CancelTokens.scala:38)
+	at scala.meta.internal.metals.MetalsLspService.definition(MetalsLspService.scala:1525)
+	at scala.meta.metals.lsp.DelegatingScalaService.definition(DelegatingScalaService.scala:69)
+	... 15 more
+
+2023.07.02 09:13:52 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 09:13:57 WARN  Using indexes to guess the definition of cpuDataWidth[0m
+2023.07.02 09:14:07 WARN  Using indexes to guess the definition of nextLevelBankAddrRange[0m
+2023.07.02 09:14:07 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 09:14:07 WARN  Using indexes to guess the definition of nextLevelBankAddrRange[0m
+2023.07.02 09:14:17 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 09:17:10 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 09:19:06 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 09:19:06 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 09:19:06 WARN  Using indexes to guess the definition of next_level[0m
+2023.07.02 09:19:09 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 09:19:09 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 09:19:09 WARN  Using indexes to guess the definition of next_level[0m
+2023.07.02 09:19:09 WARN  Using indexes to guess the definition of next_level[0m
+Jul 02, 2023 9:19:12 AM scala.meta.internal.pc.CompilerAccess handleError
+SEVERE: 0
+java.lang.IndexOutOfBoundsException: 0
+	at scala.collection.LinearSeqOps.apply(LinearSeq.scala:131)
+	at scala.collection.LinearSeqOps.apply$(LinearSeq.scala:128)
+	at scala.collection.immutable.List.apply(List.scala:79)
+	at dotty.tools.dotc.util.Signatures$.countParams(Signatures.scala:501)
+	at dotty.tools.dotc.util.Signatures$.applyCallInfo(Signatures.scala:186)
+	at dotty.tools.dotc.util.Signatures$.computeSignatureHelp(Signatures.scala:94)
+	at dotty.tools.dotc.util.Signatures$.signatureHelp(Signatures.scala:63)
+	at scala.meta.internal.pc.MetalsSignatures$.signatures(MetalsSignatures.scala:21)
+	at scala.meta.internal.pc.SignatureHelpProvider$.signatureHelp(SignatureHelpProvider.scala:51)
+
+2023.07.02 09:19:40 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 09:19:40 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 09:19:40 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 09:19:40 WARN  Using indexes to guess the definition of wayCount[0m
+2023.07.02 09:19:40 WARN  Using indexes to guess the definition of LineMeta[0m
+2023.07.02 09:19:42 WARN  Using indexes to guess the definition of next_level[0m
+Jul 02, 2023 9:19:51 AM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 13415
+2023.07.02 09:20:58 WARN  Using indexes to guess the definition of next_level[0m
+2023.07.02 09:21:00 WARN  Using indexes to guess the definition of valid[0m
+2023.07.02 09:21:19 WARN  Using indexes to guess the definition of nextLevelBankAddrRange[0m
+2023.07.02 09:21:28 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+Jul 02, 2023 9:21:59 AM scala.meta.internal.pc.CompilerAccess handleError
+SEVERE: 0
+java.lang.IndexOutOfBoundsException: 0
+	at scala.collection.LinearSeqOps.apply(LinearSeq.scala:131)
+	at scala.collection.LinearSeqOps.apply$(LinearSeq.scala:128)
+	at scala.collection.immutable.List.apply(List.scala:79)
+	at dotty.tools.dotc.util.Signatures$.countParams(Signatures.scala:501)
+	at dotty.tools.dotc.util.Signatures$.applyCallInfo(Signatures.scala:186)
+	at dotty.tools.dotc.util.Signatures$.computeSignatureHelp(Signatures.scala:94)
+	at dotty.tools.dotc.util.Signatures$.signatureHelp(Signatures.scala:63)
+	at scala.meta.internal.pc.MetalsSignatures$.signatures(MetalsSignatures.scala:21)
+	at scala.meta.internal.pc.SignatureHelpProvider$.signatureHelp(SignatureHelpProvider.scala:51)
+
+2023.07.02 09:22:00 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 09:22:44 WARN  Using indexes to guess the definition of icache_tag[0m
+2023.07.02 09:22:44 WARN  Using indexes to guess the definition of valid[0m
+2023.07.02 09:24:33 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 09:26:32 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 09:26:32 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 09:26:32 WARN  Using indexes to guess the definition of cmd[0m
+2023.07.02 09:26:32 WARN  Using indexes to guess the definition of next_level_data_cnt[0m
+2023.07.02 09:26:36 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 09:27:37 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 09:27:37 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 09:27:37 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 09:27:37 WARN  Using indexes to guess the definition of lineBusDataNum[0m
+2023.07.02 09:27:38 WARN  Using indexes to guess the definition of nextLevelBankAddrRange[0m
+2023.07.02 09:28:16 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 09:28:26 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 09:28:30 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 09:28:30 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 09:29:39 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 09:30:38 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 09:30:38 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 09:30:41 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 09:30:41 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 09:30:41 WARN  Using indexes to guess the definition of bankOffset[0m
+2023.07.02 09:30:42 WARN  Using indexes to guess the definition of cpuDataWidth[0m
+2023.07.02 09:30:42 WARN  Using indexes to guess the definition of offsetWidth[0m
+2023.07.02 09:30:42 WARN  Using indexes to guess the definition of offsetWidth[0m
+2023.07.02 09:30:42 WARN  Using indexes to guess the definition of bankOffset[0m
+2023.07.02 09:30:42 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 09:30:42 WARN  Using indexes to guess the definition of cpuDataBytesWidth[0m
+2023.07.02 09:34:33 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 09:34:40 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 09:34:41 WARN  Using indexes to guess the definition of offsetWidth[0m
+2023.07.02 09:34:41 WARN  Using indexes to guess the definition of offsetWidth[0m
+2023.07.02 09:34:41 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 09:34:41 WARN  Using indexes to guess the definition of offsetWidth[0m
+2023.07.02 09:34:51 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 09:34:51 WARN  Using indexes to guess the definition of bankOffset[0m
+2023.07.02 09:34:53 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 09:34:55 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 09:34:55 WARN  Using indexes to guess the definition of cmd[0m
+2023.07.02 09:34:56 WARN  Using indexes to guess the definition of next_level_data_cnt[0m
+2023.07.02 09:35:02 WARN  Using indexes to guess the definition of cpu_addr_d1[0m
+2023.07.02 09:35:02 WARN  Using indexes to guess the definition of next_level_bank_addr[0m
+2023.07.02 09:35:02 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 09:36:05 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 09:36:06 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 09:36:05 WARN  Using indexes to guess the definition of next_level_data_cnt[0m
+2023.07.02 09:36:36 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 09:36:38 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 09:39:01 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 09:40:30 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 09:40:34 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 09:40:38 WARN  Using indexes to guess the definition of bankWidth[0m
+2023.07.02 09:40:38 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 09:40:38 WARN  Using indexes to guess the definition of bankWidth[0m
+2023.07.02 09:46:05 WARN  Using indexes to guess the definition of next_level_bank_addr[0m
+2023.07.02 09:46:09 WARN  Using indexes to guess the definition of nextLevelBankAddrRange[0m
+2023.07.02 09:52:52 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 09:52:52 WARN  Using indexes to guess the definition of offsetWidth[0m
+2023.07.02 09:53:19 WARN  Using indexes to guess the definition of cpu_bank_addr[0m
+2023.07.02 09:53:23 WARN  Using indexes to guess the definition of bankAddrRange[0m
+2023.07.02 09:54:46 WARN  Using indexes to guess the definition of bankDepth[0m
+2023.07.02 09:55:21 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+Jul 02, 2023 9:55:34 AM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 14259
+2023.07.02 10:08:43 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 10:08:53 WARN  Using indexes to guess the definition of next_level_bank_addr[0m
+2023.07.02 10:09:11 WARN  Using indexes to guess the definition of nextLevelBankAddrRange[0m
+2023.07.02 10:10:51 WARN  Using indexes to guess the definition of ways[0m
+2023.07.02 10:11:00 WARN  Using indexes to guess the definition of icache_hit[0m
+2023.07.02 10:11:00 WARN  Using indexes to guess the definition of ways[0m
+2023.07.02 10:11:13 WARN  Using indexes to guess the definition of is_hit[0m
+2023.07.02 10:11:21 WARN  Using indexes to guess the definition of ways[0m
+2023.07.02 10:11:21 WARN  Using indexes to guess the definition of ways[0m
+2023.07.02 10:11:21 WARN  Using indexes to guess the definition of replace_info[0m
+2023.07.02 10:11:46 WARN  Using indexes to guess the definition of lineBusDataNum[0m
+2023.07.02 10:11:46 WARN  Using indexes to guess the definition of cpu_tag_d1[0m
+2023.07.02 10:11:51 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 10:11:55 WARN  Using indexes to guess the definition of next_level_data_cnt[0m
+2023.07.02 10:11:55 WARN  Using indexes to guess the definition of next_level_data_cnt[0m
+2023.07.02 10:11:55 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 10:12:03 WARN  Using indexes to guess the definition of replace_info[0m
+2023.07.02 10:12:03 WARN  Using indexes to guess the definition of replace_info[0m
+2023.07.02 10:12:03 WARN  Using indexes to guess the definition of cpu_set[0m
+2023.07.02 10:12:03 WARN  Using indexes to guess the definition of cpu_set[0m
+2023.07.02 10:12:09 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+Jul 02, 2023 10:12:10 AM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 14526
+2023.07.02 10:12:10 WARN  Using indexes to guess the definition of cpu_set_d1[0m
+2023.07.02 10:12:10 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.02 10:12:10 WARN  Using indexes to guess the definition of cpu_set_d1[0m
+2023.07.02 10:38:19 WARN  Using indexes to guess the definition of inoutClass[0m
+2023.07.02 10:38:19 WARN  Using indexes to guess the definition of inoutClass[0m
+2023.07.02 10:38:21 WARN  Using indexes to guess the definition of icache_access[0m
+2023.07.02 10:38:21 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/InstructionFetchPlugin.scala[0m
+Jul 02, 2023 10:40:43 AM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 14606
+2023.07.02 10:41:56 WARN  Using indexes to guess the definition of ICacheAccessService[0m
+2023.07.02 10:41:56 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.07.02 10:41:56 WARN  Using indexes to guess the definition of ICacheAccessService[0m
+2023.07.02 10:43:18 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.07.02 10:43:22 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.07.02 10:43:59 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.07.02 10:44:31 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.07.02 12:03:55 INFO  Started: Metals version 0.11.12 in workspace '/home/lin/SpinalProjects/DandRiscvSoC' for client Visual Studio Code 1.79.2.[0m
+Jul 02, 2023 12:03:55 PM org.flywaydb.core.internal.license.VersionPrinter printVersionOnly
+INFO: Flyway Community Edition 9.16.3 by Redgate
+Jul 02, 2023 12:03:55 PM org.flywaydb.core.internal.license.VersionPrinter printVersion
+INFO: See release notes here: https://rd.gt/416ObMi
+Jul 02, 2023 12:03:55 PM org.flywaydb.core.internal.license.VersionPrinter printVersion
+INFO: 
+Jul 02, 2023 12:03:55 PM org.flywaydb.core.internal.database.base.BaseDatabaseType createDatabase
+INFO: Database: jdbc:h2:file:/home/lin/SpinalProjects/DandRiscvSoC/.metals/metals (H2 2.1)
+Jul 02, 2023 12:03:55 PM org.flywaydb.core.internal.command.DbValidate validate
+INFO: Successfully validated 4 migrations (execution time 00:00.014s)
+Jul 02, 2023 12:03:55 PM org.flywaydb.core.internal.command.DbMigrate migrateGroup
+INFO: Current version of schema "PUBLIC": 4
+Jul 02, 2023 12:03:55 PM org.flywaydb.core.internal.command.DbMigrate logSummary
+INFO: Schema "PUBLIC" is up to date. No migration necessary.
+2023.07.02 12:03:55 INFO  time: initialize in 0.43s[0m
+2023.07.02 12:03:57 WARN  Build server is not auto-connectable.[0m
+2023.07.02 12:03:57 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.07.02 12:03:58 INFO  no build target found for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala. Using presentation compiler with project's scala-library version: 3.2.2[0m
+2023.07.02 12:04:00 INFO  time: code lens generation in 3.03s[0m
+Jul 02, 2023 12:04:11 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+Jul 02, 2023 11:13:32 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace

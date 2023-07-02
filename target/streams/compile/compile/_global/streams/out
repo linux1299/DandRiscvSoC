@@ -1,6 +1,5 @@
-[0m[[0m[31merror[0m] [0m[0m/home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala:164:13: missing argument list for method apply in class TraversableOnceAnyPimped[0m
-[0m[[0m[31merror[0m] [0m[0mUnapplied methods are only converted to functions when a function type is expected.[0m
-[0m[[0m[31merror[0m] [0m[0mYou can make this conversion explicit by writing `apply _` or `apply(_)(_)` instead of `apply`.[0m
-[0m[[0m[31merror[0m] [0m[0m        ways(hit_way_id).metas(cpu_set).replace_info := True[0m
-[0m[[0m[31merror[0m] [0m[0m            ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala:186:95: value asUInt is not a member of spinal.core.UInt[0m
+[0m[[0m[31merror[0m] [0m[0mdid you mean asSInt? or perhaps algoInt, asInOut, or asInput? or...?[0m
+[0m[[0m[31merror[0m] [0m[0m      sram(wayId).ports.cmd.payload.addr := next_level_bank_addr ## next_level_data_cnt.value.asUInt[0m
+[0m[[0m[31merror[0m] [0m[0m                                                                                              ^[0m
 [0m[[0m[31merror[0m] [0m[0mone error found[0m

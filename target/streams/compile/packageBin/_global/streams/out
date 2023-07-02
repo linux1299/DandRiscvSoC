@@ -1,5 +1,17 @@
 [0m[[0m[0mdebug[0m] [0m[0mPackaging /home/lin/SpinalProjects/DandRiscvSoC/target/scala-2.13/projectname_2.13-1.0.jar ...[0m
 [0m[[0m[0mdebug[0m] [0m[0mInput file mappings:[0m
+[0m[[0m[0mdebug[0m] [0m[0m	sim[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /home/lin/SpinalProjects/DandRiscvSoC/target/scala-2.13/classes/sim[0m
+[0m[[0m[0mdebug[0m] [0m[0m	sim/Config.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /home/lin/SpinalProjects/DandRiscvSoC/target/scala-2.13/classes/sim/Config.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	sim/Config$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /home/lin/SpinalProjects/DandRiscvSoC/target/scala-2.13/classes/sim/Config$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	sim/SimICache$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /home/lin/SpinalProjects/DandRiscvSoC/target/scala-2.13/classes/sim/SimICache$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	sim/SimICache.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /home/lin/SpinalProjects/DandRiscvSoC/target/scala-2.13/classes/sim/SimICache.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	sim/SimICache$delayedInit$body.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /home/lin/SpinalProjects/DandRiscvSoC/target/scala-2.13/classes/sim/SimICache$delayedInit$body.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	dandriscv[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  /home/lin/SpinalProjects/DandRiscvSoC/target/scala-2.13/classes/dandriscv[0m
 [0m[[0m[0mdebug[0m] [0m[0m	dandriscv/Pipeline.class[0m
@@ -142,6 +154,8 @@
 [0m[[0m[0mdebug[0m] [0m[0m	  /home/lin/SpinalProjects/DandRiscvSoC/target/scala-2.13/classes/dandriscv/plugin_simple/InstructionFetchPlugin.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	dandriscv/plugin_simple/PluginTest$.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  /home/lin/SpinalProjects/DandRiscvSoC/target/scala-2.13/classes/dandriscv/plugin_simple/PluginTest$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	dandriscv/plugin_simple/ICachePlugin$$anon$1.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /home/lin/SpinalProjects/DandRiscvSoC/target/scala-2.13/classes/dandriscv/plugin_simple/ICachePlugin$$anon$1.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	dandriscv/DandRiscvConfig$REGFILE_WRITE_VALID$$anonfun$$lessinit$greater$14.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  /home/lin/SpinalProjects/DandRiscvSoC/target/scala-2.13/classes/dandriscv/DandRiscvConfig$REGFILE_WRITE_VALID$$anonfun$$lessinit$greater$14.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	dandriscv/DandRiscvConfig$RS2$.class[0m

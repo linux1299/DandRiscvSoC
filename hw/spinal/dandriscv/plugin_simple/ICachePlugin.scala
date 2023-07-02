@@ -39,7 +39,7 @@ class ICachePlugin(val config : ICacheConfig) extends Plugin[DandRiscvSimple]{
   import config._
 
   var icache_access : ICacheAccess = null
-  var nextlevel_access : NextLevelAccess = null
+  //var nextlevel_access : NextLevelAccess = null
 
   override def setup(pipeline: DandRiscvSimple): Unit = {
     import Riscv._
@@ -54,8 +54,11 @@ class ICachePlugin(val config : ICacheConfig) extends Plugin[DandRiscvSimple]{
     import pipeline.config._
 
     val icache = new ICache(ICachePlugin.this.config)
-    //icache.sram(0).ports.rsp.data := B(0, 256 bits)
-    //icache.sram(1).ports.rsp.valid := True
+
+    fetch plug new Area{
+      import decode._
+      insert(INSTRUCTION) := icache_access.rsp.payload.data
+    }
     
    }
   

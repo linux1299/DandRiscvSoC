@@ -45,14 +45,15 @@ class InstructionFetchPlugin() extends Plugin[DandRiscvSimple] with ICacheAccess
     fetch plug new Area{
       import fetch._
 
-      insert(INSTRUCTION) := slaveBus.datain
+      insert(INSTRUCTION) := icache_access
       
     }
 
     execute plug new Area{
       import execute._
 
-      insert(INST_EXE) := B(1, 32 bits)
+      //insert(INST_EXE) := B(1, 32 bits)
+      insert(INST_EXE) := input(INST_TEST)
     }
 
     if(icache_access != null) pipeline plug new Area{
