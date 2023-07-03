@@ -70,10 +70,10 @@ class ICachePlugin(val config : ICacheConfig) extends Plugin[DandRiscvSimple]{
     ICachePlugin.this.config.bankDepthBits)
 
     // impl icache access logic
-    icache.cpu.cmd.valid := icache_access.cmd.valid
-    icache.cpu.cmd.payload.addr := icache_access.cmd.payload.addr
-    icache_access.cmd.ready := icache.cpu.cmd.ready
-    //icache_access.cmd <> icache.cpu.cmd
+    //icache.cpu.cmd.valid := icache_access.cmd.valid
+    //icache.cpu.cmd.payload.addr := icache_access.cmd.payload.addr
+    //icache_access.cmd.ready := icache.cpu.cmd.ready
+    icache_access.cmd <> icache.cpu.cmd
 
     // sram ports
     val connect_sram = for(i<-0 until ICachePlugin.this.config.wayCount) yield new Area{

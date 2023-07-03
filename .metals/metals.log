@@ -2795,3 +2795,73 @@ Jul 02, 2023 12:04:11 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint noti
 INFO: Unsupported notification method: $/setTrace
 Jul 02, 2023 11:13:32 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
 INFO: Unsupported notification method: $/setTrace
+2023.07.03 19:33:27 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/SimICache.scala[0m
+2023.07.03 19:33:39 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/InstructionFetchPlugin.scala[0m
+2023.07.03 19:34:53 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.07.03 19:35:10 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.03 19:35:15 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Services.scala[0m
+2023.07.03 19:38:43 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/InstructionFetchPlugin.scala[0m
+2023.07.03 19:41:19 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.07.03 19:41:41 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.07.03 19:41:49 WARN  Using indexes to guess the definition of control_service[0m
+2023.07.03 19:41:50 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/InstructionFetchPlugin.scala[0m
+2023.07.03 19:41:49 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/InstructionFetchPlugin.scala[0m
+2023.07.03 19:41:50 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/InstructionFetchPlugin.scala[0m
+2023.07.03 19:46:27 WARN  Using indexes to guess the definition of newICacheAccess[0m
+2023.07.03 19:46:37 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/InstructionFetchPlugin.scala[0m
+2023.07.03 19:46:40 WARN  Using indexes to guess the definition of ICacheAccessService[0m
+2023.07.03 19:46:42 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/InstructionFetchPlugin.scala[0m
+2023.07.03 19:46:51 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/InstructionFetchPlugin.scala[0m
+2023.07.03 19:47:02 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/sim/Config.scala[0m
+2023.07.03 19:47:07 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gencpu/GenSimple.scala[0m
+2023.07.03 19:47:19 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Services.scala[0m
+2023.07.03 19:47:28 WARN  Using indexes to guess the definition of ICacheAccessService[0m
+2023.07.03 19:47:28 WARN  Using indexes to guess the definition of newICacheAccess[0m
+2023.07.03 19:47:28 WARN  Using indexes to guess the definition of newICacheAccess[0m
+2023.07.03 19:47:29 WARN  Using indexes to guess the definition of newICacheAccess[0m
+2023.07.03 19:47:29 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/InstructionFetchPlugin.scala[0m
+2023.07.03 19:48:00 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Services.scala[0m
+2023.07.03 19:48:00 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Services.scala[0m
+2023.07.03 19:48:00 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Services.scala[0m
+2023.07.03 19:48:03 WARN  Using indexes to guess the definition of newICacheAccess[0m
+2023.07.03 19:48:03 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/InstructionFetchPlugin.scala[0m
+2023.07.03 19:48:10 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/InstructionFetchPlugin.scala[0m
+Jul 03, 2023 7:48:19 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 613
+2023.07.03 19:48:22 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/InstructionFetchPlugin.scala[0m
+2023.07.03 19:48:44 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/InstructionFetchPlugin.scala[0m
+2023.07.03 19:49:30 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/InstructionFetchPlugin.scala[0m
+2023.07.03 19:49:30 WARN  Using indexes to guess the definition of ICacheAccess[0m
+2023.07.03 19:49:30 WARN  Using indexes to guess the definition of icache_access[0m
+2023.07.03 19:49:30 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/InstructionFetchPlugin.scala[0m
+2023.07.03 19:49:30 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/InstructionFetchPlugin.scala[0m
+2023.07.03 19:49:55 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Services.scala[0m
+Jul 03, 2023 7:53:01 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 766
+2023.07.03 19:53:02 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Services.scala[0m
+2023.07.03 19:54:09 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/InstructionFetchPlugin.scala[0m
+2023.07.03 19:54:34 WARN  Using indexes to guess the definition of ControlIF[0m
+2023.07.03 19:54:39 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/InstructionFetchPlugin.scala[0m
+2023.07.03 19:56:19 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Services.scala[0m
+2023.07.03 19:57:15 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Services.scala[0m
+2023.07.03 19:57:15 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Services.scala[0m
+2023.07.03 19:57:15 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Services.scala[0m
+2023.07.03 19:57:22 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Services.scala[0m
+2023.07.03 19:57:25 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Services.scala[0m
+2023.07.03 19:57:43 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Services.scala[0m
+2023.07.03 19:57:44 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Services.scala[0m
+2023.07.03 20:02:22 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Services.scala[0m
+2023.07.03 20:02:31 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/InstructionFetchPlugin.scala[0m
+Jul 03, 2023 8:02:42 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 1129
+2023.07.03 20:02:48 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/InstructionFetchPlugin.scala[0m
+Jul 03, 2023 8:03:12 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 1164
+2023.07.03 20:03:34 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/InstructionFetchPlugin.scala[0m
+2023.07.03 20:03:34 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/InstructionFetchPlugin.scala[0m
+2023.07.03 20:03:46 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/InstructionFetchPlugin.scala[0m
+2023.07.03 20:07:04 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/InstructionFetchPlugin.scala[0m
+2023.07.03 20:07:04 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/InstructionFetchPlugin.scala[0m
+2023.07.03 20:17:44 WARN  Using indexes to guess the definition of icache_access[0m
+2023.07.03 20:17:45 WARN  Using indexes to guess the definition of icache_access[0m
+2023.07.03 20:17:52 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/InstructionFetchPlugin.scala[0m

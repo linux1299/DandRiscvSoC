@@ -38,6 +38,8 @@ extends Plugin[DandRiscvSimple] with ICacheAccessService with ControlService{
   override def setup(pipeline: DandRiscvSimple): Unit = {
     import Riscv._
     import pipeline.config._
+
+    control_service = pipeline.service(classOf[ControlService]).newControlIF
   }
   
   override def build(pipeline: DandRiscvSimple): Unit = {
@@ -48,14 +50,13 @@ extends Plugin[DandRiscvSimple] with ICacheAccessService with ControlService{
     //val masterBus = master(inoutClass()).setName("masterBus")
     //masterBus.dataout := B(2, 32 bits)
 
-    @dontName val fetchInst = new Area{
+    val fetchInst = new Area{
       val pc_reg = Reg(UInt(addressWidth bits)) init(resetVector)
       val pc = RegNextWhen(pc_reg, icache_access.cmd.fire)
       val pc_next = pc_reg + 4
       val fetch_valid = RegInit(False)
 
-      when(False){
-      //when(control_service.hold){
+      when(control_service.hold){
         pc_reg := pc_reg
         fetch_valid := False
       }.otherwise{

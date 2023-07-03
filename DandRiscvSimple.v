@@ -1,6 +1,6 @@
 // Generator : SpinalHDL v1.8.1    git head : 2a7592004363e5b40ec43e1f122ed8641cd8965b
 // Component : DandRiscvSimple
-// Git hash  : 4962969ebe352625a4863aeb25d4da268aefda40
+// Git hash  : c93b4933ccd734dc3a3bde17967f29b808b856fc
 
 `timescale 1ns/1ps
 
@@ -10,7 +10,6 @@ module DandRiscvSimple (
 );
 
   wire                iCache_1_flush;
-  wire       [2:0]    iCache_1_cpu_cmd_payload_size;
   wire                iCache_1_next_level_cmd_ready;
   wire                iCache_1_next_level_rsp_valid;
   wire       [255:0]  iCache_1_next_level_rsp_payload_data;
@@ -99,6 +98,7 @@ module DandRiscvSimple (
   wire                writeback_arbitration_isFlushed;
   wire                writeback_arbitration_isMoving;
   wire                writeback_arbitration_isFiring;
+  wire                _zz_1;
   wire                ICachePlugin_icache_access_cmd_valid;
   wire                ICachePlugin_icache_access_cmd_ready;
   wire       [63:0]   ICachePlugin_icache_access_cmd_payload_addr;
@@ -109,7 +109,6 @@ module DandRiscvSimple (
   wire                ICachePlugin_icache_access_cmd_fire;
   reg        [63:0]   _zz_ICachePlugin_icache_access_cmd_payload_addr_1;
   reg                 _zz_ICachePlugin_icache_access_cmd_valid;
-  wire                when_InstructionFetchPlugin_l57;
   wire                when_Pipeline_l151;
   wire                when_Pipeline_l154;
   wire                when_Pipeline_l151_1;
@@ -124,7 +123,7 @@ module DandRiscvSimple (
     .cpu_cmd_valid                  (ICachePlugin_icache_access_cmd_valid             ), //i
     .cpu_cmd_ready                  (iCache_1_cpu_cmd_ready                           ), //o
     .cpu_cmd_payload_addr           (ICachePlugin_icache_access_cmd_payload_addr[63:0]), //i
-    .cpu_cmd_payload_size           (iCache_1_cpu_cmd_payload_size[2:0]               ), //i
+    .cpu_cmd_payload_size           (ICachePlugin_icache_access_cmd_payload_size[2:0] ), //i
     .cpu_rsp_valid                  (iCache_1_cpu_rsp_valid                           ), //o
     .cpu_rsp_payload_data           (iCache_1_cpu_rsp_payload_data[31:0]              ), //o
     .sram_0_ports_cmd_valid         (iCache_1_sram_0_ports_cmd_valid                  ), //o
@@ -244,7 +243,6 @@ module DandRiscvSimple (
   assign writeback_arbitration_flushIt = 1'b0;
   assign writeback_arbitration_flushNext = 1'b0;
   assign ICachePlugin_icache_access_cmd_fire = (ICachePlugin_icache_access_cmd_valid && ICachePlugin_icache_access_cmd_ready);
-  assign when_InstructionFetchPlugin_l57 = 1'b0;
   assign ICachePlugin_icache_access_cmd_valid = _zz_ICachePlugin_icache_access_cmd_valid;
   assign ICachePlugin_icache_access_cmd_payload_addr = _zz_ICachePlugin_icache_access_cmd_payload_addr_1;
   assign ICachePlugin_icache_access_cmd_ready = iCache_1_cpu_cmd_ready;
@@ -291,7 +289,7 @@ module DandRiscvSimple (
       memaccess_arbitration_isValid <= 1'b0;
       writeback_arbitration_isValid <= 1'b0;
     end else begin
-      if(when_InstructionFetchPlugin_l57) begin
+      if(_zz_1) begin
         _zz_ICachePlugin_icache_access_cmd_payload_addr <= _zz_ICachePlugin_icache_access_cmd_payload_addr;
         _zz_ICachePlugin_icache_access_cmd_valid <= 1'b0;
       end else begin
