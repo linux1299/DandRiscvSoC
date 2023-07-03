@@ -1,6 +1,7 @@
 package dandriscv.ip
 
 import dandriscv.plugin._
+import dandriscv.plugin_simple._
 import dandriscv._
 import spinal.core._
 import spinal.lib._
@@ -36,41 +37,23 @@ case class ICacheConfig(cacheSize : Int,
   
 }
 
-// ================= sram ports as master================
-case class ICacheSramCmd(p : ICacheConfig) extends Bundle{
-  val addr = UInt(p.bankDepthBits bits)
-  val wen = Bool()
-  val wdata = Bits(p.bankWidth bits)
-}
-case class ICacheSramRsp(p : ICacheConfig) extends Bundle{
-  val data = Bits(p.bankWidth bits)
-}
-case class ICacheSramPorts(p : ICacheConfig) extends Bundle with IMasterSlave{
-  val cmd = Flow(ICacheSramCmd(p))
-  val rsp = Flow(ICacheSramRsp(p))
-
-  override def asMaster(): Unit = {
-    master(cmd)
-    slave(rsp)
-  }
-}
 
 // ================ cpu ports as slave ==============
-case class ICacheCpuCmd(p : ICacheConfig) extends Bundle{
-  val addr = UInt(p.addressWidth bits)
-}
-case class ICacheCpuRsp(p : ICacheConfig) extends Bundle{
-  val data = Bits(p.cpuDataWidth bits)
-}
-case class ICacheCpuPorts(p : ICacheConfig) extends Bundle with IMasterSlave{
-  val cmd = Stream(ICacheCpuCmd(p))
-  val rsp = Flow(ICacheCpuRsp(p))
-
-  override def asMaster(): Unit = {
-    slave(cmd)
-    master(rsp)
-  }
-}
+//case class ICacheCpuCmd(p : ICacheConfig) extends Bundle{
+//  val addr = UInt(p.addressWidth bits)
+//}
+//case class ICacheCpuRsp(p : ICacheConfig) extends Bundle{
+//  val data = Bits(p.cpuDataWidth bits)
+//}
+//case class ICacheCpuPorts(p : ICacheConfig) extends Bundle with IMasterSlave{
+//  val cmd = Stream(ICacheCpuCmd(p))
+//  val rsp = Flow(ICacheCpuRsp(p))
+//
+//  override def asMaster(): Unit = {
+//    slave(cmd)
+//    master(rsp)
+//  }
+//}
 
 // ================ next level ports as master ==============
 case class ICacheNextLevelCmd(p : ICacheConfig) extends Bundle{
@@ -95,9 +78,9 @@ case class ICache(p : ICacheConfig) extends Component{
   import p._
 
   val flush = in Bool()
-  val cpu = master(ICacheCpuPorts(p))
+  val cpu = slave(ICacheAccess(addressWidth, cpuDataWidth))
   val sram = for(i<-0 until bankNum) yield new Area{
-    val ports = master(ICacheSramPorts(p))
+    val ports = master(SramPorts(bankDepthBits, bankWidth))
   }
   val next_level = master(ICacheNextLevelPorts(p))
 

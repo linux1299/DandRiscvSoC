@@ -40,9 +40,9 @@ case class DandRiscvSimpleConfig(){
     }
   }
   
-  object INST_TEST extends Stageable(Bits(32 bits))
+  object PC extends Stageable(UInt(32 bits))
   object INSTRUCTION extends Stageable(Bits(32 bits))
-  object INST_EXE extends Stageable(Bits(32 bits))
+  object PC_EXE extends Stageable(Bits(32 bits))
 
 }
 
