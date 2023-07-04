@@ -14,7 +14,7 @@ trait ICacheAccessService {
 trait NextLevelAccessService {
   def newNextLevelAccess() : NextLevelAccess
 }
-
+// ================ cpu and icache ports ===============
 case class ICacheAccessCmd(AW: Int) extends Bundle {
   val addr = UInt(AW bits)
   val size = UInt(3 bits)
@@ -22,10 +22,6 @@ case class ICacheAccessCmd(AW: Int) extends Bundle {
 case class ICacheAccessRsp(DW: Int) extends Bundle {
   val data = Bits(DW bits)
 }
-//case class ICacheAccess(AW: Int, DW: Int) extends Bundle {
-//  val cmd = Stream(ICacheAccessCmd(AW))
-//  val rsp = Flow(ICacheAccessRsp(DW))
-//}
 case class ICacheAccess(AW: Int, DW: Int) extends Bundle with IMasterSlave{
   val cmd = Stream(ICacheAccessCmd(AW))
   val rsp = Flow(ICacheAccessRsp(DW))
@@ -38,7 +34,7 @@ case class ICacheAccess(AW: Int, DW: Int) extends Bundle with IMasterSlave{
     master(rsp)
   }
 }
-
+// ================ next level and icache ports ===============
 case class NextLevelAccess(AW: Int, DW: Int) extends Bundle {
   val cmd = Stream(ICacheAccessCmd(AW))
   val rsp = Flow(ICacheAccessRsp(DW))
@@ -50,6 +46,7 @@ class ICachePlugin(val config : ICacheConfig) extends Plugin[DandRiscvSimple]{
   import config._
 
   var icache_access : ICacheAccess = null
+  //var service_test : IntIF = null
   //var nextlevel_access : NextLevelAccess = null
 
   override def setup(pipeline: DandRiscvSimple): Unit = {
@@ -57,6 +54,7 @@ class ICachePlugin(val config : ICacheConfig) extends Plugin[DandRiscvSimple]{
     import pipeline.config._
 
     icache_access = pipeline.service(classOf[ICacheAccessService]).newICacheAccess
+    //service_test = pipeline.service(classOf[IntrruptService]).newIntIF
     //nextlevel_access = pipeline.service(classOf[NextLevelAccessService]).newNextLevelAccess
   }
 
@@ -74,6 +72,7 @@ class ICachePlugin(val config : ICacheConfig) extends Plugin[DandRiscvSimple]{
     //icache.cpu.cmd.payload.addr := icache_access.cmd.payload.addr
     //icache_access.cmd.ready := icache.cpu.cmd.ready
     icache_access.cmd <> icache.cpu.cmd
+    //service_test.hold := True
 
     // sram ports
     val connect_sram = for(i<-0 until ICachePlugin.this.config.wayCount) yield new Area{

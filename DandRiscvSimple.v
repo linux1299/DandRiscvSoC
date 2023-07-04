@@ -1,6 +1,6 @@
 // Generator : SpinalHDL v1.8.1    git head : 2a7592004363e5b40ec43e1f122ed8641cd8965b
 // Component : DandRiscvSimple
-// Git hash  : c93b4933ccd734dc3a3bde17967f29b808b856fc
+// Git hash  : 8a2393feb76d124fc4791023c73ce2c5cdb224d2
 
 `timescale 1ns/1ps
 
@@ -43,6 +43,10 @@ module DandRiscvSimple (
   wire       [255:0]  sramBanks_1_sram_2_ports_rsp_payload_data;
   wire                sramBanks_1_sram_3_ports_rsp_valid;
   wire       [255:0]  sramBanks_1_sram_3_ports_rsp_payload_data;
+  wire       [31:0]   decode_RS1;
+  wire       [31:0]   fetch_INSTRUCTION;
+  wire       [31:0]   execute_RS1;
+  wire       [31:0]   decode_INSTRUCTION;
   wire                fetch_arbitration_haltItself;
   wire                fetch_arbitration_haltByOther;
   reg                 fetch_arbitration_removeIt;
@@ -98,17 +102,35 @@ module DandRiscvSimple (
   wire                writeback_arbitration_isFlushed;
   wire                writeback_arbitration_isMoving;
   wire                writeback_arbitration_isFiring;
+  wire                _zz_when_InstructionFetchPlugin_l88;
+  wire                _zz_when_InstructionFetchPlugin_l104;
+  wire       [63:0]   _zz_ICachePlugin_icache_access_cmd_payload_addr;
+  wire                _zz_when_InstructionFetchPlugin_l88_1;
   wire                _zz_1;
+  wire       [63:0]   _zz_ICachePlugin_icache_access_cmd_payload_addr_1;
   wire                ICachePlugin_icache_access_cmd_valid;
   wire                ICachePlugin_icache_access_cmd_ready;
   wire       [63:0]   ICachePlugin_icache_access_cmd_payload_addr;
   wire       [2:0]    ICachePlugin_icache_access_cmd_payload_size;
   wire                ICachePlugin_icache_access_rsp_valid;
   wire       [31:0]   ICachePlugin_icache_access_rsp_payload_data;
-  reg        [63:0]   _zz_ICachePlugin_icache_access_cmd_payload_addr;
+  reg        [63:0]   _zz_ICachePlugin_icache_access_cmd_payload_addr_2;
   wire                ICachePlugin_icache_access_cmd_fire;
-  reg        [63:0]   _zz_ICachePlugin_icache_access_cmd_payload_addr_1;
   reg                 _zz_ICachePlugin_icache_access_cmd_valid;
+  reg        [63:0]   _zz_ICachePlugin_icache_access_cmd_payload_addr_3;
+  reg                 when_InstructionFetchPlugin_l112;
+  wire       [1:0]    _zz_when_InstructionFetchPlugin_l104_1;
+  reg        [1:0]    _zz_when_InstructionFetchPlugin_l104_2;
+  wire                when_InstructionFetchPlugin_l88;
+  wire                ICachePlugin_icache_access_cmd_isStall;
+  wire                ICachePlugin_icache_access_cmd_fire_1;
+  wire                when_InstructionFetchPlugin_l104;
+  wire                when_InstructionFetchPlugin_l111;
+  wire                when_InstructionFetchPlugin_l124;
+  wire                when_Pipeline_l124;
+  reg        [31:0]   fetch_to_decode_INSTRUCTION;
+  wire                when_Pipeline_l124_1;
+  reg        [31:0]   decode_to_execute_RS1;
   wire                when_Pipeline_l151;
   wire                when_Pipeline_l154;
   wire                when_Pipeline_l151_1;
@@ -187,6 +209,10 @@ module DandRiscvSimple (
     .clk                            (clk                                             ), //i
     .reset                          (reset                                           )  //i
   );
+  assign decode_RS1 = decode_INSTRUCTION;
+  assign fetch_INSTRUCTION = ICachePlugin_icache_access_rsp_payload_data;
+  assign execute_RS1 = decode_to_execute_RS1;
+  assign decode_INSTRUCTION = fetch_to_decode_INSTRUCTION;
   assign fetch_arbitration_haltItself = 1'b0;
   assign fetch_arbitration_haltByOther = 1'b0;
   always @(*) begin
@@ -243,10 +269,18 @@ module DandRiscvSimple (
   assign writeback_arbitration_flushIt = 1'b0;
   assign writeback_arbitration_flushNext = 1'b0;
   assign ICachePlugin_icache_access_cmd_fire = (ICachePlugin_icache_access_cmd_valid && ICachePlugin_icache_access_cmd_ready);
+  assign when_InstructionFetchPlugin_l88 = (! (_zz_when_InstructionFetchPlugin_l88 || _zz_when_InstructionFetchPlugin_l88_1));
+  assign ICachePlugin_icache_access_cmd_isStall = (ICachePlugin_icache_access_cmd_valid && (! ICachePlugin_icache_access_cmd_ready));
+  assign ICachePlugin_icache_access_cmd_fire_1 = (ICachePlugin_icache_access_cmd_valid && ICachePlugin_icache_access_cmd_ready);
+  assign when_InstructionFetchPlugin_l104 = (_zz_when_InstructionFetchPlugin_l104 && ((_zz_when_InstructionFetchPlugin_l104_2 == 2'b10) || (_zz_when_InstructionFetchPlugin_l104_1 == 2'b10)));
+  assign when_InstructionFetchPlugin_l111 = (_zz_when_InstructionFetchPlugin_l104_1 == 2'b01);
+  assign when_InstructionFetchPlugin_l124 = (_zz_when_InstructionFetchPlugin_l104_1 == 2'b01);
   assign ICachePlugin_icache_access_cmd_valid = _zz_ICachePlugin_icache_access_cmd_valid;
-  assign ICachePlugin_icache_access_cmd_payload_addr = _zz_ICachePlugin_icache_access_cmd_payload_addr_1;
+  assign ICachePlugin_icache_access_cmd_payload_addr = _zz_ICachePlugin_icache_access_cmd_payload_addr_2;
   assign ICachePlugin_icache_access_cmd_ready = iCache_1_cpu_cmd_ready;
   assign fetch_arbitration_isValid = 1'b1;
+  assign when_Pipeline_l124 = (! decode_arbitration_isStuck);
+  assign when_Pipeline_l124_1 = (! execute_arbitration_isStuck);
   assign fetch_arbitration_isFlushed = (({writeback_arbitration_flushNext,{memaccess_arbitration_flushNext,{execute_arbitration_flushNext,decode_arbitration_flushNext}}} != 4'b0000) || ({writeback_arbitration_flushIt,{memaccess_arbitration_flushIt,{execute_arbitration_flushIt,{decode_arbitration_flushIt,fetch_arbitration_flushIt}}}} != 5'h0));
   assign decode_arbitration_isFlushed = (({writeback_arbitration_flushNext,{memaccess_arbitration_flushNext,execute_arbitration_flushNext}} != 3'b000) || ({writeback_arbitration_flushIt,{memaccess_arbitration_flushIt,{execute_arbitration_flushIt,decode_arbitration_flushIt}}} != 4'b0000));
   assign execute_arbitration_isFlushed = (({writeback_arbitration_flushNext,memaccess_arbitration_flushNext} != 2'b00) || ({writeback_arbitration_flushIt,{memaccess_arbitration_flushIt,execute_arbitration_flushIt}} != 3'b000));
@@ -282,18 +316,59 @@ module DandRiscvSimple (
   assign when_Pipeline_l154_3 = ((! memaccess_arbitration_isStuck) && (! memaccess_arbitration_removeIt));
   always @(posedge clk or posedge reset) begin
     if(reset) begin
-      _zz_ICachePlugin_icache_access_cmd_payload_addr <= 64'h0000000080000000;
+      _zz_ICachePlugin_icache_access_cmd_payload_addr_2 <= 64'h0000000080000000;
       _zz_ICachePlugin_icache_access_cmd_valid <= 1'b0;
+      _zz_ICachePlugin_icache_access_cmd_payload_addr_3 <= 64'h0;
+      when_InstructionFetchPlugin_l112 <= 1'b0;
+      _zz_when_InstructionFetchPlugin_l104_2 <= 2'b00;
       decode_arbitration_isValid <= 1'b0;
       execute_arbitration_isValid <= 1'b0;
       memaccess_arbitration_isValid <= 1'b0;
       writeback_arbitration_isValid <= 1'b0;
     end else begin
-      if(_zz_1) begin
-        _zz_ICachePlugin_icache_access_cmd_payload_addr <= _zz_ICachePlugin_icache_access_cmd_payload_addr;
-        _zz_ICachePlugin_icache_access_cmd_valid <= 1'b0;
+      _zz_when_InstructionFetchPlugin_l104_2 <= _zz_when_InstructionFetchPlugin_l104_1;
+      case(_zz_when_InstructionFetchPlugin_l104_2)
+        2'b00 : begin
+          if(when_InstructionFetchPlugin_l88) begin
+            _zz_when_InstructionFetchPlugin_l104_2 <= 2'b01;
+          end
+        end
+        2'b01 : begin
+          if(ICachePlugin_icache_access_cmd_isStall) begin
+            _zz_when_InstructionFetchPlugin_l104_2 <= 2'b10;
+          end
+        end
+        2'b10 : begin
+          if(ICachePlugin_icache_access_cmd_fire_1) begin
+            _zz_when_InstructionFetchPlugin_l104_2 <= 2'b01;
+          end
+        end
+        default : begin
+        end
+      endcase
+      if(when_InstructionFetchPlugin_l104) begin
+        when_InstructionFetchPlugin_l112 <= 1'b1;
+        _zz_ICachePlugin_icache_access_cmd_payload_addr_3 <= _zz_ICachePlugin_icache_access_cmd_payload_addr;
       end else begin
-        _zz_ICachePlugin_icache_access_cmd_payload_addr <= (_zz_ICachePlugin_icache_access_cmd_payload_addr + 64'h0000000000000004);
+        if(ICachePlugin_icache_access_rsp_valid) begin
+          when_InstructionFetchPlugin_l112 <= 1'b0;
+        end
+      end
+      if(when_InstructionFetchPlugin_l111) begin
+        if(when_InstructionFetchPlugin_l112) begin
+          _zz_ICachePlugin_icache_access_cmd_payload_addr_2 <= _zz_ICachePlugin_icache_access_cmd_payload_addr_3;
+        end
+        if(_zz_when_InstructionFetchPlugin_l104) begin
+          _zz_ICachePlugin_icache_access_cmd_payload_addr_2 <= _zz_ICachePlugin_icache_access_cmd_payload_addr;
+        end else begin
+          if(_zz_1) begin
+            _zz_ICachePlugin_icache_access_cmd_payload_addr_2 <= _zz_ICachePlugin_icache_access_cmd_payload_addr_1;
+          end else begin
+            _zz_ICachePlugin_icache_access_cmd_payload_addr_2 <= (_zz_ICachePlugin_icache_access_cmd_payload_addr_2 + 64'h0000000000000004);
+          end
+        end
+      end
+      if(when_InstructionFetchPlugin_l124) begin
         _zz_ICachePlugin_icache_access_cmd_valid <= 1'b1;
       end
       if(when_Pipeline_l151) begin
@@ -324,8 +399,11 @@ module DandRiscvSimple (
   end
 
   always @(posedge clk) begin
-    if(ICachePlugin_icache_access_cmd_fire) begin
-      _zz_ICachePlugin_icache_access_cmd_payload_addr_1 <= _zz_ICachePlugin_icache_access_cmd_payload_addr;
+    if(when_Pipeline_l124) begin
+      fetch_to_decode_INSTRUCTION <= fetch_INSTRUCTION;
+    end
+    if(when_Pipeline_l124_1) begin
+      decode_to_execute_RS1 <= decode_RS1;
     end
   end
 
@@ -764,7 +842,7 @@ module ICache (
   wire                next_level_data_cnt_willOverflow;
   wire       [3:0]    next_level_bank_addr;
   wire                next_level_cmd_fire;
-  wire                when_ICache_l133;
+  wire                when_ICache_l115;
   wire                _zz_hit_way_id;
   wire                _zz_hit_way_id_1;
   wire       [15:0]   _zz_1;
@@ -802,9 +880,9 @@ module ICache (
   wire                _zz_33;
   wire                _zz_34;
   wire                cpu_cmd_fire_2;
-  wire                when_ICache_l184;
-  wire                when_ICache_l201;
-  wire                when_ICache_l210;
+  wire                when_ICache_l166;
+  wire                when_ICache_l183;
+  wire                when_ICache_l192;
   wire       [15:0]   _zz_35;
   wire                _zz_36;
   wire                _zz_37;
@@ -840,9 +918,9 @@ module ICache (
   wire                _zz_67;
   wire                _zz_68;
   wire                cpu_cmd_fire_3;
-  wire                when_ICache_l184_1;
-  wire                when_ICache_l201_1;
-  wire                when_ICache_l210_1;
+  wire                when_ICache_l166_1;
+  wire                when_ICache_l183_1;
+  wire                when_ICache_l192_1;
   wire       [15:0]   _zz_69;
   wire                _zz_70;
   wire                _zz_71;
@@ -878,9 +956,9 @@ module ICache (
   wire                _zz_101;
   wire                _zz_102;
   wire                cpu_cmd_fire_4;
-  wire                when_ICache_l184_2;
-  wire                when_ICache_l201_2;
-  wire                when_ICache_l210_2;
+  wire                when_ICache_l166_2;
+  wire                when_ICache_l183_2;
+  wire                when_ICache_l192_2;
   wire       [15:0]   _zz_103;
   wire                _zz_104;
   wire                _zz_105;
@@ -916,9 +994,9 @@ module ICache (
   wire                _zz_135;
   wire                _zz_136;
   wire                cpu_cmd_fire_5;
-  wire                when_ICache_l184_3;
-  wire                when_ICache_l201_3;
-  wire                when_ICache_l210_3;
+  wire                when_ICache_l166_3;
+  wire                when_ICache_l183_3;
+  wire                when_ICache_l192_3;
   wire       [255:0]  _zz_cpu_rsp_payload_data;
 
   always @(*) begin
@@ -1300,7 +1378,7 @@ module ICache (
   always @(*) begin
     next_level_data_cnt_willIncrement = 1'b0;
     if(!is_miss) begin
-      if(!when_ICache_l133) begin
+      if(!when_ICache_l115) begin
         if(next_level_rsp_valid) begin
           next_level_data_cnt_willIncrement = 1'b1;
         end
@@ -1313,7 +1391,7 @@ module ICache (
     if(is_miss) begin
       next_level_data_cnt_willClear = 1'b1;
     end else begin
-      if(when_ICache_l133) begin
+      if(when_ICache_l115) begin
         next_level_data_cnt_willClear = 1'b1;
       end
     end
@@ -1330,7 +1408,7 @@ module ICache (
 
   assign next_level_bank_addr = cpu_addr_d1[9 : 6];
   assign next_level_cmd_fire = (next_level_cmd_valid && next_level_cmd_ready);
-  assign when_ICache_l133 = (next_level_rsp_valid && (next_level_data_cnt_value == 1'b1));
+  assign when_ICache_l115 = (next_level_rsp_valid && (next_level_data_cnt_value == 1'b1));
   assign _zz_hit_way_id = (icache_hit_1 || icache_hit_3);
   assign _zz_hit_way_id_1 = (icache_hit_2 || icache_hit_3);
   assign hit_way_id = {_zz_hit_way_id_1,_zz_hit_way_id};
@@ -1423,9 +1501,9 @@ module ICache (
     end
   end
 
-  assign when_ICache_l184 = (is_hit && replace_info_full);
-  assign when_ICache_l201 = (next_level_rsp_valid && (next_level_data_cnt_value == 1'b1));
-  assign when_ICache_l210 = (next_level_rsp_valid && (next_level_data_cnt_value == 1'b1));
+  assign when_ICache_l166 = (is_hit && replace_info_full);
+  assign when_ICache_l183 = (next_level_rsp_valid && (next_level_data_cnt_value == 1'b1));
+  assign when_ICache_l192 = (next_level_rsp_valid && (next_level_data_cnt_value == 1'b1));
   assign _zz_35 = ({15'd0,1'b1} <<< cpu_set);
   assign _zz_36 = _zz_35[0];
   assign _zz_37 = _zz_35[1];
@@ -1522,9 +1600,9 @@ module ICache (
     end
   end
 
-  assign when_ICache_l184_1 = (is_hit && replace_info_full);
-  assign when_ICache_l201_1 = (next_level_rsp_valid && (next_level_data_cnt_value == 1'b1));
-  assign when_ICache_l210_1 = (next_level_rsp_valid && (next_level_data_cnt_value == 1'b1));
+  assign when_ICache_l166_1 = (is_hit && replace_info_full);
+  assign when_ICache_l183_1 = (next_level_rsp_valid && (next_level_data_cnt_value == 1'b1));
+  assign when_ICache_l192_1 = (next_level_rsp_valid && (next_level_data_cnt_value == 1'b1));
   assign _zz_69 = ({15'd0,1'b1} <<< cpu_set);
   assign _zz_70 = _zz_69[0];
   assign _zz_71 = _zz_69[1];
@@ -1621,9 +1699,9 @@ module ICache (
     end
   end
 
-  assign when_ICache_l184_2 = (is_hit && replace_info_full);
-  assign when_ICache_l201_2 = (next_level_rsp_valid && (next_level_data_cnt_value == 1'b1));
-  assign when_ICache_l210_2 = (next_level_rsp_valid && (next_level_data_cnt_value == 1'b1));
+  assign when_ICache_l166_2 = (is_hit && replace_info_full);
+  assign when_ICache_l183_2 = (next_level_rsp_valid && (next_level_data_cnt_value == 1'b1));
+  assign when_ICache_l192_2 = (next_level_rsp_valid && (next_level_data_cnt_value == 1'b1));
   assign _zz_103 = ({15'd0,1'b1} <<< cpu_set);
   assign _zz_104 = _zz_103[0];
   assign _zz_105 = _zz_103[1];
@@ -1720,9 +1798,9 @@ module ICache (
     end
   end
 
-  assign when_ICache_l184_3 = (is_hit && replace_info_full);
-  assign when_ICache_l201_3 = (next_level_rsp_valid && (next_level_data_cnt_value == 1'b1));
-  assign when_ICache_l210_3 = (next_level_rsp_valid && (next_level_data_cnt_value == 1'b1));
+  assign when_ICache_l166_3 = (is_hit && replace_info_full);
+  assign when_ICache_l183_3 = (next_level_rsp_valid && (next_level_data_cnt_value == 1'b1));
+  assign when_ICache_l192_3 = (next_level_rsp_valid && (next_level_data_cnt_value == 1'b1));
   assign _zz_cpu_rsp_payload_data = _zz__zz_cpu_rsp_payload_data;
   assign cpu_rsp_payload_data = _zz_cpu_rsp_payload_data_1;
   assign cpu_rsp_valid = _zz_cpu_rsp_valid;
@@ -2038,7 +2116,7 @@ module ICache (
           ways_0_metas_15_valid <= 1'b0;
         end
       end else begin
-        if(when_ICache_l184) begin
+        if(when_ICache_l166) begin
           if(icache_hit_0) begin
             if(_zz_2) begin
               ways_0_metas_0_replace_info <= 1'b1;
@@ -2246,7 +2324,7 @@ module ICache (
           end
         end
       end
-      if(when_ICache_l201) begin
+      if(when_ICache_l183) begin
         if(_zz_19) begin
           ways_0_metas_0_tag <= cpu_tag_d1;
         end
@@ -2302,7 +2380,7 @@ module ICache (
         if(is_miss) begin
           cpu_cmd_ready_1 <= 1'b0;
         end else begin
-          if(when_ICache_l210) begin
+          if(when_ICache_l192) begin
             cpu_cmd_ready_1 <= 1'b1;
           end
         end
@@ -2405,7 +2483,7 @@ module ICache (
           ways_1_metas_15_valid <= 1'b0;
         end
       end else begin
-        if(when_ICache_l184_1) begin
+        if(when_ICache_l166_1) begin
           if(icache_hit_1) begin
             if(_zz_36) begin
               ways_1_metas_0_replace_info <= 1'b1;
@@ -2613,7 +2691,7 @@ module ICache (
           end
         end
       end
-      if(when_ICache_l201_1) begin
+      if(when_ICache_l183_1) begin
         if(_zz_53) begin
           ways_1_metas_0_tag <= cpu_tag_d1;
         end
@@ -2669,7 +2747,7 @@ module ICache (
         if(is_miss) begin
           cpu_cmd_ready_1 <= 1'b0;
         end else begin
-          if(when_ICache_l210_1) begin
+          if(when_ICache_l192_1) begin
             cpu_cmd_ready_1 <= 1'b1;
           end
         end
@@ -2772,7 +2850,7 @@ module ICache (
           ways_2_metas_15_valid <= 1'b0;
         end
       end else begin
-        if(when_ICache_l184_2) begin
+        if(when_ICache_l166_2) begin
           if(icache_hit_2) begin
             if(_zz_70) begin
               ways_2_metas_0_replace_info <= 1'b1;
@@ -2980,7 +3058,7 @@ module ICache (
           end
         end
       end
-      if(when_ICache_l201_2) begin
+      if(when_ICache_l183_2) begin
         if(_zz_87) begin
           ways_2_metas_0_tag <= cpu_tag_d1;
         end
@@ -3036,7 +3114,7 @@ module ICache (
         if(is_miss) begin
           cpu_cmd_ready_1 <= 1'b0;
         end else begin
-          if(when_ICache_l210_2) begin
+          if(when_ICache_l192_2) begin
             cpu_cmd_ready_1 <= 1'b1;
           end
         end
@@ -3139,7 +3217,7 @@ module ICache (
           ways_3_metas_15_valid <= 1'b0;
         end
       end else begin
-        if(when_ICache_l184_3) begin
+        if(when_ICache_l166_3) begin
           if(icache_hit_3) begin
             if(_zz_104) begin
               ways_3_metas_0_replace_info <= 1'b1;
@@ -3347,7 +3425,7 @@ module ICache (
           end
         end
       end
-      if(when_ICache_l201_3) begin
+      if(when_ICache_l183_3) begin
         if(_zz_121) begin
           ways_3_metas_0_tag <= cpu_tag_d1;
         end
@@ -3403,7 +3481,7 @@ module ICache (
         if(is_miss) begin
           cpu_cmd_ready_1 <= 1'b0;
         end else begin
-          if(when_ICache_l210_3) begin
+          if(when_ICache_l192_3) begin
             cpu_cmd_ready_1 <= 1'b1;
           end
         end

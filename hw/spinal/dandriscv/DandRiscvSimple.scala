@@ -25,6 +25,7 @@ trait DandRiscvSimpleRegressionArg{
 case class DandRiscvSimpleConfig(){
   var withMemoryStage = true
   var withWriteBackStage = true
+  var addressWidth = 64
   val plugins = ArrayBuffer[Plugin[DandRiscvSimple]]()
 
   def add(that : Plugin[DandRiscvSimple]) : this.type = {plugins += that;this}
@@ -40,9 +41,10 @@ case class DandRiscvSimpleConfig(){
     }
   }
   
-  object PC extends Stageable(UInt(32 bits))
+  object PC extends Stageable(UInt(addressWidth bits))
   object INSTRUCTION extends Stageable(Bits(32 bits))
-  object PC_EXE extends Stageable(Bits(32 bits))
+  object RS1 extends Stageable(Bits(32 bits))
+  object RS2 extends Stageable(Bits(32 bits))
 
 }
 

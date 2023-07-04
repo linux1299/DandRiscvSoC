@@ -13,6 +13,7 @@ object GenSimple extends App{
     config = DandRiscvSimpleConfig(
       plugins = List(
         new InstructionFetchPlugin,
+        new DecodePlugin,
         new ICachePlugin(config = ICacheConfig(
           cacheSize = 4096,
           bytePerLine =64,
