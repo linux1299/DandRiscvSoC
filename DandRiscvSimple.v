@@ -1,6 +1,6 @@
 // Generator : SpinalHDL v1.8.1    git head : 2a7592004363e5b40ec43e1f122ed8641cd8965b
 // Component : DandRiscvSimple
-// Git hash  : eb0079a8a904a36b10256087cf6d92bb81d83d45
+// Git hash  : 969e650a6e4715ce9ad1ec671f8026582b643dce
 
 `timescale 1ns/1ps
 
@@ -264,9 +264,11 @@ module DandRiscvSimple (
   wire                when_AluPlugin_l62;
   wire                when_AluPlugin_l77;
   wire                when_AluPlugin_l84;
-  wire                when_AluPlugin_l104;
-  wire                when_AluPlugin_l111;
-  wire                when_AluPlugin_l118;
+  wire       [62:0]   _zz_execute_ALUPlugin_rd_value;
+  wire       [62:0]   _zz_execute_ALUPlugin_rd_value_1;
+  wire                when_AluPlugin_l100;
+  wire                when_AluPlugin_l107;
+  wire                when_AluPlugin_l114;
   wire                when_Pipeline_l124;
   reg        [63:0]   fetch_to_decode_PC;
   wire                when_Pipeline_l124_1;
@@ -1151,25 +1153,25 @@ module DandRiscvSimple (
           execute_ALUPlugin_rd_value = execute_ALUPlugin_sub_result;
         end
     end else if((decode_ALU_CTRL == AluCtrlEnum_SLT)) begin
-        execute_ALUPlugin_rd_value = 64'hffffffffffffffff;
+        execute_ALUPlugin_rd_value = {_zz_execute_ALUPlugin_rd_value,execute_ALUPlugin_slt_result};
     end else if((decode_ALU_CTRL == AluCtrlEnum_SLTU)) begin
-        execute_ALUPlugin_rd_value = 64'hffffffffffffffff;
+        execute_ALUPlugin_rd_value = {_zz_execute_ALUPlugin_rd_value_1,execute_ALUPlugin_sltu_result};
     end else if((decode_ALU_CTRL == AluCtrlEnum_XOR_1)) begin
         execute_ALUPlugin_rd_value = execute_ALUPlugin_xor_result;
     end else if((decode_ALU_CTRL == AluCtrlEnum_SLL_1)) begin
-        if(when_AluPlugin_l104) begin
+        if(when_AluPlugin_l100) begin
           execute_ALUPlugin_rd_value = execute_ALUPlugin_sllw_result;
         end else begin
           execute_ALUPlugin_rd_value = execute_ALUPlugin_sll_result;
         end
     end else if((decode_ALU_CTRL == AluCtrlEnum_SRL_1)) begin
-        if(when_AluPlugin_l111) begin
+        if(when_AluPlugin_l107) begin
           execute_ALUPlugin_rd_value = execute_ALUPlugin_srlw_result;
         end else begin
           execute_ALUPlugin_rd_value = execute_ALUPlugin_srl_result;
         end
     end else if((decode_ALU_CTRL == AluCtrlEnum_SRA_1)) begin
-        if(when_AluPlugin_l118) begin
+        if(when_AluPlugin_l114) begin
           execute_ALUPlugin_rd_value = execute_ALUPlugin_sraw_result;
         end else begin
           execute_ALUPlugin_rd_value = execute_ALUPlugin_sra_result;
@@ -1186,9 +1188,11 @@ module DandRiscvSimple (
   end
 
   assign when_AluPlugin_l84 = (decode_ALU_WORD == 1'b1);
-  assign when_AluPlugin_l104 = (decode_ALU_WORD == 1'b1);
-  assign when_AluPlugin_l111 = (decode_ALU_WORD == 1'b1);
-  assign when_AluPlugin_l118 = (decode_ALU_WORD == 1'b1);
+  assign _zz_execute_ALUPlugin_rd_value[62 : 0] = 63'h0;
+  assign _zz_execute_ALUPlugin_rd_value_1[62 : 0] = 63'h0;
+  assign when_AluPlugin_l100 = (decode_ALU_WORD == 1'b1);
+  assign when_AluPlugin_l107 = (decode_ALU_WORD == 1'b1);
+  assign when_AluPlugin_l114 = (decode_ALU_WORD == 1'b1);
   assign ICachePlugin_icache_access_cmd_ready = iCache_1_cpu_cmd_ready;
   assign fetch_arbitration_isValid = 1'b1;
   assign when_Pipeline_l124 = (! decode_arbitration_isStuck);

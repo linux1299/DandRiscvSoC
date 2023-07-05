@@ -1,13 +1,16 @@
-[0m[[0m[31merror[0m] [0m[0mD:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\AluPlugin.scala:91:65: ambiguous reference to overloaded definition,[0m
-[0m[[0m[31merror[0m] [0m[0mboth method resize in class Bits of type (width: spinal.core.BitCount): spinal.core.Bits[0m
-[0m[[0m[31merror[0m] [0m[0mand  method resize in class Bits of type (width: Int): spinal.core.Bits[0m
-[0m[[0m[31merror[0m] [0m[0mmatch expected type ?[0m
-[0m[[0m[31merror[0m] [0m[0m          rd_value := (B((63 downto 1) -> false) ## slt_result).resize[0m
-[0m[[0m[31merror[0m] [0m[0m                                                                ^[0m
-[0m[[0m[31merror[0m] [0m[0mD:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\AluPlugin.scala:94:66: ambiguous reference to overloaded definition,[0m
-[0m[[0m[31merror[0m] [0m[0mboth method resize in class Bits of type (width: spinal.core.BitCount): spinal.core.Bits[0m
-[0m[[0m[31merror[0m] [0m[0mand  method resize in class Bits of type (width: Int): spinal.core.Bits[0m
-[0m[[0m[31merror[0m] [0m[0mmatch expected type ?[0m
-[0m[[0m[31merror[0m] [0m[0m          rd_value := (B((63 downto 1) -> false) ## sltu_result).resize[0m
-[0m[[0m[31merror[0m] [0m[0m                                                                 ^[0m
-[0m[[0m[31merror[0m] [0m[0mtwo errors found[0m
+[0m[[0m[31merror[0m] [0m[0m/home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/AluPlugin.scala:78:25: not found: value addw_result[0m
+[0m[[0m[31merror[0m] [0m[0m            rd_value := addw_result[0m
+[0m[[0m[31merror[0m] [0m[0m                        ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/AluPlugin.scala:85:25: not found: value subw_result[0m
+[0m[[0m[31merror[0m] [0m[0m            rd_value := subw_result[0m
+[0m[[0m[31merror[0m] [0m[0m                        ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/AluPlugin.scala:101:25: not found: value sllw_result[0m
+[0m[[0m[31merror[0m] [0m[0m            rd_value := sllw_result[0m
+[0m[[0m[31merror[0m] [0m[0m                        ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/AluPlugin.scala:108:25: not found: value srlw_result[0m
+[0m[[0m[31merror[0m] [0m[0m            rd_value := srlw_result[0m
+[0m[[0m[31merror[0m] [0m[0m                        ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/AluPlugin.scala:115:25: not found: value sraw_result[0m
+[0m[[0m[31merror[0m] [0m[0m            rd_value := sraw_result[0m
+[0m[[0m[31merror[0m] [0m[0m                        ^[0m
+[0m[[0m[31merror[0m] [0m[0m5 errors found[0m

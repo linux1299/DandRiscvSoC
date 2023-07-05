@@ -22,7 +22,7 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
     import pipeline.config._  
 
     execute plug new Area{
-      import decode._
+      import execute._
 
       val src1 = Bits(XLEN bits) 
       val src2 = Bits(XLEN bits)
@@ -40,19 +40,20 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
       val and_result = src1 & src2 //Bits(XLEN bits)
       val or_result  = src1 | src2 //Bits(XLEN bits)
       val pc_next    = UInt(addressWidth bits)
-      //if(XLEN==64){
-        val addw_result= B((31 downto 0) -> add_result(31)) ## add_result(31 downto 0)
-        val subw_result= B((31 downto 0) -> sub_result(31)) ## sub_result(31 downto 0)
-        val sllw_temp  = src1_word |<< shift_bits(4 downto 0)
-        val sllw_result= B((31 downto 0) -> sllw_temp(31)) ## sllw_temp
-        val srlw_temp  = src1_word |>> shift_bits(4 downto 0)
-        val srlw_result= B((31 downto 0) -> srlw_temp(31)) ## srlw_temp
-        val sraw_temp  = src1_word.asSInt |>> shift_bits(4 downto 0)
-        val sraw_result= B((31 downto 0) -> sraw_temp(31)) ## sraw_temp
-      //}
+
+      val addw_result= B((31 downto 0) -> add_result(31)) ## add_result(31 downto 0)
+      val subw_result= B((31 downto 0) -> sub_result(31)) ## sub_result(31 downto 0)
+      val sllw_temp  = src1_word |<< shift_bits(4 downto 0)
+      val sllw_result= B((31 downto 0) -> sllw_temp(31)) ## sllw_temp
+      val srlw_temp  = src1_word |>> shift_bits(4 downto 0)
+      val srlw_result= B((31 downto 0) -> srlw_temp(31)) ## srlw_temp
+      val sraw_temp  = src1_word.asSInt |>> shift_bits(4 downto 0)
+      val sraw_result= B((31 downto 0) -> sraw_temp(31)) ## sraw_temp
+
       val rd_value  = Bits(XLEN bits)
       val op_is_jump= input(ALU_CTRL)===AluCtrlEnum.JAL.asBits || input(ALU_CTRL)===AluCtrlEnum.JALR.asBits
 
+      // calculate pc
       when(input(ALU_CTRL)===AluCtrlEnum.JALR.asBits){
         pc_next := ((src1.asSInt + input(IMM).asSInt) & ~S(1, XLEN bits)).asUInt
       }.otherwise{
@@ -71,7 +72,7 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
       }.otherwise{
         src2 := input(RS2) //TODO: need forward some value
       }
-
+      // caclulate rd
       switch(input(ALU_CTRL)){
         is(AluCtrlEnum.ADD.asBits, AluCtrlEnum.AUIPC.asBits){
           when(input(ALU_WORD)===True){
@@ -88,14 +89,10 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
           }
         }
         is(AluCtrlEnum.SLT.asBits){
-          //rd_value := (B((63 downto 1) -> false) ## slt_result)
-          //rd_value := (B(XLEN-1 bits, (XLEN-2 downto 1) -> false) ## False)
-          rd_value := B(XLEN bits, default -> True)
+          rd_value := B(XLEN-1 bits, (XLEN-2 downto 0) -> false) ## slt_result
         }
         is(AluCtrlEnum.SLTU.asBits){
-          //rd_value := (B((63 downto 1) -> false) ## sltu_result)
-          //rd_value := (B(XLEN-1 bits, (XLEN-2 downto 1) -> false) ## False)
-          rd_value := B(XLEN bits, default -> True)
+          rd_value := B(XLEN-1 bits, (XLEN-2 downto 0) -> false) ## sltu_result
         }
         is(AluCtrlEnum.XOR.asBits){
           rd_value := xor_result
