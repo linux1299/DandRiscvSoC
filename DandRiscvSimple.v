@@ -1,6 +1,6 @@
 // Generator : SpinalHDL v1.8.1    git head : 2a7592004363e5b40ec43e1f122ed8641cd8965b
 // Component : DandRiscvSimple
-// Git hash  : 8a2393feb76d124fc4791023c73ce2c5cdb224d2
+// Git hash  : eb0079a8a904a36b10256087cf6d92bb81d83d45
 
 `timescale 1ns/1ps
 
@@ -8,11 +8,45 @@ module DandRiscvSimple (
   input               clk,
   input               reset
 );
+  localparam AluCtrlEnum_ADD = 4'd0;
+  localparam AluCtrlEnum_SUB = 4'd1;
+  localparam AluCtrlEnum_SLT = 4'd2;
+  localparam AluCtrlEnum_SLTU = 4'd3;
+  localparam AluCtrlEnum_XOR_1 = 4'd4;
+  localparam AluCtrlEnum_SLL_1 = 4'd5;
+  localparam AluCtrlEnum_SRL_1 = 4'd6;
+  localparam AluCtrlEnum_SRA_1 = 4'd7;
+  localparam AluCtrlEnum_AND_1 = 4'd8;
+  localparam AluCtrlEnum_OR_1 = 4'd9;
+  localparam AluCtrlEnum_LUI = 4'd10;
+  localparam AluCtrlEnum_AUIPC = 4'd11;
+  localparam AluCtrlEnum_JAL = 4'd12;
+  localparam AluCtrlEnum_JALR = 4'd13;
+  localparam MemCtrlEnum_LB = 4'd0;
+  localparam MemCtrlEnum_LBU = 4'd1;
+  localparam MemCtrlEnum_LH = 4'd2;
+  localparam MemCtrlEnum_LHU = 4'd3;
+  localparam MemCtrlEnum_LW = 4'd4;
+  localparam MemCtrlEnum_LWU = 4'd5;
+  localparam MemCtrlEnum_LD = 4'd6;
+  localparam MemCtrlEnum_SB = 4'd7;
+  localparam MemCtrlEnum_SH = 4'd8;
+  localparam MemCtrlEnum_SW = 4'd9;
+  localparam MemCtrlEnum_SD = 4'd10;
 
+  wire       [4:0]    decode_DecodePlugin_regfile_module_read_ports_rs1_addr;
+  wire       [4:0]    decode_DecodePlugin_regfile_module_read_ports_rs2_addr;
+  wire                decode_DecodePlugin_regfile_module_read_ports_rs1_req;
+  wire                decode_DecodePlugin_regfile_module_read_ports_rs2_req;
+  wire       [63:0]   decode_DecodePlugin_regfile_module_write_ports_rd_value;
+  wire       [4:0]    decode_DecodePlugin_regfile_module_write_ports_rd_addr;
+  wire                decode_DecodePlugin_regfile_module_write_ports_rd_wen;
   wire                iCache_1_flush;
   wire                iCache_1_next_level_cmd_ready;
   wire                iCache_1_next_level_rsp_valid;
   wire       [255:0]  iCache_1_next_level_rsp_payload_data;
+  wire       [63:0]   decode_DecodePlugin_regfile_module_read_ports_rs1_value;
+  wire       [63:0]   decode_DecodePlugin_regfile_module_read_ports_rs2_value;
   wire                iCache_1_cpu_cmd_ready;
   wire                iCache_1_cpu_rsp_valid;
   wire       [31:0]   iCache_1_cpu_rsp_payload_data;
@@ -43,10 +77,46 @@ module DandRiscvSimple (
   wire       [255:0]  sramBanks_1_sram_2_ports_rsp_payload_data;
   wire                sramBanks_1_sram_3_ports_rsp_valid;
   wire       [255:0]  sramBanks_1_sram_3_ports_rsp_payload_data;
-  wire       [31:0]   decode_RS1;
+  wire       [11:0]   _zz__zz_decode_DecodePlugin_imm_2;
+  wire       [11:0]   _zz__zz_decode_DecodePlugin_imm_4;
+  wire       [19:0]   _zz__zz_decode_DecodePlugin_imm_6;
+  wire       [31:0]   _zz__zz_decode_DecodePlugin_imm_8;
+  wire       [6:0]    _zz_decode_DecodePlugin_rd_wen;
+  wire       [6:0]    _zz_decode_DecodePlugin_rd_wen_1;
+  wire       [6:0]    _zz_decode_DecodePlugin_rd_wen_2;
+  wire       [6:0]    _zz_decode_DecodePlugin_rd_wen_3;
+  wire       [31:0]   _zz_decode_DecodePlugin_rd_wen_4;
+  wire       [63:0]   _zz_execute_ALUPlugin_add_result;
+  wire       [63:0]   _zz_execute_ALUPlugin_add_result_1;
+  wire       [63:0]   _zz_execute_ALUPlugin_sub_result;
+  wire       [63:0]   _zz_execute_ALUPlugin_sub_result_1;
+  wire       [63:0]   _zz_execute_ALUPlugin_slt_result;
+  wire       [63:0]   _zz_execute_ALUPlugin_slt_result_1;
+  wire       [63:0]   _zz_execute_ALUPlugin_sra_result;
+  wire       [31:0]   _zz_execute_ALUPlugin_addw_result_2;
+  wire       [31:0]   _zz_execute_ALUPlugin_subw_result_2;
+  wire       [31:0]   _zz_execute_ALUPlugin_sraw_temp;
+  wire       [63:0]   _zz_execute_ALUPlugin_pc_next;
+  wire       [63:0]   _zz_execute_ALUPlugin_pc_next_1;
+  wire       [63:0]   _zz_execute_ALUPlugin_pc_next_2;
+  wire       [63:0]   _zz_execute_ALUPlugin_pc_next_3;
+  wire       [63:0]   _zz_execute_ALUPlugin_pc_next_4;
+  wire       [63:0]   _zz_execute_ALUPlugin_pc_next_5;
+  wire       [63:0]   _zz_execute_ALUPlugin_pc_next_6;
+  wire       [63:0]   _zz_execute_ALUPlugin_pc_next_7;
+  wire       [63:0]   _zz_execute_ALUPlugin_pc_next_8;
   wire       [31:0]   fetch_INSTRUCTION;
-  wire       [31:0]   execute_RS1;
+  wire       [63:0]   fetch_PC;
+  wire       [63:0]   decode_RD;
+  wire                decode_ALU_WORD;
+  wire       [63:0]   decode_RS2;
+  wire                decode_SRC2_IS_IMM;
+  wire       [63:0]   decode_RS1;
+  wire       [63:0]   decode_IMM;
+  wire       [3:0]    decode_ALU_CTRL;
+  wire       [63:0]   execute_IMM;
   wire       [31:0]   decode_INSTRUCTION;
+  wire       [63:0]   decode_PC;
   wire                fetch_arbitration_haltItself;
   wire                fetch_arbitration_haltByOther;
   reg                 fetch_arbitration_removeIt;
@@ -116,6 +186,7 @@ module DandRiscvSimple (
   wire       [31:0]   ICachePlugin_icache_access_rsp_payload_data;
   reg        [63:0]   _zz_ICachePlugin_icache_access_cmd_payload_addr_2;
   wire                ICachePlugin_icache_access_cmd_fire;
+  reg        [63:0]   _zz_fetch_PC;
   reg                 _zz_ICachePlugin_icache_access_cmd_valid;
   reg        [63:0]   _zz_ICachePlugin_icache_access_cmd_payload_addr_3;
   reg                 when_InstructionFetchPlugin_l112;
@@ -127,10 +198,81 @@ module DandRiscvSimple (
   wire                when_InstructionFetchPlugin_l104;
   wire                when_InstructionFetchPlugin_l111;
   wire                when_InstructionFetchPlugin_l124;
+  reg        [63:0]   decode_DecodePlugin_imm;
+  wire       [63:0]   decode_DecodePlugin_rs1;
+  wire       [63:0]   decode_DecodePlugin_rs2;
+  reg        [3:0]    decode_DecodePlugin_alu_ctrl;
+  wire                decode_DecodePlugin_alu_word;
+  wire                decode_DecodePlugin_src2_is_imm;
+  reg        [3:0]    decode_DecodePlugin_mem_ctrl;
+  wire                decode_DecodePlugin_rd_wen;
+  wire       [4:0]    decode_DecodePlugin_rd_addr;
+  wire                when_DecodePlugin_l92;
+  wire                _zz_decode_DecodePlugin_imm;
+  reg        [51:0]   _zz_decode_DecodePlugin_imm_1;
+  wire                _zz_decode_DecodePlugin_imm_2;
+  reg        [51:0]   _zz_decode_DecodePlugin_imm_3;
+  wire                _zz_decode_DecodePlugin_imm_4;
+  reg        [50:0]   _zz_decode_DecodePlugin_imm_5;
+  wire                _zz_decode_DecodePlugin_imm_6;
+  reg        [42:0]   _zz_decode_DecodePlugin_imm_7;
+  wire                _zz_decode_DecodePlugin_imm_8;
+  reg        [31:0]   _zz_decode_DecodePlugin_imm_9;
+  wire                _zz_decode_DecodePlugin_imm_10;
+  reg        [51:0]   _zz_decode_DecodePlugin_imm_11;
+  wire                when_DecodePlugin_l94;
+  wire                when_DecodePlugin_l96;
+  wire                when_DecodePlugin_l98;
+  wire                when_DecodePlugin_l100;
+  reg        [63:0]   execute_ALUPlugin_src1;
+  reg        [63:0]   execute_ALUPlugin_src2;
+  wire       [31:0]   execute_ALUPlugin_src1_word;
+  wire       [31:0]   execute_ALUPlugin_src2_word;
+  wire       [5:0]    execute_ALUPlugin_shift_bits;
+  wire       [63:0]   execute_ALUPlugin_add_result;
+  wire       [63:0]   execute_ALUPlugin_sub_result;
+  wire                execute_ALUPlugin_slt_result;
+  wire                execute_ALUPlugin_sltu_result;
+  wire       [63:0]   execute_ALUPlugin_xor_result;
+  wire       [63:0]   execute_ALUPlugin_sll_result;
+  wire       [63:0]   execute_ALUPlugin_srl_result;
+  wire       [63:0]   execute_ALUPlugin_sra_result;
+  wire       [63:0]   execute_ALUPlugin_and_result;
+  wire       [63:0]   execute_ALUPlugin_or_result;
+  reg        [63:0]   execute_ALUPlugin_pc_next;
+  wire                _zz_execute_ALUPlugin_addw_result;
+  reg        [31:0]   _zz_execute_ALUPlugin_addw_result_1;
+  wire       [63:0]   execute_ALUPlugin_addw_result;
+  wire                _zz_execute_ALUPlugin_subw_result;
+  reg        [31:0]   _zz_execute_ALUPlugin_subw_result_1;
+  wire       [63:0]   execute_ALUPlugin_subw_result;
+  wire       [31:0]   execute_ALUPlugin_sllw_temp;
+  wire                _zz_execute_ALUPlugin_sllw_result;
+  reg        [31:0]   _zz_execute_ALUPlugin_sllw_result_1;
+  wire       [63:0]   execute_ALUPlugin_sllw_result;
+  wire       [31:0]   execute_ALUPlugin_srlw_temp;
+  wire                _zz_execute_ALUPlugin_srlw_result;
+  reg        [31:0]   _zz_execute_ALUPlugin_srlw_result_1;
+  wire       [63:0]   execute_ALUPlugin_srlw_result;
+  wire       [31:0]   execute_ALUPlugin_sraw_temp;
+  wire                _zz_execute_ALUPlugin_sraw_result;
+  reg        [31:0]   _zz_execute_ALUPlugin_sraw_result_1;
+  wire       [63:0]   execute_ALUPlugin_sraw_result;
+  reg        [63:0]   execute_ALUPlugin_rd_value;
+  wire                execute_ALUPlugin_op_is_jump;
+  wire                when_AluPlugin_l56;
+  wire                when_AluPlugin_l62;
+  wire                when_AluPlugin_l77;
+  wire                when_AluPlugin_l84;
+  wire                when_AluPlugin_l104;
+  wire                when_AluPlugin_l111;
+  wire                when_AluPlugin_l118;
   wire                when_Pipeline_l124;
-  reg        [31:0]   fetch_to_decode_INSTRUCTION;
+  reg        [63:0]   fetch_to_decode_PC;
   wire                when_Pipeline_l124_1;
-  reg        [31:0]   decode_to_execute_RS1;
+  reg        [31:0]   fetch_to_decode_INSTRUCTION;
+  wire                when_Pipeline_l124_2;
+  reg        [63:0]   decode_to_execute_IMM;
   wire                when_Pipeline_l151;
   wire                when_Pipeline_l154;
   wire                when_Pipeline_l151_1;
@@ -140,6 +282,47 @@ module DandRiscvSimple (
   wire                when_Pipeline_l151_3;
   wire                when_Pipeline_l154_3;
 
+  assign _zz__zz_decode_DecodePlugin_imm_2 = {decode_INSTRUCTION[31 : 25],decode_INSTRUCTION[11 : 7]};
+  assign _zz__zz_decode_DecodePlugin_imm_4 = {{{decode_INSTRUCTION[31],decode_INSTRUCTION[7]},decode_INSTRUCTION[30 : 25]},decode_INSTRUCTION[11 : 8]};
+  assign _zz__zz_decode_DecodePlugin_imm_6 = {{{decode_INSTRUCTION[31],decode_INSTRUCTION[19 : 12]},decode_INSTRUCTION[20]},decode_INSTRUCTION[30 : 21]};
+  assign _zz__zz_decode_DecodePlugin_imm_8 = {decode_INSTRUCTION[31 : 12],12'h0};
+  assign _zz_execute_ALUPlugin_add_result = execute_ALUPlugin_src1;
+  assign _zz_execute_ALUPlugin_add_result_1 = execute_ALUPlugin_src2;
+  assign _zz_execute_ALUPlugin_sub_result = execute_ALUPlugin_src1;
+  assign _zz_execute_ALUPlugin_sub_result_1 = execute_ALUPlugin_src2;
+  assign _zz_execute_ALUPlugin_slt_result = execute_ALUPlugin_src1;
+  assign _zz_execute_ALUPlugin_slt_result_1 = execute_ALUPlugin_src2;
+  assign _zz_execute_ALUPlugin_sra_result = execute_ALUPlugin_src1;
+  assign _zz_execute_ALUPlugin_addw_result_2 = execute_ALUPlugin_add_result[31 : 0];
+  assign _zz_execute_ALUPlugin_subw_result_2 = execute_ALUPlugin_sub_result[31 : 0];
+  assign _zz_execute_ALUPlugin_sraw_temp = execute_ALUPlugin_src1_word;
+  assign _zz_execute_ALUPlugin_pc_next = (_zz_execute_ALUPlugin_pc_next_1 & _zz_execute_ALUPlugin_pc_next_4);
+  assign _zz_execute_ALUPlugin_pc_next_1 = ($signed(_zz_execute_ALUPlugin_pc_next_2) + $signed(_zz_execute_ALUPlugin_pc_next_3));
+  assign _zz_execute_ALUPlugin_pc_next_2 = execute_ALUPlugin_src1;
+  assign _zz_execute_ALUPlugin_pc_next_3 = decode_IMM;
+  assign _zz_execute_ALUPlugin_pc_next_4 = (~ _zz_execute_ALUPlugin_pc_next_5);
+  assign _zz_execute_ALUPlugin_pc_next_5 = 64'h0000000000000001;
+  assign _zz_execute_ALUPlugin_pc_next_6 = ($signed(_zz_execute_ALUPlugin_pc_next_7) + $signed(_zz_execute_ALUPlugin_pc_next_8));
+  assign _zz_execute_ALUPlugin_pc_next_7 = decode_PC;
+  assign _zz_execute_ALUPlugin_pc_next_8 = decode_IMM;
+  assign _zz_decode_DecodePlugin_rd_wen = decode_INSTRUCTION[6 : 0];
+  assign _zz_decode_DecodePlugin_rd_wen_1 = 7'h23;
+  assign _zz_decode_DecodePlugin_rd_wen_2 = decode_INSTRUCTION[6 : 0];
+  assign _zz_decode_DecodePlugin_rd_wen_3 = 7'h23;
+  assign _zz_decode_DecodePlugin_rd_wen_4 = 32'hffffffff;
+  RegFileModule decode_DecodePlugin_regfile_module (
+    .read_ports_rs1_value (decode_DecodePlugin_regfile_module_read_ports_rs1_value[63:0]), //o
+    .read_ports_rs2_value (decode_DecodePlugin_regfile_module_read_ports_rs2_value[63:0]), //o
+    .read_ports_rs1_addr  (decode_DecodePlugin_regfile_module_read_ports_rs1_addr[4:0]  ), //i
+    .read_ports_rs2_addr  (decode_DecodePlugin_regfile_module_read_ports_rs2_addr[4:0]  ), //i
+    .read_ports_rs1_req   (decode_DecodePlugin_regfile_module_read_ports_rs1_req        ), //i
+    .read_ports_rs2_req   (decode_DecodePlugin_regfile_module_read_ports_rs2_req        ), //i
+    .write_ports_rd_value (decode_DecodePlugin_regfile_module_write_ports_rd_value[63:0]), //i
+    .write_ports_rd_addr  (decode_DecodePlugin_regfile_module_write_ports_rd_addr[4:0]  ), //i
+    .write_ports_rd_wen   (decode_DecodePlugin_regfile_module_write_ports_rd_wen        ), //i
+    .clk                  (clk                                                          ), //i
+    .reset                (reset                                                        )  //i
+  );
   ICache iCache_1 (
     .flush                          (iCache_1_flush                                   ), //i
     .cpu_cmd_valid                  (ICachePlugin_icache_access_cmd_valid             ), //i
@@ -209,10 +392,18 @@ module DandRiscvSimple (
     .clk                            (clk                                             ), //i
     .reset                          (reset                                           )  //i
   );
-  assign decode_RS1 = decode_INSTRUCTION;
   assign fetch_INSTRUCTION = ICachePlugin_icache_access_rsp_payload_data;
-  assign execute_RS1 = decode_to_execute_RS1;
+  assign fetch_PC = _zz_fetch_PC;
+  assign decode_RD = execute_ALUPlugin_rd_value;
+  assign decode_ALU_WORD = decode_DecodePlugin_alu_word;
+  assign decode_RS2 = decode_DecodePlugin_rs2;
+  assign decode_SRC2_IS_IMM = decode_DecodePlugin_src2_is_imm;
+  assign decode_RS1 = decode_DecodePlugin_rs1;
+  assign decode_IMM = decode_DecodePlugin_imm;
+  assign decode_ALU_CTRL = decode_DecodePlugin_alu_ctrl;
+  assign execute_IMM = decode_to_execute_IMM;
   assign decode_INSTRUCTION = fetch_to_decode_INSTRUCTION;
+  assign decode_PC = fetch_to_decode_PC;
   assign fetch_arbitration_haltItself = 1'b0;
   assign fetch_arbitration_haltByOther = 1'b0;
   always @(*) begin
@@ -277,10 +468,732 @@ module DandRiscvSimple (
   assign when_InstructionFetchPlugin_l124 = (_zz_when_InstructionFetchPlugin_l104_1 == 2'b01);
   assign ICachePlugin_icache_access_cmd_valid = _zz_ICachePlugin_icache_access_cmd_valid;
   assign ICachePlugin_icache_access_cmd_payload_addr = _zz_ICachePlugin_icache_access_cmd_payload_addr_2;
+  assign decode_DecodePlugin_alu_word = (decode_INSTRUCTION[6 : 0] == 7'h3b);
+  assign decode_DecodePlugin_src2_is_imm = (((((((decode_INSTRUCTION[6 : 0] == 7'h13) || (decode_INSTRUCTION[6 : 0] == 7'h1b)) || (decode_INSTRUCTION[6 : 0] == 7'h03)) || (decode_INSTRUCTION[6 : 0] == 7'h67)) || (decode_INSTRUCTION[6 : 0] == 7'h23)) || ((decode_INSTRUCTION[6 : 0] == 7'h37) || (decode_INSTRUCTION[6 : 0] == 7'h17))) || (decode_INSTRUCTION[6 : 0] == 7'h67));
+  assign decode_DecodePlugin_rd_addr = decode_INSTRUCTION[11 : 7];
+  assign when_DecodePlugin_l92 = ((((decode_INSTRUCTION[6 : 0] == 7'h13) || (decode_INSTRUCTION[6 : 0] == 7'h1b)) || (decode_INSTRUCTION[6 : 0] == 7'h03)) || (decode_INSTRUCTION[6 : 0] == 7'h67));
+  assign _zz_decode_DecodePlugin_imm = decode_INSTRUCTION[31];
+  always @(*) begin
+    _zz_decode_DecodePlugin_imm_1[51] = _zz_decode_DecodePlugin_imm;
+    _zz_decode_DecodePlugin_imm_1[50] = _zz_decode_DecodePlugin_imm;
+    _zz_decode_DecodePlugin_imm_1[49] = _zz_decode_DecodePlugin_imm;
+    _zz_decode_DecodePlugin_imm_1[48] = _zz_decode_DecodePlugin_imm;
+    _zz_decode_DecodePlugin_imm_1[47] = _zz_decode_DecodePlugin_imm;
+    _zz_decode_DecodePlugin_imm_1[46] = _zz_decode_DecodePlugin_imm;
+    _zz_decode_DecodePlugin_imm_1[45] = _zz_decode_DecodePlugin_imm;
+    _zz_decode_DecodePlugin_imm_1[44] = _zz_decode_DecodePlugin_imm;
+    _zz_decode_DecodePlugin_imm_1[43] = _zz_decode_DecodePlugin_imm;
+    _zz_decode_DecodePlugin_imm_1[42] = _zz_decode_DecodePlugin_imm;
+    _zz_decode_DecodePlugin_imm_1[41] = _zz_decode_DecodePlugin_imm;
+    _zz_decode_DecodePlugin_imm_1[40] = _zz_decode_DecodePlugin_imm;
+    _zz_decode_DecodePlugin_imm_1[39] = _zz_decode_DecodePlugin_imm;
+    _zz_decode_DecodePlugin_imm_1[38] = _zz_decode_DecodePlugin_imm;
+    _zz_decode_DecodePlugin_imm_1[37] = _zz_decode_DecodePlugin_imm;
+    _zz_decode_DecodePlugin_imm_1[36] = _zz_decode_DecodePlugin_imm;
+    _zz_decode_DecodePlugin_imm_1[35] = _zz_decode_DecodePlugin_imm;
+    _zz_decode_DecodePlugin_imm_1[34] = _zz_decode_DecodePlugin_imm;
+    _zz_decode_DecodePlugin_imm_1[33] = _zz_decode_DecodePlugin_imm;
+    _zz_decode_DecodePlugin_imm_1[32] = _zz_decode_DecodePlugin_imm;
+    _zz_decode_DecodePlugin_imm_1[31] = _zz_decode_DecodePlugin_imm;
+    _zz_decode_DecodePlugin_imm_1[30] = _zz_decode_DecodePlugin_imm;
+    _zz_decode_DecodePlugin_imm_1[29] = _zz_decode_DecodePlugin_imm;
+    _zz_decode_DecodePlugin_imm_1[28] = _zz_decode_DecodePlugin_imm;
+    _zz_decode_DecodePlugin_imm_1[27] = _zz_decode_DecodePlugin_imm;
+    _zz_decode_DecodePlugin_imm_1[26] = _zz_decode_DecodePlugin_imm;
+    _zz_decode_DecodePlugin_imm_1[25] = _zz_decode_DecodePlugin_imm;
+    _zz_decode_DecodePlugin_imm_1[24] = _zz_decode_DecodePlugin_imm;
+    _zz_decode_DecodePlugin_imm_1[23] = _zz_decode_DecodePlugin_imm;
+    _zz_decode_DecodePlugin_imm_1[22] = _zz_decode_DecodePlugin_imm;
+    _zz_decode_DecodePlugin_imm_1[21] = _zz_decode_DecodePlugin_imm;
+    _zz_decode_DecodePlugin_imm_1[20] = _zz_decode_DecodePlugin_imm;
+    _zz_decode_DecodePlugin_imm_1[19] = _zz_decode_DecodePlugin_imm;
+    _zz_decode_DecodePlugin_imm_1[18] = _zz_decode_DecodePlugin_imm;
+    _zz_decode_DecodePlugin_imm_1[17] = _zz_decode_DecodePlugin_imm;
+    _zz_decode_DecodePlugin_imm_1[16] = _zz_decode_DecodePlugin_imm;
+    _zz_decode_DecodePlugin_imm_1[15] = _zz_decode_DecodePlugin_imm;
+    _zz_decode_DecodePlugin_imm_1[14] = _zz_decode_DecodePlugin_imm;
+    _zz_decode_DecodePlugin_imm_1[13] = _zz_decode_DecodePlugin_imm;
+    _zz_decode_DecodePlugin_imm_1[12] = _zz_decode_DecodePlugin_imm;
+    _zz_decode_DecodePlugin_imm_1[11] = _zz_decode_DecodePlugin_imm;
+    _zz_decode_DecodePlugin_imm_1[10] = _zz_decode_DecodePlugin_imm;
+    _zz_decode_DecodePlugin_imm_1[9] = _zz_decode_DecodePlugin_imm;
+    _zz_decode_DecodePlugin_imm_1[8] = _zz_decode_DecodePlugin_imm;
+    _zz_decode_DecodePlugin_imm_1[7] = _zz_decode_DecodePlugin_imm;
+    _zz_decode_DecodePlugin_imm_1[6] = _zz_decode_DecodePlugin_imm;
+    _zz_decode_DecodePlugin_imm_1[5] = _zz_decode_DecodePlugin_imm;
+    _zz_decode_DecodePlugin_imm_1[4] = _zz_decode_DecodePlugin_imm;
+    _zz_decode_DecodePlugin_imm_1[3] = _zz_decode_DecodePlugin_imm;
+    _zz_decode_DecodePlugin_imm_1[2] = _zz_decode_DecodePlugin_imm;
+    _zz_decode_DecodePlugin_imm_1[1] = _zz_decode_DecodePlugin_imm;
+    _zz_decode_DecodePlugin_imm_1[0] = _zz_decode_DecodePlugin_imm;
+  end
+
+  always @(*) begin
+    if(when_DecodePlugin_l92) begin
+      decode_DecodePlugin_imm = {_zz_decode_DecodePlugin_imm_1,decode_INSTRUCTION[31 : 20]};
+    end else begin
+      if(when_DecodePlugin_l94) begin
+        decode_DecodePlugin_imm = {_zz_decode_DecodePlugin_imm_3,{decode_INSTRUCTION[31 : 25],decode_INSTRUCTION[11 : 7]}};
+      end else begin
+        if(when_DecodePlugin_l96) begin
+          decode_DecodePlugin_imm = {{_zz_decode_DecodePlugin_imm_5,{{{decode_INSTRUCTION[31],decode_INSTRUCTION[7]},decode_INSTRUCTION[30 : 25]},decode_INSTRUCTION[11 : 8]}},1'b0};
+        end else begin
+          if(when_DecodePlugin_l98) begin
+            decode_DecodePlugin_imm = {{_zz_decode_DecodePlugin_imm_7,{{{decode_INSTRUCTION[31],decode_INSTRUCTION[19 : 12]},decode_INSTRUCTION[20]},decode_INSTRUCTION[30 : 21]}},1'b0};
+          end else begin
+            if(when_DecodePlugin_l100) begin
+              decode_DecodePlugin_imm = {_zz_decode_DecodePlugin_imm_9,{decode_INSTRUCTION[31 : 12],12'h0}};
+            end else begin
+              decode_DecodePlugin_imm = {_zz_decode_DecodePlugin_imm_11,decode_INSTRUCTION[31 : 20]};
+            end
+          end
+        end
+      end
+    end
+  end
+
+  assign _zz_decode_DecodePlugin_imm_2 = _zz__zz_decode_DecodePlugin_imm_2[11];
+  always @(*) begin
+    _zz_decode_DecodePlugin_imm_3[51] = _zz_decode_DecodePlugin_imm_2;
+    _zz_decode_DecodePlugin_imm_3[50] = _zz_decode_DecodePlugin_imm_2;
+    _zz_decode_DecodePlugin_imm_3[49] = _zz_decode_DecodePlugin_imm_2;
+    _zz_decode_DecodePlugin_imm_3[48] = _zz_decode_DecodePlugin_imm_2;
+    _zz_decode_DecodePlugin_imm_3[47] = _zz_decode_DecodePlugin_imm_2;
+    _zz_decode_DecodePlugin_imm_3[46] = _zz_decode_DecodePlugin_imm_2;
+    _zz_decode_DecodePlugin_imm_3[45] = _zz_decode_DecodePlugin_imm_2;
+    _zz_decode_DecodePlugin_imm_3[44] = _zz_decode_DecodePlugin_imm_2;
+    _zz_decode_DecodePlugin_imm_3[43] = _zz_decode_DecodePlugin_imm_2;
+    _zz_decode_DecodePlugin_imm_3[42] = _zz_decode_DecodePlugin_imm_2;
+    _zz_decode_DecodePlugin_imm_3[41] = _zz_decode_DecodePlugin_imm_2;
+    _zz_decode_DecodePlugin_imm_3[40] = _zz_decode_DecodePlugin_imm_2;
+    _zz_decode_DecodePlugin_imm_3[39] = _zz_decode_DecodePlugin_imm_2;
+    _zz_decode_DecodePlugin_imm_3[38] = _zz_decode_DecodePlugin_imm_2;
+    _zz_decode_DecodePlugin_imm_3[37] = _zz_decode_DecodePlugin_imm_2;
+    _zz_decode_DecodePlugin_imm_3[36] = _zz_decode_DecodePlugin_imm_2;
+    _zz_decode_DecodePlugin_imm_3[35] = _zz_decode_DecodePlugin_imm_2;
+    _zz_decode_DecodePlugin_imm_3[34] = _zz_decode_DecodePlugin_imm_2;
+    _zz_decode_DecodePlugin_imm_3[33] = _zz_decode_DecodePlugin_imm_2;
+    _zz_decode_DecodePlugin_imm_3[32] = _zz_decode_DecodePlugin_imm_2;
+    _zz_decode_DecodePlugin_imm_3[31] = _zz_decode_DecodePlugin_imm_2;
+    _zz_decode_DecodePlugin_imm_3[30] = _zz_decode_DecodePlugin_imm_2;
+    _zz_decode_DecodePlugin_imm_3[29] = _zz_decode_DecodePlugin_imm_2;
+    _zz_decode_DecodePlugin_imm_3[28] = _zz_decode_DecodePlugin_imm_2;
+    _zz_decode_DecodePlugin_imm_3[27] = _zz_decode_DecodePlugin_imm_2;
+    _zz_decode_DecodePlugin_imm_3[26] = _zz_decode_DecodePlugin_imm_2;
+    _zz_decode_DecodePlugin_imm_3[25] = _zz_decode_DecodePlugin_imm_2;
+    _zz_decode_DecodePlugin_imm_3[24] = _zz_decode_DecodePlugin_imm_2;
+    _zz_decode_DecodePlugin_imm_3[23] = _zz_decode_DecodePlugin_imm_2;
+    _zz_decode_DecodePlugin_imm_3[22] = _zz_decode_DecodePlugin_imm_2;
+    _zz_decode_DecodePlugin_imm_3[21] = _zz_decode_DecodePlugin_imm_2;
+    _zz_decode_DecodePlugin_imm_3[20] = _zz_decode_DecodePlugin_imm_2;
+    _zz_decode_DecodePlugin_imm_3[19] = _zz_decode_DecodePlugin_imm_2;
+    _zz_decode_DecodePlugin_imm_3[18] = _zz_decode_DecodePlugin_imm_2;
+    _zz_decode_DecodePlugin_imm_3[17] = _zz_decode_DecodePlugin_imm_2;
+    _zz_decode_DecodePlugin_imm_3[16] = _zz_decode_DecodePlugin_imm_2;
+    _zz_decode_DecodePlugin_imm_3[15] = _zz_decode_DecodePlugin_imm_2;
+    _zz_decode_DecodePlugin_imm_3[14] = _zz_decode_DecodePlugin_imm_2;
+    _zz_decode_DecodePlugin_imm_3[13] = _zz_decode_DecodePlugin_imm_2;
+    _zz_decode_DecodePlugin_imm_3[12] = _zz_decode_DecodePlugin_imm_2;
+    _zz_decode_DecodePlugin_imm_3[11] = _zz_decode_DecodePlugin_imm_2;
+    _zz_decode_DecodePlugin_imm_3[10] = _zz_decode_DecodePlugin_imm_2;
+    _zz_decode_DecodePlugin_imm_3[9] = _zz_decode_DecodePlugin_imm_2;
+    _zz_decode_DecodePlugin_imm_3[8] = _zz_decode_DecodePlugin_imm_2;
+    _zz_decode_DecodePlugin_imm_3[7] = _zz_decode_DecodePlugin_imm_2;
+    _zz_decode_DecodePlugin_imm_3[6] = _zz_decode_DecodePlugin_imm_2;
+    _zz_decode_DecodePlugin_imm_3[5] = _zz_decode_DecodePlugin_imm_2;
+    _zz_decode_DecodePlugin_imm_3[4] = _zz_decode_DecodePlugin_imm_2;
+    _zz_decode_DecodePlugin_imm_3[3] = _zz_decode_DecodePlugin_imm_2;
+    _zz_decode_DecodePlugin_imm_3[2] = _zz_decode_DecodePlugin_imm_2;
+    _zz_decode_DecodePlugin_imm_3[1] = _zz_decode_DecodePlugin_imm_2;
+    _zz_decode_DecodePlugin_imm_3[0] = _zz_decode_DecodePlugin_imm_2;
+  end
+
+  assign _zz_decode_DecodePlugin_imm_4 = _zz__zz_decode_DecodePlugin_imm_4[11];
+  always @(*) begin
+    _zz_decode_DecodePlugin_imm_5[50] = _zz_decode_DecodePlugin_imm_4;
+    _zz_decode_DecodePlugin_imm_5[49] = _zz_decode_DecodePlugin_imm_4;
+    _zz_decode_DecodePlugin_imm_5[48] = _zz_decode_DecodePlugin_imm_4;
+    _zz_decode_DecodePlugin_imm_5[47] = _zz_decode_DecodePlugin_imm_4;
+    _zz_decode_DecodePlugin_imm_5[46] = _zz_decode_DecodePlugin_imm_4;
+    _zz_decode_DecodePlugin_imm_5[45] = _zz_decode_DecodePlugin_imm_4;
+    _zz_decode_DecodePlugin_imm_5[44] = _zz_decode_DecodePlugin_imm_4;
+    _zz_decode_DecodePlugin_imm_5[43] = _zz_decode_DecodePlugin_imm_4;
+    _zz_decode_DecodePlugin_imm_5[42] = _zz_decode_DecodePlugin_imm_4;
+    _zz_decode_DecodePlugin_imm_5[41] = _zz_decode_DecodePlugin_imm_4;
+    _zz_decode_DecodePlugin_imm_5[40] = _zz_decode_DecodePlugin_imm_4;
+    _zz_decode_DecodePlugin_imm_5[39] = _zz_decode_DecodePlugin_imm_4;
+    _zz_decode_DecodePlugin_imm_5[38] = _zz_decode_DecodePlugin_imm_4;
+    _zz_decode_DecodePlugin_imm_5[37] = _zz_decode_DecodePlugin_imm_4;
+    _zz_decode_DecodePlugin_imm_5[36] = _zz_decode_DecodePlugin_imm_4;
+    _zz_decode_DecodePlugin_imm_5[35] = _zz_decode_DecodePlugin_imm_4;
+    _zz_decode_DecodePlugin_imm_5[34] = _zz_decode_DecodePlugin_imm_4;
+    _zz_decode_DecodePlugin_imm_5[33] = _zz_decode_DecodePlugin_imm_4;
+    _zz_decode_DecodePlugin_imm_5[32] = _zz_decode_DecodePlugin_imm_4;
+    _zz_decode_DecodePlugin_imm_5[31] = _zz_decode_DecodePlugin_imm_4;
+    _zz_decode_DecodePlugin_imm_5[30] = _zz_decode_DecodePlugin_imm_4;
+    _zz_decode_DecodePlugin_imm_5[29] = _zz_decode_DecodePlugin_imm_4;
+    _zz_decode_DecodePlugin_imm_5[28] = _zz_decode_DecodePlugin_imm_4;
+    _zz_decode_DecodePlugin_imm_5[27] = _zz_decode_DecodePlugin_imm_4;
+    _zz_decode_DecodePlugin_imm_5[26] = _zz_decode_DecodePlugin_imm_4;
+    _zz_decode_DecodePlugin_imm_5[25] = _zz_decode_DecodePlugin_imm_4;
+    _zz_decode_DecodePlugin_imm_5[24] = _zz_decode_DecodePlugin_imm_4;
+    _zz_decode_DecodePlugin_imm_5[23] = _zz_decode_DecodePlugin_imm_4;
+    _zz_decode_DecodePlugin_imm_5[22] = _zz_decode_DecodePlugin_imm_4;
+    _zz_decode_DecodePlugin_imm_5[21] = _zz_decode_DecodePlugin_imm_4;
+    _zz_decode_DecodePlugin_imm_5[20] = _zz_decode_DecodePlugin_imm_4;
+    _zz_decode_DecodePlugin_imm_5[19] = _zz_decode_DecodePlugin_imm_4;
+    _zz_decode_DecodePlugin_imm_5[18] = _zz_decode_DecodePlugin_imm_4;
+    _zz_decode_DecodePlugin_imm_5[17] = _zz_decode_DecodePlugin_imm_4;
+    _zz_decode_DecodePlugin_imm_5[16] = _zz_decode_DecodePlugin_imm_4;
+    _zz_decode_DecodePlugin_imm_5[15] = _zz_decode_DecodePlugin_imm_4;
+    _zz_decode_DecodePlugin_imm_5[14] = _zz_decode_DecodePlugin_imm_4;
+    _zz_decode_DecodePlugin_imm_5[13] = _zz_decode_DecodePlugin_imm_4;
+    _zz_decode_DecodePlugin_imm_5[12] = _zz_decode_DecodePlugin_imm_4;
+    _zz_decode_DecodePlugin_imm_5[11] = _zz_decode_DecodePlugin_imm_4;
+    _zz_decode_DecodePlugin_imm_5[10] = _zz_decode_DecodePlugin_imm_4;
+    _zz_decode_DecodePlugin_imm_5[9] = _zz_decode_DecodePlugin_imm_4;
+    _zz_decode_DecodePlugin_imm_5[8] = _zz_decode_DecodePlugin_imm_4;
+    _zz_decode_DecodePlugin_imm_5[7] = _zz_decode_DecodePlugin_imm_4;
+    _zz_decode_DecodePlugin_imm_5[6] = _zz_decode_DecodePlugin_imm_4;
+    _zz_decode_DecodePlugin_imm_5[5] = _zz_decode_DecodePlugin_imm_4;
+    _zz_decode_DecodePlugin_imm_5[4] = _zz_decode_DecodePlugin_imm_4;
+    _zz_decode_DecodePlugin_imm_5[3] = _zz_decode_DecodePlugin_imm_4;
+    _zz_decode_DecodePlugin_imm_5[2] = _zz_decode_DecodePlugin_imm_4;
+    _zz_decode_DecodePlugin_imm_5[1] = _zz_decode_DecodePlugin_imm_4;
+    _zz_decode_DecodePlugin_imm_5[0] = _zz_decode_DecodePlugin_imm_4;
+  end
+
+  assign _zz_decode_DecodePlugin_imm_6 = _zz__zz_decode_DecodePlugin_imm_6[19];
+  always @(*) begin
+    _zz_decode_DecodePlugin_imm_7[42] = _zz_decode_DecodePlugin_imm_6;
+    _zz_decode_DecodePlugin_imm_7[41] = _zz_decode_DecodePlugin_imm_6;
+    _zz_decode_DecodePlugin_imm_7[40] = _zz_decode_DecodePlugin_imm_6;
+    _zz_decode_DecodePlugin_imm_7[39] = _zz_decode_DecodePlugin_imm_6;
+    _zz_decode_DecodePlugin_imm_7[38] = _zz_decode_DecodePlugin_imm_6;
+    _zz_decode_DecodePlugin_imm_7[37] = _zz_decode_DecodePlugin_imm_6;
+    _zz_decode_DecodePlugin_imm_7[36] = _zz_decode_DecodePlugin_imm_6;
+    _zz_decode_DecodePlugin_imm_7[35] = _zz_decode_DecodePlugin_imm_6;
+    _zz_decode_DecodePlugin_imm_7[34] = _zz_decode_DecodePlugin_imm_6;
+    _zz_decode_DecodePlugin_imm_7[33] = _zz_decode_DecodePlugin_imm_6;
+    _zz_decode_DecodePlugin_imm_7[32] = _zz_decode_DecodePlugin_imm_6;
+    _zz_decode_DecodePlugin_imm_7[31] = _zz_decode_DecodePlugin_imm_6;
+    _zz_decode_DecodePlugin_imm_7[30] = _zz_decode_DecodePlugin_imm_6;
+    _zz_decode_DecodePlugin_imm_7[29] = _zz_decode_DecodePlugin_imm_6;
+    _zz_decode_DecodePlugin_imm_7[28] = _zz_decode_DecodePlugin_imm_6;
+    _zz_decode_DecodePlugin_imm_7[27] = _zz_decode_DecodePlugin_imm_6;
+    _zz_decode_DecodePlugin_imm_7[26] = _zz_decode_DecodePlugin_imm_6;
+    _zz_decode_DecodePlugin_imm_7[25] = _zz_decode_DecodePlugin_imm_6;
+    _zz_decode_DecodePlugin_imm_7[24] = _zz_decode_DecodePlugin_imm_6;
+    _zz_decode_DecodePlugin_imm_7[23] = _zz_decode_DecodePlugin_imm_6;
+    _zz_decode_DecodePlugin_imm_7[22] = _zz_decode_DecodePlugin_imm_6;
+    _zz_decode_DecodePlugin_imm_7[21] = _zz_decode_DecodePlugin_imm_6;
+    _zz_decode_DecodePlugin_imm_7[20] = _zz_decode_DecodePlugin_imm_6;
+    _zz_decode_DecodePlugin_imm_7[19] = _zz_decode_DecodePlugin_imm_6;
+    _zz_decode_DecodePlugin_imm_7[18] = _zz_decode_DecodePlugin_imm_6;
+    _zz_decode_DecodePlugin_imm_7[17] = _zz_decode_DecodePlugin_imm_6;
+    _zz_decode_DecodePlugin_imm_7[16] = _zz_decode_DecodePlugin_imm_6;
+    _zz_decode_DecodePlugin_imm_7[15] = _zz_decode_DecodePlugin_imm_6;
+    _zz_decode_DecodePlugin_imm_7[14] = _zz_decode_DecodePlugin_imm_6;
+    _zz_decode_DecodePlugin_imm_7[13] = _zz_decode_DecodePlugin_imm_6;
+    _zz_decode_DecodePlugin_imm_7[12] = _zz_decode_DecodePlugin_imm_6;
+    _zz_decode_DecodePlugin_imm_7[11] = _zz_decode_DecodePlugin_imm_6;
+    _zz_decode_DecodePlugin_imm_7[10] = _zz_decode_DecodePlugin_imm_6;
+    _zz_decode_DecodePlugin_imm_7[9] = _zz_decode_DecodePlugin_imm_6;
+    _zz_decode_DecodePlugin_imm_7[8] = _zz_decode_DecodePlugin_imm_6;
+    _zz_decode_DecodePlugin_imm_7[7] = _zz_decode_DecodePlugin_imm_6;
+    _zz_decode_DecodePlugin_imm_7[6] = _zz_decode_DecodePlugin_imm_6;
+    _zz_decode_DecodePlugin_imm_7[5] = _zz_decode_DecodePlugin_imm_6;
+    _zz_decode_DecodePlugin_imm_7[4] = _zz_decode_DecodePlugin_imm_6;
+    _zz_decode_DecodePlugin_imm_7[3] = _zz_decode_DecodePlugin_imm_6;
+    _zz_decode_DecodePlugin_imm_7[2] = _zz_decode_DecodePlugin_imm_6;
+    _zz_decode_DecodePlugin_imm_7[1] = _zz_decode_DecodePlugin_imm_6;
+    _zz_decode_DecodePlugin_imm_7[0] = _zz_decode_DecodePlugin_imm_6;
+  end
+
+  assign _zz_decode_DecodePlugin_imm_8 = _zz__zz_decode_DecodePlugin_imm_8[31];
+  always @(*) begin
+    _zz_decode_DecodePlugin_imm_9[31] = _zz_decode_DecodePlugin_imm_8;
+    _zz_decode_DecodePlugin_imm_9[30] = _zz_decode_DecodePlugin_imm_8;
+    _zz_decode_DecodePlugin_imm_9[29] = _zz_decode_DecodePlugin_imm_8;
+    _zz_decode_DecodePlugin_imm_9[28] = _zz_decode_DecodePlugin_imm_8;
+    _zz_decode_DecodePlugin_imm_9[27] = _zz_decode_DecodePlugin_imm_8;
+    _zz_decode_DecodePlugin_imm_9[26] = _zz_decode_DecodePlugin_imm_8;
+    _zz_decode_DecodePlugin_imm_9[25] = _zz_decode_DecodePlugin_imm_8;
+    _zz_decode_DecodePlugin_imm_9[24] = _zz_decode_DecodePlugin_imm_8;
+    _zz_decode_DecodePlugin_imm_9[23] = _zz_decode_DecodePlugin_imm_8;
+    _zz_decode_DecodePlugin_imm_9[22] = _zz_decode_DecodePlugin_imm_8;
+    _zz_decode_DecodePlugin_imm_9[21] = _zz_decode_DecodePlugin_imm_8;
+    _zz_decode_DecodePlugin_imm_9[20] = _zz_decode_DecodePlugin_imm_8;
+    _zz_decode_DecodePlugin_imm_9[19] = _zz_decode_DecodePlugin_imm_8;
+    _zz_decode_DecodePlugin_imm_9[18] = _zz_decode_DecodePlugin_imm_8;
+    _zz_decode_DecodePlugin_imm_9[17] = _zz_decode_DecodePlugin_imm_8;
+    _zz_decode_DecodePlugin_imm_9[16] = _zz_decode_DecodePlugin_imm_8;
+    _zz_decode_DecodePlugin_imm_9[15] = _zz_decode_DecodePlugin_imm_8;
+    _zz_decode_DecodePlugin_imm_9[14] = _zz_decode_DecodePlugin_imm_8;
+    _zz_decode_DecodePlugin_imm_9[13] = _zz_decode_DecodePlugin_imm_8;
+    _zz_decode_DecodePlugin_imm_9[12] = _zz_decode_DecodePlugin_imm_8;
+    _zz_decode_DecodePlugin_imm_9[11] = _zz_decode_DecodePlugin_imm_8;
+    _zz_decode_DecodePlugin_imm_9[10] = _zz_decode_DecodePlugin_imm_8;
+    _zz_decode_DecodePlugin_imm_9[9] = _zz_decode_DecodePlugin_imm_8;
+    _zz_decode_DecodePlugin_imm_9[8] = _zz_decode_DecodePlugin_imm_8;
+    _zz_decode_DecodePlugin_imm_9[7] = _zz_decode_DecodePlugin_imm_8;
+    _zz_decode_DecodePlugin_imm_9[6] = _zz_decode_DecodePlugin_imm_8;
+    _zz_decode_DecodePlugin_imm_9[5] = _zz_decode_DecodePlugin_imm_8;
+    _zz_decode_DecodePlugin_imm_9[4] = _zz_decode_DecodePlugin_imm_8;
+    _zz_decode_DecodePlugin_imm_9[3] = _zz_decode_DecodePlugin_imm_8;
+    _zz_decode_DecodePlugin_imm_9[2] = _zz_decode_DecodePlugin_imm_8;
+    _zz_decode_DecodePlugin_imm_9[1] = _zz_decode_DecodePlugin_imm_8;
+    _zz_decode_DecodePlugin_imm_9[0] = _zz_decode_DecodePlugin_imm_8;
+  end
+
+  assign _zz_decode_DecodePlugin_imm_10 = decode_INSTRUCTION[31];
+  always @(*) begin
+    _zz_decode_DecodePlugin_imm_11[51] = _zz_decode_DecodePlugin_imm_10;
+    _zz_decode_DecodePlugin_imm_11[50] = _zz_decode_DecodePlugin_imm_10;
+    _zz_decode_DecodePlugin_imm_11[49] = _zz_decode_DecodePlugin_imm_10;
+    _zz_decode_DecodePlugin_imm_11[48] = _zz_decode_DecodePlugin_imm_10;
+    _zz_decode_DecodePlugin_imm_11[47] = _zz_decode_DecodePlugin_imm_10;
+    _zz_decode_DecodePlugin_imm_11[46] = _zz_decode_DecodePlugin_imm_10;
+    _zz_decode_DecodePlugin_imm_11[45] = _zz_decode_DecodePlugin_imm_10;
+    _zz_decode_DecodePlugin_imm_11[44] = _zz_decode_DecodePlugin_imm_10;
+    _zz_decode_DecodePlugin_imm_11[43] = _zz_decode_DecodePlugin_imm_10;
+    _zz_decode_DecodePlugin_imm_11[42] = _zz_decode_DecodePlugin_imm_10;
+    _zz_decode_DecodePlugin_imm_11[41] = _zz_decode_DecodePlugin_imm_10;
+    _zz_decode_DecodePlugin_imm_11[40] = _zz_decode_DecodePlugin_imm_10;
+    _zz_decode_DecodePlugin_imm_11[39] = _zz_decode_DecodePlugin_imm_10;
+    _zz_decode_DecodePlugin_imm_11[38] = _zz_decode_DecodePlugin_imm_10;
+    _zz_decode_DecodePlugin_imm_11[37] = _zz_decode_DecodePlugin_imm_10;
+    _zz_decode_DecodePlugin_imm_11[36] = _zz_decode_DecodePlugin_imm_10;
+    _zz_decode_DecodePlugin_imm_11[35] = _zz_decode_DecodePlugin_imm_10;
+    _zz_decode_DecodePlugin_imm_11[34] = _zz_decode_DecodePlugin_imm_10;
+    _zz_decode_DecodePlugin_imm_11[33] = _zz_decode_DecodePlugin_imm_10;
+    _zz_decode_DecodePlugin_imm_11[32] = _zz_decode_DecodePlugin_imm_10;
+    _zz_decode_DecodePlugin_imm_11[31] = _zz_decode_DecodePlugin_imm_10;
+    _zz_decode_DecodePlugin_imm_11[30] = _zz_decode_DecodePlugin_imm_10;
+    _zz_decode_DecodePlugin_imm_11[29] = _zz_decode_DecodePlugin_imm_10;
+    _zz_decode_DecodePlugin_imm_11[28] = _zz_decode_DecodePlugin_imm_10;
+    _zz_decode_DecodePlugin_imm_11[27] = _zz_decode_DecodePlugin_imm_10;
+    _zz_decode_DecodePlugin_imm_11[26] = _zz_decode_DecodePlugin_imm_10;
+    _zz_decode_DecodePlugin_imm_11[25] = _zz_decode_DecodePlugin_imm_10;
+    _zz_decode_DecodePlugin_imm_11[24] = _zz_decode_DecodePlugin_imm_10;
+    _zz_decode_DecodePlugin_imm_11[23] = _zz_decode_DecodePlugin_imm_10;
+    _zz_decode_DecodePlugin_imm_11[22] = _zz_decode_DecodePlugin_imm_10;
+    _zz_decode_DecodePlugin_imm_11[21] = _zz_decode_DecodePlugin_imm_10;
+    _zz_decode_DecodePlugin_imm_11[20] = _zz_decode_DecodePlugin_imm_10;
+    _zz_decode_DecodePlugin_imm_11[19] = _zz_decode_DecodePlugin_imm_10;
+    _zz_decode_DecodePlugin_imm_11[18] = _zz_decode_DecodePlugin_imm_10;
+    _zz_decode_DecodePlugin_imm_11[17] = _zz_decode_DecodePlugin_imm_10;
+    _zz_decode_DecodePlugin_imm_11[16] = _zz_decode_DecodePlugin_imm_10;
+    _zz_decode_DecodePlugin_imm_11[15] = _zz_decode_DecodePlugin_imm_10;
+    _zz_decode_DecodePlugin_imm_11[14] = _zz_decode_DecodePlugin_imm_10;
+    _zz_decode_DecodePlugin_imm_11[13] = _zz_decode_DecodePlugin_imm_10;
+    _zz_decode_DecodePlugin_imm_11[12] = _zz_decode_DecodePlugin_imm_10;
+    _zz_decode_DecodePlugin_imm_11[11] = _zz_decode_DecodePlugin_imm_10;
+    _zz_decode_DecodePlugin_imm_11[10] = _zz_decode_DecodePlugin_imm_10;
+    _zz_decode_DecodePlugin_imm_11[9] = _zz_decode_DecodePlugin_imm_10;
+    _zz_decode_DecodePlugin_imm_11[8] = _zz_decode_DecodePlugin_imm_10;
+    _zz_decode_DecodePlugin_imm_11[7] = _zz_decode_DecodePlugin_imm_10;
+    _zz_decode_DecodePlugin_imm_11[6] = _zz_decode_DecodePlugin_imm_10;
+    _zz_decode_DecodePlugin_imm_11[5] = _zz_decode_DecodePlugin_imm_10;
+    _zz_decode_DecodePlugin_imm_11[4] = _zz_decode_DecodePlugin_imm_10;
+    _zz_decode_DecodePlugin_imm_11[3] = _zz_decode_DecodePlugin_imm_10;
+    _zz_decode_DecodePlugin_imm_11[2] = _zz_decode_DecodePlugin_imm_10;
+    _zz_decode_DecodePlugin_imm_11[1] = _zz_decode_DecodePlugin_imm_10;
+    _zz_decode_DecodePlugin_imm_11[0] = _zz_decode_DecodePlugin_imm_10;
+  end
+
+  assign when_DecodePlugin_l94 = (decode_INSTRUCTION[6 : 0] == 7'h23);
+  assign when_DecodePlugin_l96 = (decode_INSTRUCTION[6 : 0] == 7'h63);
+  assign when_DecodePlugin_l98 = (decode_INSTRUCTION[6 : 0] == 7'h67);
+  assign when_DecodePlugin_l100 = ((decode_INSTRUCTION[6 : 0] == 7'h37) || (decode_INSTRUCTION[6 : 0] == 7'h17));
+  always @(*) begin
+    casez(decode_INSTRUCTION)
+      32'b0000000??????????000?????0110011, 32'b0000000??????????000?????0111011, 32'b?????????????????000?????0010011, 32'b?????????????????000?????0011011, 32'b?????????????????????????0010111 : begin
+        decode_DecodePlugin_alu_ctrl = AluCtrlEnum_ADD;
+      end
+      32'b0100000??????????000?????0110011, 32'b0100000??????????000?????0111011 : begin
+        decode_DecodePlugin_alu_ctrl = AluCtrlEnum_SUB;
+      end
+      32'b0000000??????????010?????0110011, 32'b?????????????????010?????0010011 : begin
+        decode_DecodePlugin_alu_ctrl = AluCtrlEnum_SLT;
+      end
+      32'b0000000??????????011?????0110011, 32'b?????????????????011?????0010011 : begin
+        decode_DecodePlugin_alu_ctrl = AluCtrlEnum_SLTU;
+      end
+      32'b0000000??????????100?????0110011, 32'b?????????????????100?????0010011 : begin
+        decode_DecodePlugin_alu_ctrl = AluCtrlEnum_XOR_1;
+      end
+      32'b0000000??????????001?????0110011, 32'b0000000??????????001?????0010011, 32'b0000000??????????001?????0111011, 32'b0000000??????????001?????0011011 : begin
+        decode_DecodePlugin_alu_ctrl = AluCtrlEnum_SLL_1;
+      end
+      32'b0000000??????????101?????0110011, 32'b0000000??????????101?????0010011, 32'b0000000??????????101?????0111011, 32'b0000000??????????101?????0011011 : begin
+        decode_DecodePlugin_alu_ctrl = AluCtrlEnum_SRL_1;
+      end
+      32'b0100000??????????101?????0110011, 32'b0100000??????????101?????0010011, 32'b0100000??????????101?????0111011, 32'b0100000??????????101?????0011011 : begin
+        decode_DecodePlugin_alu_ctrl = AluCtrlEnum_SRA_1;
+      end
+      32'b0000000??????????111?????0110011, 32'b?????????????????111?????0010011 : begin
+        decode_DecodePlugin_alu_ctrl = AluCtrlEnum_AND_1;
+      end
+      32'b0000000??????????110?????0110011 : begin
+        decode_DecodePlugin_alu_ctrl = AluCtrlEnum_OR_1;
+      end
+      32'b?????????????????????????0110111 : begin
+        decode_DecodePlugin_alu_ctrl = AluCtrlEnum_LUI;
+      end
+      32'b?????????????????????????0010111 : begin
+        decode_DecodePlugin_alu_ctrl = AluCtrlEnum_AUIPC;
+      end
+      32'b??????????0??????????????1101111 : begin
+        decode_DecodePlugin_alu_ctrl = AluCtrlEnum_JAL;
+      end
+      32'b?????????????????000?????1100111 : begin
+        decode_DecodePlugin_alu_ctrl = AluCtrlEnum_JALR;
+      end
+      default : begin
+        decode_DecodePlugin_alu_ctrl = 4'b0000;
+      end
+    endcase
+  end
+
+  always @(*) begin
+    casez(decode_INSTRUCTION)
+      32'b?????????????????000?????0000011 : begin
+        decode_DecodePlugin_mem_ctrl = MemCtrlEnum_LB;
+      end
+      32'b?????????????????100?????0000011 : begin
+        decode_DecodePlugin_mem_ctrl = MemCtrlEnum_LBU;
+      end
+      32'b?????????????????001?????0000011 : begin
+        decode_DecodePlugin_mem_ctrl = MemCtrlEnum_LH;
+      end
+      32'b?????????????????101?????0000011 : begin
+        decode_DecodePlugin_mem_ctrl = MemCtrlEnum_LHU;
+      end
+      32'b?????????????????010?????0000011 : begin
+        decode_DecodePlugin_mem_ctrl = MemCtrlEnum_LW;
+      end
+      32'b?????????????????110?????0000011 : begin
+        decode_DecodePlugin_mem_ctrl = MemCtrlEnum_LWU;
+      end
+      32'b?????????????????011?????0000011 : begin
+        decode_DecodePlugin_mem_ctrl = MemCtrlEnum_LD;
+      end
+      32'b?????????????????000?????0100011 : begin
+        decode_DecodePlugin_mem_ctrl = MemCtrlEnum_SB;
+      end
+      32'b?????????????????001?????0100011 : begin
+        decode_DecodePlugin_mem_ctrl = MemCtrlEnum_SH;
+      end
+      32'b?????????????????010?????0100011 : begin
+        decode_DecodePlugin_mem_ctrl = MemCtrlEnum_SW;
+      end
+      32'b?????????????????011?????0100011 : begin
+        decode_DecodePlugin_mem_ctrl = MemCtrlEnum_SD;
+      end
+      default : begin
+        decode_DecodePlugin_mem_ctrl = 4'b0000;
+      end
+    endcase
+  end
+
+  assign decode_DecodePlugin_regfile_module_read_ports_rs1_addr = decode_INSTRUCTION[19 : 15];
+  assign decode_DecodePlugin_regfile_module_read_ports_rs2_addr = decode_INSTRUCTION[24 : 20];
+  assign decode_DecodePlugin_regfile_module_read_ports_rs1_req = (! (((decode_INSTRUCTION[6 : 0] == 7'h37) || (decode_INSTRUCTION[6 : 0] == 7'h17)) || (decode_INSTRUCTION[6 : 0] == 7'h67)));
+  assign decode_DecodePlugin_regfile_module_read_ports_rs2_req = (! ((((decode_INSTRUCTION[6 : 0] == 7'h37) || (decode_INSTRUCTION[6 : 0] == 7'h17)) || (decode_INSTRUCTION[6 : 0] == 7'h67)) || ((((decode_INSTRUCTION[6 : 0] == 7'h13) || (decode_INSTRUCTION[6 : 0] == 7'h1b)) || (decode_INSTRUCTION[6 : 0] == 7'h03)) || (decode_INSTRUCTION[6 : 0] == 7'h67))));
+  assign decode_DecodePlugin_rs1 = decode_DecodePlugin_regfile_module_read_ports_rs1_value;
+  assign decode_DecodePlugin_rs2 = decode_DecodePlugin_regfile_module_read_ports_rs2_value;
+  assign decode_DecodePlugin_rd_wen = (decode_arbitration_isValid && ((((((! (_zz_decode_DecodePlugin_rd_wen == _zz_decode_DecodePlugin_rd_wen_1)) && (! (_zz_decode_DecodePlugin_rd_wen_2 == _zz_decode_DecodePlugin_rd_wen_3))) && (! ((decode_INSTRUCTION & _zz_decode_DecodePlugin_rd_wen_4) == 32'h00100073))) && (! ((decode_INSTRUCTION & 32'hffffffff) == 32'h00000073))) && (! ((decode_INSTRUCTION & 32'hffffffff) == 32'h30200073))) && (! (decode_INSTRUCTION[6 : 0] == 7'h0f))));
+  assign execute_ALUPlugin_src1_word = execute_ALUPlugin_src1[31 : 0];
+  assign execute_ALUPlugin_src2_word = execute_ALUPlugin_src2[31 : 0];
+  assign execute_ALUPlugin_shift_bits = execute_ALUPlugin_src2[5 : 0];
+  assign execute_ALUPlugin_add_result = ($signed(_zz_execute_ALUPlugin_add_result) + $signed(_zz_execute_ALUPlugin_add_result_1));
+  assign execute_ALUPlugin_sub_result = ($signed(_zz_execute_ALUPlugin_sub_result) - $signed(_zz_execute_ALUPlugin_sub_result_1));
+  assign execute_ALUPlugin_slt_result = ($signed(_zz_execute_ALUPlugin_slt_result) < $signed(_zz_execute_ALUPlugin_slt_result_1));
+  assign execute_ALUPlugin_sltu_result = (execute_ALUPlugin_src1 < execute_ALUPlugin_src2);
+  assign execute_ALUPlugin_xor_result = (execute_ALUPlugin_src1 ^ execute_ALUPlugin_src2);
+  assign execute_ALUPlugin_sll_result = (execute_ALUPlugin_src1 <<< execute_ALUPlugin_shift_bits);
+  assign execute_ALUPlugin_srl_result = (execute_ALUPlugin_src1 >>> execute_ALUPlugin_shift_bits);
+  assign execute_ALUPlugin_sra_result = ($signed(_zz_execute_ALUPlugin_sra_result) >>> execute_ALUPlugin_shift_bits);
+  assign execute_ALUPlugin_and_result = (execute_ALUPlugin_src1 & execute_ALUPlugin_src2);
+  assign execute_ALUPlugin_or_result = (execute_ALUPlugin_src1 | execute_ALUPlugin_src2);
+  assign _zz_execute_ALUPlugin_addw_result = execute_ALUPlugin_add_result[31];
+  always @(*) begin
+    _zz_execute_ALUPlugin_addw_result_1[31] = _zz_execute_ALUPlugin_addw_result;
+    _zz_execute_ALUPlugin_addw_result_1[30] = _zz_execute_ALUPlugin_addw_result;
+    _zz_execute_ALUPlugin_addw_result_1[29] = _zz_execute_ALUPlugin_addw_result;
+    _zz_execute_ALUPlugin_addw_result_1[28] = _zz_execute_ALUPlugin_addw_result;
+    _zz_execute_ALUPlugin_addw_result_1[27] = _zz_execute_ALUPlugin_addw_result;
+    _zz_execute_ALUPlugin_addw_result_1[26] = _zz_execute_ALUPlugin_addw_result;
+    _zz_execute_ALUPlugin_addw_result_1[25] = _zz_execute_ALUPlugin_addw_result;
+    _zz_execute_ALUPlugin_addw_result_1[24] = _zz_execute_ALUPlugin_addw_result;
+    _zz_execute_ALUPlugin_addw_result_1[23] = _zz_execute_ALUPlugin_addw_result;
+    _zz_execute_ALUPlugin_addw_result_1[22] = _zz_execute_ALUPlugin_addw_result;
+    _zz_execute_ALUPlugin_addw_result_1[21] = _zz_execute_ALUPlugin_addw_result;
+    _zz_execute_ALUPlugin_addw_result_1[20] = _zz_execute_ALUPlugin_addw_result;
+    _zz_execute_ALUPlugin_addw_result_1[19] = _zz_execute_ALUPlugin_addw_result;
+    _zz_execute_ALUPlugin_addw_result_1[18] = _zz_execute_ALUPlugin_addw_result;
+    _zz_execute_ALUPlugin_addw_result_1[17] = _zz_execute_ALUPlugin_addw_result;
+    _zz_execute_ALUPlugin_addw_result_1[16] = _zz_execute_ALUPlugin_addw_result;
+    _zz_execute_ALUPlugin_addw_result_1[15] = _zz_execute_ALUPlugin_addw_result;
+    _zz_execute_ALUPlugin_addw_result_1[14] = _zz_execute_ALUPlugin_addw_result;
+    _zz_execute_ALUPlugin_addw_result_1[13] = _zz_execute_ALUPlugin_addw_result;
+    _zz_execute_ALUPlugin_addw_result_1[12] = _zz_execute_ALUPlugin_addw_result;
+    _zz_execute_ALUPlugin_addw_result_1[11] = _zz_execute_ALUPlugin_addw_result;
+    _zz_execute_ALUPlugin_addw_result_1[10] = _zz_execute_ALUPlugin_addw_result;
+    _zz_execute_ALUPlugin_addw_result_1[9] = _zz_execute_ALUPlugin_addw_result;
+    _zz_execute_ALUPlugin_addw_result_1[8] = _zz_execute_ALUPlugin_addw_result;
+    _zz_execute_ALUPlugin_addw_result_1[7] = _zz_execute_ALUPlugin_addw_result;
+    _zz_execute_ALUPlugin_addw_result_1[6] = _zz_execute_ALUPlugin_addw_result;
+    _zz_execute_ALUPlugin_addw_result_1[5] = _zz_execute_ALUPlugin_addw_result;
+    _zz_execute_ALUPlugin_addw_result_1[4] = _zz_execute_ALUPlugin_addw_result;
+    _zz_execute_ALUPlugin_addw_result_1[3] = _zz_execute_ALUPlugin_addw_result;
+    _zz_execute_ALUPlugin_addw_result_1[2] = _zz_execute_ALUPlugin_addw_result;
+    _zz_execute_ALUPlugin_addw_result_1[1] = _zz_execute_ALUPlugin_addw_result;
+    _zz_execute_ALUPlugin_addw_result_1[0] = _zz_execute_ALUPlugin_addw_result;
+  end
+
+  assign execute_ALUPlugin_addw_result = {_zz_execute_ALUPlugin_addw_result_1,_zz_execute_ALUPlugin_addw_result_2};
+  assign _zz_execute_ALUPlugin_subw_result = execute_ALUPlugin_sub_result[31];
+  always @(*) begin
+    _zz_execute_ALUPlugin_subw_result_1[31] = _zz_execute_ALUPlugin_subw_result;
+    _zz_execute_ALUPlugin_subw_result_1[30] = _zz_execute_ALUPlugin_subw_result;
+    _zz_execute_ALUPlugin_subw_result_1[29] = _zz_execute_ALUPlugin_subw_result;
+    _zz_execute_ALUPlugin_subw_result_1[28] = _zz_execute_ALUPlugin_subw_result;
+    _zz_execute_ALUPlugin_subw_result_1[27] = _zz_execute_ALUPlugin_subw_result;
+    _zz_execute_ALUPlugin_subw_result_1[26] = _zz_execute_ALUPlugin_subw_result;
+    _zz_execute_ALUPlugin_subw_result_1[25] = _zz_execute_ALUPlugin_subw_result;
+    _zz_execute_ALUPlugin_subw_result_1[24] = _zz_execute_ALUPlugin_subw_result;
+    _zz_execute_ALUPlugin_subw_result_1[23] = _zz_execute_ALUPlugin_subw_result;
+    _zz_execute_ALUPlugin_subw_result_1[22] = _zz_execute_ALUPlugin_subw_result;
+    _zz_execute_ALUPlugin_subw_result_1[21] = _zz_execute_ALUPlugin_subw_result;
+    _zz_execute_ALUPlugin_subw_result_1[20] = _zz_execute_ALUPlugin_subw_result;
+    _zz_execute_ALUPlugin_subw_result_1[19] = _zz_execute_ALUPlugin_subw_result;
+    _zz_execute_ALUPlugin_subw_result_1[18] = _zz_execute_ALUPlugin_subw_result;
+    _zz_execute_ALUPlugin_subw_result_1[17] = _zz_execute_ALUPlugin_subw_result;
+    _zz_execute_ALUPlugin_subw_result_1[16] = _zz_execute_ALUPlugin_subw_result;
+    _zz_execute_ALUPlugin_subw_result_1[15] = _zz_execute_ALUPlugin_subw_result;
+    _zz_execute_ALUPlugin_subw_result_1[14] = _zz_execute_ALUPlugin_subw_result;
+    _zz_execute_ALUPlugin_subw_result_1[13] = _zz_execute_ALUPlugin_subw_result;
+    _zz_execute_ALUPlugin_subw_result_1[12] = _zz_execute_ALUPlugin_subw_result;
+    _zz_execute_ALUPlugin_subw_result_1[11] = _zz_execute_ALUPlugin_subw_result;
+    _zz_execute_ALUPlugin_subw_result_1[10] = _zz_execute_ALUPlugin_subw_result;
+    _zz_execute_ALUPlugin_subw_result_1[9] = _zz_execute_ALUPlugin_subw_result;
+    _zz_execute_ALUPlugin_subw_result_1[8] = _zz_execute_ALUPlugin_subw_result;
+    _zz_execute_ALUPlugin_subw_result_1[7] = _zz_execute_ALUPlugin_subw_result;
+    _zz_execute_ALUPlugin_subw_result_1[6] = _zz_execute_ALUPlugin_subw_result;
+    _zz_execute_ALUPlugin_subw_result_1[5] = _zz_execute_ALUPlugin_subw_result;
+    _zz_execute_ALUPlugin_subw_result_1[4] = _zz_execute_ALUPlugin_subw_result;
+    _zz_execute_ALUPlugin_subw_result_1[3] = _zz_execute_ALUPlugin_subw_result;
+    _zz_execute_ALUPlugin_subw_result_1[2] = _zz_execute_ALUPlugin_subw_result;
+    _zz_execute_ALUPlugin_subw_result_1[1] = _zz_execute_ALUPlugin_subw_result;
+    _zz_execute_ALUPlugin_subw_result_1[0] = _zz_execute_ALUPlugin_subw_result;
+  end
+
+  assign execute_ALUPlugin_subw_result = {_zz_execute_ALUPlugin_subw_result_1,_zz_execute_ALUPlugin_subw_result_2};
+  assign execute_ALUPlugin_sllw_temp = (execute_ALUPlugin_src1_word <<< execute_ALUPlugin_shift_bits[4 : 0]);
+  assign _zz_execute_ALUPlugin_sllw_result = execute_ALUPlugin_sllw_temp[31];
+  always @(*) begin
+    _zz_execute_ALUPlugin_sllw_result_1[31] = _zz_execute_ALUPlugin_sllw_result;
+    _zz_execute_ALUPlugin_sllw_result_1[30] = _zz_execute_ALUPlugin_sllw_result;
+    _zz_execute_ALUPlugin_sllw_result_1[29] = _zz_execute_ALUPlugin_sllw_result;
+    _zz_execute_ALUPlugin_sllw_result_1[28] = _zz_execute_ALUPlugin_sllw_result;
+    _zz_execute_ALUPlugin_sllw_result_1[27] = _zz_execute_ALUPlugin_sllw_result;
+    _zz_execute_ALUPlugin_sllw_result_1[26] = _zz_execute_ALUPlugin_sllw_result;
+    _zz_execute_ALUPlugin_sllw_result_1[25] = _zz_execute_ALUPlugin_sllw_result;
+    _zz_execute_ALUPlugin_sllw_result_1[24] = _zz_execute_ALUPlugin_sllw_result;
+    _zz_execute_ALUPlugin_sllw_result_1[23] = _zz_execute_ALUPlugin_sllw_result;
+    _zz_execute_ALUPlugin_sllw_result_1[22] = _zz_execute_ALUPlugin_sllw_result;
+    _zz_execute_ALUPlugin_sllw_result_1[21] = _zz_execute_ALUPlugin_sllw_result;
+    _zz_execute_ALUPlugin_sllw_result_1[20] = _zz_execute_ALUPlugin_sllw_result;
+    _zz_execute_ALUPlugin_sllw_result_1[19] = _zz_execute_ALUPlugin_sllw_result;
+    _zz_execute_ALUPlugin_sllw_result_1[18] = _zz_execute_ALUPlugin_sllw_result;
+    _zz_execute_ALUPlugin_sllw_result_1[17] = _zz_execute_ALUPlugin_sllw_result;
+    _zz_execute_ALUPlugin_sllw_result_1[16] = _zz_execute_ALUPlugin_sllw_result;
+    _zz_execute_ALUPlugin_sllw_result_1[15] = _zz_execute_ALUPlugin_sllw_result;
+    _zz_execute_ALUPlugin_sllw_result_1[14] = _zz_execute_ALUPlugin_sllw_result;
+    _zz_execute_ALUPlugin_sllw_result_1[13] = _zz_execute_ALUPlugin_sllw_result;
+    _zz_execute_ALUPlugin_sllw_result_1[12] = _zz_execute_ALUPlugin_sllw_result;
+    _zz_execute_ALUPlugin_sllw_result_1[11] = _zz_execute_ALUPlugin_sllw_result;
+    _zz_execute_ALUPlugin_sllw_result_1[10] = _zz_execute_ALUPlugin_sllw_result;
+    _zz_execute_ALUPlugin_sllw_result_1[9] = _zz_execute_ALUPlugin_sllw_result;
+    _zz_execute_ALUPlugin_sllw_result_1[8] = _zz_execute_ALUPlugin_sllw_result;
+    _zz_execute_ALUPlugin_sllw_result_1[7] = _zz_execute_ALUPlugin_sllw_result;
+    _zz_execute_ALUPlugin_sllw_result_1[6] = _zz_execute_ALUPlugin_sllw_result;
+    _zz_execute_ALUPlugin_sllw_result_1[5] = _zz_execute_ALUPlugin_sllw_result;
+    _zz_execute_ALUPlugin_sllw_result_1[4] = _zz_execute_ALUPlugin_sllw_result;
+    _zz_execute_ALUPlugin_sllw_result_1[3] = _zz_execute_ALUPlugin_sllw_result;
+    _zz_execute_ALUPlugin_sllw_result_1[2] = _zz_execute_ALUPlugin_sllw_result;
+    _zz_execute_ALUPlugin_sllw_result_1[1] = _zz_execute_ALUPlugin_sllw_result;
+    _zz_execute_ALUPlugin_sllw_result_1[0] = _zz_execute_ALUPlugin_sllw_result;
+  end
+
+  assign execute_ALUPlugin_sllw_result = {_zz_execute_ALUPlugin_sllw_result_1,execute_ALUPlugin_sllw_temp};
+  assign execute_ALUPlugin_srlw_temp = (execute_ALUPlugin_src1_word >>> execute_ALUPlugin_shift_bits[4 : 0]);
+  assign _zz_execute_ALUPlugin_srlw_result = execute_ALUPlugin_srlw_temp[31];
+  always @(*) begin
+    _zz_execute_ALUPlugin_srlw_result_1[31] = _zz_execute_ALUPlugin_srlw_result;
+    _zz_execute_ALUPlugin_srlw_result_1[30] = _zz_execute_ALUPlugin_srlw_result;
+    _zz_execute_ALUPlugin_srlw_result_1[29] = _zz_execute_ALUPlugin_srlw_result;
+    _zz_execute_ALUPlugin_srlw_result_1[28] = _zz_execute_ALUPlugin_srlw_result;
+    _zz_execute_ALUPlugin_srlw_result_1[27] = _zz_execute_ALUPlugin_srlw_result;
+    _zz_execute_ALUPlugin_srlw_result_1[26] = _zz_execute_ALUPlugin_srlw_result;
+    _zz_execute_ALUPlugin_srlw_result_1[25] = _zz_execute_ALUPlugin_srlw_result;
+    _zz_execute_ALUPlugin_srlw_result_1[24] = _zz_execute_ALUPlugin_srlw_result;
+    _zz_execute_ALUPlugin_srlw_result_1[23] = _zz_execute_ALUPlugin_srlw_result;
+    _zz_execute_ALUPlugin_srlw_result_1[22] = _zz_execute_ALUPlugin_srlw_result;
+    _zz_execute_ALUPlugin_srlw_result_1[21] = _zz_execute_ALUPlugin_srlw_result;
+    _zz_execute_ALUPlugin_srlw_result_1[20] = _zz_execute_ALUPlugin_srlw_result;
+    _zz_execute_ALUPlugin_srlw_result_1[19] = _zz_execute_ALUPlugin_srlw_result;
+    _zz_execute_ALUPlugin_srlw_result_1[18] = _zz_execute_ALUPlugin_srlw_result;
+    _zz_execute_ALUPlugin_srlw_result_1[17] = _zz_execute_ALUPlugin_srlw_result;
+    _zz_execute_ALUPlugin_srlw_result_1[16] = _zz_execute_ALUPlugin_srlw_result;
+    _zz_execute_ALUPlugin_srlw_result_1[15] = _zz_execute_ALUPlugin_srlw_result;
+    _zz_execute_ALUPlugin_srlw_result_1[14] = _zz_execute_ALUPlugin_srlw_result;
+    _zz_execute_ALUPlugin_srlw_result_1[13] = _zz_execute_ALUPlugin_srlw_result;
+    _zz_execute_ALUPlugin_srlw_result_1[12] = _zz_execute_ALUPlugin_srlw_result;
+    _zz_execute_ALUPlugin_srlw_result_1[11] = _zz_execute_ALUPlugin_srlw_result;
+    _zz_execute_ALUPlugin_srlw_result_1[10] = _zz_execute_ALUPlugin_srlw_result;
+    _zz_execute_ALUPlugin_srlw_result_1[9] = _zz_execute_ALUPlugin_srlw_result;
+    _zz_execute_ALUPlugin_srlw_result_1[8] = _zz_execute_ALUPlugin_srlw_result;
+    _zz_execute_ALUPlugin_srlw_result_1[7] = _zz_execute_ALUPlugin_srlw_result;
+    _zz_execute_ALUPlugin_srlw_result_1[6] = _zz_execute_ALUPlugin_srlw_result;
+    _zz_execute_ALUPlugin_srlw_result_1[5] = _zz_execute_ALUPlugin_srlw_result;
+    _zz_execute_ALUPlugin_srlw_result_1[4] = _zz_execute_ALUPlugin_srlw_result;
+    _zz_execute_ALUPlugin_srlw_result_1[3] = _zz_execute_ALUPlugin_srlw_result;
+    _zz_execute_ALUPlugin_srlw_result_1[2] = _zz_execute_ALUPlugin_srlw_result;
+    _zz_execute_ALUPlugin_srlw_result_1[1] = _zz_execute_ALUPlugin_srlw_result;
+    _zz_execute_ALUPlugin_srlw_result_1[0] = _zz_execute_ALUPlugin_srlw_result;
+  end
+
+  assign execute_ALUPlugin_srlw_result = {_zz_execute_ALUPlugin_srlw_result_1,execute_ALUPlugin_srlw_temp};
+  assign execute_ALUPlugin_sraw_temp = ($signed(_zz_execute_ALUPlugin_sraw_temp) >>> execute_ALUPlugin_shift_bits[4 : 0]);
+  assign _zz_execute_ALUPlugin_sraw_result = execute_ALUPlugin_sraw_temp[31];
+  always @(*) begin
+    _zz_execute_ALUPlugin_sraw_result_1[31] = _zz_execute_ALUPlugin_sraw_result;
+    _zz_execute_ALUPlugin_sraw_result_1[30] = _zz_execute_ALUPlugin_sraw_result;
+    _zz_execute_ALUPlugin_sraw_result_1[29] = _zz_execute_ALUPlugin_sraw_result;
+    _zz_execute_ALUPlugin_sraw_result_1[28] = _zz_execute_ALUPlugin_sraw_result;
+    _zz_execute_ALUPlugin_sraw_result_1[27] = _zz_execute_ALUPlugin_sraw_result;
+    _zz_execute_ALUPlugin_sraw_result_1[26] = _zz_execute_ALUPlugin_sraw_result;
+    _zz_execute_ALUPlugin_sraw_result_1[25] = _zz_execute_ALUPlugin_sraw_result;
+    _zz_execute_ALUPlugin_sraw_result_1[24] = _zz_execute_ALUPlugin_sraw_result;
+    _zz_execute_ALUPlugin_sraw_result_1[23] = _zz_execute_ALUPlugin_sraw_result;
+    _zz_execute_ALUPlugin_sraw_result_1[22] = _zz_execute_ALUPlugin_sraw_result;
+    _zz_execute_ALUPlugin_sraw_result_1[21] = _zz_execute_ALUPlugin_sraw_result;
+    _zz_execute_ALUPlugin_sraw_result_1[20] = _zz_execute_ALUPlugin_sraw_result;
+    _zz_execute_ALUPlugin_sraw_result_1[19] = _zz_execute_ALUPlugin_sraw_result;
+    _zz_execute_ALUPlugin_sraw_result_1[18] = _zz_execute_ALUPlugin_sraw_result;
+    _zz_execute_ALUPlugin_sraw_result_1[17] = _zz_execute_ALUPlugin_sraw_result;
+    _zz_execute_ALUPlugin_sraw_result_1[16] = _zz_execute_ALUPlugin_sraw_result;
+    _zz_execute_ALUPlugin_sraw_result_1[15] = _zz_execute_ALUPlugin_sraw_result;
+    _zz_execute_ALUPlugin_sraw_result_1[14] = _zz_execute_ALUPlugin_sraw_result;
+    _zz_execute_ALUPlugin_sraw_result_1[13] = _zz_execute_ALUPlugin_sraw_result;
+    _zz_execute_ALUPlugin_sraw_result_1[12] = _zz_execute_ALUPlugin_sraw_result;
+    _zz_execute_ALUPlugin_sraw_result_1[11] = _zz_execute_ALUPlugin_sraw_result;
+    _zz_execute_ALUPlugin_sraw_result_1[10] = _zz_execute_ALUPlugin_sraw_result;
+    _zz_execute_ALUPlugin_sraw_result_1[9] = _zz_execute_ALUPlugin_sraw_result;
+    _zz_execute_ALUPlugin_sraw_result_1[8] = _zz_execute_ALUPlugin_sraw_result;
+    _zz_execute_ALUPlugin_sraw_result_1[7] = _zz_execute_ALUPlugin_sraw_result;
+    _zz_execute_ALUPlugin_sraw_result_1[6] = _zz_execute_ALUPlugin_sraw_result;
+    _zz_execute_ALUPlugin_sraw_result_1[5] = _zz_execute_ALUPlugin_sraw_result;
+    _zz_execute_ALUPlugin_sraw_result_1[4] = _zz_execute_ALUPlugin_sraw_result;
+    _zz_execute_ALUPlugin_sraw_result_1[3] = _zz_execute_ALUPlugin_sraw_result;
+    _zz_execute_ALUPlugin_sraw_result_1[2] = _zz_execute_ALUPlugin_sraw_result;
+    _zz_execute_ALUPlugin_sraw_result_1[1] = _zz_execute_ALUPlugin_sraw_result;
+    _zz_execute_ALUPlugin_sraw_result_1[0] = _zz_execute_ALUPlugin_sraw_result;
+  end
+
+  assign execute_ALUPlugin_sraw_result = {_zz_execute_ALUPlugin_sraw_result_1,execute_ALUPlugin_sraw_temp};
+  assign execute_ALUPlugin_op_is_jump = ((decode_ALU_CTRL == AluCtrlEnum_JAL) || (decode_ALU_CTRL == AluCtrlEnum_JALR));
+  assign when_AluPlugin_l56 = (decode_ALU_CTRL == AluCtrlEnum_JALR);
+  always @(*) begin
+    if(when_AluPlugin_l56) begin
+      execute_ALUPlugin_pc_next = _zz_execute_ALUPlugin_pc_next;
+    end else begin
+      execute_ALUPlugin_pc_next = _zz_execute_ALUPlugin_pc_next_6;
+    end
+  end
+
+  assign when_AluPlugin_l62 = ((decode_ALU_CTRL == AluCtrlEnum_AUIPC) || execute_ALUPlugin_op_is_jump);
+  always @(*) begin
+    if(when_AluPlugin_l62) begin
+      execute_ALUPlugin_src1 = decode_PC;
+    end else begin
+      execute_ALUPlugin_src1 = decode_RS1;
+    end
+  end
+
+  always @(*) begin
+    if(decode_SRC2_IS_IMM) begin
+      execute_ALUPlugin_src2 = decode_IMM;
+    end else begin
+      if(execute_ALUPlugin_op_is_jump) begin
+        execute_ALUPlugin_src2 = 64'h0000000000000004;
+      end else begin
+        execute_ALUPlugin_src2 = decode_RS2;
+      end
+    end
+  end
+
+  assign when_AluPlugin_l77 = (decode_ALU_WORD == 1'b1);
+  always @(*) begin
+    if((decode_ALU_CTRL == AluCtrlEnum_ADD) || (decode_ALU_CTRL == AluCtrlEnum_AUIPC)) begin
+        if(when_AluPlugin_l77) begin
+          execute_ALUPlugin_rd_value = execute_ALUPlugin_addw_result;
+        end else begin
+          execute_ALUPlugin_rd_value = execute_ALUPlugin_add_result;
+        end
+    end else if((decode_ALU_CTRL == AluCtrlEnum_SUB)) begin
+        if(when_AluPlugin_l84) begin
+          execute_ALUPlugin_rd_value = execute_ALUPlugin_subw_result;
+        end else begin
+          execute_ALUPlugin_rd_value = execute_ALUPlugin_sub_result;
+        end
+    end else if((decode_ALU_CTRL == AluCtrlEnum_SLT)) begin
+        execute_ALUPlugin_rd_value = 64'hffffffffffffffff;
+    end else if((decode_ALU_CTRL == AluCtrlEnum_SLTU)) begin
+        execute_ALUPlugin_rd_value = 64'hffffffffffffffff;
+    end else if((decode_ALU_CTRL == AluCtrlEnum_XOR_1)) begin
+        execute_ALUPlugin_rd_value = execute_ALUPlugin_xor_result;
+    end else if((decode_ALU_CTRL == AluCtrlEnum_SLL_1)) begin
+        if(when_AluPlugin_l104) begin
+          execute_ALUPlugin_rd_value = execute_ALUPlugin_sllw_result;
+        end else begin
+          execute_ALUPlugin_rd_value = execute_ALUPlugin_sll_result;
+        end
+    end else if((decode_ALU_CTRL == AluCtrlEnum_SRL_1)) begin
+        if(when_AluPlugin_l111) begin
+          execute_ALUPlugin_rd_value = execute_ALUPlugin_srlw_result;
+        end else begin
+          execute_ALUPlugin_rd_value = execute_ALUPlugin_srl_result;
+        end
+    end else if((decode_ALU_CTRL == AluCtrlEnum_SRA_1)) begin
+        if(when_AluPlugin_l118) begin
+          execute_ALUPlugin_rd_value = execute_ALUPlugin_sraw_result;
+        end else begin
+          execute_ALUPlugin_rd_value = execute_ALUPlugin_sra_result;
+        end
+    end else if((decode_ALU_CTRL == AluCtrlEnum_AND_1)) begin
+        execute_ALUPlugin_rd_value = execute_ALUPlugin_and_result;
+    end else if((decode_ALU_CTRL == AluCtrlEnum_OR_1)) begin
+        execute_ALUPlugin_rd_value = execute_ALUPlugin_or_result;
+    end else if((decode_ALU_CTRL == AluCtrlEnum_LUI)) begin
+        execute_ALUPlugin_rd_value = decode_IMM;
+    end else begin
+        execute_ALUPlugin_rd_value = 64'h0;
+    end
+  end
+
+  assign when_AluPlugin_l84 = (decode_ALU_WORD == 1'b1);
+  assign when_AluPlugin_l104 = (decode_ALU_WORD == 1'b1);
+  assign when_AluPlugin_l111 = (decode_ALU_WORD == 1'b1);
+  assign when_AluPlugin_l118 = (decode_ALU_WORD == 1'b1);
   assign ICachePlugin_icache_access_cmd_ready = iCache_1_cpu_cmd_ready;
   assign fetch_arbitration_isValid = 1'b1;
   assign when_Pipeline_l124 = (! decode_arbitration_isStuck);
-  assign when_Pipeline_l124_1 = (! execute_arbitration_isStuck);
+  assign when_Pipeline_l124_1 = (! decode_arbitration_isStuck);
+  assign when_Pipeline_l124_2 = (! execute_arbitration_isStuck);
   assign fetch_arbitration_isFlushed = (({writeback_arbitration_flushNext,{memaccess_arbitration_flushNext,{execute_arbitration_flushNext,decode_arbitration_flushNext}}} != 4'b0000) || ({writeback_arbitration_flushIt,{memaccess_arbitration_flushIt,{execute_arbitration_flushIt,{decode_arbitration_flushIt,fetch_arbitration_flushIt}}}} != 5'h0));
   assign decode_arbitration_isFlushed = (({writeback_arbitration_flushNext,{memaccess_arbitration_flushNext,execute_arbitration_flushNext}} != 3'b000) || ({writeback_arbitration_flushIt,{memaccess_arbitration_flushIt,{execute_arbitration_flushIt,decode_arbitration_flushIt}}} != 4'b0000));
   assign execute_arbitration_isFlushed = (({writeback_arbitration_flushNext,memaccess_arbitration_flushNext} != 2'b00) || ({writeback_arbitration_flushIt,{memaccess_arbitration_flushIt,execute_arbitration_flushIt}} != 3'b000));
@@ -399,11 +1312,17 @@ module DandRiscvSimple (
   end
 
   always @(posedge clk) begin
+    if(ICachePlugin_icache_access_cmd_fire) begin
+      _zz_fetch_PC <= _zz_ICachePlugin_icache_access_cmd_payload_addr_2;
+    end
     if(when_Pipeline_l124) begin
-      fetch_to_decode_INSTRUCTION <= fetch_INSTRUCTION;
+      fetch_to_decode_PC <= fetch_PC;
     end
     if(when_Pipeline_l124_1) begin
-      decode_to_execute_RS1 <= decode_RS1;
+      fetch_to_decode_INSTRUCTION <= fetch_INSTRUCTION;
+    end
+    if(when_Pipeline_l124_2) begin
+      decode_to_execute_IMM <= decode_IMM;
     end
   end
 
@@ -3489,5 +4408,36 @@ module ICache (
     end
   end
 
+
+endmodule
+
+module RegFileModule (
+  output     [63:0]   read_ports_rs1_value,
+  output     [63:0]   read_ports_rs2_value,
+  input      [4:0]    read_ports_rs1_addr,
+  input      [4:0]    read_ports_rs2_addr,
+  input               read_ports_rs1_req,
+  input               read_ports_rs2_req,
+  input      [63:0]   write_ports_rd_value,
+  input      [4:0]    write_ports_rd_addr,
+  input               write_ports_rd_wen,
+  input               clk,
+  input               reset
+);
+
+  wire       [63:0]   _zz_reg_file_port1;
+  wire       [63:0]   _zz_reg_file_port2;
+  (* ram_style = "distributed" *) reg [63:0] reg_file [0:31];
+
+  always @(posedge clk) begin
+    if(write_ports_rd_wen) begin
+      reg_file[write_ports_rd_addr] <= write_ports_rd_value;
+    end
+  end
+
+  assign _zz_reg_file_port1 = reg_file[read_ports_rs1_addr];
+  assign _zz_reg_file_port2 = reg_file[read_ports_rs2_addr];
+  assign read_ports_rs1_value = _zz_reg_file_port1;
+  assign read_ports_rs2_value = _zz_reg_file_port2;
 
 endmodule

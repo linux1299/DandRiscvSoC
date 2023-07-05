@@ -10,8 +10,21 @@ object Riscv{
   def rs2Range = 24 downto 20
   def rs3Range = 31 downto 27
   def csrRange = 31 downto 20
+  def opcodeRange = 6 downto 0
 
-  case class IMM(instruction  : Bits) extends Area{
+  def OP_IMM = B"0010011"
+  def OP_IMM_WORD = B"0011011"
+  def OP_ALU_WORD = B"0111011"
+  def OP_LOAD = B"0000011"
+  def OP_JALR = B"1100111"
+  def OP_JAL = B"1100111"
+  def OP_STORE = B"0100011"
+  def OP_BRANCH = B"1100011"
+  def OP_LUI = B"0110111"
+  def OP_AUIPC = B"0010111"
+  def OP_FENCE = B"0001111"
+
+  case class IMM_ALL(instruction : Bits, XLEN : Int = 64) extends Area{
     // immediates
     def i = instruction(31 downto 20)
     def h = instruction(31 downto 24)
@@ -21,44 +34,62 @@ object Riscv{
     def j = instruction(31) ## instruction(19 downto 12) ## instruction(20) ## instruction(30 downto 21)
     def z = instruction(19 downto 15)
 
-    // sign-extend immediates
-    def i_sext = B((19 downto 0) -> i(11)) ## i
-    def h_sext = B((23 downto 0) -> h(7))  ## h
-    def s_sext = B((19 downto 0) -> s(11)) ## s
-    def b_sext = B((18 downto 0) -> b(11)) ## b ## False
-    def j_sext = B((10 downto 0) -> j(19)) ## j ## False
+    def i_type_imm = instruction(opcodeRange)===OP_IMM || instruction(opcodeRange)===OP_IMM_WORD || instruction(opcodeRange)===OP_LOAD || instruction(opcodeRange)===OP_JALR
+    def s_type_imm = instruction(opcodeRange)===OP_STORE
+    def b_type_imm = instruction(opcodeRange)===OP_BRANCH
+    def j_type_imm = instruction(opcodeRange)===OP_JAL
+    def u_type_imm = instruction(opcodeRange)===OP_LUI || instruction(opcodeRange)===OP_AUIPC
+
+    def i_sext = B((19+(XLEN-32) downto 0) -> i(11)) ## i
+    def h_sext = B((23+(XLEN-32) downto 0) -> h(7))  ## h
+    def s_sext = B((19+(XLEN-32) downto 0) -> s(11)) ## s
+    def b_sext = B((18+(XLEN-32) downto 0) -> b(11)) ## b ## False
+    def j_sext = B((10+(XLEN-32) downto 0) -> j(19)) ## j ## False
+    def u_sext = if(XLEN==32) u else B(((31) downto 0) -> u(31)) ## u
+
   }
 
-
   def ADD                = M"0000000----------000-----0110011"
+  def ADDW               = M"0000000----------000-----0111011"
   def SUB                = M"0100000----------000-----0110011"
+  def SUBW               = M"0100000----------000-----0111011"
   def SLL                = M"0000000----------001-----0110011"
+  def SLLW               = M"0000000----------001-----0111011"
   def SLT                = M"0000000----------010-----0110011"
   def SLTU               = M"0000000----------011-----0110011"
   def XOR                = M"0000000----------100-----0110011"
   def SRL                = M"0000000----------101-----0110011"
+  def SRLW               = M"0000000----------101-----0111011"
   def SRA                = M"0100000----------101-----0110011"
+  def SRAW               = M"0100000----------101-----0111011"
   def OR                 = M"0000000----------110-----0110011"
   def AND                = M"0000000----------111-----0110011"
 
   def ADDI               = M"-----------------000-----0010011"
+  def ADDIW              = M"-----------------000-----0011011"
   def SLLI               = M"0000000----------001-----0010011"
+  def SLLIW              = M"0000000----------001-----0011011"
   def SLTI               = M"-----------------010-----0010011"
   def SLTIU              = M"-----------------011-----0010011"
   def XORI               = M"-----------------100-----0010011"
   def SRLI               = M"0000000----------101-----0010011"
+  def SRLIW              = M"0000000----------101-----0011011"
   def SRAI               = M"0100000----------101-----0010011"
+  def SRAIW              = M"0100000----------101-----0011011"
   def ORI                = M"-----------------110-----0010011"
   def ANDI               = M"-----------------111-----0010011"
 
   def LB                 = M"-----------------000-----0000011"
   def LH                 = M"-----------------001-----0000011"
   def LW                 = M"-----------------010-----0000011"
+  def LWU                = M"-----------------110-----0000011"
+  def LD                 = M"-----------------011-----0000011"
   def LBU                = M"-----------------100-----0000011"
   def LHU                = M"-----------------101-----0000011"
   def SB                 = M"-----------------000-----0100011"
   def SH                 = M"-----------------001-----0100011"
   def SW                 = M"-----------------010-----0100011"
+  def SD                 = M"-----------------011-----0100011"
 
   def LR                 = M"00010--00000-----010-----0101111"
   def SC                 = M"00011------------010-----0101111"

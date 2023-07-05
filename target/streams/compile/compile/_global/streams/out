@@ -1,8 +1,13 @@
-[0m[[0m[33mwarn[0m] [0m[0mD:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\DandRiscvSimple.scala:39:17: match may not be exhaustive.[0m
-[0m[[0m[33mwarn[0m] [0m[0mIt would fail on the following input: None[0m
-[0m[[0m[33mwarn[0m] [0m[0m    plugins.find(_.getClass == clazz) match {[0m
-[0m[[0m[33mwarn[0m] [0m[0m                ^[0m
-[0m[[0m[33mwarn[0m] [0m[0m1 deprecation (since 2.13.0)[0m
-[0m[[0m[33mwarn[0m] [0m[0m4 deprecations (since 2.13.3)[0m
-[0m[[0m[33mwarn[0m] [0m[0m5 deprecations in total; re-run with -deprecation for details[0m
-[0m[[0m[33mwarn[0m] [0m[0mfour warnings found[0m
+[0m[[0m[31merror[0m] [0m[0mD:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\AluPlugin.scala:91:65: ambiguous reference to overloaded definition,[0m
+[0m[[0m[31merror[0m] [0m[0mboth method resize in class Bits of type (width: spinal.core.BitCount): spinal.core.Bits[0m
+[0m[[0m[31merror[0m] [0m[0mand  method resize in class Bits of type (width: Int): spinal.core.Bits[0m
+[0m[[0m[31merror[0m] [0m[0mmatch expected type ?[0m
+[0m[[0m[31merror[0m] [0m[0m          rd_value := (B((63 downto 1) -> false) ## slt_result).resize[0m
+[0m[[0m[31merror[0m] [0m[0m                                                                ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\AluPlugin.scala:94:66: ambiguous reference to overloaded definition,[0m
+[0m[[0m[31merror[0m] [0m[0mboth method resize in class Bits of type (width: spinal.core.BitCount): spinal.core.Bits[0m
+[0m[[0m[31merror[0m] [0m[0mand  method resize in class Bits of type (width: Int): spinal.core.Bits[0m
+[0m[[0m[31merror[0m] [0m[0mmatch expected type ?[0m
+[0m[[0m[31merror[0m] [0m[0m          rd_value := (B((63 downto 1) -> false) ## sltu_result).resize[0m
+[0m[[0m[31merror[0m] [0m[0m                                                                 ^[0m
+[0m[[0m[31merror[0m] [0m[0mtwo errors found[0m

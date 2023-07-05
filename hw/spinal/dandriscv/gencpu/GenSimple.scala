@@ -14,6 +14,7 @@ object GenSimple extends App{
       plugins = List(
         new InstructionFetchPlugin,
         new DecodePlugin,
+        new ALUPlugin,
         new ICachePlugin(config = ICacheConfig(
           cacheSize = 4096,
           bytePerLine =64,

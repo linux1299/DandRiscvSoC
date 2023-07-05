@@ -26,6 +26,7 @@ case class DandRiscvSimpleConfig(){
   var withMemoryStage = true
   var withWriteBackStage = true
   var addressWidth = 64
+  var XLEN = 64
   val plugins = ArrayBuffer[Plugin[DandRiscvSimple]]()
 
   def add(that : Plugin[DandRiscvSimple]) : this.type = {plugins += that;this}
@@ -41,10 +42,23 @@ case class DandRiscvSimpleConfig(){
     }
   }
   
+  object AluCtrlEnum extends SpinalEnum(binarySequential){
+    val ADD, SUB, SLT, SLTU, XOR, SLL, SRL, SRA, AND, OR, LUI, AUIPC, JAL, JALR= newElement()
+  }
+
+  object MemCtrlEnum extends SpinalEnum(binarySequential){
+    val LB, LBU, LH, LHU, LW, LWU, LD, SB, SH, SW, SD= newElement()
+  }
+
   object PC extends Stageable(UInt(addressWidth bits))
   object INSTRUCTION extends Stageable(Bits(32 bits))
-  object RS1 extends Stageable(Bits(32 bits))
-  object RS2 extends Stageable(Bits(32 bits))
+  object RS1 extends Stageable(Bits(XLEN bits))
+  object RS2 extends Stageable(Bits(XLEN bits))
+  object IMM extends Stageable(Bits(XLEN bits))
+  object ALU_CTRL extends Stageable(Bits(AluCtrlEnum.ADD.asBits.getWidth bits))
+  object ALU_WORD extends Stageable(Bool())
+  object SRC2_IS_IMM extends Stageable(Bool())
+  object RD extends Stageable(Bits(XLEN bits))
 
 }
 
