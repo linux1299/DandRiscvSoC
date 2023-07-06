@@ -8,23 +8,21 @@ import scala.collection.mutable.ArrayBuffer
 import scala.collection.Seq
 
 object DandRiscvSimpleConfig{
-  def apply(withMemoryStage : Boolean, withWriteBackStage : Boolean, plugins : Seq[Plugin[DandRiscvSimple]]): DandRiscvSimpleConfig = {
+  def apply(withWBstage : Boolean, plugins : Seq[Plugin[DandRiscvSimple]]): DandRiscvSimpleConfig = {
     val config = DandRiscvSimpleConfig()
     config.plugins ++= plugins
-    config.withMemoryStage = withMemoryStage
-    config.withWriteBackStage = withWriteBackStage
+    config.withWBstage = withWBstage
     config
   }
 
-  def apply(plugins : Seq[Plugin[DandRiscvSimple]] = ArrayBuffer()) : DandRiscvSimpleConfig = apply(true,true,plugins)
+  def apply(plugins : Seq[Plugin[DandRiscvSimple]] = ArrayBuffer()) : DandRiscvSimpleConfig = apply(true,plugins)
 
 }
 trait DandRiscvSimpleRegressionArg{
   def getDandRiscvSimpleRegressionArgs() : Seq[String]
 }
 case class DandRiscvSimpleConfig(){
-  var withMemoryStage = true
-  var withWriteBackStage = true
+  var withWBstage = true
   var addressWidth = 64
   var XLEN = 64
   val plugins = ArrayBuffer[Plugin[DandRiscvSimple]]()
@@ -59,11 +57,19 @@ case class DandRiscvSimpleConfig(){
   object ALU_WORD extends Stageable(Bool())
   object SRC2_IS_IMM extends Stageable(Bool())
   object RD extends Stageable(Bits(XLEN bits))
+  object RD_WEN extends Stageable(Bool())
+  object RD_ADDR extends Stageable(UInt(5 bits))
+  object ALU_RESULT extends Stageable(Bits(XLEN bits))
+  object MEM_CTRL extends Stageable(Bits(MemCtrlEnum.LB.asBits.getWidth bits))
+  object MEM_WDATA extends Stageable(Bits(XLEN bits))
+  object DATA_LOAD extends Stageable(Bits(XLEN bits))
+  object IS_LOAD extends Stageable(Bool())
 
 }
 
 
 class DandRiscvSimple(val config : DandRiscvSimpleConfig) extends Component with Pipeline{
+
   type  T = DandRiscvSimple
   import config._
 
@@ -73,7 +79,7 @@ class DandRiscvSimple(val config : DandRiscvSimpleConfig) extends Component with
   val decode    = newStage()
   val execute   = newStage()
   val memaccess = newStage()
-  val writeback = newStage()
+  val writeback = ifGen(config.withWBstage) (newStage())
   plugins ++= config.plugins
 
 }

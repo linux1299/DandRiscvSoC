@@ -17,11 +17,11 @@ case class dBusClass() extends Bundle with IMasterSlave{
   val dataout = Bits(32 bits)
   val datain = Bits(32 bits)
 
-  override def asMaster: Unit = {
+  override def asMaster(): Unit = {
     out(dataout)
   }
 
-  override def asSlave: Unit = {
+  override def asSlave(): Unit = {
     in(datain)
   }
 }

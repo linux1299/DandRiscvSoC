@@ -59,7 +59,6 @@ class DecodePlugin() extends Plugin[DandRiscvSimple]{
   override def setup(pipeline: DandRiscvSimple): Unit = {
     import Riscv._
     import pipeline.config._
-
   }
 
   override def build(pipeline: DandRiscvSimple): Unit = {
@@ -67,10 +66,10 @@ class DecodePlugin() extends Plugin[DandRiscvSimple]{
     import pipeline._
     import pipeline.config._  
 
+    val regfile_module = new RegFileModule(XLEN)
+
     decode plug new Area{
       import decode._
-
-      val regfile_module = new RegFileModule(XLEN)
 
       val pc = input(PC)
       val instruction = input(INSTRUCTION)
@@ -87,8 +86,7 @@ class DecodePlugin() extends Plugin[DandRiscvSimple]{
       val rd_addr = instruction(rdRange).asUInt
 
 
-      // decode logic
-      
+      // choose imm
       when(imm_all.i_type_imm){
         imm := imm_all.i_sext
       }.elsewhen(imm_all.s_type_imm){
@@ -103,8 +101,9 @@ class DecodePlugin() extends Plugin[DandRiscvSimple]{
         imm := imm_all.i_sext
       }
 
+      // choose ALU's type
       switch(instruction){
-        is(ADD, ADDW, ADDI, ADDIW, AUIPC){
+        is(ADD, ADDW, ADDI, ADDIW, AUIPC, SB, SH, SW, SD){
           alu_ctrl := AluCtrlEnum.ADD.asBits
         }
         is(SUB, SUBW){
@@ -151,6 +150,7 @@ class DecodePlugin() extends Plugin[DandRiscvSimple]{
         }
       }
 
+      // choose LSU's type
       switch(instruction){
         is(LB){
           mem_ctrl := MemCtrlEnum.LB.asBits
@@ -190,6 +190,7 @@ class DecodePlugin() extends Plugin[DandRiscvSimple]{
         }
       }
 
+      // access reigster file
       regfile_module.read_ports.rs1_addr := instruction(rs1Range).asUInt
       regfile_module.read_ports.rs2_addr := instruction(rs2Range).asUInt
       regfile_module.read_ports.rs1_req := !(imm_all.u_type_imm || imm_all.j_type_imm)
@@ -198,21 +199,30 @@ class DecodePlugin() extends Plugin[DandRiscvSimple]{
       rs2 := regfile_module.read_ports.rs2_value
       rd_wen := decode.arbitration.isValid && (!imm_all.s_type_imm && !imm_all.s_type_imm && !(instruction===EBREAK) && !(instruction===ECALL) && !(instruction===MRET) && !(instruction(opcodeRange)===OP_FENCE))
 
-
-      // insert to stages
+      // insert to decode stage
       insert(IMM) := imm
       insert(RS1) := rs1
       insert(RS2) := rs2
       insert(ALU_CTRL) := alu_ctrl
       insert(ALU_WORD) := alu_word
       insert(SRC2_IS_IMM) := src2_is_imm
+      insert(MEM_CTRL) := mem_ctrl
+      insert(RD_WEN) := rd_wen
+      insert(RD_ADDR) := rd_addr
 
-      
     }
 
     execute plug new Area{
       import execute._
       output(IMM) := input(IMM)
+    }
+
+    val writebackStage = if(withWBstage) writeback else memaccess
+    writebackStage plug new Area{
+      import writebackStage._
+      regfile_module.write_ports.rd_wen := output(RD_WEN)
+      regfile_module.write_ports.rd_addr := output(RD_ADDR)
+      regfile_module.write_ports.rd_value := output(RD)
     }
   }
 }

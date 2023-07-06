@@ -7,7 +7,7 @@ import spinal.core._
 import spinal.lib._
 import math._
 
-case class ICacheConfig(cacheSize : Int,
+case class DCacheConfig(cacheSize : Int,
                         bytePerLine : Int,
                         wayCount : Int,
                         addressWidth : Int,
@@ -18,7 +18,6 @@ case class ICacheConfig(cacheSize : Int,
   def lineCount = cacheSize/bytePerLine
   def wayLineCount = lineCount/wayCount
   def busBurstLen = bytePerLine*8/busDataWidth
-  def busDataSize = log2Up(busDataWidth/8)
   def bankDepth = cacheSize*8/wayCount/bankWidth
   def bankDepthBits = log2Up(bankDepth)
   def offsetWidth = log2Up(bytePerLine)
@@ -39,17 +38,20 @@ case class ICacheConfig(cacheSize : Int,
 }
 
 // ================ next level ports as master ==============
-case class ICacheNextLevelCmd(p : ICacheConfig) extends Bundle{
+case class DCacheNextLevelCmd(p : DCacheConfig) extends Bundle{
   val addr = UInt(p.addressWidth bits)
   val len  = UInt(4 bits)
+  val wen  = Bool()
+  val wdata= Bits(p.busDataWidth bits)
+  val wstrb= Bits(p.busDataWidth/8 bits)
   val size = UInt(3 bits)
 }
-case class ICacheNextLevelRsp(p : ICacheConfig) extends Bundle{
+case class DCacheNextLevelRsp(p : DCacheConfig) extends Bundle{
   val data = Bits(p.busDataWidth bits)
 }
-case class ICacheNextLevelPorts(p : ICacheConfig) extends Bundle with IMasterSlave{
-  val cmd = Stream(ICacheNextLevelCmd(p))
-  val rsp = Flow(ICacheNextLevelRsp(p))
+case class DCacheNextLevelPorts(p : DCacheConfig) extends Bundle with IMasterSlave{
+  val cmd = Stream(DCacheNextLevelCmd(p))
+  val rsp = Flow(DCacheNextLevelRsp(p))
 
   override def asMaster(): Unit = {
     master(cmd)
@@ -57,16 +59,16 @@ case class ICacheNextLevelPorts(p : ICacheConfig) extends Bundle with IMasterSla
   }
 }
 
-// ==================== ICACHE =============================
-case class ICache(p : ICacheConfig) extends Component{
+// ==================== DCache =============================
+case class DCache(p : DCacheConfig) extends Component{
   import p._
 
   val flush = in Bool()
-  val cpu = slave(ICacheAccess(addressWidth, cpuDataWidth))
+  val cpu = slave(DCacheAccess(addressWidth, cpuDataWidth))
   val sram = for(i<-0 until bankNum) yield new Area{
     val ports = master(SramPorts(bankDepthBits, bankWidth))
   }
-  val next_level = master(ICacheNextLevelPorts(p))
+  val next_level = master(DCacheNextLevelPorts(p))
 
   case class LineMeta() extends Bundle{
     val valid = Reg(Bool()) init(False)
@@ -78,15 +80,15 @@ case class ICache(p : ICacheConfig) extends Component{
     val metas = Vec(LineMeta(), wayLineCount)
   })
 
-  // icache related
-  val icache_tag = Vec(UInt(tagWidth bits), wayCount)
-  val icache_hit = Vec(Bool(), wayCount)
-  val icache_victim = Vec(Bool(), wayCount)
-  val icache_replace_info = Vec(Bool(), wayCount)
+  // DCache related
+  val dcache_tag = Vec(UInt(tagWidth bits), wayCount)
+  val dcache_hit = Vec(Bool(), wayCount)
+  val dcache_victim = Vec(Bool(), wayCount)
+  val dcache_replace_info = Vec(Bool(), wayCount)
   val hit_way_id = UInt(log2Up(wayCount) bits)
-  val replace_info_full = icache_replace_info.asBits.andR
-  val is_hit = icache_hit.asBits.orR & cpu.cmd.fire
-  val is_miss= !icache_hit.asBits.orR & cpu.cmd.fire
+  val replace_info_full = dcache_replace_info.asBits.andR
+  val is_hit = dcache_hit.asBits.orR & cpu.cmd.fire
+  val is_miss= !dcache_hit.asBits.orR & cpu.cmd.fire
 
   // cpu related
   val cpu_tag = cpu.cmd.addr(tagRange)
@@ -122,21 +124,21 @@ case class ICache(p : ICacheConfig) extends Component{
   
 
   // read metas to decide cache hit, acccess sram, update replace_info
-  hit_way_id := OHToUInt(icache_hit)
+  hit_way_id := OHToUInt(dcache_hit)
   for(wayId <- 0 until wayCount){
 
-    icache_tag(wayId) := ways(wayId).metas(cpu_set).tag
-    icache_hit(wayId) := (icache_tag(wayId) === cpu_tag) & ways(wayId).metas(cpu_set).valid
-    icache_replace_info(wayId) := ways(wayId).metas(cpu_set).replace_info
+    dcache_tag(wayId) := ways(wayId).metas(cpu_set).tag
+    dcache_hit(wayId) := (dcache_tag(wayId) === cpu_tag) & ways(wayId).metas(cpu_set).valid
+    dcache_replace_info(wayId) := ways(wayId).metas(cpu_set).replace_info
     // replace logic
     if(wayId==0){
-      icache_victim(wayId) := !ways(wayId).metas(cpu_set_d1).valid
+      dcache_victim(wayId) := !ways(wayId).metas(cpu_set_d1).valid
     }
     else{
-      when(icache_victim(wayId-1)){
-        icache_victim(wayId) := False
+      when(dcache_victim(wayId-1)){
+        dcache_victim(wayId) := False
       }.otherwise{
-        icache_victim(wayId) := !ways(wayId).metas(cpu_set_d1).valid
+        dcache_victim(wayId) := !ways(wayId).metas(cpu_set_d1).valid
       }
     }
 
@@ -144,8 +146,8 @@ case class ICache(p : ICacheConfig) extends Component{
     sram_banks_data(wayId) := sram(wayId).ports.rsp.payload.data
     sram_banks_valid(wayId):= sram(wayId).ports.rsp.valid
     when(is_hit){
-      sram(wayId).ports.cmd.payload.addr := icache_hit(wayId) ? cpu_bank_addr | U(0, bankDepthBits bits)
-      sram(wayId).ports.cmd.valid        := icache_hit(wayId) & cpu.cmd.fire
+      sram(wayId).ports.cmd.payload.addr := dcache_hit(wayId) ? cpu_bank_addr | U(0, bankDepthBits bits)
+      sram(wayId).ports.cmd.valid        := dcache_hit(wayId) & cpu.cmd.fire
       sram(wayId).ports.cmd.payload.wen  := False
       sram(wayId).ports.cmd.payload.wdata:= B(0, bankWidth bits)
     } 
@@ -166,17 +168,17 @@ case class ICache(p : ICacheConfig) extends Component{
       ways(wayId).metas(cpu_set_d1).valid := False
     }.otherwise{
       when(is_hit && replace_info_full){
-        when(icache_hit(wayId)) {
+        when(dcache_hit(wayId)) {
           ways(wayId).metas(cpu_set).replace_info := True
         } .otherwise {
           ways(wayId).metas(cpu_set).replace_info := False
         }
       }.elsewhen(is_hit){
-        when(icache_hit(wayId)) {
+        when(dcache_hit(wayId)) {
           ways(wayId).metas(cpu_set).replace_info := True
         }
       }.elsewhen(next_level.rsp.valid){
-        when(icache_victim(wayId)) {
+        when(dcache_victim(wayId)) {
           ways(wayId).metas(cpu_set_d1).valid := True
         }
       }
@@ -205,7 +207,6 @@ case class ICache(p : ICacheConfig) extends Component{
   // cmd to next level cache
   next_level.cmd.payload.addr := cpu_addr_d1
   next_level.cmd.payload.len  := busBurstLen
-  next_level.cmd.payload.size := busDataSize
   next_level.cmd.valid := next_level_cmd_valid
 
 }

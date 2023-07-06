@@ -50,7 +50,7 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
       val sraw_temp  = src1_word.asSInt |>> shift_bits(4 downto 0)
       val sraw_result= B((31 downto 0) -> sraw_temp(31)) ## sraw_temp
 
-      val rd_value  = Bits(XLEN bits)
+      val alu_result  = Bits(XLEN bits)
       val op_is_jump= input(ALU_CTRL)===AluCtrlEnum.JAL.asBits || input(ALU_CTRL)===AluCtrlEnum.JALR.asBits
 
       // calculate pc
@@ -59,7 +59,7 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
       }.otherwise{
         pc_next := (input(PC).asSInt + input(IMM).asSInt).asUInt // jal or branch
       }
-
+      // select op's source data
       when(input(ALU_CTRL)===AluCtrlEnum.AUIPC.asBits || op_is_jump){
         src1 := input(PC).asBits
       }.otherwise{
@@ -76,64 +76,64 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
       switch(input(ALU_CTRL)){
         is(AluCtrlEnum.ADD.asBits, AluCtrlEnum.AUIPC.asBits){
           when(input(ALU_WORD)===True){
-            rd_value := addw_result
+            alu_result := addw_result
           }.otherwise{
-            rd_value := add_result.asBits
+            alu_result := add_result.asBits
           }
         }
         is(AluCtrlEnum.SUB.asBits){
           when(input(ALU_WORD)===True){
-            rd_value := subw_result
+            alu_result := subw_result
           }.otherwise{
-            rd_value := sub_result.asBits
+            alu_result := sub_result.asBits
           }
         }
         is(AluCtrlEnum.SLT.asBits){
-          rd_value := B(XLEN-1 bits, (XLEN-2 downto 0) -> false) ## slt_result
+          alu_result := B(XLEN-1 bits, (XLEN-2 downto 0) -> false) ## slt_result
         }
         is(AluCtrlEnum.SLTU.asBits){
-          rd_value := B(XLEN-1 bits, (XLEN-2 downto 0) -> false) ## sltu_result
+          alu_result := B(XLEN-1 bits, (XLEN-2 downto 0) -> false) ## sltu_result
         }
         is(AluCtrlEnum.XOR.asBits){
-          rd_value := xor_result
+          alu_result := xor_result
         }
         is(AluCtrlEnum.SLL.asBits){
           when(input(ALU_WORD)===True){
-            rd_value := sllw_result
+            alu_result := sllw_result
           }.otherwise{
-            rd_value := sll_result
+            alu_result := sll_result
           }
         }
         is(AluCtrlEnum.SRL.asBits){
           when(input(ALU_WORD)===True){
-            rd_value := srlw_result
+            alu_result := srlw_result
           }.otherwise{
-            rd_value := srl_result
+            alu_result := srl_result
           }
         }
         is(AluCtrlEnum.SRA.asBits){
           when(input(ALU_WORD)===True){
-            rd_value := sraw_result
+            alu_result := sraw_result
           }.otherwise{
-            rd_value := sra_result.asBits
+            alu_result := sra_result.asBits
           }
         }
         is(AluCtrlEnum.AND.asBits){
-          rd_value := and_result
+          alu_result := and_result
         }
         is(AluCtrlEnum.OR.asBits){
-          rd_value := or_result
+          alu_result := or_result
         }
         is(AluCtrlEnum.LUI.asBits){
-          rd_value := input(IMM)
+          alu_result := input(IMM)
         }
         default{
-          rd_value := B(0, XLEN bits)
+          alu_result := B(0, XLEN bits)
         }
       }
 
-      insert(RD) := rd_value
-      output(RD) := input(RD)
+      insert(ALU_RESULT) := alu_result
+      insert(MEM_WDATA) := input(RS2) // TODO:need bypass some value
 
     }
 

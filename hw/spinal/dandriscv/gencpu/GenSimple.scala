@@ -15,12 +15,24 @@ object GenSimple extends App{
         new InstructionFetchPlugin,
         new DecodePlugin,
         new ALUPlugin,
+        new ControlPlugin,
+        new LsuPlugin(AW=64, DW=64),
+        //new WriteBackPlugin,
         new ICachePlugin(config = ICacheConfig(
           cacheSize = 4096,
           bytePerLine =64,
           wayCount = 4,
           addressWidth = 64,
           cpuDataWidth = 32,
+          bankWidth = 256,
+          busDataWidth = 256
+        )),
+        new DCachePlugin(config = DCacheConfig(
+          cacheSize = 4096,
+          bytePerLine =64,
+          wayCount = 4,
+          addressWidth = 64,
+          cpuDataWidth = 64,
           bankWidth = 256,
           busDataWidth = 256
         ))

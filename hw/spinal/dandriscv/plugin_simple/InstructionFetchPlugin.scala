@@ -20,7 +20,7 @@ import dandriscv.plugin_simple._
 //}
 
 
-class InstructionFetchPlugin(resetVector : BigInt = 0x80000000l) 
+class InstructionFetchPlugin(resetVector : BigInt = 0x80000000l, addressWidth : Int = 64) //
 extends Plugin[DandRiscvSimple]
 with ICacheAccessService
 with ControlService
@@ -28,11 +28,12 @@ with InterruptService
 with BPUService{
 
   @dontName var icache_access : ICacheAccess = null
-  override def newICacheAccess(): ICacheAccess = {
-    assert(icache_access == null)
-    icache_access = ICacheAccess(64, 32)
-    icache_access
-  }
+    override def newICacheAccess(): ICacheAccess = {
+      assert(icache_access == null)
+      icache_access = ICacheAccess(addressWidth, 32)
+      icache_access
+    }
+
   @dontName var control_ports : ControlPorts = null
   override def newControlPorts(): ControlPorts = {
     assert(control_ports == null)
@@ -55,8 +56,7 @@ with BPUService{
   override def setup(pipeline: DandRiscvSimple): Unit = {
     import Riscv._
     import pipeline.config._
-
-    control_ports = pipeline.service(classOf[ControlService]).newControlPorts
+    
     interrupt_ports = pipeline.service(classOf[InterruptService]).newIntPorts
     bpu_ports = pipeline.service(classOf[BPUService]).newBPUPorts
   }
@@ -69,12 +69,12 @@ with BPUService{
     //val masterBus = master(inoutClass()).setName("masterBus")
     //masterBus.dataout := B(2, 32 bits)
 
-    val fetch_pc = Reg(UInt(addressWidth bits)) init(resetVector)
+    val fetch_pc = Reg(UInt(this.addressWidth bits)) init(resetVector)
     val pc = RegNextWhen(fetch_pc, icache_access.cmd.fire)
     val pc_next = fetch_pc + 4
     val fetch_valid = RegInit(False)
     val fetch_hold  = control_ports.hold || interrupt_ports.int_hold
-    val int_pc_reg = Reg(UInt(addressWidth bits)) init(0)
+    val int_pc_reg = Reg(UInt(this.addressWidth bits)) init(0)
     val int_pc_valid = RegInit(False)
     val fetch_state_next = UInt(2 bits)
     val fetch_state = RegNext(fetch_state_next) init(0)

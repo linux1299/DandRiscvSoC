@@ -82,7 +82,7 @@ class ICachePlugin(val config : ICacheConfig) extends Plugin[DandRiscvSimple]{
     fetch plug new Area{
       import fetch._
       insert(INSTRUCTION) := icache_access.rsp.payload.data
-      fetch.arbitration.isValid := True
+      fetch.arbitration.isValid := icache_access.rsp.valid
     }
 
     

@@ -5,14 +5,7 @@ import java.util
 import spinal.core._
 import spinal.lib._
 
-// Control instructionFetch
-case class ControlPorts() extends Bundle {
-  val hold = Bool()
-}
 
-trait ControlService{
-  def newControlPorts() : ControlPorts
-}
 
 case class IntPorts(addressWidth : Int = 64) extends Bundle {
   val int_en = Bool()

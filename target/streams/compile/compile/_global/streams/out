@@ -1,16 +1,4 @@
-[0m[[0m[31merror[0m] [0m[0m/home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/AluPlugin.scala:78:25: not found: value addw_result[0m
-[0m[[0m[31merror[0m] [0m[0m            rd_value := addw_result[0m
-[0m[[0m[31merror[0m] [0m[0m                        ^[0m
-[0m[[0m[31merror[0m] [0m[0m/home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/AluPlugin.scala:85:25: not found: value subw_result[0m
-[0m[[0m[31merror[0m] [0m[0m            rd_value := subw_result[0m
-[0m[[0m[31merror[0m] [0m[0m                        ^[0m
-[0m[[0m[31merror[0m] [0m[0m/home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/AluPlugin.scala:101:25: not found: value sllw_result[0m
-[0m[[0m[31merror[0m] [0m[0m            rd_value := sllw_result[0m
-[0m[[0m[31merror[0m] [0m[0m                        ^[0m
-[0m[[0m[31merror[0m] [0m[0m/home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/AluPlugin.scala:108:25: not found: value srlw_result[0m
-[0m[[0m[31merror[0m] [0m[0m            rd_value := srlw_result[0m
-[0m[[0m[31merror[0m] [0m[0m                        ^[0m
-[0m[[0m[31merror[0m] [0m[0m/home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/AluPlugin.scala:115:25: not found: value sraw_result[0m
-[0m[[0m[31merror[0m] [0m[0m            rd_value := sraw_result[0m
-[0m[[0m[31merror[0m] [0m[0m                        ^[0m
-[0m[[0m[31merror[0m] [0m[0m5 errors found[0m
+[0m[[0m[33mwarn[0m] [0m[0m1 deprecation (since 2.13.0)[0m
+[0m[[0m[33mwarn[0m] [0m[0m2 deprecations (since 2.13.3)[0m
+[0m[[0m[33mwarn[0m] [0m[0m3 deprecations in total; re-run with -deprecation for details[0m
+[0m[[0m[33mwarn[0m] [0m[0mthree warnings found[0m
