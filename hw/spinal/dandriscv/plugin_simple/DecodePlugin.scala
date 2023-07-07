@@ -55,10 +55,15 @@ case class RegFileModule(XLEN : Int = 64) extends Component{
 }
 
 // ==================== decode stage ======================
-class DecodePlugin() extends Plugin[DandRiscvSimple]{
+class DecodePlugin() extends Plugin[DandRiscvSimple]
+{
+  var control_ports : ControlPorts = null
+
   override def setup(pipeline: DandRiscvSimple): Unit = {
     import Riscv._
     import pipeline.config._
+
+    control_ports = pipeline.service(classOf[ControlService]).newControlPorts
   }
 
   override def build(pipeline: DandRiscvSimple): Unit = {
@@ -77,13 +82,19 @@ class DecodePlugin() extends Plugin[DandRiscvSimple]{
       val imm = Bits(XLEN bits)
       val rs1 = Bits(XLEN bits)
       val rs2 = Bits(XLEN bits)
+      val rs1_req = !(imm_all.u_type_imm || imm_all.j_type_imm)
+      val rs2_req = !(imm_all.u_type_imm || imm_all.j_type_imm || imm_all.i_type_imm)
+      val rs1_addr = instruction(rs1Range).asUInt
+      val rs2_addr = instruction(rs2Range).asUInt
+      val rd_wen = Bool()
+      val rd_addr = instruction(rdRange).asUInt
       val alu_ctrl = Bits(AluCtrlEnum.ADD.asBits.getWidth bits)
       val alu_word = instruction(opcodeRange)===OP_ALU_WORD
       val src2_is_imm = imm_all.i_type_imm || imm_all.s_type_imm || imm_all.u_type_imm || imm_all.j_type_imm
-      //val op_is_jal_or_jalr = instruction(opcodeRange)===OP_JAL || instruction(opcodeRange)===OP_JALR
       val mem_ctrl = Bits(MemCtrlEnum.LB.asBits.getWidth bits)
-      val rd_wen = Bool()
-      val rd_addr = instruction(rdRange).asUInt
+      val is_load = Bool()
+      val branch_or_jalr = instruction(opcodeRange)===OP_BRANCH || instruction===JALR
+      val need_predict = instruction(opcodeRange)===OP_BRANCH
 
 
       // choose imm
@@ -154,47 +165,59 @@ class DecodePlugin() extends Plugin[DandRiscvSimple]{
       switch(instruction){
         is(LB){
           mem_ctrl := MemCtrlEnum.LB.asBits
+          is_load  := True
         }
         is(LBU){
           mem_ctrl := MemCtrlEnum.LBU.asBits
+          is_load  := True
         }
         is(LH){
           mem_ctrl := MemCtrlEnum.LH.asBits
+          is_load  := True
         }
         is(LHU){
           mem_ctrl := MemCtrlEnum.LHU.asBits
+          is_load  := True
         }
         is(LW){
           mem_ctrl := MemCtrlEnum.LW.asBits
+          is_load  := True
         }
         is(LWU){
           mem_ctrl := MemCtrlEnum.LWU.asBits
+          is_load  := True
         }
         is(LD){
           mem_ctrl := MemCtrlEnum.LD.asBits
+          is_load  := True
         }
         is(SB){
           mem_ctrl := MemCtrlEnum.SB.asBits
+          is_load  := False
         }
         is(SH){
           mem_ctrl := MemCtrlEnum.SH.asBits
+          is_load  := False
         }
         is(SW){
           mem_ctrl := MemCtrlEnum.SW.asBits
+          is_load  := False
         }
         is(SD){
           mem_ctrl := MemCtrlEnum.SD.asBits
+          is_load  := False
         }
         default{
           mem_ctrl := B(0)
+          is_load  := False
         }
       }
 
       // access reigster file
-      regfile_module.read_ports.rs1_addr := instruction(rs1Range).asUInt
-      regfile_module.read_ports.rs2_addr := instruction(rs2Range).asUInt
-      regfile_module.read_ports.rs1_req := !(imm_all.u_type_imm || imm_all.j_type_imm)
-      regfile_module.read_ports.rs2_req := !(imm_all.u_type_imm || imm_all.j_type_imm || imm_all.i_type_imm)
+      regfile_module.read_ports.rs1_addr := rs1_addr
+      regfile_module.read_ports.rs2_addr := rs2_addr
+      regfile_module.read_ports.rs1_req := rs1_req
+      regfile_module.read_ports.rs2_req := rs2_req
       rs1 := regfile_module.read_ports.rs1_value
       rs2 := regfile_module.read_ports.rs2_value
       rd_wen := decode.arbitration.isValid && (!imm_all.s_type_imm && !imm_all.s_type_imm && !(instruction===EBREAK) && !(instruction===ECALL) && !(instruction===MRET) && !(instruction(opcodeRange)===OP_FENCE))
@@ -203,12 +226,25 @@ class DecodePlugin() extends Plugin[DandRiscvSimple]{
       insert(IMM) := imm
       insert(RS1) := rs1
       insert(RS2) := rs2
+      insert(RS1_ADDR) := rs1_addr
+      insert(RS2_ADDR) := rs2_addr
       insert(ALU_CTRL) := alu_ctrl
       insert(ALU_WORD) := alu_word
       insert(SRC2_IS_IMM) := src2_is_imm
       insert(MEM_CTRL) := mem_ctrl
       insert(RD_WEN) := rd_wen
       insert(RD_ADDR) := rd_addr
+      insert(IS_LOAD) := is_load
+      insert(BRANCH_OR_JALR) := branch_or_jalr
+      insert(NEED_PREDICT) := need_predict
+
+      // hazard control input
+      if(control_ports != null) {
+        control_ports.decode_rs1_req := rs1_req
+        control_ports.decode_rs2_req := rs2_req
+        control_ports.decode_rs1_addr := rs1_addr
+        control_ports.decode_rs2_addr := rs2_addr
+      }
 
     }
 
@@ -224,5 +260,8 @@ class DecodePlugin() extends Plugin[DandRiscvSimple]{
       regfile_module.write_ports.rd_addr := output(RD_ADDR)
       regfile_module.write_ports.rd_value := output(RD)
     }
+
+    
+
   }
 }

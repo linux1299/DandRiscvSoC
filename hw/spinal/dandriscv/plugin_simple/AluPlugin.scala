@@ -51,7 +51,7 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
       val sraw_result= B((31 downto 0) -> sraw_temp(31)) ## sraw_temp
 
       val alu_result  = Bits(XLEN bits)
-      val op_is_jump= input(ALU_CTRL)===AluCtrlEnum.JAL.asBits || input(ALU_CTRL)===AluCtrlEnum.JALR.asBits
+      val op_is_jump  = input(ALU_CTRL)===AluCtrlEnum.JAL.asBits || input(ALU_CTRL)===AluCtrlEnum.JALR.asBits
 
       // calculate pc
       when(input(ALU_CTRL)===AluCtrlEnum.JALR.asBits){
@@ -59,20 +59,34 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
       }.otherwise{
         pc_next := (input(PC).asSInt + input(IMM).asSInt).asUInt // jal or branch
       }
+
       // select op's source data
       when(input(ALU_CTRL)===AluCtrlEnum.AUIPC.asBits || op_is_jump){
         src1 := input(PC).asBits
       }.otherwise{
-        src1 := input(RS1).asBits //TODO: need forward some value
+        when(input(RS1_FROM_MEM)){
+          src1 := memaccess.input(ALU_RESULT)
+        }.elsewhen(input(RS1_FROM_WB)){
+          src1 := writebackStage.output(RD)
+        }.otherwise{
+          src1 := input(RS1).asBits
+        }
       }
       when(input(SRC2_IS_IMM)){
         src2 := input(IMM)
       }.elsewhen(op_is_jump){
         src2 := B(4, XLEN bits)
       }.otherwise{
-        src2 := input(RS2) //TODO: need forward some value
+        when(input(RS2_FROM_MEM)){
+          src2 := memaccess.input(ALU_RESULT)
+        }.elsewhen(input(RS2_FROM_WB)){
+          src2 := writebackStage.output(RD)
+        }.otherwise{
+          src2 := input(RS2).asBits
+        }
       }
-      // caclulate rd
+
+      // caclulate alu result
       switch(input(ALU_CTRL)){
         is(AluCtrlEnum.ADD.asBits, AluCtrlEnum.AUIPC.asBits){
           when(input(ALU_WORD)===True){

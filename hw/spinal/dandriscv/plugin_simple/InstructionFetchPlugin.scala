@@ -23,23 +23,16 @@ import dandriscv.plugin_simple._
 class InstructionFetchPlugin(resetVector : BigInt = 0x80000000l, addressWidth : Int = 64) //
 extends Plugin[DandRiscvSimple]
 with ICacheAccessService
-with ControlService
 with InterruptService
 with BPUService{
 
   @dontName var icache_access : ICacheAccess = null
-    override def newICacheAccess(): ICacheAccess = {
-      assert(icache_access == null)
-      icache_access = ICacheAccess(addressWidth, 32)
-      icache_access
-    }
-
-  @dontName var control_ports : ControlPorts = null
-  override def newControlPorts(): ControlPorts = {
-    assert(control_ports == null)
-    control_ports = ControlPorts()
-    control_ports
+  override def newICacheAccess(): ICacheAccess = {
+    assert(icache_access == null)
+    icache_access = ICacheAccess(addressWidth, 32)
+    icache_access
   }
+
   @dontName var interrupt_ports : IntPorts = null
   override def newIntPorts(): IntPorts = {
     assert(interrupt_ports == null)
@@ -56,7 +49,7 @@ with BPUService{
   override def setup(pipeline: DandRiscvSimple): Unit = {
     import Riscv._
     import pipeline.config._
-    
+
     interrupt_ports = pipeline.service(classOf[InterruptService]).newIntPorts
     bpu_ports = pipeline.service(classOf[BPUService]).newBPUPorts
   }
@@ -73,7 +66,7 @@ with BPUService{
     val pc = RegNextWhen(fetch_pc, icache_access.cmd.fire)
     val pc_next = fetch_pc + 4
     val fetch_valid = RegInit(False)
-    val fetch_hold  = control_ports.hold || interrupt_ports.int_hold
+    val fetch_hold  = fetch.output(LOAD_USE) || interrupt_ports.int_hold
     val int_pc_reg = Reg(UInt(this.addressWidth bits)) init(0)
     val int_pc_valid = RegInit(False)
     val fetch_state_next = UInt(2 bits)
@@ -125,54 +118,6 @@ with BPUService{
         fetch_valid := True
       }
     }
-
-    // another way FSM
-    /*
-    val fetchFSM = new StateMachine {
-      val IDLE = makeInstantEntry()
-      val FETCH= new State
-      val WAIT = new State
-
-      IDLE
-        .whenIsActive {
-          when(!fetch_hold){
-            goto(FETCH)
-          }
-        }
-      FETCH
-        .whenIsActive {
-          when(icache_access.cmd.isStall){
-            goto(WAIT)
-          }
-        }
-        .whenIsNext{
-          fetch_valid := True
-          when(interrupt_ports.int_en) {
-            fetch_pc := interrupt_ports.int_pc
-          } .elsewhen(bpu_ports.branch_taken) {
-            fetch_pc := bpu_ports.branch_pc
-          } .otherwise {
-            fetch_pc := pc_next
-          }
-        }
-      WAIT
-        .whenIsActive {
-          when(icache_access.cmd.fire){
-            goto(FETCH)
-          }
-          when(interrupt_ports.int_en){
-            int_pc_valid := True
-            int_pc_reg   := interrupt_ports.int_pc
-          }.elsewhen(icache_access.rsp.fire){
-            int_pc_valid := False
-          }
-        }
-        .whenIsNext{
-          fetch_valid := True
-          fetch_pc := fetch_pc
-        }
-    }
-    */
 
     fetch plug new Area{
       import fetch._

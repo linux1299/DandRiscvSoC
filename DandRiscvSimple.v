@@ -1,6 +1,6 @@
 // Generator : SpinalHDL v1.8.1    git head : 2a7592004363e5b40ec43e1f122ed8641cd8965b
 // Component : DandRiscvSimple
-// Git hash  : 6205594758dd138369d3892ddc5b4888e7802f52
+// Git hash  : 2233aa41e50171db47b5aa63cfae4baeb14e79d9
 
 `timescale 1ns/1ps
 
@@ -34,10 +34,12 @@ module DandRiscvSimple (
   localparam MemCtrlEnum_SW = 4'd9;
   localparam MemCtrlEnum_SD = 4'd10;
 
-  wire       [4:0]    regFileModule_1_read_ports_rs1_addr;
-  wire       [4:0]    regFileModule_1_read_ports_rs2_addr;
-  wire                regFileModule_1_read_ports_rs1_req;
-  wire                regFileModule_1_read_ports_rs2_req;
+  wire       [6:0]    gshare_predictor_1_predict_pc;
+  wire                gshare_predictor_1_train_valid;
+  wire                gshare_predictor_1_train_taken;
+  wire                gshare_predictor_1_train_mispredicted;
+  wire       [6:0]    gshare_predictor_1_train_history;
+  wire       [6:0]    gshare_predictor_1_train_pc;
   wire                iCache_1_flush;
   wire                iCache_1_next_level_cmd_ready;
   wire                iCache_1_next_level_rsp_valid;
@@ -48,6 +50,8 @@ module DandRiscvSimple (
   wire       [255:0]  dCache_1_next_level_rsp_payload_data;
   wire       [63:0]   regFileModule_1_read_ports_rs1_value;
   wire       [63:0]   regFileModule_1_read_ports_rs2_value;
+  wire                gshare_predictor_1_predict_taken;
+  wire       [6:0]    gshare_predictor_1_predict_history;
   wire                iCache_1_cpu_cmd_ready;
   wire                iCache_1_cpu_rsp_valid;
   wire       [31:0]   iCache_1_cpu_rsp_payload_data;
@@ -142,10 +146,15 @@ module DandRiscvSimple (
   wire       [63:0]   _zz_execute_ALUPlugin_pc_next_7;
   wire       [63:0]   _zz_execute_ALUPlugin_pc_next_8;
   wire       [63:0]   writeback_RD;
-  wire                memaccess_IS_LOAD;
   wire       [63:0]   memaccess_DATA_LOAD;
   wire       [63:0]   execute_MEM_WDATA;
   wire       [63:0]   execute_ALU_RESULT;
+  wire                decode_NEED_PREDICT;
+  wire                execute_BRANCH_OR_JALR;
+  wire                decode_BRANCH_OR_JALR;
+  wire                memaccess_IS_LOAD;
+  wire                execute_IS_LOAD;
+  wire                decode_IS_LOAD;
   wire       [4:0]    writeback_RD_ADDR;
   wire       [4:0]    memaccess_RD_ADDR;
   wire       [4:0]    execute_RD_ADDR;
@@ -159,23 +168,45 @@ module DandRiscvSimple (
   wire                decode_SRC2_IS_IMM;
   wire                decode_ALU_WORD;
   wire       [3:0]    decode_ALU_CTRL;
+  wire       [4:0]    execute_RS2_ADDR;
+  wire       [4:0]    decode_RS2_ADDR;
+  wire       [4:0]    execute_RS1_ADDR;
+  wire       [4:0]    decode_RS1_ADDR;
   wire       [63:0]   decode_RS2;
   wire       [63:0]   decode_RS1;
   wire       [63:0]   decode_IMM;
   wire       [31:0]   fetch_INSTRUCTION;
+  wire                fetch_LOAD_USE;
   wire       [63:0]   fetch_PC;
   wire       [63:0]   writeback_ALU_RESULT;
   wire       [63:0]   writeback_DATA_LOAD;
   wire                writeback_IS_LOAD;
   wire       [3:0]    memaccess_MEM_CTRL;
-  wire       [63:0]   memaccess_ALU_RESULT;
   wire       [63:0]   memaccess_MEM_WDATA;
+  wire                _zz_DecodePlugin_control_ports_ctrl_rs1_from_wb;
+  wire                _zz_DecodePlugin_control_ports_ctrl_rs1_from_mem;
+  wire       [4:0]    _zz_DecodePlugin_control_ports_load_use;
+  wire                _zz_DecodePlugin_control_ports_load_use_1;
+  wire                _zz_DecodePlugin_control_ports_rs1_from_wb;
+  wire       [4:0]    _zz_DecodePlugin_control_ports_rs2_from_mem;
+  wire       [4:0]    _zz_DecodePlugin_control_ports_rs1_from_mem;
+  wire       [4:0]    _zz_DecodePlugin_control_ports_rs1_from_mem_1;
+  wire                _zz_DecodePlugin_control_ports_rs1_from_mem_2;
+  wire       [63:0]   _zz_decode_to_execute_PC;
   wire                execute_ALU_WORD;
   wire       [63:0]   execute_RS2;
+  wire                execute_RS2_FROM_WB;
+  wire                execute_RS2_FROM_MEM;
   wire                execute_SRC2_IS_IMM;
   wire       [63:0]   execute_RS1;
+  wire                execute_RS1_FROM_WB;
+  wire       [63:0]   memaccess_ALU_RESULT;
+  wire                execute_RS1_FROM_MEM;
   wire       [63:0]   execute_PC;
   wire       [3:0]    execute_ALU_CTRL;
+  wire       [63:0]   _zz_execute_ALUPlugin_src1;
+  wire       [4:0]    _zz_DecodePlugin_control_ports_rs1_from_wb_1;
+  wire                _zz_DecodePlugin_control_ports_rs1_from_wb_2;
   wire       [63:0]   execute_IMM;
   wire       [31:0]   decode_INSTRUCTION;
   wire       [63:0]   decode_PC;
@@ -234,12 +265,25 @@ module DandRiscvSimple (
   wire                writeback_arbitration_isFlushed;
   wire                writeback_arbitration_isMoving;
   wire                writeback_arbitration_isFiring;
-  wire                _zz_when_InstructionFetchPlugin_l104;
+  wire                _zz_when_InstructionFetchPlugin_l97;
   wire       [63:0]   _zz_ICachePlugin_icache_access_cmd_payload_addr;
-  wire                _zz_when_InstructionFetchPlugin_l88;
+  wire                _zz_when_InstructionFetchPlugin_l81;
   wire                _zz_1;
   wire       [63:0]   _zz_ICachePlugin_icache_access_cmd_payload_addr_1;
-  wire                ControlPlugin_control_ports_hold;
+  wire                DecodePlugin_control_ports_decode_rs1_req;
+  wire                DecodePlugin_control_ports_decode_rs2_req;
+  wire       [4:0]    DecodePlugin_control_ports_decode_rs1_addr;
+  wire       [4:0]    DecodePlugin_control_ports_decode_rs2_addr;
+  wire                DecodePlugin_control_ports_rs1_from_mem;
+  wire                DecodePlugin_control_ports_rs2_from_mem;
+  wire                DecodePlugin_control_ports_rs1_from_wb;
+  wire                DecodePlugin_control_ports_rs2_from_wb;
+  wire                DecodePlugin_control_ports_load_use;
+  wire                DecodePlugin_control_ports_ctrl_rs1_from_mem;
+  wire                DecodePlugin_control_ports_ctrl_rs2_from_mem;
+  wire                DecodePlugin_control_ports_ctrl_rs1_from_wb;
+  wire                DecodePlugin_control_ports_ctrl_rs2_from_wb;
+  wire                DecodePlugin_control_ports_ctrl_load_use;
   wire                ICachePlugin_icache_access_cmd_valid;
   wire                ICachePlugin_icache_access_cmd_ready;
   wire       [63:0]   ICachePlugin_icache_access_cmd_payload_addr;
@@ -260,25 +304,32 @@ module DandRiscvSimple (
   reg        [63:0]   _zz_fetch_PC;
   reg                 _zz_ICachePlugin_icache_access_cmd_valid;
   reg        [63:0]   _zz_ICachePlugin_icache_access_cmd_payload_addr_3;
-  reg                 when_InstructionFetchPlugin_l112;
-  wire       [1:0]    _zz_when_InstructionFetchPlugin_l104_1;
-  reg        [1:0]    _zz_when_InstructionFetchPlugin_l104_2;
-  wire                when_InstructionFetchPlugin_l88;
+  reg                 when_InstructionFetchPlugin_l105;
+  wire       [1:0]    _zz_when_InstructionFetchPlugin_l97_1;
+  reg        [1:0]    _zz_when_InstructionFetchPlugin_l97_2;
+  wire                when_InstructionFetchPlugin_l81;
   wire                ICachePlugin_icache_access_cmd_isStall;
   wire                ICachePlugin_icache_access_cmd_fire_1;
+  wire                when_InstructionFetchPlugin_l97;
   wire                when_InstructionFetchPlugin_l104;
-  wire                when_InstructionFetchPlugin_l111;
-  wire                when_InstructionFetchPlugin_l124;
+  wire                when_InstructionFetchPlugin_l117;
   reg        [63:0]   decode_DecodePlugin_imm;
   wire       [63:0]   decode_DecodePlugin_rs1;
   wire       [63:0]   decode_DecodePlugin_rs2;
+  wire                decode_DecodePlugin_rs1_req;
+  wire                decode_DecodePlugin_rs2_req;
+  wire       [4:0]    decode_DecodePlugin_rs1_addr;
+  wire       [4:0]    decode_DecodePlugin_rs2_addr;
+  wire                decode_DecodePlugin_rd_wen;
+  wire       [4:0]    decode_DecodePlugin_rd_addr;
   reg        [3:0]    decode_DecodePlugin_alu_ctrl;
   wire                decode_DecodePlugin_alu_word;
   wire                decode_DecodePlugin_src2_is_imm;
   reg        [3:0]    decode_DecodePlugin_mem_ctrl;
-  wire                decode_DecodePlugin_rd_wen;
-  wire       [4:0]    decode_DecodePlugin_rd_addr;
-  wire                when_DecodePlugin_l90;
+  reg                 decode_DecodePlugin_is_load;
+  wire                decode_DecodePlugin_branch_or_jalr;
+  wire                decode_DecodePlugin_need_predict;
+  wire                when_DecodePlugin_l101;
   wire                _zz_decode_DecodePlugin_imm;
   reg        [51:0]   _zz_decode_DecodePlugin_imm_1;
   wire                _zz_decode_DecodePlugin_imm_2;
@@ -291,10 +342,10 @@ module DandRiscvSimple (
   reg        [31:0]   _zz_decode_DecodePlugin_imm_9;
   wire                _zz_decode_DecodePlugin_imm_10;
   reg        [51:0]   _zz_decode_DecodePlugin_imm_11;
-  wire                when_DecodePlugin_l92;
-  wire                when_DecodePlugin_l94;
-  wire                when_DecodePlugin_l96;
-  wire                when_DecodePlugin_l98;
+  wire                when_DecodePlugin_l103;
+  wire                when_DecodePlugin_l105;
+  wire                when_DecodePlugin_l107;
+  wire                when_DecodePlugin_l109;
   reg        [63:0]   execute_ALUPlugin_src1;
   reg        [63:0]   execute_ALUPlugin_src2;
   wire       [31:0]   execute_ALUPlugin_src1_word;
@@ -332,14 +383,14 @@ module DandRiscvSimple (
   reg        [63:0]   execute_ALUPlugin_alu_result;
   wire                execute_ALUPlugin_op_is_jump;
   wire                when_AluPlugin_l57;
-  wire                when_AluPlugin_l63;
-  wire                when_AluPlugin_l78;
-  wire                when_AluPlugin_l85;
+  wire                when_AluPlugin_l64;
+  wire                when_AluPlugin_l92;
+  wire                when_AluPlugin_l99;
   wire       [62:0]   _zz_execute_ALUPlugin_alu_result;
   wire       [62:0]   _zz_execute_ALUPlugin_alu_result_1;
-  wire                when_AluPlugin_l101;
-  wire                when_AluPlugin_l108;
   wire                when_AluPlugin_l115;
+  wire                when_AluPlugin_l122;
+  wire                when_AluPlugin_l129;
   wire                _zz_memaccess_LsuPlugin_data_lb;
   reg        [55:0]   _zz_memaccess_LsuPlugin_data_lb_1;
   wire       [63:0]   memaccess_LsuPlugin_data_lb;
@@ -356,7 +407,6 @@ module DandRiscvSimple (
   reg        [31:0]   _zz_memaccess_LsuPlugin_data_lwu;
   wire       [63:0]   memaccess_LsuPlugin_data_lwu;
   reg        [63:0]   memaccess_LsuPlugin_data_load;
-  reg                 memaccess_LsuPlugin_is_load;
   wire                _zz_memaccess_LsuPlugin_wdata_sb;
   reg        [55:0]   _zz_memaccess_LsuPlugin_wdata_sb_1;
   wire       [63:0]   memaccess_LsuPlugin_wdata_sb;
@@ -388,37 +438,47 @@ module DandRiscvSimple (
   wire                when_Pipeline_l124_5;
   reg        [63:0]   decode_to_execute_RS2;
   wire                when_Pipeline_l124_6;
-  reg        [3:0]    decode_to_execute_ALU_CTRL;
+  reg        [4:0]    decode_to_execute_RS1_ADDR;
   wire                when_Pipeline_l124_7;
-  reg                 decode_to_execute_ALU_WORD;
+  reg        [4:0]    decode_to_execute_RS2_ADDR;
   wire                when_Pipeline_l124_8;
-  reg                 decode_to_execute_SRC2_IS_IMM;
+  reg        [3:0]    decode_to_execute_ALU_CTRL;
   wire                when_Pipeline_l124_9;
-  reg        [3:0]    decode_to_execute_MEM_CTRL;
+  reg                 decode_to_execute_ALU_WORD;
   wire                when_Pipeline_l124_10;
-  reg        [3:0]    execute_to_memaccess_MEM_CTRL;
+  reg                 decode_to_execute_SRC2_IS_IMM;
   wire                when_Pipeline_l124_11;
-  reg                 decode_to_execute_RD_WEN;
+  reg        [3:0]    decode_to_execute_MEM_CTRL;
   wire                when_Pipeline_l124_12;
-  reg                 execute_to_memaccess_RD_WEN;
+  reg        [3:0]    execute_to_memaccess_MEM_CTRL;
   wire                when_Pipeline_l124_13;
-  reg                 memaccess_to_writeback_RD_WEN;
+  reg                 decode_to_execute_RD_WEN;
   wire                when_Pipeline_l124_14;
-  reg        [4:0]    decode_to_execute_RD_ADDR;
+  reg                 execute_to_memaccess_RD_WEN;
   wire                when_Pipeline_l124_15;
-  reg        [4:0]    execute_to_memaccess_RD_ADDR;
+  reg                 memaccess_to_writeback_RD_WEN;
   wire                when_Pipeline_l124_16;
-  reg        [4:0]    memaccess_to_writeback_RD_ADDR;
+  reg        [4:0]    decode_to_execute_RD_ADDR;
   wire                when_Pipeline_l124_17;
-  reg        [63:0]   execute_to_memaccess_ALU_RESULT;
+  reg        [4:0]    execute_to_memaccess_RD_ADDR;
   wire                when_Pipeline_l124_18;
-  reg        [63:0]   memaccess_to_writeback_ALU_RESULT;
+  reg        [4:0]    memaccess_to_writeback_RD_ADDR;
   wire                when_Pipeline_l124_19;
-  reg        [63:0]   execute_to_memaccess_MEM_WDATA;
+  reg                 decode_to_execute_IS_LOAD;
   wire                when_Pipeline_l124_20;
-  reg        [63:0]   memaccess_to_writeback_DATA_LOAD;
+  reg                 execute_to_memaccess_IS_LOAD;
   wire                when_Pipeline_l124_21;
   reg                 memaccess_to_writeback_IS_LOAD;
+  wire                when_Pipeline_l124_22;
+  reg                 decode_to_execute_BRANCH_OR_JALR;
+  wire                when_Pipeline_l124_23;
+  reg        [63:0]   execute_to_memaccess_ALU_RESULT;
+  wire                when_Pipeline_l124_24;
+  reg        [63:0]   memaccess_to_writeback_ALU_RESULT;
+  wire                when_Pipeline_l124_25;
+  reg        [63:0]   execute_to_memaccess_MEM_WDATA;
+  wire                when_Pipeline_l124_26;
+  reg        [63:0]   memaccess_to_writeback_DATA_LOAD;
   wire                when_Pipeline_l151;
   wire                when_Pipeline_l154;
   wire                when_Pipeline_l151_1;
@@ -629,17 +689,30 @@ module DandRiscvSimple (
   assign _zz_decode_DecodePlugin_rd_wen_3 = 7'h23;
   assign _zz_decode_DecodePlugin_rd_wen_4 = 32'hffffffff;
   RegFileModule regFileModule_1 (
-    .read_ports_rs1_value (regFileModule_1_read_ports_rs1_value[63:0]), //o
-    .read_ports_rs2_value (regFileModule_1_read_ports_rs2_value[63:0]), //o
-    .read_ports_rs1_addr  (regFileModule_1_read_ports_rs1_addr[4:0]  ), //i
-    .read_ports_rs2_addr  (regFileModule_1_read_ports_rs2_addr[4:0]  ), //i
-    .read_ports_rs1_req   (regFileModule_1_read_ports_rs1_req        ), //i
-    .read_ports_rs2_req   (regFileModule_1_read_ports_rs2_req        ), //i
-    .write_ports_rd_value (writeback_RD[63:0]                        ), //i
-    .write_ports_rd_addr  (writeback_RD_ADDR[4:0]                    ), //i
-    .write_ports_rd_wen   (writeback_RD_WEN                          ), //i
-    .clk                  (clk                                       ), //i
-    .reset                (reset                                     )  //i
+    .read_ports_rs1_value (regFileModule_1_read_ports_rs1_value[63:0]       ), //o
+    .read_ports_rs2_value (regFileModule_1_read_ports_rs2_value[63:0]       ), //o
+    .read_ports_rs1_addr  (decode_DecodePlugin_rs1_addr[4:0]                ), //i
+    .read_ports_rs2_addr  (decode_DecodePlugin_rs2_addr[4:0]                ), //i
+    .read_ports_rs1_req   (decode_DecodePlugin_rs1_req                      ), //i
+    .read_ports_rs2_req   (decode_DecodePlugin_rs2_req                      ), //i
+    .write_ports_rd_value (_zz_execute_ALUPlugin_src1[63:0]                 ), //i
+    .write_ports_rd_addr  (_zz_DecodePlugin_control_ports_rs1_from_wb_1[4:0]), //i
+    .write_ports_rd_wen   (_zz_DecodePlugin_control_ports_rs1_from_wb_2     ), //i
+    .clk                  (clk                                              ), //i
+    .reset                (reset                                            )  //i
+  );
+  gshare_predictor gshare_predictor_1 (
+    .predict_valid      (decode_NEED_PREDICT                    ), //i
+    .predict_pc         (gshare_predictor_1_predict_pc[6:0]     ), //i
+    .predict_taken      (gshare_predictor_1_predict_taken       ), //o
+    .predict_history    (gshare_predictor_1_predict_history[6:0]), //o
+    .train_valid        (gshare_predictor_1_train_valid         ), //i
+    .train_taken        (gshare_predictor_1_train_taken         ), //i
+    .train_mispredicted (gshare_predictor_1_train_mispredicted  ), //i
+    .train_history      (gshare_predictor_1_train_history[6:0]  ), //i
+    .train_pc           (gshare_predictor_1_train_pc[6:0]       ), //i
+    .clk                (clk                                    ), //i
+    .reset              (reset                                  )  //i
   );
   ICache iCache_1 (
     .flush                          (iCache_1_flush                                   ), //i
@@ -788,10 +861,15 @@ module DandRiscvSimple (
     .reset                          (reset                                           )  //i
   );
   assign writeback_RD = (writeback_IS_LOAD ? writeback_DATA_LOAD : writeback_ALU_RESULT);
-  assign memaccess_IS_LOAD = memaccess_LsuPlugin_is_load;
   assign memaccess_DATA_LOAD = memaccess_LsuPlugin_data_load;
   assign execute_MEM_WDATA = execute_RS2;
   assign execute_ALU_RESULT = execute_ALUPlugin_alu_result;
+  assign decode_NEED_PREDICT = decode_DecodePlugin_need_predict;
+  assign execute_BRANCH_OR_JALR = decode_to_execute_BRANCH_OR_JALR;
+  assign decode_BRANCH_OR_JALR = decode_DecodePlugin_branch_or_jalr;
+  assign memaccess_IS_LOAD = execute_to_memaccess_IS_LOAD;
+  assign execute_IS_LOAD = decode_to_execute_IS_LOAD;
+  assign decode_IS_LOAD = decode_DecodePlugin_is_load;
   assign writeback_RD_ADDR = memaccess_to_writeback_RD_ADDR;
   assign memaccess_RD_ADDR = execute_to_memaccess_RD_ADDR;
   assign execute_RD_ADDR = decode_to_execute_RD_ADDR;
@@ -805,23 +883,45 @@ module DandRiscvSimple (
   assign decode_SRC2_IS_IMM = decode_DecodePlugin_src2_is_imm;
   assign decode_ALU_WORD = decode_DecodePlugin_alu_word;
   assign decode_ALU_CTRL = decode_DecodePlugin_alu_ctrl;
+  assign execute_RS2_ADDR = decode_to_execute_RS2_ADDR;
+  assign decode_RS2_ADDR = decode_DecodePlugin_rs2_addr;
+  assign execute_RS1_ADDR = decode_to_execute_RS1_ADDR;
+  assign decode_RS1_ADDR = decode_DecodePlugin_rs1_addr;
   assign decode_RS2 = decode_DecodePlugin_rs2;
   assign decode_RS1 = decode_DecodePlugin_rs1;
   assign decode_IMM = decode_DecodePlugin_imm;
   assign fetch_INSTRUCTION = ICachePlugin_icache_access_rsp_payload_data;
+  assign fetch_LOAD_USE = DecodePlugin_control_ports_load_use;
   assign fetch_PC = _zz_fetch_PC;
   assign writeback_ALU_RESULT = memaccess_to_writeback_ALU_RESULT;
   assign writeback_DATA_LOAD = memaccess_to_writeback_DATA_LOAD;
   assign writeback_IS_LOAD = memaccess_to_writeback_IS_LOAD;
   assign memaccess_MEM_CTRL = execute_to_memaccess_MEM_CTRL;
-  assign memaccess_ALU_RESULT = execute_to_memaccess_ALU_RESULT;
   assign memaccess_MEM_WDATA = execute_to_memaccess_MEM_WDATA;
+  assign _zz_DecodePlugin_control_ports_ctrl_rs1_from_wb = execute_IS_LOAD;
+  assign _zz_DecodePlugin_control_ports_ctrl_rs1_from_mem = execute_BRANCH_OR_JALR;
+  assign _zz_DecodePlugin_control_ports_load_use = execute_RD_ADDR;
+  assign _zz_DecodePlugin_control_ports_load_use_1 = memaccess_IS_LOAD;
+  assign _zz_DecodePlugin_control_ports_rs1_from_wb = writeback_IS_LOAD;
+  assign _zz_DecodePlugin_control_ports_rs2_from_mem = execute_RS2_ADDR;
+  assign _zz_DecodePlugin_control_ports_rs1_from_mem = execute_RS1_ADDR;
+  assign _zz_DecodePlugin_control_ports_rs1_from_mem_1 = memaccess_RD_ADDR;
+  assign _zz_DecodePlugin_control_ports_rs1_from_mem_2 = memaccess_RD_WEN;
+  assign _zz_decode_to_execute_PC = decode_PC;
   assign execute_ALU_WORD = decode_to_execute_ALU_WORD;
   assign execute_RS2 = decode_to_execute_RS2;
+  assign execute_RS2_FROM_WB = DecodePlugin_control_ports_rs2_from_wb;
+  assign execute_RS2_FROM_MEM = DecodePlugin_control_ports_rs2_from_mem;
   assign execute_SRC2_IS_IMM = decode_to_execute_SRC2_IS_IMM;
   assign execute_RS1 = decode_to_execute_RS1;
+  assign execute_RS1_FROM_WB = DecodePlugin_control_ports_rs1_from_wb;
+  assign memaccess_ALU_RESULT = execute_to_memaccess_ALU_RESULT;
+  assign execute_RS1_FROM_MEM = DecodePlugin_control_ports_rs1_from_mem;
   assign execute_PC = decode_to_execute_PC;
   assign execute_ALU_CTRL = decode_to_execute_ALU_CTRL;
+  assign _zz_execute_ALUPlugin_src1 = writeback_RD;
+  assign _zz_DecodePlugin_control_ports_rs1_from_wb_1 = writeback_RD_ADDR;
+  assign _zz_DecodePlugin_control_ports_rs1_from_wb_2 = writeback_RD_WEN;
   assign execute_IMM = decode_to_execute_IMM;
   assign decode_INSTRUCTION = fetch_to_decode_INSTRUCTION;
   assign decode_PC = fetch_to_decode_PC;
@@ -881,18 +981,24 @@ module DandRiscvSimple (
   assign writeback_arbitration_flushIt = 1'b0;
   assign writeback_arbitration_flushNext = 1'b0;
   assign ICachePlugin_icache_access_cmd_fire = (ICachePlugin_icache_access_cmd_valid && ICachePlugin_icache_access_cmd_ready);
-  assign when_InstructionFetchPlugin_l88 = (! (ControlPlugin_control_ports_hold || _zz_when_InstructionFetchPlugin_l88));
+  assign when_InstructionFetchPlugin_l81 = (! (fetch_LOAD_USE || _zz_when_InstructionFetchPlugin_l81));
   assign ICachePlugin_icache_access_cmd_isStall = (ICachePlugin_icache_access_cmd_valid && (! ICachePlugin_icache_access_cmd_ready));
   assign ICachePlugin_icache_access_cmd_fire_1 = (ICachePlugin_icache_access_cmd_valid && ICachePlugin_icache_access_cmd_ready);
-  assign when_InstructionFetchPlugin_l104 = (_zz_when_InstructionFetchPlugin_l104 && ((_zz_when_InstructionFetchPlugin_l104_2 == 2'b10) || (_zz_when_InstructionFetchPlugin_l104_1 == 2'b10)));
-  assign when_InstructionFetchPlugin_l111 = (_zz_when_InstructionFetchPlugin_l104_1 == 2'b01);
-  assign when_InstructionFetchPlugin_l124 = (_zz_when_InstructionFetchPlugin_l104_1 == 2'b01);
+  assign when_InstructionFetchPlugin_l97 = (_zz_when_InstructionFetchPlugin_l97 && ((_zz_when_InstructionFetchPlugin_l97_2 == 2'b10) || (_zz_when_InstructionFetchPlugin_l97_1 == 2'b10)));
+  assign when_InstructionFetchPlugin_l104 = (_zz_when_InstructionFetchPlugin_l97_1 == 2'b01);
+  assign when_InstructionFetchPlugin_l117 = (_zz_when_InstructionFetchPlugin_l97_1 == 2'b01);
   assign ICachePlugin_icache_access_cmd_valid = _zz_ICachePlugin_icache_access_cmd_valid;
   assign ICachePlugin_icache_access_cmd_payload_addr = _zz_ICachePlugin_icache_access_cmd_payload_addr_2;
+  assign decode_DecodePlugin_rs1_req = (! (((decode_INSTRUCTION[6 : 0] == 7'h37) || (decode_INSTRUCTION[6 : 0] == 7'h17)) || (decode_INSTRUCTION[6 : 0] == 7'h67)));
+  assign decode_DecodePlugin_rs2_req = (! ((((decode_INSTRUCTION[6 : 0] == 7'h37) || (decode_INSTRUCTION[6 : 0] == 7'h17)) || (decode_INSTRUCTION[6 : 0] == 7'h67)) || ((((decode_INSTRUCTION[6 : 0] == 7'h13) || (decode_INSTRUCTION[6 : 0] == 7'h1b)) || (decode_INSTRUCTION[6 : 0] == 7'h03)) || (decode_INSTRUCTION[6 : 0] == 7'h67))));
+  assign decode_DecodePlugin_rs1_addr = decode_INSTRUCTION[19 : 15];
+  assign decode_DecodePlugin_rs2_addr = decode_INSTRUCTION[24 : 20];
+  assign decode_DecodePlugin_rd_addr = decode_INSTRUCTION[11 : 7];
   assign decode_DecodePlugin_alu_word = (decode_INSTRUCTION[6 : 0] == 7'h3b);
   assign decode_DecodePlugin_src2_is_imm = (((((((decode_INSTRUCTION[6 : 0] == 7'h13) || (decode_INSTRUCTION[6 : 0] == 7'h1b)) || (decode_INSTRUCTION[6 : 0] == 7'h03)) || (decode_INSTRUCTION[6 : 0] == 7'h67)) || (decode_INSTRUCTION[6 : 0] == 7'h23)) || ((decode_INSTRUCTION[6 : 0] == 7'h37) || (decode_INSTRUCTION[6 : 0] == 7'h17))) || (decode_INSTRUCTION[6 : 0] == 7'h67));
-  assign decode_DecodePlugin_rd_addr = decode_INSTRUCTION[11 : 7];
-  assign when_DecodePlugin_l90 = ((((decode_INSTRUCTION[6 : 0] == 7'h13) || (decode_INSTRUCTION[6 : 0] == 7'h1b)) || (decode_INSTRUCTION[6 : 0] == 7'h03)) || (decode_INSTRUCTION[6 : 0] == 7'h67));
+  assign decode_DecodePlugin_branch_or_jalr = ((decode_INSTRUCTION[6 : 0] == 7'h63) || ((decode_INSTRUCTION & 32'h0000707f) == 32'h00000067));
+  assign decode_DecodePlugin_need_predict = (decode_INSTRUCTION[6 : 0] == 7'h63);
+  assign when_DecodePlugin_l101 = ((((decode_INSTRUCTION[6 : 0] == 7'h13) || (decode_INSTRUCTION[6 : 0] == 7'h1b)) || (decode_INSTRUCTION[6 : 0] == 7'h03)) || (decode_INSTRUCTION[6 : 0] == 7'h67));
   assign _zz_decode_DecodePlugin_imm = decode_INSTRUCTION[31];
   always @(*) begin
     _zz_decode_DecodePlugin_imm_1[51] = _zz_decode_DecodePlugin_imm;
@@ -950,19 +1056,19 @@ module DandRiscvSimple (
   end
 
   always @(*) begin
-    if(when_DecodePlugin_l90) begin
+    if(when_DecodePlugin_l101) begin
       decode_DecodePlugin_imm = {_zz_decode_DecodePlugin_imm_1,decode_INSTRUCTION[31 : 20]};
     end else begin
-      if(when_DecodePlugin_l92) begin
+      if(when_DecodePlugin_l103) begin
         decode_DecodePlugin_imm = {_zz_decode_DecodePlugin_imm_3,{decode_INSTRUCTION[31 : 25],decode_INSTRUCTION[11 : 7]}};
       end else begin
-        if(when_DecodePlugin_l94) begin
+        if(when_DecodePlugin_l105) begin
           decode_DecodePlugin_imm = {{_zz_decode_DecodePlugin_imm_5,{{{decode_INSTRUCTION[31],decode_INSTRUCTION[7]},decode_INSTRUCTION[30 : 25]},decode_INSTRUCTION[11 : 8]}},1'b0};
         end else begin
-          if(when_DecodePlugin_l96) begin
+          if(when_DecodePlugin_l107) begin
             decode_DecodePlugin_imm = {{_zz_decode_DecodePlugin_imm_7,{{{decode_INSTRUCTION[31],decode_INSTRUCTION[19 : 12]},decode_INSTRUCTION[20]},decode_INSTRUCTION[30 : 21]}},1'b0};
           end else begin
-            if(when_DecodePlugin_l98) begin
+            if(when_DecodePlugin_l109) begin
               decode_DecodePlugin_imm = {_zz_decode_DecodePlugin_imm_9,{decode_INSTRUCTION[31 : 12],12'h0}};
             end else begin
               decode_DecodePlugin_imm = {_zz_decode_DecodePlugin_imm_11,decode_INSTRUCTION[31 : 20]};
@@ -1223,10 +1329,10 @@ module DandRiscvSimple (
     _zz_decode_DecodePlugin_imm_11[0] = _zz_decode_DecodePlugin_imm_10;
   end
 
-  assign when_DecodePlugin_l92 = (decode_INSTRUCTION[6 : 0] == 7'h23);
-  assign when_DecodePlugin_l94 = (decode_INSTRUCTION[6 : 0] == 7'h63);
-  assign when_DecodePlugin_l96 = (decode_INSTRUCTION[6 : 0] == 7'h67);
-  assign when_DecodePlugin_l98 = ((decode_INSTRUCTION[6 : 0] == 7'h37) || (decode_INSTRUCTION[6 : 0] == 7'h17));
+  assign when_DecodePlugin_l103 = (decode_INSTRUCTION[6 : 0] == 7'h23);
+  assign when_DecodePlugin_l105 = (decode_INSTRUCTION[6 : 0] == 7'h63);
+  assign when_DecodePlugin_l107 = (decode_INSTRUCTION[6 : 0] == 7'h67);
+  assign when_DecodePlugin_l109 = ((decode_INSTRUCTION[6 : 0] == 7'h37) || (decode_INSTRUCTION[6 : 0] == 7'h17));
   always @(*) begin
     casez(decode_INSTRUCTION)
       32'b0000000??????????000?????0110011, 32'b0000000??????????000?????0111011, 32'b?????????????????000?????0010011, 32'b?????????????????000?????0011011, 32'b?????????????????????????0010111, 32'b?????????????????000?????0100011, 32'b?????????????????001?????0100011, 32'b?????????????????010?????0100011, 32'b?????????????????011?????0100011 : begin
@@ -1318,13 +1424,54 @@ module DandRiscvSimple (
     endcase
   end
 
-  assign regFileModule_1_read_ports_rs1_addr = decode_INSTRUCTION[19 : 15];
-  assign regFileModule_1_read_ports_rs2_addr = decode_INSTRUCTION[24 : 20];
-  assign regFileModule_1_read_ports_rs1_req = (! (((decode_INSTRUCTION[6 : 0] == 7'h37) || (decode_INSTRUCTION[6 : 0] == 7'h17)) || (decode_INSTRUCTION[6 : 0] == 7'h67)));
-  assign regFileModule_1_read_ports_rs2_req = (! ((((decode_INSTRUCTION[6 : 0] == 7'h37) || (decode_INSTRUCTION[6 : 0] == 7'h17)) || (decode_INSTRUCTION[6 : 0] == 7'h67)) || ((((decode_INSTRUCTION[6 : 0] == 7'h13) || (decode_INSTRUCTION[6 : 0] == 7'h1b)) || (decode_INSTRUCTION[6 : 0] == 7'h03)) || (decode_INSTRUCTION[6 : 0] == 7'h67))));
+  always @(*) begin
+    casez(decode_INSTRUCTION)
+      32'b?????????????????000?????0000011 : begin
+        decode_DecodePlugin_is_load = 1'b1;
+      end
+      32'b?????????????????100?????0000011 : begin
+        decode_DecodePlugin_is_load = 1'b1;
+      end
+      32'b?????????????????001?????0000011 : begin
+        decode_DecodePlugin_is_load = 1'b1;
+      end
+      32'b?????????????????101?????0000011 : begin
+        decode_DecodePlugin_is_load = 1'b1;
+      end
+      32'b?????????????????010?????0000011 : begin
+        decode_DecodePlugin_is_load = 1'b1;
+      end
+      32'b?????????????????110?????0000011 : begin
+        decode_DecodePlugin_is_load = 1'b1;
+      end
+      32'b?????????????????011?????0000011 : begin
+        decode_DecodePlugin_is_load = 1'b1;
+      end
+      32'b?????????????????000?????0100011 : begin
+        decode_DecodePlugin_is_load = 1'b0;
+      end
+      32'b?????????????????001?????0100011 : begin
+        decode_DecodePlugin_is_load = 1'b0;
+      end
+      32'b?????????????????010?????0100011 : begin
+        decode_DecodePlugin_is_load = 1'b0;
+      end
+      32'b?????????????????011?????0100011 : begin
+        decode_DecodePlugin_is_load = 1'b0;
+      end
+      default : begin
+        decode_DecodePlugin_is_load = 1'b0;
+      end
+    endcase
+  end
+
   assign decode_DecodePlugin_rs1 = regFileModule_1_read_ports_rs1_value;
   assign decode_DecodePlugin_rs2 = regFileModule_1_read_ports_rs2_value;
   assign decode_DecodePlugin_rd_wen = (decode_arbitration_isValid && ((((((! (_zz_decode_DecodePlugin_rd_wen == _zz_decode_DecodePlugin_rd_wen_1)) && (! (_zz_decode_DecodePlugin_rd_wen_2 == _zz_decode_DecodePlugin_rd_wen_3))) && (! ((decode_INSTRUCTION & _zz_decode_DecodePlugin_rd_wen_4) == 32'h00100073))) && (! ((decode_INSTRUCTION & 32'hffffffff) == 32'h00000073))) && (! ((decode_INSTRUCTION & 32'hffffffff) == 32'h30200073))) && (! (decode_INSTRUCTION[6 : 0] == 7'h0f))));
+  assign DecodePlugin_control_ports_decode_rs1_req = decode_DecodePlugin_rs1_req;
+  assign DecodePlugin_control_ports_decode_rs2_req = decode_DecodePlugin_rs2_req;
+  assign DecodePlugin_control_ports_decode_rs1_addr = decode_DecodePlugin_rs1_addr;
+  assign DecodePlugin_control_ports_decode_rs2_addr = decode_DecodePlugin_rs2_addr;
   assign execute_ALUPlugin_src1_word = execute_ALUPlugin_src1[31 : 0];
   assign execute_ALUPlugin_src2_word = execute_ALUPlugin_src2[31 : 0];
   assign execute_ALUPlugin_shift_bits = execute_ALUPlugin_src2[5 : 0];
@@ -1536,12 +1683,20 @@ module DandRiscvSimple (
     end
   end
 
-  assign when_AluPlugin_l63 = ((execute_ALU_CTRL == AluCtrlEnum_AUIPC) || execute_ALUPlugin_op_is_jump);
+  assign when_AluPlugin_l64 = ((execute_ALU_CTRL == AluCtrlEnum_AUIPC) || execute_ALUPlugin_op_is_jump);
   always @(*) begin
-    if(when_AluPlugin_l63) begin
+    if(when_AluPlugin_l64) begin
       execute_ALUPlugin_src1 = execute_PC;
     end else begin
-      execute_ALUPlugin_src1 = execute_RS1;
+      if(execute_RS1_FROM_MEM) begin
+        execute_ALUPlugin_src1 = memaccess_ALU_RESULT;
+      end else begin
+        if(execute_RS1_FROM_WB) begin
+          execute_ALUPlugin_src1 = _zz_execute_ALUPlugin_src1;
+        end else begin
+          execute_ALUPlugin_src1 = execute_RS1;
+        end
+      end
     end
   end
 
@@ -1552,21 +1707,29 @@ module DandRiscvSimple (
       if(execute_ALUPlugin_op_is_jump) begin
         execute_ALUPlugin_src2 = 64'h0000000000000004;
       end else begin
-        execute_ALUPlugin_src2 = execute_RS2;
+        if(execute_RS2_FROM_MEM) begin
+          execute_ALUPlugin_src2 = memaccess_ALU_RESULT;
+        end else begin
+          if(execute_RS2_FROM_WB) begin
+            execute_ALUPlugin_src2 = _zz_execute_ALUPlugin_src1;
+          end else begin
+            execute_ALUPlugin_src2 = execute_RS2;
+          end
+        end
       end
     end
   end
 
-  assign when_AluPlugin_l78 = (execute_ALU_WORD == 1'b1);
+  assign when_AluPlugin_l92 = (execute_ALU_WORD == 1'b1);
   always @(*) begin
     if((execute_ALU_CTRL == AluCtrlEnum_ADD) || (execute_ALU_CTRL == AluCtrlEnum_AUIPC)) begin
-        if(when_AluPlugin_l78) begin
+        if(when_AluPlugin_l92) begin
           execute_ALUPlugin_alu_result = execute_ALUPlugin_addw_result;
         end else begin
           execute_ALUPlugin_alu_result = execute_ALUPlugin_add_result;
         end
     end else if((execute_ALU_CTRL == AluCtrlEnum_SUB)) begin
-        if(when_AluPlugin_l85) begin
+        if(when_AluPlugin_l99) begin
           execute_ALUPlugin_alu_result = execute_ALUPlugin_subw_result;
         end else begin
           execute_ALUPlugin_alu_result = execute_ALUPlugin_sub_result;
@@ -1578,19 +1741,19 @@ module DandRiscvSimple (
     end else if((execute_ALU_CTRL == AluCtrlEnum_XOR_1)) begin
         execute_ALUPlugin_alu_result = execute_ALUPlugin_xor_result;
     end else if((execute_ALU_CTRL == AluCtrlEnum_SLL_1)) begin
-        if(when_AluPlugin_l101) begin
+        if(when_AluPlugin_l115) begin
           execute_ALUPlugin_alu_result = execute_ALUPlugin_sllw_result;
         end else begin
           execute_ALUPlugin_alu_result = execute_ALUPlugin_sll_result;
         end
     end else if((execute_ALU_CTRL == AluCtrlEnum_SRL_1)) begin
-        if(when_AluPlugin_l108) begin
+        if(when_AluPlugin_l122) begin
           execute_ALUPlugin_alu_result = execute_ALUPlugin_srlw_result;
         end else begin
           execute_ALUPlugin_alu_result = execute_ALUPlugin_srl_result;
         end
     end else if((execute_ALU_CTRL == AluCtrlEnum_SRA_1)) begin
-        if(when_AluPlugin_l115) begin
+        if(when_AluPlugin_l129) begin
           execute_ALUPlugin_alu_result = execute_ALUPlugin_sraw_result;
         end else begin
           execute_ALUPlugin_alu_result = execute_ALUPlugin_sra_result;
@@ -1606,13 +1769,23 @@ module DandRiscvSimple (
     end
   end
 
-  assign when_AluPlugin_l85 = (execute_ALU_WORD == 1'b1);
+  assign when_AluPlugin_l99 = (execute_ALU_WORD == 1'b1);
   assign _zz_execute_ALUPlugin_alu_result[62 : 0] = 63'h0;
   assign _zz_execute_ALUPlugin_alu_result_1[62 : 0] = 63'h0;
-  assign when_AluPlugin_l101 = (execute_ALU_WORD == 1'b1);
-  assign when_AluPlugin_l108 = (execute_ALU_WORD == 1'b1);
   assign when_AluPlugin_l115 = (execute_ALU_WORD == 1'b1);
-  assign ControlPlugin_control_ports_hold = 1'b0;
+  assign when_AluPlugin_l122 = (execute_ALU_WORD == 1'b1);
+  assign when_AluPlugin_l129 = (execute_ALU_WORD == 1'b1);
+  assign gshare_predictor_1_predict_pc = _zz_decode_to_execute_PC[6 : 0];
+  assign DecodePlugin_control_ports_rs1_from_mem = ((_zz_DecodePlugin_control_ports_rs1_from_mem_2 && (_zz_DecodePlugin_control_ports_rs1_from_mem_1 != 5'h0)) && (_zz_DecodePlugin_control_ports_rs1_from_mem_1 == _zz_DecodePlugin_control_ports_rs1_from_mem));
+  assign DecodePlugin_control_ports_rs2_from_mem = ((_zz_DecodePlugin_control_ports_rs1_from_mem_2 && (_zz_DecodePlugin_control_ports_rs1_from_mem_1 != 5'h0)) && (_zz_DecodePlugin_control_ports_rs1_from_mem_1 == _zz_DecodePlugin_control_ports_rs2_from_mem));
+  assign DecodePlugin_control_ports_rs1_from_wb = (((_zz_DecodePlugin_control_ports_rs1_from_wb_2 && (_zz_DecodePlugin_control_ports_rs1_from_wb_1 != 5'h0)) && (_zz_DecodePlugin_control_ports_rs1_from_wb_1 == _zz_DecodePlugin_control_ports_rs1_from_mem)) && ((_zz_DecodePlugin_control_ports_rs1_from_mem_1 != _zz_DecodePlugin_control_ports_rs1_from_mem) || _zz_DecodePlugin_control_ports_rs1_from_wb));
+  assign DecodePlugin_control_ports_rs2_from_wb = (((_zz_DecodePlugin_control_ports_rs1_from_wb_2 && (_zz_DecodePlugin_control_ports_rs1_from_wb_1 != 5'h0)) && (_zz_DecodePlugin_control_ports_rs1_from_wb_1 == _zz_DecodePlugin_control_ports_rs2_from_mem)) && ((_zz_DecodePlugin_control_ports_rs1_from_mem_1 != _zz_DecodePlugin_control_ports_rs2_from_mem) || _zz_DecodePlugin_control_ports_rs1_from_wb));
+  assign DecodePlugin_control_ports_load_use = (_zz_DecodePlugin_control_ports_load_use_1 && ((DecodePlugin_control_ports_decode_rs1_req && (DecodePlugin_control_ports_decode_rs1_addr == _zz_DecodePlugin_control_ports_load_use)) || (DecodePlugin_control_ports_decode_rs2_req && (DecodePlugin_control_ports_decode_rs2_addr == _zz_DecodePlugin_control_ports_load_use))));
+  assign DecodePlugin_control_ports_ctrl_rs1_from_mem = (((_zz_DecodePlugin_control_ports_ctrl_rs1_from_mem && _zz_DecodePlugin_control_ports_rs1_from_mem_2) && (_zz_DecodePlugin_control_ports_rs1_from_mem_1 != 5'h0)) && (_zz_DecodePlugin_control_ports_rs1_from_mem_1 == _zz_DecodePlugin_control_ports_rs1_from_mem));
+  assign DecodePlugin_control_ports_ctrl_rs2_from_mem = (((_zz_DecodePlugin_control_ports_ctrl_rs1_from_mem && _zz_DecodePlugin_control_ports_rs1_from_mem_2) && (_zz_DecodePlugin_control_ports_rs1_from_mem_1 != 5'h0)) && (_zz_DecodePlugin_control_ports_rs1_from_mem_1 == _zz_DecodePlugin_control_ports_rs2_from_mem));
+  assign DecodePlugin_control_ports_ctrl_rs1_from_wb = ((((_zz_DecodePlugin_control_ports_ctrl_rs1_from_mem && _zz_DecodePlugin_control_ports_rs1_from_wb_2) && (_zz_DecodePlugin_control_ports_rs1_from_wb_1 != 5'h0)) && (_zz_DecodePlugin_control_ports_rs1_from_wb_1 == _zz_DecodePlugin_control_ports_rs1_from_mem)) && ((_zz_DecodePlugin_control_ports_rs1_from_mem_1 != _zz_DecodePlugin_control_ports_rs1_from_mem) || _zz_DecodePlugin_control_ports_ctrl_rs1_from_wb));
+  assign DecodePlugin_control_ports_ctrl_rs2_from_wb = ((((_zz_DecodePlugin_control_ports_ctrl_rs1_from_mem && _zz_DecodePlugin_control_ports_rs1_from_wb_2) && (_zz_DecodePlugin_control_ports_rs1_from_wb_1 != 5'h0)) && (_zz_DecodePlugin_control_ports_rs1_from_wb_1 == _zz_DecodePlugin_control_ports_rs2_from_mem)) && ((_zz_DecodePlugin_control_ports_rs1_from_mem_1 != _zz_DecodePlugin_control_ports_rs2_from_mem) || _zz_DecodePlugin_control_ports_ctrl_rs1_from_wb));
+  assign DecodePlugin_control_ports_ctrl_load_use = ((_zz_DecodePlugin_control_ports_ctrl_rs1_from_mem && _zz_DecodePlugin_control_ports_load_use_1) && ((_zz_DecodePlugin_control_ports_rs1_from_mem == _zz_DecodePlugin_control_ports_rs1_from_mem_1) || (_zz_DecodePlugin_control_ports_rs2_from_mem == _zz_DecodePlugin_control_ports_rs1_from_mem_1)));
   assign _zz_memaccess_LsuPlugin_data_lb = DCachePlugin_dcache_access_rsp_payload_data[7];
   always @(*) begin
     _zz_memaccess_LsuPlugin_data_lb_1[55] = _zz_memaccess_LsuPlugin_data_lb;
@@ -1944,24 +2117,6 @@ module DandRiscvSimple (
   end
 
   always @(*) begin
-    if((memaccess_MEM_CTRL == MemCtrlEnum_LB)) begin
-        memaccess_LsuPlugin_is_load = 1'b1;
-    end else if((memaccess_MEM_CTRL == MemCtrlEnum_LBU)) begin
-        memaccess_LsuPlugin_is_load = 1'b1;
-    end else if((memaccess_MEM_CTRL == MemCtrlEnum_LH)) begin
-        memaccess_LsuPlugin_is_load = 1'b1;
-    end else if((memaccess_MEM_CTRL == MemCtrlEnum_LHU)) begin
-        memaccess_LsuPlugin_is_load = 1'b1;
-    end else if((memaccess_MEM_CTRL == MemCtrlEnum_LW)) begin
-        memaccess_LsuPlugin_is_load = 1'b1;
-    end else if((memaccess_MEM_CTRL == MemCtrlEnum_LWU)) begin
-        memaccess_LsuPlugin_is_load = 1'b1;
-    end else begin
-        memaccess_LsuPlugin_is_load = 1'b0;
-    end
-  end
-
-  always @(*) begin
     if((memaccess_MEM_CTRL == MemCtrlEnum_SB)) begin
         memaccess_LsuPlugin_wen_dcache = 1'b1;
     end else if((memaccess_MEM_CTRL == MemCtrlEnum_SH)) begin
@@ -2042,18 +2197,23 @@ module DandRiscvSimple (
   assign when_Pipeline_l124_7 = (! execute_arbitration_isStuck);
   assign when_Pipeline_l124_8 = (! execute_arbitration_isStuck);
   assign when_Pipeline_l124_9 = (! execute_arbitration_isStuck);
-  assign when_Pipeline_l124_10 = (! memaccess_arbitration_isStuck);
+  assign when_Pipeline_l124_10 = (! execute_arbitration_isStuck);
   assign when_Pipeline_l124_11 = (! execute_arbitration_isStuck);
   assign when_Pipeline_l124_12 = (! memaccess_arbitration_isStuck);
-  assign when_Pipeline_l124_13 = (! writeback_arbitration_isStuck);
-  assign when_Pipeline_l124_14 = (! execute_arbitration_isStuck);
-  assign when_Pipeline_l124_15 = (! memaccess_arbitration_isStuck);
-  assign when_Pipeline_l124_16 = (! writeback_arbitration_isStuck);
+  assign when_Pipeline_l124_13 = (! execute_arbitration_isStuck);
+  assign when_Pipeline_l124_14 = (! memaccess_arbitration_isStuck);
+  assign when_Pipeline_l124_15 = (! writeback_arbitration_isStuck);
+  assign when_Pipeline_l124_16 = (! execute_arbitration_isStuck);
   assign when_Pipeline_l124_17 = (! memaccess_arbitration_isStuck);
   assign when_Pipeline_l124_18 = (! writeback_arbitration_isStuck);
-  assign when_Pipeline_l124_19 = (! memaccess_arbitration_isStuck);
-  assign when_Pipeline_l124_20 = (! writeback_arbitration_isStuck);
+  assign when_Pipeline_l124_19 = (! execute_arbitration_isStuck);
+  assign when_Pipeline_l124_20 = (! memaccess_arbitration_isStuck);
   assign when_Pipeline_l124_21 = (! writeback_arbitration_isStuck);
+  assign when_Pipeline_l124_22 = (! execute_arbitration_isStuck);
+  assign when_Pipeline_l124_23 = (! memaccess_arbitration_isStuck);
+  assign when_Pipeline_l124_24 = (! writeback_arbitration_isStuck);
+  assign when_Pipeline_l124_25 = (! memaccess_arbitration_isStuck);
+  assign when_Pipeline_l124_26 = (! writeback_arbitration_isStuck);
   assign fetch_arbitration_isFlushed = (({writeback_arbitration_flushNext,{memaccess_arbitration_flushNext,{execute_arbitration_flushNext,decode_arbitration_flushNext}}} != 4'b0000) || ({writeback_arbitration_flushIt,{memaccess_arbitration_flushIt,{execute_arbitration_flushIt,{decode_arbitration_flushIt,fetch_arbitration_flushIt}}}} != 5'h0));
   assign decode_arbitration_isFlushed = (({writeback_arbitration_flushNext,{memaccess_arbitration_flushNext,execute_arbitration_flushNext}} != 3'b000) || ({writeback_arbitration_flushIt,{memaccess_arbitration_flushIt,{execute_arbitration_flushIt,decode_arbitration_flushIt}}} != 4'b0000));
   assign execute_arbitration_isFlushed = (({writeback_arbitration_flushNext,memaccess_arbitration_flushNext} != 2'b00) || ({writeback_arbitration_flushIt,{memaccess_arbitration_flushIt,execute_arbitration_flushIt}} != 3'b000));
@@ -2092,46 +2252,46 @@ module DandRiscvSimple (
       _zz_ICachePlugin_icache_access_cmd_payload_addr_2 <= 64'h0000000080000000;
       _zz_ICachePlugin_icache_access_cmd_valid <= 1'b0;
       _zz_ICachePlugin_icache_access_cmd_payload_addr_3 <= 64'h0;
-      when_InstructionFetchPlugin_l112 <= 1'b0;
-      _zz_when_InstructionFetchPlugin_l104_2 <= 2'b00;
+      when_InstructionFetchPlugin_l105 <= 1'b0;
+      _zz_when_InstructionFetchPlugin_l97_2 <= 2'b00;
       decode_arbitration_isValid <= 1'b0;
       execute_arbitration_isValid <= 1'b0;
       memaccess_arbitration_isValid <= 1'b0;
       writeback_arbitration_isValid <= 1'b0;
     end else begin
-      _zz_when_InstructionFetchPlugin_l104_2 <= _zz_when_InstructionFetchPlugin_l104_1;
-      case(_zz_when_InstructionFetchPlugin_l104_2)
+      _zz_when_InstructionFetchPlugin_l97_2 <= _zz_when_InstructionFetchPlugin_l97_1;
+      case(_zz_when_InstructionFetchPlugin_l97_2)
         2'b00 : begin
-          if(when_InstructionFetchPlugin_l88) begin
-            _zz_when_InstructionFetchPlugin_l104_2 <= 2'b01;
+          if(when_InstructionFetchPlugin_l81) begin
+            _zz_when_InstructionFetchPlugin_l97_2 <= 2'b01;
           end
         end
         2'b01 : begin
           if(ICachePlugin_icache_access_cmd_isStall) begin
-            _zz_when_InstructionFetchPlugin_l104_2 <= 2'b10;
+            _zz_when_InstructionFetchPlugin_l97_2 <= 2'b10;
           end
         end
         2'b10 : begin
           if(ICachePlugin_icache_access_cmd_fire_1) begin
-            _zz_when_InstructionFetchPlugin_l104_2 <= 2'b01;
+            _zz_when_InstructionFetchPlugin_l97_2 <= 2'b01;
           end
         end
         default : begin
         end
       endcase
-      if(when_InstructionFetchPlugin_l104) begin
-        when_InstructionFetchPlugin_l112 <= 1'b1;
+      if(when_InstructionFetchPlugin_l97) begin
+        when_InstructionFetchPlugin_l105 <= 1'b1;
         _zz_ICachePlugin_icache_access_cmd_payload_addr_3 <= _zz_ICachePlugin_icache_access_cmd_payload_addr;
       end else begin
         if(ICachePlugin_icache_access_rsp_valid) begin
-          when_InstructionFetchPlugin_l112 <= 1'b0;
+          when_InstructionFetchPlugin_l105 <= 1'b0;
         end
       end
-      if(when_InstructionFetchPlugin_l111) begin
-        if(when_InstructionFetchPlugin_l112) begin
+      if(when_InstructionFetchPlugin_l104) begin
+        if(when_InstructionFetchPlugin_l105) begin
           _zz_ICachePlugin_icache_access_cmd_payload_addr_2 <= _zz_ICachePlugin_icache_access_cmd_payload_addr_3;
         end
-        if(_zz_when_InstructionFetchPlugin_l104) begin
+        if(_zz_when_InstructionFetchPlugin_l97) begin
           _zz_ICachePlugin_icache_access_cmd_payload_addr_2 <= _zz_ICachePlugin_icache_access_cmd_payload_addr;
         end else begin
           if(_zz_1) begin
@@ -2141,7 +2301,7 @@ module DandRiscvSimple (
           end
         end
       end
-      if(when_InstructionFetchPlugin_l124) begin
+      if(when_InstructionFetchPlugin_l117) begin
         _zz_ICachePlugin_icache_access_cmd_valid <= 1'b1;
       end
       if(when_Pipeline_l151) begin
@@ -2179,7 +2339,7 @@ module DandRiscvSimple (
       fetch_to_decode_PC <= fetch_PC;
     end
     if(when_Pipeline_l124_1) begin
-      decode_to_execute_PC <= decode_PC;
+      decode_to_execute_PC <= _zz_decode_to_execute_PC;
     end
     if(when_Pipeline_l124_2) begin
       fetch_to_decode_INSTRUCTION <= fetch_INSTRUCTION;
@@ -2194,52 +2354,67 @@ module DandRiscvSimple (
       decode_to_execute_RS2 <= decode_RS2;
     end
     if(when_Pipeline_l124_6) begin
-      decode_to_execute_ALU_CTRL <= decode_ALU_CTRL;
+      decode_to_execute_RS1_ADDR <= decode_RS1_ADDR;
     end
     if(when_Pipeline_l124_7) begin
-      decode_to_execute_ALU_WORD <= decode_ALU_WORD;
+      decode_to_execute_RS2_ADDR <= decode_RS2_ADDR;
     end
     if(when_Pipeline_l124_8) begin
-      decode_to_execute_SRC2_IS_IMM <= decode_SRC2_IS_IMM;
+      decode_to_execute_ALU_CTRL <= decode_ALU_CTRL;
     end
     if(when_Pipeline_l124_9) begin
-      decode_to_execute_MEM_CTRL <= decode_MEM_CTRL;
+      decode_to_execute_ALU_WORD <= decode_ALU_WORD;
     end
     if(when_Pipeline_l124_10) begin
-      execute_to_memaccess_MEM_CTRL <= execute_MEM_CTRL;
+      decode_to_execute_SRC2_IS_IMM <= decode_SRC2_IS_IMM;
     end
     if(when_Pipeline_l124_11) begin
-      decode_to_execute_RD_WEN <= decode_RD_WEN;
+      decode_to_execute_MEM_CTRL <= decode_MEM_CTRL;
     end
     if(when_Pipeline_l124_12) begin
-      execute_to_memaccess_RD_WEN <= execute_RD_WEN;
+      execute_to_memaccess_MEM_CTRL <= execute_MEM_CTRL;
     end
     if(when_Pipeline_l124_13) begin
-      memaccess_to_writeback_RD_WEN <= memaccess_RD_WEN;
+      decode_to_execute_RD_WEN <= decode_RD_WEN;
     end
     if(when_Pipeline_l124_14) begin
-      decode_to_execute_RD_ADDR <= decode_RD_ADDR;
+      execute_to_memaccess_RD_WEN <= execute_RD_WEN;
     end
     if(when_Pipeline_l124_15) begin
-      execute_to_memaccess_RD_ADDR <= execute_RD_ADDR;
+      memaccess_to_writeback_RD_WEN <= _zz_DecodePlugin_control_ports_rs1_from_mem_2;
     end
     if(when_Pipeline_l124_16) begin
-      memaccess_to_writeback_RD_ADDR <= memaccess_RD_ADDR;
+      decode_to_execute_RD_ADDR <= decode_RD_ADDR;
     end
     if(when_Pipeline_l124_17) begin
-      execute_to_memaccess_ALU_RESULT <= execute_ALU_RESULT;
+      execute_to_memaccess_RD_ADDR <= _zz_DecodePlugin_control_ports_load_use;
     end
     if(when_Pipeline_l124_18) begin
-      memaccess_to_writeback_ALU_RESULT <= memaccess_ALU_RESULT;
+      memaccess_to_writeback_RD_ADDR <= _zz_DecodePlugin_control_ports_rs1_from_mem_1;
     end
     if(when_Pipeline_l124_19) begin
-      execute_to_memaccess_MEM_WDATA <= execute_MEM_WDATA;
+      decode_to_execute_IS_LOAD <= decode_IS_LOAD;
     end
     if(when_Pipeline_l124_20) begin
-      memaccess_to_writeback_DATA_LOAD <= memaccess_DATA_LOAD;
+      execute_to_memaccess_IS_LOAD <= _zz_DecodePlugin_control_ports_ctrl_rs1_from_wb;
     end
     if(when_Pipeline_l124_21) begin
-      memaccess_to_writeback_IS_LOAD <= memaccess_IS_LOAD;
+      memaccess_to_writeback_IS_LOAD <= _zz_DecodePlugin_control_ports_load_use_1;
+    end
+    if(when_Pipeline_l124_22) begin
+      decode_to_execute_BRANCH_OR_JALR <= decode_BRANCH_OR_JALR;
+    end
+    if(when_Pipeline_l124_23) begin
+      execute_to_memaccess_ALU_RESULT <= execute_ALU_RESULT;
+    end
+    if(when_Pipeline_l124_24) begin
+      memaccess_to_writeback_ALU_RESULT <= memaccess_ALU_RESULT;
+    end
+    if(when_Pipeline_l124_25) begin
+      execute_to_memaccess_MEM_WDATA <= execute_MEM_WDATA;
+    end
+    if(when_Pipeline_l124_26) begin
+      memaccess_to_writeback_DATA_LOAD <= memaccess_DATA_LOAD;
     end
   end
 
@@ -8278,6 +8453,3931 @@ module ICache (
           if(when_ICache_l194_3) begin
             cpu_cmd_ready_1 <= 1'b1;
           end
+        end
+      end
+    end
+  end
+
+
+endmodule
+
+module gshare_predictor (
+  input               predict_valid,
+  input      [6:0]    predict_pc,
+  output              predict_taken,
+  output     [6:0]    predict_history,
+  input               train_valid,
+  input               train_taken,
+  input               train_mispredicted,
+  input      [6:0]    train_history,
+  input      [6:0]    train_pc,
+  input               clk,
+  input               reset
+);
+
+  reg        [1:0]    _zz_switch_BPUPlugin_l31;
+  reg        [1:0]    _zz_predict_taken_tmp;
+  reg        [6:0]    global_branch_history;
+  reg        [1:0]    PHT_regfile_0;
+  reg        [1:0]    PHT_regfile_1;
+  reg        [1:0]    PHT_regfile_2;
+  reg        [1:0]    PHT_regfile_3;
+  reg        [1:0]    PHT_regfile_4;
+  reg        [1:0]    PHT_regfile_5;
+  reg        [1:0]    PHT_regfile_6;
+  reg        [1:0]    PHT_regfile_7;
+  reg        [1:0]    PHT_regfile_8;
+  reg        [1:0]    PHT_regfile_9;
+  reg        [1:0]    PHT_regfile_10;
+  reg        [1:0]    PHT_regfile_11;
+  reg        [1:0]    PHT_regfile_12;
+  reg        [1:0]    PHT_regfile_13;
+  reg        [1:0]    PHT_regfile_14;
+  reg        [1:0]    PHT_regfile_15;
+  reg        [1:0]    PHT_regfile_16;
+  reg        [1:0]    PHT_regfile_17;
+  reg        [1:0]    PHT_regfile_18;
+  reg        [1:0]    PHT_regfile_19;
+  reg        [1:0]    PHT_regfile_20;
+  reg        [1:0]    PHT_regfile_21;
+  reg        [1:0]    PHT_regfile_22;
+  reg        [1:0]    PHT_regfile_23;
+  reg        [1:0]    PHT_regfile_24;
+  reg        [1:0]    PHT_regfile_25;
+  reg        [1:0]    PHT_regfile_26;
+  reg        [1:0]    PHT_regfile_27;
+  reg        [1:0]    PHT_regfile_28;
+  reg        [1:0]    PHT_regfile_29;
+  reg        [1:0]    PHT_regfile_30;
+  reg        [1:0]    PHT_regfile_31;
+  reg        [1:0]    PHT_regfile_32;
+  reg        [1:0]    PHT_regfile_33;
+  reg        [1:0]    PHT_regfile_34;
+  reg        [1:0]    PHT_regfile_35;
+  reg        [1:0]    PHT_regfile_36;
+  reg        [1:0]    PHT_regfile_37;
+  reg        [1:0]    PHT_regfile_38;
+  reg        [1:0]    PHT_regfile_39;
+  reg        [1:0]    PHT_regfile_40;
+  reg        [1:0]    PHT_regfile_41;
+  reg        [1:0]    PHT_regfile_42;
+  reg        [1:0]    PHT_regfile_43;
+  reg        [1:0]    PHT_regfile_44;
+  reg        [1:0]    PHT_regfile_45;
+  reg        [1:0]    PHT_regfile_46;
+  reg        [1:0]    PHT_regfile_47;
+  reg        [1:0]    PHT_regfile_48;
+  reg        [1:0]    PHT_regfile_49;
+  reg        [1:0]    PHT_regfile_50;
+  reg        [1:0]    PHT_regfile_51;
+  reg        [1:0]    PHT_regfile_52;
+  reg        [1:0]    PHT_regfile_53;
+  reg        [1:0]    PHT_regfile_54;
+  reg        [1:0]    PHT_regfile_55;
+  reg        [1:0]    PHT_regfile_56;
+  reg        [1:0]    PHT_regfile_57;
+  reg        [1:0]    PHT_regfile_58;
+  reg        [1:0]    PHT_regfile_59;
+  reg        [1:0]    PHT_regfile_60;
+  reg        [1:0]    PHT_regfile_61;
+  reg        [1:0]    PHT_regfile_62;
+  reg        [1:0]    PHT_regfile_63;
+  reg        [1:0]    PHT_regfile_64;
+  reg        [1:0]    PHT_regfile_65;
+  reg        [1:0]    PHT_regfile_66;
+  reg        [1:0]    PHT_regfile_67;
+  reg        [1:0]    PHT_regfile_68;
+  reg        [1:0]    PHT_regfile_69;
+  reg        [1:0]    PHT_regfile_70;
+  reg        [1:0]    PHT_regfile_71;
+  reg        [1:0]    PHT_regfile_72;
+  reg        [1:0]    PHT_regfile_73;
+  reg        [1:0]    PHT_regfile_74;
+  reg        [1:0]    PHT_regfile_75;
+  reg        [1:0]    PHT_regfile_76;
+  reg        [1:0]    PHT_regfile_77;
+  reg        [1:0]    PHT_regfile_78;
+  reg        [1:0]    PHT_regfile_79;
+  reg        [1:0]    PHT_regfile_80;
+  reg        [1:0]    PHT_regfile_81;
+  reg        [1:0]    PHT_regfile_82;
+  reg        [1:0]    PHT_regfile_83;
+  reg        [1:0]    PHT_regfile_84;
+  reg        [1:0]    PHT_regfile_85;
+  reg        [1:0]    PHT_regfile_86;
+  reg        [1:0]    PHT_regfile_87;
+  reg        [1:0]    PHT_regfile_88;
+  reg        [1:0]    PHT_regfile_89;
+  reg        [1:0]    PHT_regfile_90;
+  reg        [1:0]    PHT_regfile_91;
+  reg        [1:0]    PHT_regfile_92;
+  reg        [1:0]    PHT_regfile_93;
+  reg        [1:0]    PHT_regfile_94;
+  reg        [1:0]    PHT_regfile_95;
+  reg        [1:0]    PHT_regfile_96;
+  reg        [1:0]    PHT_regfile_97;
+  reg        [1:0]    PHT_regfile_98;
+  reg        [1:0]    PHT_regfile_99;
+  reg        [1:0]    PHT_regfile_100;
+  reg        [1:0]    PHT_regfile_101;
+  reg        [1:0]    PHT_regfile_102;
+  reg        [1:0]    PHT_regfile_103;
+  reg        [1:0]    PHT_regfile_104;
+  reg        [1:0]    PHT_regfile_105;
+  reg        [1:0]    PHT_regfile_106;
+  reg        [1:0]    PHT_regfile_107;
+  reg        [1:0]    PHT_regfile_108;
+  reg        [1:0]    PHT_regfile_109;
+  reg        [1:0]    PHT_regfile_110;
+  reg        [1:0]    PHT_regfile_111;
+  reg        [1:0]    PHT_regfile_112;
+  reg        [1:0]    PHT_regfile_113;
+  reg        [1:0]    PHT_regfile_114;
+  reg        [1:0]    PHT_regfile_115;
+  reg        [1:0]    PHT_regfile_116;
+  reg        [1:0]    PHT_regfile_117;
+  reg        [1:0]    PHT_regfile_118;
+  reg        [1:0]    PHT_regfile_119;
+  reg        [1:0]    PHT_regfile_120;
+  reg        [1:0]    PHT_regfile_121;
+  reg        [1:0]    PHT_regfile_122;
+  reg        [1:0]    PHT_regfile_123;
+  reg        [1:0]    PHT_regfile_124;
+  reg        [1:0]    PHT_regfile_125;
+  reg        [1:0]    PHT_regfile_126;
+  reg        [1:0]    PHT_regfile_127;
+  wire       [6:0]    predict_index;
+  wire       [6:0]    train_index;
+  wire       [1:0]    switch_BPUPlugin_l31;
+  wire       [127:0]  _zz_1;
+  wire                _zz_2;
+  wire                _zz_3;
+  wire                _zz_4;
+  wire                _zz_5;
+  wire                _zz_6;
+  wire                _zz_7;
+  wire                _zz_8;
+  wire                _zz_9;
+  wire                _zz_10;
+  wire                _zz_11;
+  wire                _zz_12;
+  wire                _zz_13;
+  wire                _zz_14;
+  wire                _zz_15;
+  wire                _zz_16;
+  wire                _zz_17;
+  wire                _zz_18;
+  wire                _zz_19;
+  wire                _zz_20;
+  wire                _zz_21;
+  wire                _zz_22;
+  wire                _zz_23;
+  wire                _zz_24;
+  wire                _zz_25;
+  wire                _zz_26;
+  wire                _zz_27;
+  wire                _zz_28;
+  wire                _zz_29;
+  wire                _zz_30;
+  wire                _zz_31;
+  wire                _zz_32;
+  wire                _zz_33;
+  wire                _zz_34;
+  wire                _zz_35;
+  wire                _zz_36;
+  wire                _zz_37;
+  wire                _zz_38;
+  wire                _zz_39;
+  wire                _zz_40;
+  wire                _zz_41;
+  wire                _zz_42;
+  wire                _zz_43;
+  wire                _zz_44;
+  wire                _zz_45;
+  wire                _zz_46;
+  wire                _zz_47;
+  wire                _zz_48;
+  wire                _zz_49;
+  wire                _zz_50;
+  wire                _zz_51;
+  wire                _zz_52;
+  wire                _zz_53;
+  wire                _zz_54;
+  wire                _zz_55;
+  wire                _zz_56;
+  wire                _zz_57;
+  wire                _zz_58;
+  wire                _zz_59;
+  wire                _zz_60;
+  wire                _zz_61;
+  wire                _zz_62;
+  wire                _zz_63;
+  wire                _zz_64;
+  wire                _zz_65;
+  wire                _zz_66;
+  wire                _zz_67;
+  wire                _zz_68;
+  wire                _zz_69;
+  wire                _zz_70;
+  wire                _zz_71;
+  wire                _zz_72;
+  wire                _zz_73;
+  wire                _zz_74;
+  wire                _zz_75;
+  wire                _zz_76;
+  wire                _zz_77;
+  wire                _zz_78;
+  wire                _zz_79;
+  wire                _zz_80;
+  wire                _zz_81;
+  wire                _zz_82;
+  wire                _zz_83;
+  wire                _zz_84;
+  wire                _zz_85;
+  wire                _zz_86;
+  wire                _zz_87;
+  wire                _zz_88;
+  wire                _zz_89;
+  wire                _zz_90;
+  wire                _zz_91;
+  wire                _zz_92;
+  wire                _zz_93;
+  wire                _zz_94;
+  wire                _zz_95;
+  wire                _zz_96;
+  wire                _zz_97;
+  wire                _zz_98;
+  wire                _zz_99;
+  wire                _zz_100;
+  wire                _zz_101;
+  wire                _zz_102;
+  wire                _zz_103;
+  wire                _zz_104;
+  wire                _zz_105;
+  wire                _zz_106;
+  wire                _zz_107;
+  wire                _zz_108;
+  wire                _zz_109;
+  wire                _zz_110;
+  wire                _zz_111;
+  wire                _zz_112;
+  wire                _zz_113;
+  wire                _zz_114;
+  wire                _zz_115;
+  wire                _zz_116;
+  wire                _zz_117;
+  wire                _zz_118;
+  wire                _zz_119;
+  wire                _zz_120;
+  wire                _zz_121;
+  wire                _zz_122;
+  wire                _zz_123;
+  wire                _zz_124;
+  wire                _zz_125;
+  wire                _zz_126;
+  wire                _zz_127;
+  wire                _zz_128;
+  wire                _zz_129;
+  wire                when_BPUPlugin_l54;
+  wire                when_BPUPlugin_l64;
+  wire       [1:0]    predict_taken_tmp;
+
+  always @(*) begin
+    case(train_index)
+      7'b0000000 : _zz_switch_BPUPlugin_l31 = PHT_regfile_0;
+      7'b0000001 : _zz_switch_BPUPlugin_l31 = PHT_regfile_1;
+      7'b0000010 : _zz_switch_BPUPlugin_l31 = PHT_regfile_2;
+      7'b0000011 : _zz_switch_BPUPlugin_l31 = PHT_regfile_3;
+      7'b0000100 : _zz_switch_BPUPlugin_l31 = PHT_regfile_4;
+      7'b0000101 : _zz_switch_BPUPlugin_l31 = PHT_regfile_5;
+      7'b0000110 : _zz_switch_BPUPlugin_l31 = PHT_regfile_6;
+      7'b0000111 : _zz_switch_BPUPlugin_l31 = PHT_regfile_7;
+      7'b0001000 : _zz_switch_BPUPlugin_l31 = PHT_regfile_8;
+      7'b0001001 : _zz_switch_BPUPlugin_l31 = PHT_regfile_9;
+      7'b0001010 : _zz_switch_BPUPlugin_l31 = PHT_regfile_10;
+      7'b0001011 : _zz_switch_BPUPlugin_l31 = PHT_regfile_11;
+      7'b0001100 : _zz_switch_BPUPlugin_l31 = PHT_regfile_12;
+      7'b0001101 : _zz_switch_BPUPlugin_l31 = PHT_regfile_13;
+      7'b0001110 : _zz_switch_BPUPlugin_l31 = PHT_regfile_14;
+      7'b0001111 : _zz_switch_BPUPlugin_l31 = PHT_regfile_15;
+      7'b0010000 : _zz_switch_BPUPlugin_l31 = PHT_regfile_16;
+      7'b0010001 : _zz_switch_BPUPlugin_l31 = PHT_regfile_17;
+      7'b0010010 : _zz_switch_BPUPlugin_l31 = PHT_regfile_18;
+      7'b0010011 : _zz_switch_BPUPlugin_l31 = PHT_regfile_19;
+      7'b0010100 : _zz_switch_BPUPlugin_l31 = PHT_regfile_20;
+      7'b0010101 : _zz_switch_BPUPlugin_l31 = PHT_regfile_21;
+      7'b0010110 : _zz_switch_BPUPlugin_l31 = PHT_regfile_22;
+      7'b0010111 : _zz_switch_BPUPlugin_l31 = PHT_regfile_23;
+      7'b0011000 : _zz_switch_BPUPlugin_l31 = PHT_regfile_24;
+      7'b0011001 : _zz_switch_BPUPlugin_l31 = PHT_regfile_25;
+      7'b0011010 : _zz_switch_BPUPlugin_l31 = PHT_regfile_26;
+      7'b0011011 : _zz_switch_BPUPlugin_l31 = PHT_regfile_27;
+      7'b0011100 : _zz_switch_BPUPlugin_l31 = PHT_regfile_28;
+      7'b0011101 : _zz_switch_BPUPlugin_l31 = PHT_regfile_29;
+      7'b0011110 : _zz_switch_BPUPlugin_l31 = PHT_regfile_30;
+      7'b0011111 : _zz_switch_BPUPlugin_l31 = PHT_regfile_31;
+      7'b0100000 : _zz_switch_BPUPlugin_l31 = PHT_regfile_32;
+      7'b0100001 : _zz_switch_BPUPlugin_l31 = PHT_regfile_33;
+      7'b0100010 : _zz_switch_BPUPlugin_l31 = PHT_regfile_34;
+      7'b0100011 : _zz_switch_BPUPlugin_l31 = PHT_regfile_35;
+      7'b0100100 : _zz_switch_BPUPlugin_l31 = PHT_regfile_36;
+      7'b0100101 : _zz_switch_BPUPlugin_l31 = PHT_regfile_37;
+      7'b0100110 : _zz_switch_BPUPlugin_l31 = PHT_regfile_38;
+      7'b0100111 : _zz_switch_BPUPlugin_l31 = PHT_regfile_39;
+      7'b0101000 : _zz_switch_BPUPlugin_l31 = PHT_regfile_40;
+      7'b0101001 : _zz_switch_BPUPlugin_l31 = PHT_regfile_41;
+      7'b0101010 : _zz_switch_BPUPlugin_l31 = PHT_regfile_42;
+      7'b0101011 : _zz_switch_BPUPlugin_l31 = PHT_regfile_43;
+      7'b0101100 : _zz_switch_BPUPlugin_l31 = PHT_regfile_44;
+      7'b0101101 : _zz_switch_BPUPlugin_l31 = PHT_regfile_45;
+      7'b0101110 : _zz_switch_BPUPlugin_l31 = PHT_regfile_46;
+      7'b0101111 : _zz_switch_BPUPlugin_l31 = PHT_regfile_47;
+      7'b0110000 : _zz_switch_BPUPlugin_l31 = PHT_regfile_48;
+      7'b0110001 : _zz_switch_BPUPlugin_l31 = PHT_regfile_49;
+      7'b0110010 : _zz_switch_BPUPlugin_l31 = PHT_regfile_50;
+      7'b0110011 : _zz_switch_BPUPlugin_l31 = PHT_regfile_51;
+      7'b0110100 : _zz_switch_BPUPlugin_l31 = PHT_regfile_52;
+      7'b0110101 : _zz_switch_BPUPlugin_l31 = PHT_regfile_53;
+      7'b0110110 : _zz_switch_BPUPlugin_l31 = PHT_regfile_54;
+      7'b0110111 : _zz_switch_BPUPlugin_l31 = PHT_regfile_55;
+      7'b0111000 : _zz_switch_BPUPlugin_l31 = PHT_regfile_56;
+      7'b0111001 : _zz_switch_BPUPlugin_l31 = PHT_regfile_57;
+      7'b0111010 : _zz_switch_BPUPlugin_l31 = PHT_regfile_58;
+      7'b0111011 : _zz_switch_BPUPlugin_l31 = PHT_regfile_59;
+      7'b0111100 : _zz_switch_BPUPlugin_l31 = PHT_regfile_60;
+      7'b0111101 : _zz_switch_BPUPlugin_l31 = PHT_regfile_61;
+      7'b0111110 : _zz_switch_BPUPlugin_l31 = PHT_regfile_62;
+      7'b0111111 : _zz_switch_BPUPlugin_l31 = PHT_regfile_63;
+      7'b1000000 : _zz_switch_BPUPlugin_l31 = PHT_regfile_64;
+      7'b1000001 : _zz_switch_BPUPlugin_l31 = PHT_regfile_65;
+      7'b1000010 : _zz_switch_BPUPlugin_l31 = PHT_regfile_66;
+      7'b1000011 : _zz_switch_BPUPlugin_l31 = PHT_regfile_67;
+      7'b1000100 : _zz_switch_BPUPlugin_l31 = PHT_regfile_68;
+      7'b1000101 : _zz_switch_BPUPlugin_l31 = PHT_regfile_69;
+      7'b1000110 : _zz_switch_BPUPlugin_l31 = PHT_regfile_70;
+      7'b1000111 : _zz_switch_BPUPlugin_l31 = PHT_regfile_71;
+      7'b1001000 : _zz_switch_BPUPlugin_l31 = PHT_regfile_72;
+      7'b1001001 : _zz_switch_BPUPlugin_l31 = PHT_regfile_73;
+      7'b1001010 : _zz_switch_BPUPlugin_l31 = PHT_regfile_74;
+      7'b1001011 : _zz_switch_BPUPlugin_l31 = PHT_regfile_75;
+      7'b1001100 : _zz_switch_BPUPlugin_l31 = PHT_regfile_76;
+      7'b1001101 : _zz_switch_BPUPlugin_l31 = PHT_regfile_77;
+      7'b1001110 : _zz_switch_BPUPlugin_l31 = PHT_regfile_78;
+      7'b1001111 : _zz_switch_BPUPlugin_l31 = PHT_regfile_79;
+      7'b1010000 : _zz_switch_BPUPlugin_l31 = PHT_regfile_80;
+      7'b1010001 : _zz_switch_BPUPlugin_l31 = PHT_regfile_81;
+      7'b1010010 : _zz_switch_BPUPlugin_l31 = PHT_regfile_82;
+      7'b1010011 : _zz_switch_BPUPlugin_l31 = PHT_regfile_83;
+      7'b1010100 : _zz_switch_BPUPlugin_l31 = PHT_regfile_84;
+      7'b1010101 : _zz_switch_BPUPlugin_l31 = PHT_regfile_85;
+      7'b1010110 : _zz_switch_BPUPlugin_l31 = PHT_regfile_86;
+      7'b1010111 : _zz_switch_BPUPlugin_l31 = PHT_regfile_87;
+      7'b1011000 : _zz_switch_BPUPlugin_l31 = PHT_regfile_88;
+      7'b1011001 : _zz_switch_BPUPlugin_l31 = PHT_regfile_89;
+      7'b1011010 : _zz_switch_BPUPlugin_l31 = PHT_regfile_90;
+      7'b1011011 : _zz_switch_BPUPlugin_l31 = PHT_regfile_91;
+      7'b1011100 : _zz_switch_BPUPlugin_l31 = PHT_regfile_92;
+      7'b1011101 : _zz_switch_BPUPlugin_l31 = PHT_regfile_93;
+      7'b1011110 : _zz_switch_BPUPlugin_l31 = PHT_regfile_94;
+      7'b1011111 : _zz_switch_BPUPlugin_l31 = PHT_regfile_95;
+      7'b1100000 : _zz_switch_BPUPlugin_l31 = PHT_regfile_96;
+      7'b1100001 : _zz_switch_BPUPlugin_l31 = PHT_regfile_97;
+      7'b1100010 : _zz_switch_BPUPlugin_l31 = PHT_regfile_98;
+      7'b1100011 : _zz_switch_BPUPlugin_l31 = PHT_regfile_99;
+      7'b1100100 : _zz_switch_BPUPlugin_l31 = PHT_regfile_100;
+      7'b1100101 : _zz_switch_BPUPlugin_l31 = PHT_regfile_101;
+      7'b1100110 : _zz_switch_BPUPlugin_l31 = PHT_regfile_102;
+      7'b1100111 : _zz_switch_BPUPlugin_l31 = PHT_regfile_103;
+      7'b1101000 : _zz_switch_BPUPlugin_l31 = PHT_regfile_104;
+      7'b1101001 : _zz_switch_BPUPlugin_l31 = PHT_regfile_105;
+      7'b1101010 : _zz_switch_BPUPlugin_l31 = PHT_regfile_106;
+      7'b1101011 : _zz_switch_BPUPlugin_l31 = PHT_regfile_107;
+      7'b1101100 : _zz_switch_BPUPlugin_l31 = PHT_regfile_108;
+      7'b1101101 : _zz_switch_BPUPlugin_l31 = PHT_regfile_109;
+      7'b1101110 : _zz_switch_BPUPlugin_l31 = PHT_regfile_110;
+      7'b1101111 : _zz_switch_BPUPlugin_l31 = PHT_regfile_111;
+      7'b1110000 : _zz_switch_BPUPlugin_l31 = PHT_regfile_112;
+      7'b1110001 : _zz_switch_BPUPlugin_l31 = PHT_regfile_113;
+      7'b1110010 : _zz_switch_BPUPlugin_l31 = PHT_regfile_114;
+      7'b1110011 : _zz_switch_BPUPlugin_l31 = PHT_regfile_115;
+      7'b1110100 : _zz_switch_BPUPlugin_l31 = PHT_regfile_116;
+      7'b1110101 : _zz_switch_BPUPlugin_l31 = PHT_regfile_117;
+      7'b1110110 : _zz_switch_BPUPlugin_l31 = PHT_regfile_118;
+      7'b1110111 : _zz_switch_BPUPlugin_l31 = PHT_regfile_119;
+      7'b1111000 : _zz_switch_BPUPlugin_l31 = PHT_regfile_120;
+      7'b1111001 : _zz_switch_BPUPlugin_l31 = PHT_regfile_121;
+      7'b1111010 : _zz_switch_BPUPlugin_l31 = PHT_regfile_122;
+      7'b1111011 : _zz_switch_BPUPlugin_l31 = PHT_regfile_123;
+      7'b1111100 : _zz_switch_BPUPlugin_l31 = PHT_regfile_124;
+      7'b1111101 : _zz_switch_BPUPlugin_l31 = PHT_regfile_125;
+      7'b1111110 : _zz_switch_BPUPlugin_l31 = PHT_regfile_126;
+      default : _zz_switch_BPUPlugin_l31 = PHT_regfile_127;
+    endcase
+  end
+
+  always @(*) begin
+    case(predict_index)
+      7'b0000000 : _zz_predict_taken_tmp = PHT_regfile_0;
+      7'b0000001 : _zz_predict_taken_tmp = PHT_regfile_1;
+      7'b0000010 : _zz_predict_taken_tmp = PHT_regfile_2;
+      7'b0000011 : _zz_predict_taken_tmp = PHT_regfile_3;
+      7'b0000100 : _zz_predict_taken_tmp = PHT_regfile_4;
+      7'b0000101 : _zz_predict_taken_tmp = PHT_regfile_5;
+      7'b0000110 : _zz_predict_taken_tmp = PHT_regfile_6;
+      7'b0000111 : _zz_predict_taken_tmp = PHT_regfile_7;
+      7'b0001000 : _zz_predict_taken_tmp = PHT_regfile_8;
+      7'b0001001 : _zz_predict_taken_tmp = PHT_regfile_9;
+      7'b0001010 : _zz_predict_taken_tmp = PHT_regfile_10;
+      7'b0001011 : _zz_predict_taken_tmp = PHT_regfile_11;
+      7'b0001100 : _zz_predict_taken_tmp = PHT_regfile_12;
+      7'b0001101 : _zz_predict_taken_tmp = PHT_regfile_13;
+      7'b0001110 : _zz_predict_taken_tmp = PHT_regfile_14;
+      7'b0001111 : _zz_predict_taken_tmp = PHT_regfile_15;
+      7'b0010000 : _zz_predict_taken_tmp = PHT_regfile_16;
+      7'b0010001 : _zz_predict_taken_tmp = PHT_regfile_17;
+      7'b0010010 : _zz_predict_taken_tmp = PHT_regfile_18;
+      7'b0010011 : _zz_predict_taken_tmp = PHT_regfile_19;
+      7'b0010100 : _zz_predict_taken_tmp = PHT_regfile_20;
+      7'b0010101 : _zz_predict_taken_tmp = PHT_regfile_21;
+      7'b0010110 : _zz_predict_taken_tmp = PHT_regfile_22;
+      7'b0010111 : _zz_predict_taken_tmp = PHT_regfile_23;
+      7'b0011000 : _zz_predict_taken_tmp = PHT_regfile_24;
+      7'b0011001 : _zz_predict_taken_tmp = PHT_regfile_25;
+      7'b0011010 : _zz_predict_taken_tmp = PHT_regfile_26;
+      7'b0011011 : _zz_predict_taken_tmp = PHT_regfile_27;
+      7'b0011100 : _zz_predict_taken_tmp = PHT_regfile_28;
+      7'b0011101 : _zz_predict_taken_tmp = PHT_regfile_29;
+      7'b0011110 : _zz_predict_taken_tmp = PHT_regfile_30;
+      7'b0011111 : _zz_predict_taken_tmp = PHT_regfile_31;
+      7'b0100000 : _zz_predict_taken_tmp = PHT_regfile_32;
+      7'b0100001 : _zz_predict_taken_tmp = PHT_regfile_33;
+      7'b0100010 : _zz_predict_taken_tmp = PHT_regfile_34;
+      7'b0100011 : _zz_predict_taken_tmp = PHT_regfile_35;
+      7'b0100100 : _zz_predict_taken_tmp = PHT_regfile_36;
+      7'b0100101 : _zz_predict_taken_tmp = PHT_regfile_37;
+      7'b0100110 : _zz_predict_taken_tmp = PHT_regfile_38;
+      7'b0100111 : _zz_predict_taken_tmp = PHT_regfile_39;
+      7'b0101000 : _zz_predict_taken_tmp = PHT_regfile_40;
+      7'b0101001 : _zz_predict_taken_tmp = PHT_regfile_41;
+      7'b0101010 : _zz_predict_taken_tmp = PHT_regfile_42;
+      7'b0101011 : _zz_predict_taken_tmp = PHT_regfile_43;
+      7'b0101100 : _zz_predict_taken_tmp = PHT_regfile_44;
+      7'b0101101 : _zz_predict_taken_tmp = PHT_regfile_45;
+      7'b0101110 : _zz_predict_taken_tmp = PHT_regfile_46;
+      7'b0101111 : _zz_predict_taken_tmp = PHT_regfile_47;
+      7'b0110000 : _zz_predict_taken_tmp = PHT_regfile_48;
+      7'b0110001 : _zz_predict_taken_tmp = PHT_regfile_49;
+      7'b0110010 : _zz_predict_taken_tmp = PHT_regfile_50;
+      7'b0110011 : _zz_predict_taken_tmp = PHT_regfile_51;
+      7'b0110100 : _zz_predict_taken_tmp = PHT_regfile_52;
+      7'b0110101 : _zz_predict_taken_tmp = PHT_regfile_53;
+      7'b0110110 : _zz_predict_taken_tmp = PHT_regfile_54;
+      7'b0110111 : _zz_predict_taken_tmp = PHT_regfile_55;
+      7'b0111000 : _zz_predict_taken_tmp = PHT_regfile_56;
+      7'b0111001 : _zz_predict_taken_tmp = PHT_regfile_57;
+      7'b0111010 : _zz_predict_taken_tmp = PHT_regfile_58;
+      7'b0111011 : _zz_predict_taken_tmp = PHT_regfile_59;
+      7'b0111100 : _zz_predict_taken_tmp = PHT_regfile_60;
+      7'b0111101 : _zz_predict_taken_tmp = PHT_regfile_61;
+      7'b0111110 : _zz_predict_taken_tmp = PHT_regfile_62;
+      7'b0111111 : _zz_predict_taken_tmp = PHT_regfile_63;
+      7'b1000000 : _zz_predict_taken_tmp = PHT_regfile_64;
+      7'b1000001 : _zz_predict_taken_tmp = PHT_regfile_65;
+      7'b1000010 : _zz_predict_taken_tmp = PHT_regfile_66;
+      7'b1000011 : _zz_predict_taken_tmp = PHT_regfile_67;
+      7'b1000100 : _zz_predict_taken_tmp = PHT_regfile_68;
+      7'b1000101 : _zz_predict_taken_tmp = PHT_regfile_69;
+      7'b1000110 : _zz_predict_taken_tmp = PHT_regfile_70;
+      7'b1000111 : _zz_predict_taken_tmp = PHT_regfile_71;
+      7'b1001000 : _zz_predict_taken_tmp = PHT_regfile_72;
+      7'b1001001 : _zz_predict_taken_tmp = PHT_regfile_73;
+      7'b1001010 : _zz_predict_taken_tmp = PHT_regfile_74;
+      7'b1001011 : _zz_predict_taken_tmp = PHT_regfile_75;
+      7'b1001100 : _zz_predict_taken_tmp = PHT_regfile_76;
+      7'b1001101 : _zz_predict_taken_tmp = PHT_regfile_77;
+      7'b1001110 : _zz_predict_taken_tmp = PHT_regfile_78;
+      7'b1001111 : _zz_predict_taken_tmp = PHT_regfile_79;
+      7'b1010000 : _zz_predict_taken_tmp = PHT_regfile_80;
+      7'b1010001 : _zz_predict_taken_tmp = PHT_regfile_81;
+      7'b1010010 : _zz_predict_taken_tmp = PHT_regfile_82;
+      7'b1010011 : _zz_predict_taken_tmp = PHT_regfile_83;
+      7'b1010100 : _zz_predict_taken_tmp = PHT_regfile_84;
+      7'b1010101 : _zz_predict_taken_tmp = PHT_regfile_85;
+      7'b1010110 : _zz_predict_taken_tmp = PHT_regfile_86;
+      7'b1010111 : _zz_predict_taken_tmp = PHT_regfile_87;
+      7'b1011000 : _zz_predict_taken_tmp = PHT_regfile_88;
+      7'b1011001 : _zz_predict_taken_tmp = PHT_regfile_89;
+      7'b1011010 : _zz_predict_taken_tmp = PHT_regfile_90;
+      7'b1011011 : _zz_predict_taken_tmp = PHT_regfile_91;
+      7'b1011100 : _zz_predict_taken_tmp = PHT_regfile_92;
+      7'b1011101 : _zz_predict_taken_tmp = PHT_regfile_93;
+      7'b1011110 : _zz_predict_taken_tmp = PHT_regfile_94;
+      7'b1011111 : _zz_predict_taken_tmp = PHT_regfile_95;
+      7'b1100000 : _zz_predict_taken_tmp = PHT_regfile_96;
+      7'b1100001 : _zz_predict_taken_tmp = PHT_regfile_97;
+      7'b1100010 : _zz_predict_taken_tmp = PHT_regfile_98;
+      7'b1100011 : _zz_predict_taken_tmp = PHT_regfile_99;
+      7'b1100100 : _zz_predict_taken_tmp = PHT_regfile_100;
+      7'b1100101 : _zz_predict_taken_tmp = PHT_regfile_101;
+      7'b1100110 : _zz_predict_taken_tmp = PHT_regfile_102;
+      7'b1100111 : _zz_predict_taken_tmp = PHT_regfile_103;
+      7'b1101000 : _zz_predict_taken_tmp = PHT_regfile_104;
+      7'b1101001 : _zz_predict_taken_tmp = PHT_regfile_105;
+      7'b1101010 : _zz_predict_taken_tmp = PHT_regfile_106;
+      7'b1101011 : _zz_predict_taken_tmp = PHT_regfile_107;
+      7'b1101100 : _zz_predict_taken_tmp = PHT_regfile_108;
+      7'b1101101 : _zz_predict_taken_tmp = PHT_regfile_109;
+      7'b1101110 : _zz_predict_taken_tmp = PHT_regfile_110;
+      7'b1101111 : _zz_predict_taken_tmp = PHT_regfile_111;
+      7'b1110000 : _zz_predict_taken_tmp = PHT_regfile_112;
+      7'b1110001 : _zz_predict_taken_tmp = PHT_regfile_113;
+      7'b1110010 : _zz_predict_taken_tmp = PHT_regfile_114;
+      7'b1110011 : _zz_predict_taken_tmp = PHT_regfile_115;
+      7'b1110100 : _zz_predict_taken_tmp = PHT_regfile_116;
+      7'b1110101 : _zz_predict_taken_tmp = PHT_regfile_117;
+      7'b1110110 : _zz_predict_taken_tmp = PHT_regfile_118;
+      7'b1110111 : _zz_predict_taken_tmp = PHT_regfile_119;
+      7'b1111000 : _zz_predict_taken_tmp = PHT_regfile_120;
+      7'b1111001 : _zz_predict_taken_tmp = PHT_regfile_121;
+      7'b1111010 : _zz_predict_taken_tmp = PHT_regfile_122;
+      7'b1111011 : _zz_predict_taken_tmp = PHT_regfile_123;
+      7'b1111100 : _zz_predict_taken_tmp = PHT_regfile_124;
+      7'b1111101 : _zz_predict_taken_tmp = PHT_regfile_125;
+      7'b1111110 : _zz_predict_taken_tmp = PHT_regfile_126;
+      default : _zz_predict_taken_tmp = PHT_regfile_127;
+    endcase
+  end
+
+  assign predict_index = (predict_pc ^ global_branch_history);
+  assign train_index = (train_pc ^ train_history);
+  assign switch_BPUPlugin_l31 = _zz_switch_BPUPlugin_l31;
+  assign _zz_1 = ({127'd0,1'b1} <<< train_index);
+  assign _zz_2 = _zz_1[0];
+  assign _zz_3 = _zz_1[1];
+  assign _zz_4 = _zz_1[2];
+  assign _zz_5 = _zz_1[3];
+  assign _zz_6 = _zz_1[4];
+  assign _zz_7 = _zz_1[5];
+  assign _zz_8 = _zz_1[6];
+  assign _zz_9 = _zz_1[7];
+  assign _zz_10 = _zz_1[8];
+  assign _zz_11 = _zz_1[9];
+  assign _zz_12 = _zz_1[10];
+  assign _zz_13 = _zz_1[11];
+  assign _zz_14 = _zz_1[12];
+  assign _zz_15 = _zz_1[13];
+  assign _zz_16 = _zz_1[14];
+  assign _zz_17 = _zz_1[15];
+  assign _zz_18 = _zz_1[16];
+  assign _zz_19 = _zz_1[17];
+  assign _zz_20 = _zz_1[18];
+  assign _zz_21 = _zz_1[19];
+  assign _zz_22 = _zz_1[20];
+  assign _zz_23 = _zz_1[21];
+  assign _zz_24 = _zz_1[22];
+  assign _zz_25 = _zz_1[23];
+  assign _zz_26 = _zz_1[24];
+  assign _zz_27 = _zz_1[25];
+  assign _zz_28 = _zz_1[26];
+  assign _zz_29 = _zz_1[27];
+  assign _zz_30 = _zz_1[28];
+  assign _zz_31 = _zz_1[29];
+  assign _zz_32 = _zz_1[30];
+  assign _zz_33 = _zz_1[31];
+  assign _zz_34 = _zz_1[32];
+  assign _zz_35 = _zz_1[33];
+  assign _zz_36 = _zz_1[34];
+  assign _zz_37 = _zz_1[35];
+  assign _zz_38 = _zz_1[36];
+  assign _zz_39 = _zz_1[37];
+  assign _zz_40 = _zz_1[38];
+  assign _zz_41 = _zz_1[39];
+  assign _zz_42 = _zz_1[40];
+  assign _zz_43 = _zz_1[41];
+  assign _zz_44 = _zz_1[42];
+  assign _zz_45 = _zz_1[43];
+  assign _zz_46 = _zz_1[44];
+  assign _zz_47 = _zz_1[45];
+  assign _zz_48 = _zz_1[46];
+  assign _zz_49 = _zz_1[47];
+  assign _zz_50 = _zz_1[48];
+  assign _zz_51 = _zz_1[49];
+  assign _zz_52 = _zz_1[50];
+  assign _zz_53 = _zz_1[51];
+  assign _zz_54 = _zz_1[52];
+  assign _zz_55 = _zz_1[53];
+  assign _zz_56 = _zz_1[54];
+  assign _zz_57 = _zz_1[55];
+  assign _zz_58 = _zz_1[56];
+  assign _zz_59 = _zz_1[57];
+  assign _zz_60 = _zz_1[58];
+  assign _zz_61 = _zz_1[59];
+  assign _zz_62 = _zz_1[60];
+  assign _zz_63 = _zz_1[61];
+  assign _zz_64 = _zz_1[62];
+  assign _zz_65 = _zz_1[63];
+  assign _zz_66 = _zz_1[64];
+  assign _zz_67 = _zz_1[65];
+  assign _zz_68 = _zz_1[66];
+  assign _zz_69 = _zz_1[67];
+  assign _zz_70 = _zz_1[68];
+  assign _zz_71 = _zz_1[69];
+  assign _zz_72 = _zz_1[70];
+  assign _zz_73 = _zz_1[71];
+  assign _zz_74 = _zz_1[72];
+  assign _zz_75 = _zz_1[73];
+  assign _zz_76 = _zz_1[74];
+  assign _zz_77 = _zz_1[75];
+  assign _zz_78 = _zz_1[76];
+  assign _zz_79 = _zz_1[77];
+  assign _zz_80 = _zz_1[78];
+  assign _zz_81 = _zz_1[79];
+  assign _zz_82 = _zz_1[80];
+  assign _zz_83 = _zz_1[81];
+  assign _zz_84 = _zz_1[82];
+  assign _zz_85 = _zz_1[83];
+  assign _zz_86 = _zz_1[84];
+  assign _zz_87 = _zz_1[85];
+  assign _zz_88 = _zz_1[86];
+  assign _zz_89 = _zz_1[87];
+  assign _zz_90 = _zz_1[88];
+  assign _zz_91 = _zz_1[89];
+  assign _zz_92 = _zz_1[90];
+  assign _zz_93 = _zz_1[91];
+  assign _zz_94 = _zz_1[92];
+  assign _zz_95 = _zz_1[93];
+  assign _zz_96 = _zz_1[94];
+  assign _zz_97 = _zz_1[95];
+  assign _zz_98 = _zz_1[96];
+  assign _zz_99 = _zz_1[97];
+  assign _zz_100 = _zz_1[98];
+  assign _zz_101 = _zz_1[99];
+  assign _zz_102 = _zz_1[100];
+  assign _zz_103 = _zz_1[101];
+  assign _zz_104 = _zz_1[102];
+  assign _zz_105 = _zz_1[103];
+  assign _zz_106 = _zz_1[104];
+  assign _zz_107 = _zz_1[105];
+  assign _zz_108 = _zz_1[106];
+  assign _zz_109 = _zz_1[107];
+  assign _zz_110 = _zz_1[108];
+  assign _zz_111 = _zz_1[109];
+  assign _zz_112 = _zz_1[110];
+  assign _zz_113 = _zz_1[111];
+  assign _zz_114 = _zz_1[112];
+  assign _zz_115 = _zz_1[113];
+  assign _zz_116 = _zz_1[114];
+  assign _zz_117 = _zz_1[115];
+  assign _zz_118 = _zz_1[116];
+  assign _zz_119 = _zz_1[117];
+  assign _zz_120 = _zz_1[118];
+  assign _zz_121 = _zz_1[119];
+  assign _zz_122 = _zz_1[120];
+  assign _zz_123 = _zz_1[121];
+  assign _zz_124 = _zz_1[122];
+  assign _zz_125 = _zz_1[123];
+  assign _zz_126 = _zz_1[124];
+  assign _zz_127 = _zz_1[125];
+  assign _zz_128 = _zz_1[126];
+  assign _zz_129 = _zz_1[127];
+  assign when_BPUPlugin_l54 = (! train_taken);
+  assign when_BPUPlugin_l64 = (train_valid && train_mispredicted);
+  assign predict_taken_tmp = _zz_predict_taken_tmp;
+  assign predict_taken = predict_taken_tmp[1];
+  assign predict_history = global_branch_history;
+  always @(posedge clk or posedge reset) begin
+    if(reset) begin
+      global_branch_history <= 7'h0;
+      PHT_regfile_0 <= 2'b01;
+      PHT_regfile_1 <= 2'b01;
+      PHT_regfile_2 <= 2'b01;
+      PHT_regfile_3 <= 2'b01;
+      PHT_regfile_4 <= 2'b01;
+      PHT_regfile_5 <= 2'b01;
+      PHT_regfile_6 <= 2'b01;
+      PHT_regfile_7 <= 2'b01;
+      PHT_regfile_8 <= 2'b01;
+      PHT_regfile_9 <= 2'b01;
+      PHT_regfile_10 <= 2'b01;
+      PHT_regfile_11 <= 2'b01;
+      PHT_regfile_12 <= 2'b01;
+      PHT_regfile_13 <= 2'b01;
+      PHT_regfile_14 <= 2'b01;
+      PHT_regfile_15 <= 2'b01;
+      PHT_regfile_16 <= 2'b01;
+      PHT_regfile_17 <= 2'b01;
+      PHT_regfile_18 <= 2'b01;
+      PHT_regfile_19 <= 2'b01;
+      PHT_regfile_20 <= 2'b01;
+      PHT_regfile_21 <= 2'b01;
+      PHT_regfile_22 <= 2'b01;
+      PHT_regfile_23 <= 2'b01;
+      PHT_regfile_24 <= 2'b01;
+      PHT_regfile_25 <= 2'b01;
+      PHT_regfile_26 <= 2'b01;
+      PHT_regfile_27 <= 2'b01;
+      PHT_regfile_28 <= 2'b01;
+      PHT_regfile_29 <= 2'b01;
+      PHT_regfile_30 <= 2'b01;
+      PHT_regfile_31 <= 2'b01;
+      PHT_regfile_32 <= 2'b01;
+      PHT_regfile_33 <= 2'b01;
+      PHT_regfile_34 <= 2'b01;
+      PHT_regfile_35 <= 2'b01;
+      PHT_regfile_36 <= 2'b01;
+      PHT_regfile_37 <= 2'b01;
+      PHT_regfile_38 <= 2'b01;
+      PHT_regfile_39 <= 2'b01;
+      PHT_regfile_40 <= 2'b01;
+      PHT_regfile_41 <= 2'b01;
+      PHT_regfile_42 <= 2'b01;
+      PHT_regfile_43 <= 2'b01;
+      PHT_regfile_44 <= 2'b01;
+      PHT_regfile_45 <= 2'b01;
+      PHT_regfile_46 <= 2'b01;
+      PHT_regfile_47 <= 2'b01;
+      PHT_regfile_48 <= 2'b01;
+      PHT_regfile_49 <= 2'b01;
+      PHT_regfile_50 <= 2'b01;
+      PHT_regfile_51 <= 2'b01;
+      PHT_regfile_52 <= 2'b01;
+      PHT_regfile_53 <= 2'b01;
+      PHT_regfile_54 <= 2'b01;
+      PHT_regfile_55 <= 2'b01;
+      PHT_regfile_56 <= 2'b01;
+      PHT_regfile_57 <= 2'b01;
+      PHT_regfile_58 <= 2'b01;
+      PHT_regfile_59 <= 2'b01;
+      PHT_regfile_60 <= 2'b01;
+      PHT_regfile_61 <= 2'b01;
+      PHT_regfile_62 <= 2'b01;
+      PHT_regfile_63 <= 2'b01;
+      PHT_regfile_64 <= 2'b01;
+      PHT_regfile_65 <= 2'b01;
+      PHT_regfile_66 <= 2'b01;
+      PHT_regfile_67 <= 2'b01;
+      PHT_regfile_68 <= 2'b01;
+      PHT_regfile_69 <= 2'b01;
+      PHT_regfile_70 <= 2'b01;
+      PHT_regfile_71 <= 2'b01;
+      PHT_regfile_72 <= 2'b01;
+      PHT_regfile_73 <= 2'b01;
+      PHT_regfile_74 <= 2'b01;
+      PHT_regfile_75 <= 2'b01;
+      PHT_regfile_76 <= 2'b01;
+      PHT_regfile_77 <= 2'b01;
+      PHT_regfile_78 <= 2'b01;
+      PHT_regfile_79 <= 2'b01;
+      PHT_regfile_80 <= 2'b01;
+      PHT_regfile_81 <= 2'b01;
+      PHT_regfile_82 <= 2'b01;
+      PHT_regfile_83 <= 2'b01;
+      PHT_regfile_84 <= 2'b01;
+      PHT_regfile_85 <= 2'b01;
+      PHT_regfile_86 <= 2'b01;
+      PHT_regfile_87 <= 2'b01;
+      PHT_regfile_88 <= 2'b01;
+      PHT_regfile_89 <= 2'b01;
+      PHT_regfile_90 <= 2'b01;
+      PHT_regfile_91 <= 2'b01;
+      PHT_regfile_92 <= 2'b01;
+      PHT_regfile_93 <= 2'b01;
+      PHT_regfile_94 <= 2'b01;
+      PHT_regfile_95 <= 2'b01;
+      PHT_regfile_96 <= 2'b01;
+      PHT_regfile_97 <= 2'b01;
+      PHT_regfile_98 <= 2'b01;
+      PHT_regfile_99 <= 2'b01;
+      PHT_regfile_100 <= 2'b01;
+      PHT_regfile_101 <= 2'b01;
+      PHT_regfile_102 <= 2'b01;
+      PHT_regfile_103 <= 2'b01;
+      PHT_regfile_104 <= 2'b01;
+      PHT_regfile_105 <= 2'b01;
+      PHT_regfile_106 <= 2'b01;
+      PHT_regfile_107 <= 2'b01;
+      PHT_regfile_108 <= 2'b01;
+      PHT_regfile_109 <= 2'b01;
+      PHT_regfile_110 <= 2'b01;
+      PHT_regfile_111 <= 2'b01;
+      PHT_regfile_112 <= 2'b01;
+      PHT_regfile_113 <= 2'b01;
+      PHT_regfile_114 <= 2'b01;
+      PHT_regfile_115 <= 2'b01;
+      PHT_regfile_116 <= 2'b01;
+      PHT_regfile_117 <= 2'b01;
+      PHT_regfile_118 <= 2'b01;
+      PHT_regfile_119 <= 2'b01;
+      PHT_regfile_120 <= 2'b01;
+      PHT_regfile_121 <= 2'b01;
+      PHT_regfile_122 <= 2'b01;
+      PHT_regfile_123 <= 2'b01;
+      PHT_regfile_124 <= 2'b01;
+      PHT_regfile_125 <= 2'b01;
+      PHT_regfile_126 <= 2'b01;
+      PHT_regfile_127 <= 2'b01;
+    end else begin
+      if(train_valid) begin
+        case(switch_BPUPlugin_l31)
+          2'b00 : begin
+            if(train_taken) begin
+              if(_zz_2) begin
+                PHT_regfile_0 <= 2'b01;
+              end
+              if(_zz_3) begin
+                PHT_regfile_1 <= 2'b01;
+              end
+              if(_zz_4) begin
+                PHT_regfile_2 <= 2'b01;
+              end
+              if(_zz_5) begin
+                PHT_regfile_3 <= 2'b01;
+              end
+              if(_zz_6) begin
+                PHT_regfile_4 <= 2'b01;
+              end
+              if(_zz_7) begin
+                PHT_regfile_5 <= 2'b01;
+              end
+              if(_zz_8) begin
+                PHT_regfile_6 <= 2'b01;
+              end
+              if(_zz_9) begin
+                PHT_regfile_7 <= 2'b01;
+              end
+              if(_zz_10) begin
+                PHT_regfile_8 <= 2'b01;
+              end
+              if(_zz_11) begin
+                PHT_regfile_9 <= 2'b01;
+              end
+              if(_zz_12) begin
+                PHT_regfile_10 <= 2'b01;
+              end
+              if(_zz_13) begin
+                PHT_regfile_11 <= 2'b01;
+              end
+              if(_zz_14) begin
+                PHT_regfile_12 <= 2'b01;
+              end
+              if(_zz_15) begin
+                PHT_regfile_13 <= 2'b01;
+              end
+              if(_zz_16) begin
+                PHT_regfile_14 <= 2'b01;
+              end
+              if(_zz_17) begin
+                PHT_regfile_15 <= 2'b01;
+              end
+              if(_zz_18) begin
+                PHT_regfile_16 <= 2'b01;
+              end
+              if(_zz_19) begin
+                PHT_regfile_17 <= 2'b01;
+              end
+              if(_zz_20) begin
+                PHT_regfile_18 <= 2'b01;
+              end
+              if(_zz_21) begin
+                PHT_regfile_19 <= 2'b01;
+              end
+              if(_zz_22) begin
+                PHT_regfile_20 <= 2'b01;
+              end
+              if(_zz_23) begin
+                PHT_regfile_21 <= 2'b01;
+              end
+              if(_zz_24) begin
+                PHT_regfile_22 <= 2'b01;
+              end
+              if(_zz_25) begin
+                PHT_regfile_23 <= 2'b01;
+              end
+              if(_zz_26) begin
+                PHT_regfile_24 <= 2'b01;
+              end
+              if(_zz_27) begin
+                PHT_regfile_25 <= 2'b01;
+              end
+              if(_zz_28) begin
+                PHT_regfile_26 <= 2'b01;
+              end
+              if(_zz_29) begin
+                PHT_regfile_27 <= 2'b01;
+              end
+              if(_zz_30) begin
+                PHT_regfile_28 <= 2'b01;
+              end
+              if(_zz_31) begin
+                PHT_regfile_29 <= 2'b01;
+              end
+              if(_zz_32) begin
+                PHT_regfile_30 <= 2'b01;
+              end
+              if(_zz_33) begin
+                PHT_regfile_31 <= 2'b01;
+              end
+              if(_zz_34) begin
+                PHT_regfile_32 <= 2'b01;
+              end
+              if(_zz_35) begin
+                PHT_regfile_33 <= 2'b01;
+              end
+              if(_zz_36) begin
+                PHT_regfile_34 <= 2'b01;
+              end
+              if(_zz_37) begin
+                PHT_regfile_35 <= 2'b01;
+              end
+              if(_zz_38) begin
+                PHT_regfile_36 <= 2'b01;
+              end
+              if(_zz_39) begin
+                PHT_regfile_37 <= 2'b01;
+              end
+              if(_zz_40) begin
+                PHT_regfile_38 <= 2'b01;
+              end
+              if(_zz_41) begin
+                PHT_regfile_39 <= 2'b01;
+              end
+              if(_zz_42) begin
+                PHT_regfile_40 <= 2'b01;
+              end
+              if(_zz_43) begin
+                PHT_regfile_41 <= 2'b01;
+              end
+              if(_zz_44) begin
+                PHT_regfile_42 <= 2'b01;
+              end
+              if(_zz_45) begin
+                PHT_regfile_43 <= 2'b01;
+              end
+              if(_zz_46) begin
+                PHT_regfile_44 <= 2'b01;
+              end
+              if(_zz_47) begin
+                PHT_regfile_45 <= 2'b01;
+              end
+              if(_zz_48) begin
+                PHT_regfile_46 <= 2'b01;
+              end
+              if(_zz_49) begin
+                PHT_regfile_47 <= 2'b01;
+              end
+              if(_zz_50) begin
+                PHT_regfile_48 <= 2'b01;
+              end
+              if(_zz_51) begin
+                PHT_regfile_49 <= 2'b01;
+              end
+              if(_zz_52) begin
+                PHT_regfile_50 <= 2'b01;
+              end
+              if(_zz_53) begin
+                PHT_regfile_51 <= 2'b01;
+              end
+              if(_zz_54) begin
+                PHT_regfile_52 <= 2'b01;
+              end
+              if(_zz_55) begin
+                PHT_regfile_53 <= 2'b01;
+              end
+              if(_zz_56) begin
+                PHT_regfile_54 <= 2'b01;
+              end
+              if(_zz_57) begin
+                PHT_regfile_55 <= 2'b01;
+              end
+              if(_zz_58) begin
+                PHT_regfile_56 <= 2'b01;
+              end
+              if(_zz_59) begin
+                PHT_regfile_57 <= 2'b01;
+              end
+              if(_zz_60) begin
+                PHT_regfile_58 <= 2'b01;
+              end
+              if(_zz_61) begin
+                PHT_regfile_59 <= 2'b01;
+              end
+              if(_zz_62) begin
+                PHT_regfile_60 <= 2'b01;
+              end
+              if(_zz_63) begin
+                PHT_regfile_61 <= 2'b01;
+              end
+              if(_zz_64) begin
+                PHT_regfile_62 <= 2'b01;
+              end
+              if(_zz_65) begin
+                PHT_regfile_63 <= 2'b01;
+              end
+              if(_zz_66) begin
+                PHT_regfile_64 <= 2'b01;
+              end
+              if(_zz_67) begin
+                PHT_regfile_65 <= 2'b01;
+              end
+              if(_zz_68) begin
+                PHT_regfile_66 <= 2'b01;
+              end
+              if(_zz_69) begin
+                PHT_regfile_67 <= 2'b01;
+              end
+              if(_zz_70) begin
+                PHT_regfile_68 <= 2'b01;
+              end
+              if(_zz_71) begin
+                PHT_regfile_69 <= 2'b01;
+              end
+              if(_zz_72) begin
+                PHT_regfile_70 <= 2'b01;
+              end
+              if(_zz_73) begin
+                PHT_regfile_71 <= 2'b01;
+              end
+              if(_zz_74) begin
+                PHT_regfile_72 <= 2'b01;
+              end
+              if(_zz_75) begin
+                PHT_regfile_73 <= 2'b01;
+              end
+              if(_zz_76) begin
+                PHT_regfile_74 <= 2'b01;
+              end
+              if(_zz_77) begin
+                PHT_regfile_75 <= 2'b01;
+              end
+              if(_zz_78) begin
+                PHT_regfile_76 <= 2'b01;
+              end
+              if(_zz_79) begin
+                PHT_regfile_77 <= 2'b01;
+              end
+              if(_zz_80) begin
+                PHT_regfile_78 <= 2'b01;
+              end
+              if(_zz_81) begin
+                PHT_regfile_79 <= 2'b01;
+              end
+              if(_zz_82) begin
+                PHT_regfile_80 <= 2'b01;
+              end
+              if(_zz_83) begin
+                PHT_regfile_81 <= 2'b01;
+              end
+              if(_zz_84) begin
+                PHT_regfile_82 <= 2'b01;
+              end
+              if(_zz_85) begin
+                PHT_regfile_83 <= 2'b01;
+              end
+              if(_zz_86) begin
+                PHT_regfile_84 <= 2'b01;
+              end
+              if(_zz_87) begin
+                PHT_regfile_85 <= 2'b01;
+              end
+              if(_zz_88) begin
+                PHT_regfile_86 <= 2'b01;
+              end
+              if(_zz_89) begin
+                PHT_regfile_87 <= 2'b01;
+              end
+              if(_zz_90) begin
+                PHT_regfile_88 <= 2'b01;
+              end
+              if(_zz_91) begin
+                PHT_regfile_89 <= 2'b01;
+              end
+              if(_zz_92) begin
+                PHT_regfile_90 <= 2'b01;
+              end
+              if(_zz_93) begin
+                PHT_regfile_91 <= 2'b01;
+              end
+              if(_zz_94) begin
+                PHT_regfile_92 <= 2'b01;
+              end
+              if(_zz_95) begin
+                PHT_regfile_93 <= 2'b01;
+              end
+              if(_zz_96) begin
+                PHT_regfile_94 <= 2'b01;
+              end
+              if(_zz_97) begin
+                PHT_regfile_95 <= 2'b01;
+              end
+              if(_zz_98) begin
+                PHT_regfile_96 <= 2'b01;
+              end
+              if(_zz_99) begin
+                PHT_regfile_97 <= 2'b01;
+              end
+              if(_zz_100) begin
+                PHT_regfile_98 <= 2'b01;
+              end
+              if(_zz_101) begin
+                PHT_regfile_99 <= 2'b01;
+              end
+              if(_zz_102) begin
+                PHT_regfile_100 <= 2'b01;
+              end
+              if(_zz_103) begin
+                PHT_regfile_101 <= 2'b01;
+              end
+              if(_zz_104) begin
+                PHT_regfile_102 <= 2'b01;
+              end
+              if(_zz_105) begin
+                PHT_regfile_103 <= 2'b01;
+              end
+              if(_zz_106) begin
+                PHT_regfile_104 <= 2'b01;
+              end
+              if(_zz_107) begin
+                PHT_regfile_105 <= 2'b01;
+              end
+              if(_zz_108) begin
+                PHT_regfile_106 <= 2'b01;
+              end
+              if(_zz_109) begin
+                PHT_regfile_107 <= 2'b01;
+              end
+              if(_zz_110) begin
+                PHT_regfile_108 <= 2'b01;
+              end
+              if(_zz_111) begin
+                PHT_regfile_109 <= 2'b01;
+              end
+              if(_zz_112) begin
+                PHT_regfile_110 <= 2'b01;
+              end
+              if(_zz_113) begin
+                PHT_regfile_111 <= 2'b01;
+              end
+              if(_zz_114) begin
+                PHT_regfile_112 <= 2'b01;
+              end
+              if(_zz_115) begin
+                PHT_regfile_113 <= 2'b01;
+              end
+              if(_zz_116) begin
+                PHT_regfile_114 <= 2'b01;
+              end
+              if(_zz_117) begin
+                PHT_regfile_115 <= 2'b01;
+              end
+              if(_zz_118) begin
+                PHT_regfile_116 <= 2'b01;
+              end
+              if(_zz_119) begin
+                PHT_regfile_117 <= 2'b01;
+              end
+              if(_zz_120) begin
+                PHT_regfile_118 <= 2'b01;
+              end
+              if(_zz_121) begin
+                PHT_regfile_119 <= 2'b01;
+              end
+              if(_zz_122) begin
+                PHT_regfile_120 <= 2'b01;
+              end
+              if(_zz_123) begin
+                PHT_regfile_121 <= 2'b01;
+              end
+              if(_zz_124) begin
+                PHT_regfile_122 <= 2'b01;
+              end
+              if(_zz_125) begin
+                PHT_regfile_123 <= 2'b01;
+              end
+              if(_zz_126) begin
+                PHT_regfile_124 <= 2'b01;
+              end
+              if(_zz_127) begin
+                PHT_regfile_125 <= 2'b01;
+              end
+              if(_zz_128) begin
+                PHT_regfile_126 <= 2'b01;
+              end
+              if(_zz_129) begin
+                PHT_regfile_127 <= 2'b01;
+              end
+            end else begin
+              if(_zz_2) begin
+                PHT_regfile_0 <= 2'b00;
+              end
+              if(_zz_3) begin
+                PHT_regfile_1 <= 2'b00;
+              end
+              if(_zz_4) begin
+                PHT_regfile_2 <= 2'b00;
+              end
+              if(_zz_5) begin
+                PHT_regfile_3 <= 2'b00;
+              end
+              if(_zz_6) begin
+                PHT_regfile_4 <= 2'b00;
+              end
+              if(_zz_7) begin
+                PHT_regfile_5 <= 2'b00;
+              end
+              if(_zz_8) begin
+                PHT_regfile_6 <= 2'b00;
+              end
+              if(_zz_9) begin
+                PHT_regfile_7 <= 2'b00;
+              end
+              if(_zz_10) begin
+                PHT_regfile_8 <= 2'b00;
+              end
+              if(_zz_11) begin
+                PHT_regfile_9 <= 2'b00;
+              end
+              if(_zz_12) begin
+                PHT_regfile_10 <= 2'b00;
+              end
+              if(_zz_13) begin
+                PHT_regfile_11 <= 2'b00;
+              end
+              if(_zz_14) begin
+                PHT_regfile_12 <= 2'b00;
+              end
+              if(_zz_15) begin
+                PHT_regfile_13 <= 2'b00;
+              end
+              if(_zz_16) begin
+                PHT_regfile_14 <= 2'b00;
+              end
+              if(_zz_17) begin
+                PHT_regfile_15 <= 2'b00;
+              end
+              if(_zz_18) begin
+                PHT_regfile_16 <= 2'b00;
+              end
+              if(_zz_19) begin
+                PHT_regfile_17 <= 2'b00;
+              end
+              if(_zz_20) begin
+                PHT_regfile_18 <= 2'b00;
+              end
+              if(_zz_21) begin
+                PHT_regfile_19 <= 2'b00;
+              end
+              if(_zz_22) begin
+                PHT_regfile_20 <= 2'b00;
+              end
+              if(_zz_23) begin
+                PHT_regfile_21 <= 2'b00;
+              end
+              if(_zz_24) begin
+                PHT_regfile_22 <= 2'b00;
+              end
+              if(_zz_25) begin
+                PHT_regfile_23 <= 2'b00;
+              end
+              if(_zz_26) begin
+                PHT_regfile_24 <= 2'b00;
+              end
+              if(_zz_27) begin
+                PHT_regfile_25 <= 2'b00;
+              end
+              if(_zz_28) begin
+                PHT_regfile_26 <= 2'b00;
+              end
+              if(_zz_29) begin
+                PHT_regfile_27 <= 2'b00;
+              end
+              if(_zz_30) begin
+                PHT_regfile_28 <= 2'b00;
+              end
+              if(_zz_31) begin
+                PHT_regfile_29 <= 2'b00;
+              end
+              if(_zz_32) begin
+                PHT_regfile_30 <= 2'b00;
+              end
+              if(_zz_33) begin
+                PHT_regfile_31 <= 2'b00;
+              end
+              if(_zz_34) begin
+                PHT_regfile_32 <= 2'b00;
+              end
+              if(_zz_35) begin
+                PHT_regfile_33 <= 2'b00;
+              end
+              if(_zz_36) begin
+                PHT_regfile_34 <= 2'b00;
+              end
+              if(_zz_37) begin
+                PHT_regfile_35 <= 2'b00;
+              end
+              if(_zz_38) begin
+                PHT_regfile_36 <= 2'b00;
+              end
+              if(_zz_39) begin
+                PHT_regfile_37 <= 2'b00;
+              end
+              if(_zz_40) begin
+                PHT_regfile_38 <= 2'b00;
+              end
+              if(_zz_41) begin
+                PHT_regfile_39 <= 2'b00;
+              end
+              if(_zz_42) begin
+                PHT_regfile_40 <= 2'b00;
+              end
+              if(_zz_43) begin
+                PHT_regfile_41 <= 2'b00;
+              end
+              if(_zz_44) begin
+                PHT_regfile_42 <= 2'b00;
+              end
+              if(_zz_45) begin
+                PHT_regfile_43 <= 2'b00;
+              end
+              if(_zz_46) begin
+                PHT_regfile_44 <= 2'b00;
+              end
+              if(_zz_47) begin
+                PHT_regfile_45 <= 2'b00;
+              end
+              if(_zz_48) begin
+                PHT_regfile_46 <= 2'b00;
+              end
+              if(_zz_49) begin
+                PHT_regfile_47 <= 2'b00;
+              end
+              if(_zz_50) begin
+                PHT_regfile_48 <= 2'b00;
+              end
+              if(_zz_51) begin
+                PHT_regfile_49 <= 2'b00;
+              end
+              if(_zz_52) begin
+                PHT_regfile_50 <= 2'b00;
+              end
+              if(_zz_53) begin
+                PHT_regfile_51 <= 2'b00;
+              end
+              if(_zz_54) begin
+                PHT_regfile_52 <= 2'b00;
+              end
+              if(_zz_55) begin
+                PHT_regfile_53 <= 2'b00;
+              end
+              if(_zz_56) begin
+                PHT_regfile_54 <= 2'b00;
+              end
+              if(_zz_57) begin
+                PHT_regfile_55 <= 2'b00;
+              end
+              if(_zz_58) begin
+                PHT_regfile_56 <= 2'b00;
+              end
+              if(_zz_59) begin
+                PHT_regfile_57 <= 2'b00;
+              end
+              if(_zz_60) begin
+                PHT_regfile_58 <= 2'b00;
+              end
+              if(_zz_61) begin
+                PHT_regfile_59 <= 2'b00;
+              end
+              if(_zz_62) begin
+                PHT_regfile_60 <= 2'b00;
+              end
+              if(_zz_63) begin
+                PHT_regfile_61 <= 2'b00;
+              end
+              if(_zz_64) begin
+                PHT_regfile_62 <= 2'b00;
+              end
+              if(_zz_65) begin
+                PHT_regfile_63 <= 2'b00;
+              end
+              if(_zz_66) begin
+                PHT_regfile_64 <= 2'b00;
+              end
+              if(_zz_67) begin
+                PHT_regfile_65 <= 2'b00;
+              end
+              if(_zz_68) begin
+                PHT_regfile_66 <= 2'b00;
+              end
+              if(_zz_69) begin
+                PHT_regfile_67 <= 2'b00;
+              end
+              if(_zz_70) begin
+                PHT_regfile_68 <= 2'b00;
+              end
+              if(_zz_71) begin
+                PHT_regfile_69 <= 2'b00;
+              end
+              if(_zz_72) begin
+                PHT_regfile_70 <= 2'b00;
+              end
+              if(_zz_73) begin
+                PHT_regfile_71 <= 2'b00;
+              end
+              if(_zz_74) begin
+                PHT_regfile_72 <= 2'b00;
+              end
+              if(_zz_75) begin
+                PHT_regfile_73 <= 2'b00;
+              end
+              if(_zz_76) begin
+                PHT_regfile_74 <= 2'b00;
+              end
+              if(_zz_77) begin
+                PHT_regfile_75 <= 2'b00;
+              end
+              if(_zz_78) begin
+                PHT_regfile_76 <= 2'b00;
+              end
+              if(_zz_79) begin
+                PHT_regfile_77 <= 2'b00;
+              end
+              if(_zz_80) begin
+                PHT_regfile_78 <= 2'b00;
+              end
+              if(_zz_81) begin
+                PHT_regfile_79 <= 2'b00;
+              end
+              if(_zz_82) begin
+                PHT_regfile_80 <= 2'b00;
+              end
+              if(_zz_83) begin
+                PHT_regfile_81 <= 2'b00;
+              end
+              if(_zz_84) begin
+                PHT_regfile_82 <= 2'b00;
+              end
+              if(_zz_85) begin
+                PHT_regfile_83 <= 2'b00;
+              end
+              if(_zz_86) begin
+                PHT_regfile_84 <= 2'b00;
+              end
+              if(_zz_87) begin
+                PHT_regfile_85 <= 2'b00;
+              end
+              if(_zz_88) begin
+                PHT_regfile_86 <= 2'b00;
+              end
+              if(_zz_89) begin
+                PHT_regfile_87 <= 2'b00;
+              end
+              if(_zz_90) begin
+                PHT_regfile_88 <= 2'b00;
+              end
+              if(_zz_91) begin
+                PHT_regfile_89 <= 2'b00;
+              end
+              if(_zz_92) begin
+                PHT_regfile_90 <= 2'b00;
+              end
+              if(_zz_93) begin
+                PHT_regfile_91 <= 2'b00;
+              end
+              if(_zz_94) begin
+                PHT_regfile_92 <= 2'b00;
+              end
+              if(_zz_95) begin
+                PHT_regfile_93 <= 2'b00;
+              end
+              if(_zz_96) begin
+                PHT_regfile_94 <= 2'b00;
+              end
+              if(_zz_97) begin
+                PHT_regfile_95 <= 2'b00;
+              end
+              if(_zz_98) begin
+                PHT_regfile_96 <= 2'b00;
+              end
+              if(_zz_99) begin
+                PHT_regfile_97 <= 2'b00;
+              end
+              if(_zz_100) begin
+                PHT_regfile_98 <= 2'b00;
+              end
+              if(_zz_101) begin
+                PHT_regfile_99 <= 2'b00;
+              end
+              if(_zz_102) begin
+                PHT_regfile_100 <= 2'b00;
+              end
+              if(_zz_103) begin
+                PHT_regfile_101 <= 2'b00;
+              end
+              if(_zz_104) begin
+                PHT_regfile_102 <= 2'b00;
+              end
+              if(_zz_105) begin
+                PHT_regfile_103 <= 2'b00;
+              end
+              if(_zz_106) begin
+                PHT_regfile_104 <= 2'b00;
+              end
+              if(_zz_107) begin
+                PHT_regfile_105 <= 2'b00;
+              end
+              if(_zz_108) begin
+                PHT_regfile_106 <= 2'b00;
+              end
+              if(_zz_109) begin
+                PHT_regfile_107 <= 2'b00;
+              end
+              if(_zz_110) begin
+                PHT_regfile_108 <= 2'b00;
+              end
+              if(_zz_111) begin
+                PHT_regfile_109 <= 2'b00;
+              end
+              if(_zz_112) begin
+                PHT_regfile_110 <= 2'b00;
+              end
+              if(_zz_113) begin
+                PHT_regfile_111 <= 2'b00;
+              end
+              if(_zz_114) begin
+                PHT_regfile_112 <= 2'b00;
+              end
+              if(_zz_115) begin
+                PHT_regfile_113 <= 2'b00;
+              end
+              if(_zz_116) begin
+                PHT_regfile_114 <= 2'b00;
+              end
+              if(_zz_117) begin
+                PHT_regfile_115 <= 2'b00;
+              end
+              if(_zz_118) begin
+                PHT_regfile_116 <= 2'b00;
+              end
+              if(_zz_119) begin
+                PHT_regfile_117 <= 2'b00;
+              end
+              if(_zz_120) begin
+                PHT_regfile_118 <= 2'b00;
+              end
+              if(_zz_121) begin
+                PHT_regfile_119 <= 2'b00;
+              end
+              if(_zz_122) begin
+                PHT_regfile_120 <= 2'b00;
+              end
+              if(_zz_123) begin
+                PHT_regfile_121 <= 2'b00;
+              end
+              if(_zz_124) begin
+                PHT_regfile_122 <= 2'b00;
+              end
+              if(_zz_125) begin
+                PHT_regfile_123 <= 2'b00;
+              end
+              if(_zz_126) begin
+                PHT_regfile_124 <= 2'b00;
+              end
+              if(_zz_127) begin
+                PHT_regfile_125 <= 2'b00;
+              end
+              if(_zz_128) begin
+                PHT_regfile_126 <= 2'b00;
+              end
+              if(_zz_129) begin
+                PHT_regfile_127 <= 2'b00;
+              end
+            end
+          end
+          2'b01 : begin
+            if(train_taken) begin
+              if(_zz_2) begin
+                PHT_regfile_0 <= 2'b10;
+              end
+              if(_zz_3) begin
+                PHT_regfile_1 <= 2'b10;
+              end
+              if(_zz_4) begin
+                PHT_regfile_2 <= 2'b10;
+              end
+              if(_zz_5) begin
+                PHT_regfile_3 <= 2'b10;
+              end
+              if(_zz_6) begin
+                PHT_regfile_4 <= 2'b10;
+              end
+              if(_zz_7) begin
+                PHT_regfile_5 <= 2'b10;
+              end
+              if(_zz_8) begin
+                PHT_regfile_6 <= 2'b10;
+              end
+              if(_zz_9) begin
+                PHT_regfile_7 <= 2'b10;
+              end
+              if(_zz_10) begin
+                PHT_regfile_8 <= 2'b10;
+              end
+              if(_zz_11) begin
+                PHT_regfile_9 <= 2'b10;
+              end
+              if(_zz_12) begin
+                PHT_regfile_10 <= 2'b10;
+              end
+              if(_zz_13) begin
+                PHT_regfile_11 <= 2'b10;
+              end
+              if(_zz_14) begin
+                PHT_regfile_12 <= 2'b10;
+              end
+              if(_zz_15) begin
+                PHT_regfile_13 <= 2'b10;
+              end
+              if(_zz_16) begin
+                PHT_regfile_14 <= 2'b10;
+              end
+              if(_zz_17) begin
+                PHT_regfile_15 <= 2'b10;
+              end
+              if(_zz_18) begin
+                PHT_regfile_16 <= 2'b10;
+              end
+              if(_zz_19) begin
+                PHT_regfile_17 <= 2'b10;
+              end
+              if(_zz_20) begin
+                PHT_regfile_18 <= 2'b10;
+              end
+              if(_zz_21) begin
+                PHT_regfile_19 <= 2'b10;
+              end
+              if(_zz_22) begin
+                PHT_regfile_20 <= 2'b10;
+              end
+              if(_zz_23) begin
+                PHT_regfile_21 <= 2'b10;
+              end
+              if(_zz_24) begin
+                PHT_regfile_22 <= 2'b10;
+              end
+              if(_zz_25) begin
+                PHT_regfile_23 <= 2'b10;
+              end
+              if(_zz_26) begin
+                PHT_regfile_24 <= 2'b10;
+              end
+              if(_zz_27) begin
+                PHT_regfile_25 <= 2'b10;
+              end
+              if(_zz_28) begin
+                PHT_regfile_26 <= 2'b10;
+              end
+              if(_zz_29) begin
+                PHT_regfile_27 <= 2'b10;
+              end
+              if(_zz_30) begin
+                PHT_regfile_28 <= 2'b10;
+              end
+              if(_zz_31) begin
+                PHT_regfile_29 <= 2'b10;
+              end
+              if(_zz_32) begin
+                PHT_regfile_30 <= 2'b10;
+              end
+              if(_zz_33) begin
+                PHT_regfile_31 <= 2'b10;
+              end
+              if(_zz_34) begin
+                PHT_regfile_32 <= 2'b10;
+              end
+              if(_zz_35) begin
+                PHT_regfile_33 <= 2'b10;
+              end
+              if(_zz_36) begin
+                PHT_regfile_34 <= 2'b10;
+              end
+              if(_zz_37) begin
+                PHT_regfile_35 <= 2'b10;
+              end
+              if(_zz_38) begin
+                PHT_regfile_36 <= 2'b10;
+              end
+              if(_zz_39) begin
+                PHT_regfile_37 <= 2'b10;
+              end
+              if(_zz_40) begin
+                PHT_regfile_38 <= 2'b10;
+              end
+              if(_zz_41) begin
+                PHT_regfile_39 <= 2'b10;
+              end
+              if(_zz_42) begin
+                PHT_regfile_40 <= 2'b10;
+              end
+              if(_zz_43) begin
+                PHT_regfile_41 <= 2'b10;
+              end
+              if(_zz_44) begin
+                PHT_regfile_42 <= 2'b10;
+              end
+              if(_zz_45) begin
+                PHT_regfile_43 <= 2'b10;
+              end
+              if(_zz_46) begin
+                PHT_regfile_44 <= 2'b10;
+              end
+              if(_zz_47) begin
+                PHT_regfile_45 <= 2'b10;
+              end
+              if(_zz_48) begin
+                PHT_regfile_46 <= 2'b10;
+              end
+              if(_zz_49) begin
+                PHT_regfile_47 <= 2'b10;
+              end
+              if(_zz_50) begin
+                PHT_regfile_48 <= 2'b10;
+              end
+              if(_zz_51) begin
+                PHT_regfile_49 <= 2'b10;
+              end
+              if(_zz_52) begin
+                PHT_regfile_50 <= 2'b10;
+              end
+              if(_zz_53) begin
+                PHT_regfile_51 <= 2'b10;
+              end
+              if(_zz_54) begin
+                PHT_regfile_52 <= 2'b10;
+              end
+              if(_zz_55) begin
+                PHT_regfile_53 <= 2'b10;
+              end
+              if(_zz_56) begin
+                PHT_regfile_54 <= 2'b10;
+              end
+              if(_zz_57) begin
+                PHT_regfile_55 <= 2'b10;
+              end
+              if(_zz_58) begin
+                PHT_regfile_56 <= 2'b10;
+              end
+              if(_zz_59) begin
+                PHT_regfile_57 <= 2'b10;
+              end
+              if(_zz_60) begin
+                PHT_regfile_58 <= 2'b10;
+              end
+              if(_zz_61) begin
+                PHT_regfile_59 <= 2'b10;
+              end
+              if(_zz_62) begin
+                PHT_regfile_60 <= 2'b10;
+              end
+              if(_zz_63) begin
+                PHT_regfile_61 <= 2'b10;
+              end
+              if(_zz_64) begin
+                PHT_regfile_62 <= 2'b10;
+              end
+              if(_zz_65) begin
+                PHT_regfile_63 <= 2'b10;
+              end
+              if(_zz_66) begin
+                PHT_regfile_64 <= 2'b10;
+              end
+              if(_zz_67) begin
+                PHT_regfile_65 <= 2'b10;
+              end
+              if(_zz_68) begin
+                PHT_regfile_66 <= 2'b10;
+              end
+              if(_zz_69) begin
+                PHT_regfile_67 <= 2'b10;
+              end
+              if(_zz_70) begin
+                PHT_regfile_68 <= 2'b10;
+              end
+              if(_zz_71) begin
+                PHT_regfile_69 <= 2'b10;
+              end
+              if(_zz_72) begin
+                PHT_regfile_70 <= 2'b10;
+              end
+              if(_zz_73) begin
+                PHT_regfile_71 <= 2'b10;
+              end
+              if(_zz_74) begin
+                PHT_regfile_72 <= 2'b10;
+              end
+              if(_zz_75) begin
+                PHT_regfile_73 <= 2'b10;
+              end
+              if(_zz_76) begin
+                PHT_regfile_74 <= 2'b10;
+              end
+              if(_zz_77) begin
+                PHT_regfile_75 <= 2'b10;
+              end
+              if(_zz_78) begin
+                PHT_regfile_76 <= 2'b10;
+              end
+              if(_zz_79) begin
+                PHT_regfile_77 <= 2'b10;
+              end
+              if(_zz_80) begin
+                PHT_regfile_78 <= 2'b10;
+              end
+              if(_zz_81) begin
+                PHT_regfile_79 <= 2'b10;
+              end
+              if(_zz_82) begin
+                PHT_regfile_80 <= 2'b10;
+              end
+              if(_zz_83) begin
+                PHT_regfile_81 <= 2'b10;
+              end
+              if(_zz_84) begin
+                PHT_regfile_82 <= 2'b10;
+              end
+              if(_zz_85) begin
+                PHT_regfile_83 <= 2'b10;
+              end
+              if(_zz_86) begin
+                PHT_regfile_84 <= 2'b10;
+              end
+              if(_zz_87) begin
+                PHT_regfile_85 <= 2'b10;
+              end
+              if(_zz_88) begin
+                PHT_regfile_86 <= 2'b10;
+              end
+              if(_zz_89) begin
+                PHT_regfile_87 <= 2'b10;
+              end
+              if(_zz_90) begin
+                PHT_regfile_88 <= 2'b10;
+              end
+              if(_zz_91) begin
+                PHT_regfile_89 <= 2'b10;
+              end
+              if(_zz_92) begin
+                PHT_regfile_90 <= 2'b10;
+              end
+              if(_zz_93) begin
+                PHT_regfile_91 <= 2'b10;
+              end
+              if(_zz_94) begin
+                PHT_regfile_92 <= 2'b10;
+              end
+              if(_zz_95) begin
+                PHT_regfile_93 <= 2'b10;
+              end
+              if(_zz_96) begin
+                PHT_regfile_94 <= 2'b10;
+              end
+              if(_zz_97) begin
+                PHT_regfile_95 <= 2'b10;
+              end
+              if(_zz_98) begin
+                PHT_regfile_96 <= 2'b10;
+              end
+              if(_zz_99) begin
+                PHT_regfile_97 <= 2'b10;
+              end
+              if(_zz_100) begin
+                PHT_regfile_98 <= 2'b10;
+              end
+              if(_zz_101) begin
+                PHT_regfile_99 <= 2'b10;
+              end
+              if(_zz_102) begin
+                PHT_regfile_100 <= 2'b10;
+              end
+              if(_zz_103) begin
+                PHT_regfile_101 <= 2'b10;
+              end
+              if(_zz_104) begin
+                PHT_regfile_102 <= 2'b10;
+              end
+              if(_zz_105) begin
+                PHT_regfile_103 <= 2'b10;
+              end
+              if(_zz_106) begin
+                PHT_regfile_104 <= 2'b10;
+              end
+              if(_zz_107) begin
+                PHT_regfile_105 <= 2'b10;
+              end
+              if(_zz_108) begin
+                PHT_regfile_106 <= 2'b10;
+              end
+              if(_zz_109) begin
+                PHT_regfile_107 <= 2'b10;
+              end
+              if(_zz_110) begin
+                PHT_regfile_108 <= 2'b10;
+              end
+              if(_zz_111) begin
+                PHT_regfile_109 <= 2'b10;
+              end
+              if(_zz_112) begin
+                PHT_regfile_110 <= 2'b10;
+              end
+              if(_zz_113) begin
+                PHT_regfile_111 <= 2'b10;
+              end
+              if(_zz_114) begin
+                PHT_regfile_112 <= 2'b10;
+              end
+              if(_zz_115) begin
+                PHT_regfile_113 <= 2'b10;
+              end
+              if(_zz_116) begin
+                PHT_regfile_114 <= 2'b10;
+              end
+              if(_zz_117) begin
+                PHT_regfile_115 <= 2'b10;
+              end
+              if(_zz_118) begin
+                PHT_regfile_116 <= 2'b10;
+              end
+              if(_zz_119) begin
+                PHT_regfile_117 <= 2'b10;
+              end
+              if(_zz_120) begin
+                PHT_regfile_118 <= 2'b10;
+              end
+              if(_zz_121) begin
+                PHT_regfile_119 <= 2'b10;
+              end
+              if(_zz_122) begin
+                PHT_regfile_120 <= 2'b10;
+              end
+              if(_zz_123) begin
+                PHT_regfile_121 <= 2'b10;
+              end
+              if(_zz_124) begin
+                PHT_regfile_122 <= 2'b10;
+              end
+              if(_zz_125) begin
+                PHT_regfile_123 <= 2'b10;
+              end
+              if(_zz_126) begin
+                PHT_regfile_124 <= 2'b10;
+              end
+              if(_zz_127) begin
+                PHT_regfile_125 <= 2'b10;
+              end
+              if(_zz_128) begin
+                PHT_regfile_126 <= 2'b10;
+              end
+              if(_zz_129) begin
+                PHT_regfile_127 <= 2'b10;
+              end
+            end else begin
+              if(_zz_2) begin
+                PHT_regfile_0 <= 2'b00;
+              end
+              if(_zz_3) begin
+                PHT_regfile_1 <= 2'b00;
+              end
+              if(_zz_4) begin
+                PHT_regfile_2 <= 2'b00;
+              end
+              if(_zz_5) begin
+                PHT_regfile_3 <= 2'b00;
+              end
+              if(_zz_6) begin
+                PHT_regfile_4 <= 2'b00;
+              end
+              if(_zz_7) begin
+                PHT_regfile_5 <= 2'b00;
+              end
+              if(_zz_8) begin
+                PHT_regfile_6 <= 2'b00;
+              end
+              if(_zz_9) begin
+                PHT_regfile_7 <= 2'b00;
+              end
+              if(_zz_10) begin
+                PHT_regfile_8 <= 2'b00;
+              end
+              if(_zz_11) begin
+                PHT_regfile_9 <= 2'b00;
+              end
+              if(_zz_12) begin
+                PHT_regfile_10 <= 2'b00;
+              end
+              if(_zz_13) begin
+                PHT_regfile_11 <= 2'b00;
+              end
+              if(_zz_14) begin
+                PHT_regfile_12 <= 2'b00;
+              end
+              if(_zz_15) begin
+                PHT_regfile_13 <= 2'b00;
+              end
+              if(_zz_16) begin
+                PHT_regfile_14 <= 2'b00;
+              end
+              if(_zz_17) begin
+                PHT_regfile_15 <= 2'b00;
+              end
+              if(_zz_18) begin
+                PHT_regfile_16 <= 2'b00;
+              end
+              if(_zz_19) begin
+                PHT_regfile_17 <= 2'b00;
+              end
+              if(_zz_20) begin
+                PHT_regfile_18 <= 2'b00;
+              end
+              if(_zz_21) begin
+                PHT_regfile_19 <= 2'b00;
+              end
+              if(_zz_22) begin
+                PHT_regfile_20 <= 2'b00;
+              end
+              if(_zz_23) begin
+                PHT_regfile_21 <= 2'b00;
+              end
+              if(_zz_24) begin
+                PHT_regfile_22 <= 2'b00;
+              end
+              if(_zz_25) begin
+                PHT_regfile_23 <= 2'b00;
+              end
+              if(_zz_26) begin
+                PHT_regfile_24 <= 2'b00;
+              end
+              if(_zz_27) begin
+                PHT_regfile_25 <= 2'b00;
+              end
+              if(_zz_28) begin
+                PHT_regfile_26 <= 2'b00;
+              end
+              if(_zz_29) begin
+                PHT_regfile_27 <= 2'b00;
+              end
+              if(_zz_30) begin
+                PHT_regfile_28 <= 2'b00;
+              end
+              if(_zz_31) begin
+                PHT_regfile_29 <= 2'b00;
+              end
+              if(_zz_32) begin
+                PHT_regfile_30 <= 2'b00;
+              end
+              if(_zz_33) begin
+                PHT_regfile_31 <= 2'b00;
+              end
+              if(_zz_34) begin
+                PHT_regfile_32 <= 2'b00;
+              end
+              if(_zz_35) begin
+                PHT_regfile_33 <= 2'b00;
+              end
+              if(_zz_36) begin
+                PHT_regfile_34 <= 2'b00;
+              end
+              if(_zz_37) begin
+                PHT_regfile_35 <= 2'b00;
+              end
+              if(_zz_38) begin
+                PHT_regfile_36 <= 2'b00;
+              end
+              if(_zz_39) begin
+                PHT_regfile_37 <= 2'b00;
+              end
+              if(_zz_40) begin
+                PHT_regfile_38 <= 2'b00;
+              end
+              if(_zz_41) begin
+                PHT_regfile_39 <= 2'b00;
+              end
+              if(_zz_42) begin
+                PHT_regfile_40 <= 2'b00;
+              end
+              if(_zz_43) begin
+                PHT_regfile_41 <= 2'b00;
+              end
+              if(_zz_44) begin
+                PHT_regfile_42 <= 2'b00;
+              end
+              if(_zz_45) begin
+                PHT_regfile_43 <= 2'b00;
+              end
+              if(_zz_46) begin
+                PHT_regfile_44 <= 2'b00;
+              end
+              if(_zz_47) begin
+                PHT_regfile_45 <= 2'b00;
+              end
+              if(_zz_48) begin
+                PHT_regfile_46 <= 2'b00;
+              end
+              if(_zz_49) begin
+                PHT_regfile_47 <= 2'b00;
+              end
+              if(_zz_50) begin
+                PHT_regfile_48 <= 2'b00;
+              end
+              if(_zz_51) begin
+                PHT_regfile_49 <= 2'b00;
+              end
+              if(_zz_52) begin
+                PHT_regfile_50 <= 2'b00;
+              end
+              if(_zz_53) begin
+                PHT_regfile_51 <= 2'b00;
+              end
+              if(_zz_54) begin
+                PHT_regfile_52 <= 2'b00;
+              end
+              if(_zz_55) begin
+                PHT_regfile_53 <= 2'b00;
+              end
+              if(_zz_56) begin
+                PHT_regfile_54 <= 2'b00;
+              end
+              if(_zz_57) begin
+                PHT_regfile_55 <= 2'b00;
+              end
+              if(_zz_58) begin
+                PHT_regfile_56 <= 2'b00;
+              end
+              if(_zz_59) begin
+                PHT_regfile_57 <= 2'b00;
+              end
+              if(_zz_60) begin
+                PHT_regfile_58 <= 2'b00;
+              end
+              if(_zz_61) begin
+                PHT_regfile_59 <= 2'b00;
+              end
+              if(_zz_62) begin
+                PHT_regfile_60 <= 2'b00;
+              end
+              if(_zz_63) begin
+                PHT_regfile_61 <= 2'b00;
+              end
+              if(_zz_64) begin
+                PHT_regfile_62 <= 2'b00;
+              end
+              if(_zz_65) begin
+                PHT_regfile_63 <= 2'b00;
+              end
+              if(_zz_66) begin
+                PHT_regfile_64 <= 2'b00;
+              end
+              if(_zz_67) begin
+                PHT_regfile_65 <= 2'b00;
+              end
+              if(_zz_68) begin
+                PHT_regfile_66 <= 2'b00;
+              end
+              if(_zz_69) begin
+                PHT_regfile_67 <= 2'b00;
+              end
+              if(_zz_70) begin
+                PHT_regfile_68 <= 2'b00;
+              end
+              if(_zz_71) begin
+                PHT_regfile_69 <= 2'b00;
+              end
+              if(_zz_72) begin
+                PHT_regfile_70 <= 2'b00;
+              end
+              if(_zz_73) begin
+                PHT_regfile_71 <= 2'b00;
+              end
+              if(_zz_74) begin
+                PHT_regfile_72 <= 2'b00;
+              end
+              if(_zz_75) begin
+                PHT_regfile_73 <= 2'b00;
+              end
+              if(_zz_76) begin
+                PHT_regfile_74 <= 2'b00;
+              end
+              if(_zz_77) begin
+                PHT_regfile_75 <= 2'b00;
+              end
+              if(_zz_78) begin
+                PHT_regfile_76 <= 2'b00;
+              end
+              if(_zz_79) begin
+                PHT_regfile_77 <= 2'b00;
+              end
+              if(_zz_80) begin
+                PHT_regfile_78 <= 2'b00;
+              end
+              if(_zz_81) begin
+                PHT_regfile_79 <= 2'b00;
+              end
+              if(_zz_82) begin
+                PHT_regfile_80 <= 2'b00;
+              end
+              if(_zz_83) begin
+                PHT_regfile_81 <= 2'b00;
+              end
+              if(_zz_84) begin
+                PHT_regfile_82 <= 2'b00;
+              end
+              if(_zz_85) begin
+                PHT_regfile_83 <= 2'b00;
+              end
+              if(_zz_86) begin
+                PHT_regfile_84 <= 2'b00;
+              end
+              if(_zz_87) begin
+                PHT_regfile_85 <= 2'b00;
+              end
+              if(_zz_88) begin
+                PHT_regfile_86 <= 2'b00;
+              end
+              if(_zz_89) begin
+                PHT_regfile_87 <= 2'b00;
+              end
+              if(_zz_90) begin
+                PHT_regfile_88 <= 2'b00;
+              end
+              if(_zz_91) begin
+                PHT_regfile_89 <= 2'b00;
+              end
+              if(_zz_92) begin
+                PHT_regfile_90 <= 2'b00;
+              end
+              if(_zz_93) begin
+                PHT_regfile_91 <= 2'b00;
+              end
+              if(_zz_94) begin
+                PHT_regfile_92 <= 2'b00;
+              end
+              if(_zz_95) begin
+                PHT_regfile_93 <= 2'b00;
+              end
+              if(_zz_96) begin
+                PHT_regfile_94 <= 2'b00;
+              end
+              if(_zz_97) begin
+                PHT_regfile_95 <= 2'b00;
+              end
+              if(_zz_98) begin
+                PHT_regfile_96 <= 2'b00;
+              end
+              if(_zz_99) begin
+                PHT_regfile_97 <= 2'b00;
+              end
+              if(_zz_100) begin
+                PHT_regfile_98 <= 2'b00;
+              end
+              if(_zz_101) begin
+                PHT_regfile_99 <= 2'b00;
+              end
+              if(_zz_102) begin
+                PHT_regfile_100 <= 2'b00;
+              end
+              if(_zz_103) begin
+                PHT_regfile_101 <= 2'b00;
+              end
+              if(_zz_104) begin
+                PHT_regfile_102 <= 2'b00;
+              end
+              if(_zz_105) begin
+                PHT_regfile_103 <= 2'b00;
+              end
+              if(_zz_106) begin
+                PHT_regfile_104 <= 2'b00;
+              end
+              if(_zz_107) begin
+                PHT_regfile_105 <= 2'b00;
+              end
+              if(_zz_108) begin
+                PHT_regfile_106 <= 2'b00;
+              end
+              if(_zz_109) begin
+                PHT_regfile_107 <= 2'b00;
+              end
+              if(_zz_110) begin
+                PHT_regfile_108 <= 2'b00;
+              end
+              if(_zz_111) begin
+                PHT_regfile_109 <= 2'b00;
+              end
+              if(_zz_112) begin
+                PHT_regfile_110 <= 2'b00;
+              end
+              if(_zz_113) begin
+                PHT_regfile_111 <= 2'b00;
+              end
+              if(_zz_114) begin
+                PHT_regfile_112 <= 2'b00;
+              end
+              if(_zz_115) begin
+                PHT_regfile_113 <= 2'b00;
+              end
+              if(_zz_116) begin
+                PHT_regfile_114 <= 2'b00;
+              end
+              if(_zz_117) begin
+                PHT_regfile_115 <= 2'b00;
+              end
+              if(_zz_118) begin
+                PHT_regfile_116 <= 2'b00;
+              end
+              if(_zz_119) begin
+                PHT_regfile_117 <= 2'b00;
+              end
+              if(_zz_120) begin
+                PHT_regfile_118 <= 2'b00;
+              end
+              if(_zz_121) begin
+                PHT_regfile_119 <= 2'b00;
+              end
+              if(_zz_122) begin
+                PHT_regfile_120 <= 2'b00;
+              end
+              if(_zz_123) begin
+                PHT_regfile_121 <= 2'b00;
+              end
+              if(_zz_124) begin
+                PHT_regfile_122 <= 2'b00;
+              end
+              if(_zz_125) begin
+                PHT_regfile_123 <= 2'b00;
+              end
+              if(_zz_126) begin
+                PHT_regfile_124 <= 2'b00;
+              end
+              if(_zz_127) begin
+                PHT_regfile_125 <= 2'b00;
+              end
+              if(_zz_128) begin
+                PHT_regfile_126 <= 2'b00;
+              end
+              if(_zz_129) begin
+                PHT_regfile_127 <= 2'b00;
+              end
+            end
+          end
+          2'b10 : begin
+            if(train_taken) begin
+              if(_zz_2) begin
+                PHT_regfile_0 <= 2'b11;
+              end
+              if(_zz_3) begin
+                PHT_regfile_1 <= 2'b11;
+              end
+              if(_zz_4) begin
+                PHT_regfile_2 <= 2'b11;
+              end
+              if(_zz_5) begin
+                PHT_regfile_3 <= 2'b11;
+              end
+              if(_zz_6) begin
+                PHT_regfile_4 <= 2'b11;
+              end
+              if(_zz_7) begin
+                PHT_regfile_5 <= 2'b11;
+              end
+              if(_zz_8) begin
+                PHT_regfile_6 <= 2'b11;
+              end
+              if(_zz_9) begin
+                PHT_regfile_7 <= 2'b11;
+              end
+              if(_zz_10) begin
+                PHT_regfile_8 <= 2'b11;
+              end
+              if(_zz_11) begin
+                PHT_regfile_9 <= 2'b11;
+              end
+              if(_zz_12) begin
+                PHT_regfile_10 <= 2'b11;
+              end
+              if(_zz_13) begin
+                PHT_regfile_11 <= 2'b11;
+              end
+              if(_zz_14) begin
+                PHT_regfile_12 <= 2'b11;
+              end
+              if(_zz_15) begin
+                PHT_regfile_13 <= 2'b11;
+              end
+              if(_zz_16) begin
+                PHT_regfile_14 <= 2'b11;
+              end
+              if(_zz_17) begin
+                PHT_regfile_15 <= 2'b11;
+              end
+              if(_zz_18) begin
+                PHT_regfile_16 <= 2'b11;
+              end
+              if(_zz_19) begin
+                PHT_regfile_17 <= 2'b11;
+              end
+              if(_zz_20) begin
+                PHT_regfile_18 <= 2'b11;
+              end
+              if(_zz_21) begin
+                PHT_regfile_19 <= 2'b11;
+              end
+              if(_zz_22) begin
+                PHT_regfile_20 <= 2'b11;
+              end
+              if(_zz_23) begin
+                PHT_regfile_21 <= 2'b11;
+              end
+              if(_zz_24) begin
+                PHT_regfile_22 <= 2'b11;
+              end
+              if(_zz_25) begin
+                PHT_regfile_23 <= 2'b11;
+              end
+              if(_zz_26) begin
+                PHT_regfile_24 <= 2'b11;
+              end
+              if(_zz_27) begin
+                PHT_regfile_25 <= 2'b11;
+              end
+              if(_zz_28) begin
+                PHT_regfile_26 <= 2'b11;
+              end
+              if(_zz_29) begin
+                PHT_regfile_27 <= 2'b11;
+              end
+              if(_zz_30) begin
+                PHT_regfile_28 <= 2'b11;
+              end
+              if(_zz_31) begin
+                PHT_regfile_29 <= 2'b11;
+              end
+              if(_zz_32) begin
+                PHT_regfile_30 <= 2'b11;
+              end
+              if(_zz_33) begin
+                PHT_regfile_31 <= 2'b11;
+              end
+              if(_zz_34) begin
+                PHT_regfile_32 <= 2'b11;
+              end
+              if(_zz_35) begin
+                PHT_regfile_33 <= 2'b11;
+              end
+              if(_zz_36) begin
+                PHT_regfile_34 <= 2'b11;
+              end
+              if(_zz_37) begin
+                PHT_regfile_35 <= 2'b11;
+              end
+              if(_zz_38) begin
+                PHT_regfile_36 <= 2'b11;
+              end
+              if(_zz_39) begin
+                PHT_regfile_37 <= 2'b11;
+              end
+              if(_zz_40) begin
+                PHT_regfile_38 <= 2'b11;
+              end
+              if(_zz_41) begin
+                PHT_regfile_39 <= 2'b11;
+              end
+              if(_zz_42) begin
+                PHT_regfile_40 <= 2'b11;
+              end
+              if(_zz_43) begin
+                PHT_regfile_41 <= 2'b11;
+              end
+              if(_zz_44) begin
+                PHT_regfile_42 <= 2'b11;
+              end
+              if(_zz_45) begin
+                PHT_regfile_43 <= 2'b11;
+              end
+              if(_zz_46) begin
+                PHT_regfile_44 <= 2'b11;
+              end
+              if(_zz_47) begin
+                PHT_regfile_45 <= 2'b11;
+              end
+              if(_zz_48) begin
+                PHT_regfile_46 <= 2'b11;
+              end
+              if(_zz_49) begin
+                PHT_regfile_47 <= 2'b11;
+              end
+              if(_zz_50) begin
+                PHT_regfile_48 <= 2'b11;
+              end
+              if(_zz_51) begin
+                PHT_regfile_49 <= 2'b11;
+              end
+              if(_zz_52) begin
+                PHT_regfile_50 <= 2'b11;
+              end
+              if(_zz_53) begin
+                PHT_regfile_51 <= 2'b11;
+              end
+              if(_zz_54) begin
+                PHT_regfile_52 <= 2'b11;
+              end
+              if(_zz_55) begin
+                PHT_regfile_53 <= 2'b11;
+              end
+              if(_zz_56) begin
+                PHT_regfile_54 <= 2'b11;
+              end
+              if(_zz_57) begin
+                PHT_regfile_55 <= 2'b11;
+              end
+              if(_zz_58) begin
+                PHT_regfile_56 <= 2'b11;
+              end
+              if(_zz_59) begin
+                PHT_regfile_57 <= 2'b11;
+              end
+              if(_zz_60) begin
+                PHT_regfile_58 <= 2'b11;
+              end
+              if(_zz_61) begin
+                PHT_regfile_59 <= 2'b11;
+              end
+              if(_zz_62) begin
+                PHT_regfile_60 <= 2'b11;
+              end
+              if(_zz_63) begin
+                PHT_regfile_61 <= 2'b11;
+              end
+              if(_zz_64) begin
+                PHT_regfile_62 <= 2'b11;
+              end
+              if(_zz_65) begin
+                PHT_regfile_63 <= 2'b11;
+              end
+              if(_zz_66) begin
+                PHT_regfile_64 <= 2'b11;
+              end
+              if(_zz_67) begin
+                PHT_regfile_65 <= 2'b11;
+              end
+              if(_zz_68) begin
+                PHT_regfile_66 <= 2'b11;
+              end
+              if(_zz_69) begin
+                PHT_regfile_67 <= 2'b11;
+              end
+              if(_zz_70) begin
+                PHT_regfile_68 <= 2'b11;
+              end
+              if(_zz_71) begin
+                PHT_regfile_69 <= 2'b11;
+              end
+              if(_zz_72) begin
+                PHT_regfile_70 <= 2'b11;
+              end
+              if(_zz_73) begin
+                PHT_regfile_71 <= 2'b11;
+              end
+              if(_zz_74) begin
+                PHT_regfile_72 <= 2'b11;
+              end
+              if(_zz_75) begin
+                PHT_regfile_73 <= 2'b11;
+              end
+              if(_zz_76) begin
+                PHT_regfile_74 <= 2'b11;
+              end
+              if(_zz_77) begin
+                PHT_regfile_75 <= 2'b11;
+              end
+              if(_zz_78) begin
+                PHT_regfile_76 <= 2'b11;
+              end
+              if(_zz_79) begin
+                PHT_regfile_77 <= 2'b11;
+              end
+              if(_zz_80) begin
+                PHT_regfile_78 <= 2'b11;
+              end
+              if(_zz_81) begin
+                PHT_regfile_79 <= 2'b11;
+              end
+              if(_zz_82) begin
+                PHT_regfile_80 <= 2'b11;
+              end
+              if(_zz_83) begin
+                PHT_regfile_81 <= 2'b11;
+              end
+              if(_zz_84) begin
+                PHT_regfile_82 <= 2'b11;
+              end
+              if(_zz_85) begin
+                PHT_regfile_83 <= 2'b11;
+              end
+              if(_zz_86) begin
+                PHT_regfile_84 <= 2'b11;
+              end
+              if(_zz_87) begin
+                PHT_regfile_85 <= 2'b11;
+              end
+              if(_zz_88) begin
+                PHT_regfile_86 <= 2'b11;
+              end
+              if(_zz_89) begin
+                PHT_regfile_87 <= 2'b11;
+              end
+              if(_zz_90) begin
+                PHT_regfile_88 <= 2'b11;
+              end
+              if(_zz_91) begin
+                PHT_regfile_89 <= 2'b11;
+              end
+              if(_zz_92) begin
+                PHT_regfile_90 <= 2'b11;
+              end
+              if(_zz_93) begin
+                PHT_regfile_91 <= 2'b11;
+              end
+              if(_zz_94) begin
+                PHT_regfile_92 <= 2'b11;
+              end
+              if(_zz_95) begin
+                PHT_regfile_93 <= 2'b11;
+              end
+              if(_zz_96) begin
+                PHT_regfile_94 <= 2'b11;
+              end
+              if(_zz_97) begin
+                PHT_regfile_95 <= 2'b11;
+              end
+              if(_zz_98) begin
+                PHT_regfile_96 <= 2'b11;
+              end
+              if(_zz_99) begin
+                PHT_regfile_97 <= 2'b11;
+              end
+              if(_zz_100) begin
+                PHT_regfile_98 <= 2'b11;
+              end
+              if(_zz_101) begin
+                PHT_regfile_99 <= 2'b11;
+              end
+              if(_zz_102) begin
+                PHT_regfile_100 <= 2'b11;
+              end
+              if(_zz_103) begin
+                PHT_regfile_101 <= 2'b11;
+              end
+              if(_zz_104) begin
+                PHT_regfile_102 <= 2'b11;
+              end
+              if(_zz_105) begin
+                PHT_regfile_103 <= 2'b11;
+              end
+              if(_zz_106) begin
+                PHT_regfile_104 <= 2'b11;
+              end
+              if(_zz_107) begin
+                PHT_regfile_105 <= 2'b11;
+              end
+              if(_zz_108) begin
+                PHT_regfile_106 <= 2'b11;
+              end
+              if(_zz_109) begin
+                PHT_regfile_107 <= 2'b11;
+              end
+              if(_zz_110) begin
+                PHT_regfile_108 <= 2'b11;
+              end
+              if(_zz_111) begin
+                PHT_regfile_109 <= 2'b11;
+              end
+              if(_zz_112) begin
+                PHT_regfile_110 <= 2'b11;
+              end
+              if(_zz_113) begin
+                PHT_regfile_111 <= 2'b11;
+              end
+              if(_zz_114) begin
+                PHT_regfile_112 <= 2'b11;
+              end
+              if(_zz_115) begin
+                PHT_regfile_113 <= 2'b11;
+              end
+              if(_zz_116) begin
+                PHT_regfile_114 <= 2'b11;
+              end
+              if(_zz_117) begin
+                PHT_regfile_115 <= 2'b11;
+              end
+              if(_zz_118) begin
+                PHT_regfile_116 <= 2'b11;
+              end
+              if(_zz_119) begin
+                PHT_regfile_117 <= 2'b11;
+              end
+              if(_zz_120) begin
+                PHT_regfile_118 <= 2'b11;
+              end
+              if(_zz_121) begin
+                PHT_regfile_119 <= 2'b11;
+              end
+              if(_zz_122) begin
+                PHT_regfile_120 <= 2'b11;
+              end
+              if(_zz_123) begin
+                PHT_regfile_121 <= 2'b11;
+              end
+              if(_zz_124) begin
+                PHT_regfile_122 <= 2'b11;
+              end
+              if(_zz_125) begin
+                PHT_regfile_123 <= 2'b11;
+              end
+              if(_zz_126) begin
+                PHT_regfile_124 <= 2'b11;
+              end
+              if(_zz_127) begin
+                PHT_regfile_125 <= 2'b11;
+              end
+              if(_zz_128) begin
+                PHT_regfile_126 <= 2'b11;
+              end
+              if(_zz_129) begin
+                PHT_regfile_127 <= 2'b11;
+              end
+            end else begin
+              if(_zz_2) begin
+                PHT_regfile_0 <= 2'b00;
+              end
+              if(_zz_3) begin
+                PHT_regfile_1 <= 2'b00;
+              end
+              if(_zz_4) begin
+                PHT_regfile_2 <= 2'b00;
+              end
+              if(_zz_5) begin
+                PHT_regfile_3 <= 2'b00;
+              end
+              if(_zz_6) begin
+                PHT_regfile_4 <= 2'b00;
+              end
+              if(_zz_7) begin
+                PHT_regfile_5 <= 2'b00;
+              end
+              if(_zz_8) begin
+                PHT_regfile_6 <= 2'b00;
+              end
+              if(_zz_9) begin
+                PHT_regfile_7 <= 2'b00;
+              end
+              if(_zz_10) begin
+                PHT_regfile_8 <= 2'b00;
+              end
+              if(_zz_11) begin
+                PHT_regfile_9 <= 2'b00;
+              end
+              if(_zz_12) begin
+                PHT_regfile_10 <= 2'b00;
+              end
+              if(_zz_13) begin
+                PHT_regfile_11 <= 2'b00;
+              end
+              if(_zz_14) begin
+                PHT_regfile_12 <= 2'b00;
+              end
+              if(_zz_15) begin
+                PHT_regfile_13 <= 2'b00;
+              end
+              if(_zz_16) begin
+                PHT_regfile_14 <= 2'b00;
+              end
+              if(_zz_17) begin
+                PHT_regfile_15 <= 2'b00;
+              end
+              if(_zz_18) begin
+                PHT_regfile_16 <= 2'b00;
+              end
+              if(_zz_19) begin
+                PHT_regfile_17 <= 2'b00;
+              end
+              if(_zz_20) begin
+                PHT_regfile_18 <= 2'b00;
+              end
+              if(_zz_21) begin
+                PHT_regfile_19 <= 2'b00;
+              end
+              if(_zz_22) begin
+                PHT_regfile_20 <= 2'b00;
+              end
+              if(_zz_23) begin
+                PHT_regfile_21 <= 2'b00;
+              end
+              if(_zz_24) begin
+                PHT_regfile_22 <= 2'b00;
+              end
+              if(_zz_25) begin
+                PHT_regfile_23 <= 2'b00;
+              end
+              if(_zz_26) begin
+                PHT_regfile_24 <= 2'b00;
+              end
+              if(_zz_27) begin
+                PHT_regfile_25 <= 2'b00;
+              end
+              if(_zz_28) begin
+                PHT_regfile_26 <= 2'b00;
+              end
+              if(_zz_29) begin
+                PHT_regfile_27 <= 2'b00;
+              end
+              if(_zz_30) begin
+                PHT_regfile_28 <= 2'b00;
+              end
+              if(_zz_31) begin
+                PHT_regfile_29 <= 2'b00;
+              end
+              if(_zz_32) begin
+                PHT_regfile_30 <= 2'b00;
+              end
+              if(_zz_33) begin
+                PHT_regfile_31 <= 2'b00;
+              end
+              if(_zz_34) begin
+                PHT_regfile_32 <= 2'b00;
+              end
+              if(_zz_35) begin
+                PHT_regfile_33 <= 2'b00;
+              end
+              if(_zz_36) begin
+                PHT_regfile_34 <= 2'b00;
+              end
+              if(_zz_37) begin
+                PHT_regfile_35 <= 2'b00;
+              end
+              if(_zz_38) begin
+                PHT_regfile_36 <= 2'b00;
+              end
+              if(_zz_39) begin
+                PHT_regfile_37 <= 2'b00;
+              end
+              if(_zz_40) begin
+                PHT_regfile_38 <= 2'b00;
+              end
+              if(_zz_41) begin
+                PHT_regfile_39 <= 2'b00;
+              end
+              if(_zz_42) begin
+                PHT_regfile_40 <= 2'b00;
+              end
+              if(_zz_43) begin
+                PHT_regfile_41 <= 2'b00;
+              end
+              if(_zz_44) begin
+                PHT_regfile_42 <= 2'b00;
+              end
+              if(_zz_45) begin
+                PHT_regfile_43 <= 2'b00;
+              end
+              if(_zz_46) begin
+                PHT_regfile_44 <= 2'b00;
+              end
+              if(_zz_47) begin
+                PHT_regfile_45 <= 2'b00;
+              end
+              if(_zz_48) begin
+                PHT_regfile_46 <= 2'b00;
+              end
+              if(_zz_49) begin
+                PHT_regfile_47 <= 2'b00;
+              end
+              if(_zz_50) begin
+                PHT_regfile_48 <= 2'b00;
+              end
+              if(_zz_51) begin
+                PHT_regfile_49 <= 2'b00;
+              end
+              if(_zz_52) begin
+                PHT_regfile_50 <= 2'b00;
+              end
+              if(_zz_53) begin
+                PHT_regfile_51 <= 2'b00;
+              end
+              if(_zz_54) begin
+                PHT_regfile_52 <= 2'b00;
+              end
+              if(_zz_55) begin
+                PHT_regfile_53 <= 2'b00;
+              end
+              if(_zz_56) begin
+                PHT_regfile_54 <= 2'b00;
+              end
+              if(_zz_57) begin
+                PHT_regfile_55 <= 2'b00;
+              end
+              if(_zz_58) begin
+                PHT_regfile_56 <= 2'b00;
+              end
+              if(_zz_59) begin
+                PHT_regfile_57 <= 2'b00;
+              end
+              if(_zz_60) begin
+                PHT_regfile_58 <= 2'b00;
+              end
+              if(_zz_61) begin
+                PHT_regfile_59 <= 2'b00;
+              end
+              if(_zz_62) begin
+                PHT_regfile_60 <= 2'b00;
+              end
+              if(_zz_63) begin
+                PHT_regfile_61 <= 2'b00;
+              end
+              if(_zz_64) begin
+                PHT_regfile_62 <= 2'b00;
+              end
+              if(_zz_65) begin
+                PHT_regfile_63 <= 2'b00;
+              end
+              if(_zz_66) begin
+                PHT_regfile_64 <= 2'b00;
+              end
+              if(_zz_67) begin
+                PHT_regfile_65 <= 2'b00;
+              end
+              if(_zz_68) begin
+                PHT_regfile_66 <= 2'b00;
+              end
+              if(_zz_69) begin
+                PHT_regfile_67 <= 2'b00;
+              end
+              if(_zz_70) begin
+                PHT_regfile_68 <= 2'b00;
+              end
+              if(_zz_71) begin
+                PHT_regfile_69 <= 2'b00;
+              end
+              if(_zz_72) begin
+                PHT_regfile_70 <= 2'b00;
+              end
+              if(_zz_73) begin
+                PHT_regfile_71 <= 2'b00;
+              end
+              if(_zz_74) begin
+                PHT_regfile_72 <= 2'b00;
+              end
+              if(_zz_75) begin
+                PHT_regfile_73 <= 2'b00;
+              end
+              if(_zz_76) begin
+                PHT_regfile_74 <= 2'b00;
+              end
+              if(_zz_77) begin
+                PHT_regfile_75 <= 2'b00;
+              end
+              if(_zz_78) begin
+                PHT_regfile_76 <= 2'b00;
+              end
+              if(_zz_79) begin
+                PHT_regfile_77 <= 2'b00;
+              end
+              if(_zz_80) begin
+                PHT_regfile_78 <= 2'b00;
+              end
+              if(_zz_81) begin
+                PHT_regfile_79 <= 2'b00;
+              end
+              if(_zz_82) begin
+                PHT_regfile_80 <= 2'b00;
+              end
+              if(_zz_83) begin
+                PHT_regfile_81 <= 2'b00;
+              end
+              if(_zz_84) begin
+                PHT_regfile_82 <= 2'b00;
+              end
+              if(_zz_85) begin
+                PHT_regfile_83 <= 2'b00;
+              end
+              if(_zz_86) begin
+                PHT_regfile_84 <= 2'b00;
+              end
+              if(_zz_87) begin
+                PHT_regfile_85 <= 2'b00;
+              end
+              if(_zz_88) begin
+                PHT_regfile_86 <= 2'b00;
+              end
+              if(_zz_89) begin
+                PHT_regfile_87 <= 2'b00;
+              end
+              if(_zz_90) begin
+                PHT_regfile_88 <= 2'b00;
+              end
+              if(_zz_91) begin
+                PHT_regfile_89 <= 2'b00;
+              end
+              if(_zz_92) begin
+                PHT_regfile_90 <= 2'b00;
+              end
+              if(_zz_93) begin
+                PHT_regfile_91 <= 2'b00;
+              end
+              if(_zz_94) begin
+                PHT_regfile_92 <= 2'b00;
+              end
+              if(_zz_95) begin
+                PHT_regfile_93 <= 2'b00;
+              end
+              if(_zz_96) begin
+                PHT_regfile_94 <= 2'b00;
+              end
+              if(_zz_97) begin
+                PHT_regfile_95 <= 2'b00;
+              end
+              if(_zz_98) begin
+                PHT_regfile_96 <= 2'b00;
+              end
+              if(_zz_99) begin
+                PHT_regfile_97 <= 2'b00;
+              end
+              if(_zz_100) begin
+                PHT_regfile_98 <= 2'b00;
+              end
+              if(_zz_101) begin
+                PHT_regfile_99 <= 2'b00;
+              end
+              if(_zz_102) begin
+                PHT_regfile_100 <= 2'b00;
+              end
+              if(_zz_103) begin
+                PHT_regfile_101 <= 2'b00;
+              end
+              if(_zz_104) begin
+                PHT_regfile_102 <= 2'b00;
+              end
+              if(_zz_105) begin
+                PHT_regfile_103 <= 2'b00;
+              end
+              if(_zz_106) begin
+                PHT_regfile_104 <= 2'b00;
+              end
+              if(_zz_107) begin
+                PHT_regfile_105 <= 2'b00;
+              end
+              if(_zz_108) begin
+                PHT_regfile_106 <= 2'b00;
+              end
+              if(_zz_109) begin
+                PHT_regfile_107 <= 2'b00;
+              end
+              if(_zz_110) begin
+                PHT_regfile_108 <= 2'b00;
+              end
+              if(_zz_111) begin
+                PHT_regfile_109 <= 2'b00;
+              end
+              if(_zz_112) begin
+                PHT_regfile_110 <= 2'b00;
+              end
+              if(_zz_113) begin
+                PHT_regfile_111 <= 2'b00;
+              end
+              if(_zz_114) begin
+                PHT_regfile_112 <= 2'b00;
+              end
+              if(_zz_115) begin
+                PHT_regfile_113 <= 2'b00;
+              end
+              if(_zz_116) begin
+                PHT_regfile_114 <= 2'b00;
+              end
+              if(_zz_117) begin
+                PHT_regfile_115 <= 2'b00;
+              end
+              if(_zz_118) begin
+                PHT_regfile_116 <= 2'b00;
+              end
+              if(_zz_119) begin
+                PHT_regfile_117 <= 2'b00;
+              end
+              if(_zz_120) begin
+                PHT_regfile_118 <= 2'b00;
+              end
+              if(_zz_121) begin
+                PHT_regfile_119 <= 2'b00;
+              end
+              if(_zz_122) begin
+                PHT_regfile_120 <= 2'b00;
+              end
+              if(_zz_123) begin
+                PHT_regfile_121 <= 2'b00;
+              end
+              if(_zz_124) begin
+                PHT_regfile_122 <= 2'b00;
+              end
+              if(_zz_125) begin
+                PHT_regfile_123 <= 2'b00;
+              end
+              if(_zz_126) begin
+                PHT_regfile_124 <= 2'b00;
+              end
+              if(_zz_127) begin
+                PHT_regfile_125 <= 2'b00;
+              end
+              if(_zz_128) begin
+                PHT_regfile_126 <= 2'b00;
+              end
+              if(_zz_129) begin
+                PHT_regfile_127 <= 2'b00;
+              end
+            end
+          end
+          default : begin
+            if(when_BPUPlugin_l54) begin
+              if(_zz_2) begin
+                PHT_regfile_0 <= 2'b10;
+              end
+              if(_zz_3) begin
+                PHT_regfile_1 <= 2'b10;
+              end
+              if(_zz_4) begin
+                PHT_regfile_2 <= 2'b10;
+              end
+              if(_zz_5) begin
+                PHT_regfile_3 <= 2'b10;
+              end
+              if(_zz_6) begin
+                PHT_regfile_4 <= 2'b10;
+              end
+              if(_zz_7) begin
+                PHT_regfile_5 <= 2'b10;
+              end
+              if(_zz_8) begin
+                PHT_regfile_6 <= 2'b10;
+              end
+              if(_zz_9) begin
+                PHT_regfile_7 <= 2'b10;
+              end
+              if(_zz_10) begin
+                PHT_regfile_8 <= 2'b10;
+              end
+              if(_zz_11) begin
+                PHT_regfile_9 <= 2'b10;
+              end
+              if(_zz_12) begin
+                PHT_regfile_10 <= 2'b10;
+              end
+              if(_zz_13) begin
+                PHT_regfile_11 <= 2'b10;
+              end
+              if(_zz_14) begin
+                PHT_regfile_12 <= 2'b10;
+              end
+              if(_zz_15) begin
+                PHT_regfile_13 <= 2'b10;
+              end
+              if(_zz_16) begin
+                PHT_regfile_14 <= 2'b10;
+              end
+              if(_zz_17) begin
+                PHT_regfile_15 <= 2'b10;
+              end
+              if(_zz_18) begin
+                PHT_regfile_16 <= 2'b10;
+              end
+              if(_zz_19) begin
+                PHT_regfile_17 <= 2'b10;
+              end
+              if(_zz_20) begin
+                PHT_regfile_18 <= 2'b10;
+              end
+              if(_zz_21) begin
+                PHT_regfile_19 <= 2'b10;
+              end
+              if(_zz_22) begin
+                PHT_regfile_20 <= 2'b10;
+              end
+              if(_zz_23) begin
+                PHT_regfile_21 <= 2'b10;
+              end
+              if(_zz_24) begin
+                PHT_regfile_22 <= 2'b10;
+              end
+              if(_zz_25) begin
+                PHT_regfile_23 <= 2'b10;
+              end
+              if(_zz_26) begin
+                PHT_regfile_24 <= 2'b10;
+              end
+              if(_zz_27) begin
+                PHT_regfile_25 <= 2'b10;
+              end
+              if(_zz_28) begin
+                PHT_regfile_26 <= 2'b10;
+              end
+              if(_zz_29) begin
+                PHT_regfile_27 <= 2'b10;
+              end
+              if(_zz_30) begin
+                PHT_regfile_28 <= 2'b10;
+              end
+              if(_zz_31) begin
+                PHT_regfile_29 <= 2'b10;
+              end
+              if(_zz_32) begin
+                PHT_regfile_30 <= 2'b10;
+              end
+              if(_zz_33) begin
+                PHT_regfile_31 <= 2'b10;
+              end
+              if(_zz_34) begin
+                PHT_regfile_32 <= 2'b10;
+              end
+              if(_zz_35) begin
+                PHT_regfile_33 <= 2'b10;
+              end
+              if(_zz_36) begin
+                PHT_regfile_34 <= 2'b10;
+              end
+              if(_zz_37) begin
+                PHT_regfile_35 <= 2'b10;
+              end
+              if(_zz_38) begin
+                PHT_regfile_36 <= 2'b10;
+              end
+              if(_zz_39) begin
+                PHT_regfile_37 <= 2'b10;
+              end
+              if(_zz_40) begin
+                PHT_regfile_38 <= 2'b10;
+              end
+              if(_zz_41) begin
+                PHT_regfile_39 <= 2'b10;
+              end
+              if(_zz_42) begin
+                PHT_regfile_40 <= 2'b10;
+              end
+              if(_zz_43) begin
+                PHT_regfile_41 <= 2'b10;
+              end
+              if(_zz_44) begin
+                PHT_regfile_42 <= 2'b10;
+              end
+              if(_zz_45) begin
+                PHT_regfile_43 <= 2'b10;
+              end
+              if(_zz_46) begin
+                PHT_regfile_44 <= 2'b10;
+              end
+              if(_zz_47) begin
+                PHT_regfile_45 <= 2'b10;
+              end
+              if(_zz_48) begin
+                PHT_regfile_46 <= 2'b10;
+              end
+              if(_zz_49) begin
+                PHT_regfile_47 <= 2'b10;
+              end
+              if(_zz_50) begin
+                PHT_regfile_48 <= 2'b10;
+              end
+              if(_zz_51) begin
+                PHT_regfile_49 <= 2'b10;
+              end
+              if(_zz_52) begin
+                PHT_regfile_50 <= 2'b10;
+              end
+              if(_zz_53) begin
+                PHT_regfile_51 <= 2'b10;
+              end
+              if(_zz_54) begin
+                PHT_regfile_52 <= 2'b10;
+              end
+              if(_zz_55) begin
+                PHT_regfile_53 <= 2'b10;
+              end
+              if(_zz_56) begin
+                PHT_regfile_54 <= 2'b10;
+              end
+              if(_zz_57) begin
+                PHT_regfile_55 <= 2'b10;
+              end
+              if(_zz_58) begin
+                PHT_regfile_56 <= 2'b10;
+              end
+              if(_zz_59) begin
+                PHT_regfile_57 <= 2'b10;
+              end
+              if(_zz_60) begin
+                PHT_regfile_58 <= 2'b10;
+              end
+              if(_zz_61) begin
+                PHT_regfile_59 <= 2'b10;
+              end
+              if(_zz_62) begin
+                PHT_regfile_60 <= 2'b10;
+              end
+              if(_zz_63) begin
+                PHT_regfile_61 <= 2'b10;
+              end
+              if(_zz_64) begin
+                PHT_regfile_62 <= 2'b10;
+              end
+              if(_zz_65) begin
+                PHT_regfile_63 <= 2'b10;
+              end
+              if(_zz_66) begin
+                PHT_regfile_64 <= 2'b10;
+              end
+              if(_zz_67) begin
+                PHT_regfile_65 <= 2'b10;
+              end
+              if(_zz_68) begin
+                PHT_regfile_66 <= 2'b10;
+              end
+              if(_zz_69) begin
+                PHT_regfile_67 <= 2'b10;
+              end
+              if(_zz_70) begin
+                PHT_regfile_68 <= 2'b10;
+              end
+              if(_zz_71) begin
+                PHT_regfile_69 <= 2'b10;
+              end
+              if(_zz_72) begin
+                PHT_regfile_70 <= 2'b10;
+              end
+              if(_zz_73) begin
+                PHT_regfile_71 <= 2'b10;
+              end
+              if(_zz_74) begin
+                PHT_regfile_72 <= 2'b10;
+              end
+              if(_zz_75) begin
+                PHT_regfile_73 <= 2'b10;
+              end
+              if(_zz_76) begin
+                PHT_regfile_74 <= 2'b10;
+              end
+              if(_zz_77) begin
+                PHT_regfile_75 <= 2'b10;
+              end
+              if(_zz_78) begin
+                PHT_regfile_76 <= 2'b10;
+              end
+              if(_zz_79) begin
+                PHT_regfile_77 <= 2'b10;
+              end
+              if(_zz_80) begin
+                PHT_regfile_78 <= 2'b10;
+              end
+              if(_zz_81) begin
+                PHT_regfile_79 <= 2'b10;
+              end
+              if(_zz_82) begin
+                PHT_regfile_80 <= 2'b10;
+              end
+              if(_zz_83) begin
+                PHT_regfile_81 <= 2'b10;
+              end
+              if(_zz_84) begin
+                PHT_regfile_82 <= 2'b10;
+              end
+              if(_zz_85) begin
+                PHT_regfile_83 <= 2'b10;
+              end
+              if(_zz_86) begin
+                PHT_regfile_84 <= 2'b10;
+              end
+              if(_zz_87) begin
+                PHT_regfile_85 <= 2'b10;
+              end
+              if(_zz_88) begin
+                PHT_regfile_86 <= 2'b10;
+              end
+              if(_zz_89) begin
+                PHT_regfile_87 <= 2'b10;
+              end
+              if(_zz_90) begin
+                PHT_regfile_88 <= 2'b10;
+              end
+              if(_zz_91) begin
+                PHT_regfile_89 <= 2'b10;
+              end
+              if(_zz_92) begin
+                PHT_regfile_90 <= 2'b10;
+              end
+              if(_zz_93) begin
+                PHT_regfile_91 <= 2'b10;
+              end
+              if(_zz_94) begin
+                PHT_regfile_92 <= 2'b10;
+              end
+              if(_zz_95) begin
+                PHT_regfile_93 <= 2'b10;
+              end
+              if(_zz_96) begin
+                PHT_regfile_94 <= 2'b10;
+              end
+              if(_zz_97) begin
+                PHT_regfile_95 <= 2'b10;
+              end
+              if(_zz_98) begin
+                PHT_regfile_96 <= 2'b10;
+              end
+              if(_zz_99) begin
+                PHT_regfile_97 <= 2'b10;
+              end
+              if(_zz_100) begin
+                PHT_regfile_98 <= 2'b10;
+              end
+              if(_zz_101) begin
+                PHT_regfile_99 <= 2'b10;
+              end
+              if(_zz_102) begin
+                PHT_regfile_100 <= 2'b10;
+              end
+              if(_zz_103) begin
+                PHT_regfile_101 <= 2'b10;
+              end
+              if(_zz_104) begin
+                PHT_regfile_102 <= 2'b10;
+              end
+              if(_zz_105) begin
+                PHT_regfile_103 <= 2'b10;
+              end
+              if(_zz_106) begin
+                PHT_regfile_104 <= 2'b10;
+              end
+              if(_zz_107) begin
+                PHT_regfile_105 <= 2'b10;
+              end
+              if(_zz_108) begin
+                PHT_regfile_106 <= 2'b10;
+              end
+              if(_zz_109) begin
+                PHT_regfile_107 <= 2'b10;
+              end
+              if(_zz_110) begin
+                PHT_regfile_108 <= 2'b10;
+              end
+              if(_zz_111) begin
+                PHT_regfile_109 <= 2'b10;
+              end
+              if(_zz_112) begin
+                PHT_regfile_110 <= 2'b10;
+              end
+              if(_zz_113) begin
+                PHT_regfile_111 <= 2'b10;
+              end
+              if(_zz_114) begin
+                PHT_regfile_112 <= 2'b10;
+              end
+              if(_zz_115) begin
+                PHT_regfile_113 <= 2'b10;
+              end
+              if(_zz_116) begin
+                PHT_regfile_114 <= 2'b10;
+              end
+              if(_zz_117) begin
+                PHT_regfile_115 <= 2'b10;
+              end
+              if(_zz_118) begin
+                PHT_regfile_116 <= 2'b10;
+              end
+              if(_zz_119) begin
+                PHT_regfile_117 <= 2'b10;
+              end
+              if(_zz_120) begin
+                PHT_regfile_118 <= 2'b10;
+              end
+              if(_zz_121) begin
+                PHT_regfile_119 <= 2'b10;
+              end
+              if(_zz_122) begin
+                PHT_regfile_120 <= 2'b10;
+              end
+              if(_zz_123) begin
+                PHT_regfile_121 <= 2'b10;
+              end
+              if(_zz_124) begin
+                PHT_regfile_122 <= 2'b10;
+              end
+              if(_zz_125) begin
+                PHT_regfile_123 <= 2'b10;
+              end
+              if(_zz_126) begin
+                PHT_regfile_124 <= 2'b10;
+              end
+              if(_zz_127) begin
+                PHT_regfile_125 <= 2'b10;
+              end
+              if(_zz_128) begin
+                PHT_regfile_126 <= 2'b10;
+              end
+              if(_zz_129) begin
+                PHT_regfile_127 <= 2'b10;
+              end
+            end else begin
+              if(_zz_2) begin
+                PHT_regfile_0 <= 2'b11;
+              end
+              if(_zz_3) begin
+                PHT_regfile_1 <= 2'b11;
+              end
+              if(_zz_4) begin
+                PHT_regfile_2 <= 2'b11;
+              end
+              if(_zz_5) begin
+                PHT_regfile_3 <= 2'b11;
+              end
+              if(_zz_6) begin
+                PHT_regfile_4 <= 2'b11;
+              end
+              if(_zz_7) begin
+                PHT_regfile_5 <= 2'b11;
+              end
+              if(_zz_8) begin
+                PHT_regfile_6 <= 2'b11;
+              end
+              if(_zz_9) begin
+                PHT_regfile_7 <= 2'b11;
+              end
+              if(_zz_10) begin
+                PHT_regfile_8 <= 2'b11;
+              end
+              if(_zz_11) begin
+                PHT_regfile_9 <= 2'b11;
+              end
+              if(_zz_12) begin
+                PHT_regfile_10 <= 2'b11;
+              end
+              if(_zz_13) begin
+                PHT_regfile_11 <= 2'b11;
+              end
+              if(_zz_14) begin
+                PHT_regfile_12 <= 2'b11;
+              end
+              if(_zz_15) begin
+                PHT_regfile_13 <= 2'b11;
+              end
+              if(_zz_16) begin
+                PHT_regfile_14 <= 2'b11;
+              end
+              if(_zz_17) begin
+                PHT_regfile_15 <= 2'b11;
+              end
+              if(_zz_18) begin
+                PHT_regfile_16 <= 2'b11;
+              end
+              if(_zz_19) begin
+                PHT_regfile_17 <= 2'b11;
+              end
+              if(_zz_20) begin
+                PHT_regfile_18 <= 2'b11;
+              end
+              if(_zz_21) begin
+                PHT_regfile_19 <= 2'b11;
+              end
+              if(_zz_22) begin
+                PHT_regfile_20 <= 2'b11;
+              end
+              if(_zz_23) begin
+                PHT_regfile_21 <= 2'b11;
+              end
+              if(_zz_24) begin
+                PHT_regfile_22 <= 2'b11;
+              end
+              if(_zz_25) begin
+                PHT_regfile_23 <= 2'b11;
+              end
+              if(_zz_26) begin
+                PHT_regfile_24 <= 2'b11;
+              end
+              if(_zz_27) begin
+                PHT_regfile_25 <= 2'b11;
+              end
+              if(_zz_28) begin
+                PHT_regfile_26 <= 2'b11;
+              end
+              if(_zz_29) begin
+                PHT_regfile_27 <= 2'b11;
+              end
+              if(_zz_30) begin
+                PHT_regfile_28 <= 2'b11;
+              end
+              if(_zz_31) begin
+                PHT_regfile_29 <= 2'b11;
+              end
+              if(_zz_32) begin
+                PHT_regfile_30 <= 2'b11;
+              end
+              if(_zz_33) begin
+                PHT_regfile_31 <= 2'b11;
+              end
+              if(_zz_34) begin
+                PHT_regfile_32 <= 2'b11;
+              end
+              if(_zz_35) begin
+                PHT_regfile_33 <= 2'b11;
+              end
+              if(_zz_36) begin
+                PHT_regfile_34 <= 2'b11;
+              end
+              if(_zz_37) begin
+                PHT_regfile_35 <= 2'b11;
+              end
+              if(_zz_38) begin
+                PHT_regfile_36 <= 2'b11;
+              end
+              if(_zz_39) begin
+                PHT_regfile_37 <= 2'b11;
+              end
+              if(_zz_40) begin
+                PHT_regfile_38 <= 2'b11;
+              end
+              if(_zz_41) begin
+                PHT_regfile_39 <= 2'b11;
+              end
+              if(_zz_42) begin
+                PHT_regfile_40 <= 2'b11;
+              end
+              if(_zz_43) begin
+                PHT_regfile_41 <= 2'b11;
+              end
+              if(_zz_44) begin
+                PHT_regfile_42 <= 2'b11;
+              end
+              if(_zz_45) begin
+                PHT_regfile_43 <= 2'b11;
+              end
+              if(_zz_46) begin
+                PHT_regfile_44 <= 2'b11;
+              end
+              if(_zz_47) begin
+                PHT_regfile_45 <= 2'b11;
+              end
+              if(_zz_48) begin
+                PHT_regfile_46 <= 2'b11;
+              end
+              if(_zz_49) begin
+                PHT_regfile_47 <= 2'b11;
+              end
+              if(_zz_50) begin
+                PHT_regfile_48 <= 2'b11;
+              end
+              if(_zz_51) begin
+                PHT_regfile_49 <= 2'b11;
+              end
+              if(_zz_52) begin
+                PHT_regfile_50 <= 2'b11;
+              end
+              if(_zz_53) begin
+                PHT_regfile_51 <= 2'b11;
+              end
+              if(_zz_54) begin
+                PHT_regfile_52 <= 2'b11;
+              end
+              if(_zz_55) begin
+                PHT_regfile_53 <= 2'b11;
+              end
+              if(_zz_56) begin
+                PHT_regfile_54 <= 2'b11;
+              end
+              if(_zz_57) begin
+                PHT_regfile_55 <= 2'b11;
+              end
+              if(_zz_58) begin
+                PHT_regfile_56 <= 2'b11;
+              end
+              if(_zz_59) begin
+                PHT_regfile_57 <= 2'b11;
+              end
+              if(_zz_60) begin
+                PHT_regfile_58 <= 2'b11;
+              end
+              if(_zz_61) begin
+                PHT_regfile_59 <= 2'b11;
+              end
+              if(_zz_62) begin
+                PHT_regfile_60 <= 2'b11;
+              end
+              if(_zz_63) begin
+                PHT_regfile_61 <= 2'b11;
+              end
+              if(_zz_64) begin
+                PHT_regfile_62 <= 2'b11;
+              end
+              if(_zz_65) begin
+                PHT_regfile_63 <= 2'b11;
+              end
+              if(_zz_66) begin
+                PHT_regfile_64 <= 2'b11;
+              end
+              if(_zz_67) begin
+                PHT_regfile_65 <= 2'b11;
+              end
+              if(_zz_68) begin
+                PHT_regfile_66 <= 2'b11;
+              end
+              if(_zz_69) begin
+                PHT_regfile_67 <= 2'b11;
+              end
+              if(_zz_70) begin
+                PHT_regfile_68 <= 2'b11;
+              end
+              if(_zz_71) begin
+                PHT_regfile_69 <= 2'b11;
+              end
+              if(_zz_72) begin
+                PHT_regfile_70 <= 2'b11;
+              end
+              if(_zz_73) begin
+                PHT_regfile_71 <= 2'b11;
+              end
+              if(_zz_74) begin
+                PHT_regfile_72 <= 2'b11;
+              end
+              if(_zz_75) begin
+                PHT_regfile_73 <= 2'b11;
+              end
+              if(_zz_76) begin
+                PHT_regfile_74 <= 2'b11;
+              end
+              if(_zz_77) begin
+                PHT_regfile_75 <= 2'b11;
+              end
+              if(_zz_78) begin
+                PHT_regfile_76 <= 2'b11;
+              end
+              if(_zz_79) begin
+                PHT_regfile_77 <= 2'b11;
+              end
+              if(_zz_80) begin
+                PHT_regfile_78 <= 2'b11;
+              end
+              if(_zz_81) begin
+                PHT_regfile_79 <= 2'b11;
+              end
+              if(_zz_82) begin
+                PHT_regfile_80 <= 2'b11;
+              end
+              if(_zz_83) begin
+                PHT_regfile_81 <= 2'b11;
+              end
+              if(_zz_84) begin
+                PHT_regfile_82 <= 2'b11;
+              end
+              if(_zz_85) begin
+                PHT_regfile_83 <= 2'b11;
+              end
+              if(_zz_86) begin
+                PHT_regfile_84 <= 2'b11;
+              end
+              if(_zz_87) begin
+                PHT_regfile_85 <= 2'b11;
+              end
+              if(_zz_88) begin
+                PHT_regfile_86 <= 2'b11;
+              end
+              if(_zz_89) begin
+                PHT_regfile_87 <= 2'b11;
+              end
+              if(_zz_90) begin
+                PHT_regfile_88 <= 2'b11;
+              end
+              if(_zz_91) begin
+                PHT_regfile_89 <= 2'b11;
+              end
+              if(_zz_92) begin
+                PHT_regfile_90 <= 2'b11;
+              end
+              if(_zz_93) begin
+                PHT_regfile_91 <= 2'b11;
+              end
+              if(_zz_94) begin
+                PHT_regfile_92 <= 2'b11;
+              end
+              if(_zz_95) begin
+                PHT_regfile_93 <= 2'b11;
+              end
+              if(_zz_96) begin
+                PHT_regfile_94 <= 2'b11;
+              end
+              if(_zz_97) begin
+                PHT_regfile_95 <= 2'b11;
+              end
+              if(_zz_98) begin
+                PHT_regfile_96 <= 2'b11;
+              end
+              if(_zz_99) begin
+                PHT_regfile_97 <= 2'b11;
+              end
+              if(_zz_100) begin
+                PHT_regfile_98 <= 2'b11;
+              end
+              if(_zz_101) begin
+                PHT_regfile_99 <= 2'b11;
+              end
+              if(_zz_102) begin
+                PHT_regfile_100 <= 2'b11;
+              end
+              if(_zz_103) begin
+                PHT_regfile_101 <= 2'b11;
+              end
+              if(_zz_104) begin
+                PHT_regfile_102 <= 2'b11;
+              end
+              if(_zz_105) begin
+                PHT_regfile_103 <= 2'b11;
+              end
+              if(_zz_106) begin
+                PHT_regfile_104 <= 2'b11;
+              end
+              if(_zz_107) begin
+                PHT_regfile_105 <= 2'b11;
+              end
+              if(_zz_108) begin
+                PHT_regfile_106 <= 2'b11;
+              end
+              if(_zz_109) begin
+                PHT_regfile_107 <= 2'b11;
+              end
+              if(_zz_110) begin
+                PHT_regfile_108 <= 2'b11;
+              end
+              if(_zz_111) begin
+                PHT_regfile_109 <= 2'b11;
+              end
+              if(_zz_112) begin
+                PHT_regfile_110 <= 2'b11;
+              end
+              if(_zz_113) begin
+                PHT_regfile_111 <= 2'b11;
+              end
+              if(_zz_114) begin
+                PHT_regfile_112 <= 2'b11;
+              end
+              if(_zz_115) begin
+                PHT_regfile_113 <= 2'b11;
+              end
+              if(_zz_116) begin
+                PHT_regfile_114 <= 2'b11;
+              end
+              if(_zz_117) begin
+                PHT_regfile_115 <= 2'b11;
+              end
+              if(_zz_118) begin
+                PHT_regfile_116 <= 2'b11;
+              end
+              if(_zz_119) begin
+                PHT_regfile_117 <= 2'b11;
+              end
+              if(_zz_120) begin
+                PHT_regfile_118 <= 2'b11;
+              end
+              if(_zz_121) begin
+                PHT_regfile_119 <= 2'b11;
+              end
+              if(_zz_122) begin
+                PHT_regfile_120 <= 2'b11;
+              end
+              if(_zz_123) begin
+                PHT_regfile_121 <= 2'b11;
+              end
+              if(_zz_124) begin
+                PHT_regfile_122 <= 2'b11;
+              end
+              if(_zz_125) begin
+                PHT_regfile_123 <= 2'b11;
+              end
+              if(_zz_126) begin
+                PHT_regfile_124 <= 2'b11;
+              end
+              if(_zz_127) begin
+                PHT_regfile_125 <= 2'b11;
+              end
+              if(_zz_128) begin
+                PHT_regfile_126 <= 2'b11;
+              end
+              if(_zz_129) begin
+                PHT_regfile_127 <= 2'b11;
+              end
+            end
+          end
+        endcase
+      end
+      if(when_BPUPlugin_l64) begin
+        global_branch_history <= {train_history[5 : 0],train_taken};
+      end else begin
+        if(predict_valid) begin
+          global_branch_history <= {global_branch_history[5 : 0],predict_taken};
         end
       end
     end

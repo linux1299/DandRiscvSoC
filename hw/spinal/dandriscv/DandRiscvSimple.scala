@@ -59,11 +59,25 @@ case class DandRiscvSimpleConfig(){
   object RD extends Stageable(Bits(XLEN bits))
   object RD_WEN extends Stageable(Bool())
   object RD_ADDR extends Stageable(UInt(5 bits))
+  object RS1_ADDR extends Stageable(UInt(5 bits))
+  object RS2_ADDR extends Stageable(UInt(5 bits))
   object ALU_RESULT extends Stageable(Bits(XLEN bits))
   object MEM_CTRL extends Stageable(Bits(MemCtrlEnum.LB.asBits.getWidth bits))
   object MEM_WDATA extends Stageable(Bits(XLEN bits))
   object DATA_LOAD extends Stageable(Bits(XLEN bits))
   object IS_LOAD extends Stageable(Bool())
+  object LOAD_USE extends Stageable(Bool())
+  object BRANCH_OR_JALR extends Stageable(Bool())
+  object RS1_FROM_MEM extends Stageable(Bool())
+  object RS2_FROM_MEM extends Stageable(Bool())
+  object RS1_FROM_WB extends Stageable(Bool())
+  object RS2_FROM_WB extends Stageable(Bool())
+  object CTRL_RS1_FROM_MEM extends Stageable(Bool())
+  object CTRL_RS2_FROM_MEM extends Stageable(Bool())
+  object CTRL_RS1_FROM_WB extends Stageable(Bool())
+  object CTRL_RS2_FROM_WB extends Stageable(Bool())
+  object CTRL_LOAD_USE extends Stageable(Bool())
+  object NEED_PREDICT extends Stageable(Bool())
 
 }
 
@@ -80,6 +94,7 @@ class DandRiscvSimple(val config : DandRiscvSimpleConfig) extends Component with
   val execute   = newStage()
   val memaccess = newStage()
   val writeback = ifGen(config.withWBstage) (newStage())
+  val writebackStage = if(config.withWBstage) writeback else memaccess
   plugins ++= config.plugins
 
 }

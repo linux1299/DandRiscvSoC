@@ -15,9 +15,9 @@ object GenSimple extends App{
         new InstructionFetchPlugin,
         new DecodePlugin,
         new ALUPlugin,
+        new BPUPlugin,
         new ControlPlugin,
         new LsuPlugin(AW=64, DW=64),
-        //new WriteBackPlugin,
         new ICachePlugin(config = ICacheConfig(
           cacheSize = 4096,
           bytePerLine =64,

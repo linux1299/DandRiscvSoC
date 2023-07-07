@@ -44,7 +44,7 @@ with DCacheAccessService
       val data_lw     = B((XLEN-32-1 downto 0) -> data_dcache(31)) ## data_dcache(31 downto 0)
       val data_lwu    = B((XLEN-32-1 downto 0) -> False) ## data_dcache(31 downto 0)
       val data_load   = Bits(XLEN bits)
-      val is_load     = Bool()
+      //val is_load     = Bool()
 
       val mem_wdata = input(MEM_WDATA)
       val wdata_sb  = B((XLEN-8-1 downto 0) -> mem_wdata(7)) ## mem_wdata(7 downto 0)
@@ -60,31 +60,31 @@ with DCacheAccessService
       switch(input(MEM_CTRL)){
         is(MemCtrlEnum.LB.asBits){
           data_load := data_lb
-          is_load   := True
+          //is_load   := True
         }
         is(MemCtrlEnum.LBU.asBits){
           data_load := data_lbu
-          is_load   := True
+          //is_load   := True
         }
         is(MemCtrlEnum.LH.asBits){
           data_load := data_lh
-          is_load   := True
+          //is_load   := True
         }
         is(MemCtrlEnum.LHU.asBits){
           data_load := data_lhu
-          is_load   := True
+          //is_load   := True
         }
         is(MemCtrlEnum.LW.asBits){
           data_load := data_lw
-          is_load   := True
+          //is_load   := True
         }
         is(MemCtrlEnum.LWU.asBits){
           data_load := data_lwu
-          is_load   := True
+          //is_load   := True
         }
         default{
           data_load := B(0, XLEN bits)
-          is_load   := False
+          //is_load   := False
         }
       }
 
@@ -123,25 +123,18 @@ with DCacheAccessService
 
       // output mem stage
       insert(DATA_LOAD) := data_load
-      insert(IS_LOAD)   := is_load 
+      //insert(IS_LOAD)   := is_load
       dcache_access.cmd.payload.addr := addr_dcache
       dcache_access.cmd.payload.wen  := wen_dcache
       dcache_access.cmd.payload.wdata:= wdata_dcache
       dcache_access.cmd.payload.wstrb:= wstrb_dcache
       dcache_access.cmd.payload.size := size_dcache
-
-      //insert(RD) := input(IS_LOAD) ? input(DATA_LOAD) | input(ALU_RESULT)
       
     }
 
-    val writebackStage = if(withWBstage) writeback else memaccess
     writebackStage plug new Area{
       import writebackStage._
       insert(RD) := input(IS_LOAD) ? input(DATA_LOAD) | input(ALU_RESULT)
-
-      //output(RD) := input(RD)
-      //output(RD_WEN) := input(RD_WEN)
-      //output(RD_ADDR) := input(RD_ADDR)
     }
 }
 }
