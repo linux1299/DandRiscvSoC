@@ -94,8 +94,6 @@ class DecodePlugin() extends Plugin[DandRiscvSimple]
       val mem_ctrl = Bits(MemCtrlEnum.LB.asBits.getWidth bits)
       val is_load = Bool()
       val branch_or_jalr = instruction(opcodeRange)===OP_BRANCH || instruction===JALR
-      val need_predict = instruction(opcodeRange)===OP_BRANCH
-
 
       // choose imm
       when(imm_all.i_type_imm){
@@ -220,7 +218,7 @@ class DecodePlugin() extends Plugin[DandRiscvSimple]
       regfile_module.read_ports.rs2_req := rs2_req
       rs1 := regfile_module.read_ports.rs1_value
       rs2 := regfile_module.read_ports.rs2_value
-      rd_wen := decode.arbitration.isValid && (!imm_all.s_type_imm && !imm_all.s_type_imm && !(instruction===EBREAK) && !(instruction===ECALL) && !(instruction===MRET) && !(instruction(opcodeRange)===OP_FENCE))
+      rd_wen := decode.arbitration.isValid & (!imm_all.s_type_imm & !imm_all.s_type_imm & instruction=/=EBREAK & instruction=/=ECALL & instruction=/=MRET & instruction(opcodeRange)=/=OP_FENCE)
 
       // insert to decode stage
       insert(IMM) := imm
@@ -236,7 +234,6 @@ class DecodePlugin() extends Plugin[DandRiscvSimple]
       insert(RD_ADDR) := rd_addr
       insert(IS_LOAD) := is_load
       insert(BRANCH_OR_JALR) := branch_or_jalr
-      insert(NEED_PREDICT) := need_predict
 
       // hazard control input
       if(control_ports != null) {

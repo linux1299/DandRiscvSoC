@@ -41,7 +41,7 @@ case class DandRiscvSimpleConfig(){
   }
   
   object AluCtrlEnum extends SpinalEnum(binarySequential){
-    val ADD, SUB, SLT, SLTU, XOR, SLL, SRL, SRA, AND, OR, LUI, AUIPC, JAL, JALR= newElement()
+    val ADD, SUB, SLT, SLTU, XOR, SLL, SRL, SRA, AND, OR, LUI, AUIPC, JAL, JALR,BEQ, BNE, BLT, BGE, BLTU, BGEU= newElement()
   }
 
   object MemCtrlEnum extends SpinalEnum(binarySequential){
@@ -49,6 +49,7 @@ case class DandRiscvSimpleConfig(){
   }
 
   object PC extends Stageable(UInt(addressWidth bits))
+  object PC_NEXT extends Stageable(UInt(addressWidth bits))
   object INSTRUCTION extends Stageable(Bits(32 bits))
   object RS1 extends Stageable(Bits(XLEN bits))
   object RS2 extends Stageable(Bits(XLEN bits))
@@ -77,7 +78,7 @@ case class DandRiscvSimpleConfig(){
   object CTRL_RS1_FROM_WB extends Stageable(Bool())
   object CTRL_RS2_FROM_WB extends Stageable(Bool())
   object CTRL_LOAD_USE extends Stageable(Bool())
-  object NEED_PREDICT extends Stageable(Bool())
+  object BRANCH_TAKEN extends Stageable(Bool())
 
 }
 

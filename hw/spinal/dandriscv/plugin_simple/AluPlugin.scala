@@ -51,17 +51,14 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
       val sraw_result= B((31 downto 0) -> sraw_temp(31)) ## sraw_temp
 
       val alu_result  = Bits(XLEN bits)
-      val op_is_jump  = input(ALU_CTRL)===AluCtrlEnum.JAL.asBits || input(ALU_CTRL)===AluCtrlEnum.JALR.asBits
+      val jump  = input(ALU_CTRL)===AluCtrlEnum.JAL.asBits || input(ALU_CTRL)===AluCtrlEnum.JALR.asBits
+      val branch_or_jump = jump || (input(ALU_CTRL)===AluCtrlEnum.BEQ.asBits) || (input(ALU_CTRL)===AluCtrlEnum.BNE.asBits) || (input(ALU_CTRL)===AluCtrlEnum.BLT.asBits) || (input(ALU_CTRL)===AluCtrlEnum.BGE.asBits) || (input(ALU_CTRL)===AluCtrlEnum.BLTU.asBits) ||  (input(ALU_CTRL)===AluCtrlEnum.BGEU.asBits)
+      val branch_history = RegInit(B"7'b0")
+      val branch_src1 = Bits(XLEN bits)
+      val branch_src2 = Bits(XLEN bits)
 
-      // calculate pc
-      when(input(ALU_CTRL)===AluCtrlEnum.JALR.asBits){
-        pc_next := ((src1.asSInt + input(IMM).asSInt) & ~S(1, XLEN bits)).asUInt
-      }.otherwise{
-        pc_next := (input(PC).asSInt + input(IMM).asSInt).asUInt // jal or branch
-      }
-
-      // select op's source data
-      when(input(ALU_CTRL)===AluCtrlEnum.AUIPC.asBits || op_is_jump){
+      // ================= select op's source data ==================
+      when(input(ALU_CTRL)===AluCtrlEnum.AUIPC.asBits || jump){
         src1 := input(PC).asBits
       }.otherwise{
         when(input(RS1_FROM_MEM)){
@@ -74,7 +71,7 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
       }
       when(input(SRC2_IS_IMM)){
         src2 := input(IMM)
-      }.elsewhen(op_is_jump){
+      }.elsewhen(jump){
         src2 := B(4, XLEN bits)
       }.otherwise{
         when(input(RS2_FROM_MEM)){
@@ -86,7 +83,23 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
         }
       }
 
-      // caclulate alu result
+      // ================= select branch op's source data ==================
+      when(input(CTRL_RS1_FROM_MEM)){
+        branch_src1 := memaccess.output(RS1).asBits
+      }.elsewhen(input(CTRL_RS1_FROM_WB)){
+        branch_src1 := writeback.output(RS1).asBits
+      }.otherwise{
+        branch_src1 := input(RS1).asBits
+      }
+      when(input(CTRL_RS2_FROM_MEM)){
+        branch_src2 := memaccess.output(RS2).asBits
+      }.elsewhen(input(CTRL_RS1_FROM_WB)){
+        branch_src2 := writeback.output(RS2).asBits
+      }.otherwise{
+        branch_src2 := input(RS2).asBits
+      }
+
+      // ================= caclulate alu result =====================
       switch(input(ALU_CTRL)){
         is(AluCtrlEnum.ADD.asBits, AluCtrlEnum.AUIPC.asBits){
           when(input(ALU_WORD)===True){
@@ -146,8 +159,32 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
         }
       }
 
+      // ================ for branch and jump ======================
+      // calculate pc
+      when(input(ALU_CTRL)===AluCtrlEnum.JALR.asBits){
+        pc_next := ((src1.asSInt + input(IMM).asSInt) & ~S(1, XLEN bits)).asUInt // jalr
+      }.otherwise{
+        pc_next := (input(PC).asSInt + input(IMM).asSInt).asUInt // jal or branch
+      }
+      // decide if should branch or jump
+      val beq_result = (branch_src1===branch_src2)
+      val bne_result = (branch_src1=/=branch_src2)
+      val blt_result = (branch_src1.asSInt < branch_src2.asSInt)
+      val bge_result = (branch_src1.asSInt >=branch_src2.asSInt)
+      val bltu_result =(branch_src1.asUInt <  branch_src2.asUInt)
+      val bgeu_result =(branch_src1.asUInt >= branch_src2.asUInt)
+      val branch_taken = beq_result || bne_result || blt_result || bge_result || bltu_result || bgeu_result || branch_taken || jump
+      // branch history
+      //branch_history := //TODO:
+      
+
+      // insert to stage
       insert(ALU_RESULT) := alu_result
       insert(MEM_WDATA) := input(RS2) // TODO:need bypass some value
+      insert(PC_NEXT) := pc_next
+      insert(BRANCH_OR_JUMP) := branch_or_jump
+      insert(BRANCH_TAKEN) := branch_taken
+      insert(JUMP) := jump
 
     }
 

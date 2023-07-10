@@ -1,6 +1,6 @@
 // Generator : SpinalHDL v1.8.1    git head : 2a7592004363e5b40ec43e1f122ed8641cd8965b
 // Component : DandRiscvSimple
-// Git hash  : 2233aa41e50171db47b5aa63cfae4baeb14e79d9
+// Git hash  : 1c897e87a4608668eefda4a621283324f81c4920
 
 `timescale 1ns/1ps
 
@@ -479,14 +479,14 @@ module DandRiscvSimple (
   reg        [63:0]   execute_to_memaccess_MEM_WDATA;
   wire                when_Pipeline_l124_26;
   reg        [63:0]   memaccess_to_writeback_DATA_LOAD;
-  wire                when_Pipeline_l151;
-  wire                when_Pipeline_l154;
-  wire                when_Pipeline_l151_1;
-  wire                when_Pipeline_l154_1;
-  wire                when_Pipeline_l151_2;
-  wire                when_Pipeline_l154_2;
-  wire                when_Pipeline_l151_3;
-  wire                when_Pipeline_l154_3;
+  wire                when_Pipeline_l159;
+  wire                when_Pipeline_l162;
+  wire                when_Pipeline_l159_1;
+  wire                when_Pipeline_l162_1;
+  wire                when_Pipeline_l159_2;
+  wire                when_Pipeline_l162_2;
+  wire                when_Pipeline_l159_3;
+  wire                when_Pipeline_l162_3;
   function [55:0] zz__zz_memaccess_LsuPlugin_data_lbu(input dummy);
     begin
       zz__zz_memaccess_LsuPlugin_data_lbu[55] = 1'b0;
@@ -2239,14 +2239,14 @@ module DandRiscvSimple (
   assign writeback_arbitration_isStuck = (writeback_arbitration_haltItself || writeback_arbitration_isStuckByOthers);
   assign writeback_arbitration_isMoving = ((! writeback_arbitration_isStuck) && (! writeback_arbitration_removeIt));
   assign writeback_arbitration_isFiring = ((writeback_arbitration_isValid && (! writeback_arbitration_isStuck)) && (! writeback_arbitration_removeIt));
-  assign when_Pipeline_l151 = ((! decode_arbitration_isStuck) || decode_arbitration_removeIt);
-  assign when_Pipeline_l154 = ((! fetch_arbitration_isStuck) && (! fetch_arbitration_removeIt));
-  assign when_Pipeline_l151_1 = ((! execute_arbitration_isStuck) || execute_arbitration_removeIt);
-  assign when_Pipeline_l154_1 = ((! decode_arbitration_isStuck) && (! decode_arbitration_removeIt));
-  assign when_Pipeline_l151_2 = ((! memaccess_arbitration_isStuck) || memaccess_arbitration_removeIt);
-  assign when_Pipeline_l154_2 = ((! execute_arbitration_isStuck) && (! execute_arbitration_removeIt));
-  assign when_Pipeline_l151_3 = ((! writeback_arbitration_isStuck) || writeback_arbitration_removeIt);
-  assign when_Pipeline_l154_3 = ((! memaccess_arbitration_isStuck) && (! memaccess_arbitration_removeIt));
+  assign when_Pipeline_l159 = ((! fetch_arbitration_isStuck) && (! fetch_arbitration_removeIt));
+  assign when_Pipeline_l162 = ((! decode_arbitration_isStuck) || decode_arbitration_removeIt);
+  assign when_Pipeline_l159_1 = ((! decode_arbitration_isStuck) && (! decode_arbitration_removeIt));
+  assign when_Pipeline_l162_1 = ((! execute_arbitration_isStuck) || execute_arbitration_removeIt);
+  assign when_Pipeline_l159_2 = ((! execute_arbitration_isStuck) && (! execute_arbitration_removeIt));
+  assign when_Pipeline_l162_2 = ((! memaccess_arbitration_isStuck) || memaccess_arbitration_removeIt);
+  assign when_Pipeline_l159_3 = ((! memaccess_arbitration_isStuck) && (! memaccess_arbitration_removeIt));
+  assign when_Pipeline_l162_3 = ((! writeback_arbitration_isStuck) || writeback_arbitration_removeIt);
   always @(posedge clk or posedge reset) begin
     if(reset) begin
       _zz_ICachePlugin_icache_access_cmd_payload_addr_2 <= 64'h0000000080000000;
@@ -2304,29 +2304,33 @@ module DandRiscvSimple (
       if(when_InstructionFetchPlugin_l117) begin
         _zz_ICachePlugin_icache_access_cmd_valid <= 1'b1;
       end
-      if(when_Pipeline_l151) begin
-        decode_arbitration_isValid <= 1'b0;
-      end
-      if(when_Pipeline_l154) begin
+      if(when_Pipeline_l159) begin
         decode_arbitration_isValid <= fetch_arbitration_isValid;
+      end else begin
+        if(when_Pipeline_l162) begin
+          decode_arbitration_isValid <= 1'b0;
+        end
       end
-      if(when_Pipeline_l151_1) begin
-        execute_arbitration_isValid <= 1'b0;
-      end
-      if(when_Pipeline_l154_1) begin
+      if(when_Pipeline_l159_1) begin
         execute_arbitration_isValid <= decode_arbitration_isValid;
+      end else begin
+        if(when_Pipeline_l162_1) begin
+          execute_arbitration_isValid <= 1'b0;
+        end
       end
-      if(when_Pipeline_l151_2) begin
-        memaccess_arbitration_isValid <= 1'b0;
-      end
-      if(when_Pipeline_l154_2) begin
+      if(when_Pipeline_l159_2) begin
         memaccess_arbitration_isValid <= execute_arbitration_isValid;
+      end else begin
+        if(when_Pipeline_l162_2) begin
+          memaccess_arbitration_isValid <= 1'b0;
+        end
       end
-      if(when_Pipeline_l151_3) begin
-        writeback_arbitration_isValid <= 1'b0;
-      end
-      if(when_Pipeline_l154_3) begin
+      if(when_Pipeline_l159_3) begin
         writeback_arbitration_isValid <= memaccess_arbitration_isValid;
+      end else begin
+        if(when_Pipeline_l162_3) begin
+          writeback_arbitration_isValid <= 1'b0;
+        end
       end
     end
   end
@@ -8476,7 +8480,7 @@ module gshare_predictor (
 );
 
   reg        [1:0]    _zz_switch_BPUPlugin_l31;
-  reg        [1:0]    _zz_predict_taken_tmp;
+  reg        [1:0]    _zz_predict_taken;
   reg        [6:0]    global_branch_history;
   reg        [1:0]    PHT_regfile_0;
   reg        [1:0]    PHT_regfile_1;
@@ -8740,7 +8744,6 @@ module gshare_predictor (
   wire                _zz_129;
   wire                when_BPUPlugin_l54;
   wire                when_BPUPlugin_l64;
-  wire       [1:0]    predict_taken_tmp;
 
   always @(*) begin
     case(train_index)
@@ -8877,134 +8880,134 @@ module gshare_predictor (
 
   always @(*) begin
     case(predict_index)
-      7'b0000000 : _zz_predict_taken_tmp = PHT_regfile_0;
-      7'b0000001 : _zz_predict_taken_tmp = PHT_regfile_1;
-      7'b0000010 : _zz_predict_taken_tmp = PHT_regfile_2;
-      7'b0000011 : _zz_predict_taken_tmp = PHT_regfile_3;
-      7'b0000100 : _zz_predict_taken_tmp = PHT_regfile_4;
-      7'b0000101 : _zz_predict_taken_tmp = PHT_regfile_5;
-      7'b0000110 : _zz_predict_taken_tmp = PHT_regfile_6;
-      7'b0000111 : _zz_predict_taken_tmp = PHT_regfile_7;
-      7'b0001000 : _zz_predict_taken_tmp = PHT_regfile_8;
-      7'b0001001 : _zz_predict_taken_tmp = PHT_regfile_9;
-      7'b0001010 : _zz_predict_taken_tmp = PHT_regfile_10;
-      7'b0001011 : _zz_predict_taken_tmp = PHT_regfile_11;
-      7'b0001100 : _zz_predict_taken_tmp = PHT_regfile_12;
-      7'b0001101 : _zz_predict_taken_tmp = PHT_regfile_13;
-      7'b0001110 : _zz_predict_taken_tmp = PHT_regfile_14;
-      7'b0001111 : _zz_predict_taken_tmp = PHT_regfile_15;
-      7'b0010000 : _zz_predict_taken_tmp = PHT_regfile_16;
-      7'b0010001 : _zz_predict_taken_tmp = PHT_regfile_17;
-      7'b0010010 : _zz_predict_taken_tmp = PHT_regfile_18;
-      7'b0010011 : _zz_predict_taken_tmp = PHT_regfile_19;
-      7'b0010100 : _zz_predict_taken_tmp = PHT_regfile_20;
-      7'b0010101 : _zz_predict_taken_tmp = PHT_regfile_21;
-      7'b0010110 : _zz_predict_taken_tmp = PHT_regfile_22;
-      7'b0010111 : _zz_predict_taken_tmp = PHT_regfile_23;
-      7'b0011000 : _zz_predict_taken_tmp = PHT_regfile_24;
-      7'b0011001 : _zz_predict_taken_tmp = PHT_regfile_25;
-      7'b0011010 : _zz_predict_taken_tmp = PHT_regfile_26;
-      7'b0011011 : _zz_predict_taken_tmp = PHT_regfile_27;
-      7'b0011100 : _zz_predict_taken_tmp = PHT_regfile_28;
-      7'b0011101 : _zz_predict_taken_tmp = PHT_regfile_29;
-      7'b0011110 : _zz_predict_taken_tmp = PHT_regfile_30;
-      7'b0011111 : _zz_predict_taken_tmp = PHT_regfile_31;
-      7'b0100000 : _zz_predict_taken_tmp = PHT_regfile_32;
-      7'b0100001 : _zz_predict_taken_tmp = PHT_regfile_33;
-      7'b0100010 : _zz_predict_taken_tmp = PHT_regfile_34;
-      7'b0100011 : _zz_predict_taken_tmp = PHT_regfile_35;
-      7'b0100100 : _zz_predict_taken_tmp = PHT_regfile_36;
-      7'b0100101 : _zz_predict_taken_tmp = PHT_regfile_37;
-      7'b0100110 : _zz_predict_taken_tmp = PHT_regfile_38;
-      7'b0100111 : _zz_predict_taken_tmp = PHT_regfile_39;
-      7'b0101000 : _zz_predict_taken_tmp = PHT_regfile_40;
-      7'b0101001 : _zz_predict_taken_tmp = PHT_regfile_41;
-      7'b0101010 : _zz_predict_taken_tmp = PHT_regfile_42;
-      7'b0101011 : _zz_predict_taken_tmp = PHT_regfile_43;
-      7'b0101100 : _zz_predict_taken_tmp = PHT_regfile_44;
-      7'b0101101 : _zz_predict_taken_tmp = PHT_regfile_45;
-      7'b0101110 : _zz_predict_taken_tmp = PHT_regfile_46;
-      7'b0101111 : _zz_predict_taken_tmp = PHT_regfile_47;
-      7'b0110000 : _zz_predict_taken_tmp = PHT_regfile_48;
-      7'b0110001 : _zz_predict_taken_tmp = PHT_regfile_49;
-      7'b0110010 : _zz_predict_taken_tmp = PHT_regfile_50;
-      7'b0110011 : _zz_predict_taken_tmp = PHT_regfile_51;
-      7'b0110100 : _zz_predict_taken_tmp = PHT_regfile_52;
-      7'b0110101 : _zz_predict_taken_tmp = PHT_regfile_53;
-      7'b0110110 : _zz_predict_taken_tmp = PHT_regfile_54;
-      7'b0110111 : _zz_predict_taken_tmp = PHT_regfile_55;
-      7'b0111000 : _zz_predict_taken_tmp = PHT_regfile_56;
-      7'b0111001 : _zz_predict_taken_tmp = PHT_regfile_57;
-      7'b0111010 : _zz_predict_taken_tmp = PHT_regfile_58;
-      7'b0111011 : _zz_predict_taken_tmp = PHT_regfile_59;
-      7'b0111100 : _zz_predict_taken_tmp = PHT_regfile_60;
-      7'b0111101 : _zz_predict_taken_tmp = PHT_regfile_61;
-      7'b0111110 : _zz_predict_taken_tmp = PHT_regfile_62;
-      7'b0111111 : _zz_predict_taken_tmp = PHT_regfile_63;
-      7'b1000000 : _zz_predict_taken_tmp = PHT_regfile_64;
-      7'b1000001 : _zz_predict_taken_tmp = PHT_regfile_65;
-      7'b1000010 : _zz_predict_taken_tmp = PHT_regfile_66;
-      7'b1000011 : _zz_predict_taken_tmp = PHT_regfile_67;
-      7'b1000100 : _zz_predict_taken_tmp = PHT_regfile_68;
-      7'b1000101 : _zz_predict_taken_tmp = PHT_regfile_69;
-      7'b1000110 : _zz_predict_taken_tmp = PHT_regfile_70;
-      7'b1000111 : _zz_predict_taken_tmp = PHT_regfile_71;
-      7'b1001000 : _zz_predict_taken_tmp = PHT_regfile_72;
-      7'b1001001 : _zz_predict_taken_tmp = PHT_regfile_73;
-      7'b1001010 : _zz_predict_taken_tmp = PHT_regfile_74;
-      7'b1001011 : _zz_predict_taken_tmp = PHT_regfile_75;
-      7'b1001100 : _zz_predict_taken_tmp = PHT_regfile_76;
-      7'b1001101 : _zz_predict_taken_tmp = PHT_regfile_77;
-      7'b1001110 : _zz_predict_taken_tmp = PHT_regfile_78;
-      7'b1001111 : _zz_predict_taken_tmp = PHT_regfile_79;
-      7'b1010000 : _zz_predict_taken_tmp = PHT_regfile_80;
-      7'b1010001 : _zz_predict_taken_tmp = PHT_regfile_81;
-      7'b1010010 : _zz_predict_taken_tmp = PHT_regfile_82;
-      7'b1010011 : _zz_predict_taken_tmp = PHT_regfile_83;
-      7'b1010100 : _zz_predict_taken_tmp = PHT_regfile_84;
-      7'b1010101 : _zz_predict_taken_tmp = PHT_regfile_85;
-      7'b1010110 : _zz_predict_taken_tmp = PHT_regfile_86;
-      7'b1010111 : _zz_predict_taken_tmp = PHT_regfile_87;
-      7'b1011000 : _zz_predict_taken_tmp = PHT_regfile_88;
-      7'b1011001 : _zz_predict_taken_tmp = PHT_regfile_89;
-      7'b1011010 : _zz_predict_taken_tmp = PHT_regfile_90;
-      7'b1011011 : _zz_predict_taken_tmp = PHT_regfile_91;
-      7'b1011100 : _zz_predict_taken_tmp = PHT_regfile_92;
-      7'b1011101 : _zz_predict_taken_tmp = PHT_regfile_93;
-      7'b1011110 : _zz_predict_taken_tmp = PHT_regfile_94;
-      7'b1011111 : _zz_predict_taken_tmp = PHT_regfile_95;
-      7'b1100000 : _zz_predict_taken_tmp = PHT_regfile_96;
-      7'b1100001 : _zz_predict_taken_tmp = PHT_regfile_97;
-      7'b1100010 : _zz_predict_taken_tmp = PHT_regfile_98;
-      7'b1100011 : _zz_predict_taken_tmp = PHT_regfile_99;
-      7'b1100100 : _zz_predict_taken_tmp = PHT_regfile_100;
-      7'b1100101 : _zz_predict_taken_tmp = PHT_regfile_101;
-      7'b1100110 : _zz_predict_taken_tmp = PHT_regfile_102;
-      7'b1100111 : _zz_predict_taken_tmp = PHT_regfile_103;
-      7'b1101000 : _zz_predict_taken_tmp = PHT_regfile_104;
-      7'b1101001 : _zz_predict_taken_tmp = PHT_regfile_105;
-      7'b1101010 : _zz_predict_taken_tmp = PHT_regfile_106;
-      7'b1101011 : _zz_predict_taken_tmp = PHT_regfile_107;
-      7'b1101100 : _zz_predict_taken_tmp = PHT_regfile_108;
-      7'b1101101 : _zz_predict_taken_tmp = PHT_regfile_109;
-      7'b1101110 : _zz_predict_taken_tmp = PHT_regfile_110;
-      7'b1101111 : _zz_predict_taken_tmp = PHT_regfile_111;
-      7'b1110000 : _zz_predict_taken_tmp = PHT_regfile_112;
-      7'b1110001 : _zz_predict_taken_tmp = PHT_regfile_113;
-      7'b1110010 : _zz_predict_taken_tmp = PHT_regfile_114;
-      7'b1110011 : _zz_predict_taken_tmp = PHT_regfile_115;
-      7'b1110100 : _zz_predict_taken_tmp = PHT_regfile_116;
-      7'b1110101 : _zz_predict_taken_tmp = PHT_regfile_117;
-      7'b1110110 : _zz_predict_taken_tmp = PHT_regfile_118;
-      7'b1110111 : _zz_predict_taken_tmp = PHT_regfile_119;
-      7'b1111000 : _zz_predict_taken_tmp = PHT_regfile_120;
-      7'b1111001 : _zz_predict_taken_tmp = PHT_regfile_121;
-      7'b1111010 : _zz_predict_taken_tmp = PHT_regfile_122;
-      7'b1111011 : _zz_predict_taken_tmp = PHT_regfile_123;
-      7'b1111100 : _zz_predict_taken_tmp = PHT_regfile_124;
-      7'b1111101 : _zz_predict_taken_tmp = PHT_regfile_125;
-      7'b1111110 : _zz_predict_taken_tmp = PHT_regfile_126;
-      default : _zz_predict_taken_tmp = PHT_regfile_127;
+      7'b0000000 : _zz_predict_taken = PHT_regfile_0;
+      7'b0000001 : _zz_predict_taken = PHT_regfile_1;
+      7'b0000010 : _zz_predict_taken = PHT_regfile_2;
+      7'b0000011 : _zz_predict_taken = PHT_regfile_3;
+      7'b0000100 : _zz_predict_taken = PHT_regfile_4;
+      7'b0000101 : _zz_predict_taken = PHT_regfile_5;
+      7'b0000110 : _zz_predict_taken = PHT_regfile_6;
+      7'b0000111 : _zz_predict_taken = PHT_regfile_7;
+      7'b0001000 : _zz_predict_taken = PHT_regfile_8;
+      7'b0001001 : _zz_predict_taken = PHT_regfile_9;
+      7'b0001010 : _zz_predict_taken = PHT_regfile_10;
+      7'b0001011 : _zz_predict_taken = PHT_regfile_11;
+      7'b0001100 : _zz_predict_taken = PHT_regfile_12;
+      7'b0001101 : _zz_predict_taken = PHT_regfile_13;
+      7'b0001110 : _zz_predict_taken = PHT_regfile_14;
+      7'b0001111 : _zz_predict_taken = PHT_regfile_15;
+      7'b0010000 : _zz_predict_taken = PHT_regfile_16;
+      7'b0010001 : _zz_predict_taken = PHT_regfile_17;
+      7'b0010010 : _zz_predict_taken = PHT_regfile_18;
+      7'b0010011 : _zz_predict_taken = PHT_regfile_19;
+      7'b0010100 : _zz_predict_taken = PHT_regfile_20;
+      7'b0010101 : _zz_predict_taken = PHT_regfile_21;
+      7'b0010110 : _zz_predict_taken = PHT_regfile_22;
+      7'b0010111 : _zz_predict_taken = PHT_regfile_23;
+      7'b0011000 : _zz_predict_taken = PHT_regfile_24;
+      7'b0011001 : _zz_predict_taken = PHT_regfile_25;
+      7'b0011010 : _zz_predict_taken = PHT_regfile_26;
+      7'b0011011 : _zz_predict_taken = PHT_regfile_27;
+      7'b0011100 : _zz_predict_taken = PHT_regfile_28;
+      7'b0011101 : _zz_predict_taken = PHT_regfile_29;
+      7'b0011110 : _zz_predict_taken = PHT_regfile_30;
+      7'b0011111 : _zz_predict_taken = PHT_regfile_31;
+      7'b0100000 : _zz_predict_taken = PHT_regfile_32;
+      7'b0100001 : _zz_predict_taken = PHT_regfile_33;
+      7'b0100010 : _zz_predict_taken = PHT_regfile_34;
+      7'b0100011 : _zz_predict_taken = PHT_regfile_35;
+      7'b0100100 : _zz_predict_taken = PHT_regfile_36;
+      7'b0100101 : _zz_predict_taken = PHT_regfile_37;
+      7'b0100110 : _zz_predict_taken = PHT_regfile_38;
+      7'b0100111 : _zz_predict_taken = PHT_regfile_39;
+      7'b0101000 : _zz_predict_taken = PHT_regfile_40;
+      7'b0101001 : _zz_predict_taken = PHT_regfile_41;
+      7'b0101010 : _zz_predict_taken = PHT_regfile_42;
+      7'b0101011 : _zz_predict_taken = PHT_regfile_43;
+      7'b0101100 : _zz_predict_taken = PHT_regfile_44;
+      7'b0101101 : _zz_predict_taken = PHT_regfile_45;
+      7'b0101110 : _zz_predict_taken = PHT_regfile_46;
+      7'b0101111 : _zz_predict_taken = PHT_regfile_47;
+      7'b0110000 : _zz_predict_taken = PHT_regfile_48;
+      7'b0110001 : _zz_predict_taken = PHT_regfile_49;
+      7'b0110010 : _zz_predict_taken = PHT_regfile_50;
+      7'b0110011 : _zz_predict_taken = PHT_regfile_51;
+      7'b0110100 : _zz_predict_taken = PHT_regfile_52;
+      7'b0110101 : _zz_predict_taken = PHT_regfile_53;
+      7'b0110110 : _zz_predict_taken = PHT_regfile_54;
+      7'b0110111 : _zz_predict_taken = PHT_regfile_55;
+      7'b0111000 : _zz_predict_taken = PHT_regfile_56;
+      7'b0111001 : _zz_predict_taken = PHT_regfile_57;
+      7'b0111010 : _zz_predict_taken = PHT_regfile_58;
+      7'b0111011 : _zz_predict_taken = PHT_regfile_59;
+      7'b0111100 : _zz_predict_taken = PHT_regfile_60;
+      7'b0111101 : _zz_predict_taken = PHT_regfile_61;
+      7'b0111110 : _zz_predict_taken = PHT_regfile_62;
+      7'b0111111 : _zz_predict_taken = PHT_regfile_63;
+      7'b1000000 : _zz_predict_taken = PHT_regfile_64;
+      7'b1000001 : _zz_predict_taken = PHT_regfile_65;
+      7'b1000010 : _zz_predict_taken = PHT_regfile_66;
+      7'b1000011 : _zz_predict_taken = PHT_regfile_67;
+      7'b1000100 : _zz_predict_taken = PHT_regfile_68;
+      7'b1000101 : _zz_predict_taken = PHT_regfile_69;
+      7'b1000110 : _zz_predict_taken = PHT_regfile_70;
+      7'b1000111 : _zz_predict_taken = PHT_regfile_71;
+      7'b1001000 : _zz_predict_taken = PHT_regfile_72;
+      7'b1001001 : _zz_predict_taken = PHT_regfile_73;
+      7'b1001010 : _zz_predict_taken = PHT_regfile_74;
+      7'b1001011 : _zz_predict_taken = PHT_regfile_75;
+      7'b1001100 : _zz_predict_taken = PHT_regfile_76;
+      7'b1001101 : _zz_predict_taken = PHT_regfile_77;
+      7'b1001110 : _zz_predict_taken = PHT_regfile_78;
+      7'b1001111 : _zz_predict_taken = PHT_regfile_79;
+      7'b1010000 : _zz_predict_taken = PHT_regfile_80;
+      7'b1010001 : _zz_predict_taken = PHT_regfile_81;
+      7'b1010010 : _zz_predict_taken = PHT_regfile_82;
+      7'b1010011 : _zz_predict_taken = PHT_regfile_83;
+      7'b1010100 : _zz_predict_taken = PHT_regfile_84;
+      7'b1010101 : _zz_predict_taken = PHT_regfile_85;
+      7'b1010110 : _zz_predict_taken = PHT_regfile_86;
+      7'b1010111 : _zz_predict_taken = PHT_regfile_87;
+      7'b1011000 : _zz_predict_taken = PHT_regfile_88;
+      7'b1011001 : _zz_predict_taken = PHT_regfile_89;
+      7'b1011010 : _zz_predict_taken = PHT_regfile_90;
+      7'b1011011 : _zz_predict_taken = PHT_regfile_91;
+      7'b1011100 : _zz_predict_taken = PHT_regfile_92;
+      7'b1011101 : _zz_predict_taken = PHT_regfile_93;
+      7'b1011110 : _zz_predict_taken = PHT_regfile_94;
+      7'b1011111 : _zz_predict_taken = PHT_regfile_95;
+      7'b1100000 : _zz_predict_taken = PHT_regfile_96;
+      7'b1100001 : _zz_predict_taken = PHT_regfile_97;
+      7'b1100010 : _zz_predict_taken = PHT_regfile_98;
+      7'b1100011 : _zz_predict_taken = PHT_regfile_99;
+      7'b1100100 : _zz_predict_taken = PHT_regfile_100;
+      7'b1100101 : _zz_predict_taken = PHT_regfile_101;
+      7'b1100110 : _zz_predict_taken = PHT_regfile_102;
+      7'b1100111 : _zz_predict_taken = PHT_regfile_103;
+      7'b1101000 : _zz_predict_taken = PHT_regfile_104;
+      7'b1101001 : _zz_predict_taken = PHT_regfile_105;
+      7'b1101010 : _zz_predict_taken = PHT_regfile_106;
+      7'b1101011 : _zz_predict_taken = PHT_regfile_107;
+      7'b1101100 : _zz_predict_taken = PHT_regfile_108;
+      7'b1101101 : _zz_predict_taken = PHT_regfile_109;
+      7'b1101110 : _zz_predict_taken = PHT_regfile_110;
+      7'b1101111 : _zz_predict_taken = PHT_regfile_111;
+      7'b1110000 : _zz_predict_taken = PHT_regfile_112;
+      7'b1110001 : _zz_predict_taken = PHT_regfile_113;
+      7'b1110010 : _zz_predict_taken = PHT_regfile_114;
+      7'b1110011 : _zz_predict_taken = PHT_regfile_115;
+      7'b1110100 : _zz_predict_taken = PHT_regfile_116;
+      7'b1110101 : _zz_predict_taken = PHT_regfile_117;
+      7'b1110110 : _zz_predict_taken = PHT_regfile_118;
+      7'b1110111 : _zz_predict_taken = PHT_regfile_119;
+      7'b1111000 : _zz_predict_taken = PHT_regfile_120;
+      7'b1111001 : _zz_predict_taken = PHT_regfile_121;
+      7'b1111010 : _zz_predict_taken = PHT_regfile_122;
+      7'b1111011 : _zz_predict_taken = PHT_regfile_123;
+      7'b1111100 : _zz_predict_taken = PHT_regfile_124;
+      7'b1111101 : _zz_predict_taken = PHT_regfile_125;
+      7'b1111110 : _zz_predict_taken = PHT_regfile_126;
+      default : _zz_predict_taken = PHT_regfile_127;
     endcase
   end
 
@@ -9142,8 +9145,7 @@ module gshare_predictor (
   assign _zz_129 = _zz_1[127];
   assign when_BPUPlugin_l54 = (! train_taken);
   assign when_BPUPlugin_l64 = (train_valid && train_mispredicted);
-  assign predict_taken_tmp = _zz_predict_taken_tmp;
-  assign predict_taken = predict_taken_tmp[1];
+  assign predict_taken = _zz_predict_taken[1];
   assign predict_history = global_branch_history;
   always @(posedge clk or posedge reset) begin
     if(reset) begin

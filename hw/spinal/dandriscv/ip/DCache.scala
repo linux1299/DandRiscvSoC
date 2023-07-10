@@ -107,7 +107,7 @@ case class DCache(p : DCacheConfig) extends Component{
 
   // next level related
   val next_level_cmd_valid = RegInit(False)
-  val next_level_data_cnt = Counter(lineBusDataNum)
+  val next_level_data_cnt = Counter(0 to lineBusDataNum-1)
   val next_level_bank_addr= cpu_addr_d1(nextLevelBankAddrRange)
   when(is_miss){
     next_level_cmd_valid := True

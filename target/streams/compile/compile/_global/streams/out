@@ -1,6 +1,10 @@
-[0m[[0m[33mwarn[0m] [0m[0mD:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\DandRiscvSimple.scala:38:17: match may not be exhaustive.[0m
-[0m[[0m[33mwarn[0m] [0m[0mIt would fail on the following input: None[0m
-[0m[[0m[33mwarn[0m] [0m[0m    plugins.find(_.getClass == clazz) match {[0m
-[0m[[0m[33mwarn[0m] [0m[0m                ^[0m
-[0m[[0m[33mwarn[0m] [0m[0m1 deprecation (since 2.13.3); re-run with -deprecation for details[0m
-[0m[[0m[33mwarn[0m] [0m[0mtwo warnings found[0m
+[0m[[0m[31merror[0m] [0m[0mD:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala:16:1: illegal start of simple expression[0m
+[0m[[0m[31merror[0m] [0m[0m}[0m
+[0m[[0m[31merror[0m] [0m[0m^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala:27:107: ':' expected but '=' found.[0m
+[0m[[0m[31merror[0m] [0m[0mcase class gshare_predictor(addressWidth : Int=64, RAS_ENTRIES : Int=8, BTB_ENTRIES : Int=128, PHT_ENTRIES=128) extends Component {[0m
+[0m[[0m[31merror[0m] [0m[0m                                                                                                          ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala:121:2: identifier expected but eof found.[0m
+[0m[[0m[31merror[0m] [0m[0m}[0m
+[0m[[0m[31merror[0m] [0m[0m ^[0m
+[0m[[0m[31merror[0m] [0m[0mthree errors found[0m

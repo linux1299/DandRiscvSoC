@@ -39,12 +39,7 @@ with BPUService{
     interrupt_ports = IntPorts()
     interrupt_ports
   }
-  @dontName var bpu_ports : BPUPorts = null
-  override def newBPUPorts(): BPUPorts = {
-    assert(bpu_ports == null)
-    bpu_ports = BPUPorts()
-    bpu_ports
-  }
+  
 
   override def setup(pipeline: DandRiscvSimple): Unit = {
     import Riscv._
@@ -107,8 +102,8 @@ with BPUService{
         }
         when(interrupt_ports.int_en) {
           fetch_pc := interrupt_ports.int_pc
-        } .elsewhen(bpu_ports.branch_taken) {
-          fetch_pc := bpu_ports.branch_pc
+        } .elsewhen(bpu_ports.predict_taken) {
+          fetch_pc := bpu_ports.predict_pc_next
         } .otherwise {
           fetch_pc := pc_next
         }
@@ -128,6 +123,10 @@ with BPUService{
     if(icache_access != null) pipeline plug new Area{
       icache_access.cmd.valid := fetch_valid
       icache_access.cmd.addr := fetch_pc
+    }
+
+    if(bpu_ports != null) pipeline plug new Area{
+      bpu_ports.predict_pc := fetch_pc
     }
 
 
