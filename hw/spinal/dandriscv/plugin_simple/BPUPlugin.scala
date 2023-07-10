@@ -16,14 +16,10 @@ case class BPUPorts(addressWidth : Int=64) extends Bundle {
   val predict_pc_next = UInt(addressWidth bits)
 }
 
-trait BPUService{
-  def newBPUPorts() : BPUPorts
-}
-
 // ================ gshare predictor =================
 case class gshare_predictor(addressWidth : Int=64, 
-                            RAS_ENTRIES : Int=8, 
-                            BTB_ENTRIES : Int=128, 
+                            RAS_ENTRIES : Int=4, 
+                            BTB_ENTRIES : Int=4, 
                             PHT_ENTRIES: Int=128) extends Component {
   def historyLen = log2Up(PHT_ENTRIES)
   def BTB_ENTRIES_WIDTH = log2Up(BTB_ENTRIES)
@@ -95,11 +91,11 @@ case class gshare_predictor(addressWidth : Int=64,
   
 
   val BTB = new Area{
-    val btb_valid = Reg(Bits(BTB_ENTRIES_WIDTH bits)) init(0)
+    val btb_valid = Reg(Bits(BTB_ENTRIES bits)) init(0)
     val btb_source_pc = Vec(Reg(UInt(addressWidth bits)) init(0), BTB_ENTRIES)
-    val btb_call = Reg(Bits(BTB_ENTRIES_WIDTH bits)) init(0)
-    val btb_ret = Reg(Bits(BTB_ENTRIES_WIDTH bits)) init(0)
-    val btb_jmp = Reg(Bits(BTB_ENTRIES_WIDTH bits)) init(0)
+    val btb_call = Reg(Bits(BTB_ENTRIES bits)) init(0)
+    val btb_ret = Reg(Bits(BTB_ENTRIES bits)) init(0)
+    val btb_jmp = Reg(Bits(BTB_ENTRIES bits)) init(0)
     val btb_target_pc = Vec(Reg(UInt(addressWidth bits)) init(0), BTB_ENTRIES)
 
     val btb_is_matched = Bool()
@@ -125,15 +121,21 @@ case class gshare_predictor(addressWidth : Int=64,
     }
 
     val btb_write_index = UInt(BTB_ENTRIES_WIDTH bits)
-    val btb_alloc_index = Counter(BTB_ENTRIES_WIDTH)
+    val btb_alloc_index = Counter(0 to BTB_ENTRIES-1)
     val btb_is_hit = Bool()
     val btb_is_miss= Bool()
+
+    when(train_valid && train_taken){
+      
+    }
 
     val writeBTB = for(i <- 0 until BTB_ENTRIES) yield new Area {
       btb_write_index := U(0, BTB_ENTRIES_WIDTH bits)
       btb_is_hit := False
       btb_is_miss:= False
       when(train_valid && train_taken){
+
+
         when(btb_source_pc(i)===train_pc && btb_valid(i)){
           btb_is_hit := True
           btb_write_index := U(i, BTB_ENTRIES_WIDTH bits)
@@ -171,10 +173,10 @@ case class gshare_predictor(addressWidth : Int=64,
 
   val RAS = new Area{
     val ras_regfile = Vec(Reg(UInt(addressWidth bits)), RAS_ENTRIES)
-    val ras_next_index_exe = UInt(RAS_ENTRIES_WIDTH bits)
-    val ras_curr_index_exe = RegNext(ras_next_index) init(0)
     val ras_next_index = UInt(RAS_ENTRIES_WIDTH bits)
     val ras_curr_index = Reg(UInt(RAS_ENTRIES_WIDTH bits)) init(0)
+    val ras_next_index_exe = UInt(RAS_ENTRIES_WIDTH bits)
+    val ras_curr_index_exe = RegNext(ras_next_index) init(0)
     val ras_predict_pc = UInt(addressWidth bits)
     val ras_call_matched = BTB.btb_is_matched && BTB.btb_is_call
     val ras_ret_matched = BTB.btb_is_matched && BTB.btb_is_ret
@@ -184,6 +186,8 @@ case class gshare_predictor(addressWidth : Int=64,
       ras_next_index_exe := ras_curr_index_exe + 1
     }.elsewhen(train_valid && train_is_ret){
       ras_next_index_exe := ras_curr_index_exe - 1
+    }.otherwise{
+      ras_next_index_exe := ras_curr_index_exe
     }
 
     // ras index
@@ -232,15 +236,7 @@ case class gshare_predictor(addressWidth : Int=64,
 
 
 // ================= Branch predictor plugin ===================
-class BPUPlugin() extends Plugin[DandRiscvSimple]
-with BPUService{
-
-  @dontName var bpu_ports : BPUPorts = null
-  override def newBPUPorts(): BPUPorts = {
-    assert(bpu_ports == null)
-    bpu_ports = BPUPorts()
-    bpu_ports
-  }
+class BPUPlugin(addressWidth : Int = 64) extends Plugin[DandRiscvSimple]{
 
   override def setup(pipeline: DandRiscvSimple): Unit = {
     import Riscv._
@@ -254,7 +250,9 @@ with BPUService{
 
     val predictor = new gshare_predictor()
     
-    predictor.predict_pc := bpu_ports.predict_pc
+    predictor.predict_pc := fetch.output(PC)
+    fetch.insert(BPU_BRANCH_TAKEN) := predictor.predict_taken
+    fetch.insert(BPU_PC_NEXT) := predictor.predict_pc_next
     predictor.train_valid := execute.output(BRANCH_OR_JUMP)
     predictor.train_taken := execute.output(BRANCH_TAKEN)
     predictor.train_mispredicted := execute.output(MISPRED)

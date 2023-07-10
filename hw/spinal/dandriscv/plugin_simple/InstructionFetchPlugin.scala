@@ -39,15 +39,12 @@ with InterruptService
     interrupt_ports = IntPorts()
     interrupt_ports
   }
-  
-  var bpu_ports : BPUPorts = null
 
   override def setup(pipeline: DandRiscvSimple): Unit = {
     import Riscv._
     import pipeline.config._
 
     interrupt_ports = pipeline.service(classOf[InterruptService]).newIntPorts
-    bpu_ports = pipeline.service(classOf[BPUService]).newBPUPorts
   }
   
   override def build(pipeline: DandRiscvSimple): Unit = {
@@ -103,8 +100,8 @@ with InterruptService
         }
         when(interrupt_ports.int_en) {
           fetch_pc := interrupt_ports.int_pc
-        } .elsewhen(bpu_ports.predict_taken) {
-          fetch_pc := bpu_ports.predict_pc_next
+        } .elsewhen(fetch.output(BPU_BRANCH_TAKEN)) {
+          fetch_pc := fetch.output(BPU_PC_NEXT)
         } .otherwise {
           fetch_pc := pc_next
         }
@@ -118,16 +115,13 @@ with InterruptService
     fetch plug new Area{
       import fetch._
       insert(PC) := pc
+      insert(PC_NEXT) := fetch_pc
     }
 
     // send cmd to icache
     if(icache_access != null) pipeline plug new Area{
       icache_access.cmd.valid := fetch_valid
       icache_access.cmd.addr := fetch_pc
-    }
-
-    if(bpu_ports != null) pipeline plug new Area{
-      bpu_ports.predict_pc := fetch_pc
     }
 
 

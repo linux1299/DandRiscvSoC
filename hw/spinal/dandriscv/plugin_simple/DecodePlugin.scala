@@ -6,7 +6,7 @@ import spinal.lib._
 import dandriscv._
 import dandriscv.ip._
 import dandriscv.plugin._
-import dandriscv.plugin_simple._
+//import dandriscv.plugin_simple._
 
 // ====================== reg file ports ====================
 case class RegFileReadPorts(XLEN : Int = 64) extends Bundle with IMasterSlave{

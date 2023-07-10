@@ -13,7 +13,7 @@ object GenSimple extends App{
     config = DandRiscvSimpleConfig(
       plugins = List(
         new InstructionFetchPlugin,
-        new BPUPlugin,
+        new BPUPlugin(addressWidth=64),
         new DecodePlugin,
         new ALUPlugin,
         new BPUPlugin,
