@@ -20,12 +20,11 @@ trait BPUService{
   def newBPUPorts() : BPUPorts
 }
 
-
-
-
-
 // ================ gshare predictor =================
-case class gshare_predictor(addressWidth : Int=64, RAS_ENTRIES : Int=8, BTB_ENTRIES : Int=128, PHT_ENTRIES=128) extends Component {
+case class gshare_predictor(addressWidth : Int=64, 
+                            RAS_ENTRIES : Int=8, 
+                            BTB_ENTRIES : Int=128, 
+                            PHT_ENTRIES: Int=128) extends Component {
   def historyLen = log2Up(PHT_ENTRIES)
   def BTB_ENTRIES_WIDTH = log2Up(BTB_ENTRIES)
   def RAS_ENTRIES_WIDTH = log2Up(RAS_ENTRIES)
@@ -228,13 +227,13 @@ case class gshare_predictor(addressWidth : Int=64, RAS_ENTRIES : Int=8, BTB_ENTR
   // output
   predict_history := GSHARE.global_branch_history.asUInt
   predict_taken   := BTB.btb_is_matched && (GSHARE.pht_predict_taken || BTB.btb_is_jmp || BTB.btb_is_call || BTB.btb_is_ret)
-  predict_pc_next := ras_ret_matched ? ras_predict_pc | (BTB.btb_is_matched && (GSHARE.pht_predict_taken || BTB.btb_is_jmp || BTB.btb_is_call)) ? BTB.btb_target_pc : predict_pc+4
+  predict_pc_next := RAS.ras_ret_matched ? RAS.ras_predict_pc | ((BTB.btb_is_matched && (GSHARE.pht_predict_taken || BTB.btb_is_jmp || BTB.btb_is_call)) ? BTB.btb_read_target_pc | (predict_pc+4))
 }
 
 
 // ================= Branch predictor plugin ===================
 class BPUPlugin() extends Plugin[DandRiscvSimple]
-with BPService{
+with BPUService{
 
   @dontName var bpu_ports : BPUPorts = null
   override def newBPUPorts(): BPUPorts = {
@@ -256,15 +255,15 @@ with BPService{
     val predictor = new gshare_predictor()
     
     predictor.predict_pc := bpu_ports.predict_pc
-    predictor.train_valid := 
-    predictor.train_taken
-    predictor.train_mispredicted
-    predictor.train_history
+    predictor.train_valid := execute.output(BRANCH_OR_JUMP)
+    predictor.train_taken := execute.output(BRANCH_TAKEN)
+    predictor.train_mispredicted := execute.output(MISPRED)
+    predictor.train_history := execute.output(BRANCH_HISTORY)
     predictor.train_pc := execute.output(PC)
     predictor.train_pc_next := execute.output(PC_NEXT)
-    predictor.train_is_call := 
-    predictor.train_is_ret  :=   
-    predictor.train_is_jmp  :=  
+    predictor.train_is_call := execute.output(IS_CALL)
+    predictor.train_is_ret  := execute.output(IS_RET)
+    predictor.train_is_jmp  := execute.output(IS_JMP)
 
     
 

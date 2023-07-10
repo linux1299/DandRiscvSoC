@@ -1,10 +1,31 @@
-[0m[[0m[31merror[0m] [0m[0mD:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala:16:1: illegal start of simple expression[0m
-[0m[[0m[31merror[0m] [0m[0m}[0m
-[0m[[0m[31merror[0m] [0m[0m^[0m
-[0m[[0m[31merror[0m] [0m[0mD:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala:27:107: ':' expected but '=' found.[0m
-[0m[[0m[31merror[0m] [0m[0mcase class gshare_predictor(addressWidth : Int=64, RAS_ENTRIES : Int=8, BTB_ENTRIES : Int=128, PHT_ENTRIES=128) extends Component {[0m
-[0m[[0m[31merror[0m] [0m[0m                                                                                                          ^[0m
-[0m[[0m[31merror[0m] [0m[0mD:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala:121:2: identifier expected but eof found.[0m
-[0m[[0m[31merror[0m] [0m[0m}[0m
-[0m[[0m[31merror[0m] [0m[0m ^[0m
-[0m[[0m[31merror[0m] [0m[0mthree errors found[0m
+[0m[[0m[31merror[0m] [0m[0m/home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/DecodePlugin.scala:60:23: reference to ControlPorts is ambiguous;[0m
+[0m[[0m[31merror[0m] [0m[0mit is imported twice in the same scope by[0m
+[0m[[0m[31merror[0m] [0m[0mimport dandriscv.plugin_simple._[0m
+[0m[[0m[31merror[0m] [0m[0mand import dandriscv._[0m
+[0m[[0m[31merror[0m] [0m[0m  var control_ports : ControlPorts = null[0m
+[0m[[0m[31merror[0m] [0m[0m                      ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/DecodePlugin.scala:66:46: reference to ControlService is ambiguous;[0m
+[0m[[0m[31merror[0m] [0m[0mit is imported twice in the same scope by[0m
+[0m[[0m[31merror[0m] [0m[0mimport dandriscv.plugin_simple._[0m
+[0m[[0m[31merror[0m] [0m[0mand import dandriscv._[0m
+[0m[[0m[31merror[0m] [0m[0m    control_ports = pipeline.service(classOf[ControlService]).newControlPorts[0m
+[0m[[0m[31merror[0m] [0m[0m                                             ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/DecodePlugin.scala:66:63: value newControlPorts is not a member of Nothing[0m
+[0m[[0m[31merror[0m] [0m[0m    control_ports = pipeline.service(classOf[ControlService]).newControlPorts[0m
+[0m[[0m[31merror[0m] [0m[0m                                                              ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/InstructionFetchPlugin.scala:43:19: reference to BPUPorts is ambiguous;[0m
+[0m[[0m[31merror[0m] [0m[0mit is imported twice in the same scope by[0m
+[0m[[0m[31merror[0m] [0m[0mimport dandriscv.plugin_simple._[0m
+[0m[[0m[31merror[0m] [0m[0mand import dandriscv._[0m
+[0m[[0m[31merror[0m] [0m[0m  var bpu_ports : BPUPorts = null[0m
+[0m[[0m[31merror[0m] [0m[0m                  ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/InstructionFetchPlugin.scala:50:42: reference to BPUService is ambiguous;[0m
+[0m[[0m[31merror[0m] [0m[0mit is imported twice in the same scope by[0m
+[0m[[0m[31merror[0m] [0m[0mimport dandriscv.plugin_simple._[0m
+[0m[[0m[31merror[0m] [0m[0mand import dandriscv._[0m
+[0m[[0m[31merror[0m] [0m[0m    bpu_ports = pipeline.service(classOf[BPUService]).newBPUPorts[0m
+[0m[[0m[31merror[0m] [0m[0m                                         ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/InstructionFetchPlugin.scala:50:55: value newBPUPorts is not a member of Nothing[0m
+[0m[[0m[31merror[0m] [0m[0m    bpu_ports = pipeline.service(classOf[BPUService]).newBPUPorts[0m
+[0m[[0m[31merror[0m] [0m[0m                                                      ^[0m
+[0m[[0m[31merror[0m] [0m[0m6 errors found[0m

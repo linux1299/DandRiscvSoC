@@ -79,7 +79,12 @@ case class DandRiscvSimpleConfig(){
   object CTRL_RS2_FROM_WB extends Stageable(Bool())
   object CTRL_LOAD_USE extends Stageable(Bool())
   object BRANCH_TAKEN extends Stageable(Bool())
-
+  object BRANCH_OR_JUMP extends Stageable(Bool())
+  object BRANCH_HISTORY extends Stageable(UInt(7 bits))
+  object IS_CALL extends Stageable(Bool())
+  object IS_RET extends Stageable(Bool())
+  object IS_JMP extends Stageable(Bool())
+  object MISPRED extends Stageable(Bool())
 }
 
 

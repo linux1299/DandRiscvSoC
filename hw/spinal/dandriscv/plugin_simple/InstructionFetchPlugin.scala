@@ -24,7 +24,7 @@ class InstructionFetchPlugin(resetVector : BigInt = 0x80000000l, addressWidth : 
 extends Plugin[DandRiscvSimple]
 with ICacheAccessService
 with InterruptService
-with BPUService{
+{
 
   @dontName var icache_access : ICacheAccess = null
   override def newICacheAccess(): ICacheAccess = {
@@ -40,6 +40,7 @@ with BPUService{
     interrupt_ports
   }
   
+  var bpu_ports : BPUPorts = null
 
   override def setup(pipeline: DandRiscvSimple): Unit = {
     import Riscv._

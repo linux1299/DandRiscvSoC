@@ -51,14 +51,30 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
       val sraw_result= B((31 downto 0) -> sraw_temp(31)) ## sraw_temp
 
       val alu_result  = Bits(XLEN bits)
-      val jump  = input(ALU_CTRL)===AluCtrlEnum.JAL.asBits || input(ALU_CTRL)===AluCtrlEnum.JALR.asBits
-      val branch_or_jump = jump || (input(ALU_CTRL)===AluCtrlEnum.BEQ.asBits) || (input(ALU_CTRL)===AluCtrlEnum.BNE.asBits) || (input(ALU_CTRL)===AluCtrlEnum.BLT.asBits) || (input(ALU_CTRL)===AluCtrlEnum.BGE.asBits) || (input(ALU_CTRL)===AluCtrlEnum.BLTU.asBits) ||  (input(ALU_CTRL)===AluCtrlEnum.BGEU.asBits)
-      val branch_history = RegInit(B"7'b0")
+      val jal = (input(ALU_CTRL)===AluCtrlEnum.JAL.asBits)
+      val jalr= (input(ALU_CTRL)===AluCtrlEnum.JALR.asBits)
+      val beq = (input(ALU_CTRL)===AluCtrlEnum.BEQ.asBits)
+      val bne = (input(ALU_CTRL)===AluCtrlEnum.BNE.asBits)
+      val blt = (input(ALU_CTRL)===AluCtrlEnum.BLT.asBits)
+      val bge = (input(ALU_CTRL)===AluCtrlEnum.BGE.asBits)
+      val bltu= (input(ALU_CTRL)===AluCtrlEnum.BLTU.asBits)
+      val bgeu= (input(ALU_CTRL)===AluCtrlEnum.BGEU.asBits) 
+      val branch_or_jump = jal || jalr || beq || bne || blt || bge || bltu || bgeu
+      val branch_history = RegInit(U"7'b0")
       val branch_src1 = Bits(XLEN bits)
       val branch_src2 = Bits(XLEN bits)
+      val rd_is_link  = input(RD_ADDR)===U"5'd0" || input(RD_ADDR)===U"5'd5"
+      val rs1_is_link = input(RS1_ADDR)===U"5'd0"|| input(RS1_ADDR)===U"5'd5"
+      //val is_call = Bool()
+      //val is_ret = Bool()
+      //val is_jmp = Bool()
+      val is_call= False
+      val is_ret = False
+      val is_jmp = False
+      val mispredicted = False// TODO:add logic
 
       // ================= select op's source data ==================
-      when(input(ALU_CTRL)===AluCtrlEnum.AUIPC.asBits || jump){
+      when(input(ALU_CTRL)===AluCtrlEnum.AUIPC.asBits || jal || jalr){
         src1 := input(PC).asBits
       }.otherwise{
         when(input(RS1_FROM_MEM)){
@@ -71,7 +87,7 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
       }
       when(input(SRC2_IS_IMM)){
         src2 := input(IMM)
-      }.elsewhen(jump){
+      }.elsewhen(jal || jalr){
         src2 := B(4, XLEN bits)
       }.otherwise{
         when(input(RS2_FROM_MEM)){
@@ -167,15 +183,57 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
         pc_next := (input(PC).asSInt + input(IMM).asSInt).asUInt // jal or branch
       }
       // decide if should branch or jump
-      val beq_result = (branch_src1===branch_src2)
-      val bne_result = (branch_src1=/=branch_src2)
-      val blt_result = (branch_src1.asSInt < branch_src2.asSInt)
-      val bge_result = (branch_src1.asSInt >=branch_src2.asSInt)
-      val bltu_result =(branch_src1.asUInt <  branch_src2.asUInt)
-      val bgeu_result =(branch_src1.asUInt >= branch_src2.asUInt)
-      val branch_taken = beq_result || bne_result || blt_result || bge_result || bltu_result || bgeu_result || branch_taken || jump
+      val beq_result = beq && (branch_src1===branch_src2)
+      val bne_result = bne && (branch_src1=/=branch_src2)
+      val blt_result = blt && (branch_src1.asSInt < branch_src2.asSInt)
+      val bge_result = bge && (branch_src1.asSInt >=branch_src2.asSInt)
+      val bltu_result = bltu && (branch_src1.asUInt <  branch_src2.asUInt)
+      val bgeu_result = bgeu && (branch_src1.asUInt >= branch_src2.asUInt)
+      val branch_taken = beq_result || bne_result || blt_result || bge_result || bltu_result || bgeu_result || jal || jalr
       // branch history
-      //branch_history := //TODO:
+      //branch_history := //TODO:add logic
+
+      // call or return
+      when(jal){
+        when(rd_is_link){
+          is_call := True // A JAL instruction should push the return address onto a return-address stack (RAS) only when rd=x1/x5
+          is_ret  := False
+          is_jmp  := False
+        }.otherwise{
+          is_call := False
+          is_ret  := False
+          is_jmp  := True
+        }
+      }
+      .elsewhen(jalr){
+      /* JALR instructions should push/pop a RAS as shown in the Table
+        ------------------------------------------------
+           rd    |   rs1    | rs1=rd  |   RAS action
+       (1) !link |   !link  | -       |   none
+       (2) !link |   link   | -       |   pop
+       (3) link  |   !link  | -       |   push
+       (4) link  |   link   | 0       |   push and pop
+       (5) link  |   link   | 1       |   push
+        ------------------------------------------------ */
+        when(rd_is_link){
+          when(rs1_is_link){
+            when(input(RD_ADDR)===input(RS1_ADDR)){
+              is_call := True // (5)
+            }.otherwise{
+              is_call := True // (4)
+              is_ret  := True
+            }
+          }.otherwise{
+            is_call := True // (3)
+          }
+        }.otherwise{
+          when(rs1_is_link){
+            is_ret := True // (2)
+          }.otherwise{
+            is_jmp := True // (1)
+          }
+        }
+      }
       
 
       // insert to stage
@@ -184,7 +242,11 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
       insert(PC_NEXT) := pc_next
       insert(BRANCH_OR_JUMP) := branch_or_jump
       insert(BRANCH_TAKEN) := branch_taken
-      insert(JUMP) := jump
+      insert(BRANCH_HISTORY):= branch_history
+      insert(IS_JMP) := is_jmp
+      insert(IS_CALL):= is_call
+      insert(IS_RET) := is_ret
+      insert(MISPRED):= mispredicted
 
     }
 

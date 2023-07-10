@@ -16,12 +16,3 @@ case class IntPorts(addressWidth : Int = 64) extends Bundle {
 trait InterruptService{
 	def newIntPorts() : IntPorts
 }
-
-case class BPUPorts(addressWidth : Int = 64) extends Bundle {
-	val branch_taken = Bool()
-	val branch_pc = UInt(addressWidth bits)
-}
-
-trait BPUService{
-	def newBPUPorts() : BPUPorts
-}
