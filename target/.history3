@@ -44,3 +44,5 @@
 1688636718041:runMain dandriscv.gencpu.GenSimple\\
 1688698238244:runMain dandriscv.gencpu.GenSimple\\\\
 1688698241579:runMain dandriscv.gencpu.GenSimple
+1689039124662:clean
+1689039126928:runMain dandriscv.gencpu.GenSimple

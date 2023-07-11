@@ -100,8 +100,8 @@ with InterruptService
         }
         when(interrupt_ports.int_en) {
           fetch_pc := interrupt_ports.int_pc
-        } .elsewhen(fetch.output(BPU_BRANCH_TAKEN)) {
-          fetch_pc := fetch.output(BPU_PC_NEXT)
+        } .elsewhen(fetch.input(BPU_BRANCH_TAKEN)) {
+          fetch_pc := fetch.input(BPU_PC_NEXT)
         } .otherwise {
           fetch_pc := pc_next
         }

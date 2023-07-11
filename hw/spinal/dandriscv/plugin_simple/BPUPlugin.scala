@@ -122,29 +122,30 @@ case class gshare_predictor(addressWidth : Int=64,
 
     val btb_write_index = UInt(BTB_ENTRIES_WIDTH bits)
     val btb_alloc_index = Counter(0 to BTB_ENTRIES-1)
-    val btb_is_hit = Bool()
-    val btb_is_miss= Bool()
-
-    when(train_valid && train_taken){
-      
-    }
+    val btb_is_hit_vec  = Vec(Bool(), BTB_ENTRIES)
+    val btb_is_miss_vec = Vec(Bool(), BTB_ENTRIES)
+    val btb_is_hit = btb_is_hit_vec.asBits.orR
+    val btb_is_miss = btb_is_miss_vec.asBits.orR
 
     val writeBTB = for(i <- 0 until BTB_ENTRIES) yield new Area {
-      btb_write_index := U(0, BTB_ENTRIES_WIDTH bits)
-      btb_is_hit := False
-      btb_is_miss:= False
       when(train_valid && train_taken){
-
-
         when(btb_source_pc(i)===train_pc && btb_valid(i)){
-          btb_is_hit := True
-          btb_write_index := U(i, BTB_ENTRIES_WIDTH bits)
+          btb_is_hit_vec(i) := True
+        }.otherwise{
+          btb_is_hit_vec(i) := False
         }
         when(btb_source_pc(i)=/=train_pc || !btb_valid(i)){
-          btb_is_miss := True
+          btb_is_miss_vec(i) := True
+        }.otherwise{
+          btb_is_miss_vec(i) := False
         }
+      }.otherwise{
+        btb_is_hit_vec(i) := False
+        btb_is_miss_vec(i) := False
       }
     }
+    btb_write_index := OHToUInt(btb_is_hit_vec)
+
 
     when(btb_is_miss){
       when(btb_alloc_index.willOverflowIfInc){

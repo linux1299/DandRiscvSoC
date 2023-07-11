@@ -13,10 +13,9 @@ object GenSimple extends App{
     config = DandRiscvSimpleConfig(
       plugins = List(
         new InstructionFetchPlugin,
-        new BPUPlugin(addressWidth=64),
+        new BPUPlugin,
         new DecodePlugin,
         new ALUPlugin,
-        new BPUPlugin,
         new ControlPlugin,
         new LsuPlugin(AW=64, DW=64),
         new ICachePlugin(config = ICacheConfig(
