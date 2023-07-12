@@ -61,11 +61,12 @@ with ControlService
       control_ports.rs1_from_wb := writebackStage.output(RD_WEN) && writebackStage.output(RD_ADDR)=/=U(0, 5 bits) && writebackStage.output(RD_ADDR)===execute.output(RS1_ADDR) && ((memaccess.output(RD_ADDR)=/=execute.output(RS1_ADDR)) || writebackStage.output(IS_LOAD))
       control_ports.rs2_from_wb := writebackStage.output(RD_WEN) && writebackStage.output(RD_ADDR)=/=U(0, 5 bits) && writebackStage.output(RD_ADDR)===execute.output(RS2_ADDR) && ((memaccess.output(RD_ADDR)=/=execute.output(RS2_ADDR)) || writebackStage.output(IS_LOAD))
       control_ports.load_use    := memaccess.output(IS_LOAD) && ((control_ports.decode_rs1_req && control_ports.decode_rs1_addr===execute.output(RD_ADDR)) || (control_ports.decode_rs2_req && control_ports.decode_rs2_addr===execute.output(RD_ADDR)))
+      
       // control hazadr detect
-      control_ports.ctrl_rs1_from_mem := execute.output(BRANCH_OR_JALR) && memaccess.output(RD_WEN) && memaccess.output(RD_ADDR)=/=U(0, 5 bits) && memaccess.output(RD_ADDR)===execute.output(RS1_ADDR)
-      control_ports.ctrl_rs2_from_mem := execute.output(BRANCH_OR_JALR) && memaccess.output(RD_WEN) && memaccess.output(RD_ADDR)=/=U(0, 5 bits) && memaccess.output(RD_ADDR)===execute.output(RS2_ADDR)
-      control_ports.ctrl_rs1_from_wb  := execute.output(BRANCH_OR_JALR) && writebackStage.output(RD_WEN) && writebackStage.output(RD_ADDR)=/=U(0, 5 bits) && writebackStage.output(RD_ADDR)===execute.output(RS1_ADDR) && ((memaccess.output(RD_ADDR)=/=execute.output(RS1_ADDR)) || execute.output(IS_LOAD))
-      control_ports.ctrl_rs2_from_wb  := execute.output(BRANCH_OR_JALR) && writebackStage.output(RD_WEN) && writebackStage.output(RD_ADDR)=/=U(0, 5 bits) && writebackStage.output(RD_ADDR)===execute.output(RS2_ADDR) && ((memaccess.output(RD_ADDR)=/=execute.output(RS2_ADDR)) || execute.output(IS_LOAD))
+      control_ports.ctrl_rs1_from_mem := execute.output(BRANCH_OR_JALR) && control_ports.rs1_from_mem
+      control_ports.ctrl_rs2_from_mem := execute.output(BRANCH_OR_JALR) && control_ports.rs2_from_mem
+      control_ports.ctrl_rs1_from_wb  := execute.output(BRANCH_OR_JALR) && control_ports.rs1_from_wb
+      control_ports.ctrl_rs2_from_wb  := execute.output(BRANCH_OR_JALR) && control_ports.rs2_from_wb
       control_ports.ctrl_load_use     := execute.output(BRANCH_OR_JALR) && memaccess.output(IS_LOAD) && (execute.output(RS1_ADDR)===memaccess.output(RD_ADDR) || execute.output(RS2_ADDR)===memaccess.output(RD_ADDR))
 
     }

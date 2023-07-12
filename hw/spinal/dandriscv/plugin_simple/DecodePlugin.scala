@@ -90,7 +90,7 @@ class DecodePlugin() extends Plugin[DandRiscvSimple]
       val rd_addr = instruction(rdRange).asUInt
       val alu_ctrl = Bits(AluCtrlEnum.ADD.asBits.getWidth bits)
       val alu_word = instruction(opcodeRange)===OP_ALU_WORD
-      val src2_is_imm = imm_all.i_type_imm || imm_all.s_type_imm || imm_all.u_type_imm || imm_all.j_type_imm
+      val src2_is_imm = imm_all.i_type_imm || imm_all.s_type_imm || imm_all.u_type_imm
       val mem_ctrl = Bits(MemCtrlEnum.LB.asBits.getWidth bits)
       val is_load = Bool()
       val branch_or_jalr = instruction(opcodeRange)===OP_BRANCH || instruction===JALR
@@ -218,7 +218,7 @@ class DecodePlugin() extends Plugin[DandRiscvSimple]
       regfile_module.read_ports.rs2_req := rs2_req
       rs1 := regfile_module.read_ports.rs1_value
       rs2 := regfile_module.read_ports.rs2_value
-      rd_wen := decode.arbitration.isValid & (!imm_all.s_type_imm & !imm_all.s_type_imm & instruction=/=EBREAK & instruction=/=ECALL & instruction=/=MRET & instruction(opcodeRange)=/=OP_FENCE)
+      rd_wen := decode.arbitration.isFiring & (!imm_all.s_type_imm & !imm_all.b_type_imm & instruction=/=EBREAK & instruction=/=ECALL & instruction=/=MRET & instruction(opcodeRange)=/=OP_FENCE)
 
       // insert to decode stage
       insert(IMM) := imm

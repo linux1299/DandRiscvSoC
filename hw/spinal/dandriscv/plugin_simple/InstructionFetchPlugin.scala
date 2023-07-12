@@ -90,7 +90,8 @@ with InterruptService
       when(interrupt_ports.int_en & (fetch_state===WAIT || fetch_state_next===WAIT)){
         int_pc_valid := True
         int_pc_reg   := interrupt_ports.int_pc
-      }.elsewhen(icache_access.rsp.fire){
+      }
+      .elsewhen(icache_access.rsp.fire){
         int_pc_valid := False
       }
 
@@ -98,11 +99,16 @@ with InterruptService
         when(int_pc_valid){
           fetch_pc := int_pc_reg
         }
-        when(interrupt_ports.int_en) {
+        .elsewhen(interrupt_ports.int_en) {
           fetch_pc := interrupt_ports.int_pc
-        } .elsewhen(fetch.input(BPU_BRANCH_TAKEN)) {
+        } 
+        .elsewhen(execute.output(MISPRED)){
+          fetch_pc := execute.output(REDIRECT_PC_NEXT)
+        }
+        .elsewhen(fetch.input(BPU_BRANCH_TAKEN)) {
           fetch_pc := fetch.input(BPU_PC_NEXT)
-        } .otherwise {
+        } 
+        .otherwise {
           fetch_pc := pc_next
         }
       }
@@ -112,6 +118,7 @@ with InterruptService
       }
     }
 
+    // insert to stage
     fetch plug new Area{
       import fetch._
       insert(PC) := pc

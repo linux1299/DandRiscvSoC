@@ -51,6 +51,7 @@ case class DandRiscvSimpleConfig(){
   object PC extends Stageable(UInt(addressWidth bits))
   object PC_NEXT extends Stageable(UInt(addressWidth bits))
   object BPU_PC_NEXT extends Stageable(UInt(addressWidth bits))
+  object REDIRECT_PC_NEXT extends Stageable(UInt(addressWidth bits))
   object BPU_BRANCH_TAKEN extends Stageable(Bool())
   object INSTRUCTION extends Stageable(Bits(32 bits))
   object RS1 extends Stageable(Bits(XLEN bits))

@@ -39,8 +39,6 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
       val sra_result = src1.asSInt |>> shift_bits //SInt(XLEN bits)
       val and_result = src1 & src2 //Bits(XLEN bits)
       val or_result  = src1 | src2 //Bits(XLEN bits)
-      val pc_next    = UInt(addressWidth bits)
-
       val addw_result= B((31 downto 0) -> add_result(31)) ## add_result(31 downto 0)
       val subw_result= B((31 downto 0) -> sub_result(31)) ## sub_result(31 downto 0)
       val sllw_temp  = src1_word |<< shift_bits(4 downto 0)
@@ -49,8 +47,9 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
       val srlw_result= B((31 downto 0) -> srlw_temp(31)) ## srlw_temp
       val sraw_temp  = src1_word.asSInt |>> shift_bits(4 downto 0)
       val sraw_result= B((31 downto 0) -> sraw_temp(31)) ## sraw_temp
-
       val alu_result  = Bits(XLEN bits)
+
+      val pc_next = UInt(addressWidth bits)
       val jal = (input(ALU_CTRL)===AluCtrlEnum.JAL.asBits)
       val jalr= (input(ALU_CTRL)===AluCtrlEnum.JALR.asBits)
       val beq = (input(ALU_CTRL)===AluCtrlEnum.BEQ.asBits)
@@ -65,13 +64,11 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
       val branch_src2 = Bits(XLEN bits)
       val rd_is_link  = input(RD_ADDR)===U"5'd0" || input(RD_ADDR)===U"5'd5"
       val rs1_is_link = input(RS1_ADDR)===U"5'd0"|| input(RS1_ADDR)===U"5'd5"
-      //val is_call = Bool()
-      //val is_ret = Bool()
-      //val is_jmp = Bool()
       val is_call= False
       val is_ret = False
       val is_jmp = False
-      val mispredicted = False// TODO:add logic
+      val redirect_pc_next = U(0, addressWidth bits)
+      val redirect_valid = False
 
       // ================= select op's source data ==================
       when(input(ALU_CTRL)===AluCtrlEnum.AUIPC.asBits || jal || jalr){
@@ -176,12 +173,6 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
       }
 
       // ================ for branch and jump ======================
-      // calculate pc
-      when(input(ALU_CTRL)===AluCtrlEnum.JALR.asBits){
-        pc_next := ((src1.asSInt + input(IMM).asSInt) & ~S(1, XLEN bits)).asUInt // jalr
-      }.otherwise{
-        pc_next := (input(PC).asSInt + input(IMM).asSInt).asUInt // jal or branch
-      }
       // decide if should branch or jump
       val beq_result = beq && (branch_src1===branch_src2)
       val bne_result = bne && (branch_src1=/=branch_src2)
@@ -191,8 +182,29 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
       val bgeu_result = bgeu && (branch_src1.asUInt >= branch_src2.asUInt)
       val branch_taken = beq_result || bne_result || blt_result || bge_result || bltu_result || bgeu_result || jal || jalr
       // branch history
-      //branch_history := //TODO:add logic
+      branch_history := (branch_history(5 downto 0).asBits ## branch_taken).asUInt
 
+      // calculate pc
+      when(input(ALU_CTRL)===AluCtrlEnum.JALR.asBits){
+        pc_next := ((src1.asSInt + input(IMM).asSInt) & ~S(1, XLEN bits)).asUInt // jalr
+      }.otherwise{
+        pc_next := (input(PC).asSInt + input(IMM).asSInt).asUInt // jal or branch
+      }
+      // redirect
+      when(branch_or_jump){
+        when(branch_taken){
+          when(!input(BPU_BRANCH_TAKEN) || (input(BPU_PC_NEXT)=/=pc_next)){
+            redirect_valid := True
+            redirect_pc_next := pc_next
+          }
+        }.otherwise{
+          when(input(BPU_BRANCH_TAKEN)){
+            redirect_valid := True
+            redirect_pc_next := input(PC) + 4
+          }
+        }
+      }
+      
       // call or return
       when(jal){
         when(rd_is_link){
@@ -207,14 +219,14 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
       }
       .elsewhen(jalr){
       /* JALR instructions should push/pop a RAS as shown in the Table
-        ------------------------------------------------
-           rd    |   rs1    | rs1=rd  |   RAS action
-       (1) !link |   !link  | -       |   none
-       (2) !link |   link   | -       |   pop
-       (3) link  |   !link  | -       |   push
-       (4) link  |   link   | 0       |   push and pop
-       (5) link  |   link   | 1       |   push
-        ------------------------------------------------ */
+      -------------------------------------------------
+          rd    |   rs1    | rs1=rd  |   RAS action
+      (1) !link |   !link  | -       |   none
+      (2) !link |   link   | -       |   pop
+      (3) link  |   !link  | -       |   push
+      (4) link  |   link   | 0       |   push and pop
+      (5) link  |   link   | 1       |   push
+      ------------------------------------------------- */
         when(rd_is_link){
           when(rs1_is_link){
             when(input(RD_ADDR)===input(RS1_ADDR)){
@@ -238,7 +250,7 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
 
       // insert to stage
       insert(ALU_RESULT) := alu_result
-      insert(MEM_WDATA) := input(RS2) // TODO:need bypass some value
+      insert(MEM_WDATA) := output(RS2_FROM_WB) ? writebackStage.output(RD) | (output(RS2_FROM_MEM) ? memaccess.output(ALU_RESULT) | output(RS2))
       insert(PC_NEXT) := pc_next
       insert(BRANCH_OR_JUMP) := branch_or_jump
       insert(BRANCH_TAKEN) := branch_taken
@@ -246,7 +258,8 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
       insert(IS_JMP) := is_jmp
       insert(IS_CALL):= is_call
       insert(IS_RET) := is_ret
-      insert(MISPRED):= mispredicted
+      insert(MISPRED):= redirect_valid
+      insert(REDIRECT_PC_NEXT) := redirect_pc_next
 
     }
 
