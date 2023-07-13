@@ -25,6 +25,7 @@ case class DandRiscvSimpleConfig(){
   var withWBstage = true
   var addressWidth = 64
   var XLEN = 64
+  var MXLEN = 64
   val plugins = ArrayBuffer[Plugin[DandRiscvSimple]]()
 
   def add(that : Plugin[DandRiscvSimple]) : this.type = {plugins += that;this}

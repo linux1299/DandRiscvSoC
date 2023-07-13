@@ -218,6 +218,9 @@ object Riscv{
 
 
   object CSR{
+    def MTIME     = 0x200bff8
+    def MTIMECMP  = 0x2004000
+    
     def MVENDORID = 0xF11 // MRO Vendor ID.
     def MARCHID   = 0xF12 // MRO Architecture ID.
     def MIMPID    = 0xF13 // MRO Implementation ID.
