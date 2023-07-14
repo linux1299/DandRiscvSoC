@@ -74,6 +74,10 @@ with ControlService
     fetch plug new Area{
       import fetch._
       insert(LOAD_USE) := control_ports.load_use
+      // control fetch stage
+      // add allowOverride or see Stage.scala
+      arbitration.haltItself := input(LOAD_USE) || input(INT_HOLD) || input(LSU_HOLD)
+      
     }
 
     execute plug new Area{
@@ -87,6 +91,8 @@ with ControlService
       insert(CTRL_RS1_FROM_WB)  := control_ports.ctrl_rs1_from_wb
       insert(CTRL_RS2_FROM_WB)  := control_ports.ctrl_rs2_from_wb
       insert(CTRL_LOAD_USE) := control_ports.ctrl_load_use
+      // control exe stage
+      
     }
 
   }

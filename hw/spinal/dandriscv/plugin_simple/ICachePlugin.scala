@@ -46,7 +46,6 @@ class ICachePlugin(val config : ICacheConfig) extends Plugin[DandRiscvSimple]{
   import config._
 
   var icache_access : ICacheAccess = null
-  //var service_test : IntIF = null
   //var nextlevel_access : NextLevelAccess = null
 
   override def setup(pipeline: DandRiscvSimple): Unit = {
@@ -54,7 +53,6 @@ class ICachePlugin(val config : ICacheConfig) extends Plugin[DandRiscvSimple]{
     import pipeline.config._
 
     icache_access = pipeline.service(classOf[ICacheAccessService]).newICacheAccess
-    //service_test = pipeline.service(classOf[IntrruptService]).newIntIF
     //nextlevel_access = pipeline.service(classOf[NextLevelAccessService]).newNextLevelAccess
   }
 
@@ -68,11 +66,7 @@ class ICachePlugin(val config : ICacheConfig) extends Plugin[DandRiscvSimple]{
     ICachePlugin.this.config.bankDepthBits)
 
     // impl icache access logic
-    //icache.cpu.cmd.valid := icache_access.cmd.valid
-    //icache.cpu.cmd.payload.addr := icache_access.cmd.payload.addr
-    //icache_access.cmd.ready := icache.cpu.cmd.ready
     icache_access.cmd <> icache.cpu.cmd
-    //service_test.hold := True
 
     // sram ports
     val connect_sram = for(i<-0 until ICachePlugin.this.config.wayCount) yield new Area{
@@ -82,7 +76,7 @@ class ICachePlugin(val config : ICacheConfig) extends Plugin[DandRiscvSimple]{
     fetch plug new Area{
       import fetch._
       insert(INSTRUCTION) := icache_access.rsp.payload.data
-      fetch.arbitration.isValid := icache_access.rsp.valid
+      arbitration.isValid := icache_access.rsp.valid
     }
 
     

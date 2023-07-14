@@ -91,9 +91,14 @@ class DecodePlugin() extends Plugin[DandRiscvSimple]
       val alu_ctrl = Bits(AluCtrlEnum.ADD.asBits.getWidth bits)
       val alu_word = instruction(opcodeRange)===OP_ALU_WORD
       val src2_is_imm = imm_all.i_type_imm || imm_all.s_type_imm || imm_all.u_type_imm
+
       val mem_ctrl = Bits(MemCtrlEnum.LB.asBits.getWidth bits)
       val is_load = Bool()
+      val is_store= Bool()
       val branch_or_jalr = instruction(opcodeRange)===OP_BRANCH || instruction===JALR
+      val csr_ctrl = Bits(CsrCtrlEnum.EBREAK.asBits.getWidth bits)
+      val csr_addr = instruction(csrRange).asUInt
+      val csr_wen  = csr_ctrl===CsrCtrlEnum.CSRRW.asBits || csr_ctrl===CsrCtrlEnum.CSRRS.asBits || csr_ctrl===CsrCtrlEnum.CSRRC.asBits
 
       // choose imm
       when(imm_all.i_type_imm){
@@ -164,50 +169,96 @@ class DecodePlugin() extends Plugin[DandRiscvSimple]
         is(LB){
           mem_ctrl := MemCtrlEnum.LB.asBits
           is_load  := True
+          is_store := False
         }
         is(LBU){
           mem_ctrl := MemCtrlEnum.LBU.asBits
           is_load  := True
+          is_store := False
         }
         is(LH){
           mem_ctrl := MemCtrlEnum.LH.asBits
           is_load  := True
+          is_store := False
         }
         is(LHU){
           mem_ctrl := MemCtrlEnum.LHU.asBits
           is_load  := True
+          is_store := False
         }
         is(LW){
           mem_ctrl := MemCtrlEnum.LW.asBits
           is_load  := True
+          is_store := False
         }
         is(LWU){
           mem_ctrl := MemCtrlEnum.LWU.asBits
           is_load  := True
+          is_store := False
         }
         is(LD){
           mem_ctrl := MemCtrlEnum.LD.asBits
           is_load  := True
+          is_store := False
         }
         is(SB){
           mem_ctrl := MemCtrlEnum.SB.asBits
           is_load  := False
+          is_store := True
         }
         is(SH){
           mem_ctrl := MemCtrlEnum.SH.asBits
           is_load  := False
+          is_store := True
         }
         is(SW){
           mem_ctrl := MemCtrlEnum.SW.asBits
           is_load  := False
+          is_store := True
         }
         is(SD){
           mem_ctrl := MemCtrlEnum.SD.asBits
           is_load  := False
+          is_store := True
         }
         default{
           mem_ctrl := B(0)
           is_load  := False
+          is_store := False
+        }
+      }
+
+      // choose Csr op type
+      switch(instruction){
+        is(ECALL){
+          csr_ctrl := CsrCtrlEnum.ECALL.asBits
+        }
+        is(EBREAK){
+          csr_ctrl := CsrCtrlEnum.EBREAK.asBits
+        }
+        is(MRET){
+          csr_ctrl := CsrCtrlEnum.MRET.asBits
+        }
+        is(CSRRW){
+          csr_ctrl := CsrCtrlEnum.CSRRW.asBits
+        }
+        is(CSRRS){
+          csr_ctrl := CsrCtrlEnum.CSRRS.asBits
+        }
+        is(CSRRC){
+          csr_ctrl := CsrCtrlEnum.CSRRC.asBits
+        }
+        is(CSRRWI){
+          csr_ctrl := CsrCtrlEnum.CSRRWI.asBits
+        }
+        is(CSRRSI){
+          csr_ctrl := CsrCtrlEnum.CSRRSI.asBits
+        }
+        is(CSRRCI){
+          csr_ctrl := CsrCtrlEnum.CSRRCI.asBits
+        }
+        default{
+          csr_ctrl := 0
         }
       }
 
@@ -233,7 +284,11 @@ class DecodePlugin() extends Plugin[DandRiscvSimple]
       insert(RD_WEN) := rd_wen
       insert(RD_ADDR) := rd_addr
       insert(IS_LOAD) := is_load
+      insert(IS_STORE):= is_store
       insert(BRANCH_OR_JALR) := branch_or_jalr
+      insert(CSR_CTRL) := csr_ctrl
+      insert(CSR_ADDR) := csr_addr
+      insert(CSR_WEN)  := csr_wen
 
       // hazard control input
       if(control_ports != null) {

@@ -5,19 +5,17 @@ import dandriscv.ip._
 import dandriscv.{plugin_simple, DandRiscvSimple, DandRiscvSimpleConfig}
 import spinal.core._
 
-/**
- * Created by spinalvm on 15.06.17.
- */
 object GenSimple extends App{
   def cpu() = new DandRiscvSimple(
     config = DandRiscvSimpleConfig(
       plugins = List(
-        new InstructionFetchPlugin,
+        new FetchPlugin,
         new BPUPlugin,
         new DecodePlugin,
         new ALUPlugin,
         new ControlPlugin,
-        new LsuPlugin(AW=64, DW=64),
+        new ExcepPlugin,
+        new LSUPlugin(AW=64, DW=64),
         new ICachePlugin(config = ICacheConfig(
           cacheSize = 4096,
           bytePerLine =64,

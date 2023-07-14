@@ -234,7 +234,7 @@ object Riscv{
     def MSCRATCH  = 0x340 // MRW Scratch register for machine trap handlers.
     def MEPC      = 0x341 // MRW Machine exception program counter.
     def MCAUSE    = 0x342 // MRW Machine trap cause.
-    def MBADADDR  = 0x343 // MRW Machine bad address.
+    def MBADADDR  = 0x343 // MRW Machine bad address.(MTVAL)
     def MIP       = 0x344 // MRW Machine interrupt pending.
     def MBASE     = 0x380 // MRW Base register.
     def MBOUND    = 0x381 // MRW Bound register.

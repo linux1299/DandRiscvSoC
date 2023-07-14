@@ -49,6 +49,10 @@ case class DandRiscvSimpleConfig(){
     val LB, LBU, LH, LHU, LW, LWU, LD, SB, SH, SW, SD= newElement()
   }
 
+  object CsrCtrlEnum extends SpinalEnum(binarySequential){
+    val ECALL, EBREAK, MRET, CSRRW, CSRRS, CSRRC, CSRRWI, CSRRSI, CSRRCI= newElement()
+  }
+
   object PC extends Stageable(UInt(addressWidth bits))
   object PC_NEXT extends Stageable(UInt(addressWidth bits))
   object BPU_PC_NEXT extends Stageable(UInt(addressWidth bits))
@@ -69,8 +73,12 @@ case class DandRiscvSimpleConfig(){
   object ALU_RESULT extends Stageable(Bits(XLEN bits))
   object MEM_CTRL extends Stageable(Bits(MemCtrlEnum.LB.asBits.getWidth bits))
   object MEM_WDATA extends Stageable(Bits(XLEN bits))
+  object LSU_WDATA extends Stageable(Bits(XLEN bits))
+  object LSU_HOLD extends Stageable(Bool())
   object DATA_LOAD extends Stageable(Bits(XLEN bits))
+  object TIMER_CEN extends Stageable(Bool())
   object IS_LOAD extends Stageable(Bool())
+  object IS_STORE extends Stageable(Bool())
   object LOAD_USE extends Stageable(Bool())
   object BRANCH_OR_JALR extends Stageable(Bool())
   object RS1_FROM_MEM extends Stageable(Bool())
@@ -88,7 +96,15 @@ case class DandRiscvSimpleConfig(){
   object IS_CALL extends Stageable(Bool())
   object IS_RET extends Stageable(Bool())
   object IS_JMP extends Stageable(Bool())
-  object MISPRED extends Stageable(Bool())
+  object REDIRECT_VALID extends Stageable(Bool())
+  object CSR_CTRL extends Stageable(Bits(CsrCtrlEnum.ECALL.asBits.getWidth bits))
+  object CSR_WDATA extends Stageable(Bits(XLEN bits))
+  object CSR_RDATA extends Stageable(Bits(XLEN bits))
+  object CSR_ADDR extends Stageable(UInt(12 bits))
+  object CSR_WEN  extends Stageable(Bool())
+  object INT_EN  extends Stageable(Bool())
+  object INT_HOLD extends Stageable(Bool())
+  object INT_PC extends Stageable(UInt(addressWidth bits))
 }
 
 

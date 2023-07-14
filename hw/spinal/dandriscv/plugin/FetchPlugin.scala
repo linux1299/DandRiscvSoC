@@ -4,7 +4,7 @@ import dandriscv._
 import spinal.core._
 import spinal.lib._
 
-class InstructionFetchPlugin extends Plugin[DandRiscv]{
+class FetchPlugin extends Plugin[DandRiscv]{
 
   override def setup(pipeline: DandRiscv): Unit = {
     import Riscv._

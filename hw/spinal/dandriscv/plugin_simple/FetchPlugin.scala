@@ -20,10 +20,9 @@ import dandriscv.plugin_simple._
 //}
 
 
-class InstructionFetchPlugin(resetVector : BigInt = 0x80000000l, addressWidth : Int = 64) //
+class FetchPlugin(resetVector : BigInt = 0x80000000l, addressWidth : Int = 64) //
 extends Plugin[DandRiscvSimple]
 with ICacheAccessService
-with InterruptService
 {
 
   @dontName var icache_access : ICacheAccess = null
@@ -33,18 +32,9 @@ with InterruptService
     icache_access
   }
 
-  @dontName var interrupt_ports : IntPorts = null
-  override def newIntPorts(): IntPorts = {
-    assert(interrupt_ports == null)
-    interrupt_ports = IntPorts()
-    interrupt_ports
-  }
-
   override def setup(pipeline: DandRiscvSimple): Unit = {
     import Riscv._
     import pipeline.config._
-
-    interrupt_ports = pipeline.service(classOf[InterruptService]).newIntPorts
   }
   
   override def build(pipeline: DandRiscvSimple): Unit = {
@@ -55,15 +45,13 @@ with InterruptService
     //val masterBus = master(inoutClass()).setName("masterBus")
     //masterBus.dataout := B(2, 32 bits)
 
-    val fetch_pc = Reg(UInt(this.addressWidth bits)) init(resetVector)
-    val pc = RegNextWhen(fetch_pc, icache_access.cmd.fire)
-    val pc_next = fetch_pc + 4
-    val fetch_valid = RegInit(False)
-    val fetch_hold  = fetch.output(LOAD_USE) || interrupt_ports.int_hold
-    val int_pc_reg = Reg(UInt(this.addressWidth bits)) init(0)
-    val int_pc_valid = RegInit(False)
-    val fetch_state_next = UInt(2 bits)
-    val fetch_state = RegNext(fetch_state_next) init(0)
+    val pc_next = Reg(UInt(this.addressWidth bits)).setName("pc_next") init(resetVector)
+    val pc = RegNextWhen(pc_next, icache_access.cmd.fire).setName("pc")
+    val fetch_valid = RegInit(False).setName("fetch_valid")
+    val int_pc_reg = Reg(UInt(this.addressWidth bits)).setName("int_pc_reg") init(0)
+    val int_pc_valid = RegInit(False).setName("int_pc_valid")
+    val fetch_state_next = UInt(2 bits).setName("fetch_state_next")
+    val fetch_state = RegNext(fetch_state_next).setName("fetch_state") init(0)
 
     val fetchFSM = new Area{
       def IDLE : UInt = 0
@@ -71,7 +59,7 @@ with InterruptService
       def WAIT : UInt = 2
       switch(fetch_state){
         is(IDLE) {
-          when(!fetch_hold){
+          when(!fetch.arbitration.haltItself){
             fetch_state := FETCH
           }
         }
@@ -87,34 +75,36 @@ with InterruptService
         }
       }
 
-      when(interrupt_ports.int_en & (fetch_state===WAIT || fetch_state_next===WAIT)){
+      // when icache is busy, interrupt is high, use reg store interrupt's pc
+      when(fetch.output(INT_EN) & (fetch_state===WAIT || fetch_state_next===WAIT)){
         int_pc_valid := True
-        int_pc_reg   := interrupt_ports.int_pc
+        int_pc_reg   := fetch.output(INT_PC)
       }
       .elsewhen(icache_access.rsp.fire){
         int_pc_valid := False
       }
 
+      // pc_next used to fetch instruction
       when(fetch_state_next===FETCH){
         when(int_pc_valid){
-          fetch_pc := int_pc_reg
+          pc_next := int_pc_reg
         }
-        .elsewhen(interrupt_ports.int_en) {
-          fetch_pc := interrupt_ports.int_pc
+        .elsewhen(fetch.output(INT_EN)) {
+          pc_next := fetch.output(INT_PC)
         } 
-        .elsewhen(execute.output(MISPRED)){
-          fetch_pc := execute.output(REDIRECT_PC_NEXT)
+        .elsewhen(execute.output(REDIRECT_VALID)){
+          pc_next := execute.output(REDIRECT_PC_NEXT)
         }
         .elsewhen(fetch.input(BPU_BRANCH_TAKEN)) {
-          fetch_pc := fetch.input(BPU_PC_NEXT)
+          pc_next := fetch.input(BPU_PC_NEXT)
         } 
         .otherwise {
-          fetch_pc := pc_next
+          pc_next := pc_next + 4
         }
       }
 
       when(fetch_state_next===FETCH){
-        fetch_valid := True
+        fetch_valid := True // TODO:
       }
     }
 
@@ -122,13 +112,14 @@ with InterruptService
     fetch plug new Area{
       import fetch._
       insert(PC) := pc
-      insert(PC_NEXT) := fetch_pc
+      insert(PC_NEXT) := pc_next
+      
     }
 
     // send cmd to icache
     if(icache_access != null) pipeline plug new Area{
       icache_access.cmd.valid := fetch_valid
-      icache_access.cmd.addr := fetch_pc
+      icache_access.cmd.addr := pc_next
     }
 
 

@@ -28,7 +28,7 @@ class BPUPlugin() extends Plugin[DandRiscvSimple]{
     fetch.insert(BPU_PC_NEXT) := predictor.predict_pc_next
     predictor.train_valid := execute.output(BRANCH_OR_JUMP)
     predictor.train_taken := execute.output(BRANCH_TAKEN)
-    predictor.train_mispredicted := execute.output(MISPRED)
+    predictor.train_mispredicted := execute.output(REDIRECT_VALID)
     predictor.train_history := execute.output(BRANCH_HISTORY)
     predictor.train_pc := execute.output(PC)
     predictor.train_pc_next := execute.output(PC_NEXT)

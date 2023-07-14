@@ -59,7 +59,7 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
       val bltu= (input(ALU_CTRL)===AluCtrlEnum.BLTU.asBits)
       val bgeu= (input(ALU_CTRL)===AluCtrlEnum.BGEU.asBits) 
       val branch_or_jump = jal || jalr || beq || bne || blt || bge || bltu || bgeu
-      val branch_history = RegInit(U"7'b0")
+      
       val branch_src1 = Bits(XLEN bits)
       val branch_src2 = Bits(XLEN bits)
       val rd_is_link  = input(RD_ADDR)===U"5'd0" || input(RD_ADDR)===U"5'd5"
@@ -181,7 +181,7 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
       val bltu_result = bltu && (branch_src1.asUInt <  branch_src2.asUInt)
       val bgeu_result = bgeu && (branch_src1.asUInt >= branch_src2.asUInt)
       val branch_taken = beq_result || bne_result || blt_result || bge_result || bltu_result || bgeu_result || jal || jalr
-      // branch history
+      val branch_history = RegInit(U"7'b0")
       branch_history := (branch_history(5 downto 0).asBits ## branch_taken).asUInt
 
       // calculate pc
@@ -204,7 +204,6 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
           }
         }
       }
-      
       // call or return
       when(jal){
         when(rd_is_link){
@@ -258,7 +257,7 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
       insert(IS_JMP) := is_jmp
       insert(IS_CALL):= is_call
       insert(IS_RET) := is_ret
-      insert(MISPRED):= redirect_valid
+      insert(REDIRECT_VALID):= redirect_valid
       insert(REDIRECT_PC_NEXT) := redirect_pc_next
 
     }

@@ -1,6 +1,6 @@
 // Generator : SpinalHDL v1.8.1    git head : 2a7592004363e5b40ec43e1f122ed8641cd8965b
 // Component : DandRiscvSimple
-// Git hash  : 42c8061f51e06afda1bf65891ed1514cc5f9594a
+// Git hash  : 777fcfde27d73bc72b809371834ef3c01ac0251f
 
 `timescale 1ns/1ps
 
@@ -8,6 +8,15 @@ module DandRiscvSimple (
   input               clk,
   input               reset
 );
+  localparam CsrCtrlEnum_ECALL = 4'd0;
+  localparam CsrCtrlEnum_EBREAK = 4'd1;
+  localparam CsrCtrlEnum_MRET = 4'd2;
+  localparam CsrCtrlEnum_CSRRW = 4'd3;
+  localparam CsrCtrlEnum_CSRRS = 4'd4;
+  localparam CsrCtrlEnum_CSRRC = 4'd5;
+  localparam CsrCtrlEnum_CSRRWI = 4'd6;
+  localparam CsrCtrlEnum_CSRRSI = 4'd7;
+  localparam CsrCtrlEnum_CSRRCI = 4'd8;
   localparam AluCtrlEnum_ADD = 5'd0;
   localparam AluCtrlEnum_SUB = 5'd1;
   localparam AluCtrlEnum_SLT = 5'd2;
@@ -40,6 +49,10 @@ module DandRiscvSimple (
   localparam MemCtrlEnum_SW = 4'd9;
   localparam MemCtrlEnum_SD = 4'd10;
 
+  wire                clint_1_ecall;
+  wire                clint_1_ebreak;
+  wire                clint_1_mret;
+  wire       [63:0]   timer_1_addr;
   wire                iCache_1_flush;
   wire                iCache_1_next_level_cmd_ready;
   wire                iCache_1_next_level_rsp_valid;
@@ -53,6 +66,24 @@ module DandRiscvSimple (
   wire       [63:0]   gshare_predictor_1_predict_pc_next;
   wire       [63:0]   regFileModule_1_read_ports_rs1_value;
   wire       [63:0]   regFileModule_1_read_ports_rs2_value;
+  wire       [63:0]   csrRegfile_1_cpu_ports_rdata;
+  wire       [63:0]   csrRegfile_1_clint_ports_mtvec;
+  wire       [63:0]   csrRegfile_1_clint_ports_mepc;
+  wire       [63:0]   csrRegfile_1_clint_ports_mstatus;
+  wire                csrRegfile_1_clint_ports_global_int_en;
+  wire                csrRegfile_1_clint_ports_mtime_int_en;
+  wire                csrRegfile_1_clint_ports_mtime_int_pend;
+  wire                clint_1_csr_ports_mepc_wen;
+  wire       [63:0]   clint_1_csr_ports_mepc_wdata;
+  wire                clint_1_csr_ports_mcause_wen;
+  wire       [63:0]   clint_1_csr_ports_mcause_wdata;
+  wire                clint_1_csr_ports_mstatus_wen;
+  wire       [63:0]   clint_1_csr_ports_mstatus_wdata;
+  wire                clint_1_int_en;
+  wire       [63:0]   clint_1_int_pc;
+  wire                clint_1_int_hold;
+  wire       [63:0]   timer_1_rdata;
+  wire                timer_1_timer_int;
   wire                iCache_1_cpu_cmd_ready;
   wire                iCache_1_cpu_rsp_valid;
   wire       [31:0]   iCache_1_cpu_rsp_payload_data;
@@ -106,9 +137,6 @@ module DandRiscvSimple (
   wire                dCache_1_next_level_cmd_valid;
   wire       [63:0]   dCache_1_next_level_cmd_payload_addr;
   wire       [3:0]    dCache_1_next_level_cmd_payload_len;
-  wire                dCache_1_next_level_cmd_payload_wen;
-  wire       [255:0]  dCache_1_next_level_cmd_payload_wdata;
-  wire       [31:0]   dCache_1_next_level_cmd_payload_wstrb;
   wire       [2:0]    dCache_1_next_level_cmd_payload_size;
   wire                sramBanks_3_sram_0_ports_rsp_valid;
   wire       [255:0]  sramBanks_3_sram_0_ports_rsp_payload_data;
@@ -151,9 +179,11 @@ module DandRiscvSimple (
   wire       [63:0]   _zz_execute_ALUPlugin_pc_next_7;
   wire       [63:0]   _zz_execute_ALUPlugin_pc_next_8;
   wire       [63:0]   writeback_RD;
+  wire                memaccess_TIMER_CEN;
+  wire       [63:0]   memaccess_LSU_WDATA;
   wire       [63:0]   memaccess_DATA_LOAD;
   wire       [63:0]   execute_REDIRECT_PC_NEXT;
-  wire                execute_MISPRED;
+  wire                execute_REDIRECT_VALID;
   wire                execute_IS_RET;
   wire                execute_IS_CALL;
   wire                execute_IS_JMP;
@@ -162,9 +192,16 @@ module DandRiscvSimple (
   wire                execute_BRANCH_OR_JUMP;
   wire       [63:0]   execute_MEM_WDATA;
   wire       [63:0]   execute_ALU_RESULT;
+  wire       [63:0]   decode_CSR_RDATA;
+  wire                execute_CSR_WEN;
+  wire                decode_CSR_WEN;
+  wire       [11:0]   execute_CSR_ADDR;
+  wire       [11:0]   decode_CSR_ADDR;
+  wire       [3:0]    decode_CSR_CTRL;
   wire                execute_BRANCH_OR_JALR;
   wire                decode_BRANCH_OR_JALR;
-  wire                memaccess_IS_LOAD;
+  wire                execute_IS_STORE;
+  wire                decode_IS_STORE;
   wire                execute_IS_LOAD;
   wire                decode_IS_LOAD;
   wire       [4:0]    writeback_RD_ADDR;
@@ -190,7 +227,8 @@ module DandRiscvSimple (
   wire       [63:0]   decode_RS1;
   wire       [63:0]   decode_IMM;
   wire       [31:0]   fetch_INSTRUCTION;
-  wire                fetch_LOAD_USE;
+  wire       [63:0]   fetch_INT_PC;
+  wire                fetch_INT_EN;
   wire       [63:0]   decode_BPU_PC_NEXT;
   wire                decode_BPU_BRANCH_TAKEN;
   wire       [63:0]   execute_PC_NEXT;
@@ -200,6 +238,15 @@ module DandRiscvSimple (
   wire                writeback_IS_LOAD;
   wire       [3:0]    memaccess_MEM_CTRL;
   wire       [63:0]   memaccess_MEM_WDATA;
+  wire                memaccess_IS_STORE;
+  wire                memaccess_IS_LOAD;
+  wire       [3:0]    execute_CSR_CTRL;
+  wire       [63:0]   execute_CSR_RDATA;
+  wire       [3:0]    _zz_decode_to_execute_CSR_CTRL;
+  wire       [11:0]   _zz_decode_to_execute_CSR_ADDR;
+  wire                fetch_LSU_HOLD;
+  wire                fetch_INT_HOLD;
+  wire                fetch_LOAD_USE;
   wire                _zz_DecodePlugin_control_ports_ctrl_rs1_from_mem;
   wire       [4:0]    _zz_DecodePlugin_control_ports_load_use;
   wire                _zz_DecodePlugin_control_ports_load_use_1;
@@ -239,7 +286,10 @@ module DandRiscvSimple (
   wire       [63:0]   _zz_fetch_to_decode_PC;
   wire       [63:0]   fetch_BPU_PC_NEXT;
   wire                fetch_BPU_BRANCH_TAKEN;
-  wire                when_InstructionFetchPlugin_l105;
+  wire       [63:0]   _zz_pc_next;
+  wire                when_FetchPlugin_l95;
+  wire       [63:0]   _zz_pc_next_1;
+  wire                when_FetchPlugin_l92;
   wire                fetch_arbitration_haltItself;
   wire                fetch_arbitration_haltByOther;
   reg                 fetch_arbitration_removeIt;
@@ -295,9 +345,6 @@ module DandRiscvSimple (
   wire                writeback_arbitration_isFlushed;
   wire                writeback_arbitration_isMoving;
   wire                writeback_arbitration_isFiring;
-  wire                _zz_when_InstructionFetchPlugin_l90;
-  wire       [63:0]   _zz_ICachePlugin_icache_access_cmd_payload_addr;
-  wire                _zz_when_InstructionFetchPlugin_l74;
   wire                DecodePlugin_control_ports_decode_rs1_req;
   wire                DecodePlugin_control_ports_decode_rs2_req;
   wire       [4:0]    DecodePlugin_control_ports_decode_rs1_addr;
@@ -327,20 +374,20 @@ module DandRiscvSimple (
   wire       [2:0]    DCachePlugin_dcache_access_cmd_payload_size;
   wire                DCachePlugin_dcache_access_rsp_valid;
   wire       [63:0]   DCachePlugin_dcache_access_rsp_payload_data;
-  reg        [63:0]   _zz_ICachePlugin_icache_access_cmd_payload_addr_1;
+  reg        [63:0]   pc_next;
   wire                ICachePlugin_icache_access_cmd_fire;
-  reg        [63:0]   _zz_fetch_PC;
-  reg                 _zz_ICachePlugin_icache_access_cmd_valid;
-  reg        [63:0]   _zz_ICachePlugin_icache_access_cmd_payload_addr_2;
-  reg                 when_InstructionFetchPlugin_l99;
-  wire       [1:0]    _zz_when_InstructionFetchPlugin_l90_1;
-  reg        [1:0]    _zz_when_InstructionFetchPlugin_l90_2;
-  wire                when_InstructionFetchPlugin_l74;
+  reg        [63:0]   pc;
+  reg                 fetch_valid;
+  reg        [63:0]   int_pc_reg;
+  reg                 int_pc_valid;
+  wire       [1:0]    fetch_state_next;
+  reg        [1:0]    fetch_state;
+  wire                when_FetchPlugin_l62;
   wire                ICachePlugin_icache_access_cmd_isStall;
   wire                ICachePlugin_icache_access_cmd_fire_1;
-  wire                when_InstructionFetchPlugin_l90;
-  wire                when_InstructionFetchPlugin_l98;
-  wire                when_InstructionFetchPlugin_l116;
+  wire                when_FetchPlugin_l79;
+  wire                when_FetchPlugin_l88;
+  wire                when_FetchPlugin_l106;
   reg        [63:0]   decode_DecodePlugin_imm;
   wire       [63:0]   decode_DecodePlugin_rs1;
   wire       [63:0]   decode_DecodePlugin_rs2;
@@ -355,8 +402,12 @@ module DandRiscvSimple (
   wire                decode_DecodePlugin_src2_is_imm;
   reg        [3:0]    decode_DecodePlugin_mem_ctrl;
   reg                 decode_DecodePlugin_is_load;
+  reg                 decode_DecodePlugin_is_store;
   wire                decode_DecodePlugin_branch_or_jalr;
-  wire                when_DecodePlugin_l99;
+  reg        [3:0]    decode_DecodePlugin_csr_ctrl;
+  wire       [11:0]   decode_DecodePlugin_csr_addr;
+  wire                decode_DecodePlugin_csr_wen;
+  wire                when_DecodePlugin_l104;
   wire                _zz_decode_DecodePlugin_imm;
   reg        [51:0]   _zz_decode_DecodePlugin_imm_1;
   wire                _zz_decode_DecodePlugin_imm_2;
@@ -369,10 +420,10 @@ module DandRiscvSimple (
   reg        [31:0]   _zz_decode_DecodePlugin_imm_9;
   wire                _zz_decode_DecodePlugin_imm_10;
   reg        [51:0]   _zz_decode_DecodePlugin_imm_11;
-  wire                when_DecodePlugin_l101;
-  wire                when_DecodePlugin_l103;
-  wire                when_DecodePlugin_l105;
-  wire                when_DecodePlugin_l107;
+  wire                when_DecodePlugin_l106;
+  wire                when_DecodePlugin_l108;
+  wire                when_DecodePlugin_l110;
+  wire                when_DecodePlugin_l112;
   reg        [63:0]   execute_ALUPlugin_src1;
   reg        [63:0]   execute_ALUPlugin_src2;
   wire       [31:0]   execute_ALUPlugin_src1_word;
@@ -417,7 +468,6 @@ module DandRiscvSimple (
   wire                execute_ALUPlugin_bltu;
   wire                execute_ALUPlugin_bgeu;
   wire                execute_ALUPlugin_branch_or_jump;
-  reg        [6:0]    execute_ALUPlugin_branch_history;
   reg        [63:0]   execute_ALUPlugin_branch_src1;
   reg        [63:0]   execute_ALUPlugin_branch_src2;
   wire                execute_ALUPlugin_rd_is_link;
@@ -427,15 +477,15 @@ module DandRiscvSimple (
   reg                 execute_ALUPlugin_is_jmp;
   reg        [63:0]   execute_ALUPlugin_redirect_pc_next;
   reg                 execute_ALUPlugin_redirect_valid;
-  wire                when_AluPlugin_l74;
-  wire                when_AluPlugin_l87;
-  wire                when_AluPlugin_l118;
-  wire                when_AluPlugin_l125;
+  wire                when_ALUPlugin_l74;
+  wire                when_ALUPlugin_l87;
+  wire                when_ALUPlugin_l118;
+  wire                when_ALUPlugin_l125;
   wire       [62:0]   _zz_execute_ALUPlugin_alu_result;
   wire       [62:0]   _zz_execute_ALUPlugin_alu_result_1;
-  wire                when_AluPlugin_l141;
-  wire                when_AluPlugin_l148;
-  wire                when_AluPlugin_l155;
+  wire                when_ALUPlugin_l141;
+  wire                when_ALUPlugin_l148;
+  wire                when_ALUPlugin_l155;
   wire                execute_ALUPlugin_beq_result;
   wire                execute_ALUPlugin_bne_result;
   wire                execute_ALUPlugin_blt_result;
@@ -443,43 +493,50 @@ module DandRiscvSimple (
   wire                execute_ALUPlugin_bltu_result;
   wire                execute_ALUPlugin_bgeu_result;
   wire                execute_ALUPlugin_branch_taken;
-  wire                when_AluPlugin_l188;
-  wire                when_AluPlugin_l196;
-  wire                when_AluPlugin_l232;
-  wire                _zz_memaccess_LsuPlugin_data_lb;
-  reg        [55:0]   _zz_memaccess_LsuPlugin_data_lb_1;
-  wire       [63:0]   memaccess_LsuPlugin_data_lb;
-  reg        [55:0]   _zz_memaccess_LsuPlugin_data_lbu;
-  wire       [63:0]   memaccess_LsuPlugin_data_lbu;
-  wire                _zz_memaccess_LsuPlugin_data_lh;
-  reg        [47:0]   _zz_memaccess_LsuPlugin_data_lh_1;
-  wire       [63:0]   memaccess_LsuPlugin_data_lh;
-  reg        [47:0]   _zz_memaccess_LsuPlugin_data_lhu;
-  wire       [63:0]   memaccess_LsuPlugin_data_lhu;
-  wire                _zz_memaccess_LsuPlugin_data_lw;
-  reg        [31:0]   _zz_memaccess_LsuPlugin_data_lw_1;
-  wire       [63:0]   memaccess_LsuPlugin_data_lw;
-  reg        [31:0]   _zz_memaccess_LsuPlugin_data_lwu;
-  wire       [63:0]   memaccess_LsuPlugin_data_lwu;
-  reg        [63:0]   memaccess_LsuPlugin_data_load;
-  wire                _zz_memaccess_LsuPlugin_wdata_sb;
-  reg        [55:0]   _zz_memaccess_LsuPlugin_wdata_sb_1;
-  wire       [63:0]   memaccess_LsuPlugin_wdata_sb;
-  wire                _zz_memaccess_LsuPlugin_wdata_sh;
-  reg        [47:0]   _zz_memaccess_LsuPlugin_wdata_sh_1;
-  wire       [63:0]   memaccess_LsuPlugin_wdata_sh;
-  wire                _zz_memaccess_LsuPlugin_wdata_sw;
-  reg        [31:0]   _zz_memaccess_LsuPlugin_wdata_sw_1;
-  wire       [63:0]   memaccess_LsuPlugin_wdata_sw;
-  reg                 memaccess_LsuPlugin_wen_dcache;
-  wire       [63:0]   memaccess_LsuPlugin_addr_dcache;
-  reg        [63:0]   memaccess_LsuPlugin_wdata_dcache;
-  reg        [7:0]    memaccess_LsuPlugin_wstrb_dcache;
-  reg        [2:0]    memaccess_LsuPlugin_size_dcache;
-  reg        [7:0]    _zz_memaccess_LsuPlugin_wstrb_dcache;
-  reg        [7:0]    _zz_memaccess_LsuPlugin_wstrb_dcache_1;
-  reg        [7:0]    _zz_memaccess_LsuPlugin_wstrb_dcache_2;
-  wire       [7:0]    _zz_memaccess_LsuPlugin_wstrb_dcache_3;
+  reg        [6:0]    execute_ALUPlugin_branch_history;
+  wire                when_ALUPlugin_l188;
+  wire                when_ALUPlugin_l196;
+  wire                when_ALUPlugin_l231;
+  reg        [63:0]   execute_ExcepPlugin_csr_wdata;
+  wire       [63:0]   execute_ExcepPlugin_csrrs_wdata;
+  wire       [63:0]   execute_ExcepPlugin_csrrc_wdata;
+  wire       [63:0]   execute_ExcepPlugin_csrrsi_wdata;
+  wire       [63:0]   execute_ExcepPlugin_csrrci_wdata;
+  wire                memaccess_LSUPlugin_is_memacc;
+  wire                _zz_memaccess_LSUPlugin_data_lb;
+  reg        [55:0]   _zz_memaccess_LSUPlugin_data_lb_1;
+  wire       [63:0]   memaccess_LSUPlugin_data_lb;
+  reg        [55:0]   _zz_memaccess_LSUPlugin_data_lbu;
+  wire       [63:0]   memaccess_LSUPlugin_data_lbu;
+  wire                _zz_memaccess_LSUPlugin_data_lh;
+  reg        [47:0]   _zz_memaccess_LSUPlugin_data_lh_1;
+  wire       [63:0]   memaccess_LSUPlugin_data_lh;
+  reg        [47:0]   _zz_memaccess_LSUPlugin_data_lhu;
+  wire       [63:0]   memaccess_LSUPlugin_data_lhu;
+  wire                _zz_memaccess_LSUPlugin_data_lw;
+  reg        [31:0]   _zz_memaccess_LSUPlugin_data_lw_1;
+  wire       [63:0]   memaccess_LSUPlugin_data_lw;
+  reg        [31:0]   _zz_memaccess_LSUPlugin_data_lwu;
+  wire       [63:0]   memaccess_LSUPlugin_data_lwu;
+  reg        [63:0]   memaccess_LSUPlugin_data_load;
+  wire                _zz_memaccess_LSUPlugin_wdata_sb;
+  reg        [55:0]   _zz_memaccess_LSUPlugin_wdata_sb_1;
+  wire       [63:0]   memaccess_LSUPlugin_wdata_sb;
+  wire                _zz_memaccess_LSUPlugin_wdata_sh;
+  reg        [47:0]   _zz_memaccess_LSUPlugin_wdata_sh_1;
+  wire       [63:0]   memaccess_LSUPlugin_wdata_sh;
+  wire                _zz_memaccess_LSUPlugin_wdata_sw;
+  reg        [31:0]   _zz_memaccess_LSUPlugin_wdata_sw_1;
+  wire       [63:0]   memaccess_LSUPlugin_wdata_sw;
+  wire       [63:0]   memaccess_LSUPlugin_addr;
+  reg        [63:0]   memaccess_LSUPlugin_wdata;
+  reg        [7:0]    memaccess_LSUPlugin_wstrb;
+  reg        [2:0]    memaccess_LSUPlugin_size;
+  reg        [7:0]    _zz_memaccess_LSUPlugin_wstrb;
+  reg        [7:0]    _zz_memaccess_LSUPlugin_wstrb_1;
+  reg        [7:0]    _zz_memaccess_LSUPlugin_wstrb_2;
+  wire       [7:0]    _zz_memaccess_LSUPlugin_wstrb_3;
+  wire                memaccess_LSUPlugin_hold;
   wire                when_Pipeline_l124;
   reg        [63:0]   fetch_to_decode_PC;
   wire                when_Pipeline_l124_1;
@@ -541,14 +598,26 @@ module DandRiscvSimple (
   wire                when_Pipeline_l124_29;
   reg                 memaccess_to_writeback_IS_LOAD;
   wire                when_Pipeline_l124_30;
-  reg                 decode_to_execute_BRANCH_OR_JALR;
+  reg                 decode_to_execute_IS_STORE;
   wire                when_Pipeline_l124_31;
-  reg        [63:0]   execute_to_memaccess_ALU_RESULT;
+  reg                 execute_to_memaccess_IS_STORE;
   wire                when_Pipeline_l124_32;
-  reg        [63:0]   memaccess_to_writeback_ALU_RESULT;
+  reg                 decode_to_execute_BRANCH_OR_JALR;
   wire                when_Pipeline_l124_33;
-  reg        [63:0]   execute_to_memaccess_MEM_WDATA;
+  reg        [3:0]    decode_to_execute_CSR_CTRL;
   wire                when_Pipeline_l124_34;
+  reg        [11:0]   decode_to_execute_CSR_ADDR;
+  wire                when_Pipeline_l124_35;
+  reg                 decode_to_execute_CSR_WEN;
+  wire                when_Pipeline_l124_36;
+  reg        [63:0]   decode_to_execute_CSR_RDATA;
+  wire                when_Pipeline_l124_37;
+  reg        [63:0]   execute_to_memaccess_ALU_RESULT;
+  wire                when_Pipeline_l124_38;
+  reg        [63:0]   memaccess_to_writeback_ALU_RESULT;
+  wire                when_Pipeline_l124_39;
+  reg        [63:0]   execute_to_memaccess_MEM_WDATA;
+  wire                when_Pipeline_l124_40;
   reg        [63:0]   memaccess_to_writeback_DATA_LOAD;
   wire                when_Pipeline_l159;
   wire                when_Pipeline_l162;
@@ -558,175 +627,175 @@ module DandRiscvSimple (
   wire                when_Pipeline_l162_2;
   wire                when_Pipeline_l159_3;
   wire                when_Pipeline_l162_3;
-  function [55:0] zz__zz_memaccess_LsuPlugin_data_lbu(input dummy);
+  function [55:0] zz__zz_memaccess_LSUPlugin_data_lbu(input dummy);
     begin
-      zz__zz_memaccess_LsuPlugin_data_lbu[55] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[54] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[53] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[52] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[51] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[50] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[49] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[48] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[47] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[46] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[45] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[44] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[43] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[42] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[41] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[40] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[39] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[38] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[37] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[36] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[35] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[34] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[33] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[32] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[31] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[30] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[29] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[28] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[27] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[26] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[25] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[24] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[23] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[22] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[21] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[20] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[19] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[18] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[17] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[16] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[15] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[14] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[13] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[12] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[11] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[10] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[9] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[8] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[7] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[6] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[5] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[4] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[3] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[2] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[1] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lbu[0] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[55] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[54] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[53] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[52] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[51] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[50] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[49] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[48] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[47] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[46] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[45] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[44] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[43] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[42] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[41] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[40] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[39] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[38] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[37] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[36] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[35] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[34] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[33] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[32] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[31] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[30] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[29] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[28] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[27] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[26] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[25] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[24] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[23] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[22] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[21] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[20] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[19] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[18] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[17] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[16] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[15] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[14] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[13] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[12] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[11] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[10] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[9] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[8] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[7] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[6] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[5] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[4] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[3] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[2] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[1] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lbu[0] = 1'b0;
     end
   endfunction
   wire [55:0] _zz_1;
-  function [47:0] zz__zz_memaccess_LsuPlugin_data_lhu(input dummy);
+  function [47:0] zz__zz_memaccess_LSUPlugin_data_lhu(input dummy);
     begin
-      zz__zz_memaccess_LsuPlugin_data_lhu[47] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lhu[46] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lhu[45] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lhu[44] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lhu[43] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lhu[42] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lhu[41] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lhu[40] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lhu[39] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lhu[38] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lhu[37] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lhu[36] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lhu[35] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lhu[34] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lhu[33] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lhu[32] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lhu[31] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lhu[30] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lhu[29] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lhu[28] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lhu[27] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lhu[26] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lhu[25] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lhu[24] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lhu[23] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lhu[22] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lhu[21] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lhu[20] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lhu[19] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lhu[18] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lhu[17] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lhu[16] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lhu[15] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lhu[14] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lhu[13] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lhu[12] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lhu[11] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lhu[10] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lhu[9] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lhu[8] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lhu[7] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lhu[6] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lhu[5] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lhu[4] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lhu[3] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lhu[2] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lhu[1] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lhu[0] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lhu[47] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lhu[46] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lhu[45] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lhu[44] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lhu[43] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lhu[42] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lhu[41] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lhu[40] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lhu[39] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lhu[38] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lhu[37] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lhu[36] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lhu[35] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lhu[34] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lhu[33] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lhu[32] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lhu[31] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lhu[30] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lhu[29] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lhu[28] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lhu[27] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lhu[26] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lhu[25] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lhu[24] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lhu[23] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lhu[22] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lhu[21] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lhu[20] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lhu[19] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lhu[18] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lhu[17] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lhu[16] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lhu[15] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lhu[14] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lhu[13] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lhu[12] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lhu[11] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lhu[10] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lhu[9] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lhu[8] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lhu[7] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lhu[6] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lhu[5] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lhu[4] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lhu[3] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lhu[2] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lhu[1] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lhu[0] = 1'b0;
     end
   endfunction
   wire [47:0] _zz_2;
-  function [31:0] zz__zz_memaccess_LsuPlugin_data_lwu(input dummy);
+  function [31:0] zz__zz_memaccess_LSUPlugin_data_lwu(input dummy);
     begin
-      zz__zz_memaccess_LsuPlugin_data_lwu[31] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lwu[30] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lwu[29] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lwu[28] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lwu[27] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lwu[26] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lwu[25] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lwu[24] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lwu[23] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lwu[22] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lwu[21] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lwu[20] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lwu[19] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lwu[18] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lwu[17] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lwu[16] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lwu[15] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lwu[14] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lwu[13] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lwu[12] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lwu[11] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lwu[10] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lwu[9] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lwu[8] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lwu[7] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lwu[6] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lwu[5] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lwu[4] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lwu[3] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lwu[2] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lwu[1] = 1'b0;
-      zz__zz_memaccess_LsuPlugin_data_lwu[0] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lwu[31] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lwu[30] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lwu[29] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lwu[28] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lwu[27] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lwu[26] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lwu[25] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lwu[24] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lwu[23] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lwu[22] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lwu[21] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lwu[20] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lwu[19] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lwu[18] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lwu[17] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lwu[16] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lwu[15] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lwu[14] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lwu[13] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lwu[12] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lwu[11] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lwu[10] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lwu[9] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lwu[8] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lwu[7] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lwu[6] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lwu[5] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lwu[4] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lwu[3] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lwu[2] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lwu[1] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_data_lwu[0] = 1'b0;
     end
   endfunction
   wire [31:0] _zz_3;
-  function [7:0] zz__zz_memaccess_LsuPlugin_wstrb_dcache(input dummy);
+  function [7:0] zz__zz_memaccess_LSUPlugin_wstrb(input dummy);
     begin
-      zz__zz_memaccess_LsuPlugin_wstrb_dcache = 8'h0;
-      zz__zz_memaccess_LsuPlugin_wstrb_dcache[0] = 1'b1;
+      zz__zz_memaccess_LSUPlugin_wstrb = 8'h0;
+      zz__zz_memaccess_LSUPlugin_wstrb[0] = 1'b1;
     end
   endfunction
   wire [7:0] _zz_4;
-  function [7:0] zz__zz_memaccess_LsuPlugin_wstrb_dcache_1(input dummy);
+  function [7:0] zz__zz_memaccess_LSUPlugin_wstrb_1(input dummy);
     begin
-      zz__zz_memaccess_LsuPlugin_wstrb_dcache_1 = 8'h0;
-      zz__zz_memaccess_LsuPlugin_wstrb_dcache_1[1 : 0] = 2'b11;
+      zz__zz_memaccess_LSUPlugin_wstrb_1 = 8'h0;
+      zz__zz_memaccess_LSUPlugin_wstrb_1[1 : 0] = 2'b11;
     end
   endfunction
   wire [7:0] _zz_5;
-  function [7:0] zz__zz_memaccess_LsuPlugin_wstrb_dcache_2(input dummy);
+  function [7:0] zz__zz_memaccess_LSUPlugin_wstrb_2(input dummy);
     begin
-      zz__zz_memaccess_LsuPlugin_wstrb_dcache_2 = 8'h0;
-      zz__zz_memaccess_LsuPlugin_wstrb_dcache_2[3 : 0] = 4'b1111;
+      zz__zz_memaccess_LSUPlugin_wstrb_2 = 8'h0;
+      zz__zz_memaccess_LSUPlugin_wstrb_2[3 : 0] = 4'b1111;
     end
   endfunction
   wire [7:0] _zz_6;
@@ -761,7 +830,7 @@ module DandRiscvSimple (
   assign _zz_decode_DecodePlugin_rd_wen = decode_INSTRUCTION[6 : 0];
   assign _zz_decode_DecodePlugin_rd_wen_1 = 7'h23;
   assign _zz_decode_DecodePlugin_rd_wen_2 = decode_INSTRUCTION[6 : 0];
-  assign _zz_decode_DecodePlugin_rd_wen_3 = 7'h23;
+  assign _zz_decode_DecodePlugin_rd_wen_3 = 7'h63;
   assign _zz_decode_DecodePlugin_rd_wen_4 = 32'hffffffff;
   gshare_predictor gshare_predictor_1 (
     .predict_pc         (_zz_fetch_to_decode_PC[63:0]            ), //i
@@ -770,7 +839,7 @@ module DandRiscvSimple (
     .predict_pc_next    (gshare_predictor_1_predict_pc_next[63:0]), //o
     .train_valid        (execute_BRANCH_OR_JUMP                  ), //i
     .train_taken        (execute_BRANCH_TAKEN                    ), //i
-    .train_mispredicted (when_InstructionFetchPlugin_l105        ), //i
+    .train_mispredicted (when_FetchPlugin_l95                    ), //i
     .train_history      (execute_BRANCH_HISTORY[6:0]             ), //i
     .train_pc           (execute_PC[63:0]                        ), //i
     .train_pc_next      (execute_PC_NEXT[63:0]                   ), //i
@@ -792,6 +861,64 @@ module DandRiscvSimple (
     .write_ports_rd_wen   (_zz_DecodePlugin_control_ports_rs1_from_wb_2     ), //i
     .clk                  (clk                                              ), //i
     .reset                (reset                                            )  //i
+  );
+  CsrRegfile csrRegfile_1 (
+    .cpu_ports_waddr            (execute_CSR_ADDR[11:0]                 ), //i
+    .cpu_ports_wen              (execute_CSR_WEN                        ), //i
+    .cpu_ports_wdata            (execute_ExcepPlugin_csr_wdata[63:0]    ), //i
+    .cpu_ports_raddr            (_zz_decode_to_execute_CSR_ADDR[11:0]   ), //i
+    .cpu_ports_rdata            (csrRegfile_1_cpu_ports_rdata[63:0]     ), //o
+    .clint_ports_mepc_wen       (clint_1_csr_ports_mepc_wen             ), //i
+    .clint_ports_mepc_wdata     (clint_1_csr_ports_mepc_wdata[63:0]     ), //i
+    .clint_ports_mcause_wen     (clint_1_csr_ports_mcause_wen           ), //i
+    .clint_ports_mcause_wdata   (clint_1_csr_ports_mcause_wdata[63:0]   ), //i
+    .clint_ports_mstatus_wen    (clint_1_csr_ports_mstatus_wen          ), //i
+    .clint_ports_mstatus_wdata  (clint_1_csr_ports_mstatus_wdata[63:0]  ), //i
+    .clint_ports_mtvec          (csrRegfile_1_clint_ports_mtvec[63:0]   ), //o
+    .clint_ports_mepc           (csrRegfile_1_clint_ports_mepc[63:0]    ), //o
+    .clint_ports_mstatus        (csrRegfile_1_clint_ports_mstatus[63:0] ), //o
+    .clint_ports_global_int_en  (csrRegfile_1_clint_ports_global_int_en ), //o
+    .clint_ports_mtime_int_en   (csrRegfile_1_clint_ports_mtime_int_en  ), //o
+    .clint_ports_mtime_int_pend (csrRegfile_1_clint_ports_mtime_int_pend), //o
+    .timer_int                  (timer_1_timer_int                      ), //i
+    .clk                        (clk                                    ), //i
+    .reset                      (reset                                  )  //i
+  );
+  Clint clint_1 (
+    .pc                       (_zz_fetch_to_decode_PC[63:0]           ), //i
+    .pc_next                  (_zz_pc_next[63:0]                      ), //i
+    .pc_next_valid            (when_FetchPlugin_l95                   ), //i
+    .csr_ports_mepc_wen       (clint_1_csr_ports_mepc_wen             ), //o
+    .csr_ports_mepc_wdata     (clint_1_csr_ports_mepc_wdata[63:0]     ), //o
+    .csr_ports_mcause_wen     (clint_1_csr_ports_mcause_wen           ), //o
+    .csr_ports_mcause_wdata   (clint_1_csr_ports_mcause_wdata[63:0]   ), //o
+    .csr_ports_mstatus_wen    (clint_1_csr_ports_mstatus_wen          ), //o
+    .csr_ports_mstatus_wdata  (clint_1_csr_ports_mstatus_wdata[63:0]  ), //o
+    .csr_ports_mtvec          (csrRegfile_1_clint_ports_mtvec[63:0]   ), //i
+    .csr_ports_mepc           (csrRegfile_1_clint_ports_mepc[63:0]    ), //i
+    .csr_ports_mstatus        (csrRegfile_1_clint_ports_mstatus[63:0] ), //i
+    .csr_ports_global_int_en  (csrRegfile_1_clint_ports_global_int_en ), //i
+    .csr_ports_mtime_int_en   (csrRegfile_1_clint_ports_mtime_int_en  ), //i
+    .csr_ports_mtime_int_pend (csrRegfile_1_clint_ports_mtime_int_pend), //i
+    .timer_int                (timer_1_timer_int                      ), //i
+    .int_en                   (clint_1_int_en                         ), //o
+    .int_pc                   (clint_1_int_pc[63:0]                   ), //o
+    .int_hold                 (clint_1_int_hold                       ), //o
+    .ecall                    (clint_1_ecall                          ), //i
+    .ebreak                   (clint_1_ebreak                         ), //i
+    .mret                     (clint_1_mret                           ), //i
+    .clk                      (clk                                    ), //i
+    .reset                    (reset                                  )  //i
+  );
+  Timer timer_1 (
+    .cen       (memaccess_TIMER_CEN      ), //i
+    .wen       (memaccess_IS_STORE       ), //i
+    .addr      (timer_1_addr[63:0]       ), //i
+    .wdata     (memaccess_LSU_WDATA[63:0]), //i
+    .rdata     (timer_1_rdata[63:0]      ), //o
+    .timer_int (timer_1_timer_int        ), //o
+    .clk       (clk                      ), //i
+    .reset     (reset                    )  //i
   );
   ICache iCache_1 (
     .flush                          (iCache_1_flush                                   ), //i
@@ -902,9 +1029,6 @@ module DandRiscvSimple (
     .next_level_cmd_ready           (dCache_1_next_level_cmd_ready                     ), //i
     .next_level_cmd_payload_addr    (dCache_1_next_level_cmd_payload_addr[63:0]        ), //o
     .next_level_cmd_payload_len     (dCache_1_next_level_cmd_payload_len[3:0]          ), //o
-    .next_level_cmd_payload_wen     (dCache_1_next_level_cmd_payload_wen               ), //o
-    .next_level_cmd_payload_wdata   (dCache_1_next_level_cmd_payload_wdata[255:0]      ), //o
-    .next_level_cmd_payload_wstrb   (dCache_1_next_level_cmd_payload_wstrb[31:0]       ), //o
     .next_level_cmd_payload_size    (dCache_1_next_level_cmd_payload_size[2:0]         ), //o
     .next_level_rsp_valid           (dCache_1_next_level_rsp_valid                     ), //i
     .next_level_rsp_payload_data    (dCache_1_next_level_rsp_payload_data[255:0]       ), //i
@@ -940,9 +1064,11 @@ module DandRiscvSimple (
     .reset                          (reset                                           )  //i
   );
   assign writeback_RD = (writeback_IS_LOAD ? writeback_DATA_LOAD : writeback_ALU_RESULT);
-  assign memaccess_DATA_LOAD = memaccess_LsuPlugin_data_load;
+  assign memaccess_TIMER_CEN = ((memaccess_LSUPlugin_addr == 64'h000000000200bff8) || ((memaccess_LSUPlugin_addr == 64'h0000000002004000) && memaccess_LSUPlugin_is_memacc));
+  assign memaccess_LSU_WDATA = memaccess_LSUPlugin_wdata;
+  assign memaccess_DATA_LOAD = memaccess_LSUPlugin_data_load;
   assign execute_REDIRECT_PC_NEXT = execute_ALUPlugin_redirect_pc_next;
-  assign execute_MISPRED = execute_ALUPlugin_redirect_valid;
+  assign execute_REDIRECT_VALID = execute_ALUPlugin_redirect_valid;
   assign execute_IS_RET = execute_ALUPlugin_is_ret;
   assign execute_IS_CALL = execute_ALUPlugin_is_call;
   assign execute_IS_JMP = execute_ALUPlugin_is_jmp;
@@ -951,9 +1077,16 @@ module DandRiscvSimple (
   assign execute_BRANCH_OR_JUMP = execute_ALUPlugin_branch_or_jump;
   assign execute_MEM_WDATA = (execute_RS2_FROM_WB ? _zz_execute_MEM_WDATA_2 : (execute_RS2_FROM_MEM ? _zz_execute_MEM_WDATA_1 : _zz_execute_MEM_WDATA));
   assign execute_ALU_RESULT = execute_ALUPlugin_alu_result;
+  assign decode_CSR_RDATA = csrRegfile_1_cpu_ports_rdata;
+  assign execute_CSR_WEN = decode_to_execute_CSR_WEN;
+  assign decode_CSR_WEN = decode_DecodePlugin_csr_wen;
+  assign execute_CSR_ADDR = decode_to_execute_CSR_ADDR;
+  assign decode_CSR_ADDR = decode_DecodePlugin_csr_addr;
+  assign decode_CSR_CTRL = decode_DecodePlugin_csr_ctrl;
   assign execute_BRANCH_OR_JALR = decode_to_execute_BRANCH_OR_JALR;
   assign decode_BRANCH_OR_JALR = decode_DecodePlugin_branch_or_jalr;
-  assign memaccess_IS_LOAD = execute_to_memaccess_IS_LOAD;
+  assign execute_IS_STORE = decode_to_execute_IS_STORE;
+  assign decode_IS_STORE = decode_DecodePlugin_is_store;
   assign execute_IS_LOAD = decode_to_execute_IS_LOAD;
   assign decode_IS_LOAD = decode_DecodePlugin_is_load;
   assign writeback_RD_ADDR = memaccess_to_writeback_RD_ADDR;
@@ -979,16 +1112,26 @@ module DandRiscvSimple (
   assign decode_RS1 = decode_DecodePlugin_rs1;
   assign decode_IMM = decode_DecodePlugin_imm;
   assign fetch_INSTRUCTION = ICachePlugin_icache_access_rsp_payload_data;
-  assign fetch_LOAD_USE = DecodePlugin_control_ports_load_use;
+  assign fetch_INT_PC = clint_1_int_pc;
+  assign fetch_INT_EN = clint_1_int_en;
   assign decode_BPU_PC_NEXT = fetch_to_decode_BPU_PC_NEXT;
   assign decode_BPU_BRANCH_TAKEN = fetch_to_decode_BPU_BRANCH_TAKEN;
   assign execute_PC_NEXT = execute_ALUPlugin_pc_next;
-  assign fetch_PC = _zz_fetch_PC;
+  assign fetch_PC = pc;
   assign writeback_ALU_RESULT = memaccess_to_writeback_ALU_RESULT;
   assign writeback_DATA_LOAD = memaccess_to_writeback_DATA_LOAD;
   assign writeback_IS_LOAD = memaccess_to_writeback_IS_LOAD;
   assign memaccess_MEM_CTRL = execute_to_memaccess_MEM_CTRL;
   assign memaccess_MEM_WDATA = execute_to_memaccess_MEM_WDATA;
+  assign memaccess_IS_STORE = execute_to_memaccess_IS_STORE;
+  assign memaccess_IS_LOAD = execute_to_memaccess_IS_LOAD;
+  assign execute_CSR_CTRL = decode_to_execute_CSR_CTRL;
+  assign execute_CSR_RDATA = decode_to_execute_CSR_RDATA;
+  assign _zz_decode_to_execute_CSR_CTRL = decode_CSR_CTRL;
+  assign _zz_decode_to_execute_CSR_ADDR = decode_CSR_ADDR;
+  assign fetch_LSU_HOLD = memaccess_LSUPlugin_hold;
+  assign fetch_INT_HOLD = clint_1_int_hold;
+  assign fetch_LOAD_USE = DecodePlugin_control_ports_load_use;
   assign _zz_DecodePlugin_control_ports_ctrl_rs1_from_mem = execute_BRANCH_OR_JALR;
   assign _zz_DecodePlugin_control_ports_load_use = execute_RD_ADDR;
   assign _zz_DecodePlugin_control_ports_load_use_1 = memaccess_IS_LOAD;
@@ -1028,8 +1171,10 @@ module DandRiscvSimple (
   assign _zz_fetch_to_decode_PC = fetch_PC;
   assign fetch_BPU_PC_NEXT = gshare_predictor_1_predict_pc_next;
   assign fetch_BPU_BRANCH_TAKEN = gshare_predictor_1_predict_taken;
-  assign when_InstructionFetchPlugin_l105 = execute_MISPRED;
-  assign fetch_arbitration_haltItself = 1'b0;
+  assign _zz_pc_next = execute_REDIRECT_PC_NEXT;
+  assign when_FetchPlugin_l95 = execute_REDIRECT_VALID;
+  assign _zz_pc_next_1 = fetch_INT_PC;
+  assign when_FetchPlugin_l92 = fetch_INT_EN;
   assign fetch_arbitration_haltByOther = 1'b0;
   always @(*) begin
     fetch_arbitration_removeIt = 1'b0;
@@ -1040,7 +1185,6 @@ module DandRiscvSimple (
 
   assign fetch_arbitration_flushIt = 1'b0;
   assign fetch_arbitration_flushNext = 1'b0;
-  assign decode_arbitration_haltItself = 1'b0;
   assign decode_arbitration_haltByOther = 1'b0;
   always @(*) begin
     decode_arbitration_removeIt = 1'b0;
@@ -1051,7 +1195,6 @@ module DandRiscvSimple (
 
   assign decode_arbitration_flushIt = 1'b0;
   assign decode_arbitration_flushNext = 1'b0;
-  assign execute_arbitration_haltItself = 1'b0;
   assign execute_arbitration_haltByOther = 1'b0;
   always @(*) begin
     execute_arbitration_removeIt = 1'b0;
@@ -1062,7 +1205,6 @@ module DandRiscvSimple (
 
   assign execute_arbitration_flushIt = 1'b0;
   assign execute_arbitration_flushNext = 1'b0;
-  assign memaccess_arbitration_haltItself = 1'b0;
   assign memaccess_arbitration_haltByOther = 1'b0;
   always @(*) begin
     memaccess_arbitration_removeIt = 1'b0;
@@ -1073,7 +1215,6 @@ module DandRiscvSimple (
 
   assign memaccess_arbitration_flushIt = 1'b0;
   assign memaccess_arbitration_flushNext = 1'b0;
-  assign writeback_arbitration_haltItself = 1'b0;
   assign writeback_arbitration_haltByOther = 1'b0;
   always @(*) begin
     writeback_arbitration_removeIt = 1'b0;
@@ -1085,14 +1226,14 @@ module DandRiscvSimple (
   assign writeback_arbitration_flushIt = 1'b0;
   assign writeback_arbitration_flushNext = 1'b0;
   assign ICachePlugin_icache_access_cmd_fire = (ICachePlugin_icache_access_cmd_valid && ICachePlugin_icache_access_cmd_ready);
-  assign when_InstructionFetchPlugin_l74 = (! (fetch_LOAD_USE || _zz_when_InstructionFetchPlugin_l74));
+  assign when_FetchPlugin_l62 = (! fetch_arbitration_haltItself);
   assign ICachePlugin_icache_access_cmd_isStall = (ICachePlugin_icache_access_cmd_valid && (! ICachePlugin_icache_access_cmd_ready));
   assign ICachePlugin_icache_access_cmd_fire_1 = (ICachePlugin_icache_access_cmd_valid && ICachePlugin_icache_access_cmd_ready);
-  assign when_InstructionFetchPlugin_l90 = (_zz_when_InstructionFetchPlugin_l90 && ((_zz_when_InstructionFetchPlugin_l90_2 == 2'b10) || (_zz_when_InstructionFetchPlugin_l90_1 == 2'b10)));
-  assign when_InstructionFetchPlugin_l98 = (_zz_when_InstructionFetchPlugin_l90_1 == 2'b01);
-  assign when_InstructionFetchPlugin_l116 = (_zz_when_InstructionFetchPlugin_l90_1 == 2'b01);
-  assign ICachePlugin_icache_access_cmd_valid = _zz_ICachePlugin_icache_access_cmd_valid;
-  assign ICachePlugin_icache_access_cmd_payload_addr = _zz_ICachePlugin_icache_access_cmd_payload_addr_1;
+  assign when_FetchPlugin_l79 = (when_FetchPlugin_l92 && ((fetch_state == 2'b10) || (fetch_state_next == 2'b10)));
+  assign when_FetchPlugin_l88 = (fetch_state_next == 2'b01);
+  assign when_FetchPlugin_l106 = (fetch_state_next == 2'b01);
+  assign ICachePlugin_icache_access_cmd_valid = fetch_valid;
+  assign ICachePlugin_icache_access_cmd_payload_addr = pc_next;
   assign decode_DecodePlugin_rs1_req = (! (((decode_INSTRUCTION[6 : 0] == 7'h37) || (decode_INSTRUCTION[6 : 0] == 7'h17)) || (decode_INSTRUCTION[6 : 0] == 7'h67)));
   assign decode_DecodePlugin_rs2_req = (! ((((decode_INSTRUCTION[6 : 0] == 7'h37) || (decode_INSTRUCTION[6 : 0] == 7'h17)) || (decode_INSTRUCTION[6 : 0] == 7'h67)) || ((((decode_INSTRUCTION[6 : 0] == 7'h13) || (decode_INSTRUCTION[6 : 0] == 7'h1b)) || (decode_INSTRUCTION[6 : 0] == 7'h03)) || (decode_INSTRUCTION[6 : 0] == 7'h67))));
   assign decode_DecodePlugin_rs1_addr = decode_INSTRUCTION[19 : 15];
@@ -1101,7 +1242,9 @@ module DandRiscvSimple (
   assign decode_DecodePlugin_alu_word = (decode_INSTRUCTION[6 : 0] == 7'h3b);
   assign decode_DecodePlugin_src2_is_imm = ((((((decode_INSTRUCTION[6 : 0] == 7'h13) || (decode_INSTRUCTION[6 : 0] == 7'h1b)) || (decode_INSTRUCTION[6 : 0] == 7'h03)) || (decode_INSTRUCTION[6 : 0] == 7'h67)) || (decode_INSTRUCTION[6 : 0] == 7'h23)) || ((decode_INSTRUCTION[6 : 0] == 7'h37) || (decode_INSTRUCTION[6 : 0] == 7'h17)));
   assign decode_DecodePlugin_branch_or_jalr = ((decode_INSTRUCTION[6 : 0] == 7'h63) || ((decode_INSTRUCTION & 32'h0000707f) == 32'h00000067));
-  assign when_DecodePlugin_l99 = ((((decode_INSTRUCTION[6 : 0] == 7'h13) || (decode_INSTRUCTION[6 : 0] == 7'h1b)) || (decode_INSTRUCTION[6 : 0] == 7'h03)) || (decode_INSTRUCTION[6 : 0] == 7'h67));
+  assign decode_DecodePlugin_csr_addr = decode_INSTRUCTION[31 : 20];
+  assign decode_DecodePlugin_csr_wen = (((decode_DecodePlugin_csr_ctrl == CsrCtrlEnum_CSRRW) || (decode_DecodePlugin_csr_ctrl == CsrCtrlEnum_CSRRS)) || (decode_DecodePlugin_csr_ctrl == CsrCtrlEnum_CSRRC));
+  assign when_DecodePlugin_l104 = ((((decode_INSTRUCTION[6 : 0] == 7'h13) || (decode_INSTRUCTION[6 : 0] == 7'h1b)) || (decode_INSTRUCTION[6 : 0] == 7'h03)) || (decode_INSTRUCTION[6 : 0] == 7'h67));
   assign _zz_decode_DecodePlugin_imm = decode_INSTRUCTION[31];
   always @(*) begin
     _zz_decode_DecodePlugin_imm_1[51] = _zz_decode_DecodePlugin_imm;
@@ -1159,19 +1302,19 @@ module DandRiscvSimple (
   end
 
   always @(*) begin
-    if(when_DecodePlugin_l99) begin
+    if(when_DecodePlugin_l104) begin
       decode_DecodePlugin_imm = {_zz_decode_DecodePlugin_imm_1,decode_INSTRUCTION[31 : 20]};
     end else begin
-      if(when_DecodePlugin_l101) begin
+      if(when_DecodePlugin_l106) begin
         decode_DecodePlugin_imm = {_zz_decode_DecodePlugin_imm_3,{decode_INSTRUCTION[31 : 25],decode_INSTRUCTION[11 : 7]}};
       end else begin
-        if(when_DecodePlugin_l103) begin
+        if(when_DecodePlugin_l108) begin
           decode_DecodePlugin_imm = {{_zz_decode_DecodePlugin_imm_5,{{{decode_INSTRUCTION[31],decode_INSTRUCTION[7]},decode_INSTRUCTION[30 : 25]},decode_INSTRUCTION[11 : 8]}},1'b0};
         end else begin
-          if(when_DecodePlugin_l105) begin
+          if(when_DecodePlugin_l110) begin
             decode_DecodePlugin_imm = {{_zz_decode_DecodePlugin_imm_7,{{{decode_INSTRUCTION[31],decode_INSTRUCTION[19 : 12]},decode_INSTRUCTION[20]},decode_INSTRUCTION[30 : 21]}},1'b0};
           end else begin
-            if(when_DecodePlugin_l107) begin
+            if(when_DecodePlugin_l112) begin
               decode_DecodePlugin_imm = {_zz_decode_DecodePlugin_imm_9,{decode_INSTRUCTION[31 : 12],12'h0}};
             end else begin
               decode_DecodePlugin_imm = {_zz_decode_DecodePlugin_imm_11,decode_INSTRUCTION[31 : 20]};
@@ -1432,10 +1575,10 @@ module DandRiscvSimple (
     _zz_decode_DecodePlugin_imm_11[0] = _zz_decode_DecodePlugin_imm_10;
   end
 
-  assign when_DecodePlugin_l101 = (decode_INSTRUCTION[6 : 0] == 7'h23);
-  assign when_DecodePlugin_l103 = (decode_INSTRUCTION[6 : 0] == 7'h63);
-  assign when_DecodePlugin_l105 = (decode_INSTRUCTION[6 : 0] == 7'h67);
-  assign when_DecodePlugin_l107 = ((decode_INSTRUCTION[6 : 0] == 7'h37) || (decode_INSTRUCTION[6 : 0] == 7'h17));
+  assign when_DecodePlugin_l106 = (decode_INSTRUCTION[6 : 0] == 7'h23);
+  assign when_DecodePlugin_l108 = (decode_INSTRUCTION[6 : 0] == 7'h63);
+  assign when_DecodePlugin_l110 = (decode_INSTRUCTION[6 : 0] == 7'h67);
+  assign when_DecodePlugin_l112 = ((decode_INSTRUCTION[6 : 0] == 7'h37) || (decode_INSTRUCTION[6 : 0] == 7'h17));
   always @(*) begin
     casez(decode_INSTRUCTION)
       32'b0000000??????????000?????0110011, 32'b0000000??????????000?????0111011, 32'b?????????????????000?????0010011, 32'b?????????????????000?????0011011, 32'b?????????????????????????0010111, 32'b?????????????????000?????0100011, 32'b?????????????????001?????0100011, 32'b?????????????????010?????0100011, 32'b?????????????????011?????0100011 : begin
@@ -1568,9 +1711,85 @@ module DandRiscvSimple (
     endcase
   end
 
+  always @(*) begin
+    casez(decode_INSTRUCTION)
+      32'b?????????????????000?????0000011 : begin
+        decode_DecodePlugin_is_store = 1'b0;
+      end
+      32'b?????????????????100?????0000011 : begin
+        decode_DecodePlugin_is_store = 1'b0;
+      end
+      32'b?????????????????001?????0000011 : begin
+        decode_DecodePlugin_is_store = 1'b0;
+      end
+      32'b?????????????????101?????0000011 : begin
+        decode_DecodePlugin_is_store = 1'b0;
+      end
+      32'b?????????????????010?????0000011 : begin
+        decode_DecodePlugin_is_store = 1'b0;
+      end
+      32'b?????????????????110?????0000011 : begin
+        decode_DecodePlugin_is_store = 1'b0;
+      end
+      32'b?????????????????011?????0000011 : begin
+        decode_DecodePlugin_is_store = 1'b0;
+      end
+      32'b?????????????????000?????0100011 : begin
+        decode_DecodePlugin_is_store = 1'b1;
+      end
+      32'b?????????????????001?????0100011 : begin
+        decode_DecodePlugin_is_store = 1'b1;
+      end
+      32'b?????????????????010?????0100011 : begin
+        decode_DecodePlugin_is_store = 1'b1;
+      end
+      32'b?????????????????011?????0100011 : begin
+        decode_DecodePlugin_is_store = 1'b1;
+      end
+      default : begin
+        decode_DecodePlugin_is_store = 1'b0;
+      end
+    endcase
+  end
+
+  always @(*) begin
+    casez(decode_INSTRUCTION)
+      32'b00000000000000000000000001110011 : begin
+        decode_DecodePlugin_csr_ctrl = CsrCtrlEnum_ECALL;
+      end
+      32'b00000000000100000000000001110011 : begin
+        decode_DecodePlugin_csr_ctrl = CsrCtrlEnum_EBREAK;
+      end
+      32'b00110000001000000000000001110011 : begin
+        decode_DecodePlugin_csr_ctrl = CsrCtrlEnum_MRET;
+      end
+      32'b?????????????????001?????1110011 : begin
+        decode_DecodePlugin_csr_ctrl = CsrCtrlEnum_CSRRW;
+      end
+      32'b?????????????????010?????1110011 : begin
+        decode_DecodePlugin_csr_ctrl = CsrCtrlEnum_CSRRS;
+      end
+      32'b?????????????????011?????1110011 : begin
+        decode_DecodePlugin_csr_ctrl = CsrCtrlEnum_CSRRC;
+      end
+      32'b?????????????????101?????1110011 : begin
+        decode_DecodePlugin_csr_ctrl = CsrCtrlEnum_CSRRWI;
+      end
+      32'b?????????????????110?????1110011 : begin
+        decode_DecodePlugin_csr_ctrl = CsrCtrlEnum_CSRRSI;
+      end
+      32'b?????????????????111?????1110011 : begin
+        decode_DecodePlugin_csr_ctrl = CsrCtrlEnum_CSRRCI;
+      end
+      default : begin
+        decode_DecodePlugin_csr_ctrl = 4'b0000;
+      end
+    endcase
+  end
+
   assign decode_DecodePlugin_rs1 = regFileModule_1_read_ports_rs1_value;
   assign decode_DecodePlugin_rs2 = regFileModule_1_read_ports_rs2_value;
-  assign decode_DecodePlugin_rd_wen = (decode_arbitration_isValid && ((((((! (_zz_decode_DecodePlugin_rd_wen == _zz_decode_DecodePlugin_rd_wen_1)) && (! (_zz_decode_DecodePlugin_rd_wen_2 == _zz_decode_DecodePlugin_rd_wen_3))) && (! ((decode_INSTRUCTION & _zz_decode_DecodePlugin_rd_wen_4) == 32'h00100073))) && (! ((decode_INSTRUCTION & 32'hffffffff) == 32'h00000073))) && (! ((decode_INSTRUCTION & 32'hffffffff) == 32'h30200073))) && (decode_INSTRUCTION[6 : 0] != 7'h0f)));
+  assign decode_DecodePlugin_rd_wen = (decode_arbitration_isFiring && ((((((! (_zz_decode_DecodePlugin_rd_wen == _zz_decode_DecodePlugin_rd_wen_1)) && (! (_zz_decode_DecodePlugin_rd_wen_2 == _zz_decode_DecodePlugin_rd_wen_3))) && (! ((decode_INSTRUCTION & _zz_decode_DecodePlugin_rd_wen_4) == 32'h00100073))) && (! ((decode_INSTRUCTION & 32'hffffffff) == 32'h00000073))) && (! ((decode_INSTRUCTION & 32'hffffffff) == 32'h30200073))) && (decode_INSTRUCTION[6 : 0] != 7'h0f)));
   assign DecodePlugin_control_ports_decode_rs1_req = decode_DecodePlugin_rs1_req;
   assign DecodePlugin_control_ports_decode_rs2_req = decode_DecodePlugin_rs2_req;
   assign DecodePlugin_control_ports_decode_rs1_addr = decode_DecodePlugin_rs1_addr;
@@ -1799,7 +2018,7 @@ module DandRiscvSimple (
       if(execute_ALUPlugin_jalr) begin
         if(execute_ALUPlugin_rd_is_link) begin
           if(execute_ALUPlugin_rs1_is_link) begin
-            if(when_AluPlugin_l232) begin
+            if(when_ALUPlugin_l231) begin
               execute_ALUPlugin_is_call = 1'b1;
             end else begin
               execute_ALUPlugin_is_call = 1'b1;
@@ -1824,7 +2043,7 @@ module DandRiscvSimple (
       if(execute_ALUPlugin_jalr) begin
         if(execute_ALUPlugin_rd_is_link) begin
           if(execute_ALUPlugin_rs1_is_link) begin
-            if(!when_AluPlugin_l232) begin
+            if(!when_ALUPlugin_l231) begin
               execute_ALUPlugin_is_ret = 1'b1;
             end
           end
@@ -1860,7 +2079,7 @@ module DandRiscvSimple (
     execute_ALUPlugin_redirect_pc_next = 64'h0;
     if(execute_ALUPlugin_branch_or_jump) begin
       if(execute_ALUPlugin_branch_taken) begin
-        if(when_AluPlugin_l196) begin
+        if(when_ALUPlugin_l196) begin
           execute_ALUPlugin_redirect_pc_next = execute_ALUPlugin_pc_next;
         end
       end else begin
@@ -1875,7 +2094,7 @@ module DandRiscvSimple (
     execute_ALUPlugin_redirect_valid = 1'b0;
     if(execute_ALUPlugin_branch_or_jump) begin
       if(execute_ALUPlugin_branch_taken) begin
-        if(when_AluPlugin_l196) begin
+        if(when_ALUPlugin_l196) begin
           execute_ALUPlugin_redirect_valid = 1'b1;
         end
       end else begin
@@ -1886,9 +2105,9 @@ module DandRiscvSimple (
     end
   end
 
-  assign when_AluPlugin_l74 = (((execute_ALU_CTRL == AluCtrlEnum_AUIPC) || execute_ALUPlugin_jal) || execute_ALUPlugin_jalr);
+  assign when_ALUPlugin_l74 = (((execute_ALU_CTRL == AluCtrlEnum_AUIPC) || execute_ALUPlugin_jal) || execute_ALUPlugin_jalr);
   always @(*) begin
-    if(when_AluPlugin_l74) begin
+    if(when_ALUPlugin_l74) begin
       execute_ALUPlugin_src1 = execute_PC;
     end else begin
       if(execute_RS1_FROM_MEM) begin
@@ -1907,7 +2126,7 @@ module DandRiscvSimple (
     if(execute_SRC2_IS_IMM) begin
       execute_ALUPlugin_src2 = execute_IMM;
     end else begin
-      if(when_AluPlugin_l87) begin
+      if(when_ALUPlugin_l87) begin
         execute_ALUPlugin_src2 = 64'h0000000000000004;
       end else begin
         if(execute_RS2_FROM_MEM) begin
@@ -1923,7 +2142,7 @@ module DandRiscvSimple (
     end
   end
 
-  assign when_AluPlugin_l87 = (execute_ALUPlugin_jal || execute_ALUPlugin_jalr);
+  assign when_ALUPlugin_l87 = (execute_ALUPlugin_jal || execute_ALUPlugin_jalr);
   always @(*) begin
     if(execute_CTRL_RS1_FROM_MEM) begin
       execute_ALUPlugin_branch_src1 = _zz_execute_ALUPlugin_branch_src1;
@@ -1948,16 +2167,16 @@ module DandRiscvSimple (
     end
   end
 
-  assign when_AluPlugin_l118 = (execute_ALU_WORD == 1'b1);
+  assign when_ALUPlugin_l118 = (execute_ALU_WORD == 1'b1);
   always @(*) begin
     if((execute_ALU_CTRL == AluCtrlEnum_ADD) || (execute_ALU_CTRL == AluCtrlEnum_AUIPC)) begin
-        if(when_AluPlugin_l118) begin
+        if(when_ALUPlugin_l118) begin
           execute_ALUPlugin_alu_result = execute_ALUPlugin_addw_result;
         end else begin
           execute_ALUPlugin_alu_result = execute_ALUPlugin_add_result;
         end
     end else if((execute_ALU_CTRL == AluCtrlEnum_SUB)) begin
-        if(when_AluPlugin_l125) begin
+        if(when_ALUPlugin_l125) begin
           execute_ALUPlugin_alu_result = execute_ALUPlugin_subw_result;
         end else begin
           execute_ALUPlugin_alu_result = execute_ALUPlugin_sub_result;
@@ -1969,19 +2188,19 @@ module DandRiscvSimple (
     end else if((execute_ALU_CTRL == AluCtrlEnum_XOR_1)) begin
         execute_ALUPlugin_alu_result = execute_ALUPlugin_xor_result;
     end else if((execute_ALU_CTRL == AluCtrlEnum_SLL_1)) begin
-        if(when_AluPlugin_l141) begin
+        if(when_ALUPlugin_l141) begin
           execute_ALUPlugin_alu_result = execute_ALUPlugin_sllw_result;
         end else begin
           execute_ALUPlugin_alu_result = execute_ALUPlugin_sll_result;
         end
     end else if((execute_ALU_CTRL == AluCtrlEnum_SRL_1)) begin
-        if(when_AluPlugin_l148) begin
+        if(when_ALUPlugin_l148) begin
           execute_ALUPlugin_alu_result = execute_ALUPlugin_srlw_result;
         end else begin
           execute_ALUPlugin_alu_result = execute_ALUPlugin_srl_result;
         end
     end else if((execute_ALU_CTRL == AluCtrlEnum_SRA_1)) begin
-        if(when_AluPlugin_l155) begin
+        if(when_ALUPlugin_l155) begin
           execute_ALUPlugin_alu_result = execute_ALUPlugin_sraw_result;
         end else begin
           execute_ALUPlugin_alu_result = execute_ALUPlugin_sra_result;
@@ -1997,12 +2216,12 @@ module DandRiscvSimple (
     end
   end
 
-  assign when_AluPlugin_l125 = (execute_ALU_WORD == 1'b1);
+  assign when_ALUPlugin_l125 = (execute_ALU_WORD == 1'b1);
   assign _zz_execute_ALUPlugin_alu_result[62 : 0] = 63'h0;
   assign _zz_execute_ALUPlugin_alu_result_1[62 : 0] = 63'h0;
-  assign when_AluPlugin_l141 = (execute_ALU_WORD == 1'b1);
-  assign when_AluPlugin_l148 = (execute_ALU_WORD == 1'b1);
-  assign when_AluPlugin_l155 = (execute_ALU_WORD == 1'b1);
+  assign when_ALUPlugin_l141 = (execute_ALU_WORD == 1'b1);
+  assign when_ALUPlugin_l148 = (execute_ALU_WORD == 1'b1);
+  assign when_ALUPlugin_l155 = (execute_ALU_WORD == 1'b1);
   assign execute_ALUPlugin_beq_result = (execute_ALUPlugin_beq && (execute_ALUPlugin_branch_src1 == execute_ALUPlugin_branch_src2));
   assign execute_ALUPlugin_bne_result = (execute_ALUPlugin_bne && (execute_ALUPlugin_branch_src1 != execute_ALUPlugin_branch_src2));
   assign execute_ALUPlugin_blt_result = (execute_ALUPlugin_blt && ($signed(_zz_execute_ALUPlugin_blt_result) < $signed(_zz_execute_ALUPlugin_blt_result_1)));
@@ -2010,17 +2229,17 @@ module DandRiscvSimple (
   assign execute_ALUPlugin_bltu_result = (execute_ALUPlugin_bltu && (execute_ALUPlugin_branch_src1 < execute_ALUPlugin_branch_src2));
   assign execute_ALUPlugin_bgeu_result = (execute_ALUPlugin_bgeu && (execute_ALUPlugin_branch_src2 <= execute_ALUPlugin_branch_src1));
   assign execute_ALUPlugin_branch_taken = (((((((execute_ALUPlugin_beq_result || execute_ALUPlugin_bne_result) || execute_ALUPlugin_blt_result) || execute_ALUPlugin_bge_result) || execute_ALUPlugin_bltu_result) || execute_ALUPlugin_bgeu_result) || execute_ALUPlugin_jal) || execute_ALUPlugin_jalr);
-  assign when_AluPlugin_l188 = (execute_ALU_CTRL == AluCtrlEnum_JALR);
+  assign when_ALUPlugin_l188 = (execute_ALU_CTRL == AluCtrlEnum_JALR);
   always @(*) begin
-    if(when_AluPlugin_l188) begin
+    if(when_ALUPlugin_l188) begin
       execute_ALUPlugin_pc_next = _zz_execute_ALUPlugin_pc_next;
     end else begin
       execute_ALUPlugin_pc_next = _zz_execute_ALUPlugin_pc_next_6;
     end
   end
 
-  assign when_AluPlugin_l196 = ((! execute_BPU_BRANCH_TAKEN) || (execute_BPU_PC_NEXT != execute_ALUPlugin_pc_next));
-  assign when_AluPlugin_l232 = (execute_RD_ADDR == execute_RS1_ADDR);
+  assign when_ALUPlugin_l196 = ((! execute_BPU_BRANCH_TAKEN) || (execute_BPU_PC_NEXT != execute_ALUPlugin_pc_next));
+  assign when_ALUPlugin_l231 = (execute_RD_ADDR == execute_RS1_ADDR);
   assign DecodePlugin_control_ports_rs1_from_mem = ((_zz_DecodePlugin_control_ports_rs1_from_mem_2 && (_zz_DecodePlugin_control_ports_rs1_from_mem_1 != 5'h0)) && (_zz_DecodePlugin_control_ports_rs1_from_mem_1 == _zz_DecodePlugin_control_ports_rs1_from_mem));
   assign DecodePlugin_control_ports_rs2_from_mem = ((_zz_DecodePlugin_control_ports_rs1_from_mem_2 && (_zz_DecodePlugin_control_ports_rs1_from_mem_1 != 5'h0)) && (_zz_DecodePlugin_control_ports_rs1_from_mem_1 == _zz_DecodePlugin_control_ports_rs2_from_mem));
   assign DecodePlugin_control_ports_rs1_from_wb = (((_zz_DecodePlugin_control_ports_rs1_from_wb_2 && (_zz_DecodePlugin_control_ports_rs1_from_wb_1 != 5'h0)) && (_zz_DecodePlugin_control_ports_rs1_from_wb_1 == _zz_DecodePlugin_control_ports_rs1_from_mem)) && ((_zz_DecodePlugin_control_ports_rs1_from_mem_1 != _zz_DecodePlugin_control_ports_rs1_from_mem) || _zz_DecodePlugin_control_ports_rs1_from_wb));
@@ -2031,404 +2250,420 @@ module DandRiscvSimple (
   assign DecodePlugin_control_ports_ctrl_rs1_from_wb = (_zz_DecodePlugin_control_ports_ctrl_rs1_from_mem && DecodePlugin_control_ports_rs1_from_wb);
   assign DecodePlugin_control_ports_ctrl_rs2_from_wb = (_zz_DecodePlugin_control_ports_ctrl_rs1_from_mem && DecodePlugin_control_ports_rs2_from_wb);
   assign DecodePlugin_control_ports_ctrl_load_use = ((_zz_DecodePlugin_control_ports_ctrl_rs1_from_mem && _zz_DecodePlugin_control_ports_load_use_1) && ((_zz_DecodePlugin_control_ports_rs1_from_mem == _zz_DecodePlugin_control_ports_rs1_from_mem_1) || (_zz_DecodePlugin_control_ports_rs2_from_mem == _zz_DecodePlugin_control_ports_rs1_from_mem_1)));
-  assign _zz_memaccess_LsuPlugin_data_lb = DCachePlugin_dcache_access_rsp_payload_data[7];
+  assign fetch_arbitration_haltItself = ((fetch_LOAD_USE || fetch_INT_HOLD) || fetch_LSU_HOLD);
+  assign clint_1_ecall = (_zz_decode_to_execute_CSR_CTRL == CsrCtrlEnum_ECALL);
+  assign clint_1_ebreak = (_zz_decode_to_execute_CSR_CTRL == CsrCtrlEnum_EBREAK);
+  assign clint_1_mret = (_zz_decode_to_execute_CSR_CTRL == CsrCtrlEnum_MRET);
+  assign execute_ExcepPlugin_csrrs_wdata = (execute_RS1 | execute_CSR_RDATA);
+  assign execute_ExcepPlugin_csrrc_wdata = ((~ execute_RS1) & execute_CSR_RDATA);
+  assign execute_ExcepPlugin_csrrsi_wdata = (execute_IMM | execute_CSR_RDATA);
+  assign execute_ExcepPlugin_csrrci_wdata = ((~ execute_IMM) & execute_CSR_RDATA);
   always @(*) begin
-    _zz_memaccess_LsuPlugin_data_lb_1[55] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[54] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[53] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[52] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[51] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[50] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[49] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[48] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[47] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[46] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[45] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[44] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[43] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[42] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[41] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[40] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[39] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[38] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[37] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[36] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[35] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[34] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[33] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[32] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[31] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[30] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[29] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[28] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[27] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[26] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[25] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[24] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[23] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[22] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[21] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[20] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[19] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[18] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[17] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[16] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[15] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[14] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[13] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[12] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[11] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[10] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[9] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[8] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[7] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[6] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[5] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[4] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[3] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[2] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[1] = _zz_memaccess_LsuPlugin_data_lb;
-    _zz_memaccess_LsuPlugin_data_lb_1[0] = _zz_memaccess_LsuPlugin_data_lb;
+    if((execute_CSR_CTRL == CsrCtrlEnum_CSRRW)) begin
+        execute_ExcepPlugin_csr_wdata = execute_RS1;
+    end else if((execute_CSR_CTRL == CsrCtrlEnum_CSRRS)) begin
+        execute_ExcepPlugin_csr_wdata = execute_ExcepPlugin_csrrs_wdata;
+    end else if((execute_CSR_CTRL == CsrCtrlEnum_CSRRC)) begin
+        execute_ExcepPlugin_csr_wdata = execute_ExcepPlugin_csrrc_wdata;
+    end else if((execute_CSR_CTRL == CsrCtrlEnum_CSRRWI)) begin
+        execute_ExcepPlugin_csr_wdata = execute_IMM;
+    end else if((execute_CSR_CTRL == CsrCtrlEnum_CSRRSI)) begin
+        execute_ExcepPlugin_csr_wdata = execute_ExcepPlugin_csrrsi_wdata;
+    end else if((execute_CSR_CTRL == CsrCtrlEnum_CSRRCI)) begin
+        execute_ExcepPlugin_csr_wdata = execute_ExcepPlugin_csrrci_wdata;
+    end else begin
+        execute_ExcepPlugin_csr_wdata = 64'h0;
+    end
   end
 
-  assign memaccess_LsuPlugin_data_lb = {_zz_memaccess_LsuPlugin_data_lb_1,DCachePlugin_dcache_access_rsp_payload_data[7 : 0]};
-  assign _zz_1 = zz__zz_memaccess_LsuPlugin_data_lbu(1'b0);
-  always @(*) _zz_memaccess_LsuPlugin_data_lbu = _zz_1;
-  assign memaccess_LsuPlugin_data_lbu = {_zz_memaccess_LsuPlugin_data_lbu,DCachePlugin_dcache_access_rsp_payload_data[7 : 0]};
-  assign _zz_memaccess_LsuPlugin_data_lh = DCachePlugin_dcache_access_rsp_payload_data[15];
+  assign timer_1_addr = _zz_execute_MEM_WDATA_1;
+  assign memaccess_LSUPlugin_is_memacc = ((memaccess_IS_LOAD || memaccess_IS_STORE) && memaccess_arbitration_isFiring);
+  assign _zz_memaccess_LSUPlugin_data_lb = DCachePlugin_dcache_access_rsp_payload_data[7];
   always @(*) begin
-    _zz_memaccess_LsuPlugin_data_lh_1[47] = _zz_memaccess_LsuPlugin_data_lh;
-    _zz_memaccess_LsuPlugin_data_lh_1[46] = _zz_memaccess_LsuPlugin_data_lh;
-    _zz_memaccess_LsuPlugin_data_lh_1[45] = _zz_memaccess_LsuPlugin_data_lh;
-    _zz_memaccess_LsuPlugin_data_lh_1[44] = _zz_memaccess_LsuPlugin_data_lh;
-    _zz_memaccess_LsuPlugin_data_lh_1[43] = _zz_memaccess_LsuPlugin_data_lh;
-    _zz_memaccess_LsuPlugin_data_lh_1[42] = _zz_memaccess_LsuPlugin_data_lh;
-    _zz_memaccess_LsuPlugin_data_lh_1[41] = _zz_memaccess_LsuPlugin_data_lh;
-    _zz_memaccess_LsuPlugin_data_lh_1[40] = _zz_memaccess_LsuPlugin_data_lh;
-    _zz_memaccess_LsuPlugin_data_lh_1[39] = _zz_memaccess_LsuPlugin_data_lh;
-    _zz_memaccess_LsuPlugin_data_lh_1[38] = _zz_memaccess_LsuPlugin_data_lh;
-    _zz_memaccess_LsuPlugin_data_lh_1[37] = _zz_memaccess_LsuPlugin_data_lh;
-    _zz_memaccess_LsuPlugin_data_lh_1[36] = _zz_memaccess_LsuPlugin_data_lh;
-    _zz_memaccess_LsuPlugin_data_lh_1[35] = _zz_memaccess_LsuPlugin_data_lh;
-    _zz_memaccess_LsuPlugin_data_lh_1[34] = _zz_memaccess_LsuPlugin_data_lh;
-    _zz_memaccess_LsuPlugin_data_lh_1[33] = _zz_memaccess_LsuPlugin_data_lh;
-    _zz_memaccess_LsuPlugin_data_lh_1[32] = _zz_memaccess_LsuPlugin_data_lh;
-    _zz_memaccess_LsuPlugin_data_lh_1[31] = _zz_memaccess_LsuPlugin_data_lh;
-    _zz_memaccess_LsuPlugin_data_lh_1[30] = _zz_memaccess_LsuPlugin_data_lh;
-    _zz_memaccess_LsuPlugin_data_lh_1[29] = _zz_memaccess_LsuPlugin_data_lh;
-    _zz_memaccess_LsuPlugin_data_lh_1[28] = _zz_memaccess_LsuPlugin_data_lh;
-    _zz_memaccess_LsuPlugin_data_lh_1[27] = _zz_memaccess_LsuPlugin_data_lh;
-    _zz_memaccess_LsuPlugin_data_lh_1[26] = _zz_memaccess_LsuPlugin_data_lh;
-    _zz_memaccess_LsuPlugin_data_lh_1[25] = _zz_memaccess_LsuPlugin_data_lh;
-    _zz_memaccess_LsuPlugin_data_lh_1[24] = _zz_memaccess_LsuPlugin_data_lh;
-    _zz_memaccess_LsuPlugin_data_lh_1[23] = _zz_memaccess_LsuPlugin_data_lh;
-    _zz_memaccess_LsuPlugin_data_lh_1[22] = _zz_memaccess_LsuPlugin_data_lh;
-    _zz_memaccess_LsuPlugin_data_lh_1[21] = _zz_memaccess_LsuPlugin_data_lh;
-    _zz_memaccess_LsuPlugin_data_lh_1[20] = _zz_memaccess_LsuPlugin_data_lh;
-    _zz_memaccess_LsuPlugin_data_lh_1[19] = _zz_memaccess_LsuPlugin_data_lh;
-    _zz_memaccess_LsuPlugin_data_lh_1[18] = _zz_memaccess_LsuPlugin_data_lh;
-    _zz_memaccess_LsuPlugin_data_lh_1[17] = _zz_memaccess_LsuPlugin_data_lh;
-    _zz_memaccess_LsuPlugin_data_lh_1[16] = _zz_memaccess_LsuPlugin_data_lh;
-    _zz_memaccess_LsuPlugin_data_lh_1[15] = _zz_memaccess_LsuPlugin_data_lh;
-    _zz_memaccess_LsuPlugin_data_lh_1[14] = _zz_memaccess_LsuPlugin_data_lh;
-    _zz_memaccess_LsuPlugin_data_lh_1[13] = _zz_memaccess_LsuPlugin_data_lh;
-    _zz_memaccess_LsuPlugin_data_lh_1[12] = _zz_memaccess_LsuPlugin_data_lh;
-    _zz_memaccess_LsuPlugin_data_lh_1[11] = _zz_memaccess_LsuPlugin_data_lh;
-    _zz_memaccess_LsuPlugin_data_lh_1[10] = _zz_memaccess_LsuPlugin_data_lh;
-    _zz_memaccess_LsuPlugin_data_lh_1[9] = _zz_memaccess_LsuPlugin_data_lh;
-    _zz_memaccess_LsuPlugin_data_lh_1[8] = _zz_memaccess_LsuPlugin_data_lh;
-    _zz_memaccess_LsuPlugin_data_lh_1[7] = _zz_memaccess_LsuPlugin_data_lh;
-    _zz_memaccess_LsuPlugin_data_lh_1[6] = _zz_memaccess_LsuPlugin_data_lh;
-    _zz_memaccess_LsuPlugin_data_lh_1[5] = _zz_memaccess_LsuPlugin_data_lh;
-    _zz_memaccess_LsuPlugin_data_lh_1[4] = _zz_memaccess_LsuPlugin_data_lh;
-    _zz_memaccess_LsuPlugin_data_lh_1[3] = _zz_memaccess_LsuPlugin_data_lh;
-    _zz_memaccess_LsuPlugin_data_lh_1[2] = _zz_memaccess_LsuPlugin_data_lh;
-    _zz_memaccess_LsuPlugin_data_lh_1[1] = _zz_memaccess_LsuPlugin_data_lh;
-    _zz_memaccess_LsuPlugin_data_lh_1[0] = _zz_memaccess_LsuPlugin_data_lh;
+    _zz_memaccess_LSUPlugin_data_lb_1[55] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[54] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[53] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[52] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[51] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[50] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[49] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[48] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[47] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[46] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[45] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[44] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[43] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[42] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[41] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[40] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[39] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[38] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[37] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[36] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[35] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[34] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[33] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[32] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[31] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[30] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[29] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[28] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[27] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[26] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[25] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[24] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[23] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[22] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[21] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[20] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[19] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[18] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[17] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[16] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[15] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[14] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[13] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[12] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[11] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[10] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[9] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[8] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[7] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[6] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[5] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[4] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[3] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[2] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[1] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_data_lb_1[0] = _zz_memaccess_LSUPlugin_data_lb;
   end
 
-  assign memaccess_LsuPlugin_data_lh = {_zz_memaccess_LsuPlugin_data_lh_1,DCachePlugin_dcache_access_rsp_payload_data[15 : 0]};
-  assign _zz_2 = zz__zz_memaccess_LsuPlugin_data_lhu(1'b0);
-  always @(*) _zz_memaccess_LsuPlugin_data_lhu = _zz_2;
-  assign memaccess_LsuPlugin_data_lhu = {_zz_memaccess_LsuPlugin_data_lhu,DCachePlugin_dcache_access_rsp_payload_data[15 : 0]};
-  assign _zz_memaccess_LsuPlugin_data_lw = DCachePlugin_dcache_access_rsp_payload_data[31];
+  assign memaccess_LSUPlugin_data_lb = {_zz_memaccess_LSUPlugin_data_lb_1,DCachePlugin_dcache_access_rsp_payload_data[7 : 0]};
+  assign _zz_1 = zz__zz_memaccess_LSUPlugin_data_lbu(1'b0);
+  always @(*) _zz_memaccess_LSUPlugin_data_lbu = _zz_1;
+  assign memaccess_LSUPlugin_data_lbu = {_zz_memaccess_LSUPlugin_data_lbu,DCachePlugin_dcache_access_rsp_payload_data[7 : 0]};
+  assign _zz_memaccess_LSUPlugin_data_lh = DCachePlugin_dcache_access_rsp_payload_data[15];
   always @(*) begin
-    _zz_memaccess_LsuPlugin_data_lw_1[31] = _zz_memaccess_LsuPlugin_data_lw;
-    _zz_memaccess_LsuPlugin_data_lw_1[30] = _zz_memaccess_LsuPlugin_data_lw;
-    _zz_memaccess_LsuPlugin_data_lw_1[29] = _zz_memaccess_LsuPlugin_data_lw;
-    _zz_memaccess_LsuPlugin_data_lw_1[28] = _zz_memaccess_LsuPlugin_data_lw;
-    _zz_memaccess_LsuPlugin_data_lw_1[27] = _zz_memaccess_LsuPlugin_data_lw;
-    _zz_memaccess_LsuPlugin_data_lw_1[26] = _zz_memaccess_LsuPlugin_data_lw;
-    _zz_memaccess_LsuPlugin_data_lw_1[25] = _zz_memaccess_LsuPlugin_data_lw;
-    _zz_memaccess_LsuPlugin_data_lw_1[24] = _zz_memaccess_LsuPlugin_data_lw;
-    _zz_memaccess_LsuPlugin_data_lw_1[23] = _zz_memaccess_LsuPlugin_data_lw;
-    _zz_memaccess_LsuPlugin_data_lw_1[22] = _zz_memaccess_LsuPlugin_data_lw;
-    _zz_memaccess_LsuPlugin_data_lw_1[21] = _zz_memaccess_LsuPlugin_data_lw;
-    _zz_memaccess_LsuPlugin_data_lw_1[20] = _zz_memaccess_LsuPlugin_data_lw;
-    _zz_memaccess_LsuPlugin_data_lw_1[19] = _zz_memaccess_LsuPlugin_data_lw;
-    _zz_memaccess_LsuPlugin_data_lw_1[18] = _zz_memaccess_LsuPlugin_data_lw;
-    _zz_memaccess_LsuPlugin_data_lw_1[17] = _zz_memaccess_LsuPlugin_data_lw;
-    _zz_memaccess_LsuPlugin_data_lw_1[16] = _zz_memaccess_LsuPlugin_data_lw;
-    _zz_memaccess_LsuPlugin_data_lw_1[15] = _zz_memaccess_LsuPlugin_data_lw;
-    _zz_memaccess_LsuPlugin_data_lw_1[14] = _zz_memaccess_LsuPlugin_data_lw;
-    _zz_memaccess_LsuPlugin_data_lw_1[13] = _zz_memaccess_LsuPlugin_data_lw;
-    _zz_memaccess_LsuPlugin_data_lw_1[12] = _zz_memaccess_LsuPlugin_data_lw;
-    _zz_memaccess_LsuPlugin_data_lw_1[11] = _zz_memaccess_LsuPlugin_data_lw;
-    _zz_memaccess_LsuPlugin_data_lw_1[10] = _zz_memaccess_LsuPlugin_data_lw;
-    _zz_memaccess_LsuPlugin_data_lw_1[9] = _zz_memaccess_LsuPlugin_data_lw;
-    _zz_memaccess_LsuPlugin_data_lw_1[8] = _zz_memaccess_LsuPlugin_data_lw;
-    _zz_memaccess_LsuPlugin_data_lw_1[7] = _zz_memaccess_LsuPlugin_data_lw;
-    _zz_memaccess_LsuPlugin_data_lw_1[6] = _zz_memaccess_LsuPlugin_data_lw;
-    _zz_memaccess_LsuPlugin_data_lw_1[5] = _zz_memaccess_LsuPlugin_data_lw;
-    _zz_memaccess_LsuPlugin_data_lw_1[4] = _zz_memaccess_LsuPlugin_data_lw;
-    _zz_memaccess_LsuPlugin_data_lw_1[3] = _zz_memaccess_LsuPlugin_data_lw;
-    _zz_memaccess_LsuPlugin_data_lw_1[2] = _zz_memaccess_LsuPlugin_data_lw;
-    _zz_memaccess_LsuPlugin_data_lw_1[1] = _zz_memaccess_LsuPlugin_data_lw;
-    _zz_memaccess_LsuPlugin_data_lw_1[0] = _zz_memaccess_LsuPlugin_data_lw;
+    _zz_memaccess_LSUPlugin_data_lh_1[47] = _zz_memaccess_LSUPlugin_data_lh;
+    _zz_memaccess_LSUPlugin_data_lh_1[46] = _zz_memaccess_LSUPlugin_data_lh;
+    _zz_memaccess_LSUPlugin_data_lh_1[45] = _zz_memaccess_LSUPlugin_data_lh;
+    _zz_memaccess_LSUPlugin_data_lh_1[44] = _zz_memaccess_LSUPlugin_data_lh;
+    _zz_memaccess_LSUPlugin_data_lh_1[43] = _zz_memaccess_LSUPlugin_data_lh;
+    _zz_memaccess_LSUPlugin_data_lh_1[42] = _zz_memaccess_LSUPlugin_data_lh;
+    _zz_memaccess_LSUPlugin_data_lh_1[41] = _zz_memaccess_LSUPlugin_data_lh;
+    _zz_memaccess_LSUPlugin_data_lh_1[40] = _zz_memaccess_LSUPlugin_data_lh;
+    _zz_memaccess_LSUPlugin_data_lh_1[39] = _zz_memaccess_LSUPlugin_data_lh;
+    _zz_memaccess_LSUPlugin_data_lh_1[38] = _zz_memaccess_LSUPlugin_data_lh;
+    _zz_memaccess_LSUPlugin_data_lh_1[37] = _zz_memaccess_LSUPlugin_data_lh;
+    _zz_memaccess_LSUPlugin_data_lh_1[36] = _zz_memaccess_LSUPlugin_data_lh;
+    _zz_memaccess_LSUPlugin_data_lh_1[35] = _zz_memaccess_LSUPlugin_data_lh;
+    _zz_memaccess_LSUPlugin_data_lh_1[34] = _zz_memaccess_LSUPlugin_data_lh;
+    _zz_memaccess_LSUPlugin_data_lh_1[33] = _zz_memaccess_LSUPlugin_data_lh;
+    _zz_memaccess_LSUPlugin_data_lh_1[32] = _zz_memaccess_LSUPlugin_data_lh;
+    _zz_memaccess_LSUPlugin_data_lh_1[31] = _zz_memaccess_LSUPlugin_data_lh;
+    _zz_memaccess_LSUPlugin_data_lh_1[30] = _zz_memaccess_LSUPlugin_data_lh;
+    _zz_memaccess_LSUPlugin_data_lh_1[29] = _zz_memaccess_LSUPlugin_data_lh;
+    _zz_memaccess_LSUPlugin_data_lh_1[28] = _zz_memaccess_LSUPlugin_data_lh;
+    _zz_memaccess_LSUPlugin_data_lh_1[27] = _zz_memaccess_LSUPlugin_data_lh;
+    _zz_memaccess_LSUPlugin_data_lh_1[26] = _zz_memaccess_LSUPlugin_data_lh;
+    _zz_memaccess_LSUPlugin_data_lh_1[25] = _zz_memaccess_LSUPlugin_data_lh;
+    _zz_memaccess_LSUPlugin_data_lh_1[24] = _zz_memaccess_LSUPlugin_data_lh;
+    _zz_memaccess_LSUPlugin_data_lh_1[23] = _zz_memaccess_LSUPlugin_data_lh;
+    _zz_memaccess_LSUPlugin_data_lh_1[22] = _zz_memaccess_LSUPlugin_data_lh;
+    _zz_memaccess_LSUPlugin_data_lh_1[21] = _zz_memaccess_LSUPlugin_data_lh;
+    _zz_memaccess_LSUPlugin_data_lh_1[20] = _zz_memaccess_LSUPlugin_data_lh;
+    _zz_memaccess_LSUPlugin_data_lh_1[19] = _zz_memaccess_LSUPlugin_data_lh;
+    _zz_memaccess_LSUPlugin_data_lh_1[18] = _zz_memaccess_LSUPlugin_data_lh;
+    _zz_memaccess_LSUPlugin_data_lh_1[17] = _zz_memaccess_LSUPlugin_data_lh;
+    _zz_memaccess_LSUPlugin_data_lh_1[16] = _zz_memaccess_LSUPlugin_data_lh;
+    _zz_memaccess_LSUPlugin_data_lh_1[15] = _zz_memaccess_LSUPlugin_data_lh;
+    _zz_memaccess_LSUPlugin_data_lh_1[14] = _zz_memaccess_LSUPlugin_data_lh;
+    _zz_memaccess_LSUPlugin_data_lh_1[13] = _zz_memaccess_LSUPlugin_data_lh;
+    _zz_memaccess_LSUPlugin_data_lh_1[12] = _zz_memaccess_LSUPlugin_data_lh;
+    _zz_memaccess_LSUPlugin_data_lh_1[11] = _zz_memaccess_LSUPlugin_data_lh;
+    _zz_memaccess_LSUPlugin_data_lh_1[10] = _zz_memaccess_LSUPlugin_data_lh;
+    _zz_memaccess_LSUPlugin_data_lh_1[9] = _zz_memaccess_LSUPlugin_data_lh;
+    _zz_memaccess_LSUPlugin_data_lh_1[8] = _zz_memaccess_LSUPlugin_data_lh;
+    _zz_memaccess_LSUPlugin_data_lh_1[7] = _zz_memaccess_LSUPlugin_data_lh;
+    _zz_memaccess_LSUPlugin_data_lh_1[6] = _zz_memaccess_LSUPlugin_data_lh;
+    _zz_memaccess_LSUPlugin_data_lh_1[5] = _zz_memaccess_LSUPlugin_data_lh;
+    _zz_memaccess_LSUPlugin_data_lh_1[4] = _zz_memaccess_LSUPlugin_data_lh;
+    _zz_memaccess_LSUPlugin_data_lh_1[3] = _zz_memaccess_LSUPlugin_data_lh;
+    _zz_memaccess_LSUPlugin_data_lh_1[2] = _zz_memaccess_LSUPlugin_data_lh;
+    _zz_memaccess_LSUPlugin_data_lh_1[1] = _zz_memaccess_LSUPlugin_data_lh;
+    _zz_memaccess_LSUPlugin_data_lh_1[0] = _zz_memaccess_LSUPlugin_data_lh;
   end
 
-  assign memaccess_LsuPlugin_data_lw = {_zz_memaccess_LsuPlugin_data_lw_1,DCachePlugin_dcache_access_rsp_payload_data[31 : 0]};
-  assign _zz_3 = zz__zz_memaccess_LsuPlugin_data_lwu(1'b0);
-  always @(*) _zz_memaccess_LsuPlugin_data_lwu = _zz_3;
-  assign memaccess_LsuPlugin_data_lwu = {_zz_memaccess_LsuPlugin_data_lwu,DCachePlugin_dcache_access_rsp_payload_data[31 : 0]};
-  assign _zz_memaccess_LsuPlugin_wdata_sb = memaccess_MEM_WDATA[7];
+  assign memaccess_LSUPlugin_data_lh = {_zz_memaccess_LSUPlugin_data_lh_1,DCachePlugin_dcache_access_rsp_payload_data[15 : 0]};
+  assign _zz_2 = zz__zz_memaccess_LSUPlugin_data_lhu(1'b0);
+  always @(*) _zz_memaccess_LSUPlugin_data_lhu = _zz_2;
+  assign memaccess_LSUPlugin_data_lhu = {_zz_memaccess_LSUPlugin_data_lhu,DCachePlugin_dcache_access_rsp_payload_data[15 : 0]};
+  assign _zz_memaccess_LSUPlugin_data_lw = DCachePlugin_dcache_access_rsp_payload_data[31];
   always @(*) begin
-    _zz_memaccess_LsuPlugin_wdata_sb_1[55] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[54] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[53] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[52] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[51] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[50] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[49] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[48] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[47] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[46] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[45] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[44] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[43] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[42] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[41] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[40] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[39] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[38] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[37] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[36] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[35] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[34] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[33] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[32] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[31] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[30] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[29] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[28] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[27] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[26] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[25] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[24] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[23] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[22] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[21] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[20] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[19] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[18] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[17] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[16] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[15] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[14] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[13] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[12] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[11] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[10] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[9] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[8] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[7] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[6] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[5] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[4] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[3] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[2] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[1] = _zz_memaccess_LsuPlugin_wdata_sb;
-    _zz_memaccess_LsuPlugin_wdata_sb_1[0] = _zz_memaccess_LsuPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_data_lw_1[31] = _zz_memaccess_LSUPlugin_data_lw;
+    _zz_memaccess_LSUPlugin_data_lw_1[30] = _zz_memaccess_LSUPlugin_data_lw;
+    _zz_memaccess_LSUPlugin_data_lw_1[29] = _zz_memaccess_LSUPlugin_data_lw;
+    _zz_memaccess_LSUPlugin_data_lw_1[28] = _zz_memaccess_LSUPlugin_data_lw;
+    _zz_memaccess_LSUPlugin_data_lw_1[27] = _zz_memaccess_LSUPlugin_data_lw;
+    _zz_memaccess_LSUPlugin_data_lw_1[26] = _zz_memaccess_LSUPlugin_data_lw;
+    _zz_memaccess_LSUPlugin_data_lw_1[25] = _zz_memaccess_LSUPlugin_data_lw;
+    _zz_memaccess_LSUPlugin_data_lw_1[24] = _zz_memaccess_LSUPlugin_data_lw;
+    _zz_memaccess_LSUPlugin_data_lw_1[23] = _zz_memaccess_LSUPlugin_data_lw;
+    _zz_memaccess_LSUPlugin_data_lw_1[22] = _zz_memaccess_LSUPlugin_data_lw;
+    _zz_memaccess_LSUPlugin_data_lw_1[21] = _zz_memaccess_LSUPlugin_data_lw;
+    _zz_memaccess_LSUPlugin_data_lw_1[20] = _zz_memaccess_LSUPlugin_data_lw;
+    _zz_memaccess_LSUPlugin_data_lw_1[19] = _zz_memaccess_LSUPlugin_data_lw;
+    _zz_memaccess_LSUPlugin_data_lw_1[18] = _zz_memaccess_LSUPlugin_data_lw;
+    _zz_memaccess_LSUPlugin_data_lw_1[17] = _zz_memaccess_LSUPlugin_data_lw;
+    _zz_memaccess_LSUPlugin_data_lw_1[16] = _zz_memaccess_LSUPlugin_data_lw;
+    _zz_memaccess_LSUPlugin_data_lw_1[15] = _zz_memaccess_LSUPlugin_data_lw;
+    _zz_memaccess_LSUPlugin_data_lw_1[14] = _zz_memaccess_LSUPlugin_data_lw;
+    _zz_memaccess_LSUPlugin_data_lw_1[13] = _zz_memaccess_LSUPlugin_data_lw;
+    _zz_memaccess_LSUPlugin_data_lw_1[12] = _zz_memaccess_LSUPlugin_data_lw;
+    _zz_memaccess_LSUPlugin_data_lw_1[11] = _zz_memaccess_LSUPlugin_data_lw;
+    _zz_memaccess_LSUPlugin_data_lw_1[10] = _zz_memaccess_LSUPlugin_data_lw;
+    _zz_memaccess_LSUPlugin_data_lw_1[9] = _zz_memaccess_LSUPlugin_data_lw;
+    _zz_memaccess_LSUPlugin_data_lw_1[8] = _zz_memaccess_LSUPlugin_data_lw;
+    _zz_memaccess_LSUPlugin_data_lw_1[7] = _zz_memaccess_LSUPlugin_data_lw;
+    _zz_memaccess_LSUPlugin_data_lw_1[6] = _zz_memaccess_LSUPlugin_data_lw;
+    _zz_memaccess_LSUPlugin_data_lw_1[5] = _zz_memaccess_LSUPlugin_data_lw;
+    _zz_memaccess_LSUPlugin_data_lw_1[4] = _zz_memaccess_LSUPlugin_data_lw;
+    _zz_memaccess_LSUPlugin_data_lw_1[3] = _zz_memaccess_LSUPlugin_data_lw;
+    _zz_memaccess_LSUPlugin_data_lw_1[2] = _zz_memaccess_LSUPlugin_data_lw;
+    _zz_memaccess_LSUPlugin_data_lw_1[1] = _zz_memaccess_LSUPlugin_data_lw;
+    _zz_memaccess_LSUPlugin_data_lw_1[0] = _zz_memaccess_LSUPlugin_data_lw;
   end
 
-  assign memaccess_LsuPlugin_wdata_sb = {_zz_memaccess_LsuPlugin_wdata_sb_1,memaccess_MEM_WDATA[7 : 0]};
-  assign _zz_memaccess_LsuPlugin_wdata_sh = memaccess_MEM_WDATA[15];
+  assign memaccess_LSUPlugin_data_lw = {_zz_memaccess_LSUPlugin_data_lw_1,DCachePlugin_dcache_access_rsp_payload_data[31 : 0]};
+  assign _zz_3 = zz__zz_memaccess_LSUPlugin_data_lwu(1'b0);
+  always @(*) _zz_memaccess_LSUPlugin_data_lwu = _zz_3;
+  assign memaccess_LSUPlugin_data_lwu = {_zz_memaccess_LSUPlugin_data_lwu,DCachePlugin_dcache_access_rsp_payload_data[31 : 0]};
+  assign _zz_memaccess_LSUPlugin_wdata_sb = memaccess_MEM_WDATA[7];
   always @(*) begin
-    _zz_memaccess_LsuPlugin_wdata_sh_1[47] = _zz_memaccess_LsuPlugin_wdata_sh;
-    _zz_memaccess_LsuPlugin_wdata_sh_1[46] = _zz_memaccess_LsuPlugin_wdata_sh;
-    _zz_memaccess_LsuPlugin_wdata_sh_1[45] = _zz_memaccess_LsuPlugin_wdata_sh;
-    _zz_memaccess_LsuPlugin_wdata_sh_1[44] = _zz_memaccess_LsuPlugin_wdata_sh;
-    _zz_memaccess_LsuPlugin_wdata_sh_1[43] = _zz_memaccess_LsuPlugin_wdata_sh;
-    _zz_memaccess_LsuPlugin_wdata_sh_1[42] = _zz_memaccess_LsuPlugin_wdata_sh;
-    _zz_memaccess_LsuPlugin_wdata_sh_1[41] = _zz_memaccess_LsuPlugin_wdata_sh;
-    _zz_memaccess_LsuPlugin_wdata_sh_1[40] = _zz_memaccess_LsuPlugin_wdata_sh;
-    _zz_memaccess_LsuPlugin_wdata_sh_1[39] = _zz_memaccess_LsuPlugin_wdata_sh;
-    _zz_memaccess_LsuPlugin_wdata_sh_1[38] = _zz_memaccess_LsuPlugin_wdata_sh;
-    _zz_memaccess_LsuPlugin_wdata_sh_1[37] = _zz_memaccess_LsuPlugin_wdata_sh;
-    _zz_memaccess_LsuPlugin_wdata_sh_1[36] = _zz_memaccess_LsuPlugin_wdata_sh;
-    _zz_memaccess_LsuPlugin_wdata_sh_1[35] = _zz_memaccess_LsuPlugin_wdata_sh;
-    _zz_memaccess_LsuPlugin_wdata_sh_1[34] = _zz_memaccess_LsuPlugin_wdata_sh;
-    _zz_memaccess_LsuPlugin_wdata_sh_1[33] = _zz_memaccess_LsuPlugin_wdata_sh;
-    _zz_memaccess_LsuPlugin_wdata_sh_1[32] = _zz_memaccess_LsuPlugin_wdata_sh;
-    _zz_memaccess_LsuPlugin_wdata_sh_1[31] = _zz_memaccess_LsuPlugin_wdata_sh;
-    _zz_memaccess_LsuPlugin_wdata_sh_1[30] = _zz_memaccess_LsuPlugin_wdata_sh;
-    _zz_memaccess_LsuPlugin_wdata_sh_1[29] = _zz_memaccess_LsuPlugin_wdata_sh;
-    _zz_memaccess_LsuPlugin_wdata_sh_1[28] = _zz_memaccess_LsuPlugin_wdata_sh;
-    _zz_memaccess_LsuPlugin_wdata_sh_1[27] = _zz_memaccess_LsuPlugin_wdata_sh;
-    _zz_memaccess_LsuPlugin_wdata_sh_1[26] = _zz_memaccess_LsuPlugin_wdata_sh;
-    _zz_memaccess_LsuPlugin_wdata_sh_1[25] = _zz_memaccess_LsuPlugin_wdata_sh;
-    _zz_memaccess_LsuPlugin_wdata_sh_1[24] = _zz_memaccess_LsuPlugin_wdata_sh;
-    _zz_memaccess_LsuPlugin_wdata_sh_1[23] = _zz_memaccess_LsuPlugin_wdata_sh;
-    _zz_memaccess_LsuPlugin_wdata_sh_1[22] = _zz_memaccess_LsuPlugin_wdata_sh;
-    _zz_memaccess_LsuPlugin_wdata_sh_1[21] = _zz_memaccess_LsuPlugin_wdata_sh;
-    _zz_memaccess_LsuPlugin_wdata_sh_1[20] = _zz_memaccess_LsuPlugin_wdata_sh;
-    _zz_memaccess_LsuPlugin_wdata_sh_1[19] = _zz_memaccess_LsuPlugin_wdata_sh;
-    _zz_memaccess_LsuPlugin_wdata_sh_1[18] = _zz_memaccess_LsuPlugin_wdata_sh;
-    _zz_memaccess_LsuPlugin_wdata_sh_1[17] = _zz_memaccess_LsuPlugin_wdata_sh;
-    _zz_memaccess_LsuPlugin_wdata_sh_1[16] = _zz_memaccess_LsuPlugin_wdata_sh;
-    _zz_memaccess_LsuPlugin_wdata_sh_1[15] = _zz_memaccess_LsuPlugin_wdata_sh;
-    _zz_memaccess_LsuPlugin_wdata_sh_1[14] = _zz_memaccess_LsuPlugin_wdata_sh;
-    _zz_memaccess_LsuPlugin_wdata_sh_1[13] = _zz_memaccess_LsuPlugin_wdata_sh;
-    _zz_memaccess_LsuPlugin_wdata_sh_1[12] = _zz_memaccess_LsuPlugin_wdata_sh;
-    _zz_memaccess_LsuPlugin_wdata_sh_1[11] = _zz_memaccess_LsuPlugin_wdata_sh;
-    _zz_memaccess_LsuPlugin_wdata_sh_1[10] = _zz_memaccess_LsuPlugin_wdata_sh;
-    _zz_memaccess_LsuPlugin_wdata_sh_1[9] = _zz_memaccess_LsuPlugin_wdata_sh;
-    _zz_memaccess_LsuPlugin_wdata_sh_1[8] = _zz_memaccess_LsuPlugin_wdata_sh;
-    _zz_memaccess_LsuPlugin_wdata_sh_1[7] = _zz_memaccess_LsuPlugin_wdata_sh;
-    _zz_memaccess_LsuPlugin_wdata_sh_1[6] = _zz_memaccess_LsuPlugin_wdata_sh;
-    _zz_memaccess_LsuPlugin_wdata_sh_1[5] = _zz_memaccess_LsuPlugin_wdata_sh;
-    _zz_memaccess_LsuPlugin_wdata_sh_1[4] = _zz_memaccess_LsuPlugin_wdata_sh;
-    _zz_memaccess_LsuPlugin_wdata_sh_1[3] = _zz_memaccess_LsuPlugin_wdata_sh;
-    _zz_memaccess_LsuPlugin_wdata_sh_1[2] = _zz_memaccess_LsuPlugin_wdata_sh;
-    _zz_memaccess_LsuPlugin_wdata_sh_1[1] = _zz_memaccess_LsuPlugin_wdata_sh;
-    _zz_memaccess_LsuPlugin_wdata_sh_1[0] = _zz_memaccess_LsuPlugin_wdata_sh;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[55] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[54] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[53] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[52] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[51] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[50] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[49] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[48] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[47] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[46] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[45] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[44] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[43] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[42] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[41] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[40] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[39] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[38] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[37] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[36] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[35] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[34] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[33] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[32] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[31] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[30] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[29] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[28] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[27] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[26] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[25] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[24] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[23] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[22] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[21] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[20] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[19] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[18] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[17] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[16] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[15] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[14] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[13] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[12] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[11] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[10] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[9] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[8] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[7] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[6] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[5] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[4] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[3] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[2] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[1] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_wdata_sb_1[0] = _zz_memaccess_LSUPlugin_wdata_sb;
   end
 
-  assign memaccess_LsuPlugin_wdata_sh = {_zz_memaccess_LsuPlugin_wdata_sh_1,memaccess_MEM_WDATA[15 : 0]};
-  assign _zz_memaccess_LsuPlugin_wdata_sw = memaccess_MEM_WDATA[31];
+  assign memaccess_LSUPlugin_wdata_sb = {_zz_memaccess_LSUPlugin_wdata_sb_1,memaccess_MEM_WDATA[7 : 0]};
+  assign _zz_memaccess_LSUPlugin_wdata_sh = memaccess_MEM_WDATA[15];
   always @(*) begin
-    _zz_memaccess_LsuPlugin_wdata_sw_1[31] = _zz_memaccess_LsuPlugin_wdata_sw;
-    _zz_memaccess_LsuPlugin_wdata_sw_1[30] = _zz_memaccess_LsuPlugin_wdata_sw;
-    _zz_memaccess_LsuPlugin_wdata_sw_1[29] = _zz_memaccess_LsuPlugin_wdata_sw;
-    _zz_memaccess_LsuPlugin_wdata_sw_1[28] = _zz_memaccess_LsuPlugin_wdata_sw;
-    _zz_memaccess_LsuPlugin_wdata_sw_1[27] = _zz_memaccess_LsuPlugin_wdata_sw;
-    _zz_memaccess_LsuPlugin_wdata_sw_1[26] = _zz_memaccess_LsuPlugin_wdata_sw;
-    _zz_memaccess_LsuPlugin_wdata_sw_1[25] = _zz_memaccess_LsuPlugin_wdata_sw;
-    _zz_memaccess_LsuPlugin_wdata_sw_1[24] = _zz_memaccess_LsuPlugin_wdata_sw;
-    _zz_memaccess_LsuPlugin_wdata_sw_1[23] = _zz_memaccess_LsuPlugin_wdata_sw;
-    _zz_memaccess_LsuPlugin_wdata_sw_1[22] = _zz_memaccess_LsuPlugin_wdata_sw;
-    _zz_memaccess_LsuPlugin_wdata_sw_1[21] = _zz_memaccess_LsuPlugin_wdata_sw;
-    _zz_memaccess_LsuPlugin_wdata_sw_1[20] = _zz_memaccess_LsuPlugin_wdata_sw;
-    _zz_memaccess_LsuPlugin_wdata_sw_1[19] = _zz_memaccess_LsuPlugin_wdata_sw;
-    _zz_memaccess_LsuPlugin_wdata_sw_1[18] = _zz_memaccess_LsuPlugin_wdata_sw;
-    _zz_memaccess_LsuPlugin_wdata_sw_1[17] = _zz_memaccess_LsuPlugin_wdata_sw;
-    _zz_memaccess_LsuPlugin_wdata_sw_1[16] = _zz_memaccess_LsuPlugin_wdata_sw;
-    _zz_memaccess_LsuPlugin_wdata_sw_1[15] = _zz_memaccess_LsuPlugin_wdata_sw;
-    _zz_memaccess_LsuPlugin_wdata_sw_1[14] = _zz_memaccess_LsuPlugin_wdata_sw;
-    _zz_memaccess_LsuPlugin_wdata_sw_1[13] = _zz_memaccess_LsuPlugin_wdata_sw;
-    _zz_memaccess_LsuPlugin_wdata_sw_1[12] = _zz_memaccess_LsuPlugin_wdata_sw;
-    _zz_memaccess_LsuPlugin_wdata_sw_1[11] = _zz_memaccess_LsuPlugin_wdata_sw;
-    _zz_memaccess_LsuPlugin_wdata_sw_1[10] = _zz_memaccess_LsuPlugin_wdata_sw;
-    _zz_memaccess_LsuPlugin_wdata_sw_1[9] = _zz_memaccess_LsuPlugin_wdata_sw;
-    _zz_memaccess_LsuPlugin_wdata_sw_1[8] = _zz_memaccess_LsuPlugin_wdata_sw;
-    _zz_memaccess_LsuPlugin_wdata_sw_1[7] = _zz_memaccess_LsuPlugin_wdata_sw;
-    _zz_memaccess_LsuPlugin_wdata_sw_1[6] = _zz_memaccess_LsuPlugin_wdata_sw;
-    _zz_memaccess_LsuPlugin_wdata_sw_1[5] = _zz_memaccess_LsuPlugin_wdata_sw;
-    _zz_memaccess_LsuPlugin_wdata_sw_1[4] = _zz_memaccess_LsuPlugin_wdata_sw;
-    _zz_memaccess_LsuPlugin_wdata_sw_1[3] = _zz_memaccess_LsuPlugin_wdata_sw;
-    _zz_memaccess_LsuPlugin_wdata_sw_1[2] = _zz_memaccess_LsuPlugin_wdata_sw;
-    _zz_memaccess_LsuPlugin_wdata_sw_1[1] = _zz_memaccess_LsuPlugin_wdata_sw;
-    _zz_memaccess_LsuPlugin_wdata_sw_1[0] = _zz_memaccess_LsuPlugin_wdata_sw;
+    _zz_memaccess_LSUPlugin_wdata_sh_1[47] = _zz_memaccess_LSUPlugin_wdata_sh;
+    _zz_memaccess_LSUPlugin_wdata_sh_1[46] = _zz_memaccess_LSUPlugin_wdata_sh;
+    _zz_memaccess_LSUPlugin_wdata_sh_1[45] = _zz_memaccess_LSUPlugin_wdata_sh;
+    _zz_memaccess_LSUPlugin_wdata_sh_1[44] = _zz_memaccess_LSUPlugin_wdata_sh;
+    _zz_memaccess_LSUPlugin_wdata_sh_1[43] = _zz_memaccess_LSUPlugin_wdata_sh;
+    _zz_memaccess_LSUPlugin_wdata_sh_1[42] = _zz_memaccess_LSUPlugin_wdata_sh;
+    _zz_memaccess_LSUPlugin_wdata_sh_1[41] = _zz_memaccess_LSUPlugin_wdata_sh;
+    _zz_memaccess_LSUPlugin_wdata_sh_1[40] = _zz_memaccess_LSUPlugin_wdata_sh;
+    _zz_memaccess_LSUPlugin_wdata_sh_1[39] = _zz_memaccess_LSUPlugin_wdata_sh;
+    _zz_memaccess_LSUPlugin_wdata_sh_1[38] = _zz_memaccess_LSUPlugin_wdata_sh;
+    _zz_memaccess_LSUPlugin_wdata_sh_1[37] = _zz_memaccess_LSUPlugin_wdata_sh;
+    _zz_memaccess_LSUPlugin_wdata_sh_1[36] = _zz_memaccess_LSUPlugin_wdata_sh;
+    _zz_memaccess_LSUPlugin_wdata_sh_1[35] = _zz_memaccess_LSUPlugin_wdata_sh;
+    _zz_memaccess_LSUPlugin_wdata_sh_1[34] = _zz_memaccess_LSUPlugin_wdata_sh;
+    _zz_memaccess_LSUPlugin_wdata_sh_1[33] = _zz_memaccess_LSUPlugin_wdata_sh;
+    _zz_memaccess_LSUPlugin_wdata_sh_1[32] = _zz_memaccess_LSUPlugin_wdata_sh;
+    _zz_memaccess_LSUPlugin_wdata_sh_1[31] = _zz_memaccess_LSUPlugin_wdata_sh;
+    _zz_memaccess_LSUPlugin_wdata_sh_1[30] = _zz_memaccess_LSUPlugin_wdata_sh;
+    _zz_memaccess_LSUPlugin_wdata_sh_1[29] = _zz_memaccess_LSUPlugin_wdata_sh;
+    _zz_memaccess_LSUPlugin_wdata_sh_1[28] = _zz_memaccess_LSUPlugin_wdata_sh;
+    _zz_memaccess_LSUPlugin_wdata_sh_1[27] = _zz_memaccess_LSUPlugin_wdata_sh;
+    _zz_memaccess_LSUPlugin_wdata_sh_1[26] = _zz_memaccess_LSUPlugin_wdata_sh;
+    _zz_memaccess_LSUPlugin_wdata_sh_1[25] = _zz_memaccess_LSUPlugin_wdata_sh;
+    _zz_memaccess_LSUPlugin_wdata_sh_1[24] = _zz_memaccess_LSUPlugin_wdata_sh;
+    _zz_memaccess_LSUPlugin_wdata_sh_1[23] = _zz_memaccess_LSUPlugin_wdata_sh;
+    _zz_memaccess_LSUPlugin_wdata_sh_1[22] = _zz_memaccess_LSUPlugin_wdata_sh;
+    _zz_memaccess_LSUPlugin_wdata_sh_1[21] = _zz_memaccess_LSUPlugin_wdata_sh;
+    _zz_memaccess_LSUPlugin_wdata_sh_1[20] = _zz_memaccess_LSUPlugin_wdata_sh;
+    _zz_memaccess_LSUPlugin_wdata_sh_1[19] = _zz_memaccess_LSUPlugin_wdata_sh;
+    _zz_memaccess_LSUPlugin_wdata_sh_1[18] = _zz_memaccess_LSUPlugin_wdata_sh;
+    _zz_memaccess_LSUPlugin_wdata_sh_1[17] = _zz_memaccess_LSUPlugin_wdata_sh;
+    _zz_memaccess_LSUPlugin_wdata_sh_1[16] = _zz_memaccess_LSUPlugin_wdata_sh;
+    _zz_memaccess_LSUPlugin_wdata_sh_1[15] = _zz_memaccess_LSUPlugin_wdata_sh;
+    _zz_memaccess_LSUPlugin_wdata_sh_1[14] = _zz_memaccess_LSUPlugin_wdata_sh;
+    _zz_memaccess_LSUPlugin_wdata_sh_1[13] = _zz_memaccess_LSUPlugin_wdata_sh;
+    _zz_memaccess_LSUPlugin_wdata_sh_1[12] = _zz_memaccess_LSUPlugin_wdata_sh;
+    _zz_memaccess_LSUPlugin_wdata_sh_1[11] = _zz_memaccess_LSUPlugin_wdata_sh;
+    _zz_memaccess_LSUPlugin_wdata_sh_1[10] = _zz_memaccess_LSUPlugin_wdata_sh;
+    _zz_memaccess_LSUPlugin_wdata_sh_1[9] = _zz_memaccess_LSUPlugin_wdata_sh;
+    _zz_memaccess_LSUPlugin_wdata_sh_1[8] = _zz_memaccess_LSUPlugin_wdata_sh;
+    _zz_memaccess_LSUPlugin_wdata_sh_1[7] = _zz_memaccess_LSUPlugin_wdata_sh;
+    _zz_memaccess_LSUPlugin_wdata_sh_1[6] = _zz_memaccess_LSUPlugin_wdata_sh;
+    _zz_memaccess_LSUPlugin_wdata_sh_1[5] = _zz_memaccess_LSUPlugin_wdata_sh;
+    _zz_memaccess_LSUPlugin_wdata_sh_1[4] = _zz_memaccess_LSUPlugin_wdata_sh;
+    _zz_memaccess_LSUPlugin_wdata_sh_1[3] = _zz_memaccess_LSUPlugin_wdata_sh;
+    _zz_memaccess_LSUPlugin_wdata_sh_1[2] = _zz_memaccess_LSUPlugin_wdata_sh;
+    _zz_memaccess_LSUPlugin_wdata_sh_1[1] = _zz_memaccess_LSUPlugin_wdata_sh;
+    _zz_memaccess_LSUPlugin_wdata_sh_1[0] = _zz_memaccess_LSUPlugin_wdata_sh;
   end
 
-  assign memaccess_LsuPlugin_wdata_sw = {_zz_memaccess_LsuPlugin_wdata_sw_1,memaccess_MEM_WDATA[31 : 0]};
-  assign memaccess_LsuPlugin_addr_dcache = memaccess_ALU_RESULT;
+  assign memaccess_LSUPlugin_wdata_sh = {_zz_memaccess_LSUPlugin_wdata_sh_1,memaccess_MEM_WDATA[15 : 0]};
+  assign _zz_memaccess_LSUPlugin_wdata_sw = memaccess_MEM_WDATA[31];
+  always @(*) begin
+    _zz_memaccess_LSUPlugin_wdata_sw_1[31] = _zz_memaccess_LSUPlugin_wdata_sw;
+    _zz_memaccess_LSUPlugin_wdata_sw_1[30] = _zz_memaccess_LSUPlugin_wdata_sw;
+    _zz_memaccess_LSUPlugin_wdata_sw_1[29] = _zz_memaccess_LSUPlugin_wdata_sw;
+    _zz_memaccess_LSUPlugin_wdata_sw_1[28] = _zz_memaccess_LSUPlugin_wdata_sw;
+    _zz_memaccess_LSUPlugin_wdata_sw_1[27] = _zz_memaccess_LSUPlugin_wdata_sw;
+    _zz_memaccess_LSUPlugin_wdata_sw_1[26] = _zz_memaccess_LSUPlugin_wdata_sw;
+    _zz_memaccess_LSUPlugin_wdata_sw_1[25] = _zz_memaccess_LSUPlugin_wdata_sw;
+    _zz_memaccess_LSUPlugin_wdata_sw_1[24] = _zz_memaccess_LSUPlugin_wdata_sw;
+    _zz_memaccess_LSUPlugin_wdata_sw_1[23] = _zz_memaccess_LSUPlugin_wdata_sw;
+    _zz_memaccess_LSUPlugin_wdata_sw_1[22] = _zz_memaccess_LSUPlugin_wdata_sw;
+    _zz_memaccess_LSUPlugin_wdata_sw_1[21] = _zz_memaccess_LSUPlugin_wdata_sw;
+    _zz_memaccess_LSUPlugin_wdata_sw_1[20] = _zz_memaccess_LSUPlugin_wdata_sw;
+    _zz_memaccess_LSUPlugin_wdata_sw_1[19] = _zz_memaccess_LSUPlugin_wdata_sw;
+    _zz_memaccess_LSUPlugin_wdata_sw_1[18] = _zz_memaccess_LSUPlugin_wdata_sw;
+    _zz_memaccess_LSUPlugin_wdata_sw_1[17] = _zz_memaccess_LSUPlugin_wdata_sw;
+    _zz_memaccess_LSUPlugin_wdata_sw_1[16] = _zz_memaccess_LSUPlugin_wdata_sw;
+    _zz_memaccess_LSUPlugin_wdata_sw_1[15] = _zz_memaccess_LSUPlugin_wdata_sw;
+    _zz_memaccess_LSUPlugin_wdata_sw_1[14] = _zz_memaccess_LSUPlugin_wdata_sw;
+    _zz_memaccess_LSUPlugin_wdata_sw_1[13] = _zz_memaccess_LSUPlugin_wdata_sw;
+    _zz_memaccess_LSUPlugin_wdata_sw_1[12] = _zz_memaccess_LSUPlugin_wdata_sw;
+    _zz_memaccess_LSUPlugin_wdata_sw_1[11] = _zz_memaccess_LSUPlugin_wdata_sw;
+    _zz_memaccess_LSUPlugin_wdata_sw_1[10] = _zz_memaccess_LSUPlugin_wdata_sw;
+    _zz_memaccess_LSUPlugin_wdata_sw_1[9] = _zz_memaccess_LSUPlugin_wdata_sw;
+    _zz_memaccess_LSUPlugin_wdata_sw_1[8] = _zz_memaccess_LSUPlugin_wdata_sw;
+    _zz_memaccess_LSUPlugin_wdata_sw_1[7] = _zz_memaccess_LSUPlugin_wdata_sw;
+    _zz_memaccess_LSUPlugin_wdata_sw_1[6] = _zz_memaccess_LSUPlugin_wdata_sw;
+    _zz_memaccess_LSUPlugin_wdata_sw_1[5] = _zz_memaccess_LSUPlugin_wdata_sw;
+    _zz_memaccess_LSUPlugin_wdata_sw_1[4] = _zz_memaccess_LSUPlugin_wdata_sw;
+    _zz_memaccess_LSUPlugin_wdata_sw_1[3] = _zz_memaccess_LSUPlugin_wdata_sw;
+    _zz_memaccess_LSUPlugin_wdata_sw_1[2] = _zz_memaccess_LSUPlugin_wdata_sw;
+    _zz_memaccess_LSUPlugin_wdata_sw_1[1] = _zz_memaccess_LSUPlugin_wdata_sw;
+    _zz_memaccess_LSUPlugin_wdata_sw_1[0] = _zz_memaccess_LSUPlugin_wdata_sw;
+  end
+
+  assign memaccess_LSUPlugin_wdata_sw = {_zz_memaccess_LSUPlugin_wdata_sw_1,memaccess_MEM_WDATA[31 : 0]};
+  assign memaccess_LSUPlugin_addr = memaccess_ALU_RESULT;
   always @(*) begin
     if((memaccess_MEM_CTRL == MemCtrlEnum_LB)) begin
-        memaccess_LsuPlugin_data_load = memaccess_LsuPlugin_data_lb;
+        memaccess_LSUPlugin_data_load = memaccess_LSUPlugin_data_lb;
     end else if((memaccess_MEM_CTRL == MemCtrlEnum_LBU)) begin
-        memaccess_LsuPlugin_data_load = memaccess_LsuPlugin_data_lbu;
+        memaccess_LSUPlugin_data_load = memaccess_LSUPlugin_data_lbu;
     end else if((memaccess_MEM_CTRL == MemCtrlEnum_LH)) begin
-        memaccess_LsuPlugin_data_load = memaccess_LsuPlugin_data_lh;
+        memaccess_LSUPlugin_data_load = memaccess_LSUPlugin_data_lh;
     end else if((memaccess_MEM_CTRL == MemCtrlEnum_LHU)) begin
-        memaccess_LsuPlugin_data_load = memaccess_LsuPlugin_data_lhu;
+        memaccess_LSUPlugin_data_load = memaccess_LSUPlugin_data_lhu;
     end else if((memaccess_MEM_CTRL == MemCtrlEnum_LW)) begin
-        memaccess_LsuPlugin_data_load = memaccess_LsuPlugin_data_lw;
+        memaccess_LSUPlugin_data_load = memaccess_LSUPlugin_data_lw;
     end else if((memaccess_MEM_CTRL == MemCtrlEnum_LWU)) begin
-        memaccess_LsuPlugin_data_load = memaccess_LsuPlugin_data_lwu;
+        memaccess_LSUPlugin_data_load = memaccess_LSUPlugin_data_lwu;
     end else begin
-        memaccess_LsuPlugin_data_load = 64'h0;
+        memaccess_LSUPlugin_data_load = 64'h0;
     end
   end
 
   always @(*) begin
     if((memaccess_MEM_CTRL == MemCtrlEnum_SB)) begin
-        memaccess_LsuPlugin_wen_dcache = 1'b1;
+        memaccess_LSUPlugin_wdata = memaccess_LSUPlugin_wdata_sb;
     end else if((memaccess_MEM_CTRL == MemCtrlEnum_SH)) begin
-        memaccess_LsuPlugin_wen_dcache = 1'b1;
+        memaccess_LSUPlugin_wdata = memaccess_LSUPlugin_wdata_sh;
     end else if((memaccess_MEM_CTRL == MemCtrlEnum_SW)) begin
-        memaccess_LsuPlugin_wen_dcache = 1'b1;
+        memaccess_LSUPlugin_wdata = memaccess_LSUPlugin_wdata_sw;
     end else if((memaccess_MEM_CTRL == MemCtrlEnum_SD)) begin
-        memaccess_LsuPlugin_wen_dcache = 1'b1;
+        memaccess_LSUPlugin_wdata = memaccess_MEM_WDATA;
     end else begin
-        memaccess_LsuPlugin_wen_dcache = 1'b0;
+        memaccess_LSUPlugin_wdata = 64'h0;
+    end
+  end
+
+  assign _zz_4 = zz__zz_memaccess_LSUPlugin_wstrb(1'b0);
+  always @(*) _zz_memaccess_LSUPlugin_wstrb = _zz_4;
+  always @(*) begin
+    if((memaccess_MEM_CTRL == MemCtrlEnum_SB)) begin
+        memaccess_LSUPlugin_wstrb = _zz_memaccess_LSUPlugin_wstrb;
+    end else if((memaccess_MEM_CTRL == MemCtrlEnum_SH)) begin
+        memaccess_LSUPlugin_wstrb = _zz_memaccess_LSUPlugin_wstrb_1;
+    end else if((memaccess_MEM_CTRL == MemCtrlEnum_SW)) begin
+        memaccess_LSUPlugin_wstrb = _zz_memaccess_LSUPlugin_wstrb_2;
+    end else if((memaccess_MEM_CTRL == MemCtrlEnum_SD)) begin
+        memaccess_LSUPlugin_wstrb = _zz_memaccess_LSUPlugin_wstrb_3;
+    end else begin
+        memaccess_LSUPlugin_wstrb = 8'h0;
     end
   end
 
   always @(*) begin
     if((memaccess_MEM_CTRL == MemCtrlEnum_SB)) begin
-        memaccess_LsuPlugin_wdata_dcache = memaccess_LsuPlugin_wdata_sb;
+        memaccess_LSUPlugin_size = 3'b000;
     end else if((memaccess_MEM_CTRL == MemCtrlEnum_SH)) begin
-        memaccess_LsuPlugin_wdata_dcache = memaccess_LsuPlugin_wdata_sh;
+        memaccess_LSUPlugin_size = 3'b001;
     end else if((memaccess_MEM_CTRL == MemCtrlEnum_SW)) begin
-        memaccess_LsuPlugin_wdata_dcache = memaccess_LsuPlugin_wdata_sw;
+        memaccess_LSUPlugin_size = 3'b010;
     end else if((memaccess_MEM_CTRL == MemCtrlEnum_SD)) begin
-        memaccess_LsuPlugin_wdata_dcache = memaccess_MEM_WDATA;
+        memaccess_LSUPlugin_size = 3'b011;
     end else begin
-        memaccess_LsuPlugin_wdata_dcache = 64'h0;
+        memaccess_LSUPlugin_size = 3'b000;
     end
   end
 
-  assign _zz_4 = zz__zz_memaccess_LsuPlugin_wstrb_dcache(1'b0);
-  always @(*) _zz_memaccess_LsuPlugin_wstrb_dcache = _zz_4;
-  always @(*) begin
-    if((memaccess_MEM_CTRL == MemCtrlEnum_SB)) begin
-        memaccess_LsuPlugin_wstrb_dcache = _zz_memaccess_LsuPlugin_wstrb_dcache;
-    end else if((memaccess_MEM_CTRL == MemCtrlEnum_SH)) begin
-        memaccess_LsuPlugin_wstrb_dcache = _zz_memaccess_LsuPlugin_wstrb_dcache_1;
-    end else if((memaccess_MEM_CTRL == MemCtrlEnum_SW)) begin
-        memaccess_LsuPlugin_wstrb_dcache = _zz_memaccess_LsuPlugin_wstrb_dcache_2;
-    end else if((memaccess_MEM_CTRL == MemCtrlEnum_SD)) begin
-        memaccess_LsuPlugin_wstrb_dcache = _zz_memaccess_LsuPlugin_wstrb_dcache_3;
-    end else begin
-        memaccess_LsuPlugin_wstrb_dcache = 8'h0;
-    end
-  end
-
-  always @(*) begin
-    if((memaccess_MEM_CTRL == MemCtrlEnum_SB)) begin
-        memaccess_LsuPlugin_size_dcache = 3'b000;
-    end else if((memaccess_MEM_CTRL == MemCtrlEnum_SH)) begin
-        memaccess_LsuPlugin_size_dcache = 3'b001;
-    end else if((memaccess_MEM_CTRL == MemCtrlEnum_SW)) begin
-        memaccess_LsuPlugin_size_dcache = 3'b010;
-    end else if((memaccess_MEM_CTRL == MemCtrlEnum_SD)) begin
-        memaccess_LsuPlugin_size_dcache = 3'b011;
-    end else begin
-        memaccess_LsuPlugin_size_dcache = 3'b000;
-    end
-  end
-
-  assign _zz_5 = zz__zz_memaccess_LsuPlugin_wstrb_dcache_1(1'b0);
-  always @(*) _zz_memaccess_LsuPlugin_wstrb_dcache_1 = _zz_5;
-  assign _zz_6 = zz__zz_memaccess_LsuPlugin_wstrb_dcache_2(1'b0);
-  always @(*) _zz_memaccess_LsuPlugin_wstrb_dcache_2 = _zz_6;
-  assign _zz_memaccess_LsuPlugin_wstrb_dcache_3[7 : 0] = 8'hff;
-  assign DCachePlugin_dcache_access_cmd_payload_addr = memaccess_LsuPlugin_addr_dcache;
-  assign DCachePlugin_dcache_access_cmd_payload_wen = memaccess_LsuPlugin_wen_dcache;
-  assign DCachePlugin_dcache_access_cmd_payload_wdata = memaccess_LsuPlugin_wdata_dcache;
-  assign DCachePlugin_dcache_access_cmd_payload_wstrb = memaccess_LsuPlugin_wstrb_dcache;
-  assign DCachePlugin_dcache_access_cmd_payload_size = memaccess_LsuPlugin_size_dcache;
+  assign _zz_5 = zz__zz_memaccess_LSUPlugin_wstrb_1(1'b0);
+  always @(*) _zz_memaccess_LSUPlugin_wstrb_1 = _zz_5;
+  assign _zz_6 = zz__zz_memaccess_LSUPlugin_wstrb_2(1'b0);
+  always @(*) _zz_memaccess_LSUPlugin_wstrb_2 = _zz_6;
+  assign _zz_memaccess_LSUPlugin_wstrb_3[7 : 0] = 8'hff;
+  assign memaccess_LSUPlugin_hold = 1'b0;
+  assign DCachePlugin_dcache_access_cmd_valid = (((memaccess_LSUPlugin_addr != 64'h000000000200bff8) && (memaccess_LSUPlugin_addr != 64'h0000000002004000)) && memaccess_LSUPlugin_is_memacc);
+  assign DCachePlugin_dcache_access_cmd_payload_addr = memaccess_LSUPlugin_addr;
+  assign DCachePlugin_dcache_access_cmd_payload_wen = memaccess_IS_STORE;
+  assign DCachePlugin_dcache_access_cmd_payload_wdata = memaccess_LSUPlugin_wdata;
+  assign DCachePlugin_dcache_access_cmd_payload_wstrb = memaccess_LSUPlugin_wstrb;
+  assign DCachePlugin_dcache_access_cmd_payload_size = memaccess_LSUPlugin_size;
   assign ICachePlugin_icache_access_cmd_ready = iCache_1_cpu_cmd_ready;
   assign fetch_arbitration_isValid = ICachePlugin_icache_access_rsp_valid;
   assign DCachePlugin_dcache_access_cmd_ready = dCache_1_cpu_cmd_ready;
@@ -2464,9 +2699,15 @@ module DandRiscvSimple (
   assign when_Pipeline_l124_29 = (! writeback_arbitration_isStuck);
   assign when_Pipeline_l124_30 = (! execute_arbitration_isStuck);
   assign when_Pipeline_l124_31 = (! memaccess_arbitration_isStuck);
-  assign when_Pipeline_l124_32 = (! writeback_arbitration_isStuck);
-  assign when_Pipeline_l124_33 = (! memaccess_arbitration_isStuck);
-  assign when_Pipeline_l124_34 = (! writeback_arbitration_isStuck);
+  assign when_Pipeline_l124_32 = (! execute_arbitration_isStuck);
+  assign when_Pipeline_l124_33 = (! execute_arbitration_isStuck);
+  assign when_Pipeline_l124_34 = (! execute_arbitration_isStuck);
+  assign when_Pipeline_l124_35 = (! execute_arbitration_isStuck);
+  assign when_Pipeline_l124_36 = (! execute_arbitration_isStuck);
+  assign when_Pipeline_l124_37 = (! memaccess_arbitration_isStuck);
+  assign when_Pipeline_l124_38 = (! writeback_arbitration_isStuck);
+  assign when_Pipeline_l124_39 = (! memaccess_arbitration_isStuck);
+  assign when_Pipeline_l124_40 = (! writeback_arbitration_isStuck);
   assign fetch_arbitration_isFlushed = (({writeback_arbitration_flushNext,{memaccess_arbitration_flushNext,{execute_arbitration_flushNext,decode_arbitration_flushNext}}} != 4'b0000) || ({writeback_arbitration_flushIt,{memaccess_arbitration_flushIt,{execute_arbitration_flushIt,{decode_arbitration_flushIt,fetch_arbitration_flushIt}}}} != 5'h0));
   assign decode_arbitration_isFlushed = (({writeback_arbitration_flushNext,{memaccess_arbitration_flushNext,execute_arbitration_flushNext}} != 3'b000) || ({writeback_arbitration_flushIt,{memaccess_arbitration_flushIt,{execute_arbitration_flushIt,decode_arbitration_flushIt}}} != 4'b0000));
   assign execute_arbitration_isFlushed = (({writeback_arbitration_flushNext,memaccess_arbitration_flushNext} != 2'b00) || ({writeback_arbitration_flushIt,{memaccess_arbitration_flushIt,execute_arbitration_flushIt}} != 3'b000));
@@ -2502,66 +2743,66 @@ module DandRiscvSimple (
   assign when_Pipeline_l162_3 = ((! writeback_arbitration_isStuck) || writeback_arbitration_removeIt);
   always @(posedge clk or posedge reset) begin
     if(reset) begin
-      _zz_ICachePlugin_icache_access_cmd_payload_addr_1 <= 64'h0000000080000000;
-      _zz_ICachePlugin_icache_access_cmd_valid <= 1'b0;
-      _zz_ICachePlugin_icache_access_cmd_payload_addr_2 <= 64'h0;
-      when_InstructionFetchPlugin_l99 <= 1'b0;
-      _zz_when_InstructionFetchPlugin_l90_2 <= 2'b00;
+      pc_next <= 64'h0000000080000000;
+      fetch_valid <= 1'b0;
+      int_pc_reg <= 64'h0;
+      int_pc_valid <= 1'b0;
+      fetch_state <= 2'b00;
       execute_ALUPlugin_branch_history <= 7'h0;
       decode_arbitration_isValid <= 1'b0;
       execute_arbitration_isValid <= 1'b0;
       memaccess_arbitration_isValid <= 1'b0;
       writeback_arbitration_isValid <= 1'b0;
     end else begin
-      _zz_when_InstructionFetchPlugin_l90_2 <= _zz_when_InstructionFetchPlugin_l90_1;
-      case(_zz_when_InstructionFetchPlugin_l90_2)
+      fetch_state <= fetch_state_next;
+      case(fetch_state)
         2'b00 : begin
-          if(when_InstructionFetchPlugin_l74) begin
-            _zz_when_InstructionFetchPlugin_l90_2 <= 2'b01;
+          if(when_FetchPlugin_l62) begin
+            fetch_state <= 2'b01;
           end
         end
         2'b01 : begin
           if(ICachePlugin_icache_access_cmd_isStall) begin
-            _zz_when_InstructionFetchPlugin_l90_2 <= 2'b10;
+            fetch_state <= 2'b10;
           end
         end
         2'b10 : begin
           if(ICachePlugin_icache_access_cmd_fire_1) begin
-            _zz_when_InstructionFetchPlugin_l90_2 <= 2'b01;
+            fetch_state <= 2'b01;
           end
         end
         default : begin
         end
       endcase
-      if(when_InstructionFetchPlugin_l90) begin
-        when_InstructionFetchPlugin_l99 <= 1'b1;
-        _zz_ICachePlugin_icache_access_cmd_payload_addr_2 <= _zz_ICachePlugin_icache_access_cmd_payload_addr;
+      if(when_FetchPlugin_l79) begin
+        int_pc_valid <= 1'b1;
+        int_pc_reg <= _zz_pc_next_1;
       end else begin
         if(ICachePlugin_icache_access_rsp_valid) begin
-          when_InstructionFetchPlugin_l99 <= 1'b0;
+          int_pc_valid <= 1'b0;
         end
       end
-      if(when_InstructionFetchPlugin_l98) begin
-        if(when_InstructionFetchPlugin_l99) begin
-          _zz_ICachePlugin_icache_access_cmd_payload_addr_1 <= _zz_ICachePlugin_icache_access_cmd_payload_addr_2;
+      if(when_FetchPlugin_l88) begin
+        if(int_pc_valid) begin
+          pc_next <= int_pc_reg;
         end else begin
-          if(_zz_when_InstructionFetchPlugin_l90) begin
-            _zz_ICachePlugin_icache_access_cmd_payload_addr_1 <= _zz_ICachePlugin_icache_access_cmd_payload_addr;
+          if(when_FetchPlugin_l92) begin
+            pc_next <= _zz_pc_next_1;
           end else begin
-            if(when_InstructionFetchPlugin_l105) begin
-              _zz_ICachePlugin_icache_access_cmd_payload_addr_1 <= execute_REDIRECT_PC_NEXT;
+            if(when_FetchPlugin_l95) begin
+              pc_next <= _zz_pc_next;
             end else begin
               if(fetch_BPU_BRANCH_TAKEN) begin
-                _zz_ICachePlugin_icache_access_cmd_payload_addr_1 <= fetch_BPU_PC_NEXT;
+                pc_next <= fetch_BPU_PC_NEXT;
               end else begin
-                _zz_ICachePlugin_icache_access_cmd_payload_addr_1 <= (_zz_ICachePlugin_icache_access_cmd_payload_addr_1 + 64'h0000000000000004);
+                pc_next <= (pc_next + 64'h0000000000000004);
               end
             end
           end
         end
       end
-      if(when_InstructionFetchPlugin_l116) begin
-        _zz_ICachePlugin_icache_access_cmd_valid <= 1'b1;
+      if(when_FetchPlugin_l106) begin
+        fetch_valid <= 1'b1;
       end
       execute_ALUPlugin_branch_history <= {execute_ALUPlugin_branch_history[5 : 0],execute_ALUPlugin_branch_taken};
       if(when_Pipeline_l159) begin
@@ -2597,7 +2838,7 @@ module DandRiscvSimple (
 
   always @(posedge clk) begin
     if(ICachePlugin_icache_access_cmd_fire) begin
-      _zz_fetch_PC <= _zz_ICachePlugin_icache_access_cmd_payload_addr_1;
+      pc <= pc_next;
     end
     if(when_Pipeline_l124) begin
       fetch_to_decode_PC <= _zz_fetch_to_decode_PC;
@@ -2690,18 +2931,36 @@ module DandRiscvSimple (
       memaccess_to_writeback_IS_LOAD <= _zz_DecodePlugin_control_ports_load_use_1;
     end
     if(when_Pipeline_l124_30) begin
-      decode_to_execute_BRANCH_OR_JALR <= decode_BRANCH_OR_JALR;
+      decode_to_execute_IS_STORE <= decode_IS_STORE;
     end
     if(when_Pipeline_l124_31) begin
-      execute_to_memaccess_ALU_RESULT <= execute_ALU_RESULT;
+      execute_to_memaccess_IS_STORE <= execute_IS_STORE;
     end
     if(when_Pipeline_l124_32) begin
-      memaccess_to_writeback_ALU_RESULT <= _zz_execute_MEM_WDATA_1;
+      decode_to_execute_BRANCH_OR_JALR <= decode_BRANCH_OR_JALR;
     end
     if(when_Pipeline_l124_33) begin
-      execute_to_memaccess_MEM_WDATA <= execute_MEM_WDATA;
+      decode_to_execute_CSR_CTRL <= _zz_decode_to_execute_CSR_CTRL;
     end
     if(when_Pipeline_l124_34) begin
+      decode_to_execute_CSR_ADDR <= _zz_decode_to_execute_CSR_ADDR;
+    end
+    if(when_Pipeline_l124_35) begin
+      decode_to_execute_CSR_WEN <= decode_CSR_WEN;
+    end
+    if(when_Pipeline_l124_36) begin
+      decode_to_execute_CSR_RDATA <= decode_CSR_RDATA;
+    end
+    if(when_Pipeline_l124_37) begin
+      execute_to_memaccess_ALU_RESULT <= execute_ALU_RESULT;
+    end
+    if(when_Pipeline_l124_38) begin
+      memaccess_to_writeback_ALU_RESULT <= _zz_execute_MEM_WDATA_1;
+    end
+    if(when_Pipeline_l124_39) begin
+      execute_to_memaccess_MEM_WDATA <= execute_MEM_WDATA;
+    end
+    if(when_Pipeline_l124_40) begin
       memaccess_to_writeback_DATA_LOAD <= memaccess_DATA_LOAD;
     end
   end
@@ -2750,9 +3009,6 @@ module DCache (
   input               next_level_cmd_ready,
   output     [63:0]   next_level_cmd_payload_addr,
   output     [3:0]    next_level_cmd_payload_len,
-  output              next_level_cmd_payload_wen,
-  output     [255:0]  next_level_cmd_payload_wdata,
-  output     [31:0]   next_level_cmd_payload_wstrb,
   output     [2:0]    next_level_cmd_payload_size,
   input               next_level_rsp_valid,
   input      [255:0]  next_level_rsp_payload_data,
@@ -2760,25 +3016,28 @@ module DCache (
   input               reset
 );
 
-  reg        [53:0]   _zz_dcache_tag_0;
-  reg                 _zz_dcache_hit_0;
-  reg                 _zz_dcache_replace_info_0;
-  reg                 _zz_dcache_victim_0;
-  reg        [53:0]   _zz_dcache_tag_1;
-  reg                 _zz_dcache_hit_1;
-  reg                 _zz_dcache_replace_info_1;
-  reg                 _zz_dcache_victim_1;
-  reg        [53:0]   _zz_dcache_tag_2;
-  reg                 _zz_dcache_hit_2;
-  reg                 _zz_dcache_replace_info_2;
-  reg                 _zz_dcache_victim_2;
-  reg        [53:0]   _zz_dcache_tag_3;
-  reg                 _zz_dcache_hit_3;
-  reg                 _zz_dcache_replace_info_3;
-  reg                 _zz_dcache_victim_3;
+  reg        [53:0]   _zz_cache_tag_0;
+  reg                 _zz_cache_hit_0;
+  reg                 _zz_cache_replace_info_0;
+  reg                 _zz_cache_victim_0;
+  reg        [53:0]   _zz_cache_tag_1;
+  reg                 _zz_cache_hit_1;
+  reg                 _zz_cache_replace_info_1;
+  reg                 _zz_cache_victim_1;
+  reg        [53:0]   _zz_cache_tag_2;
+  reg                 _zz_cache_hit_2;
+  reg                 _zz_cache_replace_info_2;
+  reg                 _zz_cache_victim_2;
+  reg        [53:0]   _zz_cache_tag_3;
+  reg                 _zz_cache_hit_3;
+  reg                 _zz_cache_replace_info_3;
+  reg                 _zz_cache_victim_3;
   reg        [255:0]  _zz__zz_cpu_rsp_payload_data;
-  reg        [63:0]   _zz_cpu_rsp_payload_data_1;
+  reg        [255:0]  _zz__zz_cpu_rsp_payload_data_1;
+  reg        [63:0]   _zz_cpu_rsp_payload_data_2;
+  reg        [63:0]   _zz_cpu_rsp_payload_data_3;
   reg                 _zz_cpu_rsp_valid;
+  reg                 _zz_cpu_rsp_valid_1;
   reg                 ways_0_metas_0_valid;
   reg        [53:0]   ways_0_metas_0_tag;
   reg                 ways_0_metas_0_replace_info;
@@ -2971,23 +3230,24 @@ module DCache (
   reg                 ways_3_metas_15_valid;
   reg        [53:0]   ways_3_metas_15_tag;
   reg                 ways_3_metas_15_replace_info;
-  wire       [53:0]   dcache_tag_0;
-  wire       [53:0]   dcache_tag_1;
-  wire       [53:0]   dcache_tag_2;
-  wire       [53:0]   dcache_tag_3;
-  wire                dcache_hit_0;
-  wire                dcache_hit_1;
-  wire                dcache_hit_2;
-  wire                dcache_hit_3;
-  wire                dcache_victim_0;
-  reg                 dcache_victim_1;
-  reg                 dcache_victim_2;
-  reg                 dcache_victim_3;
-  wire                dcache_replace_info_0;
-  wire                dcache_replace_info_1;
-  wire                dcache_replace_info_2;
-  wire                dcache_replace_info_3;
+  wire       [53:0]   cache_tag_0;
+  wire       [53:0]   cache_tag_1;
+  wire       [53:0]   cache_tag_2;
+  wire       [53:0]   cache_tag_3;
+  wire                cache_hit_0;
+  wire                cache_hit_1;
+  wire                cache_hit_2;
+  wire                cache_hit_3;
+  wire                cache_victim_0;
+  reg                 cache_victim_1;
+  reg                 cache_victim_2;
+  reg                 cache_victim_3;
+  wire                cache_replace_info_0;
+  wire                cache_replace_info_1;
+  wire                cache_replace_info_2;
+  wire                cache_replace_info_3;
   wire       [1:0]    hit_way_id;
+  wire       [1:0]    victim_id;
   wire                replace_info_full;
   wire                cpu_cmd_fire;
   wire                is_hit;
@@ -3001,6 +3261,8 @@ module DCache (
   reg        [63:0]   cpu_addr_d1;
   wire       [3:0]    cpu_set_d1;
   wire       [53:0]   cpu_tag_d1;
+  wire       [4:0]    cpu_bank_addr_d1;
+  wire       [1:0]    cpu_bank_sel_d1;
   reg                 cpu_cmd_ready_1;
   wire       [255:0]  sram_banks_data_0;
   wire       [255:0]  sram_banks_data_1;
@@ -3018,10 +3280,12 @@ module DCache (
   wire                next_level_data_cnt_willOverflowIfInc;
   wire                next_level_data_cnt_willOverflow;
   wire       [3:0]    next_level_bank_addr;
+  reg                 next_level_done;
   wire                next_level_cmd_fire;
-  wire                when_DCache_l119;
   wire                _zz_hit_way_id;
   wire                _zz_hit_way_id_1;
+  wire                _zz_victim_id;
+  wire                _zz_victim_id_1;
   wire       [15:0]   _zz_1;
   wire                _zz_2;
   wire                _zz_3;
@@ -3056,10 +3320,7 @@ module DCache (
   wire                _zz_32;
   wire                _zz_33;
   wire                _zz_34;
-  wire                cpu_cmd_fire_2;
-  wire                when_DCache_l170;
-  wire                when_DCache_l187;
-  wire                when_DCache_l196;
+  wire                when_DCache_l188;
   wire       [15:0]   _zz_35;
   wire                _zz_36;
   wire                _zz_37;
@@ -3094,10 +3355,7 @@ module DCache (
   wire                _zz_66;
   wire                _zz_67;
   wire                _zz_68;
-  wire                cpu_cmd_fire_3;
-  wire                when_DCache_l170_1;
-  wire                when_DCache_l187_1;
-  wire                when_DCache_l196_1;
+  wire                when_DCache_l188_1;
   wire       [15:0]   _zz_69;
   wire                _zz_70;
   wire                _zz_71;
@@ -3132,10 +3390,7 @@ module DCache (
   wire                _zz_100;
   wire                _zz_101;
   wire                _zz_102;
-  wire                cpu_cmd_fire_4;
-  wire                when_DCache_l170_2;
-  wire                when_DCache_l187_2;
-  wire                when_DCache_l196_2;
+  wire                when_DCache_l188_2;
   wire       [15:0]   _zz_103;
   wire                _zz_104;
   wire                _zz_105;
@@ -3170,237 +3425,235 @@ module DCache (
   wire                _zz_134;
   wire                _zz_135;
   wire                _zz_136;
-  wire                cpu_cmd_fire_5;
-  wire                when_DCache_l170_3;
-  wire                when_DCache_l187_3;
-  wire                when_DCache_l196_3;
+  wire                when_DCache_l188_3;
   wire       [255:0]  _zz_cpu_rsp_payload_data;
+  wire       [255:0]  _zz_cpu_rsp_payload_data_1;
 
   always @(*) begin
     case(cpu_set)
       4'b0000 : begin
-        _zz_dcache_tag_0 = ways_0_metas_0_tag;
-        _zz_dcache_hit_0 = ways_0_metas_0_valid;
-        _zz_dcache_replace_info_0 = ways_0_metas_0_replace_info;
-        _zz_dcache_tag_1 = ways_1_metas_0_tag;
-        _zz_dcache_hit_1 = ways_1_metas_0_valid;
-        _zz_dcache_replace_info_1 = ways_1_metas_0_replace_info;
-        _zz_dcache_tag_2 = ways_2_metas_0_tag;
-        _zz_dcache_hit_2 = ways_2_metas_0_valid;
-        _zz_dcache_replace_info_2 = ways_2_metas_0_replace_info;
-        _zz_dcache_tag_3 = ways_3_metas_0_tag;
-        _zz_dcache_hit_3 = ways_3_metas_0_valid;
-        _zz_dcache_replace_info_3 = ways_3_metas_0_replace_info;
+        _zz_cache_tag_0 = ways_0_metas_0_tag;
+        _zz_cache_hit_0 = ways_0_metas_0_valid;
+        _zz_cache_replace_info_0 = ways_0_metas_0_replace_info;
+        _zz_cache_tag_1 = ways_1_metas_0_tag;
+        _zz_cache_hit_1 = ways_1_metas_0_valid;
+        _zz_cache_replace_info_1 = ways_1_metas_0_replace_info;
+        _zz_cache_tag_2 = ways_2_metas_0_tag;
+        _zz_cache_hit_2 = ways_2_metas_0_valid;
+        _zz_cache_replace_info_2 = ways_2_metas_0_replace_info;
+        _zz_cache_tag_3 = ways_3_metas_0_tag;
+        _zz_cache_hit_3 = ways_3_metas_0_valid;
+        _zz_cache_replace_info_3 = ways_3_metas_0_replace_info;
       end
       4'b0001 : begin
-        _zz_dcache_tag_0 = ways_0_metas_1_tag;
-        _zz_dcache_hit_0 = ways_0_metas_1_valid;
-        _zz_dcache_replace_info_0 = ways_0_metas_1_replace_info;
-        _zz_dcache_tag_1 = ways_1_metas_1_tag;
-        _zz_dcache_hit_1 = ways_1_metas_1_valid;
-        _zz_dcache_replace_info_1 = ways_1_metas_1_replace_info;
-        _zz_dcache_tag_2 = ways_2_metas_1_tag;
-        _zz_dcache_hit_2 = ways_2_metas_1_valid;
-        _zz_dcache_replace_info_2 = ways_2_metas_1_replace_info;
-        _zz_dcache_tag_3 = ways_3_metas_1_tag;
-        _zz_dcache_hit_3 = ways_3_metas_1_valid;
-        _zz_dcache_replace_info_3 = ways_3_metas_1_replace_info;
+        _zz_cache_tag_0 = ways_0_metas_1_tag;
+        _zz_cache_hit_0 = ways_0_metas_1_valid;
+        _zz_cache_replace_info_0 = ways_0_metas_1_replace_info;
+        _zz_cache_tag_1 = ways_1_metas_1_tag;
+        _zz_cache_hit_1 = ways_1_metas_1_valid;
+        _zz_cache_replace_info_1 = ways_1_metas_1_replace_info;
+        _zz_cache_tag_2 = ways_2_metas_1_tag;
+        _zz_cache_hit_2 = ways_2_metas_1_valid;
+        _zz_cache_replace_info_2 = ways_2_metas_1_replace_info;
+        _zz_cache_tag_3 = ways_3_metas_1_tag;
+        _zz_cache_hit_3 = ways_3_metas_1_valid;
+        _zz_cache_replace_info_3 = ways_3_metas_1_replace_info;
       end
       4'b0010 : begin
-        _zz_dcache_tag_0 = ways_0_metas_2_tag;
-        _zz_dcache_hit_0 = ways_0_metas_2_valid;
-        _zz_dcache_replace_info_0 = ways_0_metas_2_replace_info;
-        _zz_dcache_tag_1 = ways_1_metas_2_tag;
-        _zz_dcache_hit_1 = ways_1_metas_2_valid;
-        _zz_dcache_replace_info_1 = ways_1_metas_2_replace_info;
-        _zz_dcache_tag_2 = ways_2_metas_2_tag;
-        _zz_dcache_hit_2 = ways_2_metas_2_valid;
-        _zz_dcache_replace_info_2 = ways_2_metas_2_replace_info;
-        _zz_dcache_tag_3 = ways_3_metas_2_tag;
-        _zz_dcache_hit_3 = ways_3_metas_2_valid;
-        _zz_dcache_replace_info_3 = ways_3_metas_2_replace_info;
+        _zz_cache_tag_0 = ways_0_metas_2_tag;
+        _zz_cache_hit_0 = ways_0_metas_2_valid;
+        _zz_cache_replace_info_0 = ways_0_metas_2_replace_info;
+        _zz_cache_tag_1 = ways_1_metas_2_tag;
+        _zz_cache_hit_1 = ways_1_metas_2_valid;
+        _zz_cache_replace_info_1 = ways_1_metas_2_replace_info;
+        _zz_cache_tag_2 = ways_2_metas_2_tag;
+        _zz_cache_hit_2 = ways_2_metas_2_valid;
+        _zz_cache_replace_info_2 = ways_2_metas_2_replace_info;
+        _zz_cache_tag_3 = ways_3_metas_2_tag;
+        _zz_cache_hit_3 = ways_3_metas_2_valid;
+        _zz_cache_replace_info_3 = ways_3_metas_2_replace_info;
       end
       4'b0011 : begin
-        _zz_dcache_tag_0 = ways_0_metas_3_tag;
-        _zz_dcache_hit_0 = ways_0_metas_3_valid;
-        _zz_dcache_replace_info_0 = ways_0_metas_3_replace_info;
-        _zz_dcache_tag_1 = ways_1_metas_3_tag;
-        _zz_dcache_hit_1 = ways_1_metas_3_valid;
-        _zz_dcache_replace_info_1 = ways_1_metas_3_replace_info;
-        _zz_dcache_tag_2 = ways_2_metas_3_tag;
-        _zz_dcache_hit_2 = ways_2_metas_3_valid;
-        _zz_dcache_replace_info_2 = ways_2_metas_3_replace_info;
-        _zz_dcache_tag_3 = ways_3_metas_3_tag;
-        _zz_dcache_hit_3 = ways_3_metas_3_valid;
-        _zz_dcache_replace_info_3 = ways_3_metas_3_replace_info;
+        _zz_cache_tag_0 = ways_0_metas_3_tag;
+        _zz_cache_hit_0 = ways_0_metas_3_valid;
+        _zz_cache_replace_info_0 = ways_0_metas_3_replace_info;
+        _zz_cache_tag_1 = ways_1_metas_3_tag;
+        _zz_cache_hit_1 = ways_1_metas_3_valid;
+        _zz_cache_replace_info_1 = ways_1_metas_3_replace_info;
+        _zz_cache_tag_2 = ways_2_metas_3_tag;
+        _zz_cache_hit_2 = ways_2_metas_3_valid;
+        _zz_cache_replace_info_2 = ways_2_metas_3_replace_info;
+        _zz_cache_tag_3 = ways_3_metas_3_tag;
+        _zz_cache_hit_3 = ways_3_metas_3_valid;
+        _zz_cache_replace_info_3 = ways_3_metas_3_replace_info;
       end
       4'b0100 : begin
-        _zz_dcache_tag_0 = ways_0_metas_4_tag;
-        _zz_dcache_hit_0 = ways_0_metas_4_valid;
-        _zz_dcache_replace_info_0 = ways_0_metas_4_replace_info;
-        _zz_dcache_tag_1 = ways_1_metas_4_tag;
-        _zz_dcache_hit_1 = ways_1_metas_4_valid;
-        _zz_dcache_replace_info_1 = ways_1_metas_4_replace_info;
-        _zz_dcache_tag_2 = ways_2_metas_4_tag;
-        _zz_dcache_hit_2 = ways_2_metas_4_valid;
-        _zz_dcache_replace_info_2 = ways_2_metas_4_replace_info;
-        _zz_dcache_tag_3 = ways_3_metas_4_tag;
-        _zz_dcache_hit_3 = ways_3_metas_4_valid;
-        _zz_dcache_replace_info_3 = ways_3_metas_4_replace_info;
+        _zz_cache_tag_0 = ways_0_metas_4_tag;
+        _zz_cache_hit_0 = ways_0_metas_4_valid;
+        _zz_cache_replace_info_0 = ways_0_metas_4_replace_info;
+        _zz_cache_tag_1 = ways_1_metas_4_tag;
+        _zz_cache_hit_1 = ways_1_metas_4_valid;
+        _zz_cache_replace_info_1 = ways_1_metas_4_replace_info;
+        _zz_cache_tag_2 = ways_2_metas_4_tag;
+        _zz_cache_hit_2 = ways_2_metas_4_valid;
+        _zz_cache_replace_info_2 = ways_2_metas_4_replace_info;
+        _zz_cache_tag_3 = ways_3_metas_4_tag;
+        _zz_cache_hit_3 = ways_3_metas_4_valid;
+        _zz_cache_replace_info_3 = ways_3_metas_4_replace_info;
       end
       4'b0101 : begin
-        _zz_dcache_tag_0 = ways_0_metas_5_tag;
-        _zz_dcache_hit_0 = ways_0_metas_5_valid;
-        _zz_dcache_replace_info_0 = ways_0_metas_5_replace_info;
-        _zz_dcache_tag_1 = ways_1_metas_5_tag;
-        _zz_dcache_hit_1 = ways_1_metas_5_valid;
-        _zz_dcache_replace_info_1 = ways_1_metas_5_replace_info;
-        _zz_dcache_tag_2 = ways_2_metas_5_tag;
-        _zz_dcache_hit_2 = ways_2_metas_5_valid;
-        _zz_dcache_replace_info_2 = ways_2_metas_5_replace_info;
-        _zz_dcache_tag_3 = ways_3_metas_5_tag;
-        _zz_dcache_hit_3 = ways_3_metas_5_valid;
-        _zz_dcache_replace_info_3 = ways_3_metas_5_replace_info;
+        _zz_cache_tag_0 = ways_0_metas_5_tag;
+        _zz_cache_hit_0 = ways_0_metas_5_valid;
+        _zz_cache_replace_info_0 = ways_0_metas_5_replace_info;
+        _zz_cache_tag_1 = ways_1_metas_5_tag;
+        _zz_cache_hit_1 = ways_1_metas_5_valid;
+        _zz_cache_replace_info_1 = ways_1_metas_5_replace_info;
+        _zz_cache_tag_2 = ways_2_metas_5_tag;
+        _zz_cache_hit_2 = ways_2_metas_5_valid;
+        _zz_cache_replace_info_2 = ways_2_metas_5_replace_info;
+        _zz_cache_tag_3 = ways_3_metas_5_tag;
+        _zz_cache_hit_3 = ways_3_metas_5_valid;
+        _zz_cache_replace_info_3 = ways_3_metas_5_replace_info;
       end
       4'b0110 : begin
-        _zz_dcache_tag_0 = ways_0_metas_6_tag;
-        _zz_dcache_hit_0 = ways_0_metas_6_valid;
-        _zz_dcache_replace_info_0 = ways_0_metas_6_replace_info;
-        _zz_dcache_tag_1 = ways_1_metas_6_tag;
-        _zz_dcache_hit_1 = ways_1_metas_6_valid;
-        _zz_dcache_replace_info_1 = ways_1_metas_6_replace_info;
-        _zz_dcache_tag_2 = ways_2_metas_6_tag;
-        _zz_dcache_hit_2 = ways_2_metas_6_valid;
-        _zz_dcache_replace_info_2 = ways_2_metas_6_replace_info;
-        _zz_dcache_tag_3 = ways_3_metas_6_tag;
-        _zz_dcache_hit_3 = ways_3_metas_6_valid;
-        _zz_dcache_replace_info_3 = ways_3_metas_6_replace_info;
+        _zz_cache_tag_0 = ways_0_metas_6_tag;
+        _zz_cache_hit_0 = ways_0_metas_6_valid;
+        _zz_cache_replace_info_0 = ways_0_metas_6_replace_info;
+        _zz_cache_tag_1 = ways_1_metas_6_tag;
+        _zz_cache_hit_1 = ways_1_metas_6_valid;
+        _zz_cache_replace_info_1 = ways_1_metas_6_replace_info;
+        _zz_cache_tag_2 = ways_2_metas_6_tag;
+        _zz_cache_hit_2 = ways_2_metas_6_valid;
+        _zz_cache_replace_info_2 = ways_2_metas_6_replace_info;
+        _zz_cache_tag_3 = ways_3_metas_6_tag;
+        _zz_cache_hit_3 = ways_3_metas_6_valid;
+        _zz_cache_replace_info_3 = ways_3_metas_6_replace_info;
       end
       4'b0111 : begin
-        _zz_dcache_tag_0 = ways_0_metas_7_tag;
-        _zz_dcache_hit_0 = ways_0_metas_7_valid;
-        _zz_dcache_replace_info_0 = ways_0_metas_7_replace_info;
-        _zz_dcache_tag_1 = ways_1_metas_7_tag;
-        _zz_dcache_hit_1 = ways_1_metas_7_valid;
-        _zz_dcache_replace_info_1 = ways_1_metas_7_replace_info;
-        _zz_dcache_tag_2 = ways_2_metas_7_tag;
-        _zz_dcache_hit_2 = ways_2_metas_7_valid;
-        _zz_dcache_replace_info_2 = ways_2_metas_7_replace_info;
-        _zz_dcache_tag_3 = ways_3_metas_7_tag;
-        _zz_dcache_hit_3 = ways_3_metas_7_valid;
-        _zz_dcache_replace_info_3 = ways_3_metas_7_replace_info;
+        _zz_cache_tag_0 = ways_0_metas_7_tag;
+        _zz_cache_hit_0 = ways_0_metas_7_valid;
+        _zz_cache_replace_info_0 = ways_0_metas_7_replace_info;
+        _zz_cache_tag_1 = ways_1_metas_7_tag;
+        _zz_cache_hit_1 = ways_1_metas_7_valid;
+        _zz_cache_replace_info_1 = ways_1_metas_7_replace_info;
+        _zz_cache_tag_2 = ways_2_metas_7_tag;
+        _zz_cache_hit_2 = ways_2_metas_7_valid;
+        _zz_cache_replace_info_2 = ways_2_metas_7_replace_info;
+        _zz_cache_tag_3 = ways_3_metas_7_tag;
+        _zz_cache_hit_3 = ways_3_metas_7_valid;
+        _zz_cache_replace_info_3 = ways_3_metas_7_replace_info;
       end
       4'b1000 : begin
-        _zz_dcache_tag_0 = ways_0_metas_8_tag;
-        _zz_dcache_hit_0 = ways_0_metas_8_valid;
-        _zz_dcache_replace_info_0 = ways_0_metas_8_replace_info;
-        _zz_dcache_tag_1 = ways_1_metas_8_tag;
-        _zz_dcache_hit_1 = ways_1_metas_8_valid;
-        _zz_dcache_replace_info_1 = ways_1_metas_8_replace_info;
-        _zz_dcache_tag_2 = ways_2_metas_8_tag;
-        _zz_dcache_hit_2 = ways_2_metas_8_valid;
-        _zz_dcache_replace_info_2 = ways_2_metas_8_replace_info;
-        _zz_dcache_tag_3 = ways_3_metas_8_tag;
-        _zz_dcache_hit_3 = ways_3_metas_8_valid;
-        _zz_dcache_replace_info_3 = ways_3_metas_8_replace_info;
+        _zz_cache_tag_0 = ways_0_metas_8_tag;
+        _zz_cache_hit_0 = ways_0_metas_8_valid;
+        _zz_cache_replace_info_0 = ways_0_metas_8_replace_info;
+        _zz_cache_tag_1 = ways_1_metas_8_tag;
+        _zz_cache_hit_1 = ways_1_metas_8_valid;
+        _zz_cache_replace_info_1 = ways_1_metas_8_replace_info;
+        _zz_cache_tag_2 = ways_2_metas_8_tag;
+        _zz_cache_hit_2 = ways_2_metas_8_valid;
+        _zz_cache_replace_info_2 = ways_2_metas_8_replace_info;
+        _zz_cache_tag_3 = ways_3_metas_8_tag;
+        _zz_cache_hit_3 = ways_3_metas_8_valid;
+        _zz_cache_replace_info_3 = ways_3_metas_8_replace_info;
       end
       4'b1001 : begin
-        _zz_dcache_tag_0 = ways_0_metas_9_tag;
-        _zz_dcache_hit_0 = ways_0_metas_9_valid;
-        _zz_dcache_replace_info_0 = ways_0_metas_9_replace_info;
-        _zz_dcache_tag_1 = ways_1_metas_9_tag;
-        _zz_dcache_hit_1 = ways_1_metas_9_valid;
-        _zz_dcache_replace_info_1 = ways_1_metas_9_replace_info;
-        _zz_dcache_tag_2 = ways_2_metas_9_tag;
-        _zz_dcache_hit_2 = ways_2_metas_9_valid;
-        _zz_dcache_replace_info_2 = ways_2_metas_9_replace_info;
-        _zz_dcache_tag_3 = ways_3_metas_9_tag;
-        _zz_dcache_hit_3 = ways_3_metas_9_valid;
-        _zz_dcache_replace_info_3 = ways_3_metas_9_replace_info;
+        _zz_cache_tag_0 = ways_0_metas_9_tag;
+        _zz_cache_hit_0 = ways_0_metas_9_valid;
+        _zz_cache_replace_info_0 = ways_0_metas_9_replace_info;
+        _zz_cache_tag_1 = ways_1_metas_9_tag;
+        _zz_cache_hit_1 = ways_1_metas_9_valid;
+        _zz_cache_replace_info_1 = ways_1_metas_9_replace_info;
+        _zz_cache_tag_2 = ways_2_metas_9_tag;
+        _zz_cache_hit_2 = ways_2_metas_9_valid;
+        _zz_cache_replace_info_2 = ways_2_metas_9_replace_info;
+        _zz_cache_tag_3 = ways_3_metas_9_tag;
+        _zz_cache_hit_3 = ways_3_metas_9_valid;
+        _zz_cache_replace_info_3 = ways_3_metas_9_replace_info;
       end
       4'b1010 : begin
-        _zz_dcache_tag_0 = ways_0_metas_10_tag;
-        _zz_dcache_hit_0 = ways_0_metas_10_valid;
-        _zz_dcache_replace_info_0 = ways_0_metas_10_replace_info;
-        _zz_dcache_tag_1 = ways_1_metas_10_tag;
-        _zz_dcache_hit_1 = ways_1_metas_10_valid;
-        _zz_dcache_replace_info_1 = ways_1_metas_10_replace_info;
-        _zz_dcache_tag_2 = ways_2_metas_10_tag;
-        _zz_dcache_hit_2 = ways_2_metas_10_valid;
-        _zz_dcache_replace_info_2 = ways_2_metas_10_replace_info;
-        _zz_dcache_tag_3 = ways_3_metas_10_tag;
-        _zz_dcache_hit_3 = ways_3_metas_10_valid;
-        _zz_dcache_replace_info_3 = ways_3_metas_10_replace_info;
+        _zz_cache_tag_0 = ways_0_metas_10_tag;
+        _zz_cache_hit_0 = ways_0_metas_10_valid;
+        _zz_cache_replace_info_0 = ways_0_metas_10_replace_info;
+        _zz_cache_tag_1 = ways_1_metas_10_tag;
+        _zz_cache_hit_1 = ways_1_metas_10_valid;
+        _zz_cache_replace_info_1 = ways_1_metas_10_replace_info;
+        _zz_cache_tag_2 = ways_2_metas_10_tag;
+        _zz_cache_hit_2 = ways_2_metas_10_valid;
+        _zz_cache_replace_info_2 = ways_2_metas_10_replace_info;
+        _zz_cache_tag_3 = ways_3_metas_10_tag;
+        _zz_cache_hit_3 = ways_3_metas_10_valid;
+        _zz_cache_replace_info_3 = ways_3_metas_10_replace_info;
       end
       4'b1011 : begin
-        _zz_dcache_tag_0 = ways_0_metas_11_tag;
-        _zz_dcache_hit_0 = ways_0_metas_11_valid;
-        _zz_dcache_replace_info_0 = ways_0_metas_11_replace_info;
-        _zz_dcache_tag_1 = ways_1_metas_11_tag;
-        _zz_dcache_hit_1 = ways_1_metas_11_valid;
-        _zz_dcache_replace_info_1 = ways_1_metas_11_replace_info;
-        _zz_dcache_tag_2 = ways_2_metas_11_tag;
-        _zz_dcache_hit_2 = ways_2_metas_11_valid;
-        _zz_dcache_replace_info_2 = ways_2_metas_11_replace_info;
-        _zz_dcache_tag_3 = ways_3_metas_11_tag;
-        _zz_dcache_hit_3 = ways_3_metas_11_valid;
-        _zz_dcache_replace_info_3 = ways_3_metas_11_replace_info;
+        _zz_cache_tag_0 = ways_0_metas_11_tag;
+        _zz_cache_hit_0 = ways_0_metas_11_valid;
+        _zz_cache_replace_info_0 = ways_0_metas_11_replace_info;
+        _zz_cache_tag_1 = ways_1_metas_11_tag;
+        _zz_cache_hit_1 = ways_1_metas_11_valid;
+        _zz_cache_replace_info_1 = ways_1_metas_11_replace_info;
+        _zz_cache_tag_2 = ways_2_metas_11_tag;
+        _zz_cache_hit_2 = ways_2_metas_11_valid;
+        _zz_cache_replace_info_2 = ways_2_metas_11_replace_info;
+        _zz_cache_tag_3 = ways_3_metas_11_tag;
+        _zz_cache_hit_3 = ways_3_metas_11_valid;
+        _zz_cache_replace_info_3 = ways_3_metas_11_replace_info;
       end
       4'b1100 : begin
-        _zz_dcache_tag_0 = ways_0_metas_12_tag;
-        _zz_dcache_hit_0 = ways_0_metas_12_valid;
-        _zz_dcache_replace_info_0 = ways_0_metas_12_replace_info;
-        _zz_dcache_tag_1 = ways_1_metas_12_tag;
-        _zz_dcache_hit_1 = ways_1_metas_12_valid;
-        _zz_dcache_replace_info_1 = ways_1_metas_12_replace_info;
-        _zz_dcache_tag_2 = ways_2_metas_12_tag;
-        _zz_dcache_hit_2 = ways_2_metas_12_valid;
-        _zz_dcache_replace_info_2 = ways_2_metas_12_replace_info;
-        _zz_dcache_tag_3 = ways_3_metas_12_tag;
-        _zz_dcache_hit_3 = ways_3_metas_12_valid;
-        _zz_dcache_replace_info_3 = ways_3_metas_12_replace_info;
+        _zz_cache_tag_0 = ways_0_metas_12_tag;
+        _zz_cache_hit_0 = ways_0_metas_12_valid;
+        _zz_cache_replace_info_0 = ways_0_metas_12_replace_info;
+        _zz_cache_tag_1 = ways_1_metas_12_tag;
+        _zz_cache_hit_1 = ways_1_metas_12_valid;
+        _zz_cache_replace_info_1 = ways_1_metas_12_replace_info;
+        _zz_cache_tag_2 = ways_2_metas_12_tag;
+        _zz_cache_hit_2 = ways_2_metas_12_valid;
+        _zz_cache_replace_info_2 = ways_2_metas_12_replace_info;
+        _zz_cache_tag_3 = ways_3_metas_12_tag;
+        _zz_cache_hit_3 = ways_3_metas_12_valid;
+        _zz_cache_replace_info_3 = ways_3_metas_12_replace_info;
       end
       4'b1101 : begin
-        _zz_dcache_tag_0 = ways_0_metas_13_tag;
-        _zz_dcache_hit_0 = ways_0_metas_13_valid;
-        _zz_dcache_replace_info_0 = ways_0_metas_13_replace_info;
-        _zz_dcache_tag_1 = ways_1_metas_13_tag;
-        _zz_dcache_hit_1 = ways_1_metas_13_valid;
-        _zz_dcache_replace_info_1 = ways_1_metas_13_replace_info;
-        _zz_dcache_tag_2 = ways_2_metas_13_tag;
-        _zz_dcache_hit_2 = ways_2_metas_13_valid;
-        _zz_dcache_replace_info_2 = ways_2_metas_13_replace_info;
-        _zz_dcache_tag_3 = ways_3_metas_13_tag;
-        _zz_dcache_hit_3 = ways_3_metas_13_valid;
-        _zz_dcache_replace_info_3 = ways_3_metas_13_replace_info;
+        _zz_cache_tag_0 = ways_0_metas_13_tag;
+        _zz_cache_hit_0 = ways_0_metas_13_valid;
+        _zz_cache_replace_info_0 = ways_0_metas_13_replace_info;
+        _zz_cache_tag_1 = ways_1_metas_13_tag;
+        _zz_cache_hit_1 = ways_1_metas_13_valid;
+        _zz_cache_replace_info_1 = ways_1_metas_13_replace_info;
+        _zz_cache_tag_2 = ways_2_metas_13_tag;
+        _zz_cache_hit_2 = ways_2_metas_13_valid;
+        _zz_cache_replace_info_2 = ways_2_metas_13_replace_info;
+        _zz_cache_tag_3 = ways_3_metas_13_tag;
+        _zz_cache_hit_3 = ways_3_metas_13_valid;
+        _zz_cache_replace_info_3 = ways_3_metas_13_replace_info;
       end
       4'b1110 : begin
-        _zz_dcache_tag_0 = ways_0_metas_14_tag;
-        _zz_dcache_hit_0 = ways_0_metas_14_valid;
-        _zz_dcache_replace_info_0 = ways_0_metas_14_replace_info;
-        _zz_dcache_tag_1 = ways_1_metas_14_tag;
-        _zz_dcache_hit_1 = ways_1_metas_14_valid;
-        _zz_dcache_replace_info_1 = ways_1_metas_14_replace_info;
-        _zz_dcache_tag_2 = ways_2_metas_14_tag;
-        _zz_dcache_hit_2 = ways_2_metas_14_valid;
-        _zz_dcache_replace_info_2 = ways_2_metas_14_replace_info;
-        _zz_dcache_tag_3 = ways_3_metas_14_tag;
-        _zz_dcache_hit_3 = ways_3_metas_14_valid;
-        _zz_dcache_replace_info_3 = ways_3_metas_14_replace_info;
+        _zz_cache_tag_0 = ways_0_metas_14_tag;
+        _zz_cache_hit_0 = ways_0_metas_14_valid;
+        _zz_cache_replace_info_0 = ways_0_metas_14_replace_info;
+        _zz_cache_tag_1 = ways_1_metas_14_tag;
+        _zz_cache_hit_1 = ways_1_metas_14_valid;
+        _zz_cache_replace_info_1 = ways_1_metas_14_replace_info;
+        _zz_cache_tag_2 = ways_2_metas_14_tag;
+        _zz_cache_hit_2 = ways_2_metas_14_valid;
+        _zz_cache_replace_info_2 = ways_2_metas_14_replace_info;
+        _zz_cache_tag_3 = ways_3_metas_14_tag;
+        _zz_cache_hit_3 = ways_3_metas_14_valid;
+        _zz_cache_replace_info_3 = ways_3_metas_14_replace_info;
       end
       default : begin
-        _zz_dcache_tag_0 = ways_0_metas_15_tag;
-        _zz_dcache_hit_0 = ways_0_metas_15_valid;
-        _zz_dcache_replace_info_0 = ways_0_metas_15_replace_info;
-        _zz_dcache_tag_1 = ways_1_metas_15_tag;
-        _zz_dcache_hit_1 = ways_1_metas_15_valid;
-        _zz_dcache_replace_info_1 = ways_1_metas_15_replace_info;
-        _zz_dcache_tag_2 = ways_2_metas_15_tag;
-        _zz_dcache_hit_2 = ways_2_metas_15_valid;
-        _zz_dcache_replace_info_2 = ways_2_metas_15_replace_info;
-        _zz_dcache_tag_3 = ways_3_metas_15_tag;
-        _zz_dcache_hit_3 = ways_3_metas_15_valid;
-        _zz_dcache_replace_info_3 = ways_3_metas_15_replace_info;
+        _zz_cache_tag_0 = ways_0_metas_15_tag;
+        _zz_cache_hit_0 = ways_0_metas_15_valid;
+        _zz_cache_replace_info_0 = ways_0_metas_15_replace_info;
+        _zz_cache_tag_1 = ways_1_metas_15_tag;
+        _zz_cache_hit_1 = ways_1_metas_15_valid;
+        _zz_cache_replace_info_1 = ways_1_metas_15_replace_info;
+        _zz_cache_tag_2 = ways_2_metas_15_tag;
+        _zz_cache_hit_2 = ways_2_metas_15_valid;
+        _zz_cache_replace_info_2 = ways_2_metas_15_replace_info;
+        _zz_cache_tag_3 = ways_3_metas_15_tag;
+        _zz_cache_hit_3 = ways_3_metas_15_valid;
+        _zz_cache_replace_info_3 = ways_3_metas_15_replace_info;
       end
     endcase
   end
@@ -3408,100 +3661,100 @@ module DCache (
   always @(*) begin
     case(cpu_set_d1)
       4'b0000 : begin
-        _zz_dcache_victim_0 = ways_0_metas_0_valid;
-        _zz_dcache_victim_1 = ways_1_metas_0_valid;
-        _zz_dcache_victim_2 = ways_2_metas_0_valid;
-        _zz_dcache_victim_3 = ways_3_metas_0_valid;
+        _zz_cache_victim_0 = ways_0_metas_0_valid;
+        _zz_cache_victim_1 = ways_1_metas_0_valid;
+        _zz_cache_victim_2 = ways_2_metas_0_valid;
+        _zz_cache_victim_3 = ways_3_metas_0_valid;
       end
       4'b0001 : begin
-        _zz_dcache_victim_0 = ways_0_metas_1_valid;
-        _zz_dcache_victim_1 = ways_1_metas_1_valid;
-        _zz_dcache_victim_2 = ways_2_metas_1_valid;
-        _zz_dcache_victim_3 = ways_3_metas_1_valid;
+        _zz_cache_victim_0 = ways_0_metas_1_valid;
+        _zz_cache_victim_1 = ways_1_metas_1_valid;
+        _zz_cache_victim_2 = ways_2_metas_1_valid;
+        _zz_cache_victim_3 = ways_3_metas_1_valid;
       end
       4'b0010 : begin
-        _zz_dcache_victim_0 = ways_0_metas_2_valid;
-        _zz_dcache_victim_1 = ways_1_metas_2_valid;
-        _zz_dcache_victim_2 = ways_2_metas_2_valid;
-        _zz_dcache_victim_3 = ways_3_metas_2_valid;
+        _zz_cache_victim_0 = ways_0_metas_2_valid;
+        _zz_cache_victim_1 = ways_1_metas_2_valid;
+        _zz_cache_victim_2 = ways_2_metas_2_valid;
+        _zz_cache_victim_3 = ways_3_metas_2_valid;
       end
       4'b0011 : begin
-        _zz_dcache_victim_0 = ways_0_metas_3_valid;
-        _zz_dcache_victim_1 = ways_1_metas_3_valid;
-        _zz_dcache_victim_2 = ways_2_metas_3_valid;
-        _zz_dcache_victim_3 = ways_3_metas_3_valid;
+        _zz_cache_victim_0 = ways_0_metas_3_valid;
+        _zz_cache_victim_1 = ways_1_metas_3_valid;
+        _zz_cache_victim_2 = ways_2_metas_3_valid;
+        _zz_cache_victim_3 = ways_3_metas_3_valid;
       end
       4'b0100 : begin
-        _zz_dcache_victim_0 = ways_0_metas_4_valid;
-        _zz_dcache_victim_1 = ways_1_metas_4_valid;
-        _zz_dcache_victim_2 = ways_2_metas_4_valid;
-        _zz_dcache_victim_3 = ways_3_metas_4_valid;
+        _zz_cache_victim_0 = ways_0_metas_4_valid;
+        _zz_cache_victim_1 = ways_1_metas_4_valid;
+        _zz_cache_victim_2 = ways_2_metas_4_valid;
+        _zz_cache_victim_3 = ways_3_metas_4_valid;
       end
       4'b0101 : begin
-        _zz_dcache_victim_0 = ways_0_metas_5_valid;
-        _zz_dcache_victim_1 = ways_1_metas_5_valid;
-        _zz_dcache_victim_2 = ways_2_metas_5_valid;
-        _zz_dcache_victim_3 = ways_3_metas_5_valid;
+        _zz_cache_victim_0 = ways_0_metas_5_valid;
+        _zz_cache_victim_1 = ways_1_metas_5_valid;
+        _zz_cache_victim_2 = ways_2_metas_5_valid;
+        _zz_cache_victim_3 = ways_3_metas_5_valid;
       end
       4'b0110 : begin
-        _zz_dcache_victim_0 = ways_0_metas_6_valid;
-        _zz_dcache_victim_1 = ways_1_metas_6_valid;
-        _zz_dcache_victim_2 = ways_2_metas_6_valid;
-        _zz_dcache_victim_3 = ways_3_metas_6_valid;
+        _zz_cache_victim_0 = ways_0_metas_6_valid;
+        _zz_cache_victim_1 = ways_1_metas_6_valid;
+        _zz_cache_victim_2 = ways_2_metas_6_valid;
+        _zz_cache_victim_3 = ways_3_metas_6_valid;
       end
       4'b0111 : begin
-        _zz_dcache_victim_0 = ways_0_metas_7_valid;
-        _zz_dcache_victim_1 = ways_1_metas_7_valid;
-        _zz_dcache_victim_2 = ways_2_metas_7_valid;
-        _zz_dcache_victim_3 = ways_3_metas_7_valid;
+        _zz_cache_victim_0 = ways_0_metas_7_valid;
+        _zz_cache_victim_1 = ways_1_metas_7_valid;
+        _zz_cache_victim_2 = ways_2_metas_7_valid;
+        _zz_cache_victim_3 = ways_3_metas_7_valid;
       end
       4'b1000 : begin
-        _zz_dcache_victim_0 = ways_0_metas_8_valid;
-        _zz_dcache_victim_1 = ways_1_metas_8_valid;
-        _zz_dcache_victim_2 = ways_2_metas_8_valid;
-        _zz_dcache_victim_3 = ways_3_metas_8_valid;
+        _zz_cache_victim_0 = ways_0_metas_8_valid;
+        _zz_cache_victim_1 = ways_1_metas_8_valid;
+        _zz_cache_victim_2 = ways_2_metas_8_valid;
+        _zz_cache_victim_3 = ways_3_metas_8_valid;
       end
       4'b1001 : begin
-        _zz_dcache_victim_0 = ways_0_metas_9_valid;
-        _zz_dcache_victim_1 = ways_1_metas_9_valid;
-        _zz_dcache_victim_2 = ways_2_metas_9_valid;
-        _zz_dcache_victim_3 = ways_3_metas_9_valid;
+        _zz_cache_victim_0 = ways_0_metas_9_valid;
+        _zz_cache_victim_1 = ways_1_metas_9_valid;
+        _zz_cache_victim_2 = ways_2_metas_9_valid;
+        _zz_cache_victim_3 = ways_3_metas_9_valid;
       end
       4'b1010 : begin
-        _zz_dcache_victim_0 = ways_0_metas_10_valid;
-        _zz_dcache_victim_1 = ways_1_metas_10_valid;
-        _zz_dcache_victim_2 = ways_2_metas_10_valid;
-        _zz_dcache_victim_3 = ways_3_metas_10_valid;
+        _zz_cache_victim_0 = ways_0_metas_10_valid;
+        _zz_cache_victim_1 = ways_1_metas_10_valid;
+        _zz_cache_victim_2 = ways_2_metas_10_valid;
+        _zz_cache_victim_3 = ways_3_metas_10_valid;
       end
       4'b1011 : begin
-        _zz_dcache_victim_0 = ways_0_metas_11_valid;
-        _zz_dcache_victim_1 = ways_1_metas_11_valid;
-        _zz_dcache_victim_2 = ways_2_metas_11_valid;
-        _zz_dcache_victim_3 = ways_3_metas_11_valid;
+        _zz_cache_victim_0 = ways_0_metas_11_valid;
+        _zz_cache_victim_1 = ways_1_metas_11_valid;
+        _zz_cache_victim_2 = ways_2_metas_11_valid;
+        _zz_cache_victim_3 = ways_3_metas_11_valid;
       end
       4'b1100 : begin
-        _zz_dcache_victim_0 = ways_0_metas_12_valid;
-        _zz_dcache_victim_1 = ways_1_metas_12_valid;
-        _zz_dcache_victim_2 = ways_2_metas_12_valid;
-        _zz_dcache_victim_3 = ways_3_metas_12_valid;
+        _zz_cache_victim_0 = ways_0_metas_12_valid;
+        _zz_cache_victim_1 = ways_1_metas_12_valid;
+        _zz_cache_victim_2 = ways_2_metas_12_valid;
+        _zz_cache_victim_3 = ways_3_metas_12_valid;
       end
       4'b1101 : begin
-        _zz_dcache_victim_0 = ways_0_metas_13_valid;
-        _zz_dcache_victim_1 = ways_1_metas_13_valid;
-        _zz_dcache_victim_2 = ways_2_metas_13_valid;
-        _zz_dcache_victim_3 = ways_3_metas_13_valid;
+        _zz_cache_victim_0 = ways_0_metas_13_valid;
+        _zz_cache_victim_1 = ways_1_metas_13_valid;
+        _zz_cache_victim_2 = ways_2_metas_13_valid;
+        _zz_cache_victim_3 = ways_3_metas_13_valid;
       end
       4'b1110 : begin
-        _zz_dcache_victim_0 = ways_0_metas_14_valid;
-        _zz_dcache_victim_1 = ways_1_metas_14_valid;
-        _zz_dcache_victim_2 = ways_2_metas_14_valid;
-        _zz_dcache_victim_3 = ways_3_metas_14_valid;
+        _zz_cache_victim_0 = ways_0_metas_14_valid;
+        _zz_cache_victim_1 = ways_1_metas_14_valid;
+        _zz_cache_victim_2 = ways_2_metas_14_valid;
+        _zz_cache_victim_3 = ways_3_metas_14_valid;
       end
       default : begin
-        _zz_dcache_victim_0 = ways_0_metas_15_valid;
-        _zz_dcache_victim_1 = ways_1_metas_15_valid;
-        _zz_dcache_victim_2 = ways_2_metas_15_valid;
-        _zz_dcache_victim_3 = ways_3_metas_15_valid;
+        _zz_cache_victim_0 = ways_0_metas_15_valid;
+        _zz_cache_victim_1 = ways_1_metas_15_valid;
+        _zz_cache_victim_2 = ways_2_metas_15_valid;
+        _zz_cache_victim_3 = ways_3_metas_15_valid;
       end
     endcase
   end
@@ -3528,19 +3781,49 @@ module DCache (
   end
 
   always @(*) begin
-    case(cpu_bank_sel)
-      2'b00 : _zz_cpu_rsp_payload_data_1 = _zz_cpu_rsp_payload_data[63 : 0];
-      2'b01 : _zz_cpu_rsp_payload_data_1 = _zz_cpu_rsp_payload_data[127 : 64];
-      2'b10 : _zz_cpu_rsp_payload_data_1 = _zz_cpu_rsp_payload_data[191 : 128];
-      default : _zz_cpu_rsp_payload_data_1 = _zz_cpu_rsp_payload_data[255 : 192];
+    case(victim_id)
+      2'b00 : begin
+        _zz__zz_cpu_rsp_payload_data_1 = sram_banks_data_0;
+        _zz_cpu_rsp_valid_1 = sram_banks_valid_0;
+      end
+      2'b01 : begin
+        _zz__zz_cpu_rsp_payload_data_1 = sram_banks_data_1;
+        _zz_cpu_rsp_valid_1 = sram_banks_valid_1;
+      end
+      2'b10 : begin
+        _zz__zz_cpu_rsp_payload_data_1 = sram_banks_data_2;
+        _zz_cpu_rsp_valid_1 = sram_banks_valid_2;
+      end
+      default : begin
+        _zz__zz_cpu_rsp_payload_data_1 = sram_banks_data_3;
+        _zz_cpu_rsp_valid_1 = sram_banks_valid_3;
+      end
     endcase
   end
 
-  assign replace_info_full = (&{dcache_replace_info_3,{dcache_replace_info_2,{dcache_replace_info_1,dcache_replace_info_0}}});
+  always @(*) begin
+    case(cpu_bank_sel)
+      2'b00 : _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[63 : 0];
+      2'b01 : _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[127 : 64];
+      2'b10 : _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[191 : 128];
+      default : _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[255 : 192];
+    endcase
+  end
+
+  always @(*) begin
+    case(cpu_bank_sel_d1)
+      2'b00 : _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[63 : 0];
+      2'b01 : _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[127 : 64];
+      2'b10 : _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[191 : 128];
+      default : _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[255 : 192];
+    endcase
+  end
+
+  assign replace_info_full = (&{cache_replace_info_3,{cache_replace_info_2,{cache_replace_info_1,cache_replace_info_0}}});
   assign cpu_cmd_fire = (cpu_cmd_valid && cpu_cmd_ready);
-  assign is_hit = ((|{dcache_hit_3,{dcache_hit_2,{dcache_hit_1,dcache_hit_0}}}) && cpu_cmd_fire);
+  assign is_hit = ((|{cache_hit_3,{cache_hit_2,{cache_hit_1,cache_hit_0}}}) && cpu_cmd_fire);
   assign cpu_cmd_fire_1 = (cpu_cmd_valid && cpu_cmd_ready);
-  assign is_miss = ((! (|{dcache_hit_3,{dcache_hit_2,{dcache_hit_1,dcache_hit_0}}})) && cpu_cmd_fire_1);
+  assign is_miss = ((! (|{cache_hit_3,{cache_hit_2,{cache_hit_1,cache_hit_0}}})) && cpu_cmd_fire_1);
   assign cpu_tag = cpu_cmd_payload_addr[63 : 10];
   assign cpu_set = cpu_cmd_payload_addr[9 : 6];
   assign cpu_bank_offset = cpu_cmd_payload_addr[4 : 0];
@@ -3548,10 +3831,12 @@ module DCache (
   assign cpu_bank_sel = cpu_cmd_payload_addr[4 : 3];
   assign cpu_set_d1 = cpu_addr_d1[9 : 6];
   assign cpu_tag_d1 = cpu_addr_d1[63 : 10];
+  assign cpu_bank_addr_d1 = cpu_addr_d1[9 : 5];
+  assign cpu_bank_sel_d1 = cpu_addr_d1[4 : 3];
   always @(*) begin
     next_level_data_cnt_willIncrement = 1'b0;
     if(!is_miss) begin
-      if(!when_DCache_l119) begin
+      if(!next_level_done) begin
         if(next_level_rsp_valid) begin
           next_level_data_cnt_willIncrement = 1'b1;
         end
@@ -3564,7 +3849,7 @@ module DCache (
     if(is_miss) begin
       next_level_data_cnt_willClear = 1'b1;
     end else begin
-      if(when_DCache_l119) begin
+      if(next_level_done) begin
         next_level_data_cnt_willClear = 1'b1;
       end
     end
@@ -3581,10 +3866,12 @@ module DCache (
 
   assign next_level_bank_addr = cpu_addr_d1[9 : 6];
   assign next_level_cmd_fire = (next_level_cmd_valid && next_level_cmd_ready);
-  assign when_DCache_l119 = (next_level_rsp_valid && (next_level_data_cnt_value == 1'b1));
-  assign _zz_hit_way_id = (dcache_hit_1 || dcache_hit_3);
-  assign _zz_hit_way_id_1 = (dcache_hit_2 || dcache_hit_3);
+  assign _zz_hit_way_id = (cache_hit_1 || cache_hit_3);
+  assign _zz_hit_way_id_1 = (cache_hit_2 || cache_hit_3);
   assign hit_way_id = {_zz_hit_way_id_1,_zz_hit_way_id};
+  assign _zz_victim_id = (cache_victim_1 || cache_victim_3);
+  assign _zz_victim_id_1 = (cache_victim_2 || cache_victim_3);
+  assign victim_id = {_zz_victim_id_1,_zz_victim_id};
   assign _zz_1 = ({15'd0,1'b1} <<< cpu_set);
   assign _zz_2 = _zz_1[0];
   assign _zz_3 = _zz_1[1];
@@ -3602,9 +3889,9 @@ module DCache (
   assign _zz_15 = _zz_1[13];
   assign _zz_16 = _zz_1[14];
   assign _zz_17 = _zz_1[15];
-  assign dcache_tag_0 = _zz_dcache_tag_0;
-  assign dcache_hit_0 = ((dcache_tag_0 == cpu_tag) && _zz_dcache_hit_0);
-  assign dcache_replace_info_0 = _zz_dcache_replace_info_0;
+  assign cache_tag_0 = _zz_cache_tag_0;
+  assign cache_hit_0 = ((cache_tag_0 == cpu_tag) && _zz_cache_hit_0);
+  assign cache_replace_info_0 = _zz_cache_replace_info_0;
   assign _zz_18 = ({15'd0,1'b1} <<< cpu_set_d1);
   assign _zz_19 = _zz_18[0];
   assign _zz_20 = _zz_18[1];
@@ -3622,30 +3909,37 @@ module DCache (
   assign _zz_32 = _zz_18[13];
   assign _zz_33 = _zz_18[14];
   assign _zz_34 = _zz_18[15];
-  assign dcache_victim_0 = (! _zz_dcache_victim_0);
+  assign cache_victim_0 = (! _zz_cache_victim_0);
   assign sram_banks_data_0 = sram_0_ports_rsp_payload_data;
   assign sram_banks_valid_0 = sram_0_ports_rsp_valid;
   always @(*) begin
     if(is_hit) begin
-      sram_0_ports_cmd_payload_addr = (dcache_hit_0 ? cpu_bank_addr : 5'h0);
+      sram_0_ports_cmd_payload_addr = cpu_bank_addr;
     end else begin
-      if(next_level_rsp_valid) begin
-        sram_0_ports_cmd_payload_addr = {next_level_bank_addr,next_level_data_cnt_value};
+      if(next_level_done) begin
+        sram_0_ports_cmd_payload_addr = cpu_bank_addr_d1;
       end else begin
-        sram_0_ports_cmd_payload_addr = 5'h0;
+        if(next_level_rsp_valid) begin
+          sram_0_ports_cmd_payload_addr = {next_level_bank_addr,next_level_data_cnt_value};
+        end else begin
+          sram_0_ports_cmd_payload_addr = 5'h0;
+        end
       end
     end
   end
 
-  assign cpu_cmd_fire_2 = (cpu_cmd_valid && cpu_cmd_ready);
   always @(*) begin
     if(is_hit) begin
-      sram_0_ports_cmd_valid = (dcache_hit_0 && cpu_cmd_fire_2);
+      sram_0_ports_cmd_valid = cache_hit_0;
     end else begin
-      if(next_level_rsp_valid) begin
-        sram_0_ports_cmd_valid = 1'b1;
+      if(next_level_done) begin
+        sram_0_ports_cmd_valid = cache_victim_0;
       end else begin
-        sram_0_ports_cmd_valid = 1'b0;
+        if(next_level_rsp_valid) begin
+          sram_0_ports_cmd_valid = 1'b1;
+        end else begin
+          sram_0_ports_cmd_valid = 1'b0;
+        end
       end
     end
   end
@@ -3654,10 +3948,14 @@ module DCache (
     if(is_hit) begin
       sram_0_ports_cmd_payload_wen = 1'b0;
     end else begin
-      if(next_level_rsp_valid) begin
-        sram_0_ports_cmd_payload_wen = 1'b1;
-      end else begin
+      if(next_level_done) begin
         sram_0_ports_cmd_payload_wen = 1'b0;
+      end else begin
+        if(next_level_rsp_valid) begin
+          sram_0_ports_cmd_payload_wen = 1'b1;
+        end else begin
+          sram_0_ports_cmd_payload_wen = 1'b0;
+        end
       end
     end
   end
@@ -3666,17 +3964,19 @@ module DCache (
     if(is_hit) begin
       sram_0_ports_cmd_payload_wdata = 256'h0;
     end else begin
-      if(next_level_rsp_valid) begin
-        sram_0_ports_cmd_payload_wdata = next_level_rsp_payload_data;
-      end else begin
+      if(next_level_done) begin
         sram_0_ports_cmd_payload_wdata = 256'h0;
+      end else begin
+        if(next_level_rsp_valid) begin
+          sram_0_ports_cmd_payload_wdata = next_level_rsp_payload_data;
+        end else begin
+          sram_0_ports_cmd_payload_wdata = 256'h0;
+        end
       end
     end
   end
 
-  assign when_DCache_l170 = (is_hit && replace_info_full);
-  assign when_DCache_l187 = (next_level_rsp_valid && (next_level_data_cnt_value == 1'b1));
-  assign when_DCache_l196 = (next_level_rsp_valid && (next_level_data_cnt_value == 1'b1));
+  assign when_DCache_l188 = (is_hit && replace_info_full);
   assign _zz_35 = ({15'd0,1'b1} <<< cpu_set);
   assign _zz_36 = _zz_35[0];
   assign _zz_37 = _zz_35[1];
@@ -3694,14 +3994,14 @@ module DCache (
   assign _zz_49 = _zz_35[13];
   assign _zz_50 = _zz_35[14];
   assign _zz_51 = _zz_35[15];
-  assign dcache_tag_1 = _zz_dcache_tag_1;
-  assign dcache_hit_1 = ((dcache_tag_1 == cpu_tag) && _zz_dcache_hit_1);
-  assign dcache_replace_info_1 = _zz_dcache_replace_info_1;
+  assign cache_tag_1 = _zz_cache_tag_1;
+  assign cache_hit_1 = ((cache_tag_1 == cpu_tag) && _zz_cache_hit_1);
+  assign cache_replace_info_1 = _zz_cache_replace_info_1;
   always @(*) begin
-    if(dcache_victim_0) begin
-      dcache_victim_1 = 1'b0;
+    if(cache_victim_0) begin
+      cache_victim_1 = 1'b0;
     end else begin
-      dcache_victim_1 = (! _zz_dcache_victim_1);
+      cache_victim_1 = (! _zz_cache_victim_1);
     end
   end
 
@@ -3726,3108 +4026,32 @@ module DCache (
   assign sram_banks_valid_1 = sram_1_ports_rsp_valid;
   always @(*) begin
     if(is_hit) begin
-      sram_1_ports_cmd_payload_addr = (dcache_hit_1 ? cpu_bank_addr : 5'h0);
+      sram_1_ports_cmd_payload_addr = cpu_bank_addr;
     end else begin
-      if(next_level_rsp_valid) begin
-        sram_1_ports_cmd_payload_addr = {next_level_bank_addr,next_level_data_cnt_value};
+      if(next_level_done) begin
+        sram_1_ports_cmd_payload_addr = cpu_bank_addr_d1;
       end else begin
-        sram_1_ports_cmd_payload_addr = 5'h0;
-      end
-    end
-  end
-
-  assign cpu_cmd_fire_3 = (cpu_cmd_valid && cpu_cmd_ready);
-  always @(*) begin
-    if(is_hit) begin
-      sram_1_ports_cmd_valid = (dcache_hit_1 && cpu_cmd_fire_3);
-    end else begin
-      if(next_level_rsp_valid) begin
-        sram_1_ports_cmd_valid = 1'b1;
-      end else begin
-        sram_1_ports_cmd_valid = 1'b0;
-      end
-    end
-  end
-
-  always @(*) begin
-    if(is_hit) begin
-      sram_1_ports_cmd_payload_wen = 1'b0;
-    end else begin
-      if(next_level_rsp_valid) begin
-        sram_1_ports_cmd_payload_wen = 1'b1;
-      end else begin
-        sram_1_ports_cmd_payload_wen = 1'b0;
-      end
-    end
-  end
-
-  always @(*) begin
-    if(is_hit) begin
-      sram_1_ports_cmd_payload_wdata = 256'h0;
-    end else begin
-      if(next_level_rsp_valid) begin
-        sram_1_ports_cmd_payload_wdata = next_level_rsp_payload_data;
-      end else begin
-        sram_1_ports_cmd_payload_wdata = 256'h0;
-      end
-    end
-  end
-
-  assign when_DCache_l170_1 = (is_hit && replace_info_full);
-  assign when_DCache_l187_1 = (next_level_rsp_valid && (next_level_data_cnt_value == 1'b1));
-  assign when_DCache_l196_1 = (next_level_rsp_valid && (next_level_data_cnt_value == 1'b1));
-  assign _zz_69 = ({15'd0,1'b1} <<< cpu_set);
-  assign _zz_70 = _zz_69[0];
-  assign _zz_71 = _zz_69[1];
-  assign _zz_72 = _zz_69[2];
-  assign _zz_73 = _zz_69[3];
-  assign _zz_74 = _zz_69[4];
-  assign _zz_75 = _zz_69[5];
-  assign _zz_76 = _zz_69[6];
-  assign _zz_77 = _zz_69[7];
-  assign _zz_78 = _zz_69[8];
-  assign _zz_79 = _zz_69[9];
-  assign _zz_80 = _zz_69[10];
-  assign _zz_81 = _zz_69[11];
-  assign _zz_82 = _zz_69[12];
-  assign _zz_83 = _zz_69[13];
-  assign _zz_84 = _zz_69[14];
-  assign _zz_85 = _zz_69[15];
-  assign dcache_tag_2 = _zz_dcache_tag_2;
-  assign dcache_hit_2 = ((dcache_tag_2 == cpu_tag) && _zz_dcache_hit_2);
-  assign dcache_replace_info_2 = _zz_dcache_replace_info_2;
-  always @(*) begin
-    if(dcache_victim_1) begin
-      dcache_victim_2 = 1'b0;
-    end else begin
-      dcache_victim_2 = (! _zz_dcache_victim_2);
-    end
-  end
-
-  assign _zz_86 = ({15'd0,1'b1} <<< cpu_set_d1);
-  assign _zz_87 = _zz_86[0];
-  assign _zz_88 = _zz_86[1];
-  assign _zz_89 = _zz_86[2];
-  assign _zz_90 = _zz_86[3];
-  assign _zz_91 = _zz_86[4];
-  assign _zz_92 = _zz_86[5];
-  assign _zz_93 = _zz_86[6];
-  assign _zz_94 = _zz_86[7];
-  assign _zz_95 = _zz_86[8];
-  assign _zz_96 = _zz_86[9];
-  assign _zz_97 = _zz_86[10];
-  assign _zz_98 = _zz_86[11];
-  assign _zz_99 = _zz_86[12];
-  assign _zz_100 = _zz_86[13];
-  assign _zz_101 = _zz_86[14];
-  assign _zz_102 = _zz_86[15];
-  assign sram_banks_data_2 = sram_2_ports_rsp_payload_data;
-  assign sram_banks_valid_2 = sram_2_ports_rsp_valid;
-  always @(*) begin
-    if(is_hit) begin
-      sram_2_ports_cmd_payload_addr = (dcache_hit_2 ? cpu_bank_addr : 5'h0);
-    end else begin
-      if(next_level_rsp_valid) begin
-        sram_2_ports_cmd_payload_addr = {next_level_bank_addr,next_level_data_cnt_value};
-      end else begin
-        sram_2_ports_cmd_payload_addr = 5'h0;
-      end
-    end
-  end
-
-  assign cpu_cmd_fire_4 = (cpu_cmd_valid && cpu_cmd_ready);
-  always @(*) begin
-    if(is_hit) begin
-      sram_2_ports_cmd_valid = (dcache_hit_2 && cpu_cmd_fire_4);
-    end else begin
-      if(next_level_rsp_valid) begin
-        sram_2_ports_cmd_valid = 1'b1;
-      end else begin
-        sram_2_ports_cmd_valid = 1'b0;
-      end
-    end
-  end
-
-  always @(*) begin
-    if(is_hit) begin
-      sram_2_ports_cmd_payload_wen = 1'b0;
-    end else begin
-      if(next_level_rsp_valid) begin
-        sram_2_ports_cmd_payload_wen = 1'b1;
-      end else begin
-        sram_2_ports_cmd_payload_wen = 1'b0;
-      end
-    end
-  end
-
-  always @(*) begin
-    if(is_hit) begin
-      sram_2_ports_cmd_payload_wdata = 256'h0;
-    end else begin
-      if(next_level_rsp_valid) begin
-        sram_2_ports_cmd_payload_wdata = next_level_rsp_payload_data;
-      end else begin
-        sram_2_ports_cmd_payload_wdata = 256'h0;
-      end
-    end
-  end
-
-  assign when_DCache_l170_2 = (is_hit && replace_info_full);
-  assign when_DCache_l187_2 = (next_level_rsp_valid && (next_level_data_cnt_value == 1'b1));
-  assign when_DCache_l196_2 = (next_level_rsp_valid && (next_level_data_cnt_value == 1'b1));
-  assign _zz_103 = ({15'd0,1'b1} <<< cpu_set);
-  assign _zz_104 = _zz_103[0];
-  assign _zz_105 = _zz_103[1];
-  assign _zz_106 = _zz_103[2];
-  assign _zz_107 = _zz_103[3];
-  assign _zz_108 = _zz_103[4];
-  assign _zz_109 = _zz_103[5];
-  assign _zz_110 = _zz_103[6];
-  assign _zz_111 = _zz_103[7];
-  assign _zz_112 = _zz_103[8];
-  assign _zz_113 = _zz_103[9];
-  assign _zz_114 = _zz_103[10];
-  assign _zz_115 = _zz_103[11];
-  assign _zz_116 = _zz_103[12];
-  assign _zz_117 = _zz_103[13];
-  assign _zz_118 = _zz_103[14];
-  assign _zz_119 = _zz_103[15];
-  assign dcache_tag_3 = _zz_dcache_tag_3;
-  assign dcache_hit_3 = ((dcache_tag_3 == cpu_tag) && _zz_dcache_hit_3);
-  assign dcache_replace_info_3 = _zz_dcache_replace_info_3;
-  always @(*) begin
-    if(dcache_victim_2) begin
-      dcache_victim_3 = 1'b0;
-    end else begin
-      dcache_victim_3 = (! _zz_dcache_victim_3);
-    end
-  end
-
-  assign _zz_120 = ({15'd0,1'b1} <<< cpu_set_d1);
-  assign _zz_121 = _zz_120[0];
-  assign _zz_122 = _zz_120[1];
-  assign _zz_123 = _zz_120[2];
-  assign _zz_124 = _zz_120[3];
-  assign _zz_125 = _zz_120[4];
-  assign _zz_126 = _zz_120[5];
-  assign _zz_127 = _zz_120[6];
-  assign _zz_128 = _zz_120[7];
-  assign _zz_129 = _zz_120[8];
-  assign _zz_130 = _zz_120[9];
-  assign _zz_131 = _zz_120[10];
-  assign _zz_132 = _zz_120[11];
-  assign _zz_133 = _zz_120[12];
-  assign _zz_134 = _zz_120[13];
-  assign _zz_135 = _zz_120[14];
-  assign _zz_136 = _zz_120[15];
-  assign sram_banks_data_3 = sram_3_ports_rsp_payload_data;
-  assign sram_banks_valid_3 = sram_3_ports_rsp_valid;
-  always @(*) begin
-    if(is_hit) begin
-      sram_3_ports_cmd_payload_addr = (dcache_hit_3 ? cpu_bank_addr : 5'h0);
-    end else begin
-      if(next_level_rsp_valid) begin
-        sram_3_ports_cmd_payload_addr = {next_level_bank_addr,next_level_data_cnt_value};
-      end else begin
-        sram_3_ports_cmd_payload_addr = 5'h0;
-      end
-    end
-  end
-
-  assign cpu_cmd_fire_5 = (cpu_cmd_valid && cpu_cmd_ready);
-  always @(*) begin
-    if(is_hit) begin
-      sram_3_ports_cmd_valid = (dcache_hit_3 && cpu_cmd_fire_5);
-    end else begin
-      if(next_level_rsp_valid) begin
-        sram_3_ports_cmd_valid = 1'b1;
-      end else begin
-        sram_3_ports_cmd_valid = 1'b0;
-      end
-    end
-  end
-
-  always @(*) begin
-    if(is_hit) begin
-      sram_3_ports_cmd_payload_wen = 1'b0;
-    end else begin
-      if(next_level_rsp_valid) begin
-        sram_3_ports_cmd_payload_wen = 1'b1;
-      end else begin
-        sram_3_ports_cmd_payload_wen = 1'b0;
-      end
-    end
-  end
-
-  always @(*) begin
-    if(is_hit) begin
-      sram_3_ports_cmd_payload_wdata = 256'h0;
-    end else begin
-      if(next_level_rsp_valid) begin
-        sram_3_ports_cmd_payload_wdata = next_level_rsp_payload_data;
-      end else begin
-        sram_3_ports_cmd_payload_wdata = 256'h0;
-      end
-    end
-  end
-
-  assign when_DCache_l170_3 = (is_hit && replace_info_full);
-  assign when_DCache_l187_3 = (next_level_rsp_valid && (next_level_data_cnt_value == 1'b1));
-  assign when_DCache_l196_3 = (next_level_rsp_valid && (next_level_data_cnt_value == 1'b1));
-  assign _zz_cpu_rsp_payload_data = _zz__zz_cpu_rsp_payload_data;
-  assign cpu_rsp_payload_data = _zz_cpu_rsp_payload_data_1;
-  assign cpu_rsp_valid = _zz_cpu_rsp_valid;
-  assign cpu_cmd_ready = cpu_cmd_ready_1;
-  assign next_level_cmd_payload_addr = cpu_addr_d1;
-  assign next_level_cmd_payload_len = 4'b0010;
-  assign next_level_cmd_valid = next_level_cmd_valid_1;
-  always @(posedge clk or posedge reset) begin
-    if(reset) begin
-      ways_0_metas_0_valid <= 1'b0;
-      ways_0_metas_0_tag <= 54'h0;
-      ways_0_metas_0_replace_info <= 1'b0;
-      ways_0_metas_1_valid <= 1'b0;
-      ways_0_metas_1_tag <= 54'h0;
-      ways_0_metas_1_replace_info <= 1'b0;
-      ways_0_metas_2_valid <= 1'b0;
-      ways_0_metas_2_tag <= 54'h0;
-      ways_0_metas_2_replace_info <= 1'b0;
-      ways_0_metas_3_valid <= 1'b0;
-      ways_0_metas_3_tag <= 54'h0;
-      ways_0_metas_3_replace_info <= 1'b0;
-      ways_0_metas_4_valid <= 1'b0;
-      ways_0_metas_4_tag <= 54'h0;
-      ways_0_metas_4_replace_info <= 1'b0;
-      ways_0_metas_5_valid <= 1'b0;
-      ways_0_metas_5_tag <= 54'h0;
-      ways_0_metas_5_replace_info <= 1'b0;
-      ways_0_metas_6_valid <= 1'b0;
-      ways_0_metas_6_tag <= 54'h0;
-      ways_0_metas_6_replace_info <= 1'b0;
-      ways_0_metas_7_valid <= 1'b0;
-      ways_0_metas_7_tag <= 54'h0;
-      ways_0_metas_7_replace_info <= 1'b0;
-      ways_0_metas_8_valid <= 1'b0;
-      ways_0_metas_8_tag <= 54'h0;
-      ways_0_metas_8_replace_info <= 1'b0;
-      ways_0_metas_9_valid <= 1'b0;
-      ways_0_metas_9_tag <= 54'h0;
-      ways_0_metas_9_replace_info <= 1'b0;
-      ways_0_metas_10_valid <= 1'b0;
-      ways_0_metas_10_tag <= 54'h0;
-      ways_0_metas_10_replace_info <= 1'b0;
-      ways_0_metas_11_valid <= 1'b0;
-      ways_0_metas_11_tag <= 54'h0;
-      ways_0_metas_11_replace_info <= 1'b0;
-      ways_0_metas_12_valid <= 1'b0;
-      ways_0_metas_12_tag <= 54'h0;
-      ways_0_metas_12_replace_info <= 1'b0;
-      ways_0_metas_13_valid <= 1'b0;
-      ways_0_metas_13_tag <= 54'h0;
-      ways_0_metas_13_replace_info <= 1'b0;
-      ways_0_metas_14_valid <= 1'b0;
-      ways_0_metas_14_tag <= 54'h0;
-      ways_0_metas_14_replace_info <= 1'b0;
-      ways_0_metas_15_valid <= 1'b0;
-      ways_0_metas_15_tag <= 54'h0;
-      ways_0_metas_15_replace_info <= 1'b0;
-      ways_1_metas_0_valid <= 1'b0;
-      ways_1_metas_0_tag <= 54'h0;
-      ways_1_metas_0_replace_info <= 1'b0;
-      ways_1_metas_1_valid <= 1'b0;
-      ways_1_metas_1_tag <= 54'h0;
-      ways_1_metas_1_replace_info <= 1'b0;
-      ways_1_metas_2_valid <= 1'b0;
-      ways_1_metas_2_tag <= 54'h0;
-      ways_1_metas_2_replace_info <= 1'b0;
-      ways_1_metas_3_valid <= 1'b0;
-      ways_1_metas_3_tag <= 54'h0;
-      ways_1_metas_3_replace_info <= 1'b0;
-      ways_1_metas_4_valid <= 1'b0;
-      ways_1_metas_4_tag <= 54'h0;
-      ways_1_metas_4_replace_info <= 1'b0;
-      ways_1_metas_5_valid <= 1'b0;
-      ways_1_metas_5_tag <= 54'h0;
-      ways_1_metas_5_replace_info <= 1'b0;
-      ways_1_metas_6_valid <= 1'b0;
-      ways_1_metas_6_tag <= 54'h0;
-      ways_1_metas_6_replace_info <= 1'b0;
-      ways_1_metas_7_valid <= 1'b0;
-      ways_1_metas_7_tag <= 54'h0;
-      ways_1_metas_7_replace_info <= 1'b0;
-      ways_1_metas_8_valid <= 1'b0;
-      ways_1_metas_8_tag <= 54'h0;
-      ways_1_metas_8_replace_info <= 1'b0;
-      ways_1_metas_9_valid <= 1'b0;
-      ways_1_metas_9_tag <= 54'h0;
-      ways_1_metas_9_replace_info <= 1'b0;
-      ways_1_metas_10_valid <= 1'b0;
-      ways_1_metas_10_tag <= 54'h0;
-      ways_1_metas_10_replace_info <= 1'b0;
-      ways_1_metas_11_valid <= 1'b0;
-      ways_1_metas_11_tag <= 54'h0;
-      ways_1_metas_11_replace_info <= 1'b0;
-      ways_1_metas_12_valid <= 1'b0;
-      ways_1_metas_12_tag <= 54'h0;
-      ways_1_metas_12_replace_info <= 1'b0;
-      ways_1_metas_13_valid <= 1'b0;
-      ways_1_metas_13_tag <= 54'h0;
-      ways_1_metas_13_replace_info <= 1'b0;
-      ways_1_metas_14_valid <= 1'b0;
-      ways_1_metas_14_tag <= 54'h0;
-      ways_1_metas_14_replace_info <= 1'b0;
-      ways_1_metas_15_valid <= 1'b0;
-      ways_1_metas_15_tag <= 54'h0;
-      ways_1_metas_15_replace_info <= 1'b0;
-      ways_2_metas_0_valid <= 1'b0;
-      ways_2_metas_0_tag <= 54'h0;
-      ways_2_metas_0_replace_info <= 1'b0;
-      ways_2_metas_1_valid <= 1'b0;
-      ways_2_metas_1_tag <= 54'h0;
-      ways_2_metas_1_replace_info <= 1'b0;
-      ways_2_metas_2_valid <= 1'b0;
-      ways_2_metas_2_tag <= 54'h0;
-      ways_2_metas_2_replace_info <= 1'b0;
-      ways_2_metas_3_valid <= 1'b0;
-      ways_2_metas_3_tag <= 54'h0;
-      ways_2_metas_3_replace_info <= 1'b0;
-      ways_2_metas_4_valid <= 1'b0;
-      ways_2_metas_4_tag <= 54'h0;
-      ways_2_metas_4_replace_info <= 1'b0;
-      ways_2_metas_5_valid <= 1'b0;
-      ways_2_metas_5_tag <= 54'h0;
-      ways_2_metas_5_replace_info <= 1'b0;
-      ways_2_metas_6_valid <= 1'b0;
-      ways_2_metas_6_tag <= 54'h0;
-      ways_2_metas_6_replace_info <= 1'b0;
-      ways_2_metas_7_valid <= 1'b0;
-      ways_2_metas_7_tag <= 54'h0;
-      ways_2_metas_7_replace_info <= 1'b0;
-      ways_2_metas_8_valid <= 1'b0;
-      ways_2_metas_8_tag <= 54'h0;
-      ways_2_metas_8_replace_info <= 1'b0;
-      ways_2_metas_9_valid <= 1'b0;
-      ways_2_metas_9_tag <= 54'h0;
-      ways_2_metas_9_replace_info <= 1'b0;
-      ways_2_metas_10_valid <= 1'b0;
-      ways_2_metas_10_tag <= 54'h0;
-      ways_2_metas_10_replace_info <= 1'b0;
-      ways_2_metas_11_valid <= 1'b0;
-      ways_2_metas_11_tag <= 54'h0;
-      ways_2_metas_11_replace_info <= 1'b0;
-      ways_2_metas_12_valid <= 1'b0;
-      ways_2_metas_12_tag <= 54'h0;
-      ways_2_metas_12_replace_info <= 1'b0;
-      ways_2_metas_13_valid <= 1'b0;
-      ways_2_metas_13_tag <= 54'h0;
-      ways_2_metas_13_replace_info <= 1'b0;
-      ways_2_metas_14_valid <= 1'b0;
-      ways_2_metas_14_tag <= 54'h0;
-      ways_2_metas_14_replace_info <= 1'b0;
-      ways_2_metas_15_valid <= 1'b0;
-      ways_2_metas_15_tag <= 54'h0;
-      ways_2_metas_15_replace_info <= 1'b0;
-      ways_3_metas_0_valid <= 1'b0;
-      ways_3_metas_0_tag <= 54'h0;
-      ways_3_metas_0_replace_info <= 1'b0;
-      ways_3_metas_1_valid <= 1'b0;
-      ways_3_metas_1_tag <= 54'h0;
-      ways_3_metas_1_replace_info <= 1'b0;
-      ways_3_metas_2_valid <= 1'b0;
-      ways_3_metas_2_tag <= 54'h0;
-      ways_3_metas_2_replace_info <= 1'b0;
-      ways_3_metas_3_valid <= 1'b0;
-      ways_3_metas_3_tag <= 54'h0;
-      ways_3_metas_3_replace_info <= 1'b0;
-      ways_3_metas_4_valid <= 1'b0;
-      ways_3_metas_4_tag <= 54'h0;
-      ways_3_metas_4_replace_info <= 1'b0;
-      ways_3_metas_5_valid <= 1'b0;
-      ways_3_metas_5_tag <= 54'h0;
-      ways_3_metas_5_replace_info <= 1'b0;
-      ways_3_metas_6_valid <= 1'b0;
-      ways_3_metas_6_tag <= 54'h0;
-      ways_3_metas_6_replace_info <= 1'b0;
-      ways_3_metas_7_valid <= 1'b0;
-      ways_3_metas_7_tag <= 54'h0;
-      ways_3_metas_7_replace_info <= 1'b0;
-      ways_3_metas_8_valid <= 1'b0;
-      ways_3_metas_8_tag <= 54'h0;
-      ways_3_metas_8_replace_info <= 1'b0;
-      ways_3_metas_9_valid <= 1'b0;
-      ways_3_metas_9_tag <= 54'h0;
-      ways_3_metas_9_replace_info <= 1'b0;
-      ways_3_metas_10_valid <= 1'b0;
-      ways_3_metas_10_tag <= 54'h0;
-      ways_3_metas_10_replace_info <= 1'b0;
-      ways_3_metas_11_valid <= 1'b0;
-      ways_3_metas_11_tag <= 54'h0;
-      ways_3_metas_11_replace_info <= 1'b0;
-      ways_3_metas_12_valid <= 1'b0;
-      ways_3_metas_12_tag <= 54'h0;
-      ways_3_metas_12_replace_info <= 1'b0;
-      ways_3_metas_13_valid <= 1'b0;
-      ways_3_metas_13_tag <= 54'h0;
-      ways_3_metas_13_replace_info <= 1'b0;
-      ways_3_metas_14_valid <= 1'b0;
-      ways_3_metas_14_tag <= 54'h0;
-      ways_3_metas_14_replace_info <= 1'b0;
-      ways_3_metas_15_valid <= 1'b0;
-      ways_3_metas_15_tag <= 54'h0;
-      ways_3_metas_15_replace_info <= 1'b0;
-      cpu_addr_d1 <= 64'h0;
-      cpu_cmd_ready_1 <= 1'b1;
-      next_level_cmd_valid_1 <= 1'b0;
-      next_level_data_cnt_value <= 1'b0;
-    end else begin
-      if(is_miss) begin
-        cpu_addr_d1 <= cpu_cmd_payload_addr;
-      end
-      next_level_data_cnt_value <= next_level_data_cnt_valueNext;
-      if(is_miss) begin
-        next_level_cmd_valid_1 <= 1'b1;
-      end else begin
-        if(next_level_cmd_fire) begin
-          next_level_cmd_valid_1 <= 1'b0;
-        end
-      end
-      if(flush) begin
-        if(_zz_2) begin
-          ways_0_metas_0_replace_info <= 1'b0;
-        end
-        if(_zz_3) begin
-          ways_0_metas_1_replace_info <= 1'b0;
-        end
-        if(_zz_4) begin
-          ways_0_metas_2_replace_info <= 1'b0;
-        end
-        if(_zz_5) begin
-          ways_0_metas_3_replace_info <= 1'b0;
-        end
-        if(_zz_6) begin
-          ways_0_metas_4_replace_info <= 1'b0;
-        end
-        if(_zz_7) begin
-          ways_0_metas_5_replace_info <= 1'b0;
-        end
-        if(_zz_8) begin
-          ways_0_metas_6_replace_info <= 1'b0;
-        end
-        if(_zz_9) begin
-          ways_0_metas_7_replace_info <= 1'b0;
-        end
-        if(_zz_10) begin
-          ways_0_metas_8_replace_info <= 1'b0;
-        end
-        if(_zz_11) begin
-          ways_0_metas_9_replace_info <= 1'b0;
-        end
-        if(_zz_12) begin
-          ways_0_metas_10_replace_info <= 1'b0;
-        end
-        if(_zz_13) begin
-          ways_0_metas_11_replace_info <= 1'b0;
-        end
-        if(_zz_14) begin
-          ways_0_metas_12_replace_info <= 1'b0;
-        end
-        if(_zz_15) begin
-          ways_0_metas_13_replace_info <= 1'b0;
-        end
-        if(_zz_16) begin
-          ways_0_metas_14_replace_info <= 1'b0;
-        end
-        if(_zz_17) begin
-          ways_0_metas_15_replace_info <= 1'b0;
-        end
-        if(_zz_19) begin
-          ways_0_metas_0_valid <= 1'b0;
-        end
-        if(_zz_20) begin
-          ways_0_metas_1_valid <= 1'b0;
-        end
-        if(_zz_21) begin
-          ways_0_metas_2_valid <= 1'b0;
-        end
-        if(_zz_22) begin
-          ways_0_metas_3_valid <= 1'b0;
-        end
-        if(_zz_23) begin
-          ways_0_metas_4_valid <= 1'b0;
-        end
-        if(_zz_24) begin
-          ways_0_metas_5_valid <= 1'b0;
-        end
-        if(_zz_25) begin
-          ways_0_metas_6_valid <= 1'b0;
-        end
-        if(_zz_26) begin
-          ways_0_metas_7_valid <= 1'b0;
-        end
-        if(_zz_27) begin
-          ways_0_metas_8_valid <= 1'b0;
-        end
-        if(_zz_28) begin
-          ways_0_metas_9_valid <= 1'b0;
-        end
-        if(_zz_29) begin
-          ways_0_metas_10_valid <= 1'b0;
-        end
-        if(_zz_30) begin
-          ways_0_metas_11_valid <= 1'b0;
-        end
-        if(_zz_31) begin
-          ways_0_metas_12_valid <= 1'b0;
-        end
-        if(_zz_32) begin
-          ways_0_metas_13_valid <= 1'b0;
-        end
-        if(_zz_33) begin
-          ways_0_metas_14_valid <= 1'b0;
-        end
-        if(_zz_34) begin
-          ways_0_metas_15_valid <= 1'b0;
-        end
-      end else begin
-        if(when_DCache_l170) begin
-          if(dcache_hit_0) begin
-            if(_zz_2) begin
-              ways_0_metas_0_replace_info <= 1'b1;
-            end
-            if(_zz_3) begin
-              ways_0_metas_1_replace_info <= 1'b1;
-            end
-            if(_zz_4) begin
-              ways_0_metas_2_replace_info <= 1'b1;
-            end
-            if(_zz_5) begin
-              ways_0_metas_3_replace_info <= 1'b1;
-            end
-            if(_zz_6) begin
-              ways_0_metas_4_replace_info <= 1'b1;
-            end
-            if(_zz_7) begin
-              ways_0_metas_5_replace_info <= 1'b1;
-            end
-            if(_zz_8) begin
-              ways_0_metas_6_replace_info <= 1'b1;
-            end
-            if(_zz_9) begin
-              ways_0_metas_7_replace_info <= 1'b1;
-            end
-            if(_zz_10) begin
-              ways_0_metas_8_replace_info <= 1'b1;
-            end
-            if(_zz_11) begin
-              ways_0_metas_9_replace_info <= 1'b1;
-            end
-            if(_zz_12) begin
-              ways_0_metas_10_replace_info <= 1'b1;
-            end
-            if(_zz_13) begin
-              ways_0_metas_11_replace_info <= 1'b1;
-            end
-            if(_zz_14) begin
-              ways_0_metas_12_replace_info <= 1'b1;
-            end
-            if(_zz_15) begin
-              ways_0_metas_13_replace_info <= 1'b1;
-            end
-            if(_zz_16) begin
-              ways_0_metas_14_replace_info <= 1'b1;
-            end
-            if(_zz_17) begin
-              ways_0_metas_15_replace_info <= 1'b1;
-            end
-          end else begin
-            if(_zz_2) begin
-              ways_0_metas_0_replace_info <= 1'b0;
-            end
-            if(_zz_3) begin
-              ways_0_metas_1_replace_info <= 1'b0;
-            end
-            if(_zz_4) begin
-              ways_0_metas_2_replace_info <= 1'b0;
-            end
-            if(_zz_5) begin
-              ways_0_metas_3_replace_info <= 1'b0;
-            end
-            if(_zz_6) begin
-              ways_0_metas_4_replace_info <= 1'b0;
-            end
-            if(_zz_7) begin
-              ways_0_metas_5_replace_info <= 1'b0;
-            end
-            if(_zz_8) begin
-              ways_0_metas_6_replace_info <= 1'b0;
-            end
-            if(_zz_9) begin
-              ways_0_metas_7_replace_info <= 1'b0;
-            end
-            if(_zz_10) begin
-              ways_0_metas_8_replace_info <= 1'b0;
-            end
-            if(_zz_11) begin
-              ways_0_metas_9_replace_info <= 1'b0;
-            end
-            if(_zz_12) begin
-              ways_0_metas_10_replace_info <= 1'b0;
-            end
-            if(_zz_13) begin
-              ways_0_metas_11_replace_info <= 1'b0;
-            end
-            if(_zz_14) begin
-              ways_0_metas_12_replace_info <= 1'b0;
-            end
-            if(_zz_15) begin
-              ways_0_metas_13_replace_info <= 1'b0;
-            end
-            if(_zz_16) begin
-              ways_0_metas_14_replace_info <= 1'b0;
-            end
-            if(_zz_17) begin
-              ways_0_metas_15_replace_info <= 1'b0;
-            end
-          end
-        end else begin
-          if(is_hit) begin
-            if(dcache_hit_0) begin
-              if(_zz_2) begin
-                ways_0_metas_0_replace_info <= 1'b1;
-              end
-              if(_zz_3) begin
-                ways_0_metas_1_replace_info <= 1'b1;
-              end
-              if(_zz_4) begin
-                ways_0_metas_2_replace_info <= 1'b1;
-              end
-              if(_zz_5) begin
-                ways_0_metas_3_replace_info <= 1'b1;
-              end
-              if(_zz_6) begin
-                ways_0_metas_4_replace_info <= 1'b1;
-              end
-              if(_zz_7) begin
-                ways_0_metas_5_replace_info <= 1'b1;
-              end
-              if(_zz_8) begin
-                ways_0_metas_6_replace_info <= 1'b1;
-              end
-              if(_zz_9) begin
-                ways_0_metas_7_replace_info <= 1'b1;
-              end
-              if(_zz_10) begin
-                ways_0_metas_8_replace_info <= 1'b1;
-              end
-              if(_zz_11) begin
-                ways_0_metas_9_replace_info <= 1'b1;
-              end
-              if(_zz_12) begin
-                ways_0_metas_10_replace_info <= 1'b1;
-              end
-              if(_zz_13) begin
-                ways_0_metas_11_replace_info <= 1'b1;
-              end
-              if(_zz_14) begin
-                ways_0_metas_12_replace_info <= 1'b1;
-              end
-              if(_zz_15) begin
-                ways_0_metas_13_replace_info <= 1'b1;
-              end
-              if(_zz_16) begin
-                ways_0_metas_14_replace_info <= 1'b1;
-              end
-              if(_zz_17) begin
-                ways_0_metas_15_replace_info <= 1'b1;
-              end
-            end
-          end else begin
-            if(next_level_rsp_valid) begin
-              if(dcache_victim_0) begin
-                if(_zz_19) begin
-                  ways_0_metas_0_valid <= 1'b1;
-                end
-                if(_zz_20) begin
-                  ways_0_metas_1_valid <= 1'b1;
-                end
-                if(_zz_21) begin
-                  ways_0_metas_2_valid <= 1'b1;
-                end
-                if(_zz_22) begin
-                  ways_0_metas_3_valid <= 1'b1;
-                end
-                if(_zz_23) begin
-                  ways_0_metas_4_valid <= 1'b1;
-                end
-                if(_zz_24) begin
-                  ways_0_metas_5_valid <= 1'b1;
-                end
-                if(_zz_25) begin
-                  ways_0_metas_6_valid <= 1'b1;
-                end
-                if(_zz_26) begin
-                  ways_0_metas_7_valid <= 1'b1;
-                end
-                if(_zz_27) begin
-                  ways_0_metas_8_valid <= 1'b1;
-                end
-                if(_zz_28) begin
-                  ways_0_metas_9_valid <= 1'b1;
-                end
-                if(_zz_29) begin
-                  ways_0_metas_10_valid <= 1'b1;
-                end
-                if(_zz_30) begin
-                  ways_0_metas_11_valid <= 1'b1;
-                end
-                if(_zz_31) begin
-                  ways_0_metas_12_valid <= 1'b1;
-                end
-                if(_zz_32) begin
-                  ways_0_metas_13_valid <= 1'b1;
-                end
-                if(_zz_33) begin
-                  ways_0_metas_14_valid <= 1'b1;
-                end
-                if(_zz_34) begin
-                  ways_0_metas_15_valid <= 1'b1;
-                end
-              end
-            end
-          end
-        end
-      end
-      if(when_DCache_l187) begin
-        if(_zz_19) begin
-          ways_0_metas_0_tag <= cpu_tag_d1;
-        end
-        if(_zz_20) begin
-          ways_0_metas_1_tag <= cpu_tag_d1;
-        end
-        if(_zz_21) begin
-          ways_0_metas_2_tag <= cpu_tag_d1;
-        end
-        if(_zz_22) begin
-          ways_0_metas_3_tag <= cpu_tag_d1;
-        end
-        if(_zz_23) begin
-          ways_0_metas_4_tag <= cpu_tag_d1;
-        end
-        if(_zz_24) begin
-          ways_0_metas_5_tag <= cpu_tag_d1;
-        end
-        if(_zz_25) begin
-          ways_0_metas_6_tag <= cpu_tag_d1;
-        end
-        if(_zz_26) begin
-          ways_0_metas_7_tag <= cpu_tag_d1;
-        end
-        if(_zz_27) begin
-          ways_0_metas_8_tag <= cpu_tag_d1;
-        end
-        if(_zz_28) begin
-          ways_0_metas_9_tag <= cpu_tag_d1;
-        end
-        if(_zz_29) begin
-          ways_0_metas_10_tag <= cpu_tag_d1;
-        end
-        if(_zz_30) begin
-          ways_0_metas_11_tag <= cpu_tag_d1;
-        end
-        if(_zz_31) begin
-          ways_0_metas_12_tag <= cpu_tag_d1;
-        end
-        if(_zz_32) begin
-          ways_0_metas_13_tag <= cpu_tag_d1;
-        end
-        if(_zz_33) begin
-          ways_0_metas_14_tag <= cpu_tag_d1;
-        end
-        if(_zz_34) begin
-          ways_0_metas_15_tag <= cpu_tag_d1;
-        end
-      end
-      if(flush) begin
-        cpu_cmd_ready_1 <= 1'b0;
-      end else begin
-        if(is_miss) begin
-          cpu_cmd_ready_1 <= 1'b0;
-        end else begin
-          if(when_DCache_l196) begin
-            cpu_cmd_ready_1 <= 1'b1;
-          end
-        end
-      end
-      if(flush) begin
-        if(_zz_36) begin
-          ways_1_metas_0_replace_info <= 1'b0;
-        end
-        if(_zz_37) begin
-          ways_1_metas_1_replace_info <= 1'b0;
-        end
-        if(_zz_38) begin
-          ways_1_metas_2_replace_info <= 1'b0;
-        end
-        if(_zz_39) begin
-          ways_1_metas_3_replace_info <= 1'b0;
-        end
-        if(_zz_40) begin
-          ways_1_metas_4_replace_info <= 1'b0;
-        end
-        if(_zz_41) begin
-          ways_1_metas_5_replace_info <= 1'b0;
-        end
-        if(_zz_42) begin
-          ways_1_metas_6_replace_info <= 1'b0;
-        end
-        if(_zz_43) begin
-          ways_1_metas_7_replace_info <= 1'b0;
-        end
-        if(_zz_44) begin
-          ways_1_metas_8_replace_info <= 1'b0;
-        end
-        if(_zz_45) begin
-          ways_1_metas_9_replace_info <= 1'b0;
-        end
-        if(_zz_46) begin
-          ways_1_metas_10_replace_info <= 1'b0;
-        end
-        if(_zz_47) begin
-          ways_1_metas_11_replace_info <= 1'b0;
-        end
-        if(_zz_48) begin
-          ways_1_metas_12_replace_info <= 1'b0;
-        end
-        if(_zz_49) begin
-          ways_1_metas_13_replace_info <= 1'b0;
-        end
-        if(_zz_50) begin
-          ways_1_metas_14_replace_info <= 1'b0;
-        end
-        if(_zz_51) begin
-          ways_1_metas_15_replace_info <= 1'b0;
-        end
-        if(_zz_53) begin
-          ways_1_metas_0_valid <= 1'b0;
-        end
-        if(_zz_54) begin
-          ways_1_metas_1_valid <= 1'b0;
-        end
-        if(_zz_55) begin
-          ways_1_metas_2_valid <= 1'b0;
-        end
-        if(_zz_56) begin
-          ways_1_metas_3_valid <= 1'b0;
-        end
-        if(_zz_57) begin
-          ways_1_metas_4_valid <= 1'b0;
-        end
-        if(_zz_58) begin
-          ways_1_metas_5_valid <= 1'b0;
-        end
-        if(_zz_59) begin
-          ways_1_metas_6_valid <= 1'b0;
-        end
-        if(_zz_60) begin
-          ways_1_metas_7_valid <= 1'b0;
-        end
-        if(_zz_61) begin
-          ways_1_metas_8_valid <= 1'b0;
-        end
-        if(_zz_62) begin
-          ways_1_metas_9_valid <= 1'b0;
-        end
-        if(_zz_63) begin
-          ways_1_metas_10_valid <= 1'b0;
-        end
-        if(_zz_64) begin
-          ways_1_metas_11_valid <= 1'b0;
-        end
-        if(_zz_65) begin
-          ways_1_metas_12_valid <= 1'b0;
-        end
-        if(_zz_66) begin
-          ways_1_metas_13_valid <= 1'b0;
-        end
-        if(_zz_67) begin
-          ways_1_metas_14_valid <= 1'b0;
-        end
-        if(_zz_68) begin
-          ways_1_metas_15_valid <= 1'b0;
-        end
-      end else begin
-        if(when_DCache_l170_1) begin
-          if(dcache_hit_1) begin
-            if(_zz_36) begin
-              ways_1_metas_0_replace_info <= 1'b1;
-            end
-            if(_zz_37) begin
-              ways_1_metas_1_replace_info <= 1'b1;
-            end
-            if(_zz_38) begin
-              ways_1_metas_2_replace_info <= 1'b1;
-            end
-            if(_zz_39) begin
-              ways_1_metas_3_replace_info <= 1'b1;
-            end
-            if(_zz_40) begin
-              ways_1_metas_4_replace_info <= 1'b1;
-            end
-            if(_zz_41) begin
-              ways_1_metas_5_replace_info <= 1'b1;
-            end
-            if(_zz_42) begin
-              ways_1_metas_6_replace_info <= 1'b1;
-            end
-            if(_zz_43) begin
-              ways_1_metas_7_replace_info <= 1'b1;
-            end
-            if(_zz_44) begin
-              ways_1_metas_8_replace_info <= 1'b1;
-            end
-            if(_zz_45) begin
-              ways_1_metas_9_replace_info <= 1'b1;
-            end
-            if(_zz_46) begin
-              ways_1_metas_10_replace_info <= 1'b1;
-            end
-            if(_zz_47) begin
-              ways_1_metas_11_replace_info <= 1'b1;
-            end
-            if(_zz_48) begin
-              ways_1_metas_12_replace_info <= 1'b1;
-            end
-            if(_zz_49) begin
-              ways_1_metas_13_replace_info <= 1'b1;
-            end
-            if(_zz_50) begin
-              ways_1_metas_14_replace_info <= 1'b1;
-            end
-            if(_zz_51) begin
-              ways_1_metas_15_replace_info <= 1'b1;
-            end
-          end else begin
-            if(_zz_36) begin
-              ways_1_metas_0_replace_info <= 1'b0;
-            end
-            if(_zz_37) begin
-              ways_1_metas_1_replace_info <= 1'b0;
-            end
-            if(_zz_38) begin
-              ways_1_metas_2_replace_info <= 1'b0;
-            end
-            if(_zz_39) begin
-              ways_1_metas_3_replace_info <= 1'b0;
-            end
-            if(_zz_40) begin
-              ways_1_metas_4_replace_info <= 1'b0;
-            end
-            if(_zz_41) begin
-              ways_1_metas_5_replace_info <= 1'b0;
-            end
-            if(_zz_42) begin
-              ways_1_metas_6_replace_info <= 1'b0;
-            end
-            if(_zz_43) begin
-              ways_1_metas_7_replace_info <= 1'b0;
-            end
-            if(_zz_44) begin
-              ways_1_metas_8_replace_info <= 1'b0;
-            end
-            if(_zz_45) begin
-              ways_1_metas_9_replace_info <= 1'b0;
-            end
-            if(_zz_46) begin
-              ways_1_metas_10_replace_info <= 1'b0;
-            end
-            if(_zz_47) begin
-              ways_1_metas_11_replace_info <= 1'b0;
-            end
-            if(_zz_48) begin
-              ways_1_metas_12_replace_info <= 1'b0;
-            end
-            if(_zz_49) begin
-              ways_1_metas_13_replace_info <= 1'b0;
-            end
-            if(_zz_50) begin
-              ways_1_metas_14_replace_info <= 1'b0;
-            end
-            if(_zz_51) begin
-              ways_1_metas_15_replace_info <= 1'b0;
-            end
-          end
-        end else begin
-          if(is_hit) begin
-            if(dcache_hit_1) begin
-              if(_zz_36) begin
-                ways_1_metas_0_replace_info <= 1'b1;
-              end
-              if(_zz_37) begin
-                ways_1_metas_1_replace_info <= 1'b1;
-              end
-              if(_zz_38) begin
-                ways_1_metas_2_replace_info <= 1'b1;
-              end
-              if(_zz_39) begin
-                ways_1_metas_3_replace_info <= 1'b1;
-              end
-              if(_zz_40) begin
-                ways_1_metas_4_replace_info <= 1'b1;
-              end
-              if(_zz_41) begin
-                ways_1_metas_5_replace_info <= 1'b1;
-              end
-              if(_zz_42) begin
-                ways_1_metas_6_replace_info <= 1'b1;
-              end
-              if(_zz_43) begin
-                ways_1_metas_7_replace_info <= 1'b1;
-              end
-              if(_zz_44) begin
-                ways_1_metas_8_replace_info <= 1'b1;
-              end
-              if(_zz_45) begin
-                ways_1_metas_9_replace_info <= 1'b1;
-              end
-              if(_zz_46) begin
-                ways_1_metas_10_replace_info <= 1'b1;
-              end
-              if(_zz_47) begin
-                ways_1_metas_11_replace_info <= 1'b1;
-              end
-              if(_zz_48) begin
-                ways_1_metas_12_replace_info <= 1'b1;
-              end
-              if(_zz_49) begin
-                ways_1_metas_13_replace_info <= 1'b1;
-              end
-              if(_zz_50) begin
-                ways_1_metas_14_replace_info <= 1'b1;
-              end
-              if(_zz_51) begin
-                ways_1_metas_15_replace_info <= 1'b1;
-              end
-            end
-          end else begin
-            if(next_level_rsp_valid) begin
-              if(dcache_victim_1) begin
-                if(_zz_53) begin
-                  ways_1_metas_0_valid <= 1'b1;
-                end
-                if(_zz_54) begin
-                  ways_1_metas_1_valid <= 1'b1;
-                end
-                if(_zz_55) begin
-                  ways_1_metas_2_valid <= 1'b1;
-                end
-                if(_zz_56) begin
-                  ways_1_metas_3_valid <= 1'b1;
-                end
-                if(_zz_57) begin
-                  ways_1_metas_4_valid <= 1'b1;
-                end
-                if(_zz_58) begin
-                  ways_1_metas_5_valid <= 1'b1;
-                end
-                if(_zz_59) begin
-                  ways_1_metas_6_valid <= 1'b1;
-                end
-                if(_zz_60) begin
-                  ways_1_metas_7_valid <= 1'b1;
-                end
-                if(_zz_61) begin
-                  ways_1_metas_8_valid <= 1'b1;
-                end
-                if(_zz_62) begin
-                  ways_1_metas_9_valid <= 1'b1;
-                end
-                if(_zz_63) begin
-                  ways_1_metas_10_valid <= 1'b1;
-                end
-                if(_zz_64) begin
-                  ways_1_metas_11_valid <= 1'b1;
-                end
-                if(_zz_65) begin
-                  ways_1_metas_12_valid <= 1'b1;
-                end
-                if(_zz_66) begin
-                  ways_1_metas_13_valid <= 1'b1;
-                end
-                if(_zz_67) begin
-                  ways_1_metas_14_valid <= 1'b1;
-                end
-                if(_zz_68) begin
-                  ways_1_metas_15_valid <= 1'b1;
-                end
-              end
-            end
-          end
-        end
-      end
-      if(when_DCache_l187_1) begin
-        if(_zz_53) begin
-          ways_1_metas_0_tag <= cpu_tag_d1;
-        end
-        if(_zz_54) begin
-          ways_1_metas_1_tag <= cpu_tag_d1;
-        end
-        if(_zz_55) begin
-          ways_1_metas_2_tag <= cpu_tag_d1;
-        end
-        if(_zz_56) begin
-          ways_1_metas_3_tag <= cpu_tag_d1;
-        end
-        if(_zz_57) begin
-          ways_1_metas_4_tag <= cpu_tag_d1;
-        end
-        if(_zz_58) begin
-          ways_1_metas_5_tag <= cpu_tag_d1;
-        end
-        if(_zz_59) begin
-          ways_1_metas_6_tag <= cpu_tag_d1;
-        end
-        if(_zz_60) begin
-          ways_1_metas_7_tag <= cpu_tag_d1;
-        end
-        if(_zz_61) begin
-          ways_1_metas_8_tag <= cpu_tag_d1;
-        end
-        if(_zz_62) begin
-          ways_1_metas_9_tag <= cpu_tag_d1;
-        end
-        if(_zz_63) begin
-          ways_1_metas_10_tag <= cpu_tag_d1;
-        end
-        if(_zz_64) begin
-          ways_1_metas_11_tag <= cpu_tag_d1;
-        end
-        if(_zz_65) begin
-          ways_1_metas_12_tag <= cpu_tag_d1;
-        end
-        if(_zz_66) begin
-          ways_1_metas_13_tag <= cpu_tag_d1;
-        end
-        if(_zz_67) begin
-          ways_1_metas_14_tag <= cpu_tag_d1;
-        end
-        if(_zz_68) begin
-          ways_1_metas_15_tag <= cpu_tag_d1;
-        end
-      end
-      if(flush) begin
-        cpu_cmd_ready_1 <= 1'b0;
-      end else begin
-        if(is_miss) begin
-          cpu_cmd_ready_1 <= 1'b0;
-        end else begin
-          if(when_DCache_l196_1) begin
-            cpu_cmd_ready_1 <= 1'b1;
-          end
-        end
-      end
-      if(flush) begin
-        if(_zz_70) begin
-          ways_2_metas_0_replace_info <= 1'b0;
-        end
-        if(_zz_71) begin
-          ways_2_metas_1_replace_info <= 1'b0;
-        end
-        if(_zz_72) begin
-          ways_2_metas_2_replace_info <= 1'b0;
-        end
-        if(_zz_73) begin
-          ways_2_metas_3_replace_info <= 1'b0;
-        end
-        if(_zz_74) begin
-          ways_2_metas_4_replace_info <= 1'b0;
-        end
-        if(_zz_75) begin
-          ways_2_metas_5_replace_info <= 1'b0;
-        end
-        if(_zz_76) begin
-          ways_2_metas_6_replace_info <= 1'b0;
-        end
-        if(_zz_77) begin
-          ways_2_metas_7_replace_info <= 1'b0;
-        end
-        if(_zz_78) begin
-          ways_2_metas_8_replace_info <= 1'b0;
-        end
-        if(_zz_79) begin
-          ways_2_metas_9_replace_info <= 1'b0;
-        end
-        if(_zz_80) begin
-          ways_2_metas_10_replace_info <= 1'b0;
-        end
-        if(_zz_81) begin
-          ways_2_metas_11_replace_info <= 1'b0;
-        end
-        if(_zz_82) begin
-          ways_2_metas_12_replace_info <= 1'b0;
-        end
-        if(_zz_83) begin
-          ways_2_metas_13_replace_info <= 1'b0;
-        end
-        if(_zz_84) begin
-          ways_2_metas_14_replace_info <= 1'b0;
-        end
-        if(_zz_85) begin
-          ways_2_metas_15_replace_info <= 1'b0;
-        end
-        if(_zz_87) begin
-          ways_2_metas_0_valid <= 1'b0;
-        end
-        if(_zz_88) begin
-          ways_2_metas_1_valid <= 1'b0;
-        end
-        if(_zz_89) begin
-          ways_2_metas_2_valid <= 1'b0;
-        end
-        if(_zz_90) begin
-          ways_2_metas_3_valid <= 1'b0;
-        end
-        if(_zz_91) begin
-          ways_2_metas_4_valid <= 1'b0;
-        end
-        if(_zz_92) begin
-          ways_2_metas_5_valid <= 1'b0;
-        end
-        if(_zz_93) begin
-          ways_2_metas_6_valid <= 1'b0;
-        end
-        if(_zz_94) begin
-          ways_2_metas_7_valid <= 1'b0;
-        end
-        if(_zz_95) begin
-          ways_2_metas_8_valid <= 1'b0;
-        end
-        if(_zz_96) begin
-          ways_2_metas_9_valid <= 1'b0;
-        end
-        if(_zz_97) begin
-          ways_2_metas_10_valid <= 1'b0;
-        end
-        if(_zz_98) begin
-          ways_2_metas_11_valid <= 1'b0;
-        end
-        if(_zz_99) begin
-          ways_2_metas_12_valid <= 1'b0;
-        end
-        if(_zz_100) begin
-          ways_2_metas_13_valid <= 1'b0;
-        end
-        if(_zz_101) begin
-          ways_2_metas_14_valid <= 1'b0;
-        end
-        if(_zz_102) begin
-          ways_2_metas_15_valid <= 1'b0;
-        end
-      end else begin
-        if(when_DCache_l170_2) begin
-          if(dcache_hit_2) begin
-            if(_zz_70) begin
-              ways_2_metas_0_replace_info <= 1'b1;
-            end
-            if(_zz_71) begin
-              ways_2_metas_1_replace_info <= 1'b1;
-            end
-            if(_zz_72) begin
-              ways_2_metas_2_replace_info <= 1'b1;
-            end
-            if(_zz_73) begin
-              ways_2_metas_3_replace_info <= 1'b1;
-            end
-            if(_zz_74) begin
-              ways_2_metas_4_replace_info <= 1'b1;
-            end
-            if(_zz_75) begin
-              ways_2_metas_5_replace_info <= 1'b1;
-            end
-            if(_zz_76) begin
-              ways_2_metas_6_replace_info <= 1'b1;
-            end
-            if(_zz_77) begin
-              ways_2_metas_7_replace_info <= 1'b1;
-            end
-            if(_zz_78) begin
-              ways_2_metas_8_replace_info <= 1'b1;
-            end
-            if(_zz_79) begin
-              ways_2_metas_9_replace_info <= 1'b1;
-            end
-            if(_zz_80) begin
-              ways_2_metas_10_replace_info <= 1'b1;
-            end
-            if(_zz_81) begin
-              ways_2_metas_11_replace_info <= 1'b1;
-            end
-            if(_zz_82) begin
-              ways_2_metas_12_replace_info <= 1'b1;
-            end
-            if(_zz_83) begin
-              ways_2_metas_13_replace_info <= 1'b1;
-            end
-            if(_zz_84) begin
-              ways_2_metas_14_replace_info <= 1'b1;
-            end
-            if(_zz_85) begin
-              ways_2_metas_15_replace_info <= 1'b1;
-            end
-          end else begin
-            if(_zz_70) begin
-              ways_2_metas_0_replace_info <= 1'b0;
-            end
-            if(_zz_71) begin
-              ways_2_metas_1_replace_info <= 1'b0;
-            end
-            if(_zz_72) begin
-              ways_2_metas_2_replace_info <= 1'b0;
-            end
-            if(_zz_73) begin
-              ways_2_metas_3_replace_info <= 1'b0;
-            end
-            if(_zz_74) begin
-              ways_2_metas_4_replace_info <= 1'b0;
-            end
-            if(_zz_75) begin
-              ways_2_metas_5_replace_info <= 1'b0;
-            end
-            if(_zz_76) begin
-              ways_2_metas_6_replace_info <= 1'b0;
-            end
-            if(_zz_77) begin
-              ways_2_metas_7_replace_info <= 1'b0;
-            end
-            if(_zz_78) begin
-              ways_2_metas_8_replace_info <= 1'b0;
-            end
-            if(_zz_79) begin
-              ways_2_metas_9_replace_info <= 1'b0;
-            end
-            if(_zz_80) begin
-              ways_2_metas_10_replace_info <= 1'b0;
-            end
-            if(_zz_81) begin
-              ways_2_metas_11_replace_info <= 1'b0;
-            end
-            if(_zz_82) begin
-              ways_2_metas_12_replace_info <= 1'b0;
-            end
-            if(_zz_83) begin
-              ways_2_metas_13_replace_info <= 1'b0;
-            end
-            if(_zz_84) begin
-              ways_2_metas_14_replace_info <= 1'b0;
-            end
-            if(_zz_85) begin
-              ways_2_metas_15_replace_info <= 1'b0;
-            end
-          end
-        end else begin
-          if(is_hit) begin
-            if(dcache_hit_2) begin
-              if(_zz_70) begin
-                ways_2_metas_0_replace_info <= 1'b1;
-              end
-              if(_zz_71) begin
-                ways_2_metas_1_replace_info <= 1'b1;
-              end
-              if(_zz_72) begin
-                ways_2_metas_2_replace_info <= 1'b1;
-              end
-              if(_zz_73) begin
-                ways_2_metas_3_replace_info <= 1'b1;
-              end
-              if(_zz_74) begin
-                ways_2_metas_4_replace_info <= 1'b1;
-              end
-              if(_zz_75) begin
-                ways_2_metas_5_replace_info <= 1'b1;
-              end
-              if(_zz_76) begin
-                ways_2_metas_6_replace_info <= 1'b1;
-              end
-              if(_zz_77) begin
-                ways_2_metas_7_replace_info <= 1'b1;
-              end
-              if(_zz_78) begin
-                ways_2_metas_8_replace_info <= 1'b1;
-              end
-              if(_zz_79) begin
-                ways_2_metas_9_replace_info <= 1'b1;
-              end
-              if(_zz_80) begin
-                ways_2_metas_10_replace_info <= 1'b1;
-              end
-              if(_zz_81) begin
-                ways_2_metas_11_replace_info <= 1'b1;
-              end
-              if(_zz_82) begin
-                ways_2_metas_12_replace_info <= 1'b1;
-              end
-              if(_zz_83) begin
-                ways_2_metas_13_replace_info <= 1'b1;
-              end
-              if(_zz_84) begin
-                ways_2_metas_14_replace_info <= 1'b1;
-              end
-              if(_zz_85) begin
-                ways_2_metas_15_replace_info <= 1'b1;
-              end
-            end
-          end else begin
-            if(next_level_rsp_valid) begin
-              if(dcache_victim_2) begin
-                if(_zz_87) begin
-                  ways_2_metas_0_valid <= 1'b1;
-                end
-                if(_zz_88) begin
-                  ways_2_metas_1_valid <= 1'b1;
-                end
-                if(_zz_89) begin
-                  ways_2_metas_2_valid <= 1'b1;
-                end
-                if(_zz_90) begin
-                  ways_2_metas_3_valid <= 1'b1;
-                end
-                if(_zz_91) begin
-                  ways_2_metas_4_valid <= 1'b1;
-                end
-                if(_zz_92) begin
-                  ways_2_metas_5_valid <= 1'b1;
-                end
-                if(_zz_93) begin
-                  ways_2_metas_6_valid <= 1'b1;
-                end
-                if(_zz_94) begin
-                  ways_2_metas_7_valid <= 1'b1;
-                end
-                if(_zz_95) begin
-                  ways_2_metas_8_valid <= 1'b1;
-                end
-                if(_zz_96) begin
-                  ways_2_metas_9_valid <= 1'b1;
-                end
-                if(_zz_97) begin
-                  ways_2_metas_10_valid <= 1'b1;
-                end
-                if(_zz_98) begin
-                  ways_2_metas_11_valid <= 1'b1;
-                end
-                if(_zz_99) begin
-                  ways_2_metas_12_valid <= 1'b1;
-                end
-                if(_zz_100) begin
-                  ways_2_metas_13_valid <= 1'b1;
-                end
-                if(_zz_101) begin
-                  ways_2_metas_14_valid <= 1'b1;
-                end
-                if(_zz_102) begin
-                  ways_2_metas_15_valid <= 1'b1;
-                end
-              end
-            end
-          end
-        end
-      end
-      if(when_DCache_l187_2) begin
-        if(_zz_87) begin
-          ways_2_metas_0_tag <= cpu_tag_d1;
-        end
-        if(_zz_88) begin
-          ways_2_metas_1_tag <= cpu_tag_d1;
-        end
-        if(_zz_89) begin
-          ways_2_metas_2_tag <= cpu_tag_d1;
-        end
-        if(_zz_90) begin
-          ways_2_metas_3_tag <= cpu_tag_d1;
-        end
-        if(_zz_91) begin
-          ways_2_metas_4_tag <= cpu_tag_d1;
-        end
-        if(_zz_92) begin
-          ways_2_metas_5_tag <= cpu_tag_d1;
-        end
-        if(_zz_93) begin
-          ways_2_metas_6_tag <= cpu_tag_d1;
-        end
-        if(_zz_94) begin
-          ways_2_metas_7_tag <= cpu_tag_d1;
-        end
-        if(_zz_95) begin
-          ways_2_metas_8_tag <= cpu_tag_d1;
-        end
-        if(_zz_96) begin
-          ways_2_metas_9_tag <= cpu_tag_d1;
-        end
-        if(_zz_97) begin
-          ways_2_metas_10_tag <= cpu_tag_d1;
-        end
-        if(_zz_98) begin
-          ways_2_metas_11_tag <= cpu_tag_d1;
-        end
-        if(_zz_99) begin
-          ways_2_metas_12_tag <= cpu_tag_d1;
-        end
-        if(_zz_100) begin
-          ways_2_metas_13_tag <= cpu_tag_d1;
-        end
-        if(_zz_101) begin
-          ways_2_metas_14_tag <= cpu_tag_d1;
-        end
-        if(_zz_102) begin
-          ways_2_metas_15_tag <= cpu_tag_d1;
-        end
-      end
-      if(flush) begin
-        cpu_cmd_ready_1 <= 1'b0;
-      end else begin
-        if(is_miss) begin
-          cpu_cmd_ready_1 <= 1'b0;
-        end else begin
-          if(when_DCache_l196_2) begin
-            cpu_cmd_ready_1 <= 1'b1;
-          end
-        end
-      end
-      if(flush) begin
-        if(_zz_104) begin
-          ways_3_metas_0_replace_info <= 1'b0;
-        end
-        if(_zz_105) begin
-          ways_3_metas_1_replace_info <= 1'b0;
-        end
-        if(_zz_106) begin
-          ways_3_metas_2_replace_info <= 1'b0;
-        end
-        if(_zz_107) begin
-          ways_3_metas_3_replace_info <= 1'b0;
-        end
-        if(_zz_108) begin
-          ways_3_metas_4_replace_info <= 1'b0;
-        end
-        if(_zz_109) begin
-          ways_3_metas_5_replace_info <= 1'b0;
-        end
-        if(_zz_110) begin
-          ways_3_metas_6_replace_info <= 1'b0;
-        end
-        if(_zz_111) begin
-          ways_3_metas_7_replace_info <= 1'b0;
-        end
-        if(_zz_112) begin
-          ways_3_metas_8_replace_info <= 1'b0;
-        end
-        if(_zz_113) begin
-          ways_3_metas_9_replace_info <= 1'b0;
-        end
-        if(_zz_114) begin
-          ways_3_metas_10_replace_info <= 1'b0;
-        end
-        if(_zz_115) begin
-          ways_3_metas_11_replace_info <= 1'b0;
-        end
-        if(_zz_116) begin
-          ways_3_metas_12_replace_info <= 1'b0;
-        end
-        if(_zz_117) begin
-          ways_3_metas_13_replace_info <= 1'b0;
-        end
-        if(_zz_118) begin
-          ways_3_metas_14_replace_info <= 1'b0;
-        end
-        if(_zz_119) begin
-          ways_3_metas_15_replace_info <= 1'b0;
-        end
-        if(_zz_121) begin
-          ways_3_metas_0_valid <= 1'b0;
-        end
-        if(_zz_122) begin
-          ways_3_metas_1_valid <= 1'b0;
-        end
-        if(_zz_123) begin
-          ways_3_metas_2_valid <= 1'b0;
-        end
-        if(_zz_124) begin
-          ways_3_metas_3_valid <= 1'b0;
-        end
-        if(_zz_125) begin
-          ways_3_metas_4_valid <= 1'b0;
-        end
-        if(_zz_126) begin
-          ways_3_metas_5_valid <= 1'b0;
-        end
-        if(_zz_127) begin
-          ways_3_metas_6_valid <= 1'b0;
-        end
-        if(_zz_128) begin
-          ways_3_metas_7_valid <= 1'b0;
-        end
-        if(_zz_129) begin
-          ways_3_metas_8_valid <= 1'b0;
-        end
-        if(_zz_130) begin
-          ways_3_metas_9_valid <= 1'b0;
-        end
-        if(_zz_131) begin
-          ways_3_metas_10_valid <= 1'b0;
-        end
-        if(_zz_132) begin
-          ways_3_metas_11_valid <= 1'b0;
-        end
-        if(_zz_133) begin
-          ways_3_metas_12_valid <= 1'b0;
-        end
-        if(_zz_134) begin
-          ways_3_metas_13_valid <= 1'b0;
-        end
-        if(_zz_135) begin
-          ways_3_metas_14_valid <= 1'b0;
-        end
-        if(_zz_136) begin
-          ways_3_metas_15_valid <= 1'b0;
-        end
-      end else begin
-        if(when_DCache_l170_3) begin
-          if(dcache_hit_3) begin
-            if(_zz_104) begin
-              ways_3_metas_0_replace_info <= 1'b1;
-            end
-            if(_zz_105) begin
-              ways_3_metas_1_replace_info <= 1'b1;
-            end
-            if(_zz_106) begin
-              ways_3_metas_2_replace_info <= 1'b1;
-            end
-            if(_zz_107) begin
-              ways_3_metas_3_replace_info <= 1'b1;
-            end
-            if(_zz_108) begin
-              ways_3_metas_4_replace_info <= 1'b1;
-            end
-            if(_zz_109) begin
-              ways_3_metas_5_replace_info <= 1'b1;
-            end
-            if(_zz_110) begin
-              ways_3_metas_6_replace_info <= 1'b1;
-            end
-            if(_zz_111) begin
-              ways_3_metas_7_replace_info <= 1'b1;
-            end
-            if(_zz_112) begin
-              ways_3_metas_8_replace_info <= 1'b1;
-            end
-            if(_zz_113) begin
-              ways_3_metas_9_replace_info <= 1'b1;
-            end
-            if(_zz_114) begin
-              ways_3_metas_10_replace_info <= 1'b1;
-            end
-            if(_zz_115) begin
-              ways_3_metas_11_replace_info <= 1'b1;
-            end
-            if(_zz_116) begin
-              ways_3_metas_12_replace_info <= 1'b1;
-            end
-            if(_zz_117) begin
-              ways_3_metas_13_replace_info <= 1'b1;
-            end
-            if(_zz_118) begin
-              ways_3_metas_14_replace_info <= 1'b1;
-            end
-            if(_zz_119) begin
-              ways_3_metas_15_replace_info <= 1'b1;
-            end
-          end else begin
-            if(_zz_104) begin
-              ways_3_metas_0_replace_info <= 1'b0;
-            end
-            if(_zz_105) begin
-              ways_3_metas_1_replace_info <= 1'b0;
-            end
-            if(_zz_106) begin
-              ways_3_metas_2_replace_info <= 1'b0;
-            end
-            if(_zz_107) begin
-              ways_3_metas_3_replace_info <= 1'b0;
-            end
-            if(_zz_108) begin
-              ways_3_metas_4_replace_info <= 1'b0;
-            end
-            if(_zz_109) begin
-              ways_3_metas_5_replace_info <= 1'b0;
-            end
-            if(_zz_110) begin
-              ways_3_metas_6_replace_info <= 1'b0;
-            end
-            if(_zz_111) begin
-              ways_3_metas_7_replace_info <= 1'b0;
-            end
-            if(_zz_112) begin
-              ways_3_metas_8_replace_info <= 1'b0;
-            end
-            if(_zz_113) begin
-              ways_3_metas_9_replace_info <= 1'b0;
-            end
-            if(_zz_114) begin
-              ways_3_metas_10_replace_info <= 1'b0;
-            end
-            if(_zz_115) begin
-              ways_3_metas_11_replace_info <= 1'b0;
-            end
-            if(_zz_116) begin
-              ways_3_metas_12_replace_info <= 1'b0;
-            end
-            if(_zz_117) begin
-              ways_3_metas_13_replace_info <= 1'b0;
-            end
-            if(_zz_118) begin
-              ways_3_metas_14_replace_info <= 1'b0;
-            end
-            if(_zz_119) begin
-              ways_3_metas_15_replace_info <= 1'b0;
-            end
-          end
-        end else begin
-          if(is_hit) begin
-            if(dcache_hit_3) begin
-              if(_zz_104) begin
-                ways_3_metas_0_replace_info <= 1'b1;
-              end
-              if(_zz_105) begin
-                ways_3_metas_1_replace_info <= 1'b1;
-              end
-              if(_zz_106) begin
-                ways_3_metas_2_replace_info <= 1'b1;
-              end
-              if(_zz_107) begin
-                ways_3_metas_3_replace_info <= 1'b1;
-              end
-              if(_zz_108) begin
-                ways_3_metas_4_replace_info <= 1'b1;
-              end
-              if(_zz_109) begin
-                ways_3_metas_5_replace_info <= 1'b1;
-              end
-              if(_zz_110) begin
-                ways_3_metas_6_replace_info <= 1'b1;
-              end
-              if(_zz_111) begin
-                ways_3_metas_7_replace_info <= 1'b1;
-              end
-              if(_zz_112) begin
-                ways_3_metas_8_replace_info <= 1'b1;
-              end
-              if(_zz_113) begin
-                ways_3_metas_9_replace_info <= 1'b1;
-              end
-              if(_zz_114) begin
-                ways_3_metas_10_replace_info <= 1'b1;
-              end
-              if(_zz_115) begin
-                ways_3_metas_11_replace_info <= 1'b1;
-              end
-              if(_zz_116) begin
-                ways_3_metas_12_replace_info <= 1'b1;
-              end
-              if(_zz_117) begin
-                ways_3_metas_13_replace_info <= 1'b1;
-              end
-              if(_zz_118) begin
-                ways_3_metas_14_replace_info <= 1'b1;
-              end
-              if(_zz_119) begin
-                ways_3_metas_15_replace_info <= 1'b1;
-              end
-            end
-          end else begin
-            if(next_level_rsp_valid) begin
-              if(dcache_victim_3) begin
-                if(_zz_121) begin
-                  ways_3_metas_0_valid <= 1'b1;
-                end
-                if(_zz_122) begin
-                  ways_3_metas_1_valid <= 1'b1;
-                end
-                if(_zz_123) begin
-                  ways_3_metas_2_valid <= 1'b1;
-                end
-                if(_zz_124) begin
-                  ways_3_metas_3_valid <= 1'b1;
-                end
-                if(_zz_125) begin
-                  ways_3_metas_4_valid <= 1'b1;
-                end
-                if(_zz_126) begin
-                  ways_3_metas_5_valid <= 1'b1;
-                end
-                if(_zz_127) begin
-                  ways_3_metas_6_valid <= 1'b1;
-                end
-                if(_zz_128) begin
-                  ways_3_metas_7_valid <= 1'b1;
-                end
-                if(_zz_129) begin
-                  ways_3_metas_8_valid <= 1'b1;
-                end
-                if(_zz_130) begin
-                  ways_3_metas_9_valid <= 1'b1;
-                end
-                if(_zz_131) begin
-                  ways_3_metas_10_valid <= 1'b1;
-                end
-                if(_zz_132) begin
-                  ways_3_metas_11_valid <= 1'b1;
-                end
-                if(_zz_133) begin
-                  ways_3_metas_12_valid <= 1'b1;
-                end
-                if(_zz_134) begin
-                  ways_3_metas_13_valid <= 1'b1;
-                end
-                if(_zz_135) begin
-                  ways_3_metas_14_valid <= 1'b1;
-                end
-                if(_zz_136) begin
-                  ways_3_metas_15_valid <= 1'b1;
-                end
-              end
-            end
-          end
-        end
-      end
-      if(when_DCache_l187_3) begin
-        if(_zz_121) begin
-          ways_3_metas_0_tag <= cpu_tag_d1;
-        end
-        if(_zz_122) begin
-          ways_3_metas_1_tag <= cpu_tag_d1;
-        end
-        if(_zz_123) begin
-          ways_3_metas_2_tag <= cpu_tag_d1;
-        end
-        if(_zz_124) begin
-          ways_3_metas_3_tag <= cpu_tag_d1;
-        end
-        if(_zz_125) begin
-          ways_3_metas_4_tag <= cpu_tag_d1;
-        end
-        if(_zz_126) begin
-          ways_3_metas_5_tag <= cpu_tag_d1;
-        end
-        if(_zz_127) begin
-          ways_3_metas_6_tag <= cpu_tag_d1;
-        end
-        if(_zz_128) begin
-          ways_3_metas_7_tag <= cpu_tag_d1;
-        end
-        if(_zz_129) begin
-          ways_3_metas_8_tag <= cpu_tag_d1;
-        end
-        if(_zz_130) begin
-          ways_3_metas_9_tag <= cpu_tag_d1;
-        end
-        if(_zz_131) begin
-          ways_3_metas_10_tag <= cpu_tag_d1;
-        end
-        if(_zz_132) begin
-          ways_3_metas_11_tag <= cpu_tag_d1;
-        end
-        if(_zz_133) begin
-          ways_3_metas_12_tag <= cpu_tag_d1;
-        end
-        if(_zz_134) begin
-          ways_3_metas_13_tag <= cpu_tag_d1;
-        end
-        if(_zz_135) begin
-          ways_3_metas_14_tag <= cpu_tag_d1;
-        end
-        if(_zz_136) begin
-          ways_3_metas_15_tag <= cpu_tag_d1;
-        end
-      end
-      if(flush) begin
-        cpu_cmd_ready_1 <= 1'b0;
-      end else begin
-        if(is_miss) begin
-          cpu_cmd_ready_1 <= 1'b0;
-        end else begin
-          if(when_DCache_l196_3) begin
-            cpu_cmd_ready_1 <= 1'b1;
-          end
-        end
-      end
-    end
-  end
-
-
-endmodule
-
-module SramBanks (
-  input               sram_0_ports_cmd_valid,
-  input      [4:0]    sram_0_ports_cmd_payload_addr,
-  input               sram_0_ports_cmd_payload_wen,
-  input      [255:0]  sram_0_ports_cmd_payload_wdata,
-  output              sram_0_ports_rsp_valid,
-  output     [255:0]  sram_0_ports_rsp_payload_data,
-  input               sram_1_ports_cmd_valid,
-  input      [4:0]    sram_1_ports_cmd_payload_addr,
-  input               sram_1_ports_cmd_payload_wen,
-  input      [255:0]  sram_1_ports_cmd_payload_wdata,
-  output              sram_1_ports_rsp_valid,
-  output     [255:0]  sram_1_ports_rsp_payload_data,
-  input               sram_2_ports_cmd_valid,
-  input      [4:0]    sram_2_ports_cmd_payload_addr,
-  input               sram_2_ports_cmd_payload_wen,
-  input      [255:0]  sram_2_ports_cmd_payload_wdata,
-  output              sram_2_ports_rsp_valid,
-  output     [255:0]  sram_2_ports_rsp_payload_data,
-  input               sram_3_ports_cmd_valid,
-  input      [4:0]    sram_3_ports_cmd_payload_addr,
-  input               sram_3_ports_cmd_payload_wen,
-  input      [255:0]  sram_3_ports_cmd_payload_wdata,
-  output              sram_3_ports_rsp_valid,
-  output     [255:0]  sram_3_ports_rsp_payload_data,
-  input               clk,
-  input               reset
-);
-
-  reg        [255:0]  _zz_sram_0_banks_port1;
-  reg        [255:0]  _zz_sram_1_banks_port1;
-  reg        [255:0]  _zz_sram_2_banks_port1;
-  reg        [255:0]  _zz_sram_3_banks_port1;
-  reg                 sram_0_rsp_valid;
-  reg                 sram_1_rsp_valid;
-  reg                 sram_2_rsp_valid;
-  reg                 sram_3_rsp_valid;
-  reg [255:0] sram_0_banks [0:31];
-  reg [255:0] sram_1_banks [0:31];
-  reg [255:0] sram_2_banks [0:31];
-  reg [255:0] sram_3_banks [0:31];
-
-  always @(posedge clk) begin
-    if(sram_0_ports_cmd_valid) begin
-      sram_0_banks[sram_0_ports_cmd_payload_addr] <= sram_0_ports_cmd_payload_wdata;
-    end
-  end
-
-  always @(posedge clk) begin
-    if(sram_0_ports_cmd_valid) begin
-      _zz_sram_0_banks_port1 <= sram_0_banks[sram_0_ports_cmd_payload_addr];
-    end
-  end
-
-  always @(posedge clk) begin
-    if(sram_1_ports_cmd_valid) begin
-      sram_1_banks[sram_1_ports_cmd_payload_addr] <= sram_1_ports_cmd_payload_wdata;
-    end
-  end
-
-  always @(posedge clk) begin
-    if(sram_1_ports_cmd_valid) begin
-      _zz_sram_1_banks_port1 <= sram_1_banks[sram_1_ports_cmd_payload_addr];
-    end
-  end
-
-  always @(posedge clk) begin
-    if(sram_2_ports_cmd_valid) begin
-      sram_2_banks[sram_2_ports_cmd_payload_addr] <= sram_2_ports_cmd_payload_wdata;
-    end
-  end
-
-  always @(posedge clk) begin
-    if(sram_2_ports_cmd_valid) begin
-      _zz_sram_2_banks_port1 <= sram_2_banks[sram_2_ports_cmd_payload_addr];
-    end
-  end
-
-  always @(posedge clk) begin
-    if(sram_3_ports_cmd_valid) begin
-      sram_3_banks[sram_3_ports_cmd_payload_addr] <= sram_3_ports_cmd_payload_wdata;
-    end
-  end
-
-  always @(posedge clk) begin
-    if(sram_3_ports_cmd_valid) begin
-      _zz_sram_3_banks_port1 <= sram_3_banks[sram_3_ports_cmd_payload_addr];
-    end
-  end
-
-  assign sram_0_ports_rsp_payload_data = _zz_sram_0_banks_port1;
-  assign sram_0_ports_rsp_valid = sram_0_rsp_valid;
-  assign sram_1_ports_rsp_payload_data = _zz_sram_1_banks_port1;
-  assign sram_1_ports_rsp_valid = sram_1_rsp_valid;
-  assign sram_2_ports_rsp_payload_data = _zz_sram_2_banks_port1;
-  assign sram_2_ports_rsp_valid = sram_2_rsp_valid;
-  assign sram_3_ports_rsp_payload_data = _zz_sram_3_banks_port1;
-  assign sram_3_ports_rsp_valid = sram_3_rsp_valid;
-  always @(posedge clk or posedge reset) begin
-    if(reset) begin
-      sram_0_rsp_valid <= 1'b0;
-      sram_1_rsp_valid <= 1'b0;
-      sram_2_rsp_valid <= 1'b0;
-      sram_3_rsp_valid <= 1'b0;
-    end else begin
-      if(sram_0_ports_cmd_valid) begin
-        sram_0_rsp_valid <= 1'b1;
-      end else begin
-        sram_0_rsp_valid <= 1'b0;
-      end
-      if(sram_1_ports_cmd_valid) begin
-        sram_1_rsp_valid <= 1'b1;
-      end else begin
-        sram_1_rsp_valid <= 1'b0;
-      end
-      if(sram_2_ports_cmd_valid) begin
-        sram_2_rsp_valid <= 1'b1;
-      end else begin
-        sram_2_rsp_valid <= 1'b0;
-      end
-      if(sram_3_ports_cmd_valid) begin
-        sram_3_rsp_valid <= 1'b1;
-      end else begin
-        sram_3_rsp_valid <= 1'b0;
-      end
-    end
-  end
-
-
-endmodule
-
-module ICache (
-  input               flush,
-  input               cpu_cmd_valid,
-  output              cpu_cmd_ready,
-  input      [63:0]   cpu_cmd_payload_addr,
-  input      [2:0]    cpu_cmd_payload_size,
-  output              cpu_rsp_valid,
-  output     [31:0]   cpu_rsp_payload_data,
-  output reg          sram_0_ports_cmd_valid,
-  output reg [4:0]    sram_0_ports_cmd_payload_addr,
-  output reg          sram_0_ports_cmd_payload_wen,
-  output reg [255:0]  sram_0_ports_cmd_payload_wdata,
-  input               sram_0_ports_rsp_valid,
-  input      [255:0]  sram_0_ports_rsp_payload_data,
-  output reg          sram_1_ports_cmd_valid,
-  output reg [4:0]    sram_1_ports_cmd_payload_addr,
-  output reg          sram_1_ports_cmd_payload_wen,
-  output reg [255:0]  sram_1_ports_cmd_payload_wdata,
-  input               sram_1_ports_rsp_valid,
-  input      [255:0]  sram_1_ports_rsp_payload_data,
-  output reg          sram_2_ports_cmd_valid,
-  output reg [4:0]    sram_2_ports_cmd_payload_addr,
-  output reg          sram_2_ports_cmd_payload_wen,
-  output reg [255:0]  sram_2_ports_cmd_payload_wdata,
-  input               sram_2_ports_rsp_valid,
-  input      [255:0]  sram_2_ports_rsp_payload_data,
-  output reg          sram_3_ports_cmd_valid,
-  output reg [4:0]    sram_3_ports_cmd_payload_addr,
-  output reg          sram_3_ports_cmd_payload_wen,
-  output reg [255:0]  sram_3_ports_cmd_payload_wdata,
-  input               sram_3_ports_rsp_valid,
-  input      [255:0]  sram_3_ports_rsp_payload_data,
-  output              next_level_cmd_valid,
-  input               next_level_cmd_ready,
-  output     [63:0]   next_level_cmd_payload_addr,
-  output     [3:0]    next_level_cmd_payload_len,
-  output     [2:0]    next_level_cmd_payload_size,
-  input               next_level_rsp_valid,
-  input      [255:0]  next_level_rsp_payload_data,
-  input               clk,
-  input               reset
-);
-
-  reg        [53:0]   _zz_icache_tag_0;
-  reg                 _zz_icache_hit_0;
-  reg                 _zz_icache_replace_info_0;
-  reg                 _zz_icache_victim_0;
-  reg        [53:0]   _zz_icache_tag_1;
-  reg                 _zz_icache_hit_1;
-  reg                 _zz_icache_replace_info_1;
-  reg                 _zz_icache_victim_1;
-  reg        [53:0]   _zz_icache_tag_2;
-  reg                 _zz_icache_hit_2;
-  reg                 _zz_icache_replace_info_2;
-  reg                 _zz_icache_victim_2;
-  reg        [53:0]   _zz_icache_tag_3;
-  reg                 _zz_icache_hit_3;
-  reg                 _zz_icache_replace_info_3;
-  reg                 _zz_icache_victim_3;
-  reg        [255:0]  _zz__zz_cpu_rsp_payload_data;
-  reg        [31:0]   _zz_cpu_rsp_payload_data_1;
-  reg                 _zz_cpu_rsp_valid;
-  reg                 ways_0_metas_0_valid;
-  reg        [53:0]   ways_0_metas_0_tag;
-  reg                 ways_0_metas_0_replace_info;
-  reg                 ways_0_metas_1_valid;
-  reg        [53:0]   ways_0_metas_1_tag;
-  reg                 ways_0_metas_1_replace_info;
-  reg                 ways_0_metas_2_valid;
-  reg        [53:0]   ways_0_metas_2_tag;
-  reg                 ways_0_metas_2_replace_info;
-  reg                 ways_0_metas_3_valid;
-  reg        [53:0]   ways_0_metas_3_tag;
-  reg                 ways_0_metas_3_replace_info;
-  reg                 ways_0_metas_4_valid;
-  reg        [53:0]   ways_0_metas_4_tag;
-  reg                 ways_0_metas_4_replace_info;
-  reg                 ways_0_metas_5_valid;
-  reg        [53:0]   ways_0_metas_5_tag;
-  reg                 ways_0_metas_5_replace_info;
-  reg                 ways_0_metas_6_valid;
-  reg        [53:0]   ways_0_metas_6_tag;
-  reg                 ways_0_metas_6_replace_info;
-  reg                 ways_0_metas_7_valid;
-  reg        [53:0]   ways_0_metas_7_tag;
-  reg                 ways_0_metas_7_replace_info;
-  reg                 ways_0_metas_8_valid;
-  reg        [53:0]   ways_0_metas_8_tag;
-  reg                 ways_0_metas_8_replace_info;
-  reg                 ways_0_metas_9_valid;
-  reg        [53:0]   ways_0_metas_9_tag;
-  reg                 ways_0_metas_9_replace_info;
-  reg                 ways_0_metas_10_valid;
-  reg        [53:0]   ways_0_metas_10_tag;
-  reg                 ways_0_metas_10_replace_info;
-  reg                 ways_0_metas_11_valid;
-  reg        [53:0]   ways_0_metas_11_tag;
-  reg                 ways_0_metas_11_replace_info;
-  reg                 ways_0_metas_12_valid;
-  reg        [53:0]   ways_0_metas_12_tag;
-  reg                 ways_0_metas_12_replace_info;
-  reg                 ways_0_metas_13_valid;
-  reg        [53:0]   ways_0_metas_13_tag;
-  reg                 ways_0_metas_13_replace_info;
-  reg                 ways_0_metas_14_valid;
-  reg        [53:0]   ways_0_metas_14_tag;
-  reg                 ways_0_metas_14_replace_info;
-  reg                 ways_0_metas_15_valid;
-  reg        [53:0]   ways_0_metas_15_tag;
-  reg                 ways_0_metas_15_replace_info;
-  reg                 ways_1_metas_0_valid;
-  reg        [53:0]   ways_1_metas_0_tag;
-  reg                 ways_1_metas_0_replace_info;
-  reg                 ways_1_metas_1_valid;
-  reg        [53:0]   ways_1_metas_1_tag;
-  reg                 ways_1_metas_1_replace_info;
-  reg                 ways_1_metas_2_valid;
-  reg        [53:0]   ways_1_metas_2_tag;
-  reg                 ways_1_metas_2_replace_info;
-  reg                 ways_1_metas_3_valid;
-  reg        [53:0]   ways_1_metas_3_tag;
-  reg                 ways_1_metas_3_replace_info;
-  reg                 ways_1_metas_4_valid;
-  reg        [53:0]   ways_1_metas_4_tag;
-  reg                 ways_1_metas_4_replace_info;
-  reg                 ways_1_metas_5_valid;
-  reg        [53:0]   ways_1_metas_5_tag;
-  reg                 ways_1_metas_5_replace_info;
-  reg                 ways_1_metas_6_valid;
-  reg        [53:0]   ways_1_metas_6_tag;
-  reg                 ways_1_metas_6_replace_info;
-  reg                 ways_1_metas_7_valid;
-  reg        [53:0]   ways_1_metas_7_tag;
-  reg                 ways_1_metas_7_replace_info;
-  reg                 ways_1_metas_8_valid;
-  reg        [53:0]   ways_1_metas_8_tag;
-  reg                 ways_1_metas_8_replace_info;
-  reg                 ways_1_metas_9_valid;
-  reg        [53:0]   ways_1_metas_9_tag;
-  reg                 ways_1_metas_9_replace_info;
-  reg                 ways_1_metas_10_valid;
-  reg        [53:0]   ways_1_metas_10_tag;
-  reg                 ways_1_metas_10_replace_info;
-  reg                 ways_1_metas_11_valid;
-  reg        [53:0]   ways_1_metas_11_tag;
-  reg                 ways_1_metas_11_replace_info;
-  reg                 ways_1_metas_12_valid;
-  reg        [53:0]   ways_1_metas_12_tag;
-  reg                 ways_1_metas_12_replace_info;
-  reg                 ways_1_metas_13_valid;
-  reg        [53:0]   ways_1_metas_13_tag;
-  reg                 ways_1_metas_13_replace_info;
-  reg                 ways_1_metas_14_valid;
-  reg        [53:0]   ways_1_metas_14_tag;
-  reg                 ways_1_metas_14_replace_info;
-  reg                 ways_1_metas_15_valid;
-  reg        [53:0]   ways_1_metas_15_tag;
-  reg                 ways_1_metas_15_replace_info;
-  reg                 ways_2_metas_0_valid;
-  reg        [53:0]   ways_2_metas_0_tag;
-  reg                 ways_2_metas_0_replace_info;
-  reg                 ways_2_metas_1_valid;
-  reg        [53:0]   ways_2_metas_1_tag;
-  reg                 ways_2_metas_1_replace_info;
-  reg                 ways_2_metas_2_valid;
-  reg        [53:0]   ways_2_metas_2_tag;
-  reg                 ways_2_metas_2_replace_info;
-  reg                 ways_2_metas_3_valid;
-  reg        [53:0]   ways_2_metas_3_tag;
-  reg                 ways_2_metas_3_replace_info;
-  reg                 ways_2_metas_4_valid;
-  reg        [53:0]   ways_2_metas_4_tag;
-  reg                 ways_2_metas_4_replace_info;
-  reg                 ways_2_metas_5_valid;
-  reg        [53:0]   ways_2_metas_5_tag;
-  reg                 ways_2_metas_5_replace_info;
-  reg                 ways_2_metas_6_valid;
-  reg        [53:0]   ways_2_metas_6_tag;
-  reg                 ways_2_metas_6_replace_info;
-  reg                 ways_2_metas_7_valid;
-  reg        [53:0]   ways_2_metas_7_tag;
-  reg                 ways_2_metas_7_replace_info;
-  reg                 ways_2_metas_8_valid;
-  reg        [53:0]   ways_2_metas_8_tag;
-  reg                 ways_2_metas_8_replace_info;
-  reg                 ways_2_metas_9_valid;
-  reg        [53:0]   ways_2_metas_9_tag;
-  reg                 ways_2_metas_9_replace_info;
-  reg                 ways_2_metas_10_valid;
-  reg        [53:0]   ways_2_metas_10_tag;
-  reg                 ways_2_metas_10_replace_info;
-  reg                 ways_2_metas_11_valid;
-  reg        [53:0]   ways_2_metas_11_tag;
-  reg                 ways_2_metas_11_replace_info;
-  reg                 ways_2_metas_12_valid;
-  reg        [53:0]   ways_2_metas_12_tag;
-  reg                 ways_2_metas_12_replace_info;
-  reg                 ways_2_metas_13_valid;
-  reg        [53:0]   ways_2_metas_13_tag;
-  reg                 ways_2_metas_13_replace_info;
-  reg                 ways_2_metas_14_valid;
-  reg        [53:0]   ways_2_metas_14_tag;
-  reg                 ways_2_metas_14_replace_info;
-  reg                 ways_2_metas_15_valid;
-  reg        [53:0]   ways_2_metas_15_tag;
-  reg                 ways_2_metas_15_replace_info;
-  reg                 ways_3_metas_0_valid;
-  reg        [53:0]   ways_3_metas_0_tag;
-  reg                 ways_3_metas_0_replace_info;
-  reg                 ways_3_metas_1_valid;
-  reg        [53:0]   ways_3_metas_1_tag;
-  reg                 ways_3_metas_1_replace_info;
-  reg                 ways_3_metas_2_valid;
-  reg        [53:0]   ways_3_metas_2_tag;
-  reg                 ways_3_metas_2_replace_info;
-  reg                 ways_3_metas_3_valid;
-  reg        [53:0]   ways_3_metas_3_tag;
-  reg                 ways_3_metas_3_replace_info;
-  reg                 ways_3_metas_4_valid;
-  reg        [53:0]   ways_3_metas_4_tag;
-  reg                 ways_3_metas_4_replace_info;
-  reg                 ways_3_metas_5_valid;
-  reg        [53:0]   ways_3_metas_5_tag;
-  reg                 ways_3_metas_5_replace_info;
-  reg                 ways_3_metas_6_valid;
-  reg        [53:0]   ways_3_metas_6_tag;
-  reg                 ways_3_metas_6_replace_info;
-  reg                 ways_3_metas_7_valid;
-  reg        [53:0]   ways_3_metas_7_tag;
-  reg                 ways_3_metas_7_replace_info;
-  reg                 ways_3_metas_8_valid;
-  reg        [53:0]   ways_3_metas_8_tag;
-  reg                 ways_3_metas_8_replace_info;
-  reg                 ways_3_metas_9_valid;
-  reg        [53:0]   ways_3_metas_9_tag;
-  reg                 ways_3_metas_9_replace_info;
-  reg                 ways_3_metas_10_valid;
-  reg        [53:0]   ways_3_metas_10_tag;
-  reg                 ways_3_metas_10_replace_info;
-  reg                 ways_3_metas_11_valid;
-  reg        [53:0]   ways_3_metas_11_tag;
-  reg                 ways_3_metas_11_replace_info;
-  reg                 ways_3_metas_12_valid;
-  reg        [53:0]   ways_3_metas_12_tag;
-  reg                 ways_3_metas_12_replace_info;
-  reg                 ways_3_metas_13_valid;
-  reg        [53:0]   ways_3_metas_13_tag;
-  reg                 ways_3_metas_13_replace_info;
-  reg                 ways_3_metas_14_valid;
-  reg        [53:0]   ways_3_metas_14_tag;
-  reg                 ways_3_metas_14_replace_info;
-  reg                 ways_3_metas_15_valid;
-  reg        [53:0]   ways_3_metas_15_tag;
-  reg                 ways_3_metas_15_replace_info;
-  wire       [53:0]   icache_tag_0;
-  wire       [53:0]   icache_tag_1;
-  wire       [53:0]   icache_tag_2;
-  wire       [53:0]   icache_tag_3;
-  wire                icache_hit_0;
-  wire                icache_hit_1;
-  wire                icache_hit_2;
-  wire                icache_hit_3;
-  wire                icache_victim_0;
-  reg                 icache_victim_1;
-  reg                 icache_victim_2;
-  reg                 icache_victim_3;
-  wire                icache_replace_info_0;
-  wire                icache_replace_info_1;
-  wire                icache_replace_info_2;
-  wire                icache_replace_info_3;
-  wire       [1:0]    hit_way_id;
-  wire                replace_info_full;
-  wire                cpu_cmd_fire;
-  wire                is_hit;
-  wire                cpu_cmd_fire_1;
-  wire                is_miss;
-  wire       [53:0]   cpu_tag;
-  wire       [3:0]    cpu_set;
-  wire       [4:0]    cpu_bank_offset;
-  wire       [4:0]    cpu_bank_addr;
-  wire       [2:0]    cpu_bank_sel;
-  reg        [63:0]   cpu_addr_d1;
-  wire       [3:0]    cpu_set_d1;
-  wire       [53:0]   cpu_tag_d1;
-  reg                 cpu_cmd_ready_1;
-  wire       [255:0]  sram_banks_data_0;
-  wire       [255:0]  sram_banks_data_1;
-  wire       [255:0]  sram_banks_data_2;
-  wire       [255:0]  sram_banks_data_3;
-  wire                sram_banks_valid_0;
-  wire                sram_banks_valid_1;
-  wire                sram_banks_valid_2;
-  wire                sram_banks_valid_3;
-  reg                 next_level_cmd_valid_1;
-  reg                 next_level_data_cnt_willIncrement;
-  reg                 next_level_data_cnt_willClear;
-  reg        [0:0]    next_level_data_cnt_valueNext;
-  reg        [0:0]    next_level_data_cnt_value;
-  wire                next_level_data_cnt_willOverflowIfInc;
-  wire                next_level_data_cnt_willOverflow;
-  wire       [3:0]    next_level_bank_addr;
-  wire                next_level_cmd_fire;
-  wire                when_ICache_l117;
-  wire                _zz_hit_way_id;
-  wire                _zz_hit_way_id_1;
-  wire       [15:0]   _zz_1;
-  wire                _zz_2;
-  wire                _zz_3;
-  wire                _zz_4;
-  wire                _zz_5;
-  wire                _zz_6;
-  wire                _zz_7;
-  wire                _zz_8;
-  wire                _zz_9;
-  wire                _zz_10;
-  wire                _zz_11;
-  wire                _zz_12;
-  wire                _zz_13;
-  wire                _zz_14;
-  wire                _zz_15;
-  wire                _zz_16;
-  wire                _zz_17;
-  wire       [15:0]   _zz_18;
-  wire                _zz_19;
-  wire                _zz_20;
-  wire                _zz_21;
-  wire                _zz_22;
-  wire                _zz_23;
-  wire                _zz_24;
-  wire                _zz_25;
-  wire                _zz_26;
-  wire                _zz_27;
-  wire                _zz_28;
-  wire                _zz_29;
-  wire                _zz_30;
-  wire                _zz_31;
-  wire                _zz_32;
-  wire                _zz_33;
-  wire                _zz_34;
-  wire                cpu_cmd_fire_2;
-  wire                when_ICache_l168;
-  wire                when_ICache_l185;
-  wire                when_ICache_l194;
-  wire       [15:0]   _zz_35;
-  wire                _zz_36;
-  wire                _zz_37;
-  wire                _zz_38;
-  wire                _zz_39;
-  wire                _zz_40;
-  wire                _zz_41;
-  wire                _zz_42;
-  wire                _zz_43;
-  wire                _zz_44;
-  wire                _zz_45;
-  wire                _zz_46;
-  wire                _zz_47;
-  wire                _zz_48;
-  wire                _zz_49;
-  wire                _zz_50;
-  wire                _zz_51;
-  wire       [15:0]   _zz_52;
-  wire                _zz_53;
-  wire                _zz_54;
-  wire                _zz_55;
-  wire                _zz_56;
-  wire                _zz_57;
-  wire                _zz_58;
-  wire                _zz_59;
-  wire                _zz_60;
-  wire                _zz_61;
-  wire                _zz_62;
-  wire                _zz_63;
-  wire                _zz_64;
-  wire                _zz_65;
-  wire                _zz_66;
-  wire                _zz_67;
-  wire                _zz_68;
-  wire                cpu_cmd_fire_3;
-  wire                when_ICache_l168_1;
-  wire                when_ICache_l185_1;
-  wire                when_ICache_l194_1;
-  wire       [15:0]   _zz_69;
-  wire                _zz_70;
-  wire                _zz_71;
-  wire                _zz_72;
-  wire                _zz_73;
-  wire                _zz_74;
-  wire                _zz_75;
-  wire                _zz_76;
-  wire                _zz_77;
-  wire                _zz_78;
-  wire                _zz_79;
-  wire                _zz_80;
-  wire                _zz_81;
-  wire                _zz_82;
-  wire                _zz_83;
-  wire                _zz_84;
-  wire                _zz_85;
-  wire       [15:0]   _zz_86;
-  wire                _zz_87;
-  wire                _zz_88;
-  wire                _zz_89;
-  wire                _zz_90;
-  wire                _zz_91;
-  wire                _zz_92;
-  wire                _zz_93;
-  wire                _zz_94;
-  wire                _zz_95;
-  wire                _zz_96;
-  wire                _zz_97;
-  wire                _zz_98;
-  wire                _zz_99;
-  wire                _zz_100;
-  wire                _zz_101;
-  wire                _zz_102;
-  wire                cpu_cmd_fire_4;
-  wire                when_ICache_l168_2;
-  wire                when_ICache_l185_2;
-  wire                when_ICache_l194_2;
-  wire       [15:0]   _zz_103;
-  wire                _zz_104;
-  wire                _zz_105;
-  wire                _zz_106;
-  wire                _zz_107;
-  wire                _zz_108;
-  wire                _zz_109;
-  wire                _zz_110;
-  wire                _zz_111;
-  wire                _zz_112;
-  wire                _zz_113;
-  wire                _zz_114;
-  wire                _zz_115;
-  wire                _zz_116;
-  wire                _zz_117;
-  wire                _zz_118;
-  wire                _zz_119;
-  wire       [15:0]   _zz_120;
-  wire                _zz_121;
-  wire                _zz_122;
-  wire                _zz_123;
-  wire                _zz_124;
-  wire                _zz_125;
-  wire                _zz_126;
-  wire                _zz_127;
-  wire                _zz_128;
-  wire                _zz_129;
-  wire                _zz_130;
-  wire                _zz_131;
-  wire                _zz_132;
-  wire                _zz_133;
-  wire                _zz_134;
-  wire                _zz_135;
-  wire                _zz_136;
-  wire                cpu_cmd_fire_5;
-  wire                when_ICache_l168_3;
-  wire                when_ICache_l185_3;
-  wire                when_ICache_l194_3;
-  wire       [255:0]  _zz_cpu_rsp_payload_data;
-
-  always @(*) begin
-    case(cpu_set)
-      4'b0000 : begin
-        _zz_icache_tag_0 = ways_0_metas_0_tag;
-        _zz_icache_hit_0 = ways_0_metas_0_valid;
-        _zz_icache_replace_info_0 = ways_0_metas_0_replace_info;
-        _zz_icache_tag_1 = ways_1_metas_0_tag;
-        _zz_icache_hit_1 = ways_1_metas_0_valid;
-        _zz_icache_replace_info_1 = ways_1_metas_0_replace_info;
-        _zz_icache_tag_2 = ways_2_metas_0_tag;
-        _zz_icache_hit_2 = ways_2_metas_0_valid;
-        _zz_icache_replace_info_2 = ways_2_metas_0_replace_info;
-        _zz_icache_tag_3 = ways_3_metas_0_tag;
-        _zz_icache_hit_3 = ways_3_metas_0_valid;
-        _zz_icache_replace_info_3 = ways_3_metas_0_replace_info;
-      end
-      4'b0001 : begin
-        _zz_icache_tag_0 = ways_0_metas_1_tag;
-        _zz_icache_hit_0 = ways_0_metas_1_valid;
-        _zz_icache_replace_info_0 = ways_0_metas_1_replace_info;
-        _zz_icache_tag_1 = ways_1_metas_1_tag;
-        _zz_icache_hit_1 = ways_1_metas_1_valid;
-        _zz_icache_replace_info_1 = ways_1_metas_1_replace_info;
-        _zz_icache_tag_2 = ways_2_metas_1_tag;
-        _zz_icache_hit_2 = ways_2_metas_1_valid;
-        _zz_icache_replace_info_2 = ways_2_metas_1_replace_info;
-        _zz_icache_tag_3 = ways_3_metas_1_tag;
-        _zz_icache_hit_3 = ways_3_metas_1_valid;
-        _zz_icache_replace_info_3 = ways_3_metas_1_replace_info;
-      end
-      4'b0010 : begin
-        _zz_icache_tag_0 = ways_0_metas_2_tag;
-        _zz_icache_hit_0 = ways_0_metas_2_valid;
-        _zz_icache_replace_info_0 = ways_0_metas_2_replace_info;
-        _zz_icache_tag_1 = ways_1_metas_2_tag;
-        _zz_icache_hit_1 = ways_1_metas_2_valid;
-        _zz_icache_replace_info_1 = ways_1_metas_2_replace_info;
-        _zz_icache_tag_2 = ways_2_metas_2_tag;
-        _zz_icache_hit_2 = ways_2_metas_2_valid;
-        _zz_icache_replace_info_2 = ways_2_metas_2_replace_info;
-        _zz_icache_tag_3 = ways_3_metas_2_tag;
-        _zz_icache_hit_3 = ways_3_metas_2_valid;
-        _zz_icache_replace_info_3 = ways_3_metas_2_replace_info;
-      end
-      4'b0011 : begin
-        _zz_icache_tag_0 = ways_0_metas_3_tag;
-        _zz_icache_hit_0 = ways_0_metas_3_valid;
-        _zz_icache_replace_info_0 = ways_0_metas_3_replace_info;
-        _zz_icache_tag_1 = ways_1_metas_3_tag;
-        _zz_icache_hit_1 = ways_1_metas_3_valid;
-        _zz_icache_replace_info_1 = ways_1_metas_3_replace_info;
-        _zz_icache_tag_2 = ways_2_metas_3_tag;
-        _zz_icache_hit_2 = ways_2_metas_3_valid;
-        _zz_icache_replace_info_2 = ways_2_metas_3_replace_info;
-        _zz_icache_tag_3 = ways_3_metas_3_tag;
-        _zz_icache_hit_3 = ways_3_metas_3_valid;
-        _zz_icache_replace_info_3 = ways_3_metas_3_replace_info;
-      end
-      4'b0100 : begin
-        _zz_icache_tag_0 = ways_0_metas_4_tag;
-        _zz_icache_hit_0 = ways_0_metas_4_valid;
-        _zz_icache_replace_info_0 = ways_0_metas_4_replace_info;
-        _zz_icache_tag_1 = ways_1_metas_4_tag;
-        _zz_icache_hit_1 = ways_1_metas_4_valid;
-        _zz_icache_replace_info_1 = ways_1_metas_4_replace_info;
-        _zz_icache_tag_2 = ways_2_metas_4_tag;
-        _zz_icache_hit_2 = ways_2_metas_4_valid;
-        _zz_icache_replace_info_2 = ways_2_metas_4_replace_info;
-        _zz_icache_tag_3 = ways_3_metas_4_tag;
-        _zz_icache_hit_3 = ways_3_metas_4_valid;
-        _zz_icache_replace_info_3 = ways_3_metas_4_replace_info;
-      end
-      4'b0101 : begin
-        _zz_icache_tag_0 = ways_0_metas_5_tag;
-        _zz_icache_hit_0 = ways_0_metas_5_valid;
-        _zz_icache_replace_info_0 = ways_0_metas_5_replace_info;
-        _zz_icache_tag_1 = ways_1_metas_5_tag;
-        _zz_icache_hit_1 = ways_1_metas_5_valid;
-        _zz_icache_replace_info_1 = ways_1_metas_5_replace_info;
-        _zz_icache_tag_2 = ways_2_metas_5_tag;
-        _zz_icache_hit_2 = ways_2_metas_5_valid;
-        _zz_icache_replace_info_2 = ways_2_metas_5_replace_info;
-        _zz_icache_tag_3 = ways_3_metas_5_tag;
-        _zz_icache_hit_3 = ways_3_metas_5_valid;
-        _zz_icache_replace_info_3 = ways_3_metas_5_replace_info;
-      end
-      4'b0110 : begin
-        _zz_icache_tag_0 = ways_0_metas_6_tag;
-        _zz_icache_hit_0 = ways_0_metas_6_valid;
-        _zz_icache_replace_info_0 = ways_0_metas_6_replace_info;
-        _zz_icache_tag_1 = ways_1_metas_6_tag;
-        _zz_icache_hit_1 = ways_1_metas_6_valid;
-        _zz_icache_replace_info_1 = ways_1_metas_6_replace_info;
-        _zz_icache_tag_2 = ways_2_metas_6_tag;
-        _zz_icache_hit_2 = ways_2_metas_6_valid;
-        _zz_icache_replace_info_2 = ways_2_metas_6_replace_info;
-        _zz_icache_tag_3 = ways_3_metas_6_tag;
-        _zz_icache_hit_3 = ways_3_metas_6_valid;
-        _zz_icache_replace_info_3 = ways_3_metas_6_replace_info;
-      end
-      4'b0111 : begin
-        _zz_icache_tag_0 = ways_0_metas_7_tag;
-        _zz_icache_hit_0 = ways_0_metas_7_valid;
-        _zz_icache_replace_info_0 = ways_0_metas_7_replace_info;
-        _zz_icache_tag_1 = ways_1_metas_7_tag;
-        _zz_icache_hit_1 = ways_1_metas_7_valid;
-        _zz_icache_replace_info_1 = ways_1_metas_7_replace_info;
-        _zz_icache_tag_2 = ways_2_metas_7_tag;
-        _zz_icache_hit_2 = ways_2_metas_7_valid;
-        _zz_icache_replace_info_2 = ways_2_metas_7_replace_info;
-        _zz_icache_tag_3 = ways_3_metas_7_tag;
-        _zz_icache_hit_3 = ways_3_metas_7_valid;
-        _zz_icache_replace_info_3 = ways_3_metas_7_replace_info;
-      end
-      4'b1000 : begin
-        _zz_icache_tag_0 = ways_0_metas_8_tag;
-        _zz_icache_hit_0 = ways_0_metas_8_valid;
-        _zz_icache_replace_info_0 = ways_0_metas_8_replace_info;
-        _zz_icache_tag_1 = ways_1_metas_8_tag;
-        _zz_icache_hit_1 = ways_1_metas_8_valid;
-        _zz_icache_replace_info_1 = ways_1_metas_8_replace_info;
-        _zz_icache_tag_2 = ways_2_metas_8_tag;
-        _zz_icache_hit_2 = ways_2_metas_8_valid;
-        _zz_icache_replace_info_2 = ways_2_metas_8_replace_info;
-        _zz_icache_tag_3 = ways_3_metas_8_tag;
-        _zz_icache_hit_3 = ways_3_metas_8_valid;
-        _zz_icache_replace_info_3 = ways_3_metas_8_replace_info;
-      end
-      4'b1001 : begin
-        _zz_icache_tag_0 = ways_0_metas_9_tag;
-        _zz_icache_hit_0 = ways_0_metas_9_valid;
-        _zz_icache_replace_info_0 = ways_0_metas_9_replace_info;
-        _zz_icache_tag_1 = ways_1_metas_9_tag;
-        _zz_icache_hit_1 = ways_1_metas_9_valid;
-        _zz_icache_replace_info_1 = ways_1_metas_9_replace_info;
-        _zz_icache_tag_2 = ways_2_metas_9_tag;
-        _zz_icache_hit_2 = ways_2_metas_9_valid;
-        _zz_icache_replace_info_2 = ways_2_metas_9_replace_info;
-        _zz_icache_tag_3 = ways_3_metas_9_tag;
-        _zz_icache_hit_3 = ways_3_metas_9_valid;
-        _zz_icache_replace_info_3 = ways_3_metas_9_replace_info;
-      end
-      4'b1010 : begin
-        _zz_icache_tag_0 = ways_0_metas_10_tag;
-        _zz_icache_hit_0 = ways_0_metas_10_valid;
-        _zz_icache_replace_info_0 = ways_0_metas_10_replace_info;
-        _zz_icache_tag_1 = ways_1_metas_10_tag;
-        _zz_icache_hit_1 = ways_1_metas_10_valid;
-        _zz_icache_replace_info_1 = ways_1_metas_10_replace_info;
-        _zz_icache_tag_2 = ways_2_metas_10_tag;
-        _zz_icache_hit_2 = ways_2_metas_10_valid;
-        _zz_icache_replace_info_2 = ways_2_metas_10_replace_info;
-        _zz_icache_tag_3 = ways_3_metas_10_tag;
-        _zz_icache_hit_3 = ways_3_metas_10_valid;
-        _zz_icache_replace_info_3 = ways_3_metas_10_replace_info;
-      end
-      4'b1011 : begin
-        _zz_icache_tag_0 = ways_0_metas_11_tag;
-        _zz_icache_hit_0 = ways_0_metas_11_valid;
-        _zz_icache_replace_info_0 = ways_0_metas_11_replace_info;
-        _zz_icache_tag_1 = ways_1_metas_11_tag;
-        _zz_icache_hit_1 = ways_1_metas_11_valid;
-        _zz_icache_replace_info_1 = ways_1_metas_11_replace_info;
-        _zz_icache_tag_2 = ways_2_metas_11_tag;
-        _zz_icache_hit_2 = ways_2_metas_11_valid;
-        _zz_icache_replace_info_2 = ways_2_metas_11_replace_info;
-        _zz_icache_tag_3 = ways_3_metas_11_tag;
-        _zz_icache_hit_3 = ways_3_metas_11_valid;
-        _zz_icache_replace_info_3 = ways_3_metas_11_replace_info;
-      end
-      4'b1100 : begin
-        _zz_icache_tag_0 = ways_0_metas_12_tag;
-        _zz_icache_hit_0 = ways_0_metas_12_valid;
-        _zz_icache_replace_info_0 = ways_0_metas_12_replace_info;
-        _zz_icache_tag_1 = ways_1_metas_12_tag;
-        _zz_icache_hit_1 = ways_1_metas_12_valid;
-        _zz_icache_replace_info_1 = ways_1_metas_12_replace_info;
-        _zz_icache_tag_2 = ways_2_metas_12_tag;
-        _zz_icache_hit_2 = ways_2_metas_12_valid;
-        _zz_icache_replace_info_2 = ways_2_metas_12_replace_info;
-        _zz_icache_tag_3 = ways_3_metas_12_tag;
-        _zz_icache_hit_3 = ways_3_metas_12_valid;
-        _zz_icache_replace_info_3 = ways_3_metas_12_replace_info;
-      end
-      4'b1101 : begin
-        _zz_icache_tag_0 = ways_0_metas_13_tag;
-        _zz_icache_hit_0 = ways_0_metas_13_valid;
-        _zz_icache_replace_info_0 = ways_0_metas_13_replace_info;
-        _zz_icache_tag_1 = ways_1_metas_13_tag;
-        _zz_icache_hit_1 = ways_1_metas_13_valid;
-        _zz_icache_replace_info_1 = ways_1_metas_13_replace_info;
-        _zz_icache_tag_2 = ways_2_metas_13_tag;
-        _zz_icache_hit_2 = ways_2_metas_13_valid;
-        _zz_icache_replace_info_2 = ways_2_metas_13_replace_info;
-        _zz_icache_tag_3 = ways_3_metas_13_tag;
-        _zz_icache_hit_3 = ways_3_metas_13_valid;
-        _zz_icache_replace_info_3 = ways_3_metas_13_replace_info;
-      end
-      4'b1110 : begin
-        _zz_icache_tag_0 = ways_0_metas_14_tag;
-        _zz_icache_hit_0 = ways_0_metas_14_valid;
-        _zz_icache_replace_info_0 = ways_0_metas_14_replace_info;
-        _zz_icache_tag_1 = ways_1_metas_14_tag;
-        _zz_icache_hit_1 = ways_1_metas_14_valid;
-        _zz_icache_replace_info_1 = ways_1_metas_14_replace_info;
-        _zz_icache_tag_2 = ways_2_metas_14_tag;
-        _zz_icache_hit_2 = ways_2_metas_14_valid;
-        _zz_icache_replace_info_2 = ways_2_metas_14_replace_info;
-        _zz_icache_tag_3 = ways_3_metas_14_tag;
-        _zz_icache_hit_3 = ways_3_metas_14_valid;
-        _zz_icache_replace_info_3 = ways_3_metas_14_replace_info;
-      end
-      default : begin
-        _zz_icache_tag_0 = ways_0_metas_15_tag;
-        _zz_icache_hit_0 = ways_0_metas_15_valid;
-        _zz_icache_replace_info_0 = ways_0_metas_15_replace_info;
-        _zz_icache_tag_1 = ways_1_metas_15_tag;
-        _zz_icache_hit_1 = ways_1_metas_15_valid;
-        _zz_icache_replace_info_1 = ways_1_metas_15_replace_info;
-        _zz_icache_tag_2 = ways_2_metas_15_tag;
-        _zz_icache_hit_2 = ways_2_metas_15_valid;
-        _zz_icache_replace_info_2 = ways_2_metas_15_replace_info;
-        _zz_icache_tag_3 = ways_3_metas_15_tag;
-        _zz_icache_hit_3 = ways_3_metas_15_valid;
-        _zz_icache_replace_info_3 = ways_3_metas_15_replace_info;
-      end
-    endcase
-  end
-
-  always @(*) begin
-    case(cpu_set_d1)
-      4'b0000 : begin
-        _zz_icache_victim_0 = ways_0_metas_0_valid;
-        _zz_icache_victim_1 = ways_1_metas_0_valid;
-        _zz_icache_victim_2 = ways_2_metas_0_valid;
-        _zz_icache_victim_3 = ways_3_metas_0_valid;
-      end
-      4'b0001 : begin
-        _zz_icache_victim_0 = ways_0_metas_1_valid;
-        _zz_icache_victim_1 = ways_1_metas_1_valid;
-        _zz_icache_victim_2 = ways_2_metas_1_valid;
-        _zz_icache_victim_3 = ways_3_metas_1_valid;
-      end
-      4'b0010 : begin
-        _zz_icache_victim_0 = ways_0_metas_2_valid;
-        _zz_icache_victim_1 = ways_1_metas_2_valid;
-        _zz_icache_victim_2 = ways_2_metas_2_valid;
-        _zz_icache_victim_3 = ways_3_metas_2_valid;
-      end
-      4'b0011 : begin
-        _zz_icache_victim_0 = ways_0_metas_3_valid;
-        _zz_icache_victim_1 = ways_1_metas_3_valid;
-        _zz_icache_victim_2 = ways_2_metas_3_valid;
-        _zz_icache_victim_3 = ways_3_metas_3_valid;
-      end
-      4'b0100 : begin
-        _zz_icache_victim_0 = ways_0_metas_4_valid;
-        _zz_icache_victim_1 = ways_1_metas_4_valid;
-        _zz_icache_victim_2 = ways_2_metas_4_valid;
-        _zz_icache_victim_3 = ways_3_metas_4_valid;
-      end
-      4'b0101 : begin
-        _zz_icache_victim_0 = ways_0_metas_5_valid;
-        _zz_icache_victim_1 = ways_1_metas_5_valid;
-        _zz_icache_victim_2 = ways_2_metas_5_valid;
-        _zz_icache_victim_3 = ways_3_metas_5_valid;
-      end
-      4'b0110 : begin
-        _zz_icache_victim_0 = ways_0_metas_6_valid;
-        _zz_icache_victim_1 = ways_1_metas_6_valid;
-        _zz_icache_victim_2 = ways_2_metas_6_valid;
-        _zz_icache_victim_3 = ways_3_metas_6_valid;
-      end
-      4'b0111 : begin
-        _zz_icache_victim_0 = ways_0_metas_7_valid;
-        _zz_icache_victim_1 = ways_1_metas_7_valid;
-        _zz_icache_victim_2 = ways_2_metas_7_valid;
-        _zz_icache_victim_3 = ways_3_metas_7_valid;
-      end
-      4'b1000 : begin
-        _zz_icache_victim_0 = ways_0_metas_8_valid;
-        _zz_icache_victim_1 = ways_1_metas_8_valid;
-        _zz_icache_victim_2 = ways_2_metas_8_valid;
-        _zz_icache_victim_3 = ways_3_metas_8_valid;
-      end
-      4'b1001 : begin
-        _zz_icache_victim_0 = ways_0_metas_9_valid;
-        _zz_icache_victim_1 = ways_1_metas_9_valid;
-        _zz_icache_victim_2 = ways_2_metas_9_valid;
-        _zz_icache_victim_3 = ways_3_metas_9_valid;
-      end
-      4'b1010 : begin
-        _zz_icache_victim_0 = ways_0_metas_10_valid;
-        _zz_icache_victim_1 = ways_1_metas_10_valid;
-        _zz_icache_victim_2 = ways_2_metas_10_valid;
-        _zz_icache_victim_3 = ways_3_metas_10_valid;
-      end
-      4'b1011 : begin
-        _zz_icache_victim_0 = ways_0_metas_11_valid;
-        _zz_icache_victim_1 = ways_1_metas_11_valid;
-        _zz_icache_victim_2 = ways_2_metas_11_valid;
-        _zz_icache_victim_3 = ways_3_metas_11_valid;
-      end
-      4'b1100 : begin
-        _zz_icache_victim_0 = ways_0_metas_12_valid;
-        _zz_icache_victim_1 = ways_1_metas_12_valid;
-        _zz_icache_victim_2 = ways_2_metas_12_valid;
-        _zz_icache_victim_3 = ways_3_metas_12_valid;
-      end
-      4'b1101 : begin
-        _zz_icache_victim_0 = ways_0_metas_13_valid;
-        _zz_icache_victim_1 = ways_1_metas_13_valid;
-        _zz_icache_victim_2 = ways_2_metas_13_valid;
-        _zz_icache_victim_3 = ways_3_metas_13_valid;
-      end
-      4'b1110 : begin
-        _zz_icache_victim_0 = ways_0_metas_14_valid;
-        _zz_icache_victim_1 = ways_1_metas_14_valid;
-        _zz_icache_victim_2 = ways_2_metas_14_valid;
-        _zz_icache_victim_3 = ways_3_metas_14_valid;
-      end
-      default : begin
-        _zz_icache_victim_0 = ways_0_metas_15_valid;
-        _zz_icache_victim_1 = ways_1_metas_15_valid;
-        _zz_icache_victim_2 = ways_2_metas_15_valid;
-        _zz_icache_victim_3 = ways_3_metas_15_valid;
-      end
-    endcase
-  end
-
-  always @(*) begin
-    case(hit_way_id)
-      2'b00 : begin
-        _zz__zz_cpu_rsp_payload_data = sram_banks_data_0;
-        _zz_cpu_rsp_valid = sram_banks_valid_0;
-      end
-      2'b01 : begin
-        _zz__zz_cpu_rsp_payload_data = sram_banks_data_1;
-        _zz_cpu_rsp_valid = sram_banks_valid_1;
-      end
-      2'b10 : begin
-        _zz__zz_cpu_rsp_payload_data = sram_banks_data_2;
-        _zz_cpu_rsp_valid = sram_banks_valid_2;
-      end
-      default : begin
-        _zz__zz_cpu_rsp_payload_data = sram_banks_data_3;
-        _zz_cpu_rsp_valid = sram_banks_valid_3;
-      end
-    endcase
-  end
-
-  always @(*) begin
-    case(cpu_bank_sel)
-      3'b000 : _zz_cpu_rsp_payload_data_1 = _zz_cpu_rsp_payload_data[31 : 0];
-      3'b001 : _zz_cpu_rsp_payload_data_1 = _zz_cpu_rsp_payload_data[63 : 32];
-      3'b010 : _zz_cpu_rsp_payload_data_1 = _zz_cpu_rsp_payload_data[95 : 64];
-      3'b011 : _zz_cpu_rsp_payload_data_1 = _zz_cpu_rsp_payload_data[127 : 96];
-      3'b100 : _zz_cpu_rsp_payload_data_1 = _zz_cpu_rsp_payload_data[159 : 128];
-      3'b101 : _zz_cpu_rsp_payload_data_1 = _zz_cpu_rsp_payload_data[191 : 160];
-      3'b110 : _zz_cpu_rsp_payload_data_1 = _zz_cpu_rsp_payload_data[223 : 192];
-      default : _zz_cpu_rsp_payload_data_1 = _zz_cpu_rsp_payload_data[255 : 224];
-    endcase
-  end
-
-  assign replace_info_full = (&{icache_replace_info_3,{icache_replace_info_2,{icache_replace_info_1,icache_replace_info_0}}});
-  assign cpu_cmd_fire = (cpu_cmd_valid && cpu_cmd_ready);
-  assign is_hit = ((|{icache_hit_3,{icache_hit_2,{icache_hit_1,icache_hit_0}}}) && cpu_cmd_fire);
-  assign cpu_cmd_fire_1 = (cpu_cmd_valid && cpu_cmd_ready);
-  assign is_miss = ((! (|{icache_hit_3,{icache_hit_2,{icache_hit_1,icache_hit_0}}})) && cpu_cmd_fire_1);
-  assign cpu_tag = cpu_cmd_payload_addr[63 : 10];
-  assign cpu_set = cpu_cmd_payload_addr[9 : 6];
-  assign cpu_bank_offset = cpu_cmd_payload_addr[4 : 0];
-  assign cpu_bank_addr = cpu_cmd_payload_addr[9 : 5];
-  assign cpu_bank_sel = cpu_cmd_payload_addr[4 : 2];
-  assign cpu_set_d1 = cpu_addr_d1[9 : 6];
-  assign cpu_tag_d1 = cpu_addr_d1[63 : 10];
-  always @(*) begin
-    next_level_data_cnt_willIncrement = 1'b0;
-    if(!is_miss) begin
-      if(!when_ICache_l117) begin
         if(next_level_rsp_valid) begin
-          next_level_data_cnt_willIncrement = 1'b1;
+          sram_1_ports_cmd_payload_addr = {next_level_bank_addr,next_level_data_cnt_value};
+        end else begin
+          sram_1_ports_cmd_payload_addr = 5'h0;
         end
       end
     end
   end
 
   always @(*) begin
-    next_level_data_cnt_willClear = 1'b0;
-    if(is_miss) begin
-      next_level_data_cnt_willClear = 1'b1;
-    end else begin
-      if(when_ICache_l117) begin
-        next_level_data_cnt_willClear = 1'b1;
-      end
-    end
-  end
-
-  assign next_level_data_cnt_willOverflowIfInc = (next_level_data_cnt_value == 1'b1);
-  assign next_level_data_cnt_willOverflow = (next_level_data_cnt_willOverflowIfInc && next_level_data_cnt_willIncrement);
-  always @(*) begin
-    next_level_data_cnt_valueNext = (next_level_data_cnt_value + next_level_data_cnt_willIncrement);
-    if(next_level_data_cnt_willClear) begin
-      next_level_data_cnt_valueNext = 1'b0;
-    end
-  end
-
-  assign next_level_bank_addr = cpu_addr_d1[9 : 6];
-  assign next_level_cmd_fire = (next_level_cmd_valid && next_level_cmd_ready);
-  assign when_ICache_l117 = (next_level_rsp_valid && (next_level_data_cnt_value == 1'b1));
-  assign _zz_hit_way_id = (icache_hit_1 || icache_hit_3);
-  assign _zz_hit_way_id_1 = (icache_hit_2 || icache_hit_3);
-  assign hit_way_id = {_zz_hit_way_id_1,_zz_hit_way_id};
-  assign _zz_1 = ({15'd0,1'b1} <<< cpu_set);
-  assign _zz_2 = _zz_1[0];
-  assign _zz_3 = _zz_1[1];
-  assign _zz_4 = _zz_1[2];
-  assign _zz_5 = _zz_1[3];
-  assign _zz_6 = _zz_1[4];
-  assign _zz_7 = _zz_1[5];
-  assign _zz_8 = _zz_1[6];
-  assign _zz_9 = _zz_1[7];
-  assign _zz_10 = _zz_1[8];
-  assign _zz_11 = _zz_1[9];
-  assign _zz_12 = _zz_1[10];
-  assign _zz_13 = _zz_1[11];
-  assign _zz_14 = _zz_1[12];
-  assign _zz_15 = _zz_1[13];
-  assign _zz_16 = _zz_1[14];
-  assign _zz_17 = _zz_1[15];
-  assign icache_tag_0 = _zz_icache_tag_0;
-  assign icache_hit_0 = ((icache_tag_0 == cpu_tag) && _zz_icache_hit_0);
-  assign icache_replace_info_0 = _zz_icache_replace_info_0;
-  assign _zz_18 = ({15'd0,1'b1} <<< cpu_set_d1);
-  assign _zz_19 = _zz_18[0];
-  assign _zz_20 = _zz_18[1];
-  assign _zz_21 = _zz_18[2];
-  assign _zz_22 = _zz_18[3];
-  assign _zz_23 = _zz_18[4];
-  assign _zz_24 = _zz_18[5];
-  assign _zz_25 = _zz_18[6];
-  assign _zz_26 = _zz_18[7];
-  assign _zz_27 = _zz_18[8];
-  assign _zz_28 = _zz_18[9];
-  assign _zz_29 = _zz_18[10];
-  assign _zz_30 = _zz_18[11];
-  assign _zz_31 = _zz_18[12];
-  assign _zz_32 = _zz_18[13];
-  assign _zz_33 = _zz_18[14];
-  assign _zz_34 = _zz_18[15];
-  assign icache_victim_0 = (! _zz_icache_victim_0);
-  assign sram_banks_data_0 = sram_0_ports_rsp_payload_data;
-  assign sram_banks_valid_0 = sram_0_ports_rsp_valid;
-  always @(*) begin
     if(is_hit) begin
-      sram_0_ports_cmd_payload_addr = (icache_hit_0 ? cpu_bank_addr : 5'h0);
+      sram_1_ports_cmd_valid = cache_hit_1;
     end else begin
-      if(next_level_rsp_valid) begin
-        sram_0_ports_cmd_payload_addr = {next_level_bank_addr,next_level_data_cnt_value};
+      if(next_level_done) begin
+        sram_1_ports_cmd_valid = cache_victim_1;
       end else begin
-        sram_0_ports_cmd_payload_addr = 5'h0;
-      end
-    end
-  end
-
-  assign cpu_cmd_fire_2 = (cpu_cmd_valid && cpu_cmd_ready);
-  always @(*) begin
-    if(is_hit) begin
-      sram_0_ports_cmd_valid = (icache_hit_0 && cpu_cmd_fire_2);
-    end else begin
-      if(next_level_rsp_valid) begin
-        sram_0_ports_cmd_valid = 1'b1;
-      end else begin
-        sram_0_ports_cmd_valid = 1'b0;
-      end
-    end
-  end
-
-  always @(*) begin
-    if(is_hit) begin
-      sram_0_ports_cmd_payload_wen = 1'b0;
-    end else begin
-      if(next_level_rsp_valid) begin
-        sram_0_ports_cmd_payload_wen = 1'b1;
-      end else begin
-        sram_0_ports_cmd_payload_wen = 1'b0;
-      end
-    end
-  end
-
-  always @(*) begin
-    if(is_hit) begin
-      sram_0_ports_cmd_payload_wdata = 256'h0;
-    end else begin
-      if(next_level_rsp_valid) begin
-        sram_0_ports_cmd_payload_wdata = next_level_rsp_payload_data;
-      end else begin
-        sram_0_ports_cmd_payload_wdata = 256'h0;
-      end
-    end
-  end
-
-  assign when_ICache_l168 = (is_hit && replace_info_full);
-  assign when_ICache_l185 = (next_level_rsp_valid && (next_level_data_cnt_value == 1'b1));
-  assign when_ICache_l194 = (next_level_rsp_valid && (next_level_data_cnt_value == 1'b1));
-  assign _zz_35 = ({15'd0,1'b1} <<< cpu_set);
-  assign _zz_36 = _zz_35[0];
-  assign _zz_37 = _zz_35[1];
-  assign _zz_38 = _zz_35[2];
-  assign _zz_39 = _zz_35[3];
-  assign _zz_40 = _zz_35[4];
-  assign _zz_41 = _zz_35[5];
-  assign _zz_42 = _zz_35[6];
-  assign _zz_43 = _zz_35[7];
-  assign _zz_44 = _zz_35[8];
-  assign _zz_45 = _zz_35[9];
-  assign _zz_46 = _zz_35[10];
-  assign _zz_47 = _zz_35[11];
-  assign _zz_48 = _zz_35[12];
-  assign _zz_49 = _zz_35[13];
-  assign _zz_50 = _zz_35[14];
-  assign _zz_51 = _zz_35[15];
-  assign icache_tag_1 = _zz_icache_tag_1;
-  assign icache_hit_1 = ((icache_tag_1 == cpu_tag) && _zz_icache_hit_1);
-  assign icache_replace_info_1 = _zz_icache_replace_info_1;
-  always @(*) begin
-    if(icache_victim_0) begin
-      icache_victim_1 = 1'b0;
-    end else begin
-      icache_victim_1 = (! _zz_icache_victim_1);
-    end
-  end
-
-  assign _zz_52 = ({15'd0,1'b1} <<< cpu_set_d1);
-  assign _zz_53 = _zz_52[0];
-  assign _zz_54 = _zz_52[1];
-  assign _zz_55 = _zz_52[2];
-  assign _zz_56 = _zz_52[3];
-  assign _zz_57 = _zz_52[4];
-  assign _zz_58 = _zz_52[5];
-  assign _zz_59 = _zz_52[6];
-  assign _zz_60 = _zz_52[7];
-  assign _zz_61 = _zz_52[8];
-  assign _zz_62 = _zz_52[9];
-  assign _zz_63 = _zz_52[10];
-  assign _zz_64 = _zz_52[11];
-  assign _zz_65 = _zz_52[12];
-  assign _zz_66 = _zz_52[13];
-  assign _zz_67 = _zz_52[14];
-  assign _zz_68 = _zz_52[15];
-  assign sram_banks_data_1 = sram_1_ports_rsp_payload_data;
-  assign sram_banks_valid_1 = sram_1_ports_rsp_valid;
-  always @(*) begin
-    if(is_hit) begin
-      sram_1_ports_cmd_payload_addr = (icache_hit_1 ? cpu_bank_addr : 5'h0);
-    end else begin
-      if(next_level_rsp_valid) begin
-        sram_1_ports_cmd_payload_addr = {next_level_bank_addr,next_level_data_cnt_value};
-      end else begin
-        sram_1_ports_cmd_payload_addr = 5'h0;
-      end
-    end
-  end
-
-  assign cpu_cmd_fire_3 = (cpu_cmd_valid && cpu_cmd_ready);
-  always @(*) begin
-    if(is_hit) begin
-      sram_1_ports_cmd_valid = (icache_hit_1 && cpu_cmd_fire_3);
-    end else begin
-      if(next_level_rsp_valid) begin
-        sram_1_ports_cmd_valid = 1'b1;
-      end else begin
-        sram_1_ports_cmd_valid = 1'b0;
+        if(next_level_rsp_valid) begin
+          sram_1_ports_cmd_valid = 1'b1;
+        end else begin
+          sram_1_ports_cmd_valid = 1'b0;
+        end
       end
     end
   end
@@ -6836,10 +4060,14 @@ module ICache (
     if(is_hit) begin
       sram_1_ports_cmd_payload_wen = 1'b0;
     end else begin
-      if(next_level_rsp_valid) begin
-        sram_1_ports_cmd_payload_wen = 1'b1;
-      end else begin
+      if(next_level_done) begin
         sram_1_ports_cmd_payload_wen = 1'b0;
+      end else begin
+        if(next_level_rsp_valid) begin
+          sram_1_ports_cmd_payload_wen = 1'b1;
+        end else begin
+          sram_1_ports_cmd_payload_wen = 1'b0;
+        end
       end
     end
   end
@@ -6848,17 +4076,19 @@ module ICache (
     if(is_hit) begin
       sram_1_ports_cmd_payload_wdata = 256'h0;
     end else begin
-      if(next_level_rsp_valid) begin
-        sram_1_ports_cmd_payload_wdata = next_level_rsp_payload_data;
-      end else begin
+      if(next_level_done) begin
         sram_1_ports_cmd_payload_wdata = 256'h0;
+      end else begin
+        if(next_level_rsp_valid) begin
+          sram_1_ports_cmd_payload_wdata = next_level_rsp_payload_data;
+        end else begin
+          sram_1_ports_cmd_payload_wdata = 256'h0;
+        end
       end
     end
   end
 
-  assign when_ICache_l168_1 = (is_hit && replace_info_full);
-  assign when_ICache_l185_1 = (next_level_rsp_valid && (next_level_data_cnt_value == 1'b1));
-  assign when_ICache_l194_1 = (next_level_rsp_valid && (next_level_data_cnt_value == 1'b1));
+  assign when_DCache_l188_1 = (is_hit && replace_info_full);
   assign _zz_69 = ({15'd0,1'b1} <<< cpu_set);
   assign _zz_70 = _zz_69[0];
   assign _zz_71 = _zz_69[1];
@@ -6876,14 +4106,14 @@ module ICache (
   assign _zz_83 = _zz_69[13];
   assign _zz_84 = _zz_69[14];
   assign _zz_85 = _zz_69[15];
-  assign icache_tag_2 = _zz_icache_tag_2;
-  assign icache_hit_2 = ((icache_tag_2 == cpu_tag) && _zz_icache_hit_2);
-  assign icache_replace_info_2 = _zz_icache_replace_info_2;
+  assign cache_tag_2 = _zz_cache_tag_2;
+  assign cache_hit_2 = ((cache_tag_2 == cpu_tag) && _zz_cache_hit_2);
+  assign cache_replace_info_2 = _zz_cache_replace_info_2;
   always @(*) begin
-    if(icache_victim_1) begin
-      icache_victim_2 = 1'b0;
+    if(cache_victim_1) begin
+      cache_victim_2 = 1'b0;
     end else begin
-      icache_victim_2 = (! _zz_icache_victim_2);
+      cache_victim_2 = (! _zz_cache_victim_2);
     end
   end
 
@@ -6908,25 +4138,32 @@ module ICache (
   assign sram_banks_valid_2 = sram_2_ports_rsp_valid;
   always @(*) begin
     if(is_hit) begin
-      sram_2_ports_cmd_payload_addr = (icache_hit_2 ? cpu_bank_addr : 5'h0);
+      sram_2_ports_cmd_payload_addr = cpu_bank_addr;
     end else begin
-      if(next_level_rsp_valid) begin
-        sram_2_ports_cmd_payload_addr = {next_level_bank_addr,next_level_data_cnt_value};
+      if(next_level_done) begin
+        sram_2_ports_cmd_payload_addr = cpu_bank_addr_d1;
       end else begin
-        sram_2_ports_cmd_payload_addr = 5'h0;
+        if(next_level_rsp_valid) begin
+          sram_2_ports_cmd_payload_addr = {next_level_bank_addr,next_level_data_cnt_value};
+        end else begin
+          sram_2_ports_cmd_payload_addr = 5'h0;
+        end
       end
     end
   end
 
-  assign cpu_cmd_fire_4 = (cpu_cmd_valid && cpu_cmd_ready);
   always @(*) begin
     if(is_hit) begin
-      sram_2_ports_cmd_valid = (icache_hit_2 && cpu_cmd_fire_4);
+      sram_2_ports_cmd_valid = cache_hit_2;
     end else begin
-      if(next_level_rsp_valid) begin
-        sram_2_ports_cmd_valid = 1'b1;
+      if(next_level_done) begin
+        sram_2_ports_cmd_valid = cache_victim_2;
       end else begin
-        sram_2_ports_cmd_valid = 1'b0;
+        if(next_level_rsp_valid) begin
+          sram_2_ports_cmd_valid = 1'b1;
+        end else begin
+          sram_2_ports_cmd_valid = 1'b0;
+        end
       end
     end
   end
@@ -6935,10 +4172,14 @@ module ICache (
     if(is_hit) begin
       sram_2_ports_cmd_payload_wen = 1'b0;
     end else begin
-      if(next_level_rsp_valid) begin
-        sram_2_ports_cmd_payload_wen = 1'b1;
-      end else begin
+      if(next_level_done) begin
         sram_2_ports_cmd_payload_wen = 1'b0;
+      end else begin
+        if(next_level_rsp_valid) begin
+          sram_2_ports_cmd_payload_wen = 1'b1;
+        end else begin
+          sram_2_ports_cmd_payload_wen = 1'b0;
+        end
       end
     end
   end
@@ -6947,17 +4188,19 @@ module ICache (
     if(is_hit) begin
       sram_2_ports_cmd_payload_wdata = 256'h0;
     end else begin
-      if(next_level_rsp_valid) begin
-        sram_2_ports_cmd_payload_wdata = next_level_rsp_payload_data;
-      end else begin
+      if(next_level_done) begin
         sram_2_ports_cmd_payload_wdata = 256'h0;
+      end else begin
+        if(next_level_rsp_valid) begin
+          sram_2_ports_cmd_payload_wdata = next_level_rsp_payload_data;
+        end else begin
+          sram_2_ports_cmd_payload_wdata = 256'h0;
+        end
       end
     end
   end
 
-  assign when_ICache_l168_2 = (is_hit && replace_info_full);
-  assign when_ICache_l185_2 = (next_level_rsp_valid && (next_level_data_cnt_value == 1'b1));
-  assign when_ICache_l194_2 = (next_level_rsp_valid && (next_level_data_cnt_value == 1'b1));
+  assign when_DCache_l188_2 = (is_hit && replace_info_full);
   assign _zz_103 = ({15'd0,1'b1} <<< cpu_set);
   assign _zz_104 = _zz_103[0];
   assign _zz_105 = _zz_103[1];
@@ -6975,14 +4218,14 @@ module ICache (
   assign _zz_117 = _zz_103[13];
   assign _zz_118 = _zz_103[14];
   assign _zz_119 = _zz_103[15];
-  assign icache_tag_3 = _zz_icache_tag_3;
-  assign icache_hit_3 = ((icache_tag_3 == cpu_tag) && _zz_icache_hit_3);
-  assign icache_replace_info_3 = _zz_icache_replace_info_3;
+  assign cache_tag_3 = _zz_cache_tag_3;
+  assign cache_hit_3 = ((cache_tag_3 == cpu_tag) && _zz_cache_hit_3);
+  assign cache_replace_info_3 = _zz_cache_replace_info_3;
   always @(*) begin
-    if(icache_victim_2) begin
-      icache_victim_3 = 1'b0;
+    if(cache_victim_2) begin
+      cache_victim_3 = 1'b0;
     end else begin
-      icache_victim_3 = (! _zz_icache_victim_3);
+      cache_victim_3 = (! _zz_cache_victim_3);
     end
   end
 
@@ -7007,25 +4250,32 @@ module ICache (
   assign sram_banks_valid_3 = sram_3_ports_rsp_valid;
   always @(*) begin
     if(is_hit) begin
-      sram_3_ports_cmd_payload_addr = (icache_hit_3 ? cpu_bank_addr : 5'h0);
+      sram_3_ports_cmd_payload_addr = cpu_bank_addr;
     end else begin
-      if(next_level_rsp_valid) begin
-        sram_3_ports_cmd_payload_addr = {next_level_bank_addr,next_level_data_cnt_value};
+      if(next_level_done) begin
+        sram_3_ports_cmd_payload_addr = cpu_bank_addr_d1;
       end else begin
-        sram_3_ports_cmd_payload_addr = 5'h0;
+        if(next_level_rsp_valid) begin
+          sram_3_ports_cmd_payload_addr = {next_level_bank_addr,next_level_data_cnt_value};
+        end else begin
+          sram_3_ports_cmd_payload_addr = 5'h0;
+        end
       end
     end
   end
 
-  assign cpu_cmd_fire_5 = (cpu_cmd_valid && cpu_cmd_ready);
   always @(*) begin
     if(is_hit) begin
-      sram_3_ports_cmd_valid = (icache_hit_3 && cpu_cmd_fire_5);
+      sram_3_ports_cmd_valid = cache_hit_3;
     end else begin
-      if(next_level_rsp_valid) begin
-        sram_3_ports_cmd_valid = 1'b1;
+      if(next_level_done) begin
+        sram_3_ports_cmd_valid = cache_victim_3;
       end else begin
-        sram_3_ports_cmd_valid = 1'b0;
+        if(next_level_rsp_valid) begin
+          sram_3_ports_cmd_valid = 1'b1;
+        end else begin
+          sram_3_ports_cmd_valid = 1'b0;
+        end
       end
     end
   end
@@ -7034,10 +4284,14 @@ module ICache (
     if(is_hit) begin
       sram_3_ports_cmd_payload_wen = 1'b0;
     end else begin
-      if(next_level_rsp_valid) begin
-        sram_3_ports_cmd_payload_wen = 1'b1;
-      end else begin
+      if(next_level_done) begin
         sram_3_ports_cmd_payload_wen = 1'b0;
+      end else begin
+        if(next_level_rsp_valid) begin
+          sram_3_ports_cmd_payload_wen = 1'b1;
+        end else begin
+          sram_3_ports_cmd_payload_wen = 1'b0;
+        end
       end
     end
   end
@@ -7046,20 +4300,23 @@ module ICache (
     if(is_hit) begin
       sram_3_ports_cmd_payload_wdata = 256'h0;
     end else begin
-      if(next_level_rsp_valid) begin
-        sram_3_ports_cmd_payload_wdata = next_level_rsp_payload_data;
-      end else begin
+      if(next_level_done) begin
         sram_3_ports_cmd_payload_wdata = 256'h0;
+      end else begin
+        if(next_level_rsp_valid) begin
+          sram_3_ports_cmd_payload_wdata = next_level_rsp_payload_data;
+        end else begin
+          sram_3_ports_cmd_payload_wdata = 256'h0;
+        end
       end
     end
   end
 
-  assign when_ICache_l168_3 = (is_hit && replace_info_full);
-  assign when_ICache_l185_3 = (next_level_rsp_valid && (next_level_data_cnt_value == 1'b1));
-  assign when_ICache_l194_3 = (next_level_rsp_valid && (next_level_data_cnt_value == 1'b1));
+  assign when_DCache_l188_3 = (is_hit && replace_info_full);
   assign _zz_cpu_rsp_payload_data = _zz__zz_cpu_rsp_payload_data;
-  assign cpu_rsp_payload_data = _zz_cpu_rsp_payload_data_1;
-  assign cpu_rsp_valid = _zz_cpu_rsp_valid;
+  assign _zz_cpu_rsp_payload_data_1 = _zz__zz_cpu_rsp_payload_data_1;
+  assign cpu_rsp_payload_data = (is_hit ? _zz_cpu_rsp_payload_data_2 : _zz_cpu_rsp_payload_data_3);
+  assign cpu_rsp_valid = (is_hit ? _zz_cpu_rsp_valid : _zz_cpu_rsp_valid_1);
   assign cpu_cmd_ready = cpu_cmd_ready_1;
   assign next_level_cmd_payload_addr = cpu_addr_d1;
   assign next_level_cmd_payload_len = 4'b0010;
@@ -7373,8 +4630,8 @@ module ICache (
           ways_0_metas_15_valid <= 1'b0;
         end
       end else begin
-        if(when_ICache_l168) begin
-          if(icache_hit_0) begin
+        if(when_DCache_l188) begin
+          if(cache_hit_0) begin
             if(_zz_2) begin
               ways_0_metas_0_replace_info <= 1'b1;
             end
@@ -7475,7 +4732,7 @@ module ICache (
           end
         end else begin
           if(is_hit) begin
-            if(icache_hit_0) begin
+            if(cache_hit_0) begin
               if(_zz_2) begin
                 ways_0_metas_0_replace_info <= 1'b1;
               end
@@ -7527,7 +4784,7 @@ module ICache (
             end
           end else begin
             if(next_level_rsp_valid) begin
-              if(icache_victim_0) begin
+              if(cache_victim_0) begin
                 if(_zz_19) begin
                   ways_0_metas_0_valid <= 1'b1;
                 end
@@ -7581,7 +4838,7 @@ module ICache (
           end
         end
       end
-      if(when_ICache_l185) begin
+      if(next_level_done) begin
         if(_zz_19) begin
           ways_0_metas_0_tag <= cpu_tag_d1;
         end
@@ -7637,7 +4894,7 @@ module ICache (
         if(is_miss) begin
           cpu_cmd_ready_1 <= 1'b0;
         end else begin
-          if(when_ICache_l194) begin
+          if(next_level_done) begin
             cpu_cmd_ready_1 <= 1'b1;
           end
         end
@@ -7740,8 +4997,8 @@ module ICache (
           ways_1_metas_15_valid <= 1'b0;
         end
       end else begin
-        if(when_ICache_l168_1) begin
-          if(icache_hit_1) begin
+        if(when_DCache_l188_1) begin
+          if(cache_hit_1) begin
             if(_zz_36) begin
               ways_1_metas_0_replace_info <= 1'b1;
             end
@@ -7842,7 +5099,7 @@ module ICache (
           end
         end else begin
           if(is_hit) begin
-            if(icache_hit_1) begin
+            if(cache_hit_1) begin
               if(_zz_36) begin
                 ways_1_metas_0_replace_info <= 1'b1;
               end
@@ -7894,7 +5151,7 @@ module ICache (
             end
           end else begin
             if(next_level_rsp_valid) begin
-              if(icache_victim_1) begin
+              if(cache_victim_1) begin
                 if(_zz_53) begin
                   ways_1_metas_0_valid <= 1'b1;
                 end
@@ -7948,7 +5205,7 @@ module ICache (
           end
         end
       end
-      if(when_ICache_l185_1) begin
+      if(next_level_done) begin
         if(_zz_53) begin
           ways_1_metas_0_tag <= cpu_tag_d1;
         end
@@ -8004,7 +5261,7 @@ module ICache (
         if(is_miss) begin
           cpu_cmd_ready_1 <= 1'b0;
         end else begin
-          if(when_ICache_l194_1) begin
+          if(next_level_done) begin
             cpu_cmd_ready_1 <= 1'b1;
           end
         end
@@ -8107,8 +5364,8 @@ module ICache (
           ways_2_metas_15_valid <= 1'b0;
         end
       end else begin
-        if(when_ICache_l168_2) begin
-          if(icache_hit_2) begin
+        if(when_DCache_l188_2) begin
+          if(cache_hit_2) begin
             if(_zz_70) begin
               ways_2_metas_0_replace_info <= 1'b1;
             end
@@ -8209,7 +5466,7 @@ module ICache (
           end
         end else begin
           if(is_hit) begin
-            if(icache_hit_2) begin
+            if(cache_hit_2) begin
               if(_zz_70) begin
                 ways_2_metas_0_replace_info <= 1'b1;
               end
@@ -8261,7 +5518,7 @@ module ICache (
             end
           end else begin
             if(next_level_rsp_valid) begin
-              if(icache_victim_2) begin
+              if(cache_victim_2) begin
                 if(_zz_87) begin
                   ways_2_metas_0_valid <= 1'b1;
                 end
@@ -8315,7 +5572,7 @@ module ICache (
           end
         end
       end
-      if(when_ICache_l185_2) begin
+      if(next_level_done) begin
         if(_zz_87) begin
           ways_2_metas_0_tag <= cpu_tag_d1;
         end
@@ -8371,7 +5628,7 @@ module ICache (
         if(is_miss) begin
           cpu_cmd_ready_1 <= 1'b0;
         end else begin
-          if(when_ICache_l194_2) begin
+          if(next_level_done) begin
             cpu_cmd_ready_1 <= 1'b1;
           end
         end
@@ -8474,8 +5731,8 @@ module ICache (
           ways_3_metas_15_valid <= 1'b0;
         end
       end else begin
-        if(when_ICache_l168_3) begin
-          if(icache_hit_3) begin
+        if(when_DCache_l188_3) begin
+          if(cache_hit_3) begin
             if(_zz_104) begin
               ways_3_metas_0_replace_info <= 1'b1;
             end
@@ -8576,7 +5833,7 @@ module ICache (
           end
         end else begin
           if(is_hit) begin
-            if(icache_hit_3) begin
+            if(cache_hit_3) begin
               if(_zz_104) begin
                 ways_3_metas_0_replace_info <= 1'b1;
               end
@@ -8628,7 +5885,7 @@ module ICache (
             end
           end else begin
             if(next_level_rsp_valid) begin
-              if(icache_victim_3) begin
+              if(cache_victim_3) begin
                 if(_zz_121) begin
                   ways_3_metas_0_valid <= 1'b1;
                 end
@@ -8682,7 +5939,7 @@ module ICache (
           end
         end
       end
-      if(when_ICache_l185_3) begin
+      if(next_level_done) begin
         if(_zz_121) begin
           ways_3_metas_0_tag <= cpu_tag_d1;
         end
@@ -8738,10 +5995,3555 @@ module ICache (
         if(is_miss) begin
           cpu_cmd_ready_1 <= 1'b0;
         end else begin
-          if(when_ICache_l194_3) begin
+          if(next_level_done) begin
             cpu_cmd_ready_1 <= 1'b1;
           end
         end
+      end
+    end
+  end
+
+  always @(posedge clk) begin
+    next_level_done <= (next_level_rsp_valid && (next_level_data_cnt_value == 1'b1));
+  end
+
+
+endmodule
+
+module SramBanks (
+  input               sram_0_ports_cmd_valid,
+  input      [4:0]    sram_0_ports_cmd_payload_addr,
+  input               sram_0_ports_cmd_payload_wen,
+  input      [255:0]  sram_0_ports_cmd_payload_wdata,
+  output              sram_0_ports_rsp_valid,
+  output     [255:0]  sram_0_ports_rsp_payload_data,
+  input               sram_1_ports_cmd_valid,
+  input      [4:0]    sram_1_ports_cmd_payload_addr,
+  input               sram_1_ports_cmd_payload_wen,
+  input      [255:0]  sram_1_ports_cmd_payload_wdata,
+  output              sram_1_ports_rsp_valid,
+  output     [255:0]  sram_1_ports_rsp_payload_data,
+  input               sram_2_ports_cmd_valid,
+  input      [4:0]    sram_2_ports_cmd_payload_addr,
+  input               sram_2_ports_cmd_payload_wen,
+  input      [255:0]  sram_2_ports_cmd_payload_wdata,
+  output              sram_2_ports_rsp_valid,
+  output     [255:0]  sram_2_ports_rsp_payload_data,
+  input               sram_3_ports_cmd_valid,
+  input      [4:0]    sram_3_ports_cmd_payload_addr,
+  input               sram_3_ports_cmd_payload_wen,
+  input      [255:0]  sram_3_ports_cmd_payload_wdata,
+  output              sram_3_ports_rsp_valid,
+  output     [255:0]  sram_3_ports_rsp_payload_data,
+  input               clk,
+  input               reset
+);
+
+  reg        [255:0]  _zz_sram_0_banks_port1;
+  reg        [255:0]  _zz_sram_1_banks_port1;
+  reg        [255:0]  _zz_sram_2_banks_port1;
+  reg        [255:0]  _zz_sram_3_banks_port1;
+  reg                 sram_0_rsp_valid;
+  reg                 sram_1_rsp_valid;
+  reg                 sram_2_rsp_valid;
+  reg                 sram_3_rsp_valid;
+  reg [255:0] sram_0_banks [0:31];
+  reg [255:0] sram_1_banks [0:31];
+  reg [255:0] sram_2_banks [0:31];
+  reg [255:0] sram_3_banks [0:31];
+
+  always @(posedge clk) begin
+    if(sram_0_ports_cmd_valid) begin
+      sram_0_banks[sram_0_ports_cmd_payload_addr] <= sram_0_ports_cmd_payload_wdata;
+    end
+  end
+
+  always @(posedge clk) begin
+    if(sram_0_ports_cmd_valid) begin
+      _zz_sram_0_banks_port1 <= sram_0_banks[sram_0_ports_cmd_payload_addr];
+    end
+  end
+
+  always @(posedge clk) begin
+    if(sram_1_ports_cmd_valid) begin
+      sram_1_banks[sram_1_ports_cmd_payload_addr] <= sram_1_ports_cmd_payload_wdata;
+    end
+  end
+
+  always @(posedge clk) begin
+    if(sram_1_ports_cmd_valid) begin
+      _zz_sram_1_banks_port1 <= sram_1_banks[sram_1_ports_cmd_payload_addr];
+    end
+  end
+
+  always @(posedge clk) begin
+    if(sram_2_ports_cmd_valid) begin
+      sram_2_banks[sram_2_ports_cmd_payload_addr] <= sram_2_ports_cmd_payload_wdata;
+    end
+  end
+
+  always @(posedge clk) begin
+    if(sram_2_ports_cmd_valid) begin
+      _zz_sram_2_banks_port1 <= sram_2_banks[sram_2_ports_cmd_payload_addr];
+    end
+  end
+
+  always @(posedge clk) begin
+    if(sram_3_ports_cmd_valid) begin
+      sram_3_banks[sram_3_ports_cmd_payload_addr] <= sram_3_ports_cmd_payload_wdata;
+    end
+  end
+
+  always @(posedge clk) begin
+    if(sram_3_ports_cmd_valid) begin
+      _zz_sram_3_banks_port1 <= sram_3_banks[sram_3_ports_cmd_payload_addr];
+    end
+  end
+
+  assign sram_0_ports_rsp_payload_data = _zz_sram_0_banks_port1;
+  assign sram_0_ports_rsp_valid = sram_0_rsp_valid;
+  assign sram_1_ports_rsp_payload_data = _zz_sram_1_banks_port1;
+  assign sram_1_ports_rsp_valid = sram_1_rsp_valid;
+  assign sram_2_ports_rsp_payload_data = _zz_sram_2_banks_port1;
+  assign sram_2_ports_rsp_valid = sram_2_rsp_valid;
+  assign sram_3_ports_rsp_payload_data = _zz_sram_3_banks_port1;
+  assign sram_3_ports_rsp_valid = sram_3_rsp_valid;
+  always @(posedge clk or posedge reset) begin
+    if(reset) begin
+      sram_0_rsp_valid <= 1'b0;
+      sram_1_rsp_valid <= 1'b0;
+      sram_2_rsp_valid <= 1'b0;
+      sram_3_rsp_valid <= 1'b0;
+    end else begin
+      if(sram_0_ports_cmd_valid) begin
+        sram_0_rsp_valid <= 1'b1;
+      end else begin
+        sram_0_rsp_valid <= 1'b0;
+      end
+      if(sram_1_ports_cmd_valid) begin
+        sram_1_rsp_valid <= 1'b1;
+      end else begin
+        sram_1_rsp_valid <= 1'b0;
+      end
+      if(sram_2_ports_cmd_valid) begin
+        sram_2_rsp_valid <= 1'b1;
+      end else begin
+        sram_2_rsp_valid <= 1'b0;
+      end
+      if(sram_3_ports_cmd_valid) begin
+        sram_3_rsp_valid <= 1'b1;
+      end else begin
+        sram_3_rsp_valid <= 1'b0;
+      end
+    end
+  end
+
+
+endmodule
+
+module ICache (
+  input               flush,
+  input               cpu_cmd_valid,
+  output              cpu_cmd_ready,
+  input      [63:0]   cpu_cmd_payload_addr,
+  input      [2:0]    cpu_cmd_payload_size,
+  output              cpu_rsp_valid,
+  output     [31:0]   cpu_rsp_payload_data,
+  output reg          sram_0_ports_cmd_valid,
+  output reg [4:0]    sram_0_ports_cmd_payload_addr,
+  output reg          sram_0_ports_cmd_payload_wen,
+  output reg [255:0]  sram_0_ports_cmd_payload_wdata,
+  input               sram_0_ports_rsp_valid,
+  input      [255:0]  sram_0_ports_rsp_payload_data,
+  output reg          sram_1_ports_cmd_valid,
+  output reg [4:0]    sram_1_ports_cmd_payload_addr,
+  output reg          sram_1_ports_cmd_payload_wen,
+  output reg [255:0]  sram_1_ports_cmd_payload_wdata,
+  input               sram_1_ports_rsp_valid,
+  input      [255:0]  sram_1_ports_rsp_payload_data,
+  output reg          sram_2_ports_cmd_valid,
+  output reg [4:0]    sram_2_ports_cmd_payload_addr,
+  output reg          sram_2_ports_cmd_payload_wen,
+  output reg [255:0]  sram_2_ports_cmd_payload_wdata,
+  input               sram_2_ports_rsp_valid,
+  input      [255:0]  sram_2_ports_rsp_payload_data,
+  output reg          sram_3_ports_cmd_valid,
+  output reg [4:0]    sram_3_ports_cmd_payload_addr,
+  output reg          sram_3_ports_cmd_payload_wen,
+  output reg [255:0]  sram_3_ports_cmd_payload_wdata,
+  input               sram_3_ports_rsp_valid,
+  input      [255:0]  sram_3_ports_rsp_payload_data,
+  output              next_level_cmd_valid,
+  input               next_level_cmd_ready,
+  output     [63:0]   next_level_cmd_payload_addr,
+  output     [3:0]    next_level_cmd_payload_len,
+  output     [2:0]    next_level_cmd_payload_size,
+  input               next_level_rsp_valid,
+  input      [255:0]  next_level_rsp_payload_data,
+  input               clk,
+  input               reset
+);
+
+  reg        [53:0]   _zz_cache_tag_0;
+  reg                 _zz_cache_hit_0;
+  reg                 _zz_cache_replace_info_0;
+  reg                 _zz_cache_victim_0;
+  reg        [53:0]   _zz_cache_tag_1;
+  reg                 _zz_cache_hit_1;
+  reg                 _zz_cache_replace_info_1;
+  reg                 _zz_cache_victim_1;
+  reg        [53:0]   _zz_cache_tag_2;
+  reg                 _zz_cache_hit_2;
+  reg                 _zz_cache_replace_info_2;
+  reg                 _zz_cache_victim_2;
+  reg        [53:0]   _zz_cache_tag_3;
+  reg                 _zz_cache_hit_3;
+  reg                 _zz_cache_replace_info_3;
+  reg                 _zz_cache_victim_3;
+  reg        [255:0]  _zz__zz_cpu_rsp_payload_data;
+  reg        [255:0]  _zz__zz_cpu_rsp_payload_data_1;
+  reg        [31:0]   _zz_cpu_rsp_payload_data_2;
+  reg        [31:0]   _zz_cpu_rsp_payload_data_3;
+  reg                 _zz_cpu_rsp_valid;
+  reg                 _zz_cpu_rsp_valid_1;
+  reg                 ways_0_metas_0_valid;
+  reg        [53:0]   ways_0_metas_0_tag;
+  reg                 ways_0_metas_0_replace_info;
+  reg                 ways_0_metas_1_valid;
+  reg        [53:0]   ways_0_metas_1_tag;
+  reg                 ways_0_metas_1_replace_info;
+  reg                 ways_0_metas_2_valid;
+  reg        [53:0]   ways_0_metas_2_tag;
+  reg                 ways_0_metas_2_replace_info;
+  reg                 ways_0_metas_3_valid;
+  reg        [53:0]   ways_0_metas_3_tag;
+  reg                 ways_0_metas_3_replace_info;
+  reg                 ways_0_metas_4_valid;
+  reg        [53:0]   ways_0_metas_4_tag;
+  reg                 ways_0_metas_4_replace_info;
+  reg                 ways_0_metas_5_valid;
+  reg        [53:0]   ways_0_metas_5_tag;
+  reg                 ways_0_metas_5_replace_info;
+  reg                 ways_0_metas_6_valid;
+  reg        [53:0]   ways_0_metas_6_tag;
+  reg                 ways_0_metas_6_replace_info;
+  reg                 ways_0_metas_7_valid;
+  reg        [53:0]   ways_0_metas_7_tag;
+  reg                 ways_0_metas_7_replace_info;
+  reg                 ways_0_metas_8_valid;
+  reg        [53:0]   ways_0_metas_8_tag;
+  reg                 ways_0_metas_8_replace_info;
+  reg                 ways_0_metas_9_valid;
+  reg        [53:0]   ways_0_metas_9_tag;
+  reg                 ways_0_metas_9_replace_info;
+  reg                 ways_0_metas_10_valid;
+  reg        [53:0]   ways_0_metas_10_tag;
+  reg                 ways_0_metas_10_replace_info;
+  reg                 ways_0_metas_11_valid;
+  reg        [53:0]   ways_0_metas_11_tag;
+  reg                 ways_0_metas_11_replace_info;
+  reg                 ways_0_metas_12_valid;
+  reg        [53:0]   ways_0_metas_12_tag;
+  reg                 ways_0_metas_12_replace_info;
+  reg                 ways_0_metas_13_valid;
+  reg        [53:0]   ways_0_metas_13_tag;
+  reg                 ways_0_metas_13_replace_info;
+  reg                 ways_0_metas_14_valid;
+  reg        [53:0]   ways_0_metas_14_tag;
+  reg                 ways_0_metas_14_replace_info;
+  reg                 ways_0_metas_15_valid;
+  reg        [53:0]   ways_0_metas_15_tag;
+  reg                 ways_0_metas_15_replace_info;
+  reg                 ways_1_metas_0_valid;
+  reg        [53:0]   ways_1_metas_0_tag;
+  reg                 ways_1_metas_0_replace_info;
+  reg                 ways_1_metas_1_valid;
+  reg        [53:0]   ways_1_metas_1_tag;
+  reg                 ways_1_metas_1_replace_info;
+  reg                 ways_1_metas_2_valid;
+  reg        [53:0]   ways_1_metas_2_tag;
+  reg                 ways_1_metas_2_replace_info;
+  reg                 ways_1_metas_3_valid;
+  reg        [53:0]   ways_1_metas_3_tag;
+  reg                 ways_1_metas_3_replace_info;
+  reg                 ways_1_metas_4_valid;
+  reg        [53:0]   ways_1_metas_4_tag;
+  reg                 ways_1_metas_4_replace_info;
+  reg                 ways_1_metas_5_valid;
+  reg        [53:0]   ways_1_metas_5_tag;
+  reg                 ways_1_metas_5_replace_info;
+  reg                 ways_1_metas_6_valid;
+  reg        [53:0]   ways_1_metas_6_tag;
+  reg                 ways_1_metas_6_replace_info;
+  reg                 ways_1_metas_7_valid;
+  reg        [53:0]   ways_1_metas_7_tag;
+  reg                 ways_1_metas_7_replace_info;
+  reg                 ways_1_metas_8_valid;
+  reg        [53:0]   ways_1_metas_8_tag;
+  reg                 ways_1_metas_8_replace_info;
+  reg                 ways_1_metas_9_valid;
+  reg        [53:0]   ways_1_metas_9_tag;
+  reg                 ways_1_metas_9_replace_info;
+  reg                 ways_1_metas_10_valid;
+  reg        [53:0]   ways_1_metas_10_tag;
+  reg                 ways_1_metas_10_replace_info;
+  reg                 ways_1_metas_11_valid;
+  reg        [53:0]   ways_1_metas_11_tag;
+  reg                 ways_1_metas_11_replace_info;
+  reg                 ways_1_metas_12_valid;
+  reg        [53:0]   ways_1_metas_12_tag;
+  reg                 ways_1_metas_12_replace_info;
+  reg                 ways_1_metas_13_valid;
+  reg        [53:0]   ways_1_metas_13_tag;
+  reg                 ways_1_metas_13_replace_info;
+  reg                 ways_1_metas_14_valid;
+  reg        [53:0]   ways_1_metas_14_tag;
+  reg                 ways_1_metas_14_replace_info;
+  reg                 ways_1_metas_15_valid;
+  reg        [53:0]   ways_1_metas_15_tag;
+  reg                 ways_1_metas_15_replace_info;
+  reg                 ways_2_metas_0_valid;
+  reg        [53:0]   ways_2_metas_0_tag;
+  reg                 ways_2_metas_0_replace_info;
+  reg                 ways_2_metas_1_valid;
+  reg        [53:0]   ways_2_metas_1_tag;
+  reg                 ways_2_metas_1_replace_info;
+  reg                 ways_2_metas_2_valid;
+  reg        [53:0]   ways_2_metas_2_tag;
+  reg                 ways_2_metas_2_replace_info;
+  reg                 ways_2_metas_3_valid;
+  reg        [53:0]   ways_2_metas_3_tag;
+  reg                 ways_2_metas_3_replace_info;
+  reg                 ways_2_metas_4_valid;
+  reg        [53:0]   ways_2_metas_4_tag;
+  reg                 ways_2_metas_4_replace_info;
+  reg                 ways_2_metas_5_valid;
+  reg        [53:0]   ways_2_metas_5_tag;
+  reg                 ways_2_metas_5_replace_info;
+  reg                 ways_2_metas_6_valid;
+  reg        [53:0]   ways_2_metas_6_tag;
+  reg                 ways_2_metas_6_replace_info;
+  reg                 ways_2_metas_7_valid;
+  reg        [53:0]   ways_2_metas_7_tag;
+  reg                 ways_2_metas_7_replace_info;
+  reg                 ways_2_metas_8_valid;
+  reg        [53:0]   ways_2_metas_8_tag;
+  reg                 ways_2_metas_8_replace_info;
+  reg                 ways_2_metas_9_valid;
+  reg        [53:0]   ways_2_metas_9_tag;
+  reg                 ways_2_metas_9_replace_info;
+  reg                 ways_2_metas_10_valid;
+  reg        [53:0]   ways_2_metas_10_tag;
+  reg                 ways_2_metas_10_replace_info;
+  reg                 ways_2_metas_11_valid;
+  reg        [53:0]   ways_2_metas_11_tag;
+  reg                 ways_2_metas_11_replace_info;
+  reg                 ways_2_metas_12_valid;
+  reg        [53:0]   ways_2_metas_12_tag;
+  reg                 ways_2_metas_12_replace_info;
+  reg                 ways_2_metas_13_valid;
+  reg        [53:0]   ways_2_metas_13_tag;
+  reg                 ways_2_metas_13_replace_info;
+  reg                 ways_2_metas_14_valid;
+  reg        [53:0]   ways_2_metas_14_tag;
+  reg                 ways_2_metas_14_replace_info;
+  reg                 ways_2_metas_15_valid;
+  reg        [53:0]   ways_2_metas_15_tag;
+  reg                 ways_2_metas_15_replace_info;
+  reg                 ways_3_metas_0_valid;
+  reg        [53:0]   ways_3_metas_0_tag;
+  reg                 ways_3_metas_0_replace_info;
+  reg                 ways_3_metas_1_valid;
+  reg        [53:0]   ways_3_metas_1_tag;
+  reg                 ways_3_metas_1_replace_info;
+  reg                 ways_3_metas_2_valid;
+  reg        [53:0]   ways_3_metas_2_tag;
+  reg                 ways_3_metas_2_replace_info;
+  reg                 ways_3_metas_3_valid;
+  reg        [53:0]   ways_3_metas_3_tag;
+  reg                 ways_3_metas_3_replace_info;
+  reg                 ways_3_metas_4_valid;
+  reg        [53:0]   ways_3_metas_4_tag;
+  reg                 ways_3_metas_4_replace_info;
+  reg                 ways_3_metas_5_valid;
+  reg        [53:0]   ways_3_metas_5_tag;
+  reg                 ways_3_metas_5_replace_info;
+  reg                 ways_3_metas_6_valid;
+  reg        [53:0]   ways_3_metas_6_tag;
+  reg                 ways_3_metas_6_replace_info;
+  reg                 ways_3_metas_7_valid;
+  reg        [53:0]   ways_3_metas_7_tag;
+  reg                 ways_3_metas_7_replace_info;
+  reg                 ways_3_metas_8_valid;
+  reg        [53:0]   ways_3_metas_8_tag;
+  reg                 ways_3_metas_8_replace_info;
+  reg                 ways_3_metas_9_valid;
+  reg        [53:0]   ways_3_metas_9_tag;
+  reg                 ways_3_metas_9_replace_info;
+  reg                 ways_3_metas_10_valid;
+  reg        [53:0]   ways_3_metas_10_tag;
+  reg                 ways_3_metas_10_replace_info;
+  reg                 ways_3_metas_11_valid;
+  reg        [53:0]   ways_3_metas_11_tag;
+  reg                 ways_3_metas_11_replace_info;
+  reg                 ways_3_metas_12_valid;
+  reg        [53:0]   ways_3_metas_12_tag;
+  reg                 ways_3_metas_12_replace_info;
+  reg                 ways_3_metas_13_valid;
+  reg        [53:0]   ways_3_metas_13_tag;
+  reg                 ways_3_metas_13_replace_info;
+  reg                 ways_3_metas_14_valid;
+  reg        [53:0]   ways_3_metas_14_tag;
+  reg                 ways_3_metas_14_replace_info;
+  reg                 ways_3_metas_15_valid;
+  reg        [53:0]   ways_3_metas_15_tag;
+  reg                 ways_3_metas_15_replace_info;
+  wire       [53:0]   cache_tag_0;
+  wire       [53:0]   cache_tag_1;
+  wire       [53:0]   cache_tag_2;
+  wire       [53:0]   cache_tag_3;
+  wire                cache_hit_0;
+  wire                cache_hit_1;
+  wire                cache_hit_2;
+  wire                cache_hit_3;
+  wire                cache_victim_0;
+  reg                 cache_victim_1;
+  reg                 cache_victim_2;
+  reg                 cache_victim_3;
+  wire                cache_replace_info_0;
+  wire                cache_replace_info_1;
+  wire                cache_replace_info_2;
+  wire                cache_replace_info_3;
+  wire       [1:0]    hit_way_id;
+  wire       [1:0]    victim_id;
+  wire                replace_info_full;
+  wire                cpu_cmd_fire;
+  wire                is_hit;
+  wire                cpu_cmd_fire_1;
+  wire                is_miss;
+  wire       [53:0]   cpu_tag;
+  wire       [3:0]    cpu_set;
+  wire       [4:0]    cpu_bank_offset;
+  wire       [4:0]    cpu_bank_addr;
+  wire       [2:0]    cpu_bank_sel;
+  reg        [63:0]   cpu_addr_d1;
+  wire       [3:0]    cpu_set_d1;
+  wire       [53:0]   cpu_tag_d1;
+  wire       [4:0]    cpu_bank_addr_d1;
+  wire       [2:0]    cpu_bank_sel_d1;
+  reg                 cpu_cmd_ready_1;
+  wire       [255:0]  sram_banks_data_0;
+  wire       [255:0]  sram_banks_data_1;
+  wire       [255:0]  sram_banks_data_2;
+  wire       [255:0]  sram_banks_data_3;
+  wire                sram_banks_valid_0;
+  wire                sram_banks_valid_1;
+  wire                sram_banks_valid_2;
+  wire                sram_banks_valid_3;
+  reg                 next_level_cmd_valid_1;
+  reg                 next_level_data_cnt_willIncrement;
+  reg                 next_level_data_cnt_willClear;
+  reg        [0:0]    next_level_data_cnt_valueNext;
+  reg        [0:0]    next_level_data_cnt_value;
+  wire                next_level_data_cnt_willOverflowIfInc;
+  wire                next_level_data_cnt_willOverflow;
+  wire       [3:0]    next_level_bank_addr;
+  reg                 next_level_done;
+  wire                next_level_cmd_fire;
+  wire                _zz_hit_way_id;
+  wire                _zz_hit_way_id_1;
+  wire                _zz_victim_id;
+  wire                _zz_victim_id_1;
+  wire       [15:0]   _zz_1;
+  wire                _zz_2;
+  wire                _zz_3;
+  wire                _zz_4;
+  wire                _zz_5;
+  wire                _zz_6;
+  wire                _zz_7;
+  wire                _zz_8;
+  wire                _zz_9;
+  wire                _zz_10;
+  wire                _zz_11;
+  wire                _zz_12;
+  wire                _zz_13;
+  wire                _zz_14;
+  wire                _zz_15;
+  wire                _zz_16;
+  wire                _zz_17;
+  wire       [15:0]   _zz_18;
+  wire                _zz_19;
+  wire                _zz_20;
+  wire                _zz_21;
+  wire                _zz_22;
+  wire                _zz_23;
+  wire                _zz_24;
+  wire                _zz_25;
+  wire                _zz_26;
+  wire                _zz_27;
+  wire                _zz_28;
+  wire                _zz_29;
+  wire                _zz_30;
+  wire                _zz_31;
+  wire                _zz_32;
+  wire                _zz_33;
+  wire                _zz_34;
+  wire                when_ICache_l188;
+  wire       [15:0]   _zz_35;
+  wire                _zz_36;
+  wire                _zz_37;
+  wire                _zz_38;
+  wire                _zz_39;
+  wire                _zz_40;
+  wire                _zz_41;
+  wire                _zz_42;
+  wire                _zz_43;
+  wire                _zz_44;
+  wire                _zz_45;
+  wire                _zz_46;
+  wire                _zz_47;
+  wire                _zz_48;
+  wire                _zz_49;
+  wire                _zz_50;
+  wire                _zz_51;
+  wire       [15:0]   _zz_52;
+  wire                _zz_53;
+  wire                _zz_54;
+  wire                _zz_55;
+  wire                _zz_56;
+  wire                _zz_57;
+  wire                _zz_58;
+  wire                _zz_59;
+  wire                _zz_60;
+  wire                _zz_61;
+  wire                _zz_62;
+  wire                _zz_63;
+  wire                _zz_64;
+  wire                _zz_65;
+  wire                _zz_66;
+  wire                _zz_67;
+  wire                _zz_68;
+  wire                when_ICache_l188_1;
+  wire       [15:0]   _zz_69;
+  wire                _zz_70;
+  wire                _zz_71;
+  wire                _zz_72;
+  wire                _zz_73;
+  wire                _zz_74;
+  wire                _zz_75;
+  wire                _zz_76;
+  wire                _zz_77;
+  wire                _zz_78;
+  wire                _zz_79;
+  wire                _zz_80;
+  wire                _zz_81;
+  wire                _zz_82;
+  wire                _zz_83;
+  wire                _zz_84;
+  wire                _zz_85;
+  wire       [15:0]   _zz_86;
+  wire                _zz_87;
+  wire                _zz_88;
+  wire                _zz_89;
+  wire                _zz_90;
+  wire                _zz_91;
+  wire                _zz_92;
+  wire                _zz_93;
+  wire                _zz_94;
+  wire                _zz_95;
+  wire                _zz_96;
+  wire                _zz_97;
+  wire                _zz_98;
+  wire                _zz_99;
+  wire                _zz_100;
+  wire                _zz_101;
+  wire                _zz_102;
+  wire                when_ICache_l188_2;
+  wire       [15:0]   _zz_103;
+  wire                _zz_104;
+  wire                _zz_105;
+  wire                _zz_106;
+  wire                _zz_107;
+  wire                _zz_108;
+  wire                _zz_109;
+  wire                _zz_110;
+  wire                _zz_111;
+  wire                _zz_112;
+  wire                _zz_113;
+  wire                _zz_114;
+  wire                _zz_115;
+  wire                _zz_116;
+  wire                _zz_117;
+  wire                _zz_118;
+  wire                _zz_119;
+  wire       [15:0]   _zz_120;
+  wire                _zz_121;
+  wire                _zz_122;
+  wire                _zz_123;
+  wire                _zz_124;
+  wire                _zz_125;
+  wire                _zz_126;
+  wire                _zz_127;
+  wire                _zz_128;
+  wire                _zz_129;
+  wire                _zz_130;
+  wire                _zz_131;
+  wire                _zz_132;
+  wire                _zz_133;
+  wire                _zz_134;
+  wire                _zz_135;
+  wire                _zz_136;
+  wire                when_ICache_l188_3;
+  wire       [255:0]  _zz_cpu_rsp_payload_data;
+  wire       [255:0]  _zz_cpu_rsp_payload_data_1;
+
+  always @(*) begin
+    case(cpu_set)
+      4'b0000 : begin
+        _zz_cache_tag_0 = ways_0_metas_0_tag;
+        _zz_cache_hit_0 = ways_0_metas_0_valid;
+        _zz_cache_replace_info_0 = ways_0_metas_0_replace_info;
+        _zz_cache_tag_1 = ways_1_metas_0_tag;
+        _zz_cache_hit_1 = ways_1_metas_0_valid;
+        _zz_cache_replace_info_1 = ways_1_metas_0_replace_info;
+        _zz_cache_tag_2 = ways_2_metas_0_tag;
+        _zz_cache_hit_2 = ways_2_metas_0_valid;
+        _zz_cache_replace_info_2 = ways_2_metas_0_replace_info;
+        _zz_cache_tag_3 = ways_3_metas_0_tag;
+        _zz_cache_hit_3 = ways_3_metas_0_valid;
+        _zz_cache_replace_info_3 = ways_3_metas_0_replace_info;
+      end
+      4'b0001 : begin
+        _zz_cache_tag_0 = ways_0_metas_1_tag;
+        _zz_cache_hit_0 = ways_0_metas_1_valid;
+        _zz_cache_replace_info_0 = ways_0_metas_1_replace_info;
+        _zz_cache_tag_1 = ways_1_metas_1_tag;
+        _zz_cache_hit_1 = ways_1_metas_1_valid;
+        _zz_cache_replace_info_1 = ways_1_metas_1_replace_info;
+        _zz_cache_tag_2 = ways_2_metas_1_tag;
+        _zz_cache_hit_2 = ways_2_metas_1_valid;
+        _zz_cache_replace_info_2 = ways_2_metas_1_replace_info;
+        _zz_cache_tag_3 = ways_3_metas_1_tag;
+        _zz_cache_hit_3 = ways_3_metas_1_valid;
+        _zz_cache_replace_info_3 = ways_3_metas_1_replace_info;
+      end
+      4'b0010 : begin
+        _zz_cache_tag_0 = ways_0_metas_2_tag;
+        _zz_cache_hit_0 = ways_0_metas_2_valid;
+        _zz_cache_replace_info_0 = ways_0_metas_2_replace_info;
+        _zz_cache_tag_1 = ways_1_metas_2_tag;
+        _zz_cache_hit_1 = ways_1_metas_2_valid;
+        _zz_cache_replace_info_1 = ways_1_metas_2_replace_info;
+        _zz_cache_tag_2 = ways_2_metas_2_tag;
+        _zz_cache_hit_2 = ways_2_metas_2_valid;
+        _zz_cache_replace_info_2 = ways_2_metas_2_replace_info;
+        _zz_cache_tag_3 = ways_3_metas_2_tag;
+        _zz_cache_hit_3 = ways_3_metas_2_valid;
+        _zz_cache_replace_info_3 = ways_3_metas_2_replace_info;
+      end
+      4'b0011 : begin
+        _zz_cache_tag_0 = ways_0_metas_3_tag;
+        _zz_cache_hit_0 = ways_0_metas_3_valid;
+        _zz_cache_replace_info_0 = ways_0_metas_3_replace_info;
+        _zz_cache_tag_1 = ways_1_metas_3_tag;
+        _zz_cache_hit_1 = ways_1_metas_3_valid;
+        _zz_cache_replace_info_1 = ways_1_metas_3_replace_info;
+        _zz_cache_tag_2 = ways_2_metas_3_tag;
+        _zz_cache_hit_2 = ways_2_metas_3_valid;
+        _zz_cache_replace_info_2 = ways_2_metas_3_replace_info;
+        _zz_cache_tag_3 = ways_3_metas_3_tag;
+        _zz_cache_hit_3 = ways_3_metas_3_valid;
+        _zz_cache_replace_info_3 = ways_3_metas_3_replace_info;
+      end
+      4'b0100 : begin
+        _zz_cache_tag_0 = ways_0_metas_4_tag;
+        _zz_cache_hit_0 = ways_0_metas_4_valid;
+        _zz_cache_replace_info_0 = ways_0_metas_4_replace_info;
+        _zz_cache_tag_1 = ways_1_metas_4_tag;
+        _zz_cache_hit_1 = ways_1_metas_4_valid;
+        _zz_cache_replace_info_1 = ways_1_metas_4_replace_info;
+        _zz_cache_tag_2 = ways_2_metas_4_tag;
+        _zz_cache_hit_2 = ways_2_metas_4_valid;
+        _zz_cache_replace_info_2 = ways_2_metas_4_replace_info;
+        _zz_cache_tag_3 = ways_3_metas_4_tag;
+        _zz_cache_hit_3 = ways_3_metas_4_valid;
+        _zz_cache_replace_info_3 = ways_3_metas_4_replace_info;
+      end
+      4'b0101 : begin
+        _zz_cache_tag_0 = ways_0_metas_5_tag;
+        _zz_cache_hit_0 = ways_0_metas_5_valid;
+        _zz_cache_replace_info_0 = ways_0_metas_5_replace_info;
+        _zz_cache_tag_1 = ways_1_metas_5_tag;
+        _zz_cache_hit_1 = ways_1_metas_5_valid;
+        _zz_cache_replace_info_1 = ways_1_metas_5_replace_info;
+        _zz_cache_tag_2 = ways_2_metas_5_tag;
+        _zz_cache_hit_2 = ways_2_metas_5_valid;
+        _zz_cache_replace_info_2 = ways_2_metas_5_replace_info;
+        _zz_cache_tag_3 = ways_3_metas_5_tag;
+        _zz_cache_hit_3 = ways_3_metas_5_valid;
+        _zz_cache_replace_info_3 = ways_3_metas_5_replace_info;
+      end
+      4'b0110 : begin
+        _zz_cache_tag_0 = ways_0_metas_6_tag;
+        _zz_cache_hit_0 = ways_0_metas_6_valid;
+        _zz_cache_replace_info_0 = ways_0_metas_6_replace_info;
+        _zz_cache_tag_1 = ways_1_metas_6_tag;
+        _zz_cache_hit_1 = ways_1_metas_6_valid;
+        _zz_cache_replace_info_1 = ways_1_metas_6_replace_info;
+        _zz_cache_tag_2 = ways_2_metas_6_tag;
+        _zz_cache_hit_2 = ways_2_metas_6_valid;
+        _zz_cache_replace_info_2 = ways_2_metas_6_replace_info;
+        _zz_cache_tag_3 = ways_3_metas_6_tag;
+        _zz_cache_hit_3 = ways_3_metas_6_valid;
+        _zz_cache_replace_info_3 = ways_3_metas_6_replace_info;
+      end
+      4'b0111 : begin
+        _zz_cache_tag_0 = ways_0_metas_7_tag;
+        _zz_cache_hit_0 = ways_0_metas_7_valid;
+        _zz_cache_replace_info_0 = ways_0_metas_7_replace_info;
+        _zz_cache_tag_1 = ways_1_metas_7_tag;
+        _zz_cache_hit_1 = ways_1_metas_7_valid;
+        _zz_cache_replace_info_1 = ways_1_metas_7_replace_info;
+        _zz_cache_tag_2 = ways_2_metas_7_tag;
+        _zz_cache_hit_2 = ways_2_metas_7_valid;
+        _zz_cache_replace_info_2 = ways_2_metas_7_replace_info;
+        _zz_cache_tag_3 = ways_3_metas_7_tag;
+        _zz_cache_hit_3 = ways_3_metas_7_valid;
+        _zz_cache_replace_info_3 = ways_3_metas_7_replace_info;
+      end
+      4'b1000 : begin
+        _zz_cache_tag_0 = ways_0_metas_8_tag;
+        _zz_cache_hit_0 = ways_0_metas_8_valid;
+        _zz_cache_replace_info_0 = ways_0_metas_8_replace_info;
+        _zz_cache_tag_1 = ways_1_metas_8_tag;
+        _zz_cache_hit_1 = ways_1_metas_8_valid;
+        _zz_cache_replace_info_1 = ways_1_metas_8_replace_info;
+        _zz_cache_tag_2 = ways_2_metas_8_tag;
+        _zz_cache_hit_2 = ways_2_metas_8_valid;
+        _zz_cache_replace_info_2 = ways_2_metas_8_replace_info;
+        _zz_cache_tag_3 = ways_3_metas_8_tag;
+        _zz_cache_hit_3 = ways_3_metas_8_valid;
+        _zz_cache_replace_info_3 = ways_3_metas_8_replace_info;
+      end
+      4'b1001 : begin
+        _zz_cache_tag_0 = ways_0_metas_9_tag;
+        _zz_cache_hit_0 = ways_0_metas_9_valid;
+        _zz_cache_replace_info_0 = ways_0_metas_9_replace_info;
+        _zz_cache_tag_1 = ways_1_metas_9_tag;
+        _zz_cache_hit_1 = ways_1_metas_9_valid;
+        _zz_cache_replace_info_1 = ways_1_metas_9_replace_info;
+        _zz_cache_tag_2 = ways_2_metas_9_tag;
+        _zz_cache_hit_2 = ways_2_metas_9_valid;
+        _zz_cache_replace_info_2 = ways_2_metas_9_replace_info;
+        _zz_cache_tag_3 = ways_3_metas_9_tag;
+        _zz_cache_hit_3 = ways_3_metas_9_valid;
+        _zz_cache_replace_info_3 = ways_3_metas_9_replace_info;
+      end
+      4'b1010 : begin
+        _zz_cache_tag_0 = ways_0_metas_10_tag;
+        _zz_cache_hit_0 = ways_0_metas_10_valid;
+        _zz_cache_replace_info_0 = ways_0_metas_10_replace_info;
+        _zz_cache_tag_1 = ways_1_metas_10_tag;
+        _zz_cache_hit_1 = ways_1_metas_10_valid;
+        _zz_cache_replace_info_1 = ways_1_metas_10_replace_info;
+        _zz_cache_tag_2 = ways_2_metas_10_tag;
+        _zz_cache_hit_2 = ways_2_metas_10_valid;
+        _zz_cache_replace_info_2 = ways_2_metas_10_replace_info;
+        _zz_cache_tag_3 = ways_3_metas_10_tag;
+        _zz_cache_hit_3 = ways_3_metas_10_valid;
+        _zz_cache_replace_info_3 = ways_3_metas_10_replace_info;
+      end
+      4'b1011 : begin
+        _zz_cache_tag_0 = ways_0_metas_11_tag;
+        _zz_cache_hit_0 = ways_0_metas_11_valid;
+        _zz_cache_replace_info_0 = ways_0_metas_11_replace_info;
+        _zz_cache_tag_1 = ways_1_metas_11_tag;
+        _zz_cache_hit_1 = ways_1_metas_11_valid;
+        _zz_cache_replace_info_1 = ways_1_metas_11_replace_info;
+        _zz_cache_tag_2 = ways_2_metas_11_tag;
+        _zz_cache_hit_2 = ways_2_metas_11_valid;
+        _zz_cache_replace_info_2 = ways_2_metas_11_replace_info;
+        _zz_cache_tag_3 = ways_3_metas_11_tag;
+        _zz_cache_hit_3 = ways_3_metas_11_valid;
+        _zz_cache_replace_info_3 = ways_3_metas_11_replace_info;
+      end
+      4'b1100 : begin
+        _zz_cache_tag_0 = ways_0_metas_12_tag;
+        _zz_cache_hit_0 = ways_0_metas_12_valid;
+        _zz_cache_replace_info_0 = ways_0_metas_12_replace_info;
+        _zz_cache_tag_1 = ways_1_metas_12_tag;
+        _zz_cache_hit_1 = ways_1_metas_12_valid;
+        _zz_cache_replace_info_1 = ways_1_metas_12_replace_info;
+        _zz_cache_tag_2 = ways_2_metas_12_tag;
+        _zz_cache_hit_2 = ways_2_metas_12_valid;
+        _zz_cache_replace_info_2 = ways_2_metas_12_replace_info;
+        _zz_cache_tag_3 = ways_3_metas_12_tag;
+        _zz_cache_hit_3 = ways_3_metas_12_valid;
+        _zz_cache_replace_info_3 = ways_3_metas_12_replace_info;
+      end
+      4'b1101 : begin
+        _zz_cache_tag_0 = ways_0_metas_13_tag;
+        _zz_cache_hit_0 = ways_0_metas_13_valid;
+        _zz_cache_replace_info_0 = ways_0_metas_13_replace_info;
+        _zz_cache_tag_1 = ways_1_metas_13_tag;
+        _zz_cache_hit_1 = ways_1_metas_13_valid;
+        _zz_cache_replace_info_1 = ways_1_metas_13_replace_info;
+        _zz_cache_tag_2 = ways_2_metas_13_tag;
+        _zz_cache_hit_2 = ways_2_metas_13_valid;
+        _zz_cache_replace_info_2 = ways_2_metas_13_replace_info;
+        _zz_cache_tag_3 = ways_3_metas_13_tag;
+        _zz_cache_hit_3 = ways_3_metas_13_valid;
+        _zz_cache_replace_info_3 = ways_3_metas_13_replace_info;
+      end
+      4'b1110 : begin
+        _zz_cache_tag_0 = ways_0_metas_14_tag;
+        _zz_cache_hit_0 = ways_0_metas_14_valid;
+        _zz_cache_replace_info_0 = ways_0_metas_14_replace_info;
+        _zz_cache_tag_1 = ways_1_metas_14_tag;
+        _zz_cache_hit_1 = ways_1_metas_14_valid;
+        _zz_cache_replace_info_1 = ways_1_metas_14_replace_info;
+        _zz_cache_tag_2 = ways_2_metas_14_tag;
+        _zz_cache_hit_2 = ways_2_metas_14_valid;
+        _zz_cache_replace_info_2 = ways_2_metas_14_replace_info;
+        _zz_cache_tag_3 = ways_3_metas_14_tag;
+        _zz_cache_hit_3 = ways_3_metas_14_valid;
+        _zz_cache_replace_info_3 = ways_3_metas_14_replace_info;
+      end
+      default : begin
+        _zz_cache_tag_0 = ways_0_metas_15_tag;
+        _zz_cache_hit_0 = ways_0_metas_15_valid;
+        _zz_cache_replace_info_0 = ways_0_metas_15_replace_info;
+        _zz_cache_tag_1 = ways_1_metas_15_tag;
+        _zz_cache_hit_1 = ways_1_metas_15_valid;
+        _zz_cache_replace_info_1 = ways_1_metas_15_replace_info;
+        _zz_cache_tag_2 = ways_2_metas_15_tag;
+        _zz_cache_hit_2 = ways_2_metas_15_valid;
+        _zz_cache_replace_info_2 = ways_2_metas_15_replace_info;
+        _zz_cache_tag_3 = ways_3_metas_15_tag;
+        _zz_cache_hit_3 = ways_3_metas_15_valid;
+        _zz_cache_replace_info_3 = ways_3_metas_15_replace_info;
+      end
+    endcase
+  end
+
+  always @(*) begin
+    case(cpu_set_d1)
+      4'b0000 : begin
+        _zz_cache_victim_0 = ways_0_metas_0_valid;
+        _zz_cache_victim_1 = ways_1_metas_0_valid;
+        _zz_cache_victim_2 = ways_2_metas_0_valid;
+        _zz_cache_victim_3 = ways_3_metas_0_valid;
+      end
+      4'b0001 : begin
+        _zz_cache_victim_0 = ways_0_metas_1_valid;
+        _zz_cache_victim_1 = ways_1_metas_1_valid;
+        _zz_cache_victim_2 = ways_2_metas_1_valid;
+        _zz_cache_victim_3 = ways_3_metas_1_valid;
+      end
+      4'b0010 : begin
+        _zz_cache_victim_0 = ways_0_metas_2_valid;
+        _zz_cache_victim_1 = ways_1_metas_2_valid;
+        _zz_cache_victim_2 = ways_2_metas_2_valid;
+        _zz_cache_victim_3 = ways_3_metas_2_valid;
+      end
+      4'b0011 : begin
+        _zz_cache_victim_0 = ways_0_metas_3_valid;
+        _zz_cache_victim_1 = ways_1_metas_3_valid;
+        _zz_cache_victim_2 = ways_2_metas_3_valid;
+        _zz_cache_victim_3 = ways_3_metas_3_valid;
+      end
+      4'b0100 : begin
+        _zz_cache_victim_0 = ways_0_metas_4_valid;
+        _zz_cache_victim_1 = ways_1_metas_4_valid;
+        _zz_cache_victim_2 = ways_2_metas_4_valid;
+        _zz_cache_victim_3 = ways_3_metas_4_valid;
+      end
+      4'b0101 : begin
+        _zz_cache_victim_0 = ways_0_metas_5_valid;
+        _zz_cache_victim_1 = ways_1_metas_5_valid;
+        _zz_cache_victim_2 = ways_2_metas_5_valid;
+        _zz_cache_victim_3 = ways_3_metas_5_valid;
+      end
+      4'b0110 : begin
+        _zz_cache_victim_0 = ways_0_metas_6_valid;
+        _zz_cache_victim_1 = ways_1_metas_6_valid;
+        _zz_cache_victim_2 = ways_2_metas_6_valid;
+        _zz_cache_victim_3 = ways_3_metas_6_valid;
+      end
+      4'b0111 : begin
+        _zz_cache_victim_0 = ways_0_metas_7_valid;
+        _zz_cache_victim_1 = ways_1_metas_7_valid;
+        _zz_cache_victim_2 = ways_2_metas_7_valid;
+        _zz_cache_victim_3 = ways_3_metas_7_valid;
+      end
+      4'b1000 : begin
+        _zz_cache_victim_0 = ways_0_metas_8_valid;
+        _zz_cache_victim_1 = ways_1_metas_8_valid;
+        _zz_cache_victim_2 = ways_2_metas_8_valid;
+        _zz_cache_victim_3 = ways_3_metas_8_valid;
+      end
+      4'b1001 : begin
+        _zz_cache_victim_0 = ways_0_metas_9_valid;
+        _zz_cache_victim_1 = ways_1_metas_9_valid;
+        _zz_cache_victim_2 = ways_2_metas_9_valid;
+        _zz_cache_victim_3 = ways_3_metas_9_valid;
+      end
+      4'b1010 : begin
+        _zz_cache_victim_0 = ways_0_metas_10_valid;
+        _zz_cache_victim_1 = ways_1_metas_10_valid;
+        _zz_cache_victim_2 = ways_2_metas_10_valid;
+        _zz_cache_victim_3 = ways_3_metas_10_valid;
+      end
+      4'b1011 : begin
+        _zz_cache_victim_0 = ways_0_metas_11_valid;
+        _zz_cache_victim_1 = ways_1_metas_11_valid;
+        _zz_cache_victim_2 = ways_2_metas_11_valid;
+        _zz_cache_victim_3 = ways_3_metas_11_valid;
+      end
+      4'b1100 : begin
+        _zz_cache_victim_0 = ways_0_metas_12_valid;
+        _zz_cache_victim_1 = ways_1_metas_12_valid;
+        _zz_cache_victim_2 = ways_2_metas_12_valid;
+        _zz_cache_victim_3 = ways_3_metas_12_valid;
+      end
+      4'b1101 : begin
+        _zz_cache_victim_0 = ways_0_metas_13_valid;
+        _zz_cache_victim_1 = ways_1_metas_13_valid;
+        _zz_cache_victim_2 = ways_2_metas_13_valid;
+        _zz_cache_victim_3 = ways_3_metas_13_valid;
+      end
+      4'b1110 : begin
+        _zz_cache_victim_0 = ways_0_metas_14_valid;
+        _zz_cache_victim_1 = ways_1_metas_14_valid;
+        _zz_cache_victim_2 = ways_2_metas_14_valid;
+        _zz_cache_victim_3 = ways_3_metas_14_valid;
+      end
+      default : begin
+        _zz_cache_victim_0 = ways_0_metas_15_valid;
+        _zz_cache_victim_1 = ways_1_metas_15_valid;
+        _zz_cache_victim_2 = ways_2_metas_15_valid;
+        _zz_cache_victim_3 = ways_3_metas_15_valid;
+      end
+    endcase
+  end
+
+  always @(*) begin
+    case(hit_way_id)
+      2'b00 : begin
+        _zz__zz_cpu_rsp_payload_data = sram_banks_data_0;
+        _zz_cpu_rsp_valid = sram_banks_valid_0;
+      end
+      2'b01 : begin
+        _zz__zz_cpu_rsp_payload_data = sram_banks_data_1;
+        _zz_cpu_rsp_valid = sram_banks_valid_1;
+      end
+      2'b10 : begin
+        _zz__zz_cpu_rsp_payload_data = sram_banks_data_2;
+        _zz_cpu_rsp_valid = sram_banks_valid_2;
+      end
+      default : begin
+        _zz__zz_cpu_rsp_payload_data = sram_banks_data_3;
+        _zz_cpu_rsp_valid = sram_banks_valid_3;
+      end
+    endcase
+  end
+
+  always @(*) begin
+    case(victim_id)
+      2'b00 : begin
+        _zz__zz_cpu_rsp_payload_data_1 = sram_banks_data_0;
+        _zz_cpu_rsp_valid_1 = sram_banks_valid_0;
+      end
+      2'b01 : begin
+        _zz__zz_cpu_rsp_payload_data_1 = sram_banks_data_1;
+        _zz_cpu_rsp_valid_1 = sram_banks_valid_1;
+      end
+      2'b10 : begin
+        _zz__zz_cpu_rsp_payload_data_1 = sram_banks_data_2;
+        _zz_cpu_rsp_valid_1 = sram_banks_valid_2;
+      end
+      default : begin
+        _zz__zz_cpu_rsp_payload_data_1 = sram_banks_data_3;
+        _zz_cpu_rsp_valid_1 = sram_banks_valid_3;
+      end
+    endcase
+  end
+
+  always @(*) begin
+    case(cpu_bank_sel)
+      3'b000 : _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[31 : 0];
+      3'b001 : _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[63 : 32];
+      3'b010 : _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[95 : 64];
+      3'b011 : _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[127 : 96];
+      3'b100 : _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[159 : 128];
+      3'b101 : _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[191 : 160];
+      3'b110 : _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[223 : 192];
+      default : _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[255 : 224];
+    endcase
+  end
+
+  always @(*) begin
+    case(cpu_bank_sel_d1)
+      3'b000 : _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[31 : 0];
+      3'b001 : _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[63 : 32];
+      3'b010 : _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[95 : 64];
+      3'b011 : _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[127 : 96];
+      3'b100 : _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[159 : 128];
+      3'b101 : _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[191 : 160];
+      3'b110 : _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[223 : 192];
+      default : _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[255 : 224];
+    endcase
+  end
+
+  assign replace_info_full = (&{cache_replace_info_3,{cache_replace_info_2,{cache_replace_info_1,cache_replace_info_0}}});
+  assign cpu_cmd_fire = (cpu_cmd_valid && cpu_cmd_ready);
+  assign is_hit = ((|{cache_hit_3,{cache_hit_2,{cache_hit_1,cache_hit_0}}}) && cpu_cmd_fire);
+  assign cpu_cmd_fire_1 = (cpu_cmd_valid && cpu_cmd_ready);
+  assign is_miss = ((! (|{cache_hit_3,{cache_hit_2,{cache_hit_1,cache_hit_0}}})) && cpu_cmd_fire_1);
+  assign cpu_tag = cpu_cmd_payload_addr[63 : 10];
+  assign cpu_set = cpu_cmd_payload_addr[9 : 6];
+  assign cpu_bank_offset = cpu_cmd_payload_addr[4 : 0];
+  assign cpu_bank_addr = cpu_cmd_payload_addr[9 : 5];
+  assign cpu_bank_sel = cpu_cmd_payload_addr[4 : 2];
+  assign cpu_set_d1 = cpu_addr_d1[9 : 6];
+  assign cpu_tag_d1 = cpu_addr_d1[63 : 10];
+  assign cpu_bank_addr_d1 = cpu_addr_d1[9 : 5];
+  assign cpu_bank_sel_d1 = cpu_addr_d1[4 : 2];
+  always @(*) begin
+    next_level_data_cnt_willIncrement = 1'b0;
+    if(!is_miss) begin
+      if(!next_level_done) begin
+        if(next_level_rsp_valid) begin
+          next_level_data_cnt_willIncrement = 1'b1;
+        end
+      end
+    end
+  end
+
+  always @(*) begin
+    next_level_data_cnt_willClear = 1'b0;
+    if(is_miss) begin
+      next_level_data_cnt_willClear = 1'b1;
+    end else begin
+      if(next_level_done) begin
+        next_level_data_cnt_willClear = 1'b1;
+      end
+    end
+  end
+
+  assign next_level_data_cnt_willOverflowIfInc = (next_level_data_cnt_value == 1'b1);
+  assign next_level_data_cnt_willOverflow = (next_level_data_cnt_willOverflowIfInc && next_level_data_cnt_willIncrement);
+  always @(*) begin
+    next_level_data_cnt_valueNext = (next_level_data_cnt_value + next_level_data_cnt_willIncrement);
+    if(next_level_data_cnt_willClear) begin
+      next_level_data_cnt_valueNext = 1'b0;
+    end
+  end
+
+  assign next_level_bank_addr = cpu_addr_d1[9 : 6];
+  assign next_level_cmd_fire = (next_level_cmd_valid && next_level_cmd_ready);
+  assign _zz_hit_way_id = (cache_hit_1 || cache_hit_3);
+  assign _zz_hit_way_id_1 = (cache_hit_2 || cache_hit_3);
+  assign hit_way_id = {_zz_hit_way_id_1,_zz_hit_way_id};
+  assign _zz_victim_id = (cache_victim_1 || cache_victim_3);
+  assign _zz_victim_id_1 = (cache_victim_2 || cache_victim_3);
+  assign victim_id = {_zz_victim_id_1,_zz_victim_id};
+  assign _zz_1 = ({15'd0,1'b1} <<< cpu_set);
+  assign _zz_2 = _zz_1[0];
+  assign _zz_3 = _zz_1[1];
+  assign _zz_4 = _zz_1[2];
+  assign _zz_5 = _zz_1[3];
+  assign _zz_6 = _zz_1[4];
+  assign _zz_7 = _zz_1[5];
+  assign _zz_8 = _zz_1[6];
+  assign _zz_9 = _zz_1[7];
+  assign _zz_10 = _zz_1[8];
+  assign _zz_11 = _zz_1[9];
+  assign _zz_12 = _zz_1[10];
+  assign _zz_13 = _zz_1[11];
+  assign _zz_14 = _zz_1[12];
+  assign _zz_15 = _zz_1[13];
+  assign _zz_16 = _zz_1[14];
+  assign _zz_17 = _zz_1[15];
+  assign cache_tag_0 = _zz_cache_tag_0;
+  assign cache_hit_0 = ((cache_tag_0 == cpu_tag) && _zz_cache_hit_0);
+  assign cache_replace_info_0 = _zz_cache_replace_info_0;
+  assign _zz_18 = ({15'd0,1'b1} <<< cpu_set_d1);
+  assign _zz_19 = _zz_18[0];
+  assign _zz_20 = _zz_18[1];
+  assign _zz_21 = _zz_18[2];
+  assign _zz_22 = _zz_18[3];
+  assign _zz_23 = _zz_18[4];
+  assign _zz_24 = _zz_18[5];
+  assign _zz_25 = _zz_18[6];
+  assign _zz_26 = _zz_18[7];
+  assign _zz_27 = _zz_18[8];
+  assign _zz_28 = _zz_18[9];
+  assign _zz_29 = _zz_18[10];
+  assign _zz_30 = _zz_18[11];
+  assign _zz_31 = _zz_18[12];
+  assign _zz_32 = _zz_18[13];
+  assign _zz_33 = _zz_18[14];
+  assign _zz_34 = _zz_18[15];
+  assign cache_victim_0 = (! _zz_cache_victim_0);
+  assign sram_banks_data_0 = sram_0_ports_rsp_payload_data;
+  assign sram_banks_valid_0 = sram_0_ports_rsp_valid;
+  always @(*) begin
+    if(is_hit) begin
+      sram_0_ports_cmd_payload_addr = cpu_bank_addr;
+    end else begin
+      if(next_level_done) begin
+        sram_0_ports_cmd_payload_addr = cpu_bank_addr_d1;
+      end else begin
+        if(next_level_rsp_valid) begin
+          sram_0_ports_cmd_payload_addr = {next_level_bank_addr,next_level_data_cnt_value};
+        end else begin
+          sram_0_ports_cmd_payload_addr = 5'h0;
+        end
+      end
+    end
+  end
+
+  always @(*) begin
+    if(is_hit) begin
+      sram_0_ports_cmd_valid = cache_hit_0;
+    end else begin
+      if(next_level_done) begin
+        sram_0_ports_cmd_valid = cache_victim_0;
+      end else begin
+        if(next_level_rsp_valid) begin
+          sram_0_ports_cmd_valid = 1'b1;
+        end else begin
+          sram_0_ports_cmd_valid = 1'b0;
+        end
+      end
+    end
+  end
+
+  always @(*) begin
+    if(is_hit) begin
+      sram_0_ports_cmd_payload_wen = 1'b0;
+    end else begin
+      if(next_level_done) begin
+        sram_0_ports_cmd_payload_wen = 1'b0;
+      end else begin
+        if(next_level_rsp_valid) begin
+          sram_0_ports_cmd_payload_wen = 1'b1;
+        end else begin
+          sram_0_ports_cmd_payload_wen = 1'b0;
+        end
+      end
+    end
+  end
+
+  always @(*) begin
+    if(is_hit) begin
+      sram_0_ports_cmd_payload_wdata = 256'h0;
+    end else begin
+      if(next_level_done) begin
+        sram_0_ports_cmd_payload_wdata = 256'h0;
+      end else begin
+        if(next_level_rsp_valid) begin
+          sram_0_ports_cmd_payload_wdata = next_level_rsp_payload_data;
+        end else begin
+          sram_0_ports_cmd_payload_wdata = 256'h0;
+        end
+      end
+    end
+  end
+
+  assign when_ICache_l188 = (is_hit && replace_info_full);
+  assign _zz_35 = ({15'd0,1'b1} <<< cpu_set);
+  assign _zz_36 = _zz_35[0];
+  assign _zz_37 = _zz_35[1];
+  assign _zz_38 = _zz_35[2];
+  assign _zz_39 = _zz_35[3];
+  assign _zz_40 = _zz_35[4];
+  assign _zz_41 = _zz_35[5];
+  assign _zz_42 = _zz_35[6];
+  assign _zz_43 = _zz_35[7];
+  assign _zz_44 = _zz_35[8];
+  assign _zz_45 = _zz_35[9];
+  assign _zz_46 = _zz_35[10];
+  assign _zz_47 = _zz_35[11];
+  assign _zz_48 = _zz_35[12];
+  assign _zz_49 = _zz_35[13];
+  assign _zz_50 = _zz_35[14];
+  assign _zz_51 = _zz_35[15];
+  assign cache_tag_1 = _zz_cache_tag_1;
+  assign cache_hit_1 = ((cache_tag_1 == cpu_tag) && _zz_cache_hit_1);
+  assign cache_replace_info_1 = _zz_cache_replace_info_1;
+  always @(*) begin
+    if(cache_victim_0) begin
+      cache_victim_1 = 1'b0;
+    end else begin
+      cache_victim_1 = (! _zz_cache_victim_1);
+    end
+  end
+
+  assign _zz_52 = ({15'd0,1'b1} <<< cpu_set_d1);
+  assign _zz_53 = _zz_52[0];
+  assign _zz_54 = _zz_52[1];
+  assign _zz_55 = _zz_52[2];
+  assign _zz_56 = _zz_52[3];
+  assign _zz_57 = _zz_52[4];
+  assign _zz_58 = _zz_52[5];
+  assign _zz_59 = _zz_52[6];
+  assign _zz_60 = _zz_52[7];
+  assign _zz_61 = _zz_52[8];
+  assign _zz_62 = _zz_52[9];
+  assign _zz_63 = _zz_52[10];
+  assign _zz_64 = _zz_52[11];
+  assign _zz_65 = _zz_52[12];
+  assign _zz_66 = _zz_52[13];
+  assign _zz_67 = _zz_52[14];
+  assign _zz_68 = _zz_52[15];
+  assign sram_banks_data_1 = sram_1_ports_rsp_payload_data;
+  assign sram_banks_valid_1 = sram_1_ports_rsp_valid;
+  always @(*) begin
+    if(is_hit) begin
+      sram_1_ports_cmd_payload_addr = cpu_bank_addr;
+    end else begin
+      if(next_level_done) begin
+        sram_1_ports_cmd_payload_addr = cpu_bank_addr_d1;
+      end else begin
+        if(next_level_rsp_valid) begin
+          sram_1_ports_cmd_payload_addr = {next_level_bank_addr,next_level_data_cnt_value};
+        end else begin
+          sram_1_ports_cmd_payload_addr = 5'h0;
+        end
+      end
+    end
+  end
+
+  always @(*) begin
+    if(is_hit) begin
+      sram_1_ports_cmd_valid = cache_hit_1;
+    end else begin
+      if(next_level_done) begin
+        sram_1_ports_cmd_valid = cache_victim_1;
+      end else begin
+        if(next_level_rsp_valid) begin
+          sram_1_ports_cmd_valid = 1'b1;
+        end else begin
+          sram_1_ports_cmd_valid = 1'b0;
+        end
+      end
+    end
+  end
+
+  always @(*) begin
+    if(is_hit) begin
+      sram_1_ports_cmd_payload_wen = 1'b0;
+    end else begin
+      if(next_level_done) begin
+        sram_1_ports_cmd_payload_wen = 1'b0;
+      end else begin
+        if(next_level_rsp_valid) begin
+          sram_1_ports_cmd_payload_wen = 1'b1;
+        end else begin
+          sram_1_ports_cmd_payload_wen = 1'b0;
+        end
+      end
+    end
+  end
+
+  always @(*) begin
+    if(is_hit) begin
+      sram_1_ports_cmd_payload_wdata = 256'h0;
+    end else begin
+      if(next_level_done) begin
+        sram_1_ports_cmd_payload_wdata = 256'h0;
+      end else begin
+        if(next_level_rsp_valid) begin
+          sram_1_ports_cmd_payload_wdata = next_level_rsp_payload_data;
+        end else begin
+          sram_1_ports_cmd_payload_wdata = 256'h0;
+        end
+      end
+    end
+  end
+
+  assign when_ICache_l188_1 = (is_hit && replace_info_full);
+  assign _zz_69 = ({15'd0,1'b1} <<< cpu_set);
+  assign _zz_70 = _zz_69[0];
+  assign _zz_71 = _zz_69[1];
+  assign _zz_72 = _zz_69[2];
+  assign _zz_73 = _zz_69[3];
+  assign _zz_74 = _zz_69[4];
+  assign _zz_75 = _zz_69[5];
+  assign _zz_76 = _zz_69[6];
+  assign _zz_77 = _zz_69[7];
+  assign _zz_78 = _zz_69[8];
+  assign _zz_79 = _zz_69[9];
+  assign _zz_80 = _zz_69[10];
+  assign _zz_81 = _zz_69[11];
+  assign _zz_82 = _zz_69[12];
+  assign _zz_83 = _zz_69[13];
+  assign _zz_84 = _zz_69[14];
+  assign _zz_85 = _zz_69[15];
+  assign cache_tag_2 = _zz_cache_tag_2;
+  assign cache_hit_2 = ((cache_tag_2 == cpu_tag) && _zz_cache_hit_2);
+  assign cache_replace_info_2 = _zz_cache_replace_info_2;
+  always @(*) begin
+    if(cache_victim_1) begin
+      cache_victim_2 = 1'b0;
+    end else begin
+      cache_victim_2 = (! _zz_cache_victim_2);
+    end
+  end
+
+  assign _zz_86 = ({15'd0,1'b1} <<< cpu_set_d1);
+  assign _zz_87 = _zz_86[0];
+  assign _zz_88 = _zz_86[1];
+  assign _zz_89 = _zz_86[2];
+  assign _zz_90 = _zz_86[3];
+  assign _zz_91 = _zz_86[4];
+  assign _zz_92 = _zz_86[5];
+  assign _zz_93 = _zz_86[6];
+  assign _zz_94 = _zz_86[7];
+  assign _zz_95 = _zz_86[8];
+  assign _zz_96 = _zz_86[9];
+  assign _zz_97 = _zz_86[10];
+  assign _zz_98 = _zz_86[11];
+  assign _zz_99 = _zz_86[12];
+  assign _zz_100 = _zz_86[13];
+  assign _zz_101 = _zz_86[14];
+  assign _zz_102 = _zz_86[15];
+  assign sram_banks_data_2 = sram_2_ports_rsp_payload_data;
+  assign sram_banks_valid_2 = sram_2_ports_rsp_valid;
+  always @(*) begin
+    if(is_hit) begin
+      sram_2_ports_cmd_payload_addr = cpu_bank_addr;
+    end else begin
+      if(next_level_done) begin
+        sram_2_ports_cmd_payload_addr = cpu_bank_addr_d1;
+      end else begin
+        if(next_level_rsp_valid) begin
+          sram_2_ports_cmd_payload_addr = {next_level_bank_addr,next_level_data_cnt_value};
+        end else begin
+          sram_2_ports_cmd_payload_addr = 5'h0;
+        end
+      end
+    end
+  end
+
+  always @(*) begin
+    if(is_hit) begin
+      sram_2_ports_cmd_valid = cache_hit_2;
+    end else begin
+      if(next_level_done) begin
+        sram_2_ports_cmd_valid = cache_victim_2;
+      end else begin
+        if(next_level_rsp_valid) begin
+          sram_2_ports_cmd_valid = 1'b1;
+        end else begin
+          sram_2_ports_cmd_valid = 1'b0;
+        end
+      end
+    end
+  end
+
+  always @(*) begin
+    if(is_hit) begin
+      sram_2_ports_cmd_payload_wen = 1'b0;
+    end else begin
+      if(next_level_done) begin
+        sram_2_ports_cmd_payload_wen = 1'b0;
+      end else begin
+        if(next_level_rsp_valid) begin
+          sram_2_ports_cmd_payload_wen = 1'b1;
+        end else begin
+          sram_2_ports_cmd_payload_wen = 1'b0;
+        end
+      end
+    end
+  end
+
+  always @(*) begin
+    if(is_hit) begin
+      sram_2_ports_cmd_payload_wdata = 256'h0;
+    end else begin
+      if(next_level_done) begin
+        sram_2_ports_cmd_payload_wdata = 256'h0;
+      end else begin
+        if(next_level_rsp_valid) begin
+          sram_2_ports_cmd_payload_wdata = next_level_rsp_payload_data;
+        end else begin
+          sram_2_ports_cmd_payload_wdata = 256'h0;
+        end
+      end
+    end
+  end
+
+  assign when_ICache_l188_2 = (is_hit && replace_info_full);
+  assign _zz_103 = ({15'd0,1'b1} <<< cpu_set);
+  assign _zz_104 = _zz_103[0];
+  assign _zz_105 = _zz_103[1];
+  assign _zz_106 = _zz_103[2];
+  assign _zz_107 = _zz_103[3];
+  assign _zz_108 = _zz_103[4];
+  assign _zz_109 = _zz_103[5];
+  assign _zz_110 = _zz_103[6];
+  assign _zz_111 = _zz_103[7];
+  assign _zz_112 = _zz_103[8];
+  assign _zz_113 = _zz_103[9];
+  assign _zz_114 = _zz_103[10];
+  assign _zz_115 = _zz_103[11];
+  assign _zz_116 = _zz_103[12];
+  assign _zz_117 = _zz_103[13];
+  assign _zz_118 = _zz_103[14];
+  assign _zz_119 = _zz_103[15];
+  assign cache_tag_3 = _zz_cache_tag_3;
+  assign cache_hit_3 = ((cache_tag_3 == cpu_tag) && _zz_cache_hit_3);
+  assign cache_replace_info_3 = _zz_cache_replace_info_3;
+  always @(*) begin
+    if(cache_victim_2) begin
+      cache_victim_3 = 1'b0;
+    end else begin
+      cache_victim_3 = (! _zz_cache_victim_3);
+    end
+  end
+
+  assign _zz_120 = ({15'd0,1'b1} <<< cpu_set_d1);
+  assign _zz_121 = _zz_120[0];
+  assign _zz_122 = _zz_120[1];
+  assign _zz_123 = _zz_120[2];
+  assign _zz_124 = _zz_120[3];
+  assign _zz_125 = _zz_120[4];
+  assign _zz_126 = _zz_120[5];
+  assign _zz_127 = _zz_120[6];
+  assign _zz_128 = _zz_120[7];
+  assign _zz_129 = _zz_120[8];
+  assign _zz_130 = _zz_120[9];
+  assign _zz_131 = _zz_120[10];
+  assign _zz_132 = _zz_120[11];
+  assign _zz_133 = _zz_120[12];
+  assign _zz_134 = _zz_120[13];
+  assign _zz_135 = _zz_120[14];
+  assign _zz_136 = _zz_120[15];
+  assign sram_banks_data_3 = sram_3_ports_rsp_payload_data;
+  assign sram_banks_valid_3 = sram_3_ports_rsp_valid;
+  always @(*) begin
+    if(is_hit) begin
+      sram_3_ports_cmd_payload_addr = cpu_bank_addr;
+    end else begin
+      if(next_level_done) begin
+        sram_3_ports_cmd_payload_addr = cpu_bank_addr_d1;
+      end else begin
+        if(next_level_rsp_valid) begin
+          sram_3_ports_cmd_payload_addr = {next_level_bank_addr,next_level_data_cnt_value};
+        end else begin
+          sram_3_ports_cmd_payload_addr = 5'h0;
+        end
+      end
+    end
+  end
+
+  always @(*) begin
+    if(is_hit) begin
+      sram_3_ports_cmd_valid = cache_hit_3;
+    end else begin
+      if(next_level_done) begin
+        sram_3_ports_cmd_valid = cache_victim_3;
+      end else begin
+        if(next_level_rsp_valid) begin
+          sram_3_ports_cmd_valid = 1'b1;
+        end else begin
+          sram_3_ports_cmd_valid = 1'b0;
+        end
+      end
+    end
+  end
+
+  always @(*) begin
+    if(is_hit) begin
+      sram_3_ports_cmd_payload_wen = 1'b0;
+    end else begin
+      if(next_level_done) begin
+        sram_3_ports_cmd_payload_wen = 1'b0;
+      end else begin
+        if(next_level_rsp_valid) begin
+          sram_3_ports_cmd_payload_wen = 1'b1;
+        end else begin
+          sram_3_ports_cmd_payload_wen = 1'b0;
+        end
+      end
+    end
+  end
+
+  always @(*) begin
+    if(is_hit) begin
+      sram_3_ports_cmd_payload_wdata = 256'h0;
+    end else begin
+      if(next_level_done) begin
+        sram_3_ports_cmd_payload_wdata = 256'h0;
+      end else begin
+        if(next_level_rsp_valid) begin
+          sram_3_ports_cmd_payload_wdata = next_level_rsp_payload_data;
+        end else begin
+          sram_3_ports_cmd_payload_wdata = 256'h0;
+        end
+      end
+    end
+  end
+
+  assign when_ICache_l188_3 = (is_hit && replace_info_full);
+  assign _zz_cpu_rsp_payload_data = _zz__zz_cpu_rsp_payload_data;
+  assign _zz_cpu_rsp_payload_data_1 = _zz__zz_cpu_rsp_payload_data_1;
+  assign cpu_rsp_payload_data = (is_hit ? _zz_cpu_rsp_payload_data_2 : _zz_cpu_rsp_payload_data_3);
+  assign cpu_rsp_valid = (is_hit ? _zz_cpu_rsp_valid : _zz_cpu_rsp_valid_1);
+  assign cpu_cmd_ready = cpu_cmd_ready_1;
+  assign next_level_cmd_payload_addr = cpu_addr_d1;
+  assign next_level_cmd_payload_len = 4'b0010;
+  assign next_level_cmd_payload_size = 3'b101;
+  assign next_level_cmd_valid = next_level_cmd_valid_1;
+  always @(posedge clk or posedge reset) begin
+    if(reset) begin
+      ways_0_metas_0_valid <= 1'b0;
+      ways_0_metas_0_tag <= 54'h0;
+      ways_0_metas_0_replace_info <= 1'b0;
+      ways_0_metas_1_valid <= 1'b0;
+      ways_0_metas_1_tag <= 54'h0;
+      ways_0_metas_1_replace_info <= 1'b0;
+      ways_0_metas_2_valid <= 1'b0;
+      ways_0_metas_2_tag <= 54'h0;
+      ways_0_metas_2_replace_info <= 1'b0;
+      ways_0_metas_3_valid <= 1'b0;
+      ways_0_metas_3_tag <= 54'h0;
+      ways_0_metas_3_replace_info <= 1'b0;
+      ways_0_metas_4_valid <= 1'b0;
+      ways_0_metas_4_tag <= 54'h0;
+      ways_0_metas_4_replace_info <= 1'b0;
+      ways_0_metas_5_valid <= 1'b0;
+      ways_0_metas_5_tag <= 54'h0;
+      ways_0_metas_5_replace_info <= 1'b0;
+      ways_0_metas_6_valid <= 1'b0;
+      ways_0_metas_6_tag <= 54'h0;
+      ways_0_metas_6_replace_info <= 1'b0;
+      ways_0_metas_7_valid <= 1'b0;
+      ways_0_metas_7_tag <= 54'h0;
+      ways_0_metas_7_replace_info <= 1'b0;
+      ways_0_metas_8_valid <= 1'b0;
+      ways_0_metas_8_tag <= 54'h0;
+      ways_0_metas_8_replace_info <= 1'b0;
+      ways_0_metas_9_valid <= 1'b0;
+      ways_0_metas_9_tag <= 54'h0;
+      ways_0_metas_9_replace_info <= 1'b0;
+      ways_0_metas_10_valid <= 1'b0;
+      ways_0_metas_10_tag <= 54'h0;
+      ways_0_metas_10_replace_info <= 1'b0;
+      ways_0_metas_11_valid <= 1'b0;
+      ways_0_metas_11_tag <= 54'h0;
+      ways_0_metas_11_replace_info <= 1'b0;
+      ways_0_metas_12_valid <= 1'b0;
+      ways_0_metas_12_tag <= 54'h0;
+      ways_0_metas_12_replace_info <= 1'b0;
+      ways_0_metas_13_valid <= 1'b0;
+      ways_0_metas_13_tag <= 54'h0;
+      ways_0_metas_13_replace_info <= 1'b0;
+      ways_0_metas_14_valid <= 1'b0;
+      ways_0_metas_14_tag <= 54'h0;
+      ways_0_metas_14_replace_info <= 1'b0;
+      ways_0_metas_15_valid <= 1'b0;
+      ways_0_metas_15_tag <= 54'h0;
+      ways_0_metas_15_replace_info <= 1'b0;
+      ways_1_metas_0_valid <= 1'b0;
+      ways_1_metas_0_tag <= 54'h0;
+      ways_1_metas_0_replace_info <= 1'b0;
+      ways_1_metas_1_valid <= 1'b0;
+      ways_1_metas_1_tag <= 54'h0;
+      ways_1_metas_1_replace_info <= 1'b0;
+      ways_1_metas_2_valid <= 1'b0;
+      ways_1_metas_2_tag <= 54'h0;
+      ways_1_metas_2_replace_info <= 1'b0;
+      ways_1_metas_3_valid <= 1'b0;
+      ways_1_metas_3_tag <= 54'h0;
+      ways_1_metas_3_replace_info <= 1'b0;
+      ways_1_metas_4_valid <= 1'b0;
+      ways_1_metas_4_tag <= 54'h0;
+      ways_1_metas_4_replace_info <= 1'b0;
+      ways_1_metas_5_valid <= 1'b0;
+      ways_1_metas_5_tag <= 54'h0;
+      ways_1_metas_5_replace_info <= 1'b0;
+      ways_1_metas_6_valid <= 1'b0;
+      ways_1_metas_6_tag <= 54'h0;
+      ways_1_metas_6_replace_info <= 1'b0;
+      ways_1_metas_7_valid <= 1'b0;
+      ways_1_metas_7_tag <= 54'h0;
+      ways_1_metas_7_replace_info <= 1'b0;
+      ways_1_metas_8_valid <= 1'b0;
+      ways_1_metas_8_tag <= 54'h0;
+      ways_1_metas_8_replace_info <= 1'b0;
+      ways_1_metas_9_valid <= 1'b0;
+      ways_1_metas_9_tag <= 54'h0;
+      ways_1_metas_9_replace_info <= 1'b0;
+      ways_1_metas_10_valid <= 1'b0;
+      ways_1_metas_10_tag <= 54'h0;
+      ways_1_metas_10_replace_info <= 1'b0;
+      ways_1_metas_11_valid <= 1'b0;
+      ways_1_metas_11_tag <= 54'h0;
+      ways_1_metas_11_replace_info <= 1'b0;
+      ways_1_metas_12_valid <= 1'b0;
+      ways_1_metas_12_tag <= 54'h0;
+      ways_1_metas_12_replace_info <= 1'b0;
+      ways_1_metas_13_valid <= 1'b0;
+      ways_1_metas_13_tag <= 54'h0;
+      ways_1_metas_13_replace_info <= 1'b0;
+      ways_1_metas_14_valid <= 1'b0;
+      ways_1_metas_14_tag <= 54'h0;
+      ways_1_metas_14_replace_info <= 1'b0;
+      ways_1_metas_15_valid <= 1'b0;
+      ways_1_metas_15_tag <= 54'h0;
+      ways_1_metas_15_replace_info <= 1'b0;
+      ways_2_metas_0_valid <= 1'b0;
+      ways_2_metas_0_tag <= 54'h0;
+      ways_2_metas_0_replace_info <= 1'b0;
+      ways_2_metas_1_valid <= 1'b0;
+      ways_2_metas_1_tag <= 54'h0;
+      ways_2_metas_1_replace_info <= 1'b0;
+      ways_2_metas_2_valid <= 1'b0;
+      ways_2_metas_2_tag <= 54'h0;
+      ways_2_metas_2_replace_info <= 1'b0;
+      ways_2_metas_3_valid <= 1'b0;
+      ways_2_metas_3_tag <= 54'h0;
+      ways_2_metas_3_replace_info <= 1'b0;
+      ways_2_metas_4_valid <= 1'b0;
+      ways_2_metas_4_tag <= 54'h0;
+      ways_2_metas_4_replace_info <= 1'b0;
+      ways_2_metas_5_valid <= 1'b0;
+      ways_2_metas_5_tag <= 54'h0;
+      ways_2_metas_5_replace_info <= 1'b0;
+      ways_2_metas_6_valid <= 1'b0;
+      ways_2_metas_6_tag <= 54'h0;
+      ways_2_metas_6_replace_info <= 1'b0;
+      ways_2_metas_7_valid <= 1'b0;
+      ways_2_metas_7_tag <= 54'h0;
+      ways_2_metas_7_replace_info <= 1'b0;
+      ways_2_metas_8_valid <= 1'b0;
+      ways_2_metas_8_tag <= 54'h0;
+      ways_2_metas_8_replace_info <= 1'b0;
+      ways_2_metas_9_valid <= 1'b0;
+      ways_2_metas_9_tag <= 54'h0;
+      ways_2_metas_9_replace_info <= 1'b0;
+      ways_2_metas_10_valid <= 1'b0;
+      ways_2_metas_10_tag <= 54'h0;
+      ways_2_metas_10_replace_info <= 1'b0;
+      ways_2_metas_11_valid <= 1'b0;
+      ways_2_metas_11_tag <= 54'h0;
+      ways_2_metas_11_replace_info <= 1'b0;
+      ways_2_metas_12_valid <= 1'b0;
+      ways_2_metas_12_tag <= 54'h0;
+      ways_2_metas_12_replace_info <= 1'b0;
+      ways_2_metas_13_valid <= 1'b0;
+      ways_2_metas_13_tag <= 54'h0;
+      ways_2_metas_13_replace_info <= 1'b0;
+      ways_2_metas_14_valid <= 1'b0;
+      ways_2_metas_14_tag <= 54'h0;
+      ways_2_metas_14_replace_info <= 1'b0;
+      ways_2_metas_15_valid <= 1'b0;
+      ways_2_metas_15_tag <= 54'h0;
+      ways_2_metas_15_replace_info <= 1'b0;
+      ways_3_metas_0_valid <= 1'b0;
+      ways_3_metas_0_tag <= 54'h0;
+      ways_3_metas_0_replace_info <= 1'b0;
+      ways_3_metas_1_valid <= 1'b0;
+      ways_3_metas_1_tag <= 54'h0;
+      ways_3_metas_1_replace_info <= 1'b0;
+      ways_3_metas_2_valid <= 1'b0;
+      ways_3_metas_2_tag <= 54'h0;
+      ways_3_metas_2_replace_info <= 1'b0;
+      ways_3_metas_3_valid <= 1'b0;
+      ways_3_metas_3_tag <= 54'h0;
+      ways_3_metas_3_replace_info <= 1'b0;
+      ways_3_metas_4_valid <= 1'b0;
+      ways_3_metas_4_tag <= 54'h0;
+      ways_3_metas_4_replace_info <= 1'b0;
+      ways_3_metas_5_valid <= 1'b0;
+      ways_3_metas_5_tag <= 54'h0;
+      ways_3_metas_5_replace_info <= 1'b0;
+      ways_3_metas_6_valid <= 1'b0;
+      ways_3_metas_6_tag <= 54'h0;
+      ways_3_metas_6_replace_info <= 1'b0;
+      ways_3_metas_7_valid <= 1'b0;
+      ways_3_metas_7_tag <= 54'h0;
+      ways_3_metas_7_replace_info <= 1'b0;
+      ways_3_metas_8_valid <= 1'b0;
+      ways_3_metas_8_tag <= 54'h0;
+      ways_3_metas_8_replace_info <= 1'b0;
+      ways_3_metas_9_valid <= 1'b0;
+      ways_3_metas_9_tag <= 54'h0;
+      ways_3_metas_9_replace_info <= 1'b0;
+      ways_3_metas_10_valid <= 1'b0;
+      ways_3_metas_10_tag <= 54'h0;
+      ways_3_metas_10_replace_info <= 1'b0;
+      ways_3_metas_11_valid <= 1'b0;
+      ways_3_metas_11_tag <= 54'h0;
+      ways_3_metas_11_replace_info <= 1'b0;
+      ways_3_metas_12_valid <= 1'b0;
+      ways_3_metas_12_tag <= 54'h0;
+      ways_3_metas_12_replace_info <= 1'b0;
+      ways_3_metas_13_valid <= 1'b0;
+      ways_3_metas_13_tag <= 54'h0;
+      ways_3_metas_13_replace_info <= 1'b0;
+      ways_3_metas_14_valid <= 1'b0;
+      ways_3_metas_14_tag <= 54'h0;
+      ways_3_metas_14_replace_info <= 1'b0;
+      ways_3_metas_15_valid <= 1'b0;
+      ways_3_metas_15_tag <= 54'h0;
+      ways_3_metas_15_replace_info <= 1'b0;
+      cpu_addr_d1 <= 64'h0;
+      cpu_cmd_ready_1 <= 1'b1;
+      next_level_cmd_valid_1 <= 1'b0;
+      next_level_data_cnt_value <= 1'b0;
+    end else begin
+      if(is_miss) begin
+        cpu_addr_d1 <= cpu_cmd_payload_addr;
+      end
+      next_level_data_cnt_value <= next_level_data_cnt_valueNext;
+      if(is_miss) begin
+        next_level_cmd_valid_1 <= 1'b1;
+      end else begin
+        if(next_level_cmd_fire) begin
+          next_level_cmd_valid_1 <= 1'b0;
+        end
+      end
+      if(flush) begin
+        if(_zz_2) begin
+          ways_0_metas_0_replace_info <= 1'b0;
+        end
+        if(_zz_3) begin
+          ways_0_metas_1_replace_info <= 1'b0;
+        end
+        if(_zz_4) begin
+          ways_0_metas_2_replace_info <= 1'b0;
+        end
+        if(_zz_5) begin
+          ways_0_metas_3_replace_info <= 1'b0;
+        end
+        if(_zz_6) begin
+          ways_0_metas_4_replace_info <= 1'b0;
+        end
+        if(_zz_7) begin
+          ways_0_metas_5_replace_info <= 1'b0;
+        end
+        if(_zz_8) begin
+          ways_0_metas_6_replace_info <= 1'b0;
+        end
+        if(_zz_9) begin
+          ways_0_metas_7_replace_info <= 1'b0;
+        end
+        if(_zz_10) begin
+          ways_0_metas_8_replace_info <= 1'b0;
+        end
+        if(_zz_11) begin
+          ways_0_metas_9_replace_info <= 1'b0;
+        end
+        if(_zz_12) begin
+          ways_0_metas_10_replace_info <= 1'b0;
+        end
+        if(_zz_13) begin
+          ways_0_metas_11_replace_info <= 1'b0;
+        end
+        if(_zz_14) begin
+          ways_0_metas_12_replace_info <= 1'b0;
+        end
+        if(_zz_15) begin
+          ways_0_metas_13_replace_info <= 1'b0;
+        end
+        if(_zz_16) begin
+          ways_0_metas_14_replace_info <= 1'b0;
+        end
+        if(_zz_17) begin
+          ways_0_metas_15_replace_info <= 1'b0;
+        end
+        if(_zz_19) begin
+          ways_0_metas_0_valid <= 1'b0;
+        end
+        if(_zz_20) begin
+          ways_0_metas_1_valid <= 1'b0;
+        end
+        if(_zz_21) begin
+          ways_0_metas_2_valid <= 1'b0;
+        end
+        if(_zz_22) begin
+          ways_0_metas_3_valid <= 1'b0;
+        end
+        if(_zz_23) begin
+          ways_0_metas_4_valid <= 1'b0;
+        end
+        if(_zz_24) begin
+          ways_0_metas_5_valid <= 1'b0;
+        end
+        if(_zz_25) begin
+          ways_0_metas_6_valid <= 1'b0;
+        end
+        if(_zz_26) begin
+          ways_0_metas_7_valid <= 1'b0;
+        end
+        if(_zz_27) begin
+          ways_0_metas_8_valid <= 1'b0;
+        end
+        if(_zz_28) begin
+          ways_0_metas_9_valid <= 1'b0;
+        end
+        if(_zz_29) begin
+          ways_0_metas_10_valid <= 1'b0;
+        end
+        if(_zz_30) begin
+          ways_0_metas_11_valid <= 1'b0;
+        end
+        if(_zz_31) begin
+          ways_0_metas_12_valid <= 1'b0;
+        end
+        if(_zz_32) begin
+          ways_0_metas_13_valid <= 1'b0;
+        end
+        if(_zz_33) begin
+          ways_0_metas_14_valid <= 1'b0;
+        end
+        if(_zz_34) begin
+          ways_0_metas_15_valid <= 1'b0;
+        end
+      end else begin
+        if(when_ICache_l188) begin
+          if(cache_hit_0) begin
+            if(_zz_2) begin
+              ways_0_metas_0_replace_info <= 1'b1;
+            end
+            if(_zz_3) begin
+              ways_0_metas_1_replace_info <= 1'b1;
+            end
+            if(_zz_4) begin
+              ways_0_metas_2_replace_info <= 1'b1;
+            end
+            if(_zz_5) begin
+              ways_0_metas_3_replace_info <= 1'b1;
+            end
+            if(_zz_6) begin
+              ways_0_metas_4_replace_info <= 1'b1;
+            end
+            if(_zz_7) begin
+              ways_0_metas_5_replace_info <= 1'b1;
+            end
+            if(_zz_8) begin
+              ways_0_metas_6_replace_info <= 1'b1;
+            end
+            if(_zz_9) begin
+              ways_0_metas_7_replace_info <= 1'b1;
+            end
+            if(_zz_10) begin
+              ways_0_metas_8_replace_info <= 1'b1;
+            end
+            if(_zz_11) begin
+              ways_0_metas_9_replace_info <= 1'b1;
+            end
+            if(_zz_12) begin
+              ways_0_metas_10_replace_info <= 1'b1;
+            end
+            if(_zz_13) begin
+              ways_0_metas_11_replace_info <= 1'b1;
+            end
+            if(_zz_14) begin
+              ways_0_metas_12_replace_info <= 1'b1;
+            end
+            if(_zz_15) begin
+              ways_0_metas_13_replace_info <= 1'b1;
+            end
+            if(_zz_16) begin
+              ways_0_metas_14_replace_info <= 1'b1;
+            end
+            if(_zz_17) begin
+              ways_0_metas_15_replace_info <= 1'b1;
+            end
+          end else begin
+            if(_zz_2) begin
+              ways_0_metas_0_replace_info <= 1'b0;
+            end
+            if(_zz_3) begin
+              ways_0_metas_1_replace_info <= 1'b0;
+            end
+            if(_zz_4) begin
+              ways_0_metas_2_replace_info <= 1'b0;
+            end
+            if(_zz_5) begin
+              ways_0_metas_3_replace_info <= 1'b0;
+            end
+            if(_zz_6) begin
+              ways_0_metas_4_replace_info <= 1'b0;
+            end
+            if(_zz_7) begin
+              ways_0_metas_5_replace_info <= 1'b0;
+            end
+            if(_zz_8) begin
+              ways_0_metas_6_replace_info <= 1'b0;
+            end
+            if(_zz_9) begin
+              ways_0_metas_7_replace_info <= 1'b0;
+            end
+            if(_zz_10) begin
+              ways_0_metas_8_replace_info <= 1'b0;
+            end
+            if(_zz_11) begin
+              ways_0_metas_9_replace_info <= 1'b0;
+            end
+            if(_zz_12) begin
+              ways_0_metas_10_replace_info <= 1'b0;
+            end
+            if(_zz_13) begin
+              ways_0_metas_11_replace_info <= 1'b0;
+            end
+            if(_zz_14) begin
+              ways_0_metas_12_replace_info <= 1'b0;
+            end
+            if(_zz_15) begin
+              ways_0_metas_13_replace_info <= 1'b0;
+            end
+            if(_zz_16) begin
+              ways_0_metas_14_replace_info <= 1'b0;
+            end
+            if(_zz_17) begin
+              ways_0_metas_15_replace_info <= 1'b0;
+            end
+          end
+        end else begin
+          if(is_hit) begin
+            if(cache_hit_0) begin
+              if(_zz_2) begin
+                ways_0_metas_0_replace_info <= 1'b1;
+              end
+              if(_zz_3) begin
+                ways_0_metas_1_replace_info <= 1'b1;
+              end
+              if(_zz_4) begin
+                ways_0_metas_2_replace_info <= 1'b1;
+              end
+              if(_zz_5) begin
+                ways_0_metas_3_replace_info <= 1'b1;
+              end
+              if(_zz_6) begin
+                ways_0_metas_4_replace_info <= 1'b1;
+              end
+              if(_zz_7) begin
+                ways_0_metas_5_replace_info <= 1'b1;
+              end
+              if(_zz_8) begin
+                ways_0_metas_6_replace_info <= 1'b1;
+              end
+              if(_zz_9) begin
+                ways_0_metas_7_replace_info <= 1'b1;
+              end
+              if(_zz_10) begin
+                ways_0_metas_8_replace_info <= 1'b1;
+              end
+              if(_zz_11) begin
+                ways_0_metas_9_replace_info <= 1'b1;
+              end
+              if(_zz_12) begin
+                ways_0_metas_10_replace_info <= 1'b1;
+              end
+              if(_zz_13) begin
+                ways_0_metas_11_replace_info <= 1'b1;
+              end
+              if(_zz_14) begin
+                ways_0_metas_12_replace_info <= 1'b1;
+              end
+              if(_zz_15) begin
+                ways_0_metas_13_replace_info <= 1'b1;
+              end
+              if(_zz_16) begin
+                ways_0_metas_14_replace_info <= 1'b1;
+              end
+              if(_zz_17) begin
+                ways_0_metas_15_replace_info <= 1'b1;
+              end
+            end
+          end else begin
+            if(next_level_rsp_valid) begin
+              if(cache_victim_0) begin
+                if(_zz_19) begin
+                  ways_0_metas_0_valid <= 1'b1;
+                end
+                if(_zz_20) begin
+                  ways_0_metas_1_valid <= 1'b1;
+                end
+                if(_zz_21) begin
+                  ways_0_metas_2_valid <= 1'b1;
+                end
+                if(_zz_22) begin
+                  ways_0_metas_3_valid <= 1'b1;
+                end
+                if(_zz_23) begin
+                  ways_0_metas_4_valid <= 1'b1;
+                end
+                if(_zz_24) begin
+                  ways_0_metas_5_valid <= 1'b1;
+                end
+                if(_zz_25) begin
+                  ways_0_metas_6_valid <= 1'b1;
+                end
+                if(_zz_26) begin
+                  ways_0_metas_7_valid <= 1'b1;
+                end
+                if(_zz_27) begin
+                  ways_0_metas_8_valid <= 1'b1;
+                end
+                if(_zz_28) begin
+                  ways_0_metas_9_valid <= 1'b1;
+                end
+                if(_zz_29) begin
+                  ways_0_metas_10_valid <= 1'b1;
+                end
+                if(_zz_30) begin
+                  ways_0_metas_11_valid <= 1'b1;
+                end
+                if(_zz_31) begin
+                  ways_0_metas_12_valid <= 1'b1;
+                end
+                if(_zz_32) begin
+                  ways_0_metas_13_valid <= 1'b1;
+                end
+                if(_zz_33) begin
+                  ways_0_metas_14_valid <= 1'b1;
+                end
+                if(_zz_34) begin
+                  ways_0_metas_15_valid <= 1'b1;
+                end
+              end
+            end
+          end
+        end
+      end
+      if(next_level_done) begin
+        if(_zz_19) begin
+          ways_0_metas_0_tag <= cpu_tag_d1;
+        end
+        if(_zz_20) begin
+          ways_0_metas_1_tag <= cpu_tag_d1;
+        end
+        if(_zz_21) begin
+          ways_0_metas_2_tag <= cpu_tag_d1;
+        end
+        if(_zz_22) begin
+          ways_0_metas_3_tag <= cpu_tag_d1;
+        end
+        if(_zz_23) begin
+          ways_0_metas_4_tag <= cpu_tag_d1;
+        end
+        if(_zz_24) begin
+          ways_0_metas_5_tag <= cpu_tag_d1;
+        end
+        if(_zz_25) begin
+          ways_0_metas_6_tag <= cpu_tag_d1;
+        end
+        if(_zz_26) begin
+          ways_0_metas_7_tag <= cpu_tag_d1;
+        end
+        if(_zz_27) begin
+          ways_0_metas_8_tag <= cpu_tag_d1;
+        end
+        if(_zz_28) begin
+          ways_0_metas_9_tag <= cpu_tag_d1;
+        end
+        if(_zz_29) begin
+          ways_0_metas_10_tag <= cpu_tag_d1;
+        end
+        if(_zz_30) begin
+          ways_0_metas_11_tag <= cpu_tag_d1;
+        end
+        if(_zz_31) begin
+          ways_0_metas_12_tag <= cpu_tag_d1;
+        end
+        if(_zz_32) begin
+          ways_0_metas_13_tag <= cpu_tag_d1;
+        end
+        if(_zz_33) begin
+          ways_0_metas_14_tag <= cpu_tag_d1;
+        end
+        if(_zz_34) begin
+          ways_0_metas_15_tag <= cpu_tag_d1;
+        end
+      end
+      if(flush) begin
+        cpu_cmd_ready_1 <= 1'b0;
+      end else begin
+        if(is_miss) begin
+          cpu_cmd_ready_1 <= 1'b0;
+        end else begin
+          if(next_level_done) begin
+            cpu_cmd_ready_1 <= 1'b1;
+          end
+        end
+      end
+      if(flush) begin
+        if(_zz_36) begin
+          ways_1_metas_0_replace_info <= 1'b0;
+        end
+        if(_zz_37) begin
+          ways_1_metas_1_replace_info <= 1'b0;
+        end
+        if(_zz_38) begin
+          ways_1_metas_2_replace_info <= 1'b0;
+        end
+        if(_zz_39) begin
+          ways_1_metas_3_replace_info <= 1'b0;
+        end
+        if(_zz_40) begin
+          ways_1_metas_4_replace_info <= 1'b0;
+        end
+        if(_zz_41) begin
+          ways_1_metas_5_replace_info <= 1'b0;
+        end
+        if(_zz_42) begin
+          ways_1_metas_6_replace_info <= 1'b0;
+        end
+        if(_zz_43) begin
+          ways_1_metas_7_replace_info <= 1'b0;
+        end
+        if(_zz_44) begin
+          ways_1_metas_8_replace_info <= 1'b0;
+        end
+        if(_zz_45) begin
+          ways_1_metas_9_replace_info <= 1'b0;
+        end
+        if(_zz_46) begin
+          ways_1_metas_10_replace_info <= 1'b0;
+        end
+        if(_zz_47) begin
+          ways_1_metas_11_replace_info <= 1'b0;
+        end
+        if(_zz_48) begin
+          ways_1_metas_12_replace_info <= 1'b0;
+        end
+        if(_zz_49) begin
+          ways_1_metas_13_replace_info <= 1'b0;
+        end
+        if(_zz_50) begin
+          ways_1_metas_14_replace_info <= 1'b0;
+        end
+        if(_zz_51) begin
+          ways_1_metas_15_replace_info <= 1'b0;
+        end
+        if(_zz_53) begin
+          ways_1_metas_0_valid <= 1'b0;
+        end
+        if(_zz_54) begin
+          ways_1_metas_1_valid <= 1'b0;
+        end
+        if(_zz_55) begin
+          ways_1_metas_2_valid <= 1'b0;
+        end
+        if(_zz_56) begin
+          ways_1_metas_3_valid <= 1'b0;
+        end
+        if(_zz_57) begin
+          ways_1_metas_4_valid <= 1'b0;
+        end
+        if(_zz_58) begin
+          ways_1_metas_5_valid <= 1'b0;
+        end
+        if(_zz_59) begin
+          ways_1_metas_6_valid <= 1'b0;
+        end
+        if(_zz_60) begin
+          ways_1_metas_7_valid <= 1'b0;
+        end
+        if(_zz_61) begin
+          ways_1_metas_8_valid <= 1'b0;
+        end
+        if(_zz_62) begin
+          ways_1_metas_9_valid <= 1'b0;
+        end
+        if(_zz_63) begin
+          ways_1_metas_10_valid <= 1'b0;
+        end
+        if(_zz_64) begin
+          ways_1_metas_11_valid <= 1'b0;
+        end
+        if(_zz_65) begin
+          ways_1_metas_12_valid <= 1'b0;
+        end
+        if(_zz_66) begin
+          ways_1_metas_13_valid <= 1'b0;
+        end
+        if(_zz_67) begin
+          ways_1_metas_14_valid <= 1'b0;
+        end
+        if(_zz_68) begin
+          ways_1_metas_15_valid <= 1'b0;
+        end
+      end else begin
+        if(when_ICache_l188_1) begin
+          if(cache_hit_1) begin
+            if(_zz_36) begin
+              ways_1_metas_0_replace_info <= 1'b1;
+            end
+            if(_zz_37) begin
+              ways_1_metas_1_replace_info <= 1'b1;
+            end
+            if(_zz_38) begin
+              ways_1_metas_2_replace_info <= 1'b1;
+            end
+            if(_zz_39) begin
+              ways_1_metas_3_replace_info <= 1'b1;
+            end
+            if(_zz_40) begin
+              ways_1_metas_4_replace_info <= 1'b1;
+            end
+            if(_zz_41) begin
+              ways_1_metas_5_replace_info <= 1'b1;
+            end
+            if(_zz_42) begin
+              ways_1_metas_6_replace_info <= 1'b1;
+            end
+            if(_zz_43) begin
+              ways_1_metas_7_replace_info <= 1'b1;
+            end
+            if(_zz_44) begin
+              ways_1_metas_8_replace_info <= 1'b1;
+            end
+            if(_zz_45) begin
+              ways_1_metas_9_replace_info <= 1'b1;
+            end
+            if(_zz_46) begin
+              ways_1_metas_10_replace_info <= 1'b1;
+            end
+            if(_zz_47) begin
+              ways_1_metas_11_replace_info <= 1'b1;
+            end
+            if(_zz_48) begin
+              ways_1_metas_12_replace_info <= 1'b1;
+            end
+            if(_zz_49) begin
+              ways_1_metas_13_replace_info <= 1'b1;
+            end
+            if(_zz_50) begin
+              ways_1_metas_14_replace_info <= 1'b1;
+            end
+            if(_zz_51) begin
+              ways_1_metas_15_replace_info <= 1'b1;
+            end
+          end else begin
+            if(_zz_36) begin
+              ways_1_metas_0_replace_info <= 1'b0;
+            end
+            if(_zz_37) begin
+              ways_1_metas_1_replace_info <= 1'b0;
+            end
+            if(_zz_38) begin
+              ways_1_metas_2_replace_info <= 1'b0;
+            end
+            if(_zz_39) begin
+              ways_1_metas_3_replace_info <= 1'b0;
+            end
+            if(_zz_40) begin
+              ways_1_metas_4_replace_info <= 1'b0;
+            end
+            if(_zz_41) begin
+              ways_1_metas_5_replace_info <= 1'b0;
+            end
+            if(_zz_42) begin
+              ways_1_metas_6_replace_info <= 1'b0;
+            end
+            if(_zz_43) begin
+              ways_1_metas_7_replace_info <= 1'b0;
+            end
+            if(_zz_44) begin
+              ways_1_metas_8_replace_info <= 1'b0;
+            end
+            if(_zz_45) begin
+              ways_1_metas_9_replace_info <= 1'b0;
+            end
+            if(_zz_46) begin
+              ways_1_metas_10_replace_info <= 1'b0;
+            end
+            if(_zz_47) begin
+              ways_1_metas_11_replace_info <= 1'b0;
+            end
+            if(_zz_48) begin
+              ways_1_metas_12_replace_info <= 1'b0;
+            end
+            if(_zz_49) begin
+              ways_1_metas_13_replace_info <= 1'b0;
+            end
+            if(_zz_50) begin
+              ways_1_metas_14_replace_info <= 1'b0;
+            end
+            if(_zz_51) begin
+              ways_1_metas_15_replace_info <= 1'b0;
+            end
+          end
+        end else begin
+          if(is_hit) begin
+            if(cache_hit_1) begin
+              if(_zz_36) begin
+                ways_1_metas_0_replace_info <= 1'b1;
+              end
+              if(_zz_37) begin
+                ways_1_metas_1_replace_info <= 1'b1;
+              end
+              if(_zz_38) begin
+                ways_1_metas_2_replace_info <= 1'b1;
+              end
+              if(_zz_39) begin
+                ways_1_metas_3_replace_info <= 1'b1;
+              end
+              if(_zz_40) begin
+                ways_1_metas_4_replace_info <= 1'b1;
+              end
+              if(_zz_41) begin
+                ways_1_metas_5_replace_info <= 1'b1;
+              end
+              if(_zz_42) begin
+                ways_1_metas_6_replace_info <= 1'b1;
+              end
+              if(_zz_43) begin
+                ways_1_metas_7_replace_info <= 1'b1;
+              end
+              if(_zz_44) begin
+                ways_1_metas_8_replace_info <= 1'b1;
+              end
+              if(_zz_45) begin
+                ways_1_metas_9_replace_info <= 1'b1;
+              end
+              if(_zz_46) begin
+                ways_1_metas_10_replace_info <= 1'b1;
+              end
+              if(_zz_47) begin
+                ways_1_metas_11_replace_info <= 1'b1;
+              end
+              if(_zz_48) begin
+                ways_1_metas_12_replace_info <= 1'b1;
+              end
+              if(_zz_49) begin
+                ways_1_metas_13_replace_info <= 1'b1;
+              end
+              if(_zz_50) begin
+                ways_1_metas_14_replace_info <= 1'b1;
+              end
+              if(_zz_51) begin
+                ways_1_metas_15_replace_info <= 1'b1;
+              end
+            end
+          end else begin
+            if(next_level_rsp_valid) begin
+              if(cache_victim_1) begin
+                if(_zz_53) begin
+                  ways_1_metas_0_valid <= 1'b1;
+                end
+                if(_zz_54) begin
+                  ways_1_metas_1_valid <= 1'b1;
+                end
+                if(_zz_55) begin
+                  ways_1_metas_2_valid <= 1'b1;
+                end
+                if(_zz_56) begin
+                  ways_1_metas_3_valid <= 1'b1;
+                end
+                if(_zz_57) begin
+                  ways_1_metas_4_valid <= 1'b1;
+                end
+                if(_zz_58) begin
+                  ways_1_metas_5_valid <= 1'b1;
+                end
+                if(_zz_59) begin
+                  ways_1_metas_6_valid <= 1'b1;
+                end
+                if(_zz_60) begin
+                  ways_1_metas_7_valid <= 1'b1;
+                end
+                if(_zz_61) begin
+                  ways_1_metas_8_valid <= 1'b1;
+                end
+                if(_zz_62) begin
+                  ways_1_metas_9_valid <= 1'b1;
+                end
+                if(_zz_63) begin
+                  ways_1_metas_10_valid <= 1'b1;
+                end
+                if(_zz_64) begin
+                  ways_1_metas_11_valid <= 1'b1;
+                end
+                if(_zz_65) begin
+                  ways_1_metas_12_valid <= 1'b1;
+                end
+                if(_zz_66) begin
+                  ways_1_metas_13_valid <= 1'b1;
+                end
+                if(_zz_67) begin
+                  ways_1_metas_14_valid <= 1'b1;
+                end
+                if(_zz_68) begin
+                  ways_1_metas_15_valid <= 1'b1;
+                end
+              end
+            end
+          end
+        end
+      end
+      if(next_level_done) begin
+        if(_zz_53) begin
+          ways_1_metas_0_tag <= cpu_tag_d1;
+        end
+        if(_zz_54) begin
+          ways_1_metas_1_tag <= cpu_tag_d1;
+        end
+        if(_zz_55) begin
+          ways_1_metas_2_tag <= cpu_tag_d1;
+        end
+        if(_zz_56) begin
+          ways_1_metas_3_tag <= cpu_tag_d1;
+        end
+        if(_zz_57) begin
+          ways_1_metas_4_tag <= cpu_tag_d1;
+        end
+        if(_zz_58) begin
+          ways_1_metas_5_tag <= cpu_tag_d1;
+        end
+        if(_zz_59) begin
+          ways_1_metas_6_tag <= cpu_tag_d1;
+        end
+        if(_zz_60) begin
+          ways_1_metas_7_tag <= cpu_tag_d1;
+        end
+        if(_zz_61) begin
+          ways_1_metas_8_tag <= cpu_tag_d1;
+        end
+        if(_zz_62) begin
+          ways_1_metas_9_tag <= cpu_tag_d1;
+        end
+        if(_zz_63) begin
+          ways_1_metas_10_tag <= cpu_tag_d1;
+        end
+        if(_zz_64) begin
+          ways_1_metas_11_tag <= cpu_tag_d1;
+        end
+        if(_zz_65) begin
+          ways_1_metas_12_tag <= cpu_tag_d1;
+        end
+        if(_zz_66) begin
+          ways_1_metas_13_tag <= cpu_tag_d1;
+        end
+        if(_zz_67) begin
+          ways_1_metas_14_tag <= cpu_tag_d1;
+        end
+        if(_zz_68) begin
+          ways_1_metas_15_tag <= cpu_tag_d1;
+        end
+      end
+      if(flush) begin
+        cpu_cmd_ready_1 <= 1'b0;
+      end else begin
+        if(is_miss) begin
+          cpu_cmd_ready_1 <= 1'b0;
+        end else begin
+          if(next_level_done) begin
+            cpu_cmd_ready_1 <= 1'b1;
+          end
+        end
+      end
+      if(flush) begin
+        if(_zz_70) begin
+          ways_2_metas_0_replace_info <= 1'b0;
+        end
+        if(_zz_71) begin
+          ways_2_metas_1_replace_info <= 1'b0;
+        end
+        if(_zz_72) begin
+          ways_2_metas_2_replace_info <= 1'b0;
+        end
+        if(_zz_73) begin
+          ways_2_metas_3_replace_info <= 1'b0;
+        end
+        if(_zz_74) begin
+          ways_2_metas_4_replace_info <= 1'b0;
+        end
+        if(_zz_75) begin
+          ways_2_metas_5_replace_info <= 1'b0;
+        end
+        if(_zz_76) begin
+          ways_2_metas_6_replace_info <= 1'b0;
+        end
+        if(_zz_77) begin
+          ways_2_metas_7_replace_info <= 1'b0;
+        end
+        if(_zz_78) begin
+          ways_2_metas_8_replace_info <= 1'b0;
+        end
+        if(_zz_79) begin
+          ways_2_metas_9_replace_info <= 1'b0;
+        end
+        if(_zz_80) begin
+          ways_2_metas_10_replace_info <= 1'b0;
+        end
+        if(_zz_81) begin
+          ways_2_metas_11_replace_info <= 1'b0;
+        end
+        if(_zz_82) begin
+          ways_2_metas_12_replace_info <= 1'b0;
+        end
+        if(_zz_83) begin
+          ways_2_metas_13_replace_info <= 1'b0;
+        end
+        if(_zz_84) begin
+          ways_2_metas_14_replace_info <= 1'b0;
+        end
+        if(_zz_85) begin
+          ways_2_metas_15_replace_info <= 1'b0;
+        end
+        if(_zz_87) begin
+          ways_2_metas_0_valid <= 1'b0;
+        end
+        if(_zz_88) begin
+          ways_2_metas_1_valid <= 1'b0;
+        end
+        if(_zz_89) begin
+          ways_2_metas_2_valid <= 1'b0;
+        end
+        if(_zz_90) begin
+          ways_2_metas_3_valid <= 1'b0;
+        end
+        if(_zz_91) begin
+          ways_2_metas_4_valid <= 1'b0;
+        end
+        if(_zz_92) begin
+          ways_2_metas_5_valid <= 1'b0;
+        end
+        if(_zz_93) begin
+          ways_2_metas_6_valid <= 1'b0;
+        end
+        if(_zz_94) begin
+          ways_2_metas_7_valid <= 1'b0;
+        end
+        if(_zz_95) begin
+          ways_2_metas_8_valid <= 1'b0;
+        end
+        if(_zz_96) begin
+          ways_2_metas_9_valid <= 1'b0;
+        end
+        if(_zz_97) begin
+          ways_2_metas_10_valid <= 1'b0;
+        end
+        if(_zz_98) begin
+          ways_2_metas_11_valid <= 1'b0;
+        end
+        if(_zz_99) begin
+          ways_2_metas_12_valid <= 1'b0;
+        end
+        if(_zz_100) begin
+          ways_2_metas_13_valid <= 1'b0;
+        end
+        if(_zz_101) begin
+          ways_2_metas_14_valid <= 1'b0;
+        end
+        if(_zz_102) begin
+          ways_2_metas_15_valid <= 1'b0;
+        end
+      end else begin
+        if(when_ICache_l188_2) begin
+          if(cache_hit_2) begin
+            if(_zz_70) begin
+              ways_2_metas_0_replace_info <= 1'b1;
+            end
+            if(_zz_71) begin
+              ways_2_metas_1_replace_info <= 1'b1;
+            end
+            if(_zz_72) begin
+              ways_2_metas_2_replace_info <= 1'b1;
+            end
+            if(_zz_73) begin
+              ways_2_metas_3_replace_info <= 1'b1;
+            end
+            if(_zz_74) begin
+              ways_2_metas_4_replace_info <= 1'b1;
+            end
+            if(_zz_75) begin
+              ways_2_metas_5_replace_info <= 1'b1;
+            end
+            if(_zz_76) begin
+              ways_2_metas_6_replace_info <= 1'b1;
+            end
+            if(_zz_77) begin
+              ways_2_metas_7_replace_info <= 1'b1;
+            end
+            if(_zz_78) begin
+              ways_2_metas_8_replace_info <= 1'b1;
+            end
+            if(_zz_79) begin
+              ways_2_metas_9_replace_info <= 1'b1;
+            end
+            if(_zz_80) begin
+              ways_2_metas_10_replace_info <= 1'b1;
+            end
+            if(_zz_81) begin
+              ways_2_metas_11_replace_info <= 1'b1;
+            end
+            if(_zz_82) begin
+              ways_2_metas_12_replace_info <= 1'b1;
+            end
+            if(_zz_83) begin
+              ways_2_metas_13_replace_info <= 1'b1;
+            end
+            if(_zz_84) begin
+              ways_2_metas_14_replace_info <= 1'b1;
+            end
+            if(_zz_85) begin
+              ways_2_metas_15_replace_info <= 1'b1;
+            end
+          end else begin
+            if(_zz_70) begin
+              ways_2_metas_0_replace_info <= 1'b0;
+            end
+            if(_zz_71) begin
+              ways_2_metas_1_replace_info <= 1'b0;
+            end
+            if(_zz_72) begin
+              ways_2_metas_2_replace_info <= 1'b0;
+            end
+            if(_zz_73) begin
+              ways_2_metas_3_replace_info <= 1'b0;
+            end
+            if(_zz_74) begin
+              ways_2_metas_4_replace_info <= 1'b0;
+            end
+            if(_zz_75) begin
+              ways_2_metas_5_replace_info <= 1'b0;
+            end
+            if(_zz_76) begin
+              ways_2_metas_6_replace_info <= 1'b0;
+            end
+            if(_zz_77) begin
+              ways_2_metas_7_replace_info <= 1'b0;
+            end
+            if(_zz_78) begin
+              ways_2_metas_8_replace_info <= 1'b0;
+            end
+            if(_zz_79) begin
+              ways_2_metas_9_replace_info <= 1'b0;
+            end
+            if(_zz_80) begin
+              ways_2_metas_10_replace_info <= 1'b0;
+            end
+            if(_zz_81) begin
+              ways_2_metas_11_replace_info <= 1'b0;
+            end
+            if(_zz_82) begin
+              ways_2_metas_12_replace_info <= 1'b0;
+            end
+            if(_zz_83) begin
+              ways_2_metas_13_replace_info <= 1'b0;
+            end
+            if(_zz_84) begin
+              ways_2_metas_14_replace_info <= 1'b0;
+            end
+            if(_zz_85) begin
+              ways_2_metas_15_replace_info <= 1'b0;
+            end
+          end
+        end else begin
+          if(is_hit) begin
+            if(cache_hit_2) begin
+              if(_zz_70) begin
+                ways_2_metas_0_replace_info <= 1'b1;
+              end
+              if(_zz_71) begin
+                ways_2_metas_1_replace_info <= 1'b1;
+              end
+              if(_zz_72) begin
+                ways_2_metas_2_replace_info <= 1'b1;
+              end
+              if(_zz_73) begin
+                ways_2_metas_3_replace_info <= 1'b1;
+              end
+              if(_zz_74) begin
+                ways_2_metas_4_replace_info <= 1'b1;
+              end
+              if(_zz_75) begin
+                ways_2_metas_5_replace_info <= 1'b1;
+              end
+              if(_zz_76) begin
+                ways_2_metas_6_replace_info <= 1'b1;
+              end
+              if(_zz_77) begin
+                ways_2_metas_7_replace_info <= 1'b1;
+              end
+              if(_zz_78) begin
+                ways_2_metas_8_replace_info <= 1'b1;
+              end
+              if(_zz_79) begin
+                ways_2_metas_9_replace_info <= 1'b1;
+              end
+              if(_zz_80) begin
+                ways_2_metas_10_replace_info <= 1'b1;
+              end
+              if(_zz_81) begin
+                ways_2_metas_11_replace_info <= 1'b1;
+              end
+              if(_zz_82) begin
+                ways_2_metas_12_replace_info <= 1'b1;
+              end
+              if(_zz_83) begin
+                ways_2_metas_13_replace_info <= 1'b1;
+              end
+              if(_zz_84) begin
+                ways_2_metas_14_replace_info <= 1'b1;
+              end
+              if(_zz_85) begin
+                ways_2_metas_15_replace_info <= 1'b1;
+              end
+            end
+          end else begin
+            if(next_level_rsp_valid) begin
+              if(cache_victim_2) begin
+                if(_zz_87) begin
+                  ways_2_metas_0_valid <= 1'b1;
+                end
+                if(_zz_88) begin
+                  ways_2_metas_1_valid <= 1'b1;
+                end
+                if(_zz_89) begin
+                  ways_2_metas_2_valid <= 1'b1;
+                end
+                if(_zz_90) begin
+                  ways_2_metas_3_valid <= 1'b1;
+                end
+                if(_zz_91) begin
+                  ways_2_metas_4_valid <= 1'b1;
+                end
+                if(_zz_92) begin
+                  ways_2_metas_5_valid <= 1'b1;
+                end
+                if(_zz_93) begin
+                  ways_2_metas_6_valid <= 1'b1;
+                end
+                if(_zz_94) begin
+                  ways_2_metas_7_valid <= 1'b1;
+                end
+                if(_zz_95) begin
+                  ways_2_metas_8_valid <= 1'b1;
+                end
+                if(_zz_96) begin
+                  ways_2_metas_9_valid <= 1'b1;
+                end
+                if(_zz_97) begin
+                  ways_2_metas_10_valid <= 1'b1;
+                end
+                if(_zz_98) begin
+                  ways_2_metas_11_valid <= 1'b1;
+                end
+                if(_zz_99) begin
+                  ways_2_metas_12_valid <= 1'b1;
+                end
+                if(_zz_100) begin
+                  ways_2_metas_13_valid <= 1'b1;
+                end
+                if(_zz_101) begin
+                  ways_2_metas_14_valid <= 1'b1;
+                end
+                if(_zz_102) begin
+                  ways_2_metas_15_valid <= 1'b1;
+                end
+              end
+            end
+          end
+        end
+      end
+      if(next_level_done) begin
+        if(_zz_87) begin
+          ways_2_metas_0_tag <= cpu_tag_d1;
+        end
+        if(_zz_88) begin
+          ways_2_metas_1_tag <= cpu_tag_d1;
+        end
+        if(_zz_89) begin
+          ways_2_metas_2_tag <= cpu_tag_d1;
+        end
+        if(_zz_90) begin
+          ways_2_metas_3_tag <= cpu_tag_d1;
+        end
+        if(_zz_91) begin
+          ways_2_metas_4_tag <= cpu_tag_d1;
+        end
+        if(_zz_92) begin
+          ways_2_metas_5_tag <= cpu_tag_d1;
+        end
+        if(_zz_93) begin
+          ways_2_metas_6_tag <= cpu_tag_d1;
+        end
+        if(_zz_94) begin
+          ways_2_metas_7_tag <= cpu_tag_d1;
+        end
+        if(_zz_95) begin
+          ways_2_metas_8_tag <= cpu_tag_d1;
+        end
+        if(_zz_96) begin
+          ways_2_metas_9_tag <= cpu_tag_d1;
+        end
+        if(_zz_97) begin
+          ways_2_metas_10_tag <= cpu_tag_d1;
+        end
+        if(_zz_98) begin
+          ways_2_metas_11_tag <= cpu_tag_d1;
+        end
+        if(_zz_99) begin
+          ways_2_metas_12_tag <= cpu_tag_d1;
+        end
+        if(_zz_100) begin
+          ways_2_metas_13_tag <= cpu_tag_d1;
+        end
+        if(_zz_101) begin
+          ways_2_metas_14_tag <= cpu_tag_d1;
+        end
+        if(_zz_102) begin
+          ways_2_metas_15_tag <= cpu_tag_d1;
+        end
+      end
+      if(flush) begin
+        cpu_cmd_ready_1 <= 1'b0;
+      end else begin
+        if(is_miss) begin
+          cpu_cmd_ready_1 <= 1'b0;
+        end else begin
+          if(next_level_done) begin
+            cpu_cmd_ready_1 <= 1'b1;
+          end
+        end
+      end
+      if(flush) begin
+        if(_zz_104) begin
+          ways_3_metas_0_replace_info <= 1'b0;
+        end
+        if(_zz_105) begin
+          ways_3_metas_1_replace_info <= 1'b0;
+        end
+        if(_zz_106) begin
+          ways_3_metas_2_replace_info <= 1'b0;
+        end
+        if(_zz_107) begin
+          ways_3_metas_3_replace_info <= 1'b0;
+        end
+        if(_zz_108) begin
+          ways_3_metas_4_replace_info <= 1'b0;
+        end
+        if(_zz_109) begin
+          ways_3_metas_5_replace_info <= 1'b0;
+        end
+        if(_zz_110) begin
+          ways_3_metas_6_replace_info <= 1'b0;
+        end
+        if(_zz_111) begin
+          ways_3_metas_7_replace_info <= 1'b0;
+        end
+        if(_zz_112) begin
+          ways_3_metas_8_replace_info <= 1'b0;
+        end
+        if(_zz_113) begin
+          ways_3_metas_9_replace_info <= 1'b0;
+        end
+        if(_zz_114) begin
+          ways_3_metas_10_replace_info <= 1'b0;
+        end
+        if(_zz_115) begin
+          ways_3_metas_11_replace_info <= 1'b0;
+        end
+        if(_zz_116) begin
+          ways_3_metas_12_replace_info <= 1'b0;
+        end
+        if(_zz_117) begin
+          ways_3_metas_13_replace_info <= 1'b0;
+        end
+        if(_zz_118) begin
+          ways_3_metas_14_replace_info <= 1'b0;
+        end
+        if(_zz_119) begin
+          ways_3_metas_15_replace_info <= 1'b0;
+        end
+        if(_zz_121) begin
+          ways_3_metas_0_valid <= 1'b0;
+        end
+        if(_zz_122) begin
+          ways_3_metas_1_valid <= 1'b0;
+        end
+        if(_zz_123) begin
+          ways_3_metas_2_valid <= 1'b0;
+        end
+        if(_zz_124) begin
+          ways_3_metas_3_valid <= 1'b0;
+        end
+        if(_zz_125) begin
+          ways_3_metas_4_valid <= 1'b0;
+        end
+        if(_zz_126) begin
+          ways_3_metas_5_valid <= 1'b0;
+        end
+        if(_zz_127) begin
+          ways_3_metas_6_valid <= 1'b0;
+        end
+        if(_zz_128) begin
+          ways_3_metas_7_valid <= 1'b0;
+        end
+        if(_zz_129) begin
+          ways_3_metas_8_valid <= 1'b0;
+        end
+        if(_zz_130) begin
+          ways_3_metas_9_valid <= 1'b0;
+        end
+        if(_zz_131) begin
+          ways_3_metas_10_valid <= 1'b0;
+        end
+        if(_zz_132) begin
+          ways_3_metas_11_valid <= 1'b0;
+        end
+        if(_zz_133) begin
+          ways_3_metas_12_valid <= 1'b0;
+        end
+        if(_zz_134) begin
+          ways_3_metas_13_valid <= 1'b0;
+        end
+        if(_zz_135) begin
+          ways_3_metas_14_valid <= 1'b0;
+        end
+        if(_zz_136) begin
+          ways_3_metas_15_valid <= 1'b0;
+        end
+      end else begin
+        if(when_ICache_l188_3) begin
+          if(cache_hit_3) begin
+            if(_zz_104) begin
+              ways_3_metas_0_replace_info <= 1'b1;
+            end
+            if(_zz_105) begin
+              ways_3_metas_1_replace_info <= 1'b1;
+            end
+            if(_zz_106) begin
+              ways_3_metas_2_replace_info <= 1'b1;
+            end
+            if(_zz_107) begin
+              ways_3_metas_3_replace_info <= 1'b1;
+            end
+            if(_zz_108) begin
+              ways_3_metas_4_replace_info <= 1'b1;
+            end
+            if(_zz_109) begin
+              ways_3_metas_5_replace_info <= 1'b1;
+            end
+            if(_zz_110) begin
+              ways_3_metas_6_replace_info <= 1'b1;
+            end
+            if(_zz_111) begin
+              ways_3_metas_7_replace_info <= 1'b1;
+            end
+            if(_zz_112) begin
+              ways_3_metas_8_replace_info <= 1'b1;
+            end
+            if(_zz_113) begin
+              ways_3_metas_9_replace_info <= 1'b1;
+            end
+            if(_zz_114) begin
+              ways_3_metas_10_replace_info <= 1'b1;
+            end
+            if(_zz_115) begin
+              ways_3_metas_11_replace_info <= 1'b1;
+            end
+            if(_zz_116) begin
+              ways_3_metas_12_replace_info <= 1'b1;
+            end
+            if(_zz_117) begin
+              ways_3_metas_13_replace_info <= 1'b1;
+            end
+            if(_zz_118) begin
+              ways_3_metas_14_replace_info <= 1'b1;
+            end
+            if(_zz_119) begin
+              ways_3_metas_15_replace_info <= 1'b1;
+            end
+          end else begin
+            if(_zz_104) begin
+              ways_3_metas_0_replace_info <= 1'b0;
+            end
+            if(_zz_105) begin
+              ways_3_metas_1_replace_info <= 1'b0;
+            end
+            if(_zz_106) begin
+              ways_3_metas_2_replace_info <= 1'b0;
+            end
+            if(_zz_107) begin
+              ways_3_metas_3_replace_info <= 1'b0;
+            end
+            if(_zz_108) begin
+              ways_3_metas_4_replace_info <= 1'b0;
+            end
+            if(_zz_109) begin
+              ways_3_metas_5_replace_info <= 1'b0;
+            end
+            if(_zz_110) begin
+              ways_3_metas_6_replace_info <= 1'b0;
+            end
+            if(_zz_111) begin
+              ways_3_metas_7_replace_info <= 1'b0;
+            end
+            if(_zz_112) begin
+              ways_3_metas_8_replace_info <= 1'b0;
+            end
+            if(_zz_113) begin
+              ways_3_metas_9_replace_info <= 1'b0;
+            end
+            if(_zz_114) begin
+              ways_3_metas_10_replace_info <= 1'b0;
+            end
+            if(_zz_115) begin
+              ways_3_metas_11_replace_info <= 1'b0;
+            end
+            if(_zz_116) begin
+              ways_3_metas_12_replace_info <= 1'b0;
+            end
+            if(_zz_117) begin
+              ways_3_metas_13_replace_info <= 1'b0;
+            end
+            if(_zz_118) begin
+              ways_3_metas_14_replace_info <= 1'b0;
+            end
+            if(_zz_119) begin
+              ways_3_metas_15_replace_info <= 1'b0;
+            end
+          end
+        end else begin
+          if(is_hit) begin
+            if(cache_hit_3) begin
+              if(_zz_104) begin
+                ways_3_metas_0_replace_info <= 1'b1;
+              end
+              if(_zz_105) begin
+                ways_3_metas_1_replace_info <= 1'b1;
+              end
+              if(_zz_106) begin
+                ways_3_metas_2_replace_info <= 1'b1;
+              end
+              if(_zz_107) begin
+                ways_3_metas_3_replace_info <= 1'b1;
+              end
+              if(_zz_108) begin
+                ways_3_metas_4_replace_info <= 1'b1;
+              end
+              if(_zz_109) begin
+                ways_3_metas_5_replace_info <= 1'b1;
+              end
+              if(_zz_110) begin
+                ways_3_metas_6_replace_info <= 1'b1;
+              end
+              if(_zz_111) begin
+                ways_3_metas_7_replace_info <= 1'b1;
+              end
+              if(_zz_112) begin
+                ways_3_metas_8_replace_info <= 1'b1;
+              end
+              if(_zz_113) begin
+                ways_3_metas_9_replace_info <= 1'b1;
+              end
+              if(_zz_114) begin
+                ways_3_metas_10_replace_info <= 1'b1;
+              end
+              if(_zz_115) begin
+                ways_3_metas_11_replace_info <= 1'b1;
+              end
+              if(_zz_116) begin
+                ways_3_metas_12_replace_info <= 1'b1;
+              end
+              if(_zz_117) begin
+                ways_3_metas_13_replace_info <= 1'b1;
+              end
+              if(_zz_118) begin
+                ways_3_metas_14_replace_info <= 1'b1;
+              end
+              if(_zz_119) begin
+                ways_3_metas_15_replace_info <= 1'b1;
+              end
+            end
+          end else begin
+            if(next_level_rsp_valid) begin
+              if(cache_victim_3) begin
+                if(_zz_121) begin
+                  ways_3_metas_0_valid <= 1'b1;
+                end
+                if(_zz_122) begin
+                  ways_3_metas_1_valid <= 1'b1;
+                end
+                if(_zz_123) begin
+                  ways_3_metas_2_valid <= 1'b1;
+                end
+                if(_zz_124) begin
+                  ways_3_metas_3_valid <= 1'b1;
+                end
+                if(_zz_125) begin
+                  ways_3_metas_4_valid <= 1'b1;
+                end
+                if(_zz_126) begin
+                  ways_3_metas_5_valid <= 1'b1;
+                end
+                if(_zz_127) begin
+                  ways_3_metas_6_valid <= 1'b1;
+                end
+                if(_zz_128) begin
+                  ways_3_metas_7_valid <= 1'b1;
+                end
+                if(_zz_129) begin
+                  ways_3_metas_8_valid <= 1'b1;
+                end
+                if(_zz_130) begin
+                  ways_3_metas_9_valid <= 1'b1;
+                end
+                if(_zz_131) begin
+                  ways_3_metas_10_valid <= 1'b1;
+                end
+                if(_zz_132) begin
+                  ways_3_metas_11_valid <= 1'b1;
+                end
+                if(_zz_133) begin
+                  ways_3_metas_12_valid <= 1'b1;
+                end
+                if(_zz_134) begin
+                  ways_3_metas_13_valid <= 1'b1;
+                end
+                if(_zz_135) begin
+                  ways_3_metas_14_valid <= 1'b1;
+                end
+                if(_zz_136) begin
+                  ways_3_metas_15_valid <= 1'b1;
+                end
+              end
+            end
+          end
+        end
+      end
+      if(next_level_done) begin
+        if(_zz_121) begin
+          ways_3_metas_0_tag <= cpu_tag_d1;
+        end
+        if(_zz_122) begin
+          ways_3_metas_1_tag <= cpu_tag_d1;
+        end
+        if(_zz_123) begin
+          ways_3_metas_2_tag <= cpu_tag_d1;
+        end
+        if(_zz_124) begin
+          ways_3_metas_3_tag <= cpu_tag_d1;
+        end
+        if(_zz_125) begin
+          ways_3_metas_4_tag <= cpu_tag_d1;
+        end
+        if(_zz_126) begin
+          ways_3_metas_5_tag <= cpu_tag_d1;
+        end
+        if(_zz_127) begin
+          ways_3_metas_6_tag <= cpu_tag_d1;
+        end
+        if(_zz_128) begin
+          ways_3_metas_7_tag <= cpu_tag_d1;
+        end
+        if(_zz_129) begin
+          ways_3_metas_8_tag <= cpu_tag_d1;
+        end
+        if(_zz_130) begin
+          ways_3_metas_9_tag <= cpu_tag_d1;
+        end
+        if(_zz_131) begin
+          ways_3_metas_10_tag <= cpu_tag_d1;
+        end
+        if(_zz_132) begin
+          ways_3_metas_11_tag <= cpu_tag_d1;
+        end
+        if(_zz_133) begin
+          ways_3_metas_12_tag <= cpu_tag_d1;
+        end
+        if(_zz_134) begin
+          ways_3_metas_13_tag <= cpu_tag_d1;
+        end
+        if(_zz_135) begin
+          ways_3_metas_14_tag <= cpu_tag_d1;
+        end
+        if(_zz_136) begin
+          ways_3_metas_15_tag <= cpu_tag_d1;
+        end
+      end
+      if(flush) begin
+        cpu_cmd_ready_1 <= 1'b0;
+      end else begin
+        if(is_miss) begin
+          cpu_cmd_ready_1 <= 1'b0;
+        end else begin
+          if(next_level_done) begin
+            cpu_cmd_ready_1 <= 1'b1;
+          end
+        end
+      end
+    end
+  end
+
+  always @(posedge clk) begin
+    next_level_done <= (next_level_rsp_valid && (next_level_data_cnt_value == 1'b1));
+  end
+
+
+endmodule
+
+module Timer (
+  input               cen,
+  input               wen,
+  input      [63:0]   addr,
+  input      [63:0]   wdata,
+  output reg [63:0]   rdata,
+  output              timer_int,
+  input               clk,
+  input               reset
+);
+
+  wire       [63:0]   _zz_mtime;
+  reg        [63:0]   mtime;
+  reg        [63:0]   mtimecmp;
+  wire                when_ExcepPlugin_l287;
+  wire                when_ExcepPlugin_l300;
+  wire                when_ExcepPlugin_l302;
+
+  assign _zz_mtime = (mtime + 64'h0000000000000001);
+  assign when_ExcepPlugin_l287 = (wen && cen);
+  assign when_ExcepPlugin_l300 = (addr == 64'h000000000200bff8);
+  always @(*) begin
+    if(when_ExcepPlugin_l300) begin
+      rdata = mtime;
+    end else begin
+      if(when_ExcepPlugin_l302) begin
+        rdata = mtimecmp;
+      end else begin
+        rdata = 64'h0;
+      end
+    end
+  end
+
+  assign when_ExcepPlugin_l302 = (addr == 64'h0000000002004000);
+  assign timer_int = (mtimecmp <= mtime);
+  always @(posedge clk or posedge reset) begin
+    if(reset) begin
+      mtime <= 64'h0;
+      mtimecmp <= 64'hffffffffffffffff;
+    end else begin
+      if(when_ExcepPlugin_l287) begin
+        case(addr)
+          64'h000000000200bff8 : begin
+            mtime <= wdata;
+          end
+          64'h0000000002004000 : begin
+            mtimecmp <= wdata;
+          end
+          default : begin
+          end
+        endcase
+      end else begin
+        mtime <= _zz_mtime;
+      end
+    end
+  end
+
+
+endmodule
+
+module Clint (
+  input      [63:0]   pc,
+  input      [63:0]   pc_next,
+  input               pc_next_valid,
+  output reg          csr_ports_mepc_wen,
+  output reg [63:0]   csr_ports_mepc_wdata,
+  output reg          csr_ports_mcause_wen,
+  output reg [63:0]   csr_ports_mcause_wdata,
+  output reg          csr_ports_mstatus_wen,
+  output reg [63:0]   csr_ports_mstatus_wdata,
+  input      [63:0]   csr_ports_mtvec,
+  input      [63:0]   csr_ports_mepc,
+  input      [63:0]   csr_ports_mstatus,
+  input               csr_ports_global_int_en,
+  input               csr_ports_mtime_int_en,
+  input               csr_ports_mtime_int_pend,
+  input               timer_int,
+  output reg          int_en,
+  output reg [63:0]   int_pc,
+  output              int_hold,
+  input               ecall,
+  input               ebreak,
+  input               mret,
+  input               clk,
+  input               reset
+);
+  localparam CsrEnum_IDLE = 2'd0;
+  localparam CsrEnum_EXPT_TIME = 2'd1;
+  localparam CsrEnum_MRET = 2'd2;
+  localparam CsrEnum_WRITE = 2'd3;
+  localparam IntTypeEnum_IDLE = 2'd0;
+  localparam IntTypeEnum_EXPT = 2'd1;
+  localparam IntTypeEnum_TIME_1 = 2'd2;
+  localparam IntTypeEnum_MRET = 2'd3;
+
+  reg        [1:0]    int_state;
+  reg        [1:0]    csr_state;
+  reg        [63:0]   mepc_wdata;
+  reg        [63:0]   mcause_wdata;
+  wire                when_ExcepPlugin_l188;
+  wire                when_ExcepPlugin_l190;
+  wire                when_ExcepPlugin_l200;
+  wire                when_ExcepPlugin_l202;
+  wire                when_ExcepPlugin_l214;
+  wire                when_ExcepPlugin_l222;
+  wire                when_ExcepPlugin_l223;
+  wire                when_ExcepPlugin_l231;
+  wire                when_ExcepPlugin_l258;
+  wire                when_ExcepPlugin_l262;
+
+  assign when_ExcepPlugin_l188 = (ecall || ebreak);
+  always @(*) begin
+    if(when_ExcepPlugin_l188) begin
+      int_state = IntTypeEnum_EXPT;
+    end else begin
+      if(when_ExcepPlugin_l190) begin
+        int_state = IntTypeEnum_TIME_1;
+      end else begin
+        if(mret) begin
+          int_state = IntTypeEnum_MRET;
+        end else begin
+          int_state = IntTypeEnum_IDLE;
+        end
+      end
+    end
+  end
+
+  assign when_ExcepPlugin_l190 = ((csr_ports_global_int_en && csr_ports_mtime_int_en) && timer_int);
+  assign when_ExcepPlugin_l200 = ((int_state == IntTypeEnum_EXPT) || (int_state == IntTypeEnum_TIME_1));
+  assign when_ExcepPlugin_l202 = (int_state == IntTypeEnum_MRET);
+  assign when_ExcepPlugin_l214 = (csr_state == CsrEnum_IDLE);
+  assign when_ExcepPlugin_l222 = (csr_state == CsrEnum_IDLE);
+  assign when_ExcepPlugin_l223 = (int_state == IntTypeEnum_EXPT);
+  assign when_ExcepPlugin_l231 = (int_state == IntTypeEnum_TIME_1);
+  assign when_ExcepPlugin_l258 = (csr_state == CsrEnum_WRITE);
+  assign when_ExcepPlugin_l262 = (csr_state == CsrEnum_MRET);
+  assign int_hold = ((int_state != IntTypeEnum_IDLE) || (csr_state != CsrEnum_IDLE));
+  always @(posedge clk or posedge reset) begin
+    if(reset) begin
+      csr_state <= CsrEnum_IDLE;
+      mepc_wdata <= 64'h0;
+      mcause_wdata <= 64'h0;
+      csr_ports_mepc_wen <= 1'b0;
+      csr_ports_mepc_wdata <= 64'h0;
+      csr_ports_mcause_wen <= 1'b0;
+      csr_ports_mcause_wdata <= 64'h0;
+      csr_ports_mstatus_wen <= 1'b0;
+      csr_ports_mstatus_wdata <= 64'h0;
+      int_en <= 1'b0;
+      int_pc <= 64'h0;
+    end else begin
+      if((csr_state == CsrEnum_IDLE)) begin
+          if(when_ExcepPlugin_l200) begin
+            csr_state <= CsrEnum_EXPT_TIME;
+          end else begin
+            if(when_ExcepPlugin_l202) begin
+              csr_state <= CsrEnum_MRET;
+            end
+          end
+      end else if((csr_state == CsrEnum_EXPT_TIME)) begin
+          csr_state <= CsrEnum_WRITE;
+      end else if((csr_state == CsrEnum_MRET) || (csr_state == CsrEnum_WRITE)) begin
+          csr_state <= CsrEnum_IDLE;
+      end
+      if(when_ExcepPlugin_l214) begin
+        if(pc_next_valid) begin
+          mepc_wdata <= pc_next;
+        end else begin
+          mepc_wdata <= pc;
+        end
+      end
+      if(when_ExcepPlugin_l222) begin
+        if(when_ExcepPlugin_l223) begin
+          if(ecall) begin
+            mcause_wdata <= 64'h000000000000000b;
+          end else begin
+            if(ebreak) begin
+              mcause_wdata <= 64'h0000000000000003;
+            end else begin
+              mcause_wdata <= 64'h000000000000000a;
+            end
+          end
+        end else begin
+          if(when_ExcepPlugin_l231) begin
+            mcause_wdata <= 64'h8000000000000007;
+          end
+        end
+      end
+      if((csr_state == CsrEnum_WRITE)) begin
+          csr_ports_mepc_wen <= 1'b1;
+          csr_ports_mcause_wen <= 1'b1;
+          csr_ports_mstatus_wen <= 1'b1;
+          csr_ports_mepc_wdata <= mepc_wdata;
+          csr_ports_mcause_wdata <= mcause_wdata;
+          csr_ports_mstatus_wdata <= {{{{csr_ports_mstatus[63 : 8],csr_ports_mstatus[3]},csr_ports_mstatus[6 : 4]},1'b0},csr_ports_mstatus[2 : 0]};
+      end else if((csr_state == CsrEnum_MRET)) begin
+          csr_ports_mstatus_wen <= 1'b1;
+          csr_ports_mstatus_wdata <= {{{{csr_ports_mstatus[63 : 8],1'b1},csr_ports_mstatus[6 : 4]},csr_ports_mstatus[7]},csr_ports_mstatus[2 : 0]};
+      end else begin
+          csr_ports_mepc_wen <= 1'b0;
+          csr_ports_mcause_wen <= 1'b0;
+          csr_ports_mstatus_wen <= 1'b0;
+      end
+      if(when_ExcepPlugin_l258) begin
+        int_en <= 1'b1;
+        int_pc <= csr_ports_mtvec;
+      end else begin
+        if(when_ExcepPlugin_l262) begin
+          int_en <= 1'b1;
+          int_pc <= csr_ports_mepc;
+        end else begin
+          int_en <= 1'b0;
+        end
+      end
+    end
+  end
+
+
+endmodule
+
+module CsrRegfile (
+  input      [11:0]   cpu_ports_waddr,
+  input               cpu_ports_wen,
+  input      [63:0]   cpu_ports_wdata,
+  input      [11:0]   cpu_ports_raddr,
+  output reg [63:0]   cpu_ports_rdata,
+  input               clint_ports_mepc_wen,
+  input      [63:0]   clint_ports_mepc_wdata,
+  input               clint_ports_mcause_wen,
+  input      [63:0]   clint_ports_mcause_wdata,
+  input               clint_ports_mstatus_wen,
+  input      [63:0]   clint_ports_mstatus_wdata,
+  output     [63:0]   clint_ports_mtvec,
+  output     [63:0]   clint_ports_mepc,
+  output     [63:0]   clint_ports_mstatus,
+  output              clint_ports_global_int_en,
+  output              clint_ports_mtime_int_en,
+  output              clint_ports_mtime_int_pend,
+  input               timer_int,
+  input               clk,
+  input               reset
+);
+
+  wire       [63:0]   _zz_mcycle;
+  reg        [63:0]   mstatus;
+  reg        [63:0]   mie;
+  reg        [63:0]   mtvec;
+  reg        [63:0]   mepc;
+  reg        [63:0]   mcause;
+  reg        [63:0]   mtval;
+  reg        [63:0]   mip;
+  reg        [63:0]   mcycle;
+  reg        [63:0]   mhartid;
+  reg        [63:0]   mscratch;
+  wire                when_ExcepPlugin_l106;
+
+  assign _zz_mcycle = (mcycle + 64'h0000000000000001);
+  assign when_ExcepPlugin_l106 = (cpu_ports_wen && (cpu_ports_raddr == cpu_ports_waddr));
+  always @(*) begin
+    if(when_ExcepPlugin_l106) begin
+      cpu_ports_rdata = cpu_ports_wdata;
+    end else begin
+      case(cpu_ports_raddr)
+        12'h300 : begin
+          cpu_ports_rdata = mstatus;
+        end
+        12'h304 : begin
+          cpu_ports_rdata = mie;
+        end
+        12'h305 : begin
+          cpu_ports_rdata = mtvec;
+        end
+        12'h341 : begin
+          cpu_ports_rdata = mepc;
+        end
+        12'h342 : begin
+          cpu_ports_rdata = mcause;
+        end
+        12'h343 : begin
+          cpu_ports_rdata = mtval;
+        end
+        12'h344 : begin
+          cpu_ports_rdata = mip;
+        end
+        12'hb00 : begin
+          cpu_ports_rdata = mcycle;
+        end
+        12'hf14 : begin
+          cpu_ports_rdata = mhartid;
+        end
+        default : begin
+          cpu_ports_rdata = 64'h0;
+        end
+      endcase
+    end
+  end
+
+  assign clint_ports_mtvec = mtvec;
+  assign clint_ports_mepc = mepc;
+  assign clint_ports_mstatus = mstatus;
+  assign clint_ports_global_int_en = mstatus[3];
+  assign clint_ports_mtime_int_en = mie[7];
+  assign clint_ports_mtime_int_pend = mip[7];
+  always @(posedge clk or posedge reset) begin
+    if(reset) begin
+      mstatus <= {51'h0,13'h1880};
+      mie <= 64'h0;
+      mtvec <= 64'h0;
+      mepc <= 64'h0;
+      mcause <= 64'h0;
+      mtval <= 64'h0;
+      mip <= 64'h0;
+      mcycle <= 64'h0;
+      mhartid <= 64'h0;
+      mscratch <= 64'h0;
+    end else begin
+      mcycle <= _zz_mcycle;
+      mip <= {{{{52'h0,1'b0},3'b000},timer_int},7'h0};
+      if(cpu_ports_wen) begin
+        case(cpu_ports_waddr)
+          12'h300 : begin
+            mstatus <= {{{{{{{((cpu_ports_wdata[16 : 15] == 2'b11) || (cpu_ports_wdata[14 : 13] == 2'b11)),50'h0},2'b11},3'b000},cpu_ports_wdata[7]},3'b000},cpu_ports_wdata[3]},3'b000};
+          end
+          12'h304 : begin
+            mie <= {{{{{{52'h0,cpu_ports_wdata[11]},3'b000},cpu_ports_wdata[7]},3'b000},cpu_ports_wdata[3]},3'b000};
+          end
+          12'h305 : begin
+            mtvec <= cpu_ports_wdata;
+          end
+          12'h341 : begin
+            mepc <= cpu_ports_wdata;
+          end
+          12'h342 : begin
+            mcause <= cpu_ports_wdata;
+          end
+          12'h343 : begin
+            mtval <= cpu_ports_wdata;
+          end
+          12'hf14 : begin
+            mhartid <= cpu_ports_wdata;
+          end
+          12'h340 : begin
+            mscratch <= cpu_ports_wdata;
+          end
+          default : begin
+          end
+        endcase
+      end else begin
+        if(clint_ports_mepc_wen) begin
+          mepc <= clint_ports_mepc_wdata;
+        end
+        if(clint_ports_mcause_wen) begin
+          mcause <= clint_ports_mcause_wdata;
+        end
+        if(clint_ports_mstatus_wen) begin
+          mstatus <= clint_ports_mstatus_wdata;
+        end
+        mtvec <= {clint_ports_mtvec[63 : 2],2'b00};
       end
     end
   end

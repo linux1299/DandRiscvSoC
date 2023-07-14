@@ -7,9 +7,10 @@ import dandriscv._
 import dandriscv.ip._
 import dandriscv.plugin._
 import dandriscv.plugin_simple._
+import dandriscv.Riscv.CSR._
 
 // ==================== mem stage ======================
-class LsuPlugin(AW : Int = 64, DW : Int = 64) extends Plugin[DandRiscvSimple]
+class LSUPlugin(AW : Int = 64, DW : Int = 64) extends Plugin[DandRiscvSimple]
 with DCacheAccessService
 {
 
@@ -35,6 +36,8 @@ with DCacheAccessService
     memaccess plug new Area{
       import memaccess._
 
+      val is_memacc   = (input(IS_LOAD) || input(IS_STORE)) && arbitration.isFiring
+
       val data_dcache = dcache_access.rsp.payload.data
       val data_lb     = B((XLEN-8-1 downto 0) -> data_dcache(7)) ## data_dcache(7 downto 0)
       val data_lbu    = B((XLEN-8-1 downto 0) -> False) ## data_dcache(7 downto 0)
@@ -49,11 +52,10 @@ with DCacheAccessService
       val wdata_sh  = B((XLEN-16-1 downto 0) -> mem_wdata(15)) ## mem_wdata(15 downto 0)
       val wdata_sw  = B((XLEN-32-1 downto 0) -> mem_wdata(31)) ## mem_wdata(31 downto 0)
 
-      val wen_dcache  = Bool()
-      val addr_dcache = input(ALU_RESULT).asUInt
-      val wdata_dcache= Bits(XLEN bits)
-      val wstrb_dcache= Bits(XLEN/8 bits)
-      val size_dcache = UInt(3 bits)
+      val addr = input(ALU_RESULT).asUInt
+      val wdata= Bits(XLEN bits)
+      val wstrb= Bits(XLEN/8 bits)
+      val size = UInt(3 bits)
 
       switch(input(MEM_CTRL)){
         is(MemCtrlEnum.LB.asBits){
@@ -81,47 +83,51 @@ with DCacheAccessService
 
       switch(input(MEM_CTRL)){
         is(MemCtrlEnum.SB.asBits){
-          wen_dcache   := True
-          wdata_dcache := wdata_sb
-          wstrb_dcache := B(wstrb_dcache.getWidth bits, 0->true, default -> false)
-          size_dcache  := U(0, 3 bits)
+          wdata := wdata_sb
+          wstrb := B(wstrb.getWidth bits, 0->true, default -> false)
+          size  := U(0, 3 bits)
         }
         is(MemCtrlEnum.SH.asBits){
-          wen_dcache   := True
-          wdata_dcache := wdata_sh
-          wstrb_dcache := B(wstrb_dcache.getWidth bits, (1 downto 0)->true, default -> false)
-          size_dcache  := U(1, 3 bits)
+          wdata := wdata_sh
+          wstrb := B(wstrb.getWidth bits, (1 downto 0)->true, default -> false)
+          size  := U(1, 3 bits)
         }
         is(MemCtrlEnum.SW.asBits){
-          wen_dcache   := True
-          wdata_dcache := wdata_sw
-          wstrb_dcache := B(wstrb_dcache.getWidth bits, (3 downto 0)->true, default -> false)
-          size_dcache  := U(2, 3 bits)
+          wdata := wdata_sw
+          wstrb := B(wstrb.getWidth bits, (3 downto 0)->true, default -> false)
+          size  := U(2, 3 bits)
         }
         is(MemCtrlEnum.SD.asBits){
-          wen_dcache   := True
-          wdata_dcache := mem_wdata
-          wstrb_dcache := B(wstrb_dcache.getWidth bits, (7 downto 0)->true)
-          size_dcache  := U(3, 3 bits)
+          wdata := mem_wdata
+          wstrb := B(wstrb.getWidth bits, (7 downto 0)->true)
+          size  := U(3, 3 bits)
         }
         default{
-          wen_dcache   := False
-          wdata_dcache := B(0, XLEN bits)
-          wstrb_dcache := B(wstrb_dcache.getWidth bits, default -> false)
-          size_dcache  := U(0, 3 bits)
+          wdata := B(0, XLEN bits)
+          wstrb := B(wstrb.getWidth bits, default -> false)
+          size  := U(0, 3 bits)
         }
       }
 
+     
+
       // output mem stage
-      insert(DATA_LOAD) := data_load
+      insert(DATA_LOAD):= data_load
+      insert(LSU_WDATA):= wdata
+      insert(TIMER_CEN):= (addr===MTIME) || (addr===MTIMECMP) && is_memacc
+
+      // lsu hold logic TODO:
+      val hold = False
+      fetch.insert(LSU_HOLD) := hold
+      
 
       // connect to cache
-      dcache_access.cmd.payload.addr := addr_dcache
-      dcache_access.cmd.payload.wen  := wen_dcache
-      dcache_access.cmd.payload.wdata:= wdata_dcache
-      dcache_access.cmd.payload.wstrb:= wstrb_dcache
-      dcache_access.cmd.payload.size := size_dcache
-      
+      dcache_access.cmd.valid        := (addr=/=MTIME) && (addr=/=MTIMECMP) && is_memacc
+      dcache_access.cmd.payload.addr := addr
+      dcache_access.cmd.payload.wen  := input(IS_STORE)
+      dcache_access.cmd.payload.wdata:= wdata
+      dcache_access.cmd.payload.wstrb:= wstrb
+      dcache_access.cmd.payload.size := size
     }
 
     writebackStage plug new Area{
