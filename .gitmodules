@@ -1,0 +1,3 @@
+[submodule "ysyx-workbench"]
+	path = ysyx-workbench
+	url = https://github.com/linux1299/ysyx-workbench
