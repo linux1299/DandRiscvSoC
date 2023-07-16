@@ -14,6 +14,29 @@ trait DCacheAccessService {
 trait NextLevelDataService {
   def newNextLevelData() : NextLevelData
 }
+
+// ================ next level ports as master ==============
+case class DCacheNextLevelCmd(p : DCacheConfig) extends Bundle{
+  val addr = UInt(p.addressWidth bits)
+  val len  = UInt(4 bits)
+  val size = UInt(3 bits)
+  val wen  = Bool()
+  val wdata= Bits(p.busDataWidth bits)
+  val wstrb= Bits(p.busDataWidth/8 bits)
+}
+case class DCacheNextLevelRsp(p : DCacheConfig) extends Bundle{
+  val data = Bits(p.busDataWidth bits)
+}
+case class DCacheNextLevelPorts(p : DCacheConfig) extends Bundle with IMasterSlave{
+  val cmd = Stream(DCacheNextLevelCmd(p))
+  val rsp = Flow(DCacheNextLevelRsp(p))
+
+  override def asMaster(): Unit = {
+    master(cmd)
+    slave(rsp)
+  }
+}
+
 // ================ cpu and dcache ports ===============
 case class DCacheAccessCmd(AW: Int, DW: Int) extends Bundle {
   val addr = UInt(AW bits)

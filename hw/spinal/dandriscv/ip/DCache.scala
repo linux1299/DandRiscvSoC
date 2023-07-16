@@ -43,25 +43,6 @@ case class DCacheConfig(cacheSize : Int,
   
 }
 
-// ================ next level ports as master ==============
-case class DCacheNextLevelCmd(p : DCacheConfig) extends Bundle{
-  val addr = UInt(p.addressWidth bits)
-  val len  = UInt(4 bits)
-  val size = UInt(3 bits)
-}
-case class DCacheNextLevelRsp(p : DCacheConfig) extends Bundle{
-  val data = Bits(p.busDataWidth bits)
-}
-case class DCacheNextLevelPorts(p : DCacheConfig) extends Bundle with IMasterSlave{
-  val cmd = Stream(DCacheNextLevelCmd(p))
-  val rsp = Flow(DCacheNextLevelRsp(p))
-
-  override def asMaster(): Unit = {
-    master(cmd)
-    slave(rsp)
-  }
-}
-
 // ==================== CACHE =============================
 case class DCache(p : DCacheConfig) extends Component{
   import p._
