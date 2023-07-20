@@ -12,7 +12,7 @@ trait DCacheAccessService {
   def newDCacheAccess() : DCacheAccess
 }
 trait NextLevelDataService {
-  def newNextLevelData() : NextLevelData
+  def newDCacheNextLevelPorts() : DCacheNextLevelPorts
 }
 
 // ================ next level ports as master ==============
@@ -60,11 +60,6 @@ case class DCacheAccess(AW: Int, DW: Int) extends Bundle with IMasterSlave{
     master(rsp)
   }
 }
-// ================ next level and dcache ports ===============
-case class NextLevelData(AW: Int, DW: Int) extends Bundle {
-  val cmd = Stream(DCacheAccessCmd(AW, DW))
-  val rsp = Flow(DCacheAccessRsp(DW))
-}
 
 
 class DCachePlugin(val config : DCacheConfig) extends Plugin[DandRiscvSimple]{
@@ -72,34 +67,41 @@ class DCachePlugin(val config : DCacheConfig) extends Plugin[DandRiscvSimple]{
   import config._
 
   var dcache_access : DCacheAccess = null
-  //var service_test : IntIF = null
-  //var nextlevel_access : NextLevelData = null
+  var nextlevel_access : DCacheNextLevelPorts = null
 
   override def setup(pipeline: DandRiscvSimple): Unit = {
     import Riscv._
     import pipeline.config._
 
     dcache_access = pipeline.service(classOf[DCacheAccessService]).newDCacheAccess
-    //service_test = pipeline.service(classOf[IntrruptService]).newIntIF
-    //nextlevel_access = pipeline.service(classOf[NextLevelDataService]).newNextLevelData
+    nextlevel_access = pipeline.service(classOf[NextLevelDataService]).newDCacheNextLevelPorts
   }
 
    override def build(pipeline: DandRiscvSimple): Unit = {
     import pipeline._
     import pipeline.config._
 
-    val dcache = new DCache(DCachePlugin.this.config)
-    val srambanks   = new SramBanks(DCachePlugin.this.config.wayCount, 
-    DCachePlugin.this.config.bankWidth, 
-    DCachePlugin.this.config.bankDepthBits)
+    val dcache_config = DCachePlugin.this.config
+    val dcache = new DCache(dcache_config)
+    val srambanks   = new SramBanks(.wayCount, dcache_config.bankWidth, dcache_config.bankDepthBits)
 
     // impl dcache access logic
     dcache_access.cmd <> dcache.cpu.cmd
 
     // sram ports
-    val connect_sram = for(i<-0 until DCachePlugin.this.config.wayCount) yield new Area{
+    val connect_sram = for(i<-0 until dcache_config.wayCount) yield new Area{
       dcache.sram(i).ports <> srambanks.sram(i).ports
     }
+
+    // next level AXI ports
+     val axiConfig = Axi4Config(addressWidth=dcache_config.addressWidth, dataWidth=dcache_config.busDataWidth, idWidth=4,
+                               useId=false, useLast=false, useRegion=false, useBurst=false, 
+                               useLock=false, useCache=false, useSize=false, useQos=false,
+                               useLen=false, useResp=false, useProt=false, useStrb=false)
+    val dcacheReader = master(Axi4ReadOnly(axiConfig)).setName("dcacheReader")
+    dcacheReader.r.ready := False
+    dcacheReader.ar.valid := False
+    dcacheReader.ar.addr := U(32, dcache_config.addressWidth bits)
 
     memaccess plug new Area{
       import memaccess._
