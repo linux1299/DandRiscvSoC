@@ -12,9 +12,6 @@ import spinal.lib.bus.amba4.axi._
 trait ICacheAccessService {
   def newICacheAccess() : ICacheAccess
 }
-trait NextLevelAccessService {
-  def newNextLevelAccess() : NextLevelAccess
-}
 
 // ================ next level ports as master ==============
 case class ICacheNextLevelCmd(p : ICacheConfig) extends Bundle{
@@ -61,14 +58,11 @@ class ICachePlugin(val config : ICacheConfig) extends Plugin[DandRiscvSimple]{
   import config._
 
   var icache_access : ICacheAccess = null
-  var nextlevel_access : NextLevelAccess = null
 
   override def setup(pipeline: DandRiscvSimple): Unit = {
     import Riscv._
     import pipeline.config._
-
     icache_access = pipeline.service(classOf[ICacheAccessService]).newICacheAccess
-    nextlevel_access = pipeline.service(classOf[NextLevelAccessService]).newNextLevelAccess
   }
 
   override def build(pipeline: DandRiscvSimple): Unit = {
@@ -81,6 +75,7 @@ class ICachePlugin(val config : ICacheConfig) extends Plugin[DandRiscvSimple]{
 
     // connect icache and cpu ports
     icache_access.cmd <> icache.cpu.cmd
+    icache_access.rsp <> icache.cpu.rsp
 
     // sram ports
     val connect_sram = for(i<-0 until icache_config.wayCount) yield new Area{
@@ -89,13 +84,26 @@ class ICachePlugin(val config : ICacheConfig) extends Plugin[DandRiscvSimple]{
 
     // next level AXI ports
     val axiConfig = Axi4Config(addressWidth=icache_config.addressWidth, dataWidth=icache_config.busDataWidth, idWidth=4,
-                               useId=false, useLast=false, useRegion=false, useBurst=false, 
-                               useLock=false, useCache=false, useSize=false, useQos=false,
-                               useLen=false, useResp=false, useProt=false, useStrb=false)
+                               useId=true, useLast=true, useRegion=false, useBurst=true, 
+                               useLock=false, useCache=false, useSize=true, useQos=false,
+                               useLen=true, useResp=true, useProt=false, useStrb=false)
     val icacheReader = master(Axi4ReadOnly(axiConfig)).setName("icacheReader")
-    icacheReader.r.ready := False
-    icacheReader.ar.valid := False
-    icacheReader.ar.addr := U(32, icache_config.addressWidth bits)
+    // ar channel
+    icacheReader.ar.valid := icache.next_level.cmd.valid
+    icacheReader.ar.payload.id := U(0)
+    icacheReader.ar.payload.len := icache.next_level.cmd.payload.len.resized
+    icacheReader.ar.payload.size := icache.next_level.cmd.payload.size
+    icacheReader.ar.payload.burst := B(1) // INCR
+    icacheReader.ar.payload.addr := icache.next_level.cmd.payload.addr
+    icache.next_level.cmd.ready := icacheReader.ar.ready
+
+    // r channel
+    icacheReader.r.ready := True
+    icache.next_level.rsp.valid := icacheReader.r.valid
+    icache.next_level.rsp.payload.data := icacheReader.r.payload.data
+
+    // to icache ready
+    icache.next_level.cmd.ready := icacheReader.ar.ready
 
     fetch plug new Area{
       import fetch._

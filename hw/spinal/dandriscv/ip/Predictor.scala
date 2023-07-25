@@ -16,6 +16,7 @@ case class gshare_predictor(addressWidth : Int=64,
   def RAS_ENTRIES_WIDTH = log2Up(RAS_ENTRIES)
 
   val predict_pc = in UInt(addressWidth bits)
+  val predict_valid = in Bool()
   val predict_taken = out Bool()
   val predict_history = out UInt(historyLen bits)
   val predict_pc_next = out UInt(addressWidth bits)
@@ -35,7 +36,6 @@ case class gshare_predictor(addressWidth : Int=64,
     val PHT = Vec(RegInit(U"2'b01"), PHT_ENTRIES)
     val predict_index = predict_pc(historyLen+1 downto 2) ^ global_branch_history.asUInt
     val train_index = train_pc(historyLen+1 downto 2) ^ train_history
-    val predict_valid = Bool()
     val pht_predict_taken = PHT(predict_index)(1)
 
     when(train_valid) {

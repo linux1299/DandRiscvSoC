@@ -1,7 +1,2 @@
-[0m[[0m[31merror[0m] [0m[0mD:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\DCachePlugin.scala:86:37: illegal start of simple expression[0m
-[0m[[0m[31merror[0m] [0m[0m    val srambanks   = new SramBanks(.wayCount, dcache_config.bankWidth, dcache_config.bankDepthBits)[0m
-[0m[[0m[31merror[0m] [0m[0m                                    ^[0m
-[0m[[0m[31merror[0m] [0m[0mD:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\DCachePlugin.scala:112:4: ')' expected but '}' found.[0m
-[0m[[0m[31merror[0m] [0m[0m   }[0m
-[0m[[0m[31merror[0m] [0m[0m   ^[0m
-[0m[[0m[31merror[0m] [0m[0mtwo errors found[0m
+[0m[[0m[33mwarn[0m] [0m[0m2 deprecations (since 2.13.3); re-run with -deprecation for details[0m
+[0m[[0m[33mwarn[0m] [0m[0mone warning found[0m

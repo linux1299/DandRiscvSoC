@@ -35,6 +35,7 @@ case class DCacheConfig(cacheSize : Int,
   def bankDataSelRange = (bankOffset-1) downto cpuDataBytesWidth
   def lineBusDataNum = bytePerLine/(bankWidth/8) 
   def nextLevelBankAddrRange = (bankDepthBits+bankOffset-1) downto (offsetWidth)
+  def cpuDataOnBusRange = (busDataSize-1) downto (log2Up(cpuDataBytesWidth))
 
   assert(wayCount>=2)
   assert(bankWidth/cpuDataWidth>=2 && bankWidth % cpuDataWidth==0)
@@ -74,20 +75,24 @@ case class DCache(p : DCacheConfig) extends Component{
   val replace_info_full = cache_replace_info.asBits.andR
   val is_hit = cache_hit.asBits.orR & cpu.cmd.fire
   val is_miss= !cache_hit.asBits.orR & cpu.cmd.fire
+  val is_write = cpu.cmd.fire & cpu.cmd.payload.wen
 
   // cpu related
-  val cpu_tag = cpu.cmd.addr(tagRange)
-  val cpu_set = cpu.cmd.addr(setRange)
-  val cpu_bank_offset = cpu.cmd.addr(bankOffsetRange)
-  val cpu_bank_addr   = cpu.cmd.addr(bankAddrRange)
-  val cpu_bank_sel    = cpu.cmd.addr(bankDataSelRange)
+  val cpu_tag = cpu.cmd.payload.addr(tagRange)
+  val cpu_set = cpu.cmd.payload.addr(setRange)
+  val cpu_bank_offset = cpu.cmd.payload.addr(bankOffsetRange)
+  val cpu_bank_addr   = cpu.cmd.payload.addr(bankAddrRange)
+  val cpu_bank_sel    = cpu.cmd.payload.addr(bankDataSelRange)
 
-  val cpu_addr_d1     = RegNextWhen(cpu.cmd.addr, is_miss) init(0)
+  val cpu_addr_d1     = RegNextWhen(cpu.cmd.payload.addr, is_miss || is_write) init(0)
   val cpu_set_d1      = cpu_addr_d1(setRange)
   val cpu_tag_d1      = cpu_addr_d1(tagRange)
   val cpu_bank_addr_d1= cpu_addr_d1(bankAddrRange)
   val cpu_bank_sel_d1 = cpu_addr_d1(bankDataSelRange)
   val cpu_cmd_ready   = RegInit(True)
+  val cpu_wstrb_d1    = RegNextWhen(cpu.cmd.payload.wstrb, is_write) init(0)
+  val cpu_wen_d1      = RegNextWhen(cpu.cmd.payload.wen, is_write) init(False)
+  val cpu_wdata_d1    = RegNextWhen(cpu.cmd.payload.wdata, is_write) init(0)
 
   // sram related
   val sram_banks_data = Vec(Bits(bankWidth bits), wayCount)
@@ -98,6 +103,10 @@ case class DCache(p : DCacheConfig) extends Component{
   val next_level_data_cnt = Counter(0 to lineBusDataNum-1)
   val next_level_bank_addr= cpu_addr_d1(nextLevelBankAddrRange)
   val next_level_done = RegNext(next_level.rsp.valid && next_level_data_cnt===(lineBusDataNum-1))
+  val next_level_wstrb_tmp = B(0, busDataWidth/8-cpuDataWidth/8 bits) ## cpu_wstrb_d1
+  val next_level_wdata_tmp = B(0, busDataWidth-cpuDataWidth bits) ## cpu_wdata_d1
+  val next_level_wstrb = next_level_wstrb_tmp |<< (cpu_addr_d1(cpuDataOnBusRange)*cpuDataWidth/8)
+  val next_level_wdata = next_level_wdata_tmp |<< (cpu_addr_d1(cpuDataOnBusRange)*cpuDataWidth)
 
   when(is_miss){
     next_level_cmd_valid := True
@@ -186,12 +195,15 @@ case class DCache(p : DCacheConfig) extends Component{
     when(next_level_done){
       ways(wayId).metas(cpu_set_d1).tag := cpu_tag_d1
     }
-    // ready
+    // to cpu ready
     when(flush){
       cpu_cmd_ready := False
     }
     .otherwise{
       when(is_miss){
+        cpu_cmd_ready := False
+      }
+      .elsewhen(is_write){
         cpu_cmd_ready := False
       }
       .elsewhen(next_level_done){
@@ -209,8 +221,10 @@ case class DCache(p : DCacheConfig) extends Component{
   next_level.cmd.payload.addr := cpu_addr_d1
   next_level.cmd.payload.len  := busBurstLen
   next_level.cmd.payload.size := busDataSize
+  next_level.cmd.payload.wen := cpu_wen_d1
+  next_level.cmd.payload.wdata:= next_level_wdata
+  next_level.cmd.payload.wstrb:= next_level_wstrb
   next_level.cmd.valid := next_level_cmd_valid
-
 }
 
   

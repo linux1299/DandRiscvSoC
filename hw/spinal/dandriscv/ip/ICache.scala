@@ -186,7 +186,7 @@ case class ICache(p : ICacheConfig) extends Component{
     when(next_level_done){
       ways(wayId).metas(cpu_set_d1).tag := cpu_tag_d1
     }
-    // ready
+    // to cpu ready
     when(flush){
       cpu_cmd_ready := False
     }

@@ -24,6 +24,7 @@ class BPUPlugin() extends Plugin[DandRiscvSimple]{
     val predictor = new gshare_predictor(addressWidth)
     
     predictor.predict_pc := fetch.output(PC)
+    predictor.predict_valid := True // TODO:
     fetch.insert(BPU_BRANCH_TAKEN) := predictor.predict_taken
     fetch.insert(BPU_PC_NEXT) := predictor.predict_pc_next
     predictor.train_valid := execute.output(BRANCH_OR_JUMP)
