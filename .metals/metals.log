@@ -2865,3 +2865,129 @@ WARNING: Unmatched cancel notification for request id 1164
 2023.07.03 20:17:44 WARN  Using indexes to guess the definition of icache_access[0m
 2023.07.03 20:17:45 WARN  Using indexes to guess the definition of icache_access[0m
 2023.07.03 20:17:52 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/InstructionFetchPlugin.scala[0m
+2023.07.16 21:01:31 INFO  Started: Metals version 0.11.12 in workspace '/home/lin/SpinalProjects/DandRiscvSoC' for client Visual Studio Code 1.79.2.[0m
+Jul 16, 2023 9:01:31 PM org.flywaydb.core.internal.license.VersionPrinter printVersionOnly
+INFO: Flyway Community Edition 9.16.3 by Redgate
+Jul 16, 2023 9:01:31 PM org.flywaydb.core.internal.license.VersionPrinter printVersion
+INFO: See release notes here: https://rd.gt/416ObMi
+Jul 16, 2023 9:01:31 PM org.flywaydb.core.internal.license.VersionPrinter printVersion
+INFO: 
+Jul 16, 2023 9:01:35 PM org.flywaydb.core.internal.database.base.BaseDatabaseType createDatabase
+INFO: Database: jdbc:h2:file:/home/lin/SpinalProjects/DandRiscvSoC/.metals/metals (H2 2.1)
+Jul 16, 2023 9:01:35 PM org.flywaydb.core.internal.command.DbValidate validate
+INFO: Successfully validated 4 migrations (execution time 00:00.024s)
+Jul 16, 2023 9:01:35 PM org.flywaydb.core.internal.command.DbMigrate migrateGroup
+INFO: Current version of schema "PUBLIC": 4
+Jul 16, 2023 9:01:35 PM org.flywaydb.core.internal.command.DbMigrate logSummary
+INFO: Schema "PUBLIC" is up to date. No migration necessary.
+2023.07.16 21:01:35 INFO  time: initialize in 3.87s[0m
+2023.07.16 21:01:36 WARN  Build server is not auto-connectable.[0m
+2023.07.16 21:01:36 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/LsuPlugin.scala[0m
+2023.07.16 21:01:36 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.16 21:01:36 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/DecodePlugin.scala[0m
+2023.07.16 21:01:36 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Services.scala[0m
+2023.07.16 21:01:36 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.07.16 21:01:36 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Stage.scala[0m
+2023.07.16 21:01:36 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.07.16 21:01:36 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Pipeline.scala[0m
+2023.07.16 21:01:36 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gencpu/GenSimple.scala[0m
+2023.07.16 21:01:36 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/DandRiscvSimple.scala[0m
+2023.07.16 21:01:36 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/DCachePlugin.scala[0m
+2023.07.16 21:01:36 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/AluPlugin.scala[0m
+2023.07.16 21:01:42 ERROR Unexpected error initializing server: 
+scala.concurrent.Future$$anon$2: Future.filter predicate is not satisfied
+[0m
+2023.07.25 22:50:55 INFO  Started: Metals version 1.0.0 in folders '/home/lin/SpinalProjects/DandRiscvSoC' for client Visual Studio Code 1.79.2.[0m
+Jul 25, 2023 10:50:55 PM org.flywaydb.core.internal.license.VersionPrinter printVersionOnly
+INFO: Flyway Community Edition 9.20.1 by Redgate
+Jul 25, 2023 10:50:55 PM org.flywaydb.core.internal.license.VersionPrinter printVersion
+INFO: See release notes here: https://rd.gt/416ObMi
+Jul 25, 2023 10:50:55 PM org.flywaydb.core.internal.license.VersionPrinter printVersion
+INFO: 
+Jul 25, 2023 10:50:56 PM org.flywaydb.core.internal.database.base.BaseDatabaseType createDatabase
+INFO: Database: jdbc:h2:file:/home/lin/SpinalProjects/DandRiscvSoC/.metals/metals (H2 2.1)
+Jul 25, 2023 10:50:56 PM org.flywaydb.core.internal.command.DbValidate validate
+INFO: Successfully validated 4 migrations (execution time 00:00.041s)
+Jul 25, 2023 10:50:56 PM org.flywaydb.core.internal.command.DbMigrate migrateGroup
+INFO: Current version of schema "PUBLIC": 4
+Jul 25, 2023 10:50:56 PM org.flywaydb.core.internal.command.DbMigrate logSummary
+INFO: Schema "PUBLIC" is up to date. No migration necessary.
+2023.07.25 22:50:57 INFO  time: initialize in 1.21s[0m
+2023.07.25 22:50:58 WARN  Build server is not auto-connectable.[0m
+2023.07.25 23:23:04 INFO  Shutting down server[0m
+2023.07.25 23:23:04 INFO  shutting down Metals[0m
+2023.07.25 23:23:04 INFO  Exiting server[0m
+2023.07.26 20:32:36 INFO  Started: Metals version 1.0.0 in folders '/home/lin/SpinalProjects/DandRiscvSoC' for client Visual Studio Code 1.80.1.[0m
+Jul 26, 2023 8:32:36 PM org.flywaydb.core.internal.license.VersionPrinter printVersionOnly
+INFO: Flyway Community Edition 9.20.1 by Redgate
+Jul 26, 2023 8:32:36 PM org.flywaydb.core.internal.license.VersionPrinter printVersion
+INFO: See release notes here: https://rd.gt/416ObMi
+Jul 26, 2023 8:32:36 PM org.flywaydb.core.internal.license.VersionPrinter printVersion
+INFO: 
+Jul 26, 2023 8:32:36 PM org.flywaydb.core.internal.database.base.BaseDatabaseType createDatabase
+INFO: Database: jdbc:h2:file:/home/lin/SpinalProjects/DandRiscvSoC/.metals/metals (H2 2.1)
+Jul 26, 2023 8:32:37 PM org.flywaydb.core.internal.command.DbValidate validate
+INFO: Successfully validated 4 migrations (execution time 00:00.028s)
+Jul 26, 2023 8:32:37 PM org.flywaydb.core.internal.command.DbMigrate migrateGroup
+INFO: Current version of schema "PUBLIC": 4
+Jul 26, 2023 8:32:37 PM org.flywaydb.core.internal.command.DbMigrate logSummary
+INFO: Schema "PUBLIC" is up to date. No migration necessary.
+2023.07.26 20:32:37 INFO  time: initialize in 0.96s[0m
+2023.07.26 20:32:37 WARN  Build server is not auto-connectable.[0m
+2023.07.26 20:32:37 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/FetchPlugin.scala[0m
+2023.07.26 20:32:37 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Pipeline.scala[0m
+2023.07.26 20:32:37 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Stage.scala[0m
+2023.07.26 20:32:37 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/LsuPlugin.scala[0m
+2023.07.26 20:32:37 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/DandRiscvSimple.scala[0m
+2023.07.26 20:32:37 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Services.scala[0m
+2023.07.26 20:32:37 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/DCachePlugin.scala[0m
+2023.07.26 20:32:37 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/AluPlugin.scala[0m
+2023.07.26 20:32:37 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gencpu/GenSimple.scala[0m
+2023.07.26 20:32:37 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.07.26 20:32:37 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/DecodePlugin.scala[0m
+2023.07.26 20:32:37 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/DandRiscvCpu.scala[0m
+2023.07.26 20:32:37 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.07.26 20:32:37 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.26 20:32:37 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ControlPlugin.scala[0m
+2023.07.26 20:32:45 ERROR Unexpected error initializing server: 
+scala.concurrent.Future$$anon$2: Future.filter predicate is not satisfied
+[0m
+2023.07.26 20:38:25 INFO  no build target found for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Services.scala. Using presentation compiler with project's scala-library version: 3.3.0[0m
+2023.07.26 21:16:42 INFO  Shutting down server[0m
+2023.07.26 21:16:42 INFO  shutting down Metals[0m
+2023.07.26 21:24:19 INFO  Started: Metals version 1.0.0 in folders '/home/lin/SpinalProjects/DandRiscvSoC' for client Visual Studio Code 1.80.1.[0m
+Jul 26, 2023 9:24:19 PM org.flywaydb.core.internal.license.VersionPrinter printVersionOnly
+INFO: Flyway Community Edition 9.20.1 by Redgate
+Jul 26, 2023 9:24:19 PM org.flywaydb.core.internal.license.VersionPrinter printVersion
+INFO: See release notes here: https://rd.gt/416ObMi
+Jul 26, 2023 9:24:19 PM org.flywaydb.core.internal.license.VersionPrinter printVersion
+INFO: 
+Jul 26, 2023 9:24:20 PM org.flywaydb.core.internal.database.base.BaseDatabaseType createDatabase
+INFO: Database: jdbc:h2:file:/home/lin/SpinalProjects/DandRiscvSoC/.metals/metals (H2 2.1)
+Jul 26, 2023 9:24:20 PM org.flywaydb.core.internal.command.DbValidate validate
+INFO: Successfully validated 4 migrations (execution time 00:00.023s)
+Jul 26, 2023 9:24:20 PM org.flywaydb.core.internal.command.DbMigrate migrateGroup
+INFO: Current version of schema "PUBLIC": 4
+Jul 26, 2023 9:24:20 PM org.flywaydb.core.internal.command.DbMigrate logSummary
+INFO: Schema "PUBLIC" is up to date. No migration necessary.
+2023.07.26 21:24:20 INFO  time: initialize in 0.65s[0m
+2023.07.26 21:24:20 WARN  Build server is not auto-connectable.[0m
+2023.07.26 21:24:20 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.07.26 21:24:20 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/FetchPlugin.scala[0m
+2023.07.26 21:24:20 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Stage.scala[0m
+2023.07.26 21:24:20 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/DecodePlugin.scala[0m
+2023.07.26 21:24:20 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gencpu/GenSimple.scala[0m
+2023.07.26 21:24:20 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/LsuPlugin.scala[0m
+2023.07.26 21:24:20 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Pipeline.scala[0m
+2023.07.26 21:24:20 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Services.scala[0m
+2023.07.26 21:24:20 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/DandRiscvCpu.scala[0m
+2023.07.26 21:24:20 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.07.26 21:24:20 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/DCachePlugin.scala[0m
+2023.07.26 21:24:20 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ControlPlugin.scala[0m
+2023.07.26 21:24:20 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.07.26 21:24:20 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/DandRiscvSimple.scala[0m
+2023.07.26 21:24:20 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/AluPlugin.scala[0m
+2023.07.26 21:24:23 INFO  no build target found for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Pipeline.scala. Using presentation compiler with project's scala-library version: 3.3.0[0m
+2023.07.26 21:24:26 ERROR Unexpected error initializing server: 
+scala.concurrent.Future$$anon$2: Future.filter predicate is not satisfied
+[0m

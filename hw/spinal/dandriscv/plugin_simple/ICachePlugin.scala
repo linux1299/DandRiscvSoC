@@ -76,6 +76,7 @@ class ICachePlugin(val config : ICacheConfig) extends Plugin[DandRiscvSimple]{
     // connect icache and cpu ports
     icache_access.cmd <> icache.cpu.cmd
     icache_access.rsp <> icache.cpu.rsp
+    icache.flush := False // TODO:
 
     // sram ports
     val connect_sram = for(i<-0 until icache_config.wayCount) yield new Area{
@@ -101,9 +102,6 @@ class ICachePlugin(val config : ICacheConfig) extends Plugin[DandRiscvSimple]{
     icacheReader.r.ready := True
     icache.next_level.rsp.valid := icacheReader.r.valid
     icache.next_level.rsp.payload.data := icacheReader.r.payload.data
-
-    // to icache ready
-    icache.next_level.cmd.ready := icacheReader.ar.ready
 
     fetch plug new Area{
       import fetch._
