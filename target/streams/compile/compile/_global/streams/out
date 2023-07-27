@@ -1,2 +1,21 @@
-[0m[[0m[33mwarn[0m] [0m[0m2 deprecations (since 2.13.3); re-run with -deprecation for details[0m
-[0m[[0m[33mwarn[0m] [0m[0mone warning found[0m
+[0m[[0m[0minfo[0m] [0m[0mD:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin\IntAluPlugin.scala:1:1: [0m
+[0m[[0m[0minfo[0m] [0m[0mFound names but no class, trait or object is defined in the compilation unit.[0m
+[0m[[0m[0minfo[0m] [0m[0mThe incremental compiler cannot record the dependency information in such case.[0m
+[0m[[0m[0minfo[0m] [0m[0mSome errors like unused import referring to a non-existent class might not be reported.[0m
+[0m[[0m[0minfo[0m] [0m[0m    [0m
+[0m[[0m[0minfo[0m] [0m[0mpackage dandriscv.plugin[0m
+[0m[[0m[0minfo[0m] [0m[0m^[0m
+[0m[[0m[33mwarn[0m] [0m[0mD:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\DandRiscvCpu.scala:36:17: match may not be exhaustive.[0m
+[0m[[0m[33mwarn[0m] [0m[0mIt would fail on the following input: None[0m
+[0m[[0m[33mwarn[0m] [0m[0m    plugins.find(_.getClass == clazz) match {[0m
+[0m[[0m[33mwarn[0m] [0m[0m                ^[0m
+[0m[[0m[33mwarn[0m] [0m[0mD:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\DandRiscvSimple.scala:39:17: match may not be exhaustive.[0m
+[0m[[0m[33mwarn[0m] [0m[0mIt would fail on the following input: None[0m
+[0m[[0m[33mwarn[0m] [0m[0m    plugins.find(_.getClass == clazz) match {[0m
+[0m[[0m[33mwarn[0m] [0m[0m                ^[0m
+[0m[[0m[33mwarn[0m] [0m[0m20 deprecations[0m
+[0m[[0m[33mwarn[0m] [0m[0m1 deprecation (since 2.13.0)[0m
+[0m[[0m[33mwarn[0m] [0m[0m3 deprecations (since 2.13.3)[0m
+[0m[[0m[33mwarn[0m] [0m[0m24 deprecations in total; re-run with -deprecation for details[0m
+[0m[[0m[33mwarn[0m] [0m[0m1 feature warning; re-run with -feature for details[0m
+[0m[[0m[33mwarn[0m] [0m[0m7 warnings found[0m
