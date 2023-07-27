@@ -334,16 +334,13 @@ class ExcepPlugin() extends Plugin[DandRiscvSimple]
 
     clint.csr_ports <> csr_regfile.clint_ports
     csr_regfile.timer_int := timer.timer_int
+    clint.timer_int := timer.timer_int
 
     fetch plug new Area{
       import fetch._
       clint.pc := output(PC)
-      clint.timer_int := timer.timer_int
-
       insert(INT_EN) := clint.int_en
       insert(INT_PC) := clint.int_pc
-      insert(INT_HOLD) := clint.int_hold
-
     }
 
     decode plug new Area{
@@ -396,6 +393,7 @@ class ExcepPlugin() extends Plugin[DandRiscvSimple]
 
       clint.pc_next := output(REDIRECT_PC_NEXT)
       clint.pc_next_valid := output(REDIRECT_VALID)
+      insert(INT_HOLD) := clint.int_hold
 
     }
 

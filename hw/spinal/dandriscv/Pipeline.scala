@@ -70,7 +70,10 @@ trait Pipeline {
 
 
       def addOutputStageIndex(stageId : Int): Unit = {
-        require(stageId >= insertStageId)
+        print("stageId "+stageId)
+        print("insertStageId "+insertStageId)
+        print("\n ")
+//        require(stageId >= insertStageId)
         lastInputStageId = Math.max(lastInputStageId,stageId)
         lastOutputStageId = Math.max(lastOutputStageId,stageId)
       }

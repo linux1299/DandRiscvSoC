@@ -8,17 +8,6 @@ import dandriscv._
 import dandriscv.plugin._
 import dandriscv.plugin_simple._
 
-//case class inoutClass() extends Bundle with IMasterSlave{
-//  val dataout = Bits(32 bits)
-//  val datain = Bits(32 bits)
-//  override def asMaster(): Unit = {
-//    out(dataout)
-//  }
-//  override def asSlave(): Unit = {
-//    in(datain)
-//  }
-//}
-
 
 class FetchPlugin(resetVector : BigInt = 0x80000000l, addressWidth : Int = 64) //
 extends Plugin[DandRiscvSimple]
@@ -41,87 +30,110 @@ with ICacheAccessService
     import pipeline._
     import pipeline.config._
 
-    //val slaveBus = slave(inoutClass()).setName("slaveBus")
-    //val masterBus = master(inoutClass()).setName("masterBus")
-    //masterBus.dataout := B(2, 32 bits)
-
-    val pc_next = Reg(UInt(this.addressWidth bits)).setName("pc_next") init(resetVector)
-    val pc = RegNextWhen(pc_next, icache_access.cmd.fire).setName("pc")
-    val fetch_valid = RegInit(False).setName("fetch_valid")
-    val int_pc_reg = Reg(UInt(this.addressWidth bits)).setName("int_pc_reg") init(0)
-    val int_pc_valid = RegInit(False).setName("int_pc_valid")
-    val fetch_state_next = U(0, 2 bits).setName("fetch_state_next")
-    val fetch_state = RegNext(fetch_state_next).setName("fetch_state") init(0)
-
-    val fetchFSM = new Area{
-      def IDLE : UInt = 0
-      def FETCH : UInt = 1
-      def WAIT : UInt = 2
-      switch(fetch_state){
-        is(IDLE) {
-          when(!fetch.arbitration.haltItself){
-            fetch_state_next := FETCH
-          }
-        }
-        is(FETCH) {
-          when(icache_access.cmd.isStall){
-            fetch_state_next := WAIT
-          }
-        }
-        is(WAIT) {
-          when(icache_access.cmd.fire){
-            fetch_state_next := FETCH
-          }
-        }
-      }
-
-      // when icache is busy, interrupt is high, use reg store interrupt's pc
-      when(fetch.output(INT_EN) & (fetch_state===WAIT || fetch_state_next===WAIT)){
-        int_pc_valid := True
-        int_pc_reg   := fetch.output(INT_PC)
-      }
-      .elsewhen(icache_access.rsp.fire){
-        int_pc_valid := False
-      }
-
-      // pc_next used to fetch instruction
-      when(fetch_state_next===FETCH){
-        when(int_pc_valid){
-          pc_next := int_pc_reg
-        }
-        .elsewhen(fetch.output(INT_EN)) {
-          pc_next := fetch.output(INT_PC)
-        } 
-        .elsewhen(execute.output(REDIRECT_VALID)){
-          pc_next := execute.output(REDIRECT_PC_NEXT)
-        }
-        .elsewhen(fetch.input(BPU_BRANCH_TAKEN)) {
-          pc_next := fetch.input(BPU_PC_NEXT)
-        } 
-        .otherwise {
-          pc_next := pc_next + 4
-        }
-      }
-
-      when(fetch_state_next===FETCH){
-        fetch_valid := True // TODO:
-      }
-    }
-
-    // insert to stage
     fetch plug new Area{
       import fetch._
+
+      val pc_next = Reg(UInt(pipeline.config.addressWidth bits)).setName("pc_next") init(resetVector)
+      val pc = RegNextWhen(pc_next, icache_access.cmd.fire).setName("pc")
+      val fetch_valid = RegInit(False).setName("fetch_valid")
+      val int_pc_reg = Reg(UInt(pipeline.config.addressWidth bits)).setName("int_pc_reg") init(0)
+      val int_en_reg = RegInit(False).setName("int_en_reg")
+
+      val fetchFSM = new Area{
+        def IDLE : UInt = 0
+        def FETCH : UInt = 1
+        def WAIT : UInt = 2
+        def HALT : UInt  = 3
+        val fetch_state_next = UInt(2 bits).setName("fetch_state_next")
+        val fetch_state = RegNext(fetch_state_next).setName("fetch_state") init(IDLE)
+
+        switch(fetch_state){
+          is(IDLE) {
+            when(!arbitration.isStuck){
+              fetch_state_next := FETCH
+            }
+            .otherwise{
+              fetch_state_next := IDLE
+            }
+          }
+          is(FETCH) {
+            when(icache_access.cmd.isStall){
+              fetch_state_next := WAIT
+            }
+            .elsewhen(arbitration.isStuck){
+              fetch_state_next := HALT
+            }
+            .otherwise{
+              fetch_state_next := FETCH
+            }
+          }
+          is(WAIT) {
+            when(arbitration.isStuck){
+              fetch_state_next := WAIT
+            }
+            .elsewhen(icache_access.cmd.fire){
+              fetch_state_next := FETCH
+            }
+            .otherwise{
+              fetch_state_next := WAIT
+            }
+          }
+          is(HALT){
+            when(!arbitration.isStuck){
+              fetch_state_next := FETCH
+            }
+            .otherwise{
+              fetch_state_next := HALT
+            }
+          }
+        }
+
+        // when icache is busy, interrupt is high, use reg store interrupt's pc
+        when(fetch.output(INT_EN) & (fetch_state===WAIT || fetch_state_next===WAIT)){
+          int_en_reg := True
+          int_pc_reg := fetch.output(INT_PC)
+        }
+        .elsewhen(icache_access.rsp.fire){
+          int_en_reg := False
+        }
+
+        // pc_next used to fetch instruction
+        when(fetch_state_next===FETCH){
+          when(int_en_reg){
+            pc_next := int_pc_reg
+          }
+          .elsewhen(fetch.output(INT_EN)) {
+            pc_next := fetch.output(INT_PC)
+          } 
+          .elsewhen(execute.output(REDIRECT_VALID)){
+            pc_next := execute.output(REDIRECT_PC_NEXT)
+          }
+          .elsewhen(fetch.input(BPU_BRANCH_TAKEN)) {
+            pc_next := fetch.input(BPU_PC_NEXT)
+          } 
+          .otherwise {
+            pc_next := pc_next + 4
+          }
+        }
+
+        when(fetch_state_next=/=IDLE){
+          fetch_valid := True
+        }
+        .otherwise{
+          fetch_valid := False
+        }
+      }
+
+      // insert to stage
       insert(PC) := pc
       insert(PC_NEXT) := pc_next
-      
-    }
+      insert(INSTRUCTION) := icache_access.rsp.payload.data
+      arbitration.isValid := icache_access.rsp.valid && !(output(INT_EN) || int_en_reg)
 
-    // send cmd to icache
-    if(icache_access != null) pipeline plug new Area{
+      // send cmd to icache
       icache_access.cmd.valid := fetch_valid
       icache_access.cmd.addr := pc_next
     }
-
 
   }
 }

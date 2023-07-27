@@ -100,14 +100,14 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
       when(input(CTRL_RS1_FROM_MEM)){
         branch_src1 := memaccess.output(RS1).asBits
       }.elsewhen(input(CTRL_RS1_FROM_WB)){
-        branch_src1 := writeback.output(RS1).asBits
+        branch_src1 := writebackStage.output(RD).asBits
       }.otherwise{
         branch_src1 := input(RS1).asBits
       }
       when(input(CTRL_RS2_FROM_MEM)){
-        branch_src2 := memaccess.output(RS2).asBits
-      }.elsewhen(input(CTRL_RS1_FROM_WB)){
-        branch_src2 := writeback.output(RS2).asBits
+        branch_src2 := memaccess.output(RS1).asBits
+      }.elsewhen(input(CTRL_RS2_FROM_WB)){
+        branch_src2 := writebackStage.output(RD).asBits
       }.otherwise{
         branch_src2 := input(RS2).asBits
       }
@@ -246,7 +246,6 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
         }
       }
       
-
       // insert to stage
       insert(ALU_RESULT) := alu_result
       insert(MEM_WDATA) := output(RS2_FROM_WB) ? writebackStage.output(RD) | (output(RS2_FROM_MEM) ? memaccess.output(ALU_RESULT) | output(RS2))

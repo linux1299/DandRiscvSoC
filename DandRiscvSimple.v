@@ -1,6 +1,6 @@
 // Generator : SpinalHDL v1.8.1    git head : 2a7592004363e5b40ec43e1f122ed8641cd8965b
 // Component : DandRiscvSimple
-// Git hash  : 1d6a6eff7b7b789acf8b52ef5a964c275502ddd4
+// Git hash  : 3047226fa7f3d38621f1146bb4e229d6c6fc8eaa
 
 `timescale 1ns/1ps
 
@@ -217,9 +217,11 @@ module DandRiscvSimple (
   wire       [63:0]   _zz_execute_ALUPlugin_pc_next_7;
   wire       [63:0]   _zz_execute_ALUPlugin_pc_next_8;
   wire       [63:0]   writeback_RD;
+  wire                memaccess_LSU_HOLD;
   wire                memaccess_TIMER_CEN;
   wire       [63:0]   memaccess_LSU_WDATA;
   wire       [63:0]   memaccess_DATA_LOAD;
+  wire                execute_INT_HOLD;
   wire       [63:0]   execute_REDIRECT_PC_NEXT;
   wire                execute_REDIRECT_VALID;
   wire                execute_IS_RET;
@@ -257,18 +259,15 @@ module DandRiscvSimple (
   wire       [4:0]    execute_RS2_ADDR;
   wire       [4:0]    decode_RS2_ADDR;
   wire       [4:0]    decode_RS1_ADDR;
-  wire       [63:0]   writeback_RS2;
-  wire       [63:0]   memaccess_RS2;
   wire       [63:0]   decode_RS2;
-  wire       [63:0]   writeback_RS1;
   wire       [63:0]   memaccess_RS1;
   wire       [63:0]   decode_RS1;
   wire       [63:0]   decode_IMM;
-  wire       [31:0]   fetch_INSTRUCTION;
   wire       [63:0]   fetch_INT_PC;
   wire                fetch_INT_EN;
   wire       [63:0]   decode_BPU_PC_NEXT;
   wire                decode_BPU_BRANCH_TAKEN;
+  wire       [31:0]   fetch_INSTRUCTION;
   wire       [63:0]   execute_PC_NEXT;
   wire       [63:0]   fetch_PC;
   wire       [63:0]   writeback_ALU_RESULT;
@@ -282,9 +281,6 @@ module DandRiscvSimple (
   wire       [63:0]   execute_CSR_RDATA;
   wire       [3:0]    _zz_decode_to_execute_CSR_CTRL;
   wire       [11:0]   _zz_decode_to_execute_CSR_ADDR;
-  wire                fetch_LSU_HOLD;
-  wire                fetch_INT_HOLD;
-  wire                fetch_LOAD_USE;
   wire                _zz_DecodePlugin_control_ports_ctrl_rs1_from_mem;
   wire       [4:0]    _zz_DecodePlugin_control_ports_load_use;
   wire                _zz_DecodePlugin_control_ports_load_use_1;
@@ -294,11 +290,10 @@ module DandRiscvSimple (
   wire       [4:0]    _zz_DecodePlugin_control_ports_rs1_from_mem_1;
   wire                _zz_DecodePlugin_control_ports_rs1_from_mem_2;
   wire       [63:0]   _zz_execute_MEM_WDATA;
-  wire       [63:0]   _zz_execute_MEM_WDATA_1;
   wire       [63:0]   execute_BPU_PC_NEXT;
   wire                execute_BPU_BRANCH_TAKEN;
   wire                execute_ALU_WORD;
-  wire       [63:0]   _zz_execute_ALUPlugin_branch_src2;
+  wire                execute_CTRL_RS2_FROM_WB;
   wire                execute_CTRL_RS2_FROM_MEM;
   wire                execute_CTRL_RS1_FROM_WB;
   wire       [63:0]   _zz_execute_ALUPlugin_branch_src1;
@@ -306,6 +301,7 @@ module DandRiscvSimple (
   wire       [63:0]   execute_RS2;
   wire                execute_RS2_FROM_WB;
   wire                execute_RS2_FROM_MEM;
+  wire       [63:0]   execute_IMM;
   wire                execute_SRC2_IS_IMM;
   wire       [63:0]   execute_RS1;
   wire                execute_RS1_FROM_WB;
@@ -315,19 +311,18 @@ module DandRiscvSimple (
   wire       [4:0]    execute_RS1_ADDR;
   wire       [4:0]    execute_RD_ADDR;
   wire       [4:0]    execute_ALU_CTRL;
-  wire       [63:0]   _zz_execute_MEM_WDATA_2;
+  wire       [63:0]   _zz_execute_MEM_WDATA_1;
   wire       [4:0]    _zz_DecodePlugin_control_ports_rs1_from_wb_1;
   wire                _zz_DecodePlugin_control_ports_rs1_from_wb_2;
-  wire       [63:0]   execute_IMM;
   wire       [31:0]   decode_INSTRUCTION;
   wire       [63:0]   decode_PC;
   wire       [63:0]   _zz_fetch_to_decode_PC;
   wire       [63:0]   fetch_BPU_PC_NEXT;
   wire                fetch_BPU_BRANCH_TAKEN;
   wire       [63:0]   _zz_pc_next;
-  wire                when_FetchPlugin_l95;
+  wire                when_FetchPlugin_l108;
   wire       [63:0]   _zz_pc_next_1;
-  wire                when_FetchPlugin_l92;
+  wire                when_FetchPlugin_l105;
   wire                fetch_arbitration_haltItself;
   wire                fetch_arbitration_haltByOther;
   reg                 fetch_arbitration_removeIt;
@@ -417,15 +412,16 @@ module DandRiscvSimple (
   reg        [63:0]   pc;
   reg                 fetch_valid;
   reg        [63:0]   int_pc_reg;
-  reg                 int_pc_valid;
+  reg                 int_en_reg;
   reg        [1:0]    fetch_state_next;
   reg        [1:0]    fetch_state;
-  wire                when_FetchPlugin_l62;
+  wire                when_FetchPlugin_l52;
   wire                ICachePlugin_icache_access_cmd_isStall;
   wire                ICachePlugin_icache_access_cmd_fire_1;
-  wire                when_FetchPlugin_l79;
-  wire                when_FetchPlugin_l88;
-  wire                when_FetchPlugin_l106;
+  wire                when_FetchPlugin_l82;
+  wire                when_FetchPlugin_l92;
+  wire                when_FetchPlugin_l101;
+  wire                when_FetchPlugin_l119;
   reg        [63:0]   decode_DecodePlugin_imm;
   wire       [63:0]   decode_DecodePlugin_rs1;
   wire       [63:0]   decode_DecodePlugin_rs2;
@@ -541,6 +537,7 @@ module DandRiscvSimple (
   wire       [63:0]   execute_ExcepPlugin_csrrsi_wdata;
   wire       [63:0]   execute_ExcepPlugin_csrrci_wdata;
   wire                memaccess_LSUPlugin_is_memacc;
+  wire                memaccess_LSUPlugin_hold;
   wire                _zz_memaccess_LSUPlugin_data_lb;
   reg        [55:0]   _zz_memaccess_LSUPlugin_data_lb_1;
   wire       [63:0]   memaccess_LSUPlugin_data_lb;
@@ -574,97 +571,90 @@ module DandRiscvSimple (
   reg        [7:0]    _zz_memaccess_LSUPlugin_wstrb_1;
   reg        [7:0]    _zz_memaccess_LSUPlugin_wstrb_2;
   wire       [7:0]    _zz_memaccess_LSUPlugin_wstrb_3;
-  wire                memaccess_LSUPlugin_hold;
-  wire                when_Pipeline_l124;
+  wire                when_Pipeline_l127;
   reg        [63:0]   fetch_to_decode_PC;
-  wire                when_Pipeline_l124_1;
+  wire                when_Pipeline_l127_1;
   reg        [63:0]   decode_to_execute_PC;
-  wire                when_Pipeline_l124_2;
-  reg                 fetch_to_decode_BPU_BRANCH_TAKEN;
-  wire                when_Pipeline_l124_3;
-  reg                 decode_to_execute_BPU_BRANCH_TAKEN;
-  wire                when_Pipeline_l124_4;
-  reg        [63:0]   fetch_to_decode_BPU_PC_NEXT;
-  wire                when_Pipeline_l124_5;
-  reg        [63:0]   decode_to_execute_BPU_PC_NEXT;
-  wire                when_Pipeline_l124_6;
+  wire                when_Pipeline_l127_2;
   reg        [31:0]   fetch_to_decode_INSTRUCTION;
-  wire                when_Pipeline_l124_7;
+  wire                when_Pipeline_l127_3;
+  reg                 fetch_to_decode_BPU_BRANCH_TAKEN;
+  wire                when_Pipeline_l127_4;
+  reg                 decode_to_execute_BPU_BRANCH_TAKEN;
+  wire                when_Pipeline_l127_5;
+  reg        [63:0]   fetch_to_decode_BPU_PC_NEXT;
+  wire                when_Pipeline_l127_6;
+  reg        [63:0]   decode_to_execute_BPU_PC_NEXT;
+  wire                when_Pipeline_l127_7;
   reg        [63:0]   decode_to_execute_IMM;
-  wire                when_Pipeline_l124_8;
+  wire                when_Pipeline_l127_8;
   reg        [63:0]   decode_to_execute_RS1;
-  wire                when_Pipeline_l124_9;
+  wire                when_Pipeline_l127_9;
   reg        [63:0]   execute_to_memaccess_RS1;
-  wire                when_Pipeline_l124_10;
-  reg        [63:0]   memaccess_to_writeback_RS1;
-  wire                when_Pipeline_l124_11;
+  wire                when_Pipeline_l127_10;
   reg        [63:0]   decode_to_execute_RS2;
-  wire                when_Pipeline_l124_12;
-  reg        [63:0]   execute_to_memaccess_RS2;
-  wire                when_Pipeline_l124_13;
-  reg        [63:0]   memaccess_to_writeback_RS2;
-  wire                when_Pipeline_l124_14;
+  wire                when_Pipeline_l127_11;
   reg        [4:0]    decode_to_execute_RS1_ADDR;
-  wire                when_Pipeline_l124_15;
+  wire                when_Pipeline_l127_12;
   reg        [4:0]    decode_to_execute_RS2_ADDR;
-  wire                when_Pipeline_l124_16;
+  wire                when_Pipeline_l127_13;
   reg        [4:0]    decode_to_execute_ALU_CTRL;
-  wire                when_Pipeline_l124_17;
+  wire                when_Pipeline_l127_14;
   reg                 decode_to_execute_ALU_WORD;
-  wire                when_Pipeline_l124_18;
+  wire                when_Pipeline_l127_15;
   reg                 decode_to_execute_SRC2_IS_IMM;
-  wire                when_Pipeline_l124_19;
+  wire                when_Pipeline_l127_16;
   reg        [3:0]    decode_to_execute_MEM_CTRL;
-  wire                when_Pipeline_l124_20;
+  wire                when_Pipeline_l127_17;
   reg        [3:0]    execute_to_memaccess_MEM_CTRL;
-  wire                when_Pipeline_l124_21;
+  wire                when_Pipeline_l127_18;
   reg                 decode_to_execute_RD_WEN;
-  wire                when_Pipeline_l124_22;
+  wire                when_Pipeline_l127_19;
   reg                 execute_to_memaccess_RD_WEN;
-  wire                when_Pipeline_l124_23;
+  wire                when_Pipeline_l127_20;
   reg                 memaccess_to_writeback_RD_WEN;
-  wire                when_Pipeline_l124_24;
+  wire                when_Pipeline_l127_21;
   reg        [4:0]    decode_to_execute_RD_ADDR;
-  wire                when_Pipeline_l124_25;
+  wire                when_Pipeline_l127_22;
   reg        [4:0]    execute_to_memaccess_RD_ADDR;
-  wire                when_Pipeline_l124_26;
+  wire                when_Pipeline_l127_23;
   reg        [4:0]    memaccess_to_writeback_RD_ADDR;
-  wire                when_Pipeline_l124_27;
+  wire                when_Pipeline_l127_24;
   reg                 decode_to_execute_IS_LOAD;
-  wire                when_Pipeline_l124_28;
+  wire                when_Pipeline_l127_25;
   reg                 execute_to_memaccess_IS_LOAD;
-  wire                when_Pipeline_l124_29;
+  wire                when_Pipeline_l127_26;
   reg                 memaccess_to_writeback_IS_LOAD;
-  wire                when_Pipeline_l124_30;
+  wire                when_Pipeline_l127_27;
   reg                 decode_to_execute_IS_STORE;
-  wire                when_Pipeline_l124_31;
+  wire                when_Pipeline_l127_28;
   reg                 execute_to_memaccess_IS_STORE;
-  wire                when_Pipeline_l124_32;
+  wire                when_Pipeline_l127_29;
   reg                 decode_to_execute_BRANCH_OR_JALR;
-  wire                when_Pipeline_l124_33;
+  wire                when_Pipeline_l127_30;
   reg        [3:0]    decode_to_execute_CSR_CTRL;
-  wire                when_Pipeline_l124_34;
+  wire                when_Pipeline_l127_31;
   reg        [11:0]   decode_to_execute_CSR_ADDR;
-  wire                when_Pipeline_l124_35;
+  wire                when_Pipeline_l127_32;
   reg                 decode_to_execute_CSR_WEN;
-  wire                when_Pipeline_l124_36;
+  wire                when_Pipeline_l127_33;
   reg        [63:0]   decode_to_execute_CSR_RDATA;
-  wire                when_Pipeline_l124_37;
+  wire                when_Pipeline_l127_34;
   reg        [63:0]   execute_to_memaccess_ALU_RESULT;
-  wire                when_Pipeline_l124_38;
+  wire                when_Pipeline_l127_35;
   reg        [63:0]   memaccess_to_writeback_ALU_RESULT;
-  wire                when_Pipeline_l124_39;
+  wire                when_Pipeline_l127_36;
   reg        [63:0]   execute_to_memaccess_MEM_WDATA;
-  wire                when_Pipeline_l124_40;
+  wire                when_Pipeline_l127_37;
   reg        [63:0]   memaccess_to_writeback_DATA_LOAD;
-  wire                when_Pipeline_l159;
   wire                when_Pipeline_l162;
-  wire                when_Pipeline_l159_1;
+  wire                when_Pipeline_l165;
   wire                when_Pipeline_l162_1;
-  wire                when_Pipeline_l159_2;
+  wire                when_Pipeline_l165_1;
   wire                when_Pipeline_l162_2;
-  wire                when_Pipeline_l159_3;
+  wire                when_Pipeline_l165_2;
   wire                when_Pipeline_l162_3;
+  wire                when_Pipeline_l165_3;
   function [55:0] zz__zz_memaccess_LSUPlugin_data_lbu(input dummy);
     begin
       zz__zz_memaccess_LSUPlugin_data_lbu[55] = 1'b0;
@@ -878,7 +868,7 @@ module DandRiscvSimple (
     .predict_pc_next    (gshare_predictor_1_predict_pc_next[63:0]), //o
     .train_valid        (execute_BRANCH_OR_JUMP                  ), //i
     .train_taken        (execute_BRANCH_TAKEN                    ), //i
-    .train_mispredicted (when_FetchPlugin_l95                    ), //i
+    .train_mispredicted (when_FetchPlugin_l108                   ), //i
     .train_history      (execute_BRANCH_HISTORY[6:0]             ), //i
     .train_pc           (execute_PC[63:0]                        ), //i
     .train_pc_next      (execute_PC_NEXT[63:0]                   ), //i
@@ -895,7 +885,7 @@ module DandRiscvSimple (
     .read_ports_rs2_addr  (decode_DecodePlugin_rs2_addr[4:0]                ), //i
     .read_ports_rs1_req   (decode_DecodePlugin_rs1_req                      ), //i
     .read_ports_rs2_req   (decode_DecodePlugin_rs2_req                      ), //i
-    .write_ports_rd_value (_zz_execute_MEM_WDATA_2[63:0]                    ), //i
+    .write_ports_rd_value (_zz_execute_MEM_WDATA_1[63:0]                    ), //i
     .write_ports_rd_addr  (_zz_DecodePlugin_control_ports_rs1_from_wb_1[4:0]), //i
     .write_ports_rd_wen   (_zz_DecodePlugin_control_ports_rs1_from_wb_2     ), //i
     .clk                  (clk                                              ), //i
@@ -926,7 +916,7 @@ module DandRiscvSimple (
   Clint clint_1 (
     .pc                       (_zz_fetch_to_decode_PC[63:0]           ), //i
     .pc_next                  (_zz_pc_next[63:0]                      ), //i
-    .pc_next_valid            (when_FetchPlugin_l95                   ), //i
+    .pc_next_valid            (when_FetchPlugin_l108                  ), //i
     .csr_ports_mepc_wen       (clint_1_csr_ports_mepc_wen             ), //o
     .csr_ports_mepc_wdata     (clint_1_csr_ports_mepc_wdata[63:0]     ), //o
     .csr_ports_mcause_wen     (clint_1_csr_ports_mcause_wen           ), //o
@@ -1106,9 +1096,11 @@ module DandRiscvSimple (
     .reset                          (reset                                           )  //i
   );
   assign writeback_RD = (writeback_IS_LOAD ? writeback_DATA_LOAD : writeback_ALU_RESULT);
+  assign memaccess_LSU_HOLD = memaccess_LSUPlugin_hold;
   assign memaccess_TIMER_CEN = ((memaccess_LSUPlugin_addr == 64'h000000000200bff8) || ((memaccess_LSUPlugin_addr == 64'h0000000002004000) && memaccess_LSUPlugin_is_memacc));
   assign memaccess_LSU_WDATA = memaccess_LSUPlugin_wdata;
   assign memaccess_DATA_LOAD = memaccess_LSUPlugin_data_load;
+  assign execute_INT_HOLD = clint_1_int_hold;
   assign execute_REDIRECT_PC_NEXT = execute_ALUPlugin_redirect_pc_next;
   assign execute_REDIRECT_VALID = execute_ALUPlugin_redirect_valid;
   assign execute_IS_RET = execute_ALUPlugin_is_ret;
@@ -1117,7 +1109,7 @@ module DandRiscvSimple (
   assign execute_BRANCH_HISTORY = execute_ALUPlugin_branch_history;
   assign execute_BRANCH_TAKEN = execute_ALUPlugin_branch_taken;
   assign execute_BRANCH_OR_JUMP = execute_ALUPlugin_branch_or_jump;
-  assign execute_MEM_WDATA = (execute_RS2_FROM_WB ? _zz_execute_MEM_WDATA_2 : (execute_RS2_FROM_MEM ? _zz_execute_MEM_WDATA_1 : _zz_execute_MEM_WDATA));
+  assign execute_MEM_WDATA = (execute_RS2_FROM_WB ? _zz_execute_MEM_WDATA_1 : (execute_RS2_FROM_MEM ? _zz_execute_MEM_WDATA : execute_RS2));
   assign execute_ALU_RESULT = execute_ALUPlugin_alu_result;
   assign decode_CSR_RDATA = csrRegfile_1_cpu_ports_rdata;
   assign execute_CSR_WEN = decode_to_execute_CSR_WEN;
@@ -1146,18 +1138,15 @@ module DandRiscvSimple (
   assign execute_RS2_ADDR = decode_to_execute_RS2_ADDR;
   assign decode_RS2_ADDR = decode_DecodePlugin_rs2_addr;
   assign decode_RS1_ADDR = decode_DecodePlugin_rs1_addr;
-  assign writeback_RS2 = memaccess_to_writeback_RS2;
-  assign memaccess_RS2 = execute_to_memaccess_RS2;
   assign decode_RS2 = decode_DecodePlugin_rs2;
-  assign writeback_RS1 = memaccess_to_writeback_RS1;
   assign memaccess_RS1 = execute_to_memaccess_RS1;
   assign decode_RS1 = decode_DecodePlugin_rs1;
   assign decode_IMM = decode_DecodePlugin_imm;
-  assign fetch_INSTRUCTION = ICachePlugin_icache_access_rsp_payload_data;
   assign fetch_INT_PC = clint_1_int_pc;
   assign fetch_INT_EN = clint_1_int_en;
   assign decode_BPU_PC_NEXT = fetch_to_decode_BPU_PC_NEXT;
   assign decode_BPU_BRANCH_TAKEN = fetch_to_decode_BPU_BRANCH_TAKEN;
+  assign fetch_INSTRUCTION = ICachePlugin_icache_access_rsp_payload_data;
   assign execute_PC_NEXT = execute_ALUPlugin_pc_next;
   assign fetch_PC = pc;
   assign writeback_ALU_RESULT = memaccess_to_writeback_ALU_RESULT;
@@ -1171,9 +1160,6 @@ module DandRiscvSimple (
   assign execute_CSR_RDATA = decode_to_execute_CSR_RDATA;
   assign _zz_decode_to_execute_CSR_CTRL = decode_CSR_CTRL;
   assign _zz_decode_to_execute_CSR_ADDR = decode_CSR_ADDR;
-  assign fetch_LSU_HOLD = memaccess_LSUPlugin_hold;
-  assign fetch_INT_HOLD = clint_1_int_hold;
-  assign fetch_LOAD_USE = DecodePlugin_control_ports_load_use;
   assign _zz_DecodePlugin_control_ports_ctrl_rs1_from_mem = execute_BRANCH_OR_JALR;
   assign _zz_DecodePlugin_control_ports_load_use = execute_RD_ADDR;
   assign _zz_DecodePlugin_control_ports_load_use_1 = memaccess_IS_LOAD;
@@ -1182,12 +1168,11 @@ module DandRiscvSimple (
   assign _zz_DecodePlugin_control_ports_rs1_from_mem = execute_RS1_ADDR;
   assign _zz_DecodePlugin_control_ports_rs1_from_mem_1 = memaccess_RD_ADDR;
   assign _zz_DecodePlugin_control_ports_rs1_from_mem_2 = memaccess_RD_WEN;
-  assign _zz_execute_MEM_WDATA = execute_RS2;
-  assign _zz_execute_MEM_WDATA_1 = memaccess_ALU_RESULT;
+  assign _zz_execute_MEM_WDATA = memaccess_ALU_RESULT;
   assign execute_BPU_PC_NEXT = decode_to_execute_BPU_PC_NEXT;
   assign execute_BPU_BRANCH_TAKEN = decode_to_execute_BPU_BRANCH_TAKEN;
   assign execute_ALU_WORD = decode_to_execute_ALU_WORD;
-  assign _zz_execute_ALUPlugin_branch_src2 = memaccess_RS2;
+  assign execute_CTRL_RS2_FROM_WB = DecodePlugin_control_ports_ctrl_rs2_from_wb;
   assign execute_CTRL_RS2_FROM_MEM = DecodePlugin_control_ports_ctrl_rs2_from_mem;
   assign execute_CTRL_RS1_FROM_WB = DecodePlugin_control_ports_ctrl_rs1_from_wb;
   assign _zz_execute_ALUPlugin_branch_src1 = memaccess_RS1;
@@ -1195,6 +1180,7 @@ module DandRiscvSimple (
   assign execute_RS2 = decode_to_execute_RS2;
   assign execute_RS2_FROM_WB = DecodePlugin_control_ports_rs2_from_wb;
   assign execute_RS2_FROM_MEM = DecodePlugin_control_ports_rs2_from_mem;
+  assign execute_IMM = decode_to_execute_IMM;
   assign execute_SRC2_IS_IMM = decode_to_execute_SRC2_IS_IMM;
   assign execute_RS1 = decode_to_execute_RS1;
   assign execute_RS1_FROM_WB = DecodePlugin_control_ports_rs1_from_wb;
@@ -1204,19 +1190,18 @@ module DandRiscvSimple (
   assign execute_RS1_ADDR = decode_to_execute_RS1_ADDR;
   assign execute_RD_ADDR = decode_to_execute_RD_ADDR;
   assign execute_ALU_CTRL = decode_to_execute_ALU_CTRL;
-  assign _zz_execute_MEM_WDATA_2 = writeback_RD;
+  assign _zz_execute_MEM_WDATA_1 = writeback_RD;
   assign _zz_DecodePlugin_control_ports_rs1_from_wb_1 = writeback_RD_ADDR;
   assign _zz_DecodePlugin_control_ports_rs1_from_wb_2 = writeback_RD_WEN;
-  assign execute_IMM = decode_to_execute_IMM;
   assign decode_INSTRUCTION = fetch_to_decode_INSTRUCTION;
   assign decode_PC = fetch_to_decode_PC;
   assign _zz_fetch_to_decode_PC = fetch_PC;
   assign fetch_BPU_PC_NEXT = gshare_predictor_1_predict_pc_next;
   assign fetch_BPU_BRANCH_TAKEN = gshare_predictor_1_predict_taken;
   assign _zz_pc_next = execute_REDIRECT_PC_NEXT;
-  assign when_FetchPlugin_l95 = execute_REDIRECT_VALID;
+  assign when_FetchPlugin_l108 = execute_REDIRECT_VALID;
   assign _zz_pc_next_1 = fetch_INT_PC;
-  assign when_FetchPlugin_l92 = fetch_INT_EN;
+  assign when_FetchPlugin_l105 = fetch_INT_EN;
   assign fetch_arbitration_haltByOther = 1'b0;
   always @(*) begin
     fetch_arbitration_removeIt = 1'b0;
@@ -1268,35 +1253,55 @@ module DandRiscvSimple (
   assign writeback_arbitration_flushIt = 1'b0;
   assign writeback_arbitration_flushNext = 1'b0;
   assign ICachePlugin_icache_access_cmd_fire = (ICachePlugin_icache_access_cmd_valid && ICachePlugin_icache_access_cmd_ready);
+  assign when_FetchPlugin_l52 = (! fetch_arbitration_isStuck);
   always @(*) begin
-    fetch_state_next = 2'b00;
     case(fetch_state)
       2'b00 : begin
-        if(when_FetchPlugin_l62) begin
+        if(when_FetchPlugin_l52) begin
           fetch_state_next = 2'b01;
+        end else begin
+          fetch_state_next = 2'b00;
         end
       end
       2'b01 : begin
         if(ICachePlugin_icache_access_cmd_isStall) begin
           fetch_state_next = 2'b10;
+        end else begin
+          if(fetch_arbitration_isStuck) begin
+            fetch_state_next = 2'b11;
+          end else begin
+            fetch_state_next = 2'b01;
+          end
         end
       end
       2'b10 : begin
-        if(ICachePlugin_icache_access_cmd_fire_1) begin
-          fetch_state_next = 2'b01;
+        if(fetch_arbitration_isStuck) begin
+          fetch_state_next = 2'b10;
+        end else begin
+          if(ICachePlugin_icache_access_cmd_fire_1) begin
+            fetch_state_next = 2'b01;
+          end else begin
+            fetch_state_next = 2'b10;
+          end
         end
       end
       default : begin
+        if(when_FetchPlugin_l82) begin
+          fetch_state_next = 2'b01;
+        end else begin
+          fetch_state_next = 2'b11;
+        end
       end
     endcase
   end
 
-  assign when_FetchPlugin_l62 = (! fetch_arbitration_haltItself);
   assign ICachePlugin_icache_access_cmd_isStall = (ICachePlugin_icache_access_cmd_valid && (! ICachePlugin_icache_access_cmd_ready));
   assign ICachePlugin_icache_access_cmd_fire_1 = (ICachePlugin_icache_access_cmd_valid && ICachePlugin_icache_access_cmd_ready);
-  assign when_FetchPlugin_l79 = (when_FetchPlugin_l92 && ((fetch_state == 2'b10) || (fetch_state_next == 2'b10)));
-  assign when_FetchPlugin_l88 = (fetch_state_next == 2'b01);
-  assign when_FetchPlugin_l106 = (fetch_state_next == 2'b01);
+  assign when_FetchPlugin_l82 = (! fetch_arbitration_isStuck);
+  assign when_FetchPlugin_l92 = (when_FetchPlugin_l105 && ((fetch_state == 2'b10) || (fetch_state_next == 2'b10)));
+  assign when_FetchPlugin_l101 = (fetch_state_next == 2'b01);
+  assign when_FetchPlugin_l119 = (fetch_state_next != 2'b00);
+  assign fetch_arbitration_isValid = (ICachePlugin_icache_access_rsp_valid && (! (when_FetchPlugin_l105 || int_en_reg)));
   assign ICachePlugin_icache_access_cmd_valid = fetch_valid;
   assign ICachePlugin_icache_access_cmd_payload_addr = pc_next;
   assign decode_DecodePlugin_rs1_req = (! (((decode_INSTRUCTION[6 : 0] == 7'h37) || (decode_INSTRUCTION[6 : 0] == 7'h17)) || (decode_INSTRUCTION[6 : 0] == 7'h67)));
@@ -2179,7 +2184,7 @@ module DandRiscvSimple (
         execute_ALUPlugin_src1 = memaccess_ALU_RESULT;
       end else begin
         if(execute_RS1_FROM_WB) begin
-          execute_ALUPlugin_src1 = _zz_execute_MEM_WDATA_2;
+          execute_ALUPlugin_src1 = _zz_execute_MEM_WDATA_1;
         end else begin
           execute_ALUPlugin_src1 = execute_RS1;
         end
@@ -2198,7 +2203,7 @@ module DandRiscvSimple (
           execute_ALUPlugin_src2 = memaccess_ALU_RESULT;
         end else begin
           if(execute_RS2_FROM_WB) begin
-            execute_ALUPlugin_src2 = _zz_execute_MEM_WDATA_2;
+            execute_ALUPlugin_src2 = _zz_execute_MEM_WDATA_1;
           end else begin
             execute_ALUPlugin_src2 = execute_RS2;
           end
@@ -2213,7 +2218,7 @@ module DandRiscvSimple (
       execute_ALUPlugin_branch_src1 = _zz_execute_ALUPlugin_branch_src1;
     end else begin
       if(execute_CTRL_RS1_FROM_WB) begin
-        execute_ALUPlugin_branch_src1 = writeback_RS1;
+        execute_ALUPlugin_branch_src1 = _zz_execute_MEM_WDATA_1;
       end else begin
         execute_ALUPlugin_branch_src1 = execute_RS1;
       end
@@ -2222,10 +2227,10 @@ module DandRiscvSimple (
 
   always @(*) begin
     if(execute_CTRL_RS2_FROM_MEM) begin
-      execute_ALUPlugin_branch_src2 = _zz_execute_ALUPlugin_branch_src2;
+      execute_ALUPlugin_branch_src2 = _zz_execute_ALUPlugin_branch_src1;
     end else begin
-      if(execute_CTRL_RS1_FROM_WB) begin
-        execute_ALUPlugin_branch_src2 = writeback_RS2;
+      if(execute_CTRL_RS2_FROM_WB) begin
+        execute_ALUPlugin_branch_src2 = _zz_execute_MEM_WDATA_1;
       end else begin
         execute_ALUPlugin_branch_src2 = execute_RS2;
       end
@@ -2315,10 +2320,10 @@ module DandRiscvSimple (
   assign DecodePlugin_control_ports_ctrl_rs1_from_wb = (_zz_DecodePlugin_control_ports_ctrl_rs1_from_mem && DecodePlugin_control_ports_rs1_from_wb);
   assign DecodePlugin_control_ports_ctrl_rs2_from_wb = (_zz_DecodePlugin_control_ports_ctrl_rs1_from_mem && DecodePlugin_control_ports_rs2_from_wb);
   assign DecodePlugin_control_ports_ctrl_load_use = ((_zz_DecodePlugin_control_ports_ctrl_rs1_from_mem && _zz_DecodePlugin_control_ports_load_use_1) && ((_zz_DecodePlugin_control_ports_rs1_from_mem == _zz_DecodePlugin_control_ports_rs1_from_mem_1) || (_zz_DecodePlugin_control_ports_rs2_from_mem == _zz_DecodePlugin_control_ports_rs1_from_mem_1)));
-  assign fetch_arbitration_haltItself = ((fetch_LOAD_USE || fetch_INT_HOLD) || fetch_LSU_HOLD);
-  assign decode_arbitration_haltItself = 1'b0;
-  assign execute_arbitration_haltItself = 1'b0;
-  assign memaccess_arbitration_haltItself = 1'b0;
+  assign fetch_arbitration_haltItself = 1'b0;
+  assign decode_arbitration_haltItself = DecodePlugin_control_ports_load_use;
+  assign execute_arbitration_haltItself = (DecodePlugin_control_ports_ctrl_load_use || execute_INT_HOLD);
+  assign memaccess_arbitration_haltItself = memaccess_LSU_HOLD;
   assign writeback_arbitration_haltItself = 1'b0;
   assign clint_1_ecall = (_zz_decode_to_execute_CSR_CTRL == CsrCtrlEnum_ECALL);
   assign clint_1_ebreak = (_zz_decode_to_execute_CSR_CTRL == CsrCtrlEnum_EBREAK);
@@ -2345,7 +2350,7 @@ module DandRiscvSimple (
     end
   end
 
-  assign timer_1_addr = _zz_execute_MEM_WDATA_1;
+  assign timer_1_addr = _zz_execute_MEM_WDATA;
   assign memaccess_LSUPlugin_is_memacc = ((memaccess_IS_LOAD || memaccess_IS_STORE) && memaccess_arbitration_isFiring);
   assign _zz_memaccess_LSUPlugin_data_lb = DCachePlugin_dcache_access_rsp_payload_data[7];
   always @(*) begin
@@ -2726,13 +2731,13 @@ module DandRiscvSimple (
   assign _zz_6 = zz__zz_memaccess_LSUPlugin_wstrb_2(1'b0);
   always @(*) _zz_memaccess_LSUPlugin_wstrb_2 = _zz_6;
   assign _zz_memaccess_LSUPlugin_wstrb_3[7 : 0] = 8'hff;
-  assign memaccess_LSUPlugin_hold = 1'b0;
   assign DCachePlugin_dcache_access_cmd_valid = (((memaccess_LSUPlugin_addr != 64'h000000000200bff8) && (memaccess_LSUPlugin_addr != 64'h0000000002004000)) && memaccess_LSUPlugin_is_memacc);
   assign DCachePlugin_dcache_access_cmd_payload_addr = memaccess_LSUPlugin_addr;
   assign DCachePlugin_dcache_access_cmd_payload_wen = memaccess_IS_STORE;
   assign DCachePlugin_dcache_access_cmd_payload_wdata = memaccess_LSUPlugin_wdata;
   assign DCachePlugin_dcache_access_cmd_payload_wstrb = memaccess_LSUPlugin_wstrb;
   assign DCachePlugin_dcache_access_cmd_payload_size = memaccess_LSUPlugin_size;
+  assign memaccess_LSUPlugin_hold = (! DCachePlugin_dcache_access_cmd_ready);
   assign ICachePlugin_icache_access_cmd_ready = iCache_1_cpu_cmd_ready;
   assign ICachePlugin_icache_access_rsp_valid = iCache_1_cpu_rsp_valid;
   assign ICachePlugin_icache_access_rsp_payload_data = iCache_1_cpu_rsp_payload_data;
@@ -2743,7 +2748,6 @@ module DandRiscvSimple (
   assign icacheReader_ar_payload_burst = 2'b01;
   assign icacheReader_ar_payload_addr = iCache_1_next_level_cmd_payload_addr;
   assign icacheReader_r_ready = 1'b1;
-  assign fetch_arbitration_isValid = ICachePlugin_icache_access_rsp_valid;
   assign DCachePlugin_dcache_access_cmd_ready = dCache_1_cpu_cmd_ready;
   assign DCachePlugin_dcache_access_rsp_valid = dCache_1_cpu_rsp_valid;
   assign DCachePlugin_dcache_access_rsp_payload_data = dCache_1_cpu_rsp_payload_data;
@@ -2766,47 +2770,44 @@ module DandRiscvSimple (
   assign dcacheWriter_w_payload_last = 1'b1;
   assign dcacheWriter_b_ready = 1'b1;
   assign dCache_1_next_level_cmd_ready = (dCache_1_next_level_cmd_payload_wen ? dcacheReader_ar_ready : dcacheWriter_aw_ready);
-  assign when_Pipeline_l124 = (! decode_arbitration_isStuck);
-  assign when_Pipeline_l124_1 = (! execute_arbitration_isStuck);
-  assign when_Pipeline_l124_2 = (! decode_arbitration_isStuck);
-  assign when_Pipeline_l124_3 = (! execute_arbitration_isStuck);
-  assign when_Pipeline_l124_4 = (! decode_arbitration_isStuck);
-  assign when_Pipeline_l124_5 = (! execute_arbitration_isStuck);
-  assign when_Pipeline_l124_6 = (! decode_arbitration_isStuck);
-  assign when_Pipeline_l124_7 = (! execute_arbitration_isStuck);
-  assign when_Pipeline_l124_8 = (! execute_arbitration_isStuck);
-  assign when_Pipeline_l124_9 = (! memaccess_arbitration_isStuck);
-  assign when_Pipeline_l124_10 = (! writeback_arbitration_isStuck);
-  assign when_Pipeline_l124_11 = (! execute_arbitration_isStuck);
-  assign when_Pipeline_l124_12 = (! memaccess_arbitration_isStuck);
-  assign when_Pipeline_l124_13 = (! writeback_arbitration_isStuck);
-  assign when_Pipeline_l124_14 = (! execute_arbitration_isStuck);
-  assign when_Pipeline_l124_15 = (! execute_arbitration_isStuck);
-  assign when_Pipeline_l124_16 = (! execute_arbitration_isStuck);
-  assign when_Pipeline_l124_17 = (! execute_arbitration_isStuck);
-  assign when_Pipeline_l124_18 = (! execute_arbitration_isStuck);
-  assign when_Pipeline_l124_19 = (! execute_arbitration_isStuck);
-  assign when_Pipeline_l124_20 = (! memaccess_arbitration_isStuck);
-  assign when_Pipeline_l124_21 = (! execute_arbitration_isStuck);
-  assign when_Pipeline_l124_22 = (! memaccess_arbitration_isStuck);
-  assign when_Pipeline_l124_23 = (! writeback_arbitration_isStuck);
-  assign when_Pipeline_l124_24 = (! execute_arbitration_isStuck);
-  assign when_Pipeline_l124_25 = (! memaccess_arbitration_isStuck);
-  assign when_Pipeline_l124_26 = (! writeback_arbitration_isStuck);
-  assign when_Pipeline_l124_27 = (! execute_arbitration_isStuck);
-  assign when_Pipeline_l124_28 = (! memaccess_arbitration_isStuck);
-  assign when_Pipeline_l124_29 = (! writeback_arbitration_isStuck);
-  assign when_Pipeline_l124_30 = (! execute_arbitration_isStuck);
-  assign when_Pipeline_l124_31 = (! memaccess_arbitration_isStuck);
-  assign when_Pipeline_l124_32 = (! execute_arbitration_isStuck);
-  assign when_Pipeline_l124_33 = (! execute_arbitration_isStuck);
-  assign when_Pipeline_l124_34 = (! execute_arbitration_isStuck);
-  assign when_Pipeline_l124_35 = (! execute_arbitration_isStuck);
-  assign when_Pipeline_l124_36 = (! execute_arbitration_isStuck);
-  assign when_Pipeline_l124_37 = (! memaccess_arbitration_isStuck);
-  assign when_Pipeline_l124_38 = (! writeback_arbitration_isStuck);
-  assign when_Pipeline_l124_39 = (! memaccess_arbitration_isStuck);
-  assign when_Pipeline_l124_40 = (! writeback_arbitration_isStuck);
+  assign when_Pipeline_l127 = (! decode_arbitration_isStuck);
+  assign when_Pipeline_l127_1 = (! execute_arbitration_isStuck);
+  assign when_Pipeline_l127_2 = (! decode_arbitration_isStuck);
+  assign when_Pipeline_l127_3 = (! decode_arbitration_isStuck);
+  assign when_Pipeline_l127_4 = (! execute_arbitration_isStuck);
+  assign when_Pipeline_l127_5 = (! decode_arbitration_isStuck);
+  assign when_Pipeline_l127_6 = (! execute_arbitration_isStuck);
+  assign when_Pipeline_l127_7 = (! execute_arbitration_isStuck);
+  assign when_Pipeline_l127_8 = (! execute_arbitration_isStuck);
+  assign when_Pipeline_l127_9 = (! memaccess_arbitration_isStuck);
+  assign when_Pipeline_l127_10 = (! execute_arbitration_isStuck);
+  assign when_Pipeline_l127_11 = (! execute_arbitration_isStuck);
+  assign when_Pipeline_l127_12 = (! execute_arbitration_isStuck);
+  assign when_Pipeline_l127_13 = (! execute_arbitration_isStuck);
+  assign when_Pipeline_l127_14 = (! execute_arbitration_isStuck);
+  assign when_Pipeline_l127_15 = (! execute_arbitration_isStuck);
+  assign when_Pipeline_l127_16 = (! execute_arbitration_isStuck);
+  assign when_Pipeline_l127_17 = (! memaccess_arbitration_isStuck);
+  assign when_Pipeline_l127_18 = (! execute_arbitration_isStuck);
+  assign when_Pipeline_l127_19 = (! memaccess_arbitration_isStuck);
+  assign when_Pipeline_l127_20 = (! writeback_arbitration_isStuck);
+  assign when_Pipeline_l127_21 = (! execute_arbitration_isStuck);
+  assign when_Pipeline_l127_22 = (! memaccess_arbitration_isStuck);
+  assign when_Pipeline_l127_23 = (! writeback_arbitration_isStuck);
+  assign when_Pipeline_l127_24 = (! execute_arbitration_isStuck);
+  assign when_Pipeline_l127_25 = (! memaccess_arbitration_isStuck);
+  assign when_Pipeline_l127_26 = (! writeback_arbitration_isStuck);
+  assign when_Pipeline_l127_27 = (! execute_arbitration_isStuck);
+  assign when_Pipeline_l127_28 = (! memaccess_arbitration_isStuck);
+  assign when_Pipeline_l127_29 = (! execute_arbitration_isStuck);
+  assign when_Pipeline_l127_30 = (! execute_arbitration_isStuck);
+  assign when_Pipeline_l127_31 = (! execute_arbitration_isStuck);
+  assign when_Pipeline_l127_32 = (! execute_arbitration_isStuck);
+  assign when_Pipeline_l127_33 = (! execute_arbitration_isStuck);
+  assign when_Pipeline_l127_34 = (! memaccess_arbitration_isStuck);
+  assign when_Pipeline_l127_35 = (! writeback_arbitration_isStuck);
+  assign when_Pipeline_l127_36 = (! memaccess_arbitration_isStuck);
+  assign when_Pipeline_l127_37 = (! writeback_arbitration_isStuck);
   assign fetch_arbitration_isFlushed = (({writeback_arbitration_flushNext,{memaccess_arbitration_flushNext,{execute_arbitration_flushNext,decode_arbitration_flushNext}}} != 4'b0000) || ({writeback_arbitration_flushIt,{memaccess_arbitration_flushIt,{execute_arbitration_flushIt,{decode_arbitration_flushIt,fetch_arbitration_flushIt}}}} != 5'h0));
   assign decode_arbitration_isFlushed = (({writeback_arbitration_flushNext,{memaccess_arbitration_flushNext,execute_arbitration_flushNext}} != 3'b000) || ({writeback_arbitration_flushIt,{memaccess_arbitration_flushIt,{execute_arbitration_flushIt,decode_arbitration_flushIt}}} != 4'b0000));
   assign execute_arbitration_isFlushed = (({writeback_arbitration_flushNext,memaccess_arbitration_flushNext} != 2'b00) || ({writeback_arbitration_flushIt,{memaccess_arbitration_flushIt,execute_arbitration_flushIt}} != 3'b000));
@@ -2832,20 +2833,20 @@ module DandRiscvSimple (
   assign writeback_arbitration_isStuck = (writeback_arbitration_haltItself || writeback_arbitration_isStuckByOthers);
   assign writeback_arbitration_isMoving = ((! writeback_arbitration_isStuck) && (! writeback_arbitration_removeIt));
   assign writeback_arbitration_isFiring = ((writeback_arbitration_isValid && (! writeback_arbitration_isStuck)) && (! writeback_arbitration_removeIt));
-  assign when_Pipeline_l159 = ((! fetch_arbitration_isStuck) && (! fetch_arbitration_removeIt));
-  assign when_Pipeline_l162 = ((! decode_arbitration_isStuck) || decode_arbitration_removeIt);
-  assign when_Pipeline_l159_1 = ((! decode_arbitration_isStuck) && (! decode_arbitration_removeIt));
-  assign when_Pipeline_l162_1 = ((! execute_arbitration_isStuck) || execute_arbitration_removeIt);
-  assign when_Pipeline_l159_2 = ((! execute_arbitration_isStuck) && (! execute_arbitration_removeIt));
-  assign when_Pipeline_l162_2 = ((! memaccess_arbitration_isStuck) || memaccess_arbitration_removeIt);
-  assign when_Pipeline_l159_3 = ((! memaccess_arbitration_isStuck) && (! memaccess_arbitration_removeIt));
-  assign when_Pipeline_l162_3 = ((! writeback_arbitration_isStuck) || writeback_arbitration_removeIt);
+  assign when_Pipeline_l162 = ((! fetch_arbitration_isStuck) && (! fetch_arbitration_removeIt));
+  assign when_Pipeline_l165 = ((! decode_arbitration_isStuck) || decode_arbitration_removeIt);
+  assign when_Pipeline_l162_1 = ((! decode_arbitration_isStuck) && (! decode_arbitration_removeIt));
+  assign when_Pipeline_l165_1 = ((! execute_arbitration_isStuck) || execute_arbitration_removeIt);
+  assign when_Pipeline_l162_2 = ((! execute_arbitration_isStuck) && (! execute_arbitration_removeIt));
+  assign when_Pipeline_l165_2 = ((! memaccess_arbitration_isStuck) || memaccess_arbitration_removeIt);
+  assign when_Pipeline_l162_3 = ((! memaccess_arbitration_isStuck) && (! memaccess_arbitration_removeIt));
+  assign when_Pipeline_l165_3 = ((! writeback_arbitration_isStuck) || writeback_arbitration_removeIt);
   always @(posedge clk or posedge reset) begin
     if(reset) begin
       pc_next <= 64'h0000000080000000;
       fetch_valid <= 1'b0;
       int_pc_reg <= 64'h0;
-      int_pc_valid <= 1'b0;
+      int_en_reg <= 1'b0;
       fetch_state <= 2'b00;
       execute_ALUPlugin_branch_history <= 7'h0;
       decode_arbitration_isValid <= 1'b0;
@@ -2854,22 +2855,22 @@ module DandRiscvSimple (
       writeback_arbitration_isValid <= 1'b0;
     end else begin
       fetch_state <= fetch_state_next;
-      if(when_FetchPlugin_l79) begin
-        int_pc_valid <= 1'b1;
+      if(when_FetchPlugin_l92) begin
+        int_en_reg <= 1'b1;
         int_pc_reg <= _zz_pc_next_1;
       end else begin
         if(ICachePlugin_icache_access_rsp_valid) begin
-          int_pc_valid <= 1'b0;
+          int_en_reg <= 1'b0;
         end
       end
-      if(when_FetchPlugin_l88) begin
-        if(int_pc_valid) begin
+      if(when_FetchPlugin_l101) begin
+        if(int_en_reg) begin
           pc_next <= int_pc_reg;
         end else begin
-          if(when_FetchPlugin_l92) begin
+          if(when_FetchPlugin_l105) begin
             pc_next <= _zz_pc_next_1;
           end else begin
-            if(when_FetchPlugin_l95) begin
+            if(when_FetchPlugin_l108) begin
               pc_next <= _zz_pc_next;
             end else begin
               if(fetch_BPU_BRANCH_TAKEN) begin
@@ -2881,35 +2882,37 @@ module DandRiscvSimple (
           end
         end
       end
-      if(when_FetchPlugin_l106) begin
+      if(when_FetchPlugin_l119) begin
         fetch_valid <= 1'b1;
+      end else begin
+        fetch_valid <= 1'b0;
       end
       execute_ALUPlugin_branch_history <= {execute_ALUPlugin_branch_history[5 : 0],execute_ALUPlugin_branch_taken};
-      if(when_Pipeline_l159) begin
+      if(when_Pipeline_l162) begin
         decode_arbitration_isValid <= fetch_arbitration_isValid;
       end else begin
-        if(when_Pipeline_l162) begin
+        if(when_Pipeline_l165) begin
           decode_arbitration_isValid <= 1'b0;
         end
       end
-      if(when_Pipeline_l159_1) begin
+      if(when_Pipeline_l162_1) begin
         execute_arbitration_isValid <= decode_arbitration_isValid;
       end else begin
-        if(when_Pipeline_l162_1) begin
+        if(when_Pipeline_l165_1) begin
           execute_arbitration_isValid <= 1'b0;
         end
       end
-      if(when_Pipeline_l159_2) begin
+      if(when_Pipeline_l162_2) begin
         memaccess_arbitration_isValid <= execute_arbitration_isValid;
       end else begin
-        if(when_Pipeline_l162_2) begin
+        if(when_Pipeline_l165_2) begin
           memaccess_arbitration_isValid <= 1'b0;
         end
       end
-      if(when_Pipeline_l159_3) begin
+      if(when_Pipeline_l162_3) begin
         writeback_arbitration_isValid <= memaccess_arbitration_isValid;
       end else begin
-        if(when_Pipeline_l162_3) begin
+        if(when_Pipeline_l165_3) begin
           writeback_arbitration_isValid <= 1'b0;
         end
       end
@@ -2920,127 +2923,118 @@ module DandRiscvSimple (
     if(ICachePlugin_icache_access_cmd_fire) begin
       pc <= pc_next;
     end
-    if(when_Pipeline_l124) begin
+    if(when_Pipeline_l127) begin
       fetch_to_decode_PC <= _zz_fetch_to_decode_PC;
     end
-    if(when_Pipeline_l124_1) begin
+    if(when_Pipeline_l127_1) begin
       decode_to_execute_PC <= decode_PC;
     end
-    if(when_Pipeline_l124_2) begin
-      fetch_to_decode_BPU_BRANCH_TAKEN <= fetch_BPU_BRANCH_TAKEN;
-    end
-    if(when_Pipeline_l124_3) begin
-      decode_to_execute_BPU_BRANCH_TAKEN <= decode_BPU_BRANCH_TAKEN;
-    end
-    if(when_Pipeline_l124_4) begin
-      fetch_to_decode_BPU_PC_NEXT <= fetch_BPU_PC_NEXT;
-    end
-    if(when_Pipeline_l124_5) begin
-      decode_to_execute_BPU_PC_NEXT <= decode_BPU_PC_NEXT;
-    end
-    if(when_Pipeline_l124_6) begin
+    if(when_Pipeline_l127_2) begin
       fetch_to_decode_INSTRUCTION <= fetch_INSTRUCTION;
     end
-    if(when_Pipeline_l124_7) begin
+    if(when_Pipeline_l127_3) begin
+      fetch_to_decode_BPU_BRANCH_TAKEN <= fetch_BPU_BRANCH_TAKEN;
+    end
+    if(when_Pipeline_l127_4) begin
+      decode_to_execute_BPU_BRANCH_TAKEN <= decode_BPU_BRANCH_TAKEN;
+    end
+    if(when_Pipeline_l127_5) begin
+      fetch_to_decode_BPU_PC_NEXT <= fetch_BPU_PC_NEXT;
+    end
+    if(when_Pipeline_l127_6) begin
+      decode_to_execute_BPU_PC_NEXT <= decode_BPU_PC_NEXT;
+    end
+    if(when_Pipeline_l127_7) begin
       decode_to_execute_IMM <= decode_IMM;
     end
-    if(when_Pipeline_l124_8) begin
+    if(when_Pipeline_l127_8) begin
       decode_to_execute_RS1 <= decode_RS1;
     end
-    if(when_Pipeline_l124_9) begin
+    if(when_Pipeline_l127_9) begin
       execute_to_memaccess_RS1 <= execute_RS1;
     end
-    if(when_Pipeline_l124_10) begin
-      memaccess_to_writeback_RS1 <= _zz_execute_ALUPlugin_branch_src1;
-    end
-    if(when_Pipeline_l124_11) begin
+    if(when_Pipeline_l127_10) begin
       decode_to_execute_RS2 <= decode_RS2;
     end
-    if(when_Pipeline_l124_12) begin
-      execute_to_memaccess_RS2 <= _zz_execute_MEM_WDATA;
-    end
-    if(when_Pipeline_l124_13) begin
-      memaccess_to_writeback_RS2 <= _zz_execute_ALUPlugin_branch_src2;
-    end
-    if(when_Pipeline_l124_14) begin
+    if(when_Pipeline_l127_11) begin
       decode_to_execute_RS1_ADDR <= decode_RS1_ADDR;
     end
-    if(when_Pipeline_l124_15) begin
+    if(when_Pipeline_l127_12) begin
       decode_to_execute_RS2_ADDR <= decode_RS2_ADDR;
     end
-    if(when_Pipeline_l124_16) begin
+    if(when_Pipeline_l127_13) begin
       decode_to_execute_ALU_CTRL <= decode_ALU_CTRL;
     end
-    if(when_Pipeline_l124_17) begin
+    if(when_Pipeline_l127_14) begin
       decode_to_execute_ALU_WORD <= decode_ALU_WORD;
     end
-    if(when_Pipeline_l124_18) begin
+    if(when_Pipeline_l127_15) begin
       decode_to_execute_SRC2_IS_IMM <= decode_SRC2_IS_IMM;
     end
-    if(when_Pipeline_l124_19) begin
+    if(when_Pipeline_l127_16) begin
       decode_to_execute_MEM_CTRL <= decode_MEM_CTRL;
     end
-    if(when_Pipeline_l124_20) begin
+    if(when_Pipeline_l127_17) begin
       execute_to_memaccess_MEM_CTRL <= execute_MEM_CTRL;
     end
-    if(when_Pipeline_l124_21) begin
+    if(when_Pipeline_l127_18) begin
       decode_to_execute_RD_WEN <= decode_RD_WEN;
     end
-    if(when_Pipeline_l124_22) begin
+    if(when_Pipeline_l127_19) begin
       execute_to_memaccess_RD_WEN <= execute_RD_WEN;
     end
-    if(when_Pipeline_l124_23) begin
+    if(when_Pipeline_l127_20) begin
       memaccess_to_writeback_RD_WEN <= _zz_DecodePlugin_control_ports_rs1_from_mem_2;
     end
-    if(when_Pipeline_l124_24) begin
+    if(when_Pipeline_l127_21) begin
       decode_to_execute_RD_ADDR <= decode_RD_ADDR;
     end
-    if(when_Pipeline_l124_25) begin
+    if(when_Pipeline_l127_22) begin
       execute_to_memaccess_RD_ADDR <= _zz_DecodePlugin_control_ports_load_use;
     end
-    if(when_Pipeline_l124_26) begin
+    if(when_Pipeline_l127_23) begin
       memaccess_to_writeback_RD_ADDR <= _zz_DecodePlugin_control_ports_rs1_from_mem_1;
     end
-    if(when_Pipeline_l124_27) begin
+    if(when_Pipeline_l127_24) begin
       decode_to_execute_IS_LOAD <= decode_IS_LOAD;
     end
-    if(when_Pipeline_l124_28) begin
+    if(when_Pipeline_l127_25) begin
       execute_to_memaccess_IS_LOAD <= execute_IS_LOAD;
     end
-    if(when_Pipeline_l124_29) begin
+    if(when_Pipeline_l127_26) begin
       memaccess_to_writeback_IS_LOAD <= _zz_DecodePlugin_control_ports_load_use_1;
     end
-    if(when_Pipeline_l124_30) begin
+    if(when_Pipeline_l127_27) begin
       decode_to_execute_IS_STORE <= decode_IS_STORE;
     end
-    if(when_Pipeline_l124_31) begin
+    if(when_Pipeline_l127_28) begin
       execute_to_memaccess_IS_STORE <= execute_IS_STORE;
     end
-    if(when_Pipeline_l124_32) begin
+    if(when_Pipeline_l127_29) begin
       decode_to_execute_BRANCH_OR_JALR <= decode_BRANCH_OR_JALR;
     end
-    if(when_Pipeline_l124_33) begin
+    if(when_Pipeline_l127_30) begin
       decode_to_execute_CSR_CTRL <= _zz_decode_to_execute_CSR_CTRL;
     end
-    if(when_Pipeline_l124_34) begin
+    if(when_Pipeline_l127_31) begin
       decode_to_execute_CSR_ADDR <= _zz_decode_to_execute_CSR_ADDR;
     end
-    if(when_Pipeline_l124_35) begin
+    if(when_Pipeline_l127_32) begin
       decode_to_execute_CSR_WEN <= decode_CSR_WEN;
     end
-    if(when_Pipeline_l124_36) begin
+    if(when_Pipeline_l127_33) begin
       decode_to_execute_CSR_RDATA <= decode_CSR_RDATA;
     end
-    if(when_Pipeline_l124_37) begin
+    if(when_Pipeline_l127_34) begin
       execute_to_memaccess_ALU_RESULT <= execute_ALU_RESULT;
     end
-    if(when_Pipeline_l124_38) begin
-      memaccess_to_writeback_ALU_RESULT <= _zz_execute_MEM_WDATA_1;
+    if(when_Pipeline_l127_35) begin
+      memaccess_to_writeback_ALU_RESULT <= _zz_execute_MEM_WDATA;
     end
-    if(when_Pipeline_l124_39) begin
+    if(when_Pipeline_l127_36) begin
       execute_to_memaccess_MEM_WDATA <= execute_MEM_WDATA;
     end
-    if(when_Pipeline_l124_40) begin
+    if(when_Pipeline_l127_37) begin
       memaccess_to_writeback_DATA_LOAD <= memaccess_DATA_LOAD;
     end
   end

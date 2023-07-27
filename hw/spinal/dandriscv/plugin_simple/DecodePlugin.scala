@@ -300,12 +300,7 @@ class DecodePlugin() extends Plugin[DandRiscvSimple]
 
     }
 
-    execute plug new Area{
-      import execute._
-      output(IMM) := input(IMM)
-    }
-
-    val writebackStage = if(withWBstage) writeback else memaccess
+    // regfile recv rd from wb stage
     writebackStage plug new Area{
       import writebackStage._
       regfile_module.write_ports.rd_wen := output(RD_WEN)

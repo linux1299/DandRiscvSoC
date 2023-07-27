@@ -37,6 +37,7 @@ with DCacheAccessService
       import memaccess._
 
       val is_memacc   = (input(IS_LOAD) || input(IS_STORE)) && arbitration.isFiring
+      val hold        = Bool()
 
       val data_dcache = dcache_access.rsp.payload.data
       val data_lb     = B((XLEN-8-1 downto 0) -> data_dcache(7)) ## data_dcache(7 downto 0)
@@ -109,25 +110,20 @@ with DCacheAccessService
         }
       }
 
-     
-
       // output mem stage
       insert(DATA_LOAD):= data_load
       insert(LSU_WDATA):= wdata
       insert(TIMER_CEN):= (addr===MTIME) || (addr===MTIMECMP) && is_memacc
-
-      // lsu hold logic TODO:
-      val hold = False
-      fetch.insert(LSU_HOLD) := hold
-      
-
-      // connect to cache
+      insert(LSU_HOLD) := hold
+         
+      // connect to dcache
       dcache_access.cmd.valid        := (addr=/=MTIME) && (addr=/=MTIMECMP) && is_memacc
       dcache_access.cmd.payload.addr := addr
       dcache_access.cmd.payload.wen  := input(IS_STORE)
       dcache_access.cmd.payload.wdata:= wdata
       dcache_access.cmd.payload.wstrb:= wstrb
       dcache_access.cmd.payload.size := size
+      hold := !dcache_access.cmd.ready
     }
 
     writebackStage plug new Area{

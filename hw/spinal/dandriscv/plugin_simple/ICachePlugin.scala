@@ -103,12 +103,6 @@ class ICachePlugin(val config : ICacheConfig) extends Plugin[DandRiscvSimple]{
     icache.next_level.rsp.valid := icacheReader.r.valid
     icache.next_level.rsp.payload.data := icacheReader.r.payload.data
 
-    fetch plug new Area{
-      import fetch._
-      insert(INSTRUCTION) := icache_access.rsp.payload.data
-      arbitration.isValid := icache_access.rsp.valid
-    }
-
     
    }
   
