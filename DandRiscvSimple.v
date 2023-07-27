@@ -1,6 +1,6 @@
 // Generator : SpinalHDL v1.8.1    git head : 2a7592004363e5b40ec43e1f122ed8641cd8965b
 // Component : DandRiscvSimple
-// Git hash  : 180fcdde7ee8d6bf018aba5f00ab02b0cdba32bf
+// Git hash  : 1d6a6eff7b7b789acf8b52ef5a964c275502ddd4
 
 `timescale 1ns/1ps
 
@@ -515,15 +515,15 @@ module DandRiscvSimple (
   reg                 execute_ALUPlugin_is_jmp;
   reg        [63:0]   execute_ALUPlugin_redirect_pc_next;
   reg                 execute_ALUPlugin_redirect_valid;
-  wire                when_AluPlugin_l74;
-  wire                when_AluPlugin_l87;
-  wire                when_AluPlugin_l118;
-  wire                when_AluPlugin_l125;
+  wire                when_ALUPlugin_l74;
+  wire                when_ALUPlugin_l87;
+  wire                when_ALUPlugin_l118;
+  wire                when_ALUPlugin_l125;
   wire       [62:0]   _zz_execute_ALUPlugin_alu_result;
   wire       [62:0]   _zz_execute_ALUPlugin_alu_result_1;
-  wire                when_AluPlugin_l141;
-  wire                when_AluPlugin_l148;
-  wire                when_AluPlugin_l155;
+  wire                when_ALUPlugin_l141;
+  wire                when_ALUPlugin_l148;
+  wire                when_ALUPlugin_l155;
   wire                execute_ALUPlugin_beq_result;
   wire                execute_ALUPlugin_bne_result;
   wire                execute_ALUPlugin_blt_result;
@@ -532,9 +532,9 @@ module DandRiscvSimple (
   wire                execute_ALUPlugin_bgeu_result;
   wire                execute_ALUPlugin_branch_taken;
   reg        [6:0]    execute_ALUPlugin_branch_history;
-  wire                when_AluPlugin_l188;
-  wire                when_AluPlugin_l196;
-  wire                when_AluPlugin_l231;
+  wire                when_ALUPlugin_l188;
+  wire                when_ALUPlugin_l196;
+  wire                when_ALUPlugin_l231;
   reg        [63:0]   execute_ExcepPlugin_csr_wdata;
   wire       [63:0]   execute_ExcepPlugin_csrrs_wdata;
   wire       [63:0]   execute_ExcepPlugin_csrrc_wdata;
@@ -2083,7 +2083,7 @@ module DandRiscvSimple (
       if(execute_ALUPlugin_jalr) begin
         if(execute_ALUPlugin_rd_is_link) begin
           if(execute_ALUPlugin_rs1_is_link) begin
-            if(when_AluPlugin_l231) begin
+            if(when_ALUPlugin_l231) begin
               execute_ALUPlugin_is_call = 1'b1;
             end else begin
               execute_ALUPlugin_is_call = 1'b1;
@@ -2108,7 +2108,7 @@ module DandRiscvSimple (
       if(execute_ALUPlugin_jalr) begin
         if(execute_ALUPlugin_rd_is_link) begin
           if(execute_ALUPlugin_rs1_is_link) begin
-            if(!when_AluPlugin_l231) begin
+            if(!when_ALUPlugin_l231) begin
               execute_ALUPlugin_is_ret = 1'b1;
             end
           end
@@ -2144,7 +2144,7 @@ module DandRiscvSimple (
     execute_ALUPlugin_redirect_pc_next = 64'h0;
     if(execute_ALUPlugin_branch_or_jump) begin
       if(execute_ALUPlugin_branch_taken) begin
-        if(when_AluPlugin_l196) begin
+        if(when_ALUPlugin_l196) begin
           execute_ALUPlugin_redirect_pc_next = execute_ALUPlugin_pc_next;
         end
       end else begin
@@ -2159,7 +2159,7 @@ module DandRiscvSimple (
     execute_ALUPlugin_redirect_valid = 1'b0;
     if(execute_ALUPlugin_branch_or_jump) begin
       if(execute_ALUPlugin_branch_taken) begin
-        if(when_AluPlugin_l196) begin
+        if(when_ALUPlugin_l196) begin
           execute_ALUPlugin_redirect_valid = 1'b1;
         end
       end else begin
@@ -2170,9 +2170,9 @@ module DandRiscvSimple (
     end
   end
 
-  assign when_AluPlugin_l74 = (((execute_ALU_CTRL == AluCtrlEnum_AUIPC) || execute_ALUPlugin_jal) || execute_ALUPlugin_jalr);
+  assign when_ALUPlugin_l74 = (((execute_ALU_CTRL == AluCtrlEnum_AUIPC) || execute_ALUPlugin_jal) || execute_ALUPlugin_jalr);
   always @(*) begin
-    if(when_AluPlugin_l74) begin
+    if(when_ALUPlugin_l74) begin
       execute_ALUPlugin_src1 = execute_PC;
     end else begin
       if(execute_RS1_FROM_MEM) begin
@@ -2191,7 +2191,7 @@ module DandRiscvSimple (
     if(execute_SRC2_IS_IMM) begin
       execute_ALUPlugin_src2 = execute_IMM;
     end else begin
-      if(when_AluPlugin_l87) begin
+      if(when_ALUPlugin_l87) begin
         execute_ALUPlugin_src2 = 64'h0000000000000004;
       end else begin
         if(execute_RS2_FROM_MEM) begin
@@ -2207,7 +2207,7 @@ module DandRiscvSimple (
     end
   end
 
-  assign when_AluPlugin_l87 = (execute_ALUPlugin_jal || execute_ALUPlugin_jalr);
+  assign when_ALUPlugin_l87 = (execute_ALUPlugin_jal || execute_ALUPlugin_jalr);
   always @(*) begin
     if(execute_CTRL_RS1_FROM_MEM) begin
       execute_ALUPlugin_branch_src1 = _zz_execute_ALUPlugin_branch_src1;
@@ -2232,16 +2232,16 @@ module DandRiscvSimple (
     end
   end
 
-  assign when_AluPlugin_l118 = (execute_ALU_WORD == 1'b1);
+  assign when_ALUPlugin_l118 = (execute_ALU_WORD == 1'b1);
   always @(*) begin
     if((execute_ALU_CTRL == AluCtrlEnum_ADD) || (execute_ALU_CTRL == AluCtrlEnum_AUIPC)) begin
-        if(when_AluPlugin_l118) begin
+        if(when_ALUPlugin_l118) begin
           execute_ALUPlugin_alu_result = execute_ALUPlugin_addw_result;
         end else begin
           execute_ALUPlugin_alu_result = execute_ALUPlugin_add_result;
         end
     end else if((execute_ALU_CTRL == AluCtrlEnum_SUB)) begin
-        if(when_AluPlugin_l125) begin
+        if(when_ALUPlugin_l125) begin
           execute_ALUPlugin_alu_result = execute_ALUPlugin_subw_result;
         end else begin
           execute_ALUPlugin_alu_result = execute_ALUPlugin_sub_result;
@@ -2253,19 +2253,19 @@ module DandRiscvSimple (
     end else if((execute_ALU_CTRL == AluCtrlEnum_XOR_1)) begin
         execute_ALUPlugin_alu_result = execute_ALUPlugin_xor_result;
     end else if((execute_ALU_CTRL == AluCtrlEnum_SLL_1)) begin
-        if(when_AluPlugin_l141) begin
+        if(when_ALUPlugin_l141) begin
           execute_ALUPlugin_alu_result = execute_ALUPlugin_sllw_result;
         end else begin
           execute_ALUPlugin_alu_result = execute_ALUPlugin_sll_result;
         end
     end else if((execute_ALU_CTRL == AluCtrlEnum_SRL_1)) begin
-        if(when_AluPlugin_l148) begin
+        if(when_ALUPlugin_l148) begin
           execute_ALUPlugin_alu_result = execute_ALUPlugin_srlw_result;
         end else begin
           execute_ALUPlugin_alu_result = execute_ALUPlugin_srl_result;
         end
     end else if((execute_ALU_CTRL == AluCtrlEnum_SRA_1)) begin
-        if(when_AluPlugin_l155) begin
+        if(when_ALUPlugin_l155) begin
           execute_ALUPlugin_alu_result = execute_ALUPlugin_sraw_result;
         end else begin
           execute_ALUPlugin_alu_result = execute_ALUPlugin_sra_result;
@@ -2281,12 +2281,12 @@ module DandRiscvSimple (
     end
   end
 
-  assign when_AluPlugin_l125 = (execute_ALU_WORD == 1'b1);
+  assign when_ALUPlugin_l125 = (execute_ALU_WORD == 1'b1);
   assign _zz_execute_ALUPlugin_alu_result[62 : 0] = 63'h0;
   assign _zz_execute_ALUPlugin_alu_result_1[62 : 0] = 63'h0;
-  assign when_AluPlugin_l141 = (execute_ALU_WORD == 1'b1);
-  assign when_AluPlugin_l148 = (execute_ALU_WORD == 1'b1);
-  assign when_AluPlugin_l155 = (execute_ALU_WORD == 1'b1);
+  assign when_ALUPlugin_l141 = (execute_ALU_WORD == 1'b1);
+  assign when_ALUPlugin_l148 = (execute_ALU_WORD == 1'b1);
+  assign when_ALUPlugin_l155 = (execute_ALU_WORD == 1'b1);
   assign execute_ALUPlugin_beq_result = (execute_ALUPlugin_beq && (execute_ALUPlugin_branch_src1 == execute_ALUPlugin_branch_src2));
   assign execute_ALUPlugin_bne_result = (execute_ALUPlugin_bne && (execute_ALUPlugin_branch_src1 != execute_ALUPlugin_branch_src2));
   assign execute_ALUPlugin_blt_result = (execute_ALUPlugin_blt && ($signed(_zz_execute_ALUPlugin_blt_result) < $signed(_zz_execute_ALUPlugin_blt_result_1)));
@@ -2294,17 +2294,17 @@ module DandRiscvSimple (
   assign execute_ALUPlugin_bltu_result = (execute_ALUPlugin_bltu && (execute_ALUPlugin_branch_src1 < execute_ALUPlugin_branch_src2));
   assign execute_ALUPlugin_bgeu_result = (execute_ALUPlugin_bgeu && (execute_ALUPlugin_branch_src2 <= execute_ALUPlugin_branch_src1));
   assign execute_ALUPlugin_branch_taken = (((((((execute_ALUPlugin_beq_result || execute_ALUPlugin_bne_result) || execute_ALUPlugin_blt_result) || execute_ALUPlugin_bge_result) || execute_ALUPlugin_bltu_result) || execute_ALUPlugin_bgeu_result) || execute_ALUPlugin_jal) || execute_ALUPlugin_jalr);
-  assign when_AluPlugin_l188 = (execute_ALU_CTRL == AluCtrlEnum_JALR);
+  assign when_ALUPlugin_l188 = (execute_ALU_CTRL == AluCtrlEnum_JALR);
   always @(*) begin
-    if(when_AluPlugin_l188) begin
+    if(when_ALUPlugin_l188) begin
       execute_ALUPlugin_pc_next = _zz_execute_ALUPlugin_pc_next;
     end else begin
       execute_ALUPlugin_pc_next = _zz_execute_ALUPlugin_pc_next_6;
     end
   end
 
-  assign when_AluPlugin_l196 = ((! execute_BPU_BRANCH_TAKEN) || (execute_BPU_PC_NEXT != execute_ALUPlugin_pc_next));
-  assign when_AluPlugin_l231 = (execute_RD_ADDR == execute_RS1_ADDR);
+  assign when_ALUPlugin_l196 = ((! execute_BPU_BRANCH_TAKEN) || (execute_BPU_PC_NEXT != execute_ALUPlugin_pc_next));
+  assign when_ALUPlugin_l231 = (execute_RD_ADDR == execute_RS1_ADDR);
   assign DecodePlugin_control_ports_rs1_from_mem = ((_zz_DecodePlugin_control_ports_rs1_from_mem_2 && (_zz_DecodePlugin_control_ports_rs1_from_mem_1 != 5'h0)) && (_zz_DecodePlugin_control_ports_rs1_from_mem_1 == _zz_DecodePlugin_control_ports_rs1_from_mem));
   assign DecodePlugin_control_ports_rs2_from_mem = ((_zz_DecodePlugin_control_ports_rs1_from_mem_2 && (_zz_DecodePlugin_control_ports_rs1_from_mem_1 != 5'h0)) && (_zz_DecodePlugin_control_ports_rs1_from_mem_1 == _zz_DecodePlugin_control_ports_rs2_from_mem));
   assign DecodePlugin_control_ports_rs1_from_wb = (((_zz_DecodePlugin_control_ports_rs1_from_wb_2 && (_zz_DecodePlugin_control_ports_rs1_from_wb_1 != 5'h0)) && (_zz_DecodePlugin_control_ports_rs1_from_wb_1 == _zz_DecodePlugin_control_ports_rs1_from_mem)) && ((_zz_DecodePlugin_control_ports_rs1_from_mem_1 != _zz_DecodePlugin_control_ports_rs1_from_mem) || _zz_DecodePlugin_control_ports_rs1_from_wb));

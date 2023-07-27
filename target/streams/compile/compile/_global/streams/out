@@ -1,27 +1,15 @@
-<<<<<<< HEAD
 [0m[[0m[0minfo[0m] [0m[0mD:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin\IntAluPlugin.scala:1:1: [0m
-=======
-[0m[[0m[0minfo[0m] [0m[0m/home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin/IntAluPlugin.scala:1:1: [0m
->>>>>>> c282a756be35267eca8499ce193268e2ba6fb9e3
 [0m[[0m[0minfo[0m] [0m[0mFound names but no class, trait or object is defined in the compilation unit.[0m
 [0m[[0m[0minfo[0m] [0m[0mThe incremental compiler cannot record the dependency information in such case.[0m
 [0m[[0m[0minfo[0m] [0m[0mSome errors like unused import referring to a non-existent class might not be reported.[0m
 [0m[[0m[0minfo[0m] [0m[0m    [0m
 [0m[[0m[0minfo[0m] [0m[0mpackage dandriscv.plugin[0m
 [0m[[0m[0minfo[0m] [0m[0m^[0m
-<<<<<<< HEAD
 [0m[[0m[33mwarn[0m] [0m[0mD:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\DandRiscvCpu.scala:36:17: match may not be exhaustive.[0m
 [0m[[0m[33mwarn[0m] [0m[0mIt would fail on the following input: None[0m
 [0m[[0m[33mwarn[0m] [0m[0m    plugins.find(_.getClass == clazz) match {[0m
 [0m[[0m[33mwarn[0m] [0m[0m                ^[0m
 [0m[[0m[33mwarn[0m] [0m[0mD:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\DandRiscvSimple.scala:39:17: match may not be exhaustive.[0m
-=======
-[0m[[0m[33mwarn[0m] [0m[0m/home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/DandRiscvCpu.scala:36:17: match may not be exhaustive.[0m
-[0m[[0m[33mwarn[0m] [0m[0mIt would fail on the following input: None[0m
-[0m[[0m[33mwarn[0m] [0m[0m    plugins.find(_.getClass == clazz) match {[0m
-[0m[[0m[33mwarn[0m] [0m[0m                ^[0m
-[0m[[0m[33mwarn[0m] [0m[0m/home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/DandRiscvSimple.scala:39:17: match may not be exhaustive.[0m
->>>>>>> c282a756be35267eca8499ce193268e2ba6fb9e3
 [0m[[0m[33mwarn[0m] [0m[0mIt would fail on the following input: None[0m
 [0m[[0m[33mwarn[0m] [0m[0m    plugins.find(_.getClass == clazz) match {[0m
 [0m[[0m[33mwarn[0m] [0m[0m                ^[0m
