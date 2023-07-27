@@ -73,42 +73,55 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
       // ================= select op's source data ==================
       when(input(ALU_CTRL)===AluCtrlEnum.AUIPC.asBits || jal || jalr){
         src1 := input(PC).asBits
-      }.otherwise{
+      }
+      .otherwise{
         when(input(RS1_FROM_MEM)){
-          src1 := memaccess.input(ALU_RESULT)
-        }.elsewhen(input(RS1_FROM_WB)){
+          src1 := memaccess.input(DATA_LOAD)
+        }
+        .elsewhen(input(RS1_FROM_WB)){
           src1 := writebackStage.output(RD)
-        }.otherwise{
+        }
+        .otherwise{
           src1 := input(RS1).asBits
         }
       }
+      
       when(input(SRC2_IS_IMM)){
         src2 := input(IMM)
-      }.elsewhen(jal || jalr){
+      }
+      .elsewhen(jal || jalr){
         src2 := B(4, XLEN bits)
-      }.otherwise{
+      }
+      .otherwise{
         when(input(RS2_FROM_MEM)){
-          src2 := memaccess.input(ALU_RESULT)
-        }.elsewhen(input(RS2_FROM_WB)){
+          src2 := memaccess.input(DATA_LOAD)
+        }
+        .elsewhen(input(RS2_FROM_WB)){
           src2 := writebackStage.output(RD)
-        }.otherwise{
+        }
+        .otherwise{
           src2 := input(RS2).asBits
         }
       }
 
       // ================= select branch op's source data ==================
       when(input(CTRL_RS1_FROM_MEM)){
-        branch_src1 := memaccess.output(RS1).asBits
-      }.elsewhen(input(CTRL_RS1_FROM_WB)){
+        branch_src1 := memaccess.output(DATA_LOAD).asBits
+      }
+      .elsewhen(input(CTRL_RS1_FROM_WB)){
         branch_src1 := writebackStage.output(RD).asBits
-      }.otherwise{
+      }
+      .otherwise{
         branch_src1 := input(RS1).asBits
       }
+
       when(input(CTRL_RS2_FROM_MEM)){
-        branch_src2 := memaccess.output(RS1).asBits
-      }.elsewhen(input(CTRL_RS2_FROM_WB)){
+        branch_src2 := memaccess.output(DATA_LOAD).asBits
+      }
+      .elsewhen(input(CTRL_RS2_FROM_WB)){
         branch_src2 := writebackStage.output(RD).asBits
-      }.otherwise{
+      }
+      .otherwise{
         branch_src2 := input(RS2).asBits
       }
 
