@@ -71,15 +71,24 @@ with ControlService
 
     }
 
+    // control fetch stage
+      // add allowOverride or see Stage.scala
     fetch plug new Area{
       import fetch._
       insert(LOAD_USE) := control_ports.load_use
-      // control fetch stage
-      // add allowOverride or see Stage.scala
+      
       arbitration.haltItself := input(LOAD_USE) || input(INT_HOLD) || input(LSU_HOLD)
       
     }
+    
+    // control decode stage
+    decode plug new Area{
+      import decode._
 
+      arbitration.haltItself := False //TODO:
+    }
+
+    // control exe stage
     execute plug new Area{
       import execute._
       insert(RS1_FROM_MEM) := control_ports.rs1_from_mem
@@ -91,8 +100,22 @@ with ControlService
       insert(CTRL_RS1_FROM_WB)  := control_ports.ctrl_rs1_from_wb
       insert(CTRL_RS2_FROM_WB)  := control_ports.ctrl_rs2_from_wb
       insert(CTRL_LOAD_USE) := control_ports.ctrl_load_use
-      // control exe stage
-      
+
+      arbitration.haltItself := False //TODO:
+    }
+
+    // control memaccess stage
+    memaccess plug new Area{
+      import memaccess._
+
+      arbitration.haltItself := False //TODO:
+    }
+
+    // control writeback stage
+    writeback plug new Area{
+      import writeback._
+
+      arbitration.haltItself := False //TODO:
     }
 
   }

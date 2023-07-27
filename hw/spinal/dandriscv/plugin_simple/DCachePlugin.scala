@@ -83,6 +83,7 @@ class DCachePlugin(val config : DCacheConfig) extends Plugin[DandRiscvSimple]{
     // impl dcache access logic
     dcache_access.cmd <> dcache.cpu.cmd
     dcache_access.rsp <> dcache.cpu.rsp
+    dcache.flush := False // TODO:
 
     // sram ports
     val connect_sram = for(i<-0 until dcache_config.wayCount) yield new Area{

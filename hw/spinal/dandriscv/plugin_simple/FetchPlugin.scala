@@ -50,7 +50,7 @@ with ICacheAccessService
     val fetch_valid = RegInit(False).setName("fetch_valid")
     val int_pc_reg = Reg(UInt(this.addressWidth bits)).setName("int_pc_reg") init(0)
     val int_pc_valid = RegInit(False).setName("int_pc_valid")
-    val fetch_state_next = UInt(2 bits).setName("fetch_state_next")
+    val fetch_state_next = U(0, 2 bits).setName("fetch_state_next")
     val fetch_state = RegNext(fetch_state_next).setName("fetch_state") init(0)
 
     val fetchFSM = new Area{
@@ -60,17 +60,17 @@ with ICacheAccessService
       switch(fetch_state){
         is(IDLE) {
           when(!fetch.arbitration.haltItself){
-            fetch_state := FETCH
+            fetch_state_next := FETCH
           }
         }
         is(FETCH) {
           when(icache_access.cmd.isStall){
-            fetch_state := WAIT
+            fetch_state_next := WAIT
           }
         }
         is(WAIT) {
           when(icache_access.cmd.fire){
-            fetch_state := FETCH
+            fetch_state_next := FETCH
           }
         }
       }

@@ -1,10 +1,52 @@
 // Generator : SpinalHDL v1.8.1    git head : 2a7592004363e5b40ec43e1f122ed8641cd8965b
 // Component : DandRiscvSimple
-// Git hash  : 8521ef76c693b8a864eb14dbaa8fc9f34556d135
+// Git hash  : 180fcdde7ee8d6bf018aba5f00ab02b0cdba32bf
 
 `timescale 1ns/1ps
 
 module DandRiscvSimple (
+  output              icacheReader_ar_valid,
+  input               icacheReader_ar_ready,
+  output     [63:0]   icacheReader_ar_payload_addr,
+  output     [3:0]    icacheReader_ar_payload_id,
+  output     [7:0]    icacheReader_ar_payload_len,
+  output     [2:0]    icacheReader_ar_payload_size,
+  output     [1:0]    icacheReader_ar_payload_burst,
+  input               icacheReader_r_valid,
+  output              icacheReader_r_ready,
+  input      [255:0]  icacheReader_r_payload_data,
+  input      [3:0]    icacheReader_r_payload_id,
+  input      [1:0]    icacheReader_r_payload_resp,
+  input               icacheReader_r_payload_last,
+  output              dcacheReader_ar_valid,
+  input               dcacheReader_ar_ready,
+  output     [63:0]   dcacheReader_ar_payload_addr,
+  output     [3:0]    dcacheReader_ar_payload_id,
+  output     [7:0]    dcacheReader_ar_payload_len,
+  output     [2:0]    dcacheReader_ar_payload_size,
+  output     [1:0]    dcacheReader_ar_payload_burst,
+  input               dcacheReader_r_valid,
+  output              dcacheReader_r_ready,
+  input      [255:0]  dcacheReader_r_payload_data,
+  input      [3:0]    dcacheReader_r_payload_id,
+  input      [1:0]    dcacheReader_r_payload_resp,
+  input               dcacheReader_r_payload_last,
+  output              dcacheWriter_aw_valid,
+  input               dcacheWriter_aw_ready,
+  output     [63:0]   dcacheWriter_aw_payload_addr,
+  output     [3:0]    dcacheWriter_aw_payload_id,
+  output     [7:0]    dcacheWriter_aw_payload_len,
+  output     [2:0]    dcacheWriter_aw_payload_size,
+  output     [1:0]    dcacheWriter_aw_payload_burst,
+  output              dcacheWriter_w_valid,
+  input               dcacheWriter_w_ready,
+  output     [255:0]  dcacheWriter_w_payload_data,
+  output     [31:0]   dcacheWriter_w_payload_strb,
+  output              dcacheWriter_w_payload_last,
+  input               dcacheWriter_b_valid,
+  output              dcacheWriter_b_ready,
+  input      [3:0]    dcacheWriter_b_payload_id,
+  input      [1:0]    dcacheWriter_b_payload_resp,
   input               clk,
   input               reset
 );
@@ -53,14 +95,7 @@ module DandRiscvSimple (
   wire                clint_1_ebreak;
   wire                clint_1_mret;
   wire       [63:0]   timer_1_addr;
-  wire                iCache_1_flush;
-  wire                iCache_1_next_level_cmd_ready;
-  wire                iCache_1_next_level_rsp_valid;
-  wire       [255:0]  iCache_1_next_level_rsp_payload_data;
-  wire                dCache_1_flush;
   wire                dCache_1_next_level_cmd_ready;
-  wire                dCache_1_next_level_rsp_valid;
-  wire       [255:0]  dCache_1_next_level_rsp_payload_data;
   wire                gshare_predictor_1_predict_taken;
   wire       [6:0]    gshare_predictor_1_predict_history;
   wire       [63:0]   gshare_predictor_1_predict_pc_next;
@@ -383,7 +418,7 @@ module DandRiscvSimple (
   reg                 fetch_valid;
   reg        [63:0]   int_pc_reg;
   reg                 int_pc_valid;
-  wire       [1:0]    fetch_state_next;
+  reg        [1:0]    fetch_state_next;
   reg        [1:0]    fetch_state;
   wire                when_FetchPlugin_l62;
   wire                ICachePlugin_icache_access_cmd_isStall;
@@ -837,6 +872,7 @@ module DandRiscvSimple (
   assign _zz_decode_DecodePlugin_rd_wen_4 = 32'hffffffff;
   gshare_predictor gshare_predictor_1 (
     .predict_pc         (_zz_fetch_to_decode_PC[63:0]            ), //i
+    .predict_valid      (1'b1                                    ), //i
     .predict_taken      (gshare_predictor_1_predict_taken        ), //o
     .predict_history    (gshare_predictor_1_predict_history[6:0] ), //o
     .predict_pc_next    (gshare_predictor_1_predict_pc_next[63:0]), //o
@@ -924,7 +960,7 @@ module DandRiscvSimple (
     .reset     (reset                    )  //i
   );
   ICache iCache_1 (
-    .flush                          (iCache_1_flush                                   ), //i
+    .flush                          (1'b0                                             ), //i
     .cpu_cmd_valid                  (ICachePlugin_icache_access_cmd_valid             ), //i
     .cpu_cmd_ready                  (iCache_1_cpu_cmd_ready                           ), //o
     .cpu_cmd_payload_addr           (ICachePlugin_icache_access_cmd_payload_addr[63:0]), //i
@@ -956,12 +992,12 @@ module DandRiscvSimple (
     .sram_3_ports_rsp_valid         (sramBanks_2_sram_3_ports_rsp_valid               ), //i
     .sram_3_ports_rsp_payload_data  (sramBanks_2_sram_3_ports_rsp_payload_data[255:0] ), //i
     .next_level_cmd_valid           (iCache_1_next_level_cmd_valid                    ), //o
-    .next_level_cmd_ready           (iCache_1_next_level_cmd_ready                    ), //i
+    .next_level_cmd_ready           (icacheReader_ar_ready                            ), //i
     .next_level_cmd_payload_addr    (iCache_1_next_level_cmd_payload_addr[63:0]       ), //o
     .next_level_cmd_payload_len     (iCache_1_next_level_cmd_payload_len[3:0]         ), //o
     .next_level_cmd_payload_size    (iCache_1_next_level_cmd_payload_size[2:0]        ), //o
-    .next_level_rsp_valid           (iCache_1_next_level_rsp_valid                    ), //i
-    .next_level_rsp_payload_data    (iCache_1_next_level_rsp_payload_data[255:0]      ), //i
+    .next_level_rsp_valid           (icacheReader_r_valid                             ), //i
+    .next_level_rsp_payload_data    (icacheReader_r_payload_data[255:0]               ), //i
     .clk                            (clk                                              ), //i
     .reset                          (reset                                            )  //i
   );
@@ -994,7 +1030,7 @@ module DandRiscvSimple (
     .reset                          (reset                                           )  //i
   );
   DCache dCache_1 (
-    .flush                          (dCache_1_flush                                    ), //i
+    .flush                          (1'b0                                              ), //i
     .cpu_cmd_valid                  (DCachePlugin_dcache_access_cmd_valid              ), //i
     .cpu_cmd_ready                  (dCache_1_cpu_cmd_ready                            ), //o
     .cpu_cmd_payload_addr           (DCachePlugin_dcache_access_cmd_payload_addr[63:0] ), //i
@@ -1036,8 +1072,8 @@ module DandRiscvSimple (
     .next_level_cmd_payload_wen     (dCache_1_next_level_cmd_payload_wen               ), //o
     .next_level_cmd_payload_wdata   (dCache_1_next_level_cmd_payload_wdata[255:0]      ), //o
     .next_level_cmd_payload_wstrb   (dCache_1_next_level_cmd_payload_wstrb[31:0]       ), //o
-    .next_level_rsp_valid           (dCache_1_next_level_rsp_valid                     ), //i
-    .next_level_rsp_payload_data    (dCache_1_next_level_rsp_payload_data[255:0]       ), //i
+    .next_level_rsp_valid           (dcacheReader_r_valid                              ), //i
+    .next_level_rsp_payload_data    (dcacheReader_r_payload_data[255:0]                ), //i
     .clk                            (clk                                               ), //i
     .reset                          (reset                                             )  //i
   );
@@ -1232,6 +1268,29 @@ module DandRiscvSimple (
   assign writeback_arbitration_flushIt = 1'b0;
   assign writeback_arbitration_flushNext = 1'b0;
   assign ICachePlugin_icache_access_cmd_fire = (ICachePlugin_icache_access_cmd_valid && ICachePlugin_icache_access_cmd_ready);
+  always @(*) begin
+    fetch_state_next = 2'b00;
+    case(fetch_state)
+      2'b00 : begin
+        if(when_FetchPlugin_l62) begin
+          fetch_state_next = 2'b01;
+        end
+      end
+      2'b01 : begin
+        if(ICachePlugin_icache_access_cmd_isStall) begin
+          fetch_state_next = 2'b10;
+        end
+      end
+      2'b10 : begin
+        if(ICachePlugin_icache_access_cmd_fire_1) begin
+          fetch_state_next = 2'b01;
+        end
+      end
+      default : begin
+      end
+    endcase
+  end
+
   assign when_FetchPlugin_l62 = (! fetch_arbitration_haltItself);
   assign ICachePlugin_icache_access_cmd_isStall = (ICachePlugin_icache_access_cmd_valid && (! ICachePlugin_icache_access_cmd_ready));
   assign ICachePlugin_icache_access_cmd_fire_1 = (ICachePlugin_icache_access_cmd_valid && ICachePlugin_icache_access_cmd_ready);
@@ -2257,6 +2316,10 @@ module DandRiscvSimple (
   assign DecodePlugin_control_ports_ctrl_rs2_from_wb = (_zz_DecodePlugin_control_ports_ctrl_rs1_from_mem && DecodePlugin_control_ports_rs2_from_wb);
   assign DecodePlugin_control_ports_ctrl_load_use = ((_zz_DecodePlugin_control_ports_ctrl_rs1_from_mem && _zz_DecodePlugin_control_ports_load_use_1) && ((_zz_DecodePlugin_control_ports_rs1_from_mem == _zz_DecodePlugin_control_ports_rs1_from_mem_1) || (_zz_DecodePlugin_control_ports_rs2_from_mem == _zz_DecodePlugin_control_ports_rs1_from_mem_1)));
   assign fetch_arbitration_haltItself = ((fetch_LOAD_USE || fetch_INT_HOLD) || fetch_LSU_HOLD);
+  assign decode_arbitration_haltItself = 1'b0;
+  assign execute_arbitration_haltItself = 1'b0;
+  assign memaccess_arbitration_haltItself = 1'b0;
+  assign writeback_arbitration_haltItself = 1'b0;
   assign clint_1_ecall = (_zz_decode_to_execute_CSR_CTRL == CsrCtrlEnum_ECALL);
   assign clint_1_ebreak = (_zz_decode_to_execute_CSR_CTRL == CsrCtrlEnum_EBREAK);
   assign clint_1_mret = (_zz_decode_to_execute_CSR_CTRL == CsrCtrlEnum_MRET);
@@ -2671,8 +2734,38 @@ module DandRiscvSimple (
   assign DCachePlugin_dcache_access_cmd_payload_wstrb = memaccess_LSUPlugin_wstrb;
   assign DCachePlugin_dcache_access_cmd_payload_size = memaccess_LSUPlugin_size;
   assign ICachePlugin_icache_access_cmd_ready = iCache_1_cpu_cmd_ready;
+  assign ICachePlugin_icache_access_rsp_valid = iCache_1_cpu_rsp_valid;
+  assign ICachePlugin_icache_access_rsp_payload_data = iCache_1_cpu_rsp_payload_data;
+  assign icacheReader_ar_valid = iCache_1_next_level_cmd_valid;
+  assign icacheReader_ar_payload_id = 4'b0000;
+  assign icacheReader_ar_payload_len = {4'd0, iCache_1_next_level_cmd_payload_len};
+  assign icacheReader_ar_payload_size = iCache_1_next_level_cmd_payload_size;
+  assign icacheReader_ar_payload_burst = 2'b01;
+  assign icacheReader_ar_payload_addr = iCache_1_next_level_cmd_payload_addr;
+  assign icacheReader_r_ready = 1'b1;
   assign fetch_arbitration_isValid = ICachePlugin_icache_access_rsp_valid;
   assign DCachePlugin_dcache_access_cmd_ready = dCache_1_cpu_cmd_ready;
+  assign DCachePlugin_dcache_access_rsp_valid = dCache_1_cpu_rsp_valid;
+  assign DCachePlugin_dcache_access_rsp_payload_data = dCache_1_cpu_rsp_payload_data;
+  assign dcacheReader_ar_valid = dCache_1_next_level_cmd_valid;
+  assign dcacheReader_ar_payload_id = 4'b0001;
+  assign dcacheReader_ar_payload_len = {4'd0, dCache_1_next_level_cmd_payload_len};
+  assign dcacheReader_ar_payload_size = dCache_1_next_level_cmd_payload_size;
+  assign dcacheReader_ar_payload_burst = 2'b01;
+  assign dcacheReader_ar_payload_addr = dCache_1_next_level_cmd_payload_addr;
+  assign dcacheReader_r_ready = 1'b1;
+  assign dcacheWriter_aw_valid = (dCache_1_next_level_cmd_valid && dCache_1_next_level_cmd_payload_wen);
+  assign dcacheWriter_aw_payload_id = 4'b0010;
+  assign dcacheWriter_aw_payload_len = {4'd0, dCache_1_next_level_cmd_payload_len};
+  assign dcacheWriter_aw_payload_size = dCache_1_next_level_cmd_payload_size;
+  assign dcacheWriter_aw_payload_burst = 2'b01;
+  assign dcacheWriter_aw_payload_addr = dCache_1_next_level_cmd_payload_addr;
+  assign dcacheWriter_w_valid = dCache_1_next_level_cmd_valid;
+  assign dcacheWriter_w_payload_data = dCache_1_next_level_cmd_payload_wdata;
+  assign dcacheWriter_w_payload_strb = dCache_1_next_level_cmd_payload_wstrb;
+  assign dcacheWriter_w_payload_last = 1'b1;
+  assign dcacheWriter_b_ready = 1'b1;
+  assign dCache_1_next_level_cmd_ready = (dCache_1_next_level_cmd_payload_wen ? dcacheReader_ar_ready : dcacheWriter_aw_ready);
   assign when_Pipeline_l124 = (! decode_arbitration_isStuck);
   assign when_Pipeline_l124_1 = (! execute_arbitration_isStuck);
   assign when_Pipeline_l124_2 = (! decode_arbitration_isStuck);
@@ -2761,25 +2854,6 @@ module DandRiscvSimple (
       writeback_arbitration_isValid <= 1'b0;
     end else begin
       fetch_state <= fetch_state_next;
-      case(fetch_state)
-        2'b00 : begin
-          if(when_FetchPlugin_l62) begin
-            fetch_state <= 2'b01;
-          end
-        end
-        2'b01 : begin
-          if(ICachePlugin_icache_access_cmd_isStall) begin
-            fetch_state <= 2'b10;
-          end
-        end
-        2'b10 : begin
-          if(ICachePlugin_icache_access_cmd_fire_1) begin
-            fetch_state <= 2'b01;
-          end
-        end
-        default : begin
-        end
-      endcase
       if(when_FetchPlugin_l79) begin
         int_pc_valid <= 1'b1;
         int_pc_reg <= _zz_pc_next_1;
@@ -3025,6 +3099,9 @@ module DCache (
   input               reset
 );
 
+  wire       [9:0]    _zz_next_level_wstrb;
+  wire       [9:0]    _zz_next_level_wstrb_1;
+  wire       [9:0]    _zz_next_level_wdata;
   reg        [53:0]   _zz_cache_tag_0;
   reg                 _zz_cache_hit_0;
   reg                 _zz_cache_replace_info_0;
@@ -3262,17 +3339,23 @@ module DCache (
   wire                is_hit;
   wire                cpu_cmd_fire_1;
   wire                is_miss;
+  wire                cpu_cmd_fire_2;
+  wire                is_write;
   wire       [53:0]   cpu_tag;
   wire       [3:0]    cpu_set;
   wire       [4:0]    cpu_bank_offset;
   wire       [4:0]    cpu_bank_addr;
   wire       [1:0]    cpu_bank_sel;
+  wire                when_DCache_l87;
   reg        [63:0]   cpu_addr_d1;
   wire       [3:0]    cpu_set_d1;
   wire       [53:0]   cpu_tag_d1;
   wire       [4:0]    cpu_bank_addr_d1;
   wire       [1:0]    cpu_bank_sel_d1;
   reg                 cpu_cmd_ready_1;
+  reg        [7:0]    cpu_wstrb_d1;
+  reg                 cpu_wen_d1;
+  reg        [63:0]   cpu_wdata_d1;
   wire       [255:0]  sram_banks_data_0;
   wire       [255:0]  sram_banks_data_1;
   wire       [255:0]  sram_banks_data_2;
@@ -3290,6 +3373,10 @@ module DCache (
   wire                next_level_data_cnt_willOverflow;
   wire       [3:0]    next_level_bank_addr;
   reg                 next_level_done;
+  wire       [31:0]   next_level_wstrb_tmp;
+  wire       [255:0]  next_level_wdata_tmp;
+  wire       [31:0]   next_level_wstrb;
+  wire       [255:0]  next_level_wdata;
   wire                next_level_cmd_fire;
   wire                _zz_hit_way_id;
   wire                _zz_hit_way_id_1;
@@ -3329,7 +3416,7 @@ module DCache (
   wire                _zz_32;
   wire                _zz_33;
   wire                _zz_34;
-  wire                when_DCache_l169;
+  wire                when_DCache_l178;
   wire       [15:0]   _zz_35;
   wire                _zz_36;
   wire                _zz_37;
@@ -3364,7 +3451,7 @@ module DCache (
   wire                _zz_66;
   wire                _zz_67;
   wire                _zz_68;
-  wire                when_DCache_l169_1;
+  wire                when_DCache_l178_1;
   wire       [15:0]   _zz_69;
   wire                _zz_70;
   wire                _zz_71;
@@ -3399,7 +3486,7 @@ module DCache (
   wire                _zz_100;
   wire                _zz_101;
   wire                _zz_102;
-  wire                when_DCache_l169_2;
+  wire                when_DCache_l178_2;
   wire       [15:0]   _zz_103;
   wire                _zz_104;
   wire                _zz_105;
@@ -3434,10 +3521,13 @@ module DCache (
   wire                _zz_134;
   wire                _zz_135;
   wire                _zz_136;
-  wire                when_DCache_l169_3;
+  wire                when_DCache_l178_3;
   wire       [255:0]  _zz_cpu_rsp_payload_data;
   wire       [255:0]  _zz_cpu_rsp_payload_data_1;
 
+  assign _zz_next_level_wstrb = (_zz_next_level_wstrb_1 / 4'b1000);
+  assign _zz_next_level_wstrb_1 = (cpu_addr_d1[4 : 2] * 7'h40);
+  assign _zz_next_level_wdata = (cpu_addr_d1[4 : 2] * 7'h40);
   always @(*) begin
     case(cpu_set)
       4'b0000 : begin
@@ -3833,11 +3923,14 @@ module DCache (
   assign is_hit = ((|{cache_hit_3,{cache_hit_2,{cache_hit_1,cache_hit_0}}}) && cpu_cmd_fire);
   assign cpu_cmd_fire_1 = (cpu_cmd_valid && cpu_cmd_ready);
   assign is_miss = ((! (|{cache_hit_3,{cache_hit_2,{cache_hit_1,cache_hit_0}}})) && cpu_cmd_fire_1);
+  assign cpu_cmd_fire_2 = (cpu_cmd_valid && cpu_cmd_ready);
+  assign is_write = (cpu_cmd_fire_2 && cpu_cmd_payload_wen);
   assign cpu_tag = cpu_cmd_payload_addr[63 : 10];
   assign cpu_set = cpu_cmd_payload_addr[9 : 6];
   assign cpu_bank_offset = cpu_cmd_payload_addr[4 : 0];
   assign cpu_bank_addr = cpu_cmd_payload_addr[9 : 5];
   assign cpu_bank_sel = cpu_cmd_payload_addr[4 : 3];
+  assign when_DCache_l87 = (is_miss || is_write);
   assign cpu_set_d1 = cpu_addr_d1[9 : 6];
   assign cpu_tag_d1 = cpu_addr_d1[63 : 10];
   assign cpu_bank_addr_d1 = cpu_addr_d1[9 : 5];
@@ -3874,6 +3967,10 @@ module DCache (
   end
 
   assign next_level_bank_addr = cpu_addr_d1[9 : 6];
+  assign next_level_wstrb_tmp = {24'h0,cpu_wstrb_d1};
+  assign next_level_wdata_tmp = {192'h0,cpu_wdata_d1};
+  assign next_level_wstrb = (next_level_wstrb_tmp <<< _zz_next_level_wstrb);
+  assign next_level_wdata = (next_level_wdata_tmp <<< _zz_next_level_wdata);
   assign next_level_cmd_fire = (next_level_cmd_valid && next_level_cmd_ready);
   assign _zz_hit_way_id = (cache_hit_1 || cache_hit_3);
   assign _zz_hit_way_id_1 = (cache_hit_2 || cache_hit_3);
@@ -3985,7 +4082,7 @@ module DCache (
     end
   end
 
-  assign when_DCache_l169 = (is_hit && replace_info_full);
+  assign when_DCache_l178 = (is_hit && replace_info_full);
   assign _zz_35 = ({15'd0,1'b1} <<< cpu_set);
   assign _zz_36 = _zz_35[0];
   assign _zz_37 = _zz_35[1];
@@ -4097,7 +4194,7 @@ module DCache (
     end
   end
 
-  assign when_DCache_l169_1 = (is_hit && replace_info_full);
+  assign when_DCache_l178_1 = (is_hit && replace_info_full);
   assign _zz_69 = ({15'd0,1'b1} <<< cpu_set);
   assign _zz_70 = _zz_69[0];
   assign _zz_71 = _zz_69[1];
@@ -4209,7 +4306,7 @@ module DCache (
     end
   end
 
-  assign when_DCache_l169_2 = (is_hit && replace_info_full);
+  assign when_DCache_l178_2 = (is_hit && replace_info_full);
   assign _zz_103 = ({15'd0,1'b1} <<< cpu_set);
   assign _zz_104 = _zz_103[0];
   assign _zz_105 = _zz_103[1];
@@ -4321,7 +4418,7 @@ module DCache (
     end
   end
 
-  assign when_DCache_l169_3 = (is_hit && replace_info_full);
+  assign when_DCache_l178_3 = (is_hit && replace_info_full);
   assign _zz_cpu_rsp_payload_data = _zz__zz_cpu_rsp_payload_data;
   assign _zz_cpu_rsp_payload_data_1 = _zz__zz_cpu_rsp_payload_data_1;
   assign cpu_rsp_payload_data = (is_hit ? _zz_cpu_rsp_payload_data_2 : _zz_cpu_rsp_payload_data_3);
@@ -4330,6 +4427,9 @@ module DCache (
   assign next_level_cmd_payload_addr = cpu_addr_d1;
   assign next_level_cmd_payload_len = 4'b0010;
   assign next_level_cmd_payload_size = 3'b101;
+  assign next_level_cmd_payload_wen = cpu_wen_d1;
+  assign next_level_cmd_payload_wdata = next_level_wdata;
+  assign next_level_cmd_payload_wstrb = next_level_wstrb;
   assign next_level_cmd_valid = next_level_cmd_valid_1;
   always @(posedge clk or posedge reset) begin
     if(reset) begin
@@ -4527,11 +4627,23 @@ module DCache (
       ways_3_metas_15_replace_info <= 1'b0;
       cpu_addr_d1 <= 64'h0;
       cpu_cmd_ready_1 <= 1'b1;
+      cpu_wstrb_d1 <= 8'h0;
+      cpu_wen_d1 <= 1'b0;
+      cpu_wdata_d1 <= 64'h0;
       next_level_cmd_valid_1 <= 1'b0;
       next_level_data_cnt_value <= 1'b0;
     end else begin
-      if(is_miss) begin
+      if(when_DCache_l87) begin
         cpu_addr_d1 <= cpu_cmd_payload_addr;
+      end
+      if(is_write) begin
+        cpu_wstrb_d1 <= cpu_cmd_payload_wstrb;
+      end
+      if(is_write) begin
+        cpu_wen_d1 <= cpu_cmd_payload_wen;
+      end
+      if(is_write) begin
+        cpu_wdata_d1 <= cpu_cmd_payload_wdata;
       end
       next_level_data_cnt_value <= next_level_data_cnt_valueNext;
       if(is_miss) begin
@@ -4639,7 +4751,7 @@ module DCache (
           ways_0_metas_15_valid <= 1'b0;
         end
       end else begin
-        if(when_DCache_l169) begin
+        if(when_DCache_l178) begin
           if(cache_hit_0) begin
             if(_zz_2) begin
               ways_0_metas_0_replace_info <= 1'b1;
@@ -4903,8 +5015,12 @@ module DCache (
         if(is_miss) begin
           cpu_cmd_ready_1 <= 1'b0;
         end else begin
-          if(next_level_done) begin
-            cpu_cmd_ready_1 <= 1'b1;
+          if(is_write) begin
+            cpu_cmd_ready_1 <= 1'b0;
+          end else begin
+            if(next_level_done) begin
+              cpu_cmd_ready_1 <= 1'b1;
+            end
           end
         end
       end
@@ -5006,7 +5122,7 @@ module DCache (
           ways_1_metas_15_valid <= 1'b0;
         end
       end else begin
-        if(when_DCache_l169_1) begin
+        if(when_DCache_l178_1) begin
           if(cache_hit_1) begin
             if(_zz_36) begin
               ways_1_metas_0_replace_info <= 1'b1;
@@ -5270,8 +5386,12 @@ module DCache (
         if(is_miss) begin
           cpu_cmd_ready_1 <= 1'b0;
         end else begin
-          if(next_level_done) begin
-            cpu_cmd_ready_1 <= 1'b1;
+          if(is_write) begin
+            cpu_cmd_ready_1 <= 1'b0;
+          end else begin
+            if(next_level_done) begin
+              cpu_cmd_ready_1 <= 1'b1;
+            end
           end
         end
       end
@@ -5373,7 +5493,7 @@ module DCache (
           ways_2_metas_15_valid <= 1'b0;
         end
       end else begin
-        if(when_DCache_l169_2) begin
+        if(when_DCache_l178_2) begin
           if(cache_hit_2) begin
             if(_zz_70) begin
               ways_2_metas_0_replace_info <= 1'b1;
@@ -5637,8 +5757,12 @@ module DCache (
         if(is_miss) begin
           cpu_cmd_ready_1 <= 1'b0;
         end else begin
-          if(next_level_done) begin
-            cpu_cmd_ready_1 <= 1'b1;
+          if(is_write) begin
+            cpu_cmd_ready_1 <= 1'b0;
+          end else begin
+            if(next_level_done) begin
+              cpu_cmd_ready_1 <= 1'b1;
+            end
           end
         end
       end
@@ -5740,7 +5864,7 @@ module DCache (
           ways_3_metas_15_valid <= 1'b0;
         end
       end else begin
-        if(when_DCache_l169_3) begin
+        if(when_DCache_l178_3) begin
           if(cache_hit_3) begin
             if(_zz_104) begin
               ways_3_metas_0_replace_info <= 1'b1;
@@ -6004,8 +6128,12 @@ module DCache (
         if(is_miss) begin
           cpu_cmd_ready_1 <= 1'b0;
         end else begin
-          if(next_level_done) begin
-            cpu_cmd_ready_1 <= 1'b1;
+          if(is_write) begin
+            cpu_cmd_ready_1 <= 1'b0;
+          end else begin
+            if(next_level_done) begin
+              cpu_cmd_ready_1 <= 1'b1;
+            end
           end
         end
       end
@@ -9593,6 +9721,7 @@ endmodule
 
 module gshare_predictor (
   input      [63:0]   predict_pc,
+  input               predict_valid,
   output              predict_taken,
   output     [6:0]    predict_history,
   output     [63:0]   predict_pc_next,
@@ -9746,7 +9875,6 @@ module gshare_predictor (
   reg        [1:0]    GSHARE_PHT_127;
   wire       [6:0]    GSHARE_predict_index;
   wire       [6:0]    GSHARE_train_index;
-  wire                GSHARE_predict_valid;
   wire                GSHARE_pht_predict_taken;
   wire       [1:0]    switch_Predictor_l42;
   wire       [127:0]  _zz_1;
@@ -13934,7 +14062,7 @@ module gshare_predictor (
       if(when_Predictor_l74) begin
         GSHARE_global_branch_history <= {train_history[5 : 0],train_taken};
       end else begin
-        if(GSHARE_predict_valid) begin
+        if(predict_valid) begin
           GSHARE_global_branch_history <= {GSHARE_global_branch_history[5 : 0],predict_taken};
         end
       end
