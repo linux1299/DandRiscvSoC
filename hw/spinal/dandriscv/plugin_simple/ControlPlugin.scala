@@ -37,11 +37,11 @@ class ControlPlugin() extends Plugin[DandRiscvSimple]
 with ControlService
 {
 
-  @dontName var control_ports : ControlPorts = null
+  @dontName var hazard : ControlPorts = null
   override def newControlPorts() : ControlPorts = {
-    assert(control_ports == null)
-    control_ports = ControlPorts()
-    control_ports
+    assert(hazard == null)
+    hazard = ControlPorts()
+    hazard
   }
   
   override def setup(pipeline: DandRiscvSimple): Unit = {
@@ -54,20 +54,20 @@ with ControlService
     import pipeline._
     import pipeline.config._ 
 
-    if(control_ports != null) pipeline plug new Area{
+    if(hazard != null) pipeline plug new Area{
       // data hazard detect
-      control_ports.rs1_from_mem := memaccess.output(RD_WEN) && memaccess.output(RD_ADDR)=/=U(0, 5 bits) && memaccess.output(RD_ADDR)===execute.output(RS1_ADDR)
-      control_ports.rs2_from_mem := memaccess.output(RD_WEN) && memaccess.output(RD_ADDR)=/=U(0, 5 bits) && memaccess.output(RD_ADDR)===execute.output(RS2_ADDR)
-      control_ports.rs1_from_wb := writebackStage.output(RD_WEN) && writebackStage.output(RD_ADDR)=/=U(0, 5 bits) && writebackStage.output(RD_ADDR)===execute.output(RS1_ADDR) && ((memaccess.output(RD_ADDR)=/=execute.output(RS1_ADDR)) || writebackStage.output(IS_LOAD))
-      control_ports.rs2_from_wb := writebackStage.output(RD_WEN) && writebackStage.output(RD_ADDR)=/=U(0, 5 bits) && writebackStage.output(RD_ADDR)===execute.output(RS2_ADDR) && ((memaccess.output(RD_ADDR)=/=execute.output(RS2_ADDR)) || writebackStage.output(IS_LOAD))
-      control_ports.load_use    := memaccess.output(IS_LOAD) && ((control_ports.decode_rs1_req && control_ports.decode_rs1_addr===execute.output(RD_ADDR)) || (control_ports.decode_rs2_req && control_ports.decode_rs2_addr===execute.output(RD_ADDR)))
+      hazard.rs1_from_mem := memaccess.output(RD_WEN)      && memaccess.output(RD_ADDR)=/=U(0, 5 bits)      && memaccess.output(RD_ADDR)===execute.output(RS1_ADDR) && !memaccess.output(IS_LOAD)
+      hazard.rs2_from_mem := memaccess.output(RD_WEN)      && memaccess.output(RD_ADDR)=/=U(0, 5 bits)      && memaccess.output(RD_ADDR)===execute.output(RS2_ADDR) && !memaccess.output(IS_LOAD)
+      hazard.rs1_from_wb  := writebackStage.output(RD_WEN) && writebackStage.output(RD_ADDR)=/=U(0, 5 bits) && writebackStage.output(RD_ADDR)===execute.output(RS1_ADDR) && memaccess.output(RD_ADDR)=/=execute.output(RS1_ADDR)
+      hazard.rs2_from_wb  := writebackStage.output(RD_WEN) && writebackStage.output(RD_ADDR)=/=U(0, 5 bits) && writebackStage.output(RD_ADDR)===execute.output(RS2_ADDR) && memaccess.output(RD_ADDR)=/=execute.output(RS2_ADDR)
+      hazard.load_use     := memaccess.output(IS_LOAD)     && ((memaccess.output(RD_ADDR)===execute.output(RS1_ADDR) && !hazard.rs1_from_wb) || (memaccess.output(RD_ADDR)===execute.output(RS2_ADDR) && !hazard.rs2_from_wb))
       
       // control hazadr detect
-      control_ports.ctrl_rs1_from_mem := execute.output(BRANCH_OR_JALR) && control_ports.rs1_from_mem
-      control_ports.ctrl_rs2_from_mem := execute.output(BRANCH_OR_JALR) && control_ports.rs2_from_mem
-      control_ports.ctrl_rs1_from_wb  := execute.output(BRANCH_OR_JALR) && control_ports.rs1_from_wb
-      control_ports.ctrl_rs2_from_wb  := execute.output(BRANCH_OR_JALR) && control_ports.rs2_from_wb
-      control_ports.ctrl_load_use     := execute.output(BRANCH_OR_JALR) && memaccess.output(IS_LOAD) && (execute.output(RS1_ADDR)===memaccess.output(RD_ADDR) || execute.output(RS2_ADDR)===memaccess.output(RD_ADDR))
+      hazard.ctrl_rs1_from_mem := execute.output(BRANCH_OR_JALR) && hazard.rs1_from_mem
+      hazard.ctrl_rs2_from_mem := execute.output(BRANCH_OR_JALR) && hazard.rs2_from_mem
+      hazard.ctrl_rs1_from_wb  := execute.output(BRANCH_OR_JALR) && hazard.rs1_from_wb
+      hazard.ctrl_rs2_from_wb  := execute.output(BRANCH_OR_JALR) && hazard.rs2_from_wb
+      hazard.ctrl_load_use     := execute.output(BRANCH_OR_JALR) && hazard.load_use
 
     }
 
@@ -75,40 +75,43 @@ with ControlService
     fetch plug new Area{
       import fetch._
       arbitration.haltItself := False
+      arbitration.flushIt := False
     }
     
     // control decode stage
     decode plug new Area{
       import decode._
-      arbitration.haltItself := control_ports.load_use
+      arbitration.haltItself := False
+      arbitration.flushIt := execute.output(REDIRECT_VALID)
     }
 
     // control exe stage
     execute plug new Area{
       import execute._
-      insert(RS1_FROM_MEM) := control_ports.rs1_from_mem
-      insert(RS2_FROM_MEM) := control_ports.rs2_from_mem
-      insert(RS1_FROM_WB) := control_ports.rs1_from_wb
-      insert(RS2_FROM_WB) := control_ports.rs2_from_wb
-      insert(CTRL_RS1_FROM_MEM) := control_ports.ctrl_rs1_from_mem
-      insert(CTRL_RS2_FROM_MEM) := control_ports.ctrl_rs2_from_mem
-      insert(CTRL_RS1_FROM_WB)  := control_ports.ctrl_rs1_from_wb
-      insert(CTRL_RS2_FROM_WB)  := control_ports.ctrl_rs2_from_wb
-      arbitration.haltItself := control_ports.ctrl_load_use || output(INT_HOLD)
-      // arbitration.haltItself := False
+      insert(RS1_FROM_MEM) := hazard.rs1_from_mem
+      insert(RS2_FROM_MEM) := hazard.rs2_from_mem
+      insert(RS1_FROM_WB) := hazard.rs1_from_wb
+      insert(RS2_FROM_WB) := hazard.rs2_from_wb
+      insert(CTRL_RS1_FROM_MEM) := hazard.ctrl_rs1_from_mem
+      insert(CTRL_RS2_FROM_MEM) := hazard.ctrl_rs2_from_mem
+      insert(CTRL_RS1_FROM_WB)  := hazard.ctrl_rs1_from_wb
+      insert(CTRL_RS2_FROM_WB)  := hazard.ctrl_rs2_from_wb
+      arbitration.haltItself := output(INT_HOLD)
+      arbitration.flushIt := False
     }
 
     // control memaccess stage
     memaccess plug new Area{
       import memaccess._
-      arbitration.haltItself := output(LSU_HOLD)
-      // arbitration.haltItself := False
+      arbitration.haltItself := hazard.load_use || hazard.ctrl_load_use || output(LSU_HOLD)
+      arbitration.flushIt := False
     }
 
     // control writeback stage
     writeback plug new Area{
       import writeback._
-      arbitration.haltItself := False //TODO:
+      arbitration.haltItself := False
+      arbitration.flushIt := False
     }
 
   }

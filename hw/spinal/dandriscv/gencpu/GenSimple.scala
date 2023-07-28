@@ -10,7 +10,12 @@ object GenSimple extends App{
     config = DandRiscvSimpleConfig(
       plugins = List(
         new FetchPlugin,
-        new BPUPlugin,
+        new BPUPlugin(p = PredictorConfig(
+          addressWidth =64, 
+          RAS_ENTRIES = 4, 
+          BTB_ENTRIES = 4, 
+          PHT_ENTRIES = 128
+        )),
         new DecodePlugin,
         new ALUPlugin,
         new ControlPlugin,

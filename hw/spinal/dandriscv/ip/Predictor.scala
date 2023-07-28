@@ -4,16 +4,12 @@ import spinal.core._
 import spinal.lib._
 
 import dandriscv._
+import dandriscv.plugin_simple._
 import math._
 
 // ================ gshare predictor =================
-case class gshare_predictor(addressWidth : Int=64, 
-                            RAS_ENTRIES : Int=4, 
-                            BTB_ENTRIES : Int=4, 
-                            PHT_ENTRIES: Int=128) extends Component {
-  def historyLen = log2Up(PHT_ENTRIES)
-  def BTB_ENTRIES_WIDTH = log2Up(BTB_ENTRIES)
-  def RAS_ENTRIES_WIDTH = log2Up(RAS_ENTRIES)
+case class gshare_predictor(val p : PredictorConfig) extends Component {
+  import p._
 
   val predict_pc = in UInt(addressWidth bits)
   val predict_valid = in Bool()
@@ -71,45 +67,41 @@ case class gshare_predictor(addressWidth : Int=64,
       }
     }
 
-    when(train_valid & train_mispredicted) {
+    when(train_valid & train_mispredicted) { // update at exe stage
       global_branch_history := train_history(historyLen-2 downto 0).asBits ## train_taken
-    } .elsewhen(predict_valid) {
+    }
+    .elsewhen(predict_valid) { // update at fetch stage
       global_branch_history := global_branch_history(historyLen-2 downto 0) ## predict_taken
     }
   }
 
-  
-
+  // ======================== Branch Target Buffer =====================
   val BTB = new Area{
-    val btb_valid = Reg(Bits(BTB_ENTRIES bits)) init(0)
-    val btb_source_pc = Vec(Reg(UInt(addressWidth bits)) init(0), BTB_ENTRIES)
-    val btb_call = Reg(Bits(BTB_ENTRIES bits)) init(0)
-    val btb_ret = Reg(Bits(BTB_ENTRIES bits)) init(0)
-    val btb_jmp = Reg(Bits(BTB_ENTRIES bits)) init(0)
-    val btb_target_pc = Vec(Reg(UInt(addressWidth bits)) init(0), BTB_ENTRIES)
+    val valid = Reg(Bits(BTB_ENTRIES bits)) init(0)
+    val source_pc = Vec(Reg(UInt(addressWidth bits)) init(0), BTB_ENTRIES)
+    val call = Reg(Bits(BTB_ENTRIES bits)) init(0)
+    val ret = Reg(Bits(BTB_ENTRIES bits)) init(0)
+    val jmp = Reg(Bits(BTB_ENTRIES bits)) init(0)
+    val target_pc = Vec(Reg(UInt(addressWidth bits)) init(0), BTB_ENTRIES)
 
-    val btb_is_matched = Bool()
-    val btb_is_call = Bool()
-    val btb_is_ret  = Bool()
-    val btb_is_jmp  = Bool()
-    val btb_read_target_pc = UInt(addressWidth bits)
+    val is_matched = False
+    val is_call    = False
+    val is_ret     = False
+    val is_jmp     = False
+    val target_pc_read = U(0, addressWidth bits)
 
+    // =============== read BTB =================
     val readBTB = for(i <- 0 until BTB_ENTRIES) yield new Area {
-      when(btb_source_pc(i)===predict_pc && btb_valid(i)){
-        btb_is_matched := True
-        btb_is_call    := btb_call(i)
-        btb_is_ret     := btb_ret(i)
-        btb_is_jmp     := btb_jmp(i)
-        btb_read_target_pc := btb_target_pc(i)
-      } .otherwise {
-        btb_is_matched := False
-        btb_is_call    := False
-        btb_is_ret     := False
-        btb_is_jmp     := False
-        btb_read_target_pc := U(0, addressWidth bits)
+      when(source_pc(i)===predict_pc && valid(i)){
+        is_matched := True
+        is_call    := call(i)
+        is_ret     := ret(i)
+        is_jmp     := jmp(i)
+        target_pc_read := target_pc(i)
       }
     }
 
+    // =============== write BTB =================
     val btb_write_index = UInt(BTB_ENTRIES_WIDTH bits)
     val btb_alloc_index = Counter(0 to BTB_ENTRIES-1)
     val btb_is_hit_vec  = Vec(Bool(), BTB_ENTRIES)
@@ -119,12 +111,12 @@ case class gshare_predictor(addressWidth : Int=64,
 
     val writeBTB = for(i <- 0 until BTB_ENTRIES) yield new Area {
       when(train_valid && train_taken){
-        when(btb_source_pc(i)===train_pc && btb_valid(i)){
+        when(source_pc(i)===train_pc && valid(i)){
           btb_is_hit_vec(i) := True
         }.otherwise{
           btb_is_hit_vec(i) := False
         }
-        when(btb_source_pc(i)=/=train_pc || !btb_valid(i)){
+        when(source_pc(i)=/=train_pc || !valid(i)){
           btb_is_miss_vec(i) := True
         }.otherwise{
           btb_is_miss_vec(i) := False
@@ -136,57 +128,60 @@ case class gshare_predictor(addressWidth : Int=64,
     }
     btb_write_index := OHToUInt(btb_is_hit_vec)
 
-
     when(btb_is_miss){
       when(btb_alloc_index.willOverflowIfInc){
         btb_alloc_index.clear()
-      }.otherwise{
+      }
+      .otherwise{
         btb_alloc_index.increment()
       }
     }
 
     when(btb_is_hit){
-      btb_source_pc(btb_write_index) := train_pc
-      btb_call(btb_write_index)      := train_is_call
-      btb_ret(btb_write_index)       := train_is_ret
-      btb_jmp(btb_write_index)       := train_is_jmp
-      btb_target_pc(btb_write_index) := train_pc_next
+      source_pc(btb_write_index) := train_pc
+      call(btb_write_index)      := train_is_call
+      ret(btb_write_index)       := train_is_ret
+      jmp(btb_write_index)       := train_is_jmp
+      target_pc(btb_write_index) := train_pc_next
     }
     .elsewhen(btb_is_miss){
-      btb_valid(btb_alloc_index)     := True
-      btb_source_pc(btb_alloc_index) := train_pc
-      btb_call(btb_alloc_index)      := train_is_call
-      btb_ret(btb_alloc_index)       := train_is_ret
-      btb_jmp(btb_alloc_index)       := train_is_jmp
-      btb_target_pc(btb_alloc_index) := train_pc_next
+      valid(btb_alloc_index)     := True
+      source_pc(btb_alloc_index) := train_pc
+      call(btb_alloc_index)      := train_is_call
+      ret(btb_alloc_index)       := train_is_ret
+      jmp(btb_alloc_index)       := train_is_jmp
+      target_pc(btb_alloc_index) := train_pc_next
     }
   }
 
+  // ===================== Return Address Stack =====================
   val RAS = new Area{
     val ras_regfile = Vec(Reg(UInt(addressWidth bits)), RAS_ENTRIES)
     val ras_next_index = UInt(RAS_ENTRIES_WIDTH bits)
     val ras_curr_index = Reg(UInt(RAS_ENTRIES_WIDTH bits)) init(0)
-    val ras_next_index_exe = UInt(RAS_ENTRIES_WIDTH bits)
-    val ras_curr_index_exe = RegNext(ras_next_index) init(0)
+    val ras_next_index_proven = UInt(RAS_ENTRIES_WIDTH bits)
+    val ras_curr_index_proven = RegNext(ras_next_index) init(0)
     val ras_predict_pc = UInt(addressWidth bits)
-    val ras_call_matched = BTB.btb_is_matched && BTB.btb_is_call
-    val ras_ret_matched = BTB.btb_is_matched && BTB.btb_is_ret
+    val ras_call_matched = BTB.is_matched && BTB.is_call
+    val ras_ret_matched = BTB.is_matched && BTB.is_ret
     
     // true ras index at exe stage
     when(train_valid && train_is_call){
-      ras_next_index_exe := ras_curr_index_exe + 1
-    }.elsewhen(train_valid && train_is_ret){
-      ras_next_index_exe := ras_curr_index_exe - 1
-    }.otherwise{
-      ras_next_index_exe := ras_curr_index_exe
+      ras_next_index_proven := ras_curr_index_proven + 1
+    }
+    .elsewhen(train_valid && train_is_ret){
+      ras_next_index_proven := ras_curr_index_proven - 1
+    }
+    .otherwise{
+      ras_next_index_proven := ras_curr_index_proven
     }
 
-    // ras index
+    // ras index (speculative)
     when(train_mispredicted && train_valid && train_is_call){
-      ras_next_index := ras_curr_index + 1
+      ras_next_index := ras_curr_index_proven + 1
     }
     .elsewhen(train_mispredicted && train_valid && train_is_ret){
-      ras_next_index := ras_curr_index - 1
+      ras_next_index := ras_curr_index_proven - 1
     }
     .elsewhen(ras_call_matched){
       ras_next_index := ras_curr_index + 1
@@ -219,8 +214,8 @@ case class gshare_predictor(addressWidth : Int=64,
 
   }
 
-  // output
+  // ============================= output =============================
   predict_history := GSHARE.global_branch_history.asUInt
-  predict_taken   := BTB.btb_is_matched && (GSHARE.pht_predict_taken || BTB.btb_is_jmp || BTB.btb_is_call || BTB.btb_is_ret)
-  predict_pc_next := RAS.ras_ret_matched ? RAS.ras_predict_pc | ((BTB.btb_is_matched && (GSHARE.pht_predict_taken || BTB.btb_is_jmp || BTB.btb_is_call)) ? BTB.btb_read_target_pc | (predict_pc+4))
+  predict_taken   := BTB.is_matched && (GSHARE.pht_predict_taken || BTB.is_jmp || BTB.is_call || BTB.is_ret)
+  predict_pc_next := RAS.ras_ret_matched ? RAS.ras_predict_pc | ((BTB.is_matched && (GSHARE.pht_predict_taken || BTB.is_jmp || BTB.is_call)) ? BTB.target_pc_read | (predict_pc+4))
 }

@@ -57,13 +57,13 @@ case class RegFileModule(XLEN : Int = 64) extends Component{
 // ==================== decode stage ======================
 class DecodePlugin() extends Plugin[DandRiscvSimple]
 {
-  var control_ports : ControlPorts = null
+  var hazard : ControlPorts = null
 
   override def setup(pipeline: DandRiscvSimple): Unit = {
     import Riscv._
     import pipeline.config._
 
-    control_ports = pipeline.service(classOf[ControlService]).newControlPorts
+    hazard = pipeline.service(classOf[ControlService]).newControlPorts
   }
 
   override def build(pipeline: DandRiscvSimple): Unit = {
@@ -103,15 +103,20 @@ class DecodePlugin() extends Plugin[DandRiscvSimple]
       // choose imm
       when(imm_all.i_type_imm){
         imm := imm_all.i_sext
-      }.elsewhen(imm_all.s_type_imm){
+      }
+      .elsewhen(imm_all.s_type_imm){
         imm := imm_all.s_sext
-      }.elsewhen(imm_all.b_type_imm){
+      }
+      .elsewhen(imm_all.b_type_imm){
         imm := imm_all.b_sext
-      }.elsewhen(imm_all.j_type_imm){
+      }
+      .elsewhen(imm_all.j_type_imm){
         imm := imm_all.j_sext
-      }.elsewhen(imm_all.u_type_imm){
+      }
+      .elsewhen(imm_all.u_type_imm){
         imm := imm_all.u_sext
-      }.otherwise{
+      }
+      .otherwise{
         imm := imm_all.i_sext
       }
 
@@ -269,7 +274,7 @@ class DecodePlugin() extends Plugin[DandRiscvSimple]
       regfile_module.read_ports.rs2_req := rs2_req
       rs1 := regfile_module.read_ports.rs1_value
       rs2 := regfile_module.read_ports.rs2_value
-      rd_wen := decode.arbitration.isFiring & (!imm_all.s_type_imm & !imm_all.b_type_imm & instruction=/=EBREAK & instruction=/=ECALL & instruction=/=MRET & instruction(opcodeRange)=/=OP_FENCE)
+      rd_wen := !imm_all.s_type_imm && !imm_all.b_type_imm && instruction=/=EBREAK && instruction=/=ECALL && instruction=/=MRET && instruction(opcodeRange)=/=OP_FENCE
 
       // insert to decode stage
       insert(IMM) := imm
@@ -291,19 +296,16 @@ class DecodePlugin() extends Plugin[DandRiscvSimple]
       insert(CSR_WEN)  := csr_wen
 
       // hazard control input
-      if(control_ports != null) {
-        control_ports.decode_rs1_req := rs1_req
-        control_ports.decode_rs2_req := rs2_req
-        control_ports.decode_rs1_addr := rs1_addr
-        control_ports.decode_rs2_addr := rs2_addr
-      }
-
+      hazard.decode_rs1_req := rs1_req
+      hazard.decode_rs2_req := rs2_req
+      hazard.decode_rs1_addr := rs1_addr
+      hazard.decode_rs2_addr := rs2_addr
     }
 
     // regfile recv rd from wb stage
     writebackStage plug new Area{
       import writebackStage._
-      regfile_module.write_ports.rd_wen := output(RD_WEN)
+      regfile_module.write_ports.rd_wen := arbitration.isFiring & output(RD_WEN)
       regfile_module.write_ports.rd_addr := output(RD_ADDR)
       regfile_module.write_ports.rd_value := output(RD)
     }

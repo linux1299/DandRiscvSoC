@@ -7,6 +7,7 @@ import dandriscv._
 import dandriscv.ip._
 import dandriscv.plugin._
 import dandriscv.plugin_simple._
+import dandriscv.gencpu._
 
 // ==================== exe stage ======================
 class ALUPlugin() extends Plugin[DandRiscvSimple]{
@@ -59,7 +60,6 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
       val bltu= (input(ALU_CTRL)===AluCtrlEnum.BLTU.asBits)
       val bgeu= (input(ALU_CTRL)===AluCtrlEnum.BGEU.asBits) 
       val branch_or_jump = jal || jalr || beq || bne || blt || bge || bltu || bgeu
-      
       val branch_src1 = Bits(XLEN bits)
       val branch_src2 = Bits(XLEN bits)
       val rd_is_link  = input(RD_ADDR)===U"5'd0" || input(RD_ADDR)===U"5'd5"
@@ -76,7 +76,7 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
       }
       .otherwise{
         when(input(RS1_FROM_MEM)){
-          src1 := memaccess.input(DATA_LOAD)
+          src1 := memaccess.input(ALU_RESULT)
         }
         .elsewhen(input(RS1_FROM_WB)){
           src1 := writebackStage.output(RD)
@@ -94,7 +94,7 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
       }
       .otherwise{
         when(input(RS2_FROM_MEM)){
-          src2 := memaccess.input(DATA_LOAD)
+          src2 := memaccess.input(ALU_RESULT)
         }
         .elsewhen(input(RS2_FROM_WB)){
           src2 := writebackStage.output(RD)
@@ -106,7 +106,7 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
 
       // ================= select branch op's source data ==================
       when(input(CTRL_RS1_FROM_MEM)){
-        branch_src1 := memaccess.output(DATA_LOAD).asBits
+        branch_src1 := memaccess.output(ALU_RESULT).asBits
       }
       .elsewhen(input(CTRL_RS1_FROM_WB)){
         branch_src1 := writebackStage.output(RD).asBits
@@ -116,7 +116,7 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
       }
 
       when(input(CTRL_RS2_FROM_MEM)){
-        branch_src2 := memaccess.output(DATA_LOAD).asBits
+        branch_src2 := memaccess.output(ALU_RESULT).asBits
       }
       .elsewhen(input(CTRL_RS2_FROM_WB)){
         branch_src2 := writebackStage.output(RD).asBits
@@ -194,25 +194,25 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
       val bltu_result = bltu && (branch_src1.asUInt <  branch_src2.asUInt)
       val bgeu_result = bgeu && (branch_src1.asUInt >= branch_src2.asUInt)
       val branch_taken = beq_result || bne_result || blt_result || bge_result || bltu_result || bgeu_result || jal || jalr
-      val branch_history = RegInit(U"7'b0")
-      branch_history := (branch_history(5 downto 0).asBits ## branch_taken).asUInt
+      val branch_history = RegInit(U(0, PredictorHistoryLen bits))
+      branch_history := (branch_history(PredictorHistoryLen-2 downto 0).asBits ## branch_taken).asUInt
 
-      // calculate pc
+      // calculate pc_next
       when(input(ALU_CTRL)===AluCtrlEnum.JALR.asBits){
         pc_next := ((src1.asSInt + input(IMM).asSInt) & ~S(1, XLEN bits)).asUInt // jalr
       }.otherwise{
         pc_next := (input(PC).asSInt + input(IMM).asSInt).asUInt // jal or branch
       }
-      // redirect
+      // redirect if predict wrong
       when(branch_or_jump){
         when(branch_taken){
           when(!input(BPU_BRANCH_TAKEN) || (input(BPU_PC_NEXT)=/=pc_next)){
-            redirect_valid := True
+            redirect_valid := arbitration.isFiring
             redirect_pc_next := pc_next
           }
         }.otherwise{
           when(input(BPU_BRANCH_TAKEN)){
-            redirect_valid := True
+            redirect_valid := arbitration.isFiring
             redirect_pc_next := input(PC) + 4
           }
         }
@@ -263,7 +263,7 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
       insert(ALU_RESULT) := alu_result
       insert(MEM_WDATA) := output(RS2_FROM_WB) ? writebackStage.output(RD) | (output(RS2_FROM_MEM) ? memaccess.output(ALU_RESULT) | output(RS2))
       insert(PC_NEXT) := pc_next
-      insert(BRANCH_OR_JUMP) := branch_or_jump
+      insert(BRANCH_OR_JUMP) := branch_or_jump && arbitration.isFiring
       insert(BRANCH_TAKEN) := branch_taken
       insert(BRANCH_HISTORY):= branch_history
       insert(IS_JMP) := is_jmp

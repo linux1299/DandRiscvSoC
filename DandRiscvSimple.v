@@ -1,52 +1,52 @@
 // Generator : SpinalHDL v1.8.1    git head : 2a7592004363e5b40ec43e1f122ed8641cd8965b
 // Component : DandRiscvSimple
-// Git hash  : 61e0111f1b8a9ffe312921110e122df9ce4acfb0
+// Git hash  : d5e2f739c2904846bc90121ff0c1de86ba1ffa3c
 
 `timescale 1ns/1ps
 
 module DandRiscvSimple (
-  output              icacheReader_ar_valid,
-  input               icacheReader_ar_ready,
-  output     [63:0]   icacheReader_ar_payload_addr,
-  output     [3:0]    icacheReader_ar_payload_id,
-  output     [7:0]    icacheReader_ar_payload_len,
-  output     [2:0]    icacheReader_ar_payload_size,
-  output     [1:0]    icacheReader_ar_payload_burst,
-  input               icacheReader_r_valid,
-  output              icacheReader_r_ready,
-  input      [255:0]  icacheReader_r_payload_data,
-  input      [3:0]    icacheReader_r_payload_id,
-  input      [1:0]    icacheReader_r_payload_resp,
-  input               icacheReader_r_payload_last,
-  output              dcacheReader_ar_valid,
-  input               dcacheReader_ar_ready,
-  output     [63:0]   dcacheReader_ar_payload_addr,
-  output     [3:0]    dcacheReader_ar_payload_id,
-  output     [7:0]    dcacheReader_ar_payload_len,
-  output     [2:0]    dcacheReader_ar_payload_size,
-  output     [1:0]    dcacheReader_ar_payload_burst,
-  input               dcacheReader_r_valid,
-  output              dcacheReader_r_ready,
-  input      [255:0]  dcacheReader_r_payload_data,
-  input      [3:0]    dcacheReader_r_payload_id,
-  input      [1:0]    dcacheReader_r_payload_resp,
-  input               dcacheReader_r_payload_last,
-  output              dcacheWriter_aw_valid,
-  input               dcacheWriter_aw_ready,
-  output     [63:0]   dcacheWriter_aw_payload_addr,
-  output     [3:0]    dcacheWriter_aw_payload_id,
-  output     [7:0]    dcacheWriter_aw_payload_len,
-  output     [2:0]    dcacheWriter_aw_payload_size,
-  output     [1:0]    dcacheWriter_aw_payload_burst,
-  output              dcacheWriter_w_valid,
-  input               dcacheWriter_w_ready,
-  output     [255:0]  dcacheWriter_w_payload_data,
-  output     [31:0]   dcacheWriter_w_payload_strb,
-  output              dcacheWriter_w_payload_last,
-  input               dcacheWriter_b_valid,
-  output              dcacheWriter_b_ready,
-  input      [3:0]    dcacheWriter_b_payload_id,
-  input      [1:0]    dcacheWriter_b_payload_resp,
+  output              icache_ar_valid,
+  input               icache_ar_ready,
+  output     [63:0]   icache_ar_payload_addr,
+  output     [3:0]    icache_ar_payload_id,
+  output     [7:0]    icache_ar_payload_len,
+  output     [2:0]    icache_ar_payload_size,
+  output     [1:0]    icache_ar_payload_burst,
+  input               icache_r_valid,
+  output              icache_r_ready,
+  input      [255:0]  icache_r_payload_data,
+  input      [3:0]    icache_r_payload_id,
+  input      [1:0]    icache_r_payload_resp,
+  input               icache_r_payload_last,
+  output              dcache_ar_valid,
+  input               dcache_ar_ready,
+  output     [63:0]   dcache_ar_payload_addr,
+  output     [3:0]    dcache_ar_payload_id,
+  output     [7:0]    dcache_ar_payload_len,
+  output     [2:0]    dcache_ar_payload_size,
+  output     [1:0]    dcache_ar_payload_burst,
+  input               dcache_r_valid,
+  output              dcache_r_ready,
+  input      [255:0]  dcache_r_payload_data,
+  input      [3:0]    dcache_r_payload_id,
+  input      [1:0]    dcache_r_payload_resp,
+  input               dcache_r_payload_last,
+  output              dcache_aw_valid,
+  input               dcache_aw_ready,
+  output     [63:0]   dcache_aw_payload_addr,
+  output     [3:0]    dcache_aw_payload_id,
+  output     [7:0]    dcache_aw_payload_len,
+  output     [2:0]    dcache_aw_payload_size,
+  output     [1:0]    dcache_aw_payload_burst,
+  output              dcache_w_valid,
+  input               dcache_w_ready,
+  output     [255:0]  dcache_w_payload_data,
+  output     [31:0]   dcache_w_payload_strb,
+  output              dcache_w_payload_last,
+  input               dcache_b_valid,
+  output              dcache_b_ready,
+  input      [3:0]    dcache_b_payload_id,
+  input      [1:0]    dcache_b_payload_resp,
   input               clk,
   input               reset
 );
@@ -91,6 +91,7 @@ module DandRiscvSimple (
   localparam MemCtrlEnum_SW = 4'd9;
   localparam MemCtrlEnum_SD = 4'd10;
 
+  wire                regFileModule_1_write_ports_rd_wen;
   wire                clint_1_ecall;
   wire                clint_1_ebreak;
   wire                clint_1_mret;
@@ -188,11 +189,6 @@ module DandRiscvSimple (
   wire       [11:0]   _zz__zz_decode_DecodePlugin_imm_4;
   wire       [19:0]   _zz__zz_decode_DecodePlugin_imm_6;
   wire       [31:0]   _zz__zz_decode_DecodePlugin_imm_8;
-  wire       [6:0]    _zz_decode_DecodePlugin_rd_wen;
-  wire       [6:0]    _zz_decode_DecodePlugin_rd_wen_1;
-  wire       [6:0]    _zz_decode_DecodePlugin_rd_wen_2;
-  wire       [6:0]    _zz_decode_DecodePlugin_rd_wen_3;
-  wire       [31:0]   _zz_decode_DecodePlugin_rd_wen_4;
   wire       [63:0]   _zz_execute_ALUPlugin_add_result;
   wire       [63:0]   _zz_execute_ALUPlugin_add_result_1;
   wire       [63:0]   _zz_execute_ALUPlugin_sub_result;
@@ -260,7 +256,6 @@ module DandRiscvSimple (
   wire       [4:0]    decode_RS2_ADDR;
   wire       [4:0]    decode_RS1_ADDR;
   wire       [63:0]   decode_RS2;
-  wire       [63:0]   memaccess_RS1;
   wire       [63:0]   decode_RS1;
   wire       [63:0]   decode_IMM;
   wire       [63:0]   fetch_INT_PC;
@@ -274,29 +269,26 @@ module DandRiscvSimple (
   wire       [63:0]   writeback_DATA_LOAD;
   wire                writeback_IS_LOAD;
   wire       [3:0]    memaccess_MEM_CTRL;
-  wire       [63:0]   memaccess_MEM_WDATA;
-  wire                memaccess_IS_STORE;
   wire                memaccess_IS_LOAD;
+  wire                memaccess_IS_STORE;
+  wire       [63:0]   memaccess_MEM_WDATA;
   wire       [3:0]    execute_CSR_CTRL;
   wire       [63:0]   execute_CSR_RDATA;
   wire       [3:0]    _zz_decode_to_execute_CSR_CTRL;
   wire       [11:0]   _zz_decode_to_execute_CSR_ADDR;
-  wire                _zz_DecodePlugin_control_ports_ctrl_rs1_from_mem;
-  wire       [4:0]    _zz_DecodePlugin_control_ports_load_use;
-  wire                _zz_DecodePlugin_control_ports_load_use_1;
-  wire                _zz_DecodePlugin_control_ports_rs1_from_wb;
-  wire       [4:0]    _zz_DecodePlugin_control_ports_rs2_from_mem;
-  wire       [4:0]    _zz_DecodePlugin_control_ports_rs1_from_mem;
-  wire       [4:0]    _zz_DecodePlugin_control_ports_rs1_from_mem_1;
-  wire                _zz_DecodePlugin_control_ports_rs1_from_mem_2;
-  wire       [63:0]   _zz_execute_MEM_WDATA;
+  wire                _zz_DecodePlugin_hazard_ctrl_rs1_from_mem;
+  wire       [4:0]    _zz_DecodePlugin_hazard_rs2_from_mem;
+  wire                _zz_DecodePlugin_hazard_rs1_from_mem;
+  wire       [4:0]    _zz_DecodePlugin_hazard_rs1_from_mem_1;
+  wire       [4:0]    _zz_DecodePlugin_hazard_rs1_from_mem_2;
+  wire                _zz_DecodePlugin_hazard_rs1_from_mem_3;
   wire       [63:0]   execute_BPU_PC_NEXT;
   wire                execute_BPU_BRANCH_TAKEN;
   wire                execute_ALU_WORD;
   wire                execute_CTRL_RS2_FROM_WB;
   wire                execute_CTRL_RS2_FROM_MEM;
   wire                execute_CTRL_RS1_FROM_WB;
-  wire       [63:0]   _zz_execute_ALUPlugin_branch_src1;
+  wire       [63:0]   _zz_execute_MEM_WDATA;
   wire                execute_CTRL_RS1_FROM_MEM;
   wire       [63:0]   execute_RS2;
   wire                execute_RS2_FROM_WB;
@@ -312,8 +304,8 @@ module DandRiscvSimple (
   wire       [4:0]    execute_RD_ADDR;
   wire       [4:0]    execute_ALU_CTRL;
   wire       [63:0]   _zz_execute_MEM_WDATA_1;
-  wire       [4:0]    _zz_DecodePlugin_control_ports_rs1_from_wb_1;
-  wire                _zz_DecodePlugin_control_ports_rs1_from_wb_2;
+  wire       [4:0]    _zz_DecodePlugin_hazard_rs1_from_wb;
+  wire                _zz_DecodePlugin_hazard_rs1_from_wb_1;
   wire       [31:0]   decode_INSTRUCTION;
   wire       [63:0]   decode_PC;
   wire       [63:0]   _zz_fetch_to_decode_PC;
@@ -378,20 +370,20 @@ module DandRiscvSimple (
   wire                writeback_arbitration_isFlushed;
   wire                writeback_arbitration_isMoving;
   wire                writeback_arbitration_isFiring;
-  wire                DecodePlugin_control_ports_decode_rs1_req;
-  wire                DecodePlugin_control_ports_decode_rs2_req;
-  wire       [4:0]    DecodePlugin_control_ports_decode_rs1_addr;
-  wire       [4:0]    DecodePlugin_control_ports_decode_rs2_addr;
-  wire                DecodePlugin_control_ports_rs1_from_mem;
-  wire                DecodePlugin_control_ports_rs2_from_mem;
-  wire                DecodePlugin_control_ports_rs1_from_wb;
-  wire                DecodePlugin_control_ports_rs2_from_wb;
-  wire                DecodePlugin_control_ports_load_use;
-  wire                DecodePlugin_control_ports_ctrl_rs1_from_mem;
-  wire                DecodePlugin_control_ports_ctrl_rs2_from_mem;
-  wire                DecodePlugin_control_ports_ctrl_rs1_from_wb;
-  wire                DecodePlugin_control_ports_ctrl_rs2_from_wb;
-  wire                DecodePlugin_control_ports_ctrl_load_use;
+  wire                DecodePlugin_hazard_decode_rs1_req;
+  wire                DecodePlugin_hazard_decode_rs2_req;
+  wire       [4:0]    DecodePlugin_hazard_decode_rs1_addr;
+  wire       [4:0]    DecodePlugin_hazard_decode_rs2_addr;
+  wire                DecodePlugin_hazard_rs1_from_mem;
+  wire                DecodePlugin_hazard_rs2_from_mem;
+  wire                DecodePlugin_hazard_rs1_from_wb;
+  wire                DecodePlugin_hazard_rs2_from_wb;
+  wire                DecodePlugin_hazard_load_use;
+  wire                DecodePlugin_hazard_ctrl_rs1_from_mem;
+  wire                DecodePlugin_hazard_ctrl_rs2_from_mem;
+  wire                DecodePlugin_hazard_ctrl_rs1_from_wb;
+  wire                DecodePlugin_hazard_ctrl_rs2_from_wb;
+  wire                DecodePlugin_hazard_ctrl_load_use;
   wire                ICachePlugin_icache_access_cmd_valid;
   wire                ICachePlugin_icache_access_cmd_ready;
   wire       [63:0]   ICachePlugin_icache_access_cmd_payload_addr;
@@ -454,10 +446,10 @@ module DandRiscvSimple (
   reg        [31:0]   _zz_decode_DecodePlugin_imm_9;
   wire                _zz_decode_DecodePlugin_imm_10;
   reg        [51:0]   _zz_decode_DecodePlugin_imm_11;
-  wire                when_DecodePlugin_l106;
-  wire                when_DecodePlugin_l108;
+  wire                when_DecodePlugin_l107;
   wire                when_DecodePlugin_l110;
-  wire                when_DecodePlugin_l112;
+  wire                when_DecodePlugin_l113;
+  wire                when_DecodePlugin_l116;
   reg        [63:0]   execute_ALUPlugin_src1;
   reg        [63:0]   execute_ALUPlugin_src2;
   wire       [31:0]   execute_ALUPlugin_src1_word;
@@ -512,14 +504,14 @@ module DandRiscvSimple (
   reg        [63:0]   execute_ALUPlugin_redirect_pc_next;
   reg                 execute_ALUPlugin_redirect_valid;
   wire                when_AluPlugin_l74;
-  wire                when_AluPlugin_l87;
-  wire                when_AluPlugin_l118;
-  wire                when_AluPlugin_l125;
+  wire                when_AluPlugin_l92;
+  wire                when_AluPlugin_l131;
+  wire                when_AluPlugin_l138;
   wire       [62:0]   _zz_execute_ALUPlugin_alu_result;
   wire       [62:0]   _zz_execute_ALUPlugin_alu_result_1;
-  wire                when_AluPlugin_l141;
-  wire                when_AluPlugin_l148;
-  wire                when_AluPlugin_l155;
+  wire                when_AluPlugin_l154;
+  wire                when_AluPlugin_l161;
+  wire                when_AluPlugin_l168;
   wire                execute_ALUPlugin_beq_result;
   wire                execute_ALUPlugin_bne_result;
   wire                execute_ALUPlugin_blt_result;
@@ -528,16 +520,14 @@ module DandRiscvSimple (
   wire                execute_ALUPlugin_bgeu_result;
   wire                execute_ALUPlugin_branch_taken;
   reg        [6:0]    execute_ALUPlugin_branch_history;
-  wire                when_AluPlugin_l188;
-  wire                when_AluPlugin_l196;
-  wire                when_AluPlugin_l231;
+  wire                when_AluPlugin_l201;
+  wire                when_AluPlugin_l209;
+  wire                when_AluPlugin_l244;
   reg        [63:0]   execute_ExcepPlugin_csr_wdata;
   wire       [63:0]   execute_ExcepPlugin_csrrs_wdata;
   wire       [63:0]   execute_ExcepPlugin_csrrc_wdata;
   wire       [63:0]   execute_ExcepPlugin_csrrsi_wdata;
   wire       [63:0]   execute_ExcepPlugin_csrrci_wdata;
-  wire                memaccess_LSUPlugin_is_memacc;
-  wire                memaccess_LSUPlugin_hold;
   wire                _zz_memaccess_LSUPlugin_data_lb;
   reg        [55:0]   _zz_memaccess_LSUPlugin_data_lb_1;
   wire       [63:0]   memaccess_LSUPlugin_data_lb;
@@ -567,6 +557,9 @@ module DandRiscvSimple (
   reg        [63:0]   memaccess_LSUPlugin_wdata;
   reg        [7:0]    memaccess_LSUPlugin_wstrb;
   reg        [2:0]    memaccess_LSUPlugin_size;
+  wire                memaccess_LSUPlugin_is_mem;
+  wire                memaccess_LSUPlugin_is_timer;
+  wire                memaccess_LSUPlugin_hold;
   reg        [7:0]    _zz_memaccess_LSUPlugin_wstrb;
   reg        [7:0]    _zz_memaccess_LSUPlugin_wstrb_1;
   reg        [7:0]    _zz_memaccess_LSUPlugin_wstrb_2;
@@ -590,62 +583,60 @@ module DandRiscvSimple (
   wire                when_Pipeline_l127_8;
   reg        [63:0]   decode_to_execute_RS1;
   wire                when_Pipeline_l127_9;
-  reg        [63:0]   execute_to_memaccess_RS1;
-  wire                when_Pipeline_l127_10;
   reg        [63:0]   decode_to_execute_RS2;
-  wire                when_Pipeline_l127_11;
+  wire                when_Pipeline_l127_10;
   reg        [4:0]    decode_to_execute_RS1_ADDR;
-  wire                when_Pipeline_l127_12;
+  wire                when_Pipeline_l127_11;
   reg        [4:0]    decode_to_execute_RS2_ADDR;
-  wire                when_Pipeline_l127_13;
+  wire                when_Pipeline_l127_12;
   reg        [4:0]    decode_to_execute_ALU_CTRL;
-  wire                when_Pipeline_l127_14;
+  wire                when_Pipeline_l127_13;
   reg                 decode_to_execute_ALU_WORD;
-  wire                when_Pipeline_l127_15;
+  wire                when_Pipeline_l127_14;
   reg                 decode_to_execute_SRC2_IS_IMM;
-  wire                when_Pipeline_l127_16;
+  wire                when_Pipeline_l127_15;
   reg        [3:0]    decode_to_execute_MEM_CTRL;
-  wire                when_Pipeline_l127_17;
+  wire                when_Pipeline_l127_16;
   reg        [3:0]    execute_to_memaccess_MEM_CTRL;
-  wire                when_Pipeline_l127_18;
+  wire                when_Pipeline_l127_17;
   reg                 decode_to_execute_RD_WEN;
-  wire                when_Pipeline_l127_19;
+  wire                when_Pipeline_l127_18;
   reg                 execute_to_memaccess_RD_WEN;
-  wire                when_Pipeline_l127_20;
+  wire                when_Pipeline_l127_19;
   reg                 memaccess_to_writeback_RD_WEN;
-  wire                when_Pipeline_l127_21;
+  wire                when_Pipeline_l127_20;
   reg        [4:0]    decode_to_execute_RD_ADDR;
-  wire                when_Pipeline_l127_22;
+  wire                when_Pipeline_l127_21;
   reg        [4:0]    execute_to_memaccess_RD_ADDR;
-  wire                when_Pipeline_l127_23;
+  wire                when_Pipeline_l127_22;
   reg        [4:0]    memaccess_to_writeback_RD_ADDR;
-  wire                when_Pipeline_l127_24;
+  wire                when_Pipeline_l127_23;
   reg                 decode_to_execute_IS_LOAD;
-  wire                when_Pipeline_l127_25;
+  wire                when_Pipeline_l127_24;
   reg                 execute_to_memaccess_IS_LOAD;
-  wire                when_Pipeline_l127_26;
+  wire                when_Pipeline_l127_25;
   reg                 memaccess_to_writeback_IS_LOAD;
-  wire                when_Pipeline_l127_27;
+  wire                when_Pipeline_l127_26;
   reg                 decode_to_execute_IS_STORE;
-  wire                when_Pipeline_l127_28;
+  wire                when_Pipeline_l127_27;
   reg                 execute_to_memaccess_IS_STORE;
-  wire                when_Pipeline_l127_29;
+  wire                when_Pipeline_l127_28;
   reg                 decode_to_execute_BRANCH_OR_JALR;
-  wire                when_Pipeline_l127_30;
+  wire                when_Pipeline_l127_29;
   reg        [3:0]    decode_to_execute_CSR_CTRL;
-  wire                when_Pipeline_l127_31;
+  wire                when_Pipeline_l127_30;
   reg        [11:0]   decode_to_execute_CSR_ADDR;
-  wire                when_Pipeline_l127_32;
+  wire                when_Pipeline_l127_31;
   reg                 decode_to_execute_CSR_WEN;
-  wire                when_Pipeline_l127_33;
+  wire                when_Pipeline_l127_32;
   reg        [63:0]   decode_to_execute_CSR_RDATA;
-  wire                when_Pipeline_l127_34;
+  wire                when_Pipeline_l127_33;
   reg        [63:0]   execute_to_memaccess_ALU_RESULT;
-  wire                when_Pipeline_l127_35;
+  wire                when_Pipeline_l127_34;
   reg        [63:0]   memaccess_to_writeback_ALU_RESULT;
-  wire                when_Pipeline_l127_36;
+  wire                when_Pipeline_l127_35;
   reg        [63:0]   execute_to_memaccess_MEM_WDATA;
-  wire                when_Pipeline_l127_37;
+  wire                when_Pipeline_l127_36;
   reg        [63:0]   memaccess_to_writeback_DATA_LOAD;
   wire                when_Pipeline_l162;
   wire                when_Pipeline_l165;
@@ -855,14 +846,9 @@ module DandRiscvSimple (
   assign _zz_execute_ALUPlugin_pc_next_6 = ($signed(_zz_execute_ALUPlugin_pc_next_7) + $signed(_zz_execute_ALUPlugin_pc_next_8));
   assign _zz_execute_ALUPlugin_pc_next_7 = execute_PC;
   assign _zz_execute_ALUPlugin_pc_next_8 = execute_IMM;
-  assign _zz_decode_DecodePlugin_rd_wen = decode_INSTRUCTION[6 : 0];
-  assign _zz_decode_DecodePlugin_rd_wen_1 = 7'h23;
-  assign _zz_decode_DecodePlugin_rd_wen_2 = decode_INSTRUCTION[6 : 0];
-  assign _zz_decode_DecodePlugin_rd_wen_3 = 7'h63;
-  assign _zz_decode_DecodePlugin_rd_wen_4 = 32'hffffffff;
   gshare_predictor gshare_predictor_1 (
     .predict_pc         (_zz_fetch_to_decode_PC[63:0]            ), //i
-    .predict_valid      (1'b1                                    ), //i
+    .predict_valid      (fetch_arbitration_isValid               ), //i
     .predict_taken      (gshare_predictor_1_predict_taken        ), //o
     .predict_history    (gshare_predictor_1_predict_history[6:0] ), //o
     .predict_pc_next    (gshare_predictor_1_predict_pc_next[63:0]), //o
@@ -879,17 +865,17 @@ module DandRiscvSimple (
     .reset              (reset                                   )  //i
   );
   RegFileModule regFileModule_1 (
-    .read_ports_rs1_value (regFileModule_1_read_ports_rs1_value[63:0]       ), //o
-    .read_ports_rs2_value (regFileModule_1_read_ports_rs2_value[63:0]       ), //o
-    .read_ports_rs1_addr  (decode_DecodePlugin_rs1_addr[4:0]                ), //i
-    .read_ports_rs2_addr  (decode_DecodePlugin_rs2_addr[4:0]                ), //i
-    .read_ports_rs1_req   (decode_DecodePlugin_rs1_req                      ), //i
-    .read_ports_rs2_req   (decode_DecodePlugin_rs2_req                      ), //i
-    .write_ports_rd_value (_zz_execute_MEM_WDATA_1[63:0]                    ), //i
-    .write_ports_rd_addr  (_zz_DecodePlugin_control_ports_rs1_from_wb_1[4:0]), //i
-    .write_ports_rd_wen   (_zz_DecodePlugin_control_ports_rs1_from_wb_2     ), //i
-    .clk                  (clk                                              ), //i
-    .reset                (reset                                            )  //i
+    .read_ports_rs1_value (regFileModule_1_read_ports_rs1_value[63:0]), //o
+    .read_ports_rs2_value (regFileModule_1_read_ports_rs2_value[63:0]), //o
+    .read_ports_rs1_addr  (decode_DecodePlugin_rs1_addr[4:0]         ), //i
+    .read_ports_rs2_addr  (decode_DecodePlugin_rs2_addr[4:0]         ), //i
+    .read_ports_rs1_req   (decode_DecodePlugin_rs1_req               ), //i
+    .read_ports_rs2_req   (decode_DecodePlugin_rs2_req               ), //i
+    .write_ports_rd_value (_zz_execute_MEM_WDATA_1[63:0]             ), //i
+    .write_ports_rd_addr  (_zz_DecodePlugin_hazard_rs1_from_wb[4:0]  ), //i
+    .write_ports_rd_wen   (regFileModule_1_write_ports_rd_wen        ), //i
+    .clk                  (clk                                       ), //i
+    .reset                (reset                                     )  //i
   );
   CsrRegfile csrRegfile_1 (
     .cpu_ports_waddr            (execute_CSR_ADDR[11:0]                 ), //i
@@ -982,12 +968,12 @@ module DandRiscvSimple (
     .sram_3_ports_rsp_valid         (sramBanks_2_sram_3_ports_rsp_valid               ), //i
     .sram_3_ports_rsp_payload_data  (sramBanks_2_sram_3_ports_rsp_payload_data[255:0] ), //i
     .next_level_cmd_valid           (iCache_1_next_level_cmd_valid                    ), //o
-    .next_level_cmd_ready           (icacheReader_ar_ready                            ), //i
+    .next_level_cmd_ready           (icache_ar_ready                                  ), //i
     .next_level_cmd_payload_addr    (iCache_1_next_level_cmd_payload_addr[63:0]       ), //o
     .next_level_cmd_payload_len     (iCache_1_next_level_cmd_payload_len[3:0]         ), //o
     .next_level_cmd_payload_size    (iCache_1_next_level_cmd_payload_size[2:0]        ), //o
-    .next_level_rsp_valid           (icacheReader_r_valid                             ), //i
-    .next_level_rsp_payload_data    (icacheReader_r_payload_data[255:0]               ), //i
+    .next_level_rsp_valid           (icache_r_valid                                   ), //i
+    .next_level_rsp_payload_data    (icache_r_payload_data[255:0]                     ), //i
     .clk                            (clk                                              ), //i
     .reset                          (reset                                            )  //i
   );
@@ -1062,8 +1048,8 @@ module DandRiscvSimple (
     .next_level_cmd_payload_wen     (dCache_1_next_level_cmd_payload_wen               ), //o
     .next_level_cmd_payload_wdata   (dCache_1_next_level_cmd_payload_wdata[255:0]      ), //o
     .next_level_cmd_payload_wstrb   (dCache_1_next_level_cmd_payload_wstrb[31:0]       ), //o
-    .next_level_rsp_valid           (dcacheReader_r_valid                              ), //i
-    .next_level_rsp_payload_data    (dcacheReader_r_payload_data[255:0]                ), //i
+    .next_level_rsp_valid           (dcache_r_valid                                    ), //i
+    .next_level_rsp_payload_data    (dcache_r_payload_data[255:0]                      ), //i
     .clk                            (clk                                               ), //i
     .reset                          (reset                                             )  //i
   );
@@ -1097,7 +1083,7 @@ module DandRiscvSimple (
   );
   assign writeback_RD = (writeback_IS_LOAD ? writeback_DATA_LOAD : writeback_ALU_RESULT);
   assign memaccess_LSU_HOLD = memaccess_LSUPlugin_hold;
-  assign memaccess_TIMER_CEN = ((memaccess_LSUPlugin_addr == 64'h000000000200bff8) || ((memaccess_LSUPlugin_addr == 64'h0000000002004000) && memaccess_LSUPlugin_is_memacc));
+  assign memaccess_TIMER_CEN = ((memaccess_LSUPlugin_is_timer && memaccess_LSUPlugin_is_mem) && memaccess_arbitration_isFiring);
   assign memaccess_LSU_WDATA = memaccess_LSUPlugin_wdata;
   assign memaccess_DATA_LOAD = memaccess_LSUPlugin_data_load;
   assign execute_INT_HOLD = clint_1_int_hold;
@@ -1108,7 +1094,7 @@ module DandRiscvSimple (
   assign execute_IS_JMP = execute_ALUPlugin_is_jmp;
   assign execute_BRANCH_HISTORY = execute_ALUPlugin_branch_history;
   assign execute_BRANCH_TAKEN = execute_ALUPlugin_branch_taken;
-  assign execute_BRANCH_OR_JUMP = execute_ALUPlugin_branch_or_jump;
+  assign execute_BRANCH_OR_JUMP = (execute_ALUPlugin_branch_or_jump && execute_arbitration_isFiring);
   assign execute_MEM_WDATA = (execute_RS2_FROM_WB ? _zz_execute_MEM_WDATA_1 : (execute_RS2_FROM_MEM ? _zz_execute_MEM_WDATA : execute_RS2));
   assign execute_ALU_RESULT = execute_ALUPlugin_alu_result;
   assign decode_CSR_RDATA = csrRegfile_1_cpu_ports_rdata;
@@ -1139,7 +1125,6 @@ module DandRiscvSimple (
   assign decode_RS2_ADDR = decode_DecodePlugin_rs2_addr;
   assign decode_RS1_ADDR = decode_DecodePlugin_rs1_addr;
   assign decode_RS2 = decode_DecodePlugin_rs2;
-  assign memaccess_RS1 = execute_to_memaccess_RS1;
   assign decode_RS1 = decode_DecodePlugin_rs1;
   assign decode_IMM = decode_DecodePlugin_imm;
   assign fetch_INT_PC = clint_1_int_pc;
@@ -1153,46 +1138,43 @@ module DandRiscvSimple (
   assign writeback_DATA_LOAD = memaccess_to_writeback_DATA_LOAD;
   assign writeback_IS_LOAD = memaccess_to_writeback_IS_LOAD;
   assign memaccess_MEM_CTRL = execute_to_memaccess_MEM_CTRL;
-  assign memaccess_MEM_WDATA = execute_to_memaccess_MEM_WDATA;
-  assign memaccess_IS_STORE = execute_to_memaccess_IS_STORE;
   assign memaccess_IS_LOAD = execute_to_memaccess_IS_LOAD;
+  assign memaccess_IS_STORE = execute_to_memaccess_IS_STORE;
+  assign memaccess_MEM_WDATA = execute_to_memaccess_MEM_WDATA;
   assign execute_CSR_CTRL = decode_to_execute_CSR_CTRL;
   assign execute_CSR_RDATA = decode_to_execute_CSR_RDATA;
   assign _zz_decode_to_execute_CSR_CTRL = decode_CSR_CTRL;
   assign _zz_decode_to_execute_CSR_ADDR = decode_CSR_ADDR;
-  assign _zz_DecodePlugin_control_ports_ctrl_rs1_from_mem = execute_BRANCH_OR_JALR;
-  assign _zz_DecodePlugin_control_ports_load_use = execute_RD_ADDR;
-  assign _zz_DecodePlugin_control_ports_load_use_1 = memaccess_IS_LOAD;
-  assign _zz_DecodePlugin_control_ports_rs1_from_wb = writeback_IS_LOAD;
-  assign _zz_DecodePlugin_control_ports_rs2_from_mem = execute_RS2_ADDR;
-  assign _zz_DecodePlugin_control_ports_rs1_from_mem = execute_RS1_ADDR;
-  assign _zz_DecodePlugin_control_ports_rs1_from_mem_1 = memaccess_RD_ADDR;
-  assign _zz_DecodePlugin_control_ports_rs1_from_mem_2 = memaccess_RD_WEN;
-  assign _zz_execute_MEM_WDATA = memaccess_ALU_RESULT;
+  assign _zz_DecodePlugin_hazard_ctrl_rs1_from_mem = execute_BRANCH_OR_JALR;
+  assign _zz_DecodePlugin_hazard_rs2_from_mem = execute_RS2_ADDR;
+  assign _zz_DecodePlugin_hazard_rs1_from_mem = memaccess_IS_LOAD;
+  assign _zz_DecodePlugin_hazard_rs1_from_mem_1 = execute_RS1_ADDR;
+  assign _zz_DecodePlugin_hazard_rs1_from_mem_2 = memaccess_RD_ADDR;
+  assign _zz_DecodePlugin_hazard_rs1_from_mem_3 = memaccess_RD_WEN;
   assign execute_BPU_PC_NEXT = decode_to_execute_BPU_PC_NEXT;
   assign execute_BPU_BRANCH_TAKEN = decode_to_execute_BPU_BRANCH_TAKEN;
   assign execute_ALU_WORD = decode_to_execute_ALU_WORD;
-  assign execute_CTRL_RS2_FROM_WB = DecodePlugin_control_ports_ctrl_rs2_from_wb;
-  assign execute_CTRL_RS2_FROM_MEM = DecodePlugin_control_ports_ctrl_rs2_from_mem;
-  assign execute_CTRL_RS1_FROM_WB = DecodePlugin_control_ports_ctrl_rs1_from_wb;
-  assign _zz_execute_ALUPlugin_branch_src1 = memaccess_RS1;
-  assign execute_CTRL_RS1_FROM_MEM = DecodePlugin_control_ports_ctrl_rs1_from_mem;
+  assign execute_CTRL_RS2_FROM_WB = DecodePlugin_hazard_ctrl_rs2_from_wb;
+  assign execute_CTRL_RS2_FROM_MEM = DecodePlugin_hazard_ctrl_rs2_from_mem;
+  assign execute_CTRL_RS1_FROM_WB = DecodePlugin_hazard_ctrl_rs1_from_wb;
+  assign _zz_execute_MEM_WDATA = memaccess_ALU_RESULT;
+  assign execute_CTRL_RS1_FROM_MEM = DecodePlugin_hazard_ctrl_rs1_from_mem;
   assign execute_RS2 = decode_to_execute_RS2;
-  assign execute_RS2_FROM_WB = DecodePlugin_control_ports_rs2_from_wb;
-  assign execute_RS2_FROM_MEM = DecodePlugin_control_ports_rs2_from_mem;
+  assign execute_RS2_FROM_WB = DecodePlugin_hazard_rs2_from_wb;
+  assign execute_RS2_FROM_MEM = DecodePlugin_hazard_rs2_from_mem;
   assign execute_IMM = decode_to_execute_IMM;
   assign execute_SRC2_IS_IMM = decode_to_execute_SRC2_IS_IMM;
   assign execute_RS1 = decode_to_execute_RS1;
-  assign execute_RS1_FROM_WB = DecodePlugin_control_ports_rs1_from_wb;
+  assign execute_RS1_FROM_WB = DecodePlugin_hazard_rs1_from_wb;
   assign memaccess_ALU_RESULT = execute_to_memaccess_ALU_RESULT;
-  assign execute_RS1_FROM_MEM = DecodePlugin_control_ports_rs1_from_mem;
+  assign execute_RS1_FROM_MEM = DecodePlugin_hazard_rs1_from_mem;
   assign execute_PC = decode_to_execute_PC;
   assign execute_RS1_ADDR = decode_to_execute_RS1_ADDR;
   assign execute_RD_ADDR = decode_to_execute_RD_ADDR;
   assign execute_ALU_CTRL = decode_to_execute_ALU_CTRL;
   assign _zz_execute_MEM_WDATA_1 = writeback_RD;
-  assign _zz_DecodePlugin_control_ports_rs1_from_wb_1 = writeback_RD_ADDR;
-  assign _zz_DecodePlugin_control_ports_rs1_from_wb_2 = writeback_RD_WEN;
+  assign _zz_DecodePlugin_hazard_rs1_from_wb = writeback_RD_ADDR;
+  assign _zz_DecodePlugin_hazard_rs1_from_wb_1 = writeback_RD_WEN;
   assign decode_INSTRUCTION = fetch_to_decode_INSTRUCTION;
   assign decode_PC = fetch_to_decode_PC;
   assign _zz_fetch_to_decode_PC = fetch_PC;
@@ -1210,7 +1192,6 @@ module DandRiscvSimple (
     end
   end
 
-  assign fetch_arbitration_flushIt = 1'b0;
   assign fetch_arbitration_flushNext = 1'b0;
   assign decode_arbitration_haltByOther = 1'b0;
   always @(*) begin
@@ -1220,7 +1201,6 @@ module DandRiscvSimple (
     end
   end
 
-  assign decode_arbitration_flushIt = 1'b0;
   assign decode_arbitration_flushNext = 1'b0;
   assign execute_arbitration_haltByOther = 1'b0;
   always @(*) begin
@@ -1230,7 +1210,6 @@ module DandRiscvSimple (
     end
   end
 
-  assign execute_arbitration_flushIt = 1'b0;
   assign execute_arbitration_flushNext = 1'b0;
   assign memaccess_arbitration_haltByOther = 1'b0;
   always @(*) begin
@@ -1240,7 +1219,6 @@ module DandRiscvSimple (
     end
   end
 
-  assign memaccess_arbitration_flushIt = 1'b0;
   assign memaccess_arbitration_flushNext = 1'b0;
   assign writeback_arbitration_haltByOther = 1'b0;
   always @(*) begin
@@ -1250,7 +1228,6 @@ module DandRiscvSimple (
     end
   end
 
-  assign writeback_arbitration_flushIt = 1'b0;
   assign writeback_arbitration_flushNext = 1'b0;
   assign ICachePlugin_icache_access_cmd_fire = (ICachePlugin_icache_access_cmd_valid && ICachePlugin_icache_access_cmd_ready);
   assign when_FetchPlugin_l52 = (! fetch_arbitration_isStuck);
@@ -1375,16 +1352,16 @@ module DandRiscvSimple (
     if(when_DecodePlugin_l104) begin
       decode_DecodePlugin_imm = {_zz_decode_DecodePlugin_imm_1,decode_INSTRUCTION[31 : 20]};
     end else begin
-      if(when_DecodePlugin_l106) begin
+      if(when_DecodePlugin_l107) begin
         decode_DecodePlugin_imm = {_zz_decode_DecodePlugin_imm_3,{decode_INSTRUCTION[31 : 25],decode_INSTRUCTION[11 : 7]}};
       end else begin
-        if(when_DecodePlugin_l108) begin
+        if(when_DecodePlugin_l110) begin
           decode_DecodePlugin_imm = {{_zz_decode_DecodePlugin_imm_5,{{{decode_INSTRUCTION[31],decode_INSTRUCTION[7]},decode_INSTRUCTION[30 : 25]},decode_INSTRUCTION[11 : 8]}},1'b0};
         end else begin
-          if(when_DecodePlugin_l110) begin
+          if(when_DecodePlugin_l113) begin
             decode_DecodePlugin_imm = {{_zz_decode_DecodePlugin_imm_7,{{{decode_INSTRUCTION[31],decode_INSTRUCTION[19 : 12]},decode_INSTRUCTION[20]},decode_INSTRUCTION[30 : 21]}},1'b0};
           end else begin
-            if(when_DecodePlugin_l112) begin
+            if(when_DecodePlugin_l116) begin
               decode_DecodePlugin_imm = {_zz_decode_DecodePlugin_imm_9,{decode_INSTRUCTION[31 : 12],12'h0}};
             end else begin
               decode_DecodePlugin_imm = {_zz_decode_DecodePlugin_imm_11,decode_INSTRUCTION[31 : 20]};
@@ -1645,10 +1622,10 @@ module DandRiscvSimple (
     _zz_decode_DecodePlugin_imm_11[0] = _zz_decode_DecodePlugin_imm_10;
   end
 
-  assign when_DecodePlugin_l106 = (decode_INSTRUCTION[6 : 0] == 7'h23);
-  assign when_DecodePlugin_l108 = (decode_INSTRUCTION[6 : 0] == 7'h63);
-  assign when_DecodePlugin_l110 = (decode_INSTRUCTION[6 : 0] == 7'h67);
-  assign when_DecodePlugin_l112 = ((decode_INSTRUCTION[6 : 0] == 7'h37) || (decode_INSTRUCTION[6 : 0] == 7'h17));
+  assign when_DecodePlugin_l107 = (decode_INSTRUCTION[6 : 0] == 7'h23);
+  assign when_DecodePlugin_l110 = (decode_INSTRUCTION[6 : 0] == 7'h63);
+  assign when_DecodePlugin_l113 = (decode_INSTRUCTION[6 : 0] == 7'h67);
+  assign when_DecodePlugin_l116 = ((decode_INSTRUCTION[6 : 0] == 7'h37) || (decode_INSTRUCTION[6 : 0] == 7'h17));
   always @(*) begin
     casez(decode_INSTRUCTION)
       32'b0000000??????????000?????0110011, 32'b0000000??????????000?????0111011, 32'b?????????????????000?????0010011, 32'b?????????????????000?????0011011, 32'b?????????????????????????0010111, 32'b?????????????????000?????0100011, 32'b?????????????????001?????0100011, 32'b?????????????????010?????0100011, 32'b?????????????????011?????0100011 : begin
@@ -1859,11 +1836,12 @@ module DandRiscvSimple (
 
   assign decode_DecodePlugin_rs1 = regFileModule_1_read_ports_rs1_value;
   assign decode_DecodePlugin_rs2 = regFileModule_1_read_ports_rs2_value;
-  assign decode_DecodePlugin_rd_wen = (decode_arbitration_isFiring && ((((((! (_zz_decode_DecodePlugin_rd_wen == _zz_decode_DecodePlugin_rd_wen_1)) && (! (_zz_decode_DecodePlugin_rd_wen_2 == _zz_decode_DecodePlugin_rd_wen_3))) && (! ((decode_INSTRUCTION & _zz_decode_DecodePlugin_rd_wen_4) == 32'h00100073))) && (! ((decode_INSTRUCTION & 32'hffffffff) == 32'h00000073))) && (! ((decode_INSTRUCTION & 32'hffffffff) == 32'h30200073))) && (decode_INSTRUCTION[6 : 0] != 7'h0f)));
-  assign DecodePlugin_control_ports_decode_rs1_req = decode_DecodePlugin_rs1_req;
-  assign DecodePlugin_control_ports_decode_rs2_req = decode_DecodePlugin_rs2_req;
-  assign DecodePlugin_control_ports_decode_rs1_addr = decode_DecodePlugin_rs1_addr;
-  assign DecodePlugin_control_ports_decode_rs2_addr = decode_DecodePlugin_rs2_addr;
+  assign decode_DecodePlugin_rd_wen = ((((((! (decode_INSTRUCTION[6 : 0] == 7'h23)) && (! (decode_INSTRUCTION[6 : 0] == 7'h63))) && (! ((decode_INSTRUCTION & 32'hffffffff) == 32'h00100073))) && (! ((decode_INSTRUCTION & 32'hffffffff) == 32'h00000073))) && (! ((decode_INSTRUCTION & 32'hffffffff) == 32'h30200073))) && (decode_INSTRUCTION[6 : 0] != 7'h0f));
+  assign DecodePlugin_hazard_decode_rs1_req = decode_DecodePlugin_rs1_req;
+  assign DecodePlugin_hazard_decode_rs2_req = decode_DecodePlugin_rs2_req;
+  assign DecodePlugin_hazard_decode_rs1_addr = decode_DecodePlugin_rs1_addr;
+  assign DecodePlugin_hazard_decode_rs2_addr = decode_DecodePlugin_rs2_addr;
+  assign regFileModule_1_write_ports_rd_wen = (writeback_arbitration_isFiring && _zz_DecodePlugin_hazard_rs1_from_wb_1);
   assign execute_ALUPlugin_src1_word = execute_ALUPlugin_src1[31 : 0];
   assign execute_ALUPlugin_src2_word = execute_ALUPlugin_src2[31 : 0];
   assign execute_ALUPlugin_shift_bits = execute_ALUPlugin_src2[5 : 0];
@@ -2088,7 +2066,7 @@ module DandRiscvSimple (
       if(execute_ALUPlugin_jalr) begin
         if(execute_ALUPlugin_rd_is_link) begin
           if(execute_ALUPlugin_rs1_is_link) begin
-            if(when_AluPlugin_l231) begin
+            if(when_AluPlugin_l244) begin
               execute_ALUPlugin_is_call = 1'b1;
             end else begin
               execute_ALUPlugin_is_call = 1'b1;
@@ -2113,7 +2091,7 @@ module DandRiscvSimple (
       if(execute_ALUPlugin_jalr) begin
         if(execute_ALUPlugin_rd_is_link) begin
           if(execute_ALUPlugin_rs1_is_link) begin
-            if(!when_AluPlugin_l231) begin
+            if(!when_AluPlugin_l244) begin
               execute_ALUPlugin_is_ret = 1'b1;
             end
           end
@@ -2149,7 +2127,7 @@ module DandRiscvSimple (
     execute_ALUPlugin_redirect_pc_next = 64'h0;
     if(execute_ALUPlugin_branch_or_jump) begin
       if(execute_ALUPlugin_branch_taken) begin
-        if(when_AluPlugin_l196) begin
+        if(when_AluPlugin_l209) begin
           execute_ALUPlugin_redirect_pc_next = execute_ALUPlugin_pc_next;
         end
       end else begin
@@ -2164,12 +2142,12 @@ module DandRiscvSimple (
     execute_ALUPlugin_redirect_valid = 1'b0;
     if(execute_ALUPlugin_branch_or_jump) begin
       if(execute_ALUPlugin_branch_taken) begin
-        if(when_AluPlugin_l196) begin
-          execute_ALUPlugin_redirect_valid = 1'b1;
+        if(when_AluPlugin_l209) begin
+          execute_ALUPlugin_redirect_valid = execute_arbitration_isFiring;
         end
       end else begin
         if(execute_BPU_BRANCH_TAKEN) begin
-          execute_ALUPlugin_redirect_valid = 1'b1;
+          execute_ALUPlugin_redirect_valid = execute_arbitration_isFiring;
         end
       end
     end
@@ -2196,7 +2174,7 @@ module DandRiscvSimple (
     if(execute_SRC2_IS_IMM) begin
       execute_ALUPlugin_src2 = execute_IMM;
     end else begin
-      if(when_AluPlugin_l87) begin
+      if(when_AluPlugin_l92) begin
         execute_ALUPlugin_src2 = 64'h0000000000000004;
       end else begin
         if(execute_RS2_FROM_MEM) begin
@@ -2212,10 +2190,10 @@ module DandRiscvSimple (
     end
   end
 
-  assign when_AluPlugin_l87 = (execute_ALUPlugin_jal || execute_ALUPlugin_jalr);
+  assign when_AluPlugin_l92 = (execute_ALUPlugin_jal || execute_ALUPlugin_jalr);
   always @(*) begin
     if(execute_CTRL_RS1_FROM_MEM) begin
-      execute_ALUPlugin_branch_src1 = _zz_execute_ALUPlugin_branch_src1;
+      execute_ALUPlugin_branch_src1 = _zz_execute_MEM_WDATA;
     end else begin
       if(execute_CTRL_RS1_FROM_WB) begin
         execute_ALUPlugin_branch_src1 = _zz_execute_MEM_WDATA_1;
@@ -2227,7 +2205,7 @@ module DandRiscvSimple (
 
   always @(*) begin
     if(execute_CTRL_RS2_FROM_MEM) begin
-      execute_ALUPlugin_branch_src2 = _zz_execute_ALUPlugin_branch_src1;
+      execute_ALUPlugin_branch_src2 = _zz_execute_MEM_WDATA;
     end else begin
       if(execute_CTRL_RS2_FROM_WB) begin
         execute_ALUPlugin_branch_src2 = _zz_execute_MEM_WDATA_1;
@@ -2237,16 +2215,16 @@ module DandRiscvSimple (
     end
   end
 
-  assign when_AluPlugin_l118 = (execute_ALU_WORD == 1'b1);
+  assign when_AluPlugin_l131 = (execute_ALU_WORD == 1'b1);
   always @(*) begin
     if((execute_ALU_CTRL == AluCtrlEnum_ADD) || (execute_ALU_CTRL == AluCtrlEnum_AUIPC)) begin
-        if(when_AluPlugin_l118) begin
+        if(when_AluPlugin_l131) begin
           execute_ALUPlugin_alu_result = execute_ALUPlugin_addw_result;
         end else begin
           execute_ALUPlugin_alu_result = execute_ALUPlugin_add_result;
         end
     end else if((execute_ALU_CTRL == AluCtrlEnum_SUB)) begin
-        if(when_AluPlugin_l125) begin
+        if(when_AluPlugin_l138) begin
           execute_ALUPlugin_alu_result = execute_ALUPlugin_subw_result;
         end else begin
           execute_ALUPlugin_alu_result = execute_ALUPlugin_sub_result;
@@ -2258,19 +2236,19 @@ module DandRiscvSimple (
     end else if((execute_ALU_CTRL == AluCtrlEnum_XOR_1)) begin
         execute_ALUPlugin_alu_result = execute_ALUPlugin_xor_result;
     end else if((execute_ALU_CTRL == AluCtrlEnum_SLL_1)) begin
-        if(when_AluPlugin_l141) begin
+        if(when_AluPlugin_l154) begin
           execute_ALUPlugin_alu_result = execute_ALUPlugin_sllw_result;
         end else begin
           execute_ALUPlugin_alu_result = execute_ALUPlugin_sll_result;
         end
     end else if((execute_ALU_CTRL == AluCtrlEnum_SRL_1)) begin
-        if(when_AluPlugin_l148) begin
+        if(when_AluPlugin_l161) begin
           execute_ALUPlugin_alu_result = execute_ALUPlugin_srlw_result;
         end else begin
           execute_ALUPlugin_alu_result = execute_ALUPlugin_srl_result;
         end
     end else if((execute_ALU_CTRL == AluCtrlEnum_SRA_1)) begin
-        if(when_AluPlugin_l155) begin
+        if(when_AluPlugin_l168) begin
           execute_ALUPlugin_alu_result = execute_ALUPlugin_sraw_result;
         end else begin
           execute_ALUPlugin_alu_result = execute_ALUPlugin_sra_result;
@@ -2286,12 +2264,12 @@ module DandRiscvSimple (
     end
   end
 
-  assign when_AluPlugin_l125 = (execute_ALU_WORD == 1'b1);
+  assign when_AluPlugin_l138 = (execute_ALU_WORD == 1'b1);
   assign _zz_execute_ALUPlugin_alu_result[62 : 0] = 63'h0;
   assign _zz_execute_ALUPlugin_alu_result_1[62 : 0] = 63'h0;
-  assign when_AluPlugin_l141 = (execute_ALU_WORD == 1'b1);
-  assign when_AluPlugin_l148 = (execute_ALU_WORD == 1'b1);
-  assign when_AluPlugin_l155 = (execute_ALU_WORD == 1'b1);
+  assign when_AluPlugin_l154 = (execute_ALU_WORD == 1'b1);
+  assign when_AluPlugin_l161 = (execute_ALU_WORD == 1'b1);
+  assign when_AluPlugin_l168 = (execute_ALU_WORD == 1'b1);
   assign execute_ALUPlugin_beq_result = (execute_ALUPlugin_beq && (execute_ALUPlugin_branch_src1 == execute_ALUPlugin_branch_src2));
   assign execute_ALUPlugin_bne_result = (execute_ALUPlugin_bne && (execute_ALUPlugin_branch_src1 != execute_ALUPlugin_branch_src2));
   assign execute_ALUPlugin_blt_result = (execute_ALUPlugin_blt && ($signed(_zz_execute_ALUPlugin_blt_result) < $signed(_zz_execute_ALUPlugin_blt_result_1)));
@@ -2299,32 +2277,37 @@ module DandRiscvSimple (
   assign execute_ALUPlugin_bltu_result = (execute_ALUPlugin_bltu && (execute_ALUPlugin_branch_src1 < execute_ALUPlugin_branch_src2));
   assign execute_ALUPlugin_bgeu_result = (execute_ALUPlugin_bgeu && (execute_ALUPlugin_branch_src2 <= execute_ALUPlugin_branch_src1));
   assign execute_ALUPlugin_branch_taken = (((((((execute_ALUPlugin_beq_result || execute_ALUPlugin_bne_result) || execute_ALUPlugin_blt_result) || execute_ALUPlugin_bge_result) || execute_ALUPlugin_bltu_result) || execute_ALUPlugin_bgeu_result) || execute_ALUPlugin_jal) || execute_ALUPlugin_jalr);
-  assign when_AluPlugin_l188 = (execute_ALU_CTRL == AluCtrlEnum_JALR);
+  assign when_AluPlugin_l201 = (execute_ALU_CTRL == AluCtrlEnum_JALR);
   always @(*) begin
-    if(when_AluPlugin_l188) begin
+    if(when_AluPlugin_l201) begin
       execute_ALUPlugin_pc_next = _zz_execute_ALUPlugin_pc_next;
     end else begin
       execute_ALUPlugin_pc_next = _zz_execute_ALUPlugin_pc_next_6;
     end
   end
 
-  assign when_AluPlugin_l196 = ((! execute_BPU_BRANCH_TAKEN) || (execute_BPU_PC_NEXT != execute_ALUPlugin_pc_next));
-  assign when_AluPlugin_l231 = (execute_RD_ADDR == execute_RS1_ADDR);
-  assign DecodePlugin_control_ports_rs1_from_mem = ((_zz_DecodePlugin_control_ports_rs1_from_mem_2 && (_zz_DecodePlugin_control_ports_rs1_from_mem_1 != 5'h0)) && (_zz_DecodePlugin_control_ports_rs1_from_mem_1 == _zz_DecodePlugin_control_ports_rs1_from_mem));
-  assign DecodePlugin_control_ports_rs2_from_mem = ((_zz_DecodePlugin_control_ports_rs1_from_mem_2 && (_zz_DecodePlugin_control_ports_rs1_from_mem_1 != 5'h0)) && (_zz_DecodePlugin_control_ports_rs1_from_mem_1 == _zz_DecodePlugin_control_ports_rs2_from_mem));
-  assign DecodePlugin_control_ports_rs1_from_wb = (((_zz_DecodePlugin_control_ports_rs1_from_wb_2 && (_zz_DecodePlugin_control_ports_rs1_from_wb_1 != 5'h0)) && (_zz_DecodePlugin_control_ports_rs1_from_wb_1 == _zz_DecodePlugin_control_ports_rs1_from_mem)) && ((_zz_DecodePlugin_control_ports_rs1_from_mem_1 != _zz_DecodePlugin_control_ports_rs1_from_mem) || _zz_DecodePlugin_control_ports_rs1_from_wb));
-  assign DecodePlugin_control_ports_rs2_from_wb = (((_zz_DecodePlugin_control_ports_rs1_from_wb_2 && (_zz_DecodePlugin_control_ports_rs1_from_wb_1 != 5'h0)) && (_zz_DecodePlugin_control_ports_rs1_from_wb_1 == _zz_DecodePlugin_control_ports_rs2_from_mem)) && ((_zz_DecodePlugin_control_ports_rs1_from_mem_1 != _zz_DecodePlugin_control_ports_rs2_from_mem) || _zz_DecodePlugin_control_ports_rs1_from_wb));
-  assign DecodePlugin_control_ports_load_use = (_zz_DecodePlugin_control_ports_load_use_1 && ((DecodePlugin_control_ports_decode_rs1_req && (DecodePlugin_control_ports_decode_rs1_addr == _zz_DecodePlugin_control_ports_load_use)) || (DecodePlugin_control_ports_decode_rs2_req && (DecodePlugin_control_ports_decode_rs2_addr == _zz_DecodePlugin_control_ports_load_use))));
-  assign DecodePlugin_control_ports_ctrl_rs1_from_mem = (_zz_DecodePlugin_control_ports_ctrl_rs1_from_mem && DecodePlugin_control_ports_rs1_from_mem);
-  assign DecodePlugin_control_ports_ctrl_rs2_from_mem = (_zz_DecodePlugin_control_ports_ctrl_rs1_from_mem && DecodePlugin_control_ports_rs2_from_mem);
-  assign DecodePlugin_control_ports_ctrl_rs1_from_wb = (_zz_DecodePlugin_control_ports_ctrl_rs1_from_mem && DecodePlugin_control_ports_rs1_from_wb);
-  assign DecodePlugin_control_ports_ctrl_rs2_from_wb = (_zz_DecodePlugin_control_ports_ctrl_rs1_from_mem && DecodePlugin_control_ports_rs2_from_wb);
-  assign DecodePlugin_control_ports_ctrl_load_use = ((_zz_DecodePlugin_control_ports_ctrl_rs1_from_mem && _zz_DecodePlugin_control_ports_load_use_1) && ((_zz_DecodePlugin_control_ports_rs1_from_mem == _zz_DecodePlugin_control_ports_rs1_from_mem_1) || (_zz_DecodePlugin_control_ports_rs2_from_mem == _zz_DecodePlugin_control_ports_rs1_from_mem_1)));
+  assign when_AluPlugin_l209 = ((! execute_BPU_BRANCH_TAKEN) || (execute_BPU_PC_NEXT != execute_ALUPlugin_pc_next));
+  assign when_AluPlugin_l244 = (execute_RD_ADDR == execute_RS1_ADDR);
+  assign DecodePlugin_hazard_rs1_from_mem = (((_zz_DecodePlugin_hazard_rs1_from_mem_3 && (_zz_DecodePlugin_hazard_rs1_from_mem_2 != 5'h0)) && (_zz_DecodePlugin_hazard_rs1_from_mem_2 == _zz_DecodePlugin_hazard_rs1_from_mem_1)) && (! _zz_DecodePlugin_hazard_rs1_from_mem));
+  assign DecodePlugin_hazard_rs2_from_mem = (((_zz_DecodePlugin_hazard_rs1_from_mem_3 && (_zz_DecodePlugin_hazard_rs1_from_mem_2 != 5'h0)) && (_zz_DecodePlugin_hazard_rs1_from_mem_2 == _zz_DecodePlugin_hazard_rs2_from_mem)) && (! _zz_DecodePlugin_hazard_rs1_from_mem));
+  assign DecodePlugin_hazard_rs1_from_wb = (((_zz_DecodePlugin_hazard_rs1_from_wb_1 && (_zz_DecodePlugin_hazard_rs1_from_wb != 5'h0)) && (_zz_DecodePlugin_hazard_rs1_from_wb == _zz_DecodePlugin_hazard_rs1_from_mem_1)) && (_zz_DecodePlugin_hazard_rs1_from_mem_2 != _zz_DecodePlugin_hazard_rs1_from_mem_1));
+  assign DecodePlugin_hazard_rs2_from_wb = (((_zz_DecodePlugin_hazard_rs1_from_wb_1 && (_zz_DecodePlugin_hazard_rs1_from_wb != 5'h0)) && (_zz_DecodePlugin_hazard_rs1_from_wb == _zz_DecodePlugin_hazard_rs2_from_mem)) && (_zz_DecodePlugin_hazard_rs1_from_mem_2 != _zz_DecodePlugin_hazard_rs2_from_mem));
+  assign DecodePlugin_hazard_load_use = (_zz_DecodePlugin_hazard_rs1_from_mem && (((_zz_DecodePlugin_hazard_rs1_from_mem_2 == _zz_DecodePlugin_hazard_rs1_from_mem_1) && (! DecodePlugin_hazard_rs1_from_wb)) || ((_zz_DecodePlugin_hazard_rs1_from_mem_2 == _zz_DecodePlugin_hazard_rs2_from_mem) && (! DecodePlugin_hazard_rs2_from_wb))));
+  assign DecodePlugin_hazard_ctrl_rs1_from_mem = (_zz_DecodePlugin_hazard_ctrl_rs1_from_mem && DecodePlugin_hazard_rs1_from_mem);
+  assign DecodePlugin_hazard_ctrl_rs2_from_mem = (_zz_DecodePlugin_hazard_ctrl_rs1_from_mem && DecodePlugin_hazard_rs2_from_mem);
+  assign DecodePlugin_hazard_ctrl_rs1_from_wb = (_zz_DecodePlugin_hazard_ctrl_rs1_from_mem && DecodePlugin_hazard_rs1_from_wb);
+  assign DecodePlugin_hazard_ctrl_rs2_from_wb = (_zz_DecodePlugin_hazard_ctrl_rs1_from_mem && DecodePlugin_hazard_rs2_from_wb);
+  assign DecodePlugin_hazard_ctrl_load_use = (_zz_DecodePlugin_hazard_ctrl_rs1_from_mem && DecodePlugin_hazard_load_use);
   assign fetch_arbitration_haltItself = 1'b0;
-  assign decode_arbitration_haltItself = DecodePlugin_control_ports_load_use;
-  assign execute_arbitration_haltItself = (DecodePlugin_control_ports_ctrl_load_use || execute_INT_HOLD);
-  assign memaccess_arbitration_haltItself = memaccess_LSU_HOLD;
+  assign fetch_arbitration_flushIt = 1'b0;
+  assign decode_arbitration_haltItself = 1'b0;
+  assign decode_arbitration_flushIt = when_FetchPlugin_l108;
+  assign execute_arbitration_haltItself = execute_INT_HOLD;
+  assign execute_arbitration_flushIt = 1'b0;
+  assign memaccess_arbitration_haltItself = ((DecodePlugin_hazard_load_use || DecodePlugin_hazard_ctrl_load_use) || memaccess_LSU_HOLD);
+  assign memaccess_arbitration_flushIt = 1'b0;
   assign writeback_arbitration_haltItself = 1'b0;
+  assign writeback_arbitration_flushIt = 1'b0;
   assign clint_1_ecall = (_zz_decode_to_execute_CSR_CTRL == CsrCtrlEnum_ECALL);
   assign clint_1_ebreak = (_zz_decode_to_execute_CSR_CTRL == CsrCtrlEnum_EBREAK);
   assign clint_1_mret = (_zz_decode_to_execute_CSR_CTRL == CsrCtrlEnum_MRET);
@@ -2351,7 +2334,6 @@ module DandRiscvSimple (
   end
 
   assign timer_1_addr = _zz_execute_MEM_WDATA;
-  assign memaccess_LSUPlugin_is_memacc = ((memaccess_IS_LOAD || memaccess_IS_STORE) && memaccess_arbitration_isFiring);
   assign _zz_memaccess_LSUPlugin_data_lb = DCachePlugin_dcache_access_rsp_payload_data[7];
   always @(*) begin
     _zz_memaccess_LSUPlugin_data_lb_1[55] = _zz_memaccess_LSUPlugin_data_lb;
@@ -2664,6 +2646,8 @@ module DandRiscvSimple (
 
   assign memaccess_LSUPlugin_wdata_sw = {_zz_memaccess_LSUPlugin_wdata_sw_1,memaccess_MEM_WDATA[31 : 0]};
   assign memaccess_LSUPlugin_addr = memaccess_ALU_RESULT;
+  assign memaccess_LSUPlugin_is_mem = (memaccess_IS_LOAD || memaccess_IS_STORE);
+  assign memaccess_LSUPlugin_is_timer = ((memaccess_LSUPlugin_addr == 64'h000000000200bff8) || (memaccess_LSUPlugin_addr == 64'h0000000002004000));
   always @(*) begin
     if((memaccess_MEM_CTRL == MemCtrlEnum_LB)) begin
         memaccess_LSUPlugin_data_load = memaccess_LSUPlugin_data_lb;
@@ -2731,7 +2715,7 @@ module DandRiscvSimple (
   assign _zz_6 = zz__zz_memaccess_LSUPlugin_wstrb_2(1'b0);
   always @(*) _zz_memaccess_LSUPlugin_wstrb_2 = _zz_6;
   assign _zz_memaccess_LSUPlugin_wstrb_3[7 : 0] = 8'hff;
-  assign DCachePlugin_dcache_access_cmd_valid = (((memaccess_LSUPlugin_addr != 64'h000000000200bff8) && (memaccess_LSUPlugin_addr != 64'h0000000002004000)) && memaccess_LSUPlugin_is_memacc);
+  assign DCachePlugin_dcache_access_cmd_valid = ((! memaccess_LSUPlugin_is_timer) && memaccess_LSUPlugin_is_mem);
   assign DCachePlugin_dcache_access_cmd_payload_addr = memaccess_LSUPlugin_addr;
   assign DCachePlugin_dcache_access_cmd_payload_wen = memaccess_IS_STORE;
   assign DCachePlugin_dcache_access_cmd_payload_wdata = memaccess_LSUPlugin_wdata;
@@ -2741,35 +2725,35 @@ module DandRiscvSimple (
   assign ICachePlugin_icache_access_cmd_ready = iCache_1_cpu_cmd_ready;
   assign ICachePlugin_icache_access_rsp_valid = iCache_1_cpu_rsp_valid;
   assign ICachePlugin_icache_access_rsp_payload_data = iCache_1_cpu_rsp_payload_data;
-  assign icacheReader_ar_valid = iCache_1_next_level_cmd_valid;
-  assign icacheReader_ar_payload_id = 4'b0000;
-  assign icacheReader_ar_payload_len = {4'd0, iCache_1_next_level_cmd_payload_len};
-  assign icacheReader_ar_payload_size = iCache_1_next_level_cmd_payload_size;
-  assign icacheReader_ar_payload_burst = 2'b01;
-  assign icacheReader_ar_payload_addr = iCache_1_next_level_cmd_payload_addr;
-  assign icacheReader_r_ready = 1'b1;
+  assign icache_ar_valid = iCache_1_next_level_cmd_valid;
+  assign icache_ar_payload_id = 4'b0000;
+  assign icache_ar_payload_len = {4'd0, iCache_1_next_level_cmd_payload_len};
+  assign icache_ar_payload_size = iCache_1_next_level_cmd_payload_size;
+  assign icache_ar_payload_burst = 2'b01;
+  assign icache_ar_payload_addr = iCache_1_next_level_cmd_payload_addr;
+  assign icache_r_ready = 1'b1;
   assign DCachePlugin_dcache_access_cmd_ready = dCache_1_cpu_cmd_ready;
   assign DCachePlugin_dcache_access_rsp_valid = dCache_1_cpu_rsp_valid;
   assign DCachePlugin_dcache_access_rsp_payload_data = dCache_1_cpu_rsp_payload_data;
-  assign dcacheReader_ar_valid = dCache_1_next_level_cmd_valid;
-  assign dcacheReader_ar_payload_id = 4'b0001;
-  assign dcacheReader_ar_payload_len = {4'd0, dCache_1_next_level_cmd_payload_len};
-  assign dcacheReader_ar_payload_size = dCache_1_next_level_cmd_payload_size;
-  assign dcacheReader_ar_payload_burst = 2'b01;
-  assign dcacheReader_ar_payload_addr = dCache_1_next_level_cmd_payload_addr;
-  assign dcacheReader_r_ready = 1'b1;
-  assign dcacheWriter_aw_valid = (dCache_1_next_level_cmd_valid && dCache_1_next_level_cmd_payload_wen);
-  assign dcacheWriter_aw_payload_id = 4'b0010;
-  assign dcacheWriter_aw_payload_len = {4'd0, dCache_1_next_level_cmd_payload_len};
-  assign dcacheWriter_aw_payload_size = dCache_1_next_level_cmd_payload_size;
-  assign dcacheWriter_aw_payload_burst = 2'b01;
-  assign dcacheWriter_aw_payload_addr = dCache_1_next_level_cmd_payload_addr;
-  assign dcacheWriter_w_valid = dCache_1_next_level_cmd_valid;
-  assign dcacheWriter_w_payload_data = dCache_1_next_level_cmd_payload_wdata;
-  assign dcacheWriter_w_payload_strb = dCache_1_next_level_cmd_payload_wstrb;
-  assign dcacheWriter_w_payload_last = 1'b1;
-  assign dcacheWriter_b_ready = 1'b1;
-  assign dCache_1_next_level_cmd_ready = (dCache_1_next_level_cmd_payload_wen ? dcacheReader_ar_ready : dcacheWriter_aw_ready);
+  assign dcache_ar_valid = dCache_1_next_level_cmd_valid;
+  assign dcache_ar_payload_id = 4'b0001;
+  assign dcache_ar_payload_len = {4'd0, dCache_1_next_level_cmd_payload_len};
+  assign dcache_ar_payload_size = dCache_1_next_level_cmd_payload_size;
+  assign dcache_ar_payload_burst = 2'b01;
+  assign dcache_ar_payload_addr = dCache_1_next_level_cmd_payload_addr;
+  assign dcache_r_ready = 1'b1;
+  assign dcache_aw_valid = (dCache_1_next_level_cmd_valid && dCache_1_next_level_cmd_payload_wen);
+  assign dcache_aw_payload_id = 4'b0010;
+  assign dcache_aw_payload_len = {4'd0, dCache_1_next_level_cmd_payload_len};
+  assign dcache_aw_payload_size = dCache_1_next_level_cmd_payload_size;
+  assign dcache_aw_payload_burst = 2'b01;
+  assign dcache_aw_payload_addr = dCache_1_next_level_cmd_payload_addr;
+  assign dcache_w_valid = dCache_1_next_level_cmd_valid;
+  assign dcache_w_payload_data = dCache_1_next_level_cmd_payload_wdata;
+  assign dcache_w_payload_strb = dCache_1_next_level_cmd_payload_wstrb;
+  assign dcache_w_payload_last = 1'b1;
+  assign dcache_b_ready = 1'b1;
+  assign dCache_1_next_level_cmd_ready = (dCache_1_next_level_cmd_payload_wen ? dcache_ar_ready : dcache_aw_ready);
   assign when_Pipeline_l127 = (! decode_arbitration_isStuck);
   assign when_Pipeline_l127_1 = (! execute_arbitration_isStuck);
   assign when_Pipeline_l127_2 = (! decode_arbitration_isStuck);
@@ -2779,35 +2763,34 @@ module DandRiscvSimple (
   assign when_Pipeline_l127_6 = (! execute_arbitration_isStuck);
   assign when_Pipeline_l127_7 = (! execute_arbitration_isStuck);
   assign when_Pipeline_l127_8 = (! execute_arbitration_isStuck);
-  assign when_Pipeline_l127_9 = (! memaccess_arbitration_isStuck);
+  assign when_Pipeline_l127_9 = (! execute_arbitration_isStuck);
   assign when_Pipeline_l127_10 = (! execute_arbitration_isStuck);
   assign when_Pipeline_l127_11 = (! execute_arbitration_isStuck);
   assign when_Pipeline_l127_12 = (! execute_arbitration_isStuck);
   assign when_Pipeline_l127_13 = (! execute_arbitration_isStuck);
   assign when_Pipeline_l127_14 = (! execute_arbitration_isStuck);
   assign when_Pipeline_l127_15 = (! execute_arbitration_isStuck);
-  assign when_Pipeline_l127_16 = (! execute_arbitration_isStuck);
-  assign when_Pipeline_l127_17 = (! memaccess_arbitration_isStuck);
-  assign when_Pipeline_l127_18 = (! execute_arbitration_isStuck);
-  assign when_Pipeline_l127_19 = (! memaccess_arbitration_isStuck);
-  assign when_Pipeline_l127_20 = (! writeback_arbitration_isStuck);
-  assign when_Pipeline_l127_21 = (! execute_arbitration_isStuck);
-  assign when_Pipeline_l127_22 = (! memaccess_arbitration_isStuck);
-  assign when_Pipeline_l127_23 = (! writeback_arbitration_isStuck);
-  assign when_Pipeline_l127_24 = (! execute_arbitration_isStuck);
-  assign when_Pipeline_l127_25 = (! memaccess_arbitration_isStuck);
-  assign when_Pipeline_l127_26 = (! writeback_arbitration_isStuck);
-  assign when_Pipeline_l127_27 = (! execute_arbitration_isStuck);
-  assign when_Pipeline_l127_28 = (! memaccess_arbitration_isStuck);
+  assign when_Pipeline_l127_16 = (! memaccess_arbitration_isStuck);
+  assign when_Pipeline_l127_17 = (! execute_arbitration_isStuck);
+  assign when_Pipeline_l127_18 = (! memaccess_arbitration_isStuck);
+  assign when_Pipeline_l127_19 = (! writeback_arbitration_isStuck);
+  assign when_Pipeline_l127_20 = (! execute_arbitration_isStuck);
+  assign when_Pipeline_l127_21 = (! memaccess_arbitration_isStuck);
+  assign when_Pipeline_l127_22 = (! writeback_arbitration_isStuck);
+  assign when_Pipeline_l127_23 = (! execute_arbitration_isStuck);
+  assign when_Pipeline_l127_24 = (! memaccess_arbitration_isStuck);
+  assign when_Pipeline_l127_25 = (! writeback_arbitration_isStuck);
+  assign when_Pipeline_l127_26 = (! execute_arbitration_isStuck);
+  assign when_Pipeline_l127_27 = (! memaccess_arbitration_isStuck);
+  assign when_Pipeline_l127_28 = (! execute_arbitration_isStuck);
   assign when_Pipeline_l127_29 = (! execute_arbitration_isStuck);
   assign when_Pipeline_l127_30 = (! execute_arbitration_isStuck);
   assign when_Pipeline_l127_31 = (! execute_arbitration_isStuck);
   assign when_Pipeline_l127_32 = (! execute_arbitration_isStuck);
-  assign when_Pipeline_l127_33 = (! execute_arbitration_isStuck);
-  assign when_Pipeline_l127_34 = (! memaccess_arbitration_isStuck);
-  assign when_Pipeline_l127_35 = (! writeback_arbitration_isStuck);
-  assign when_Pipeline_l127_36 = (! memaccess_arbitration_isStuck);
-  assign when_Pipeline_l127_37 = (! writeback_arbitration_isStuck);
+  assign when_Pipeline_l127_33 = (! memaccess_arbitration_isStuck);
+  assign when_Pipeline_l127_34 = (! writeback_arbitration_isStuck);
+  assign when_Pipeline_l127_35 = (! memaccess_arbitration_isStuck);
+  assign when_Pipeline_l127_36 = (! writeback_arbitration_isStuck);
   assign fetch_arbitration_isFlushed = (({writeback_arbitration_flushNext,{memaccess_arbitration_flushNext,{execute_arbitration_flushNext,decode_arbitration_flushNext}}} != 4'b0000) || ({writeback_arbitration_flushIt,{memaccess_arbitration_flushIt,{execute_arbitration_flushIt,{decode_arbitration_flushIt,fetch_arbitration_flushIt}}}} != 5'h0));
   assign decode_arbitration_isFlushed = (({writeback_arbitration_flushNext,{memaccess_arbitration_flushNext,execute_arbitration_flushNext}} != 3'b000) || ({writeback_arbitration_flushIt,{memaccess_arbitration_flushIt,{execute_arbitration_flushIt,decode_arbitration_flushIt}}} != 4'b0000));
   assign execute_arbitration_isFlushed = (({writeback_arbitration_flushNext,memaccess_arbitration_flushNext} != 2'b00) || ({writeback_arbitration_flushIt,{memaccess_arbitration_flushIt,execute_arbitration_flushIt}} != 3'b000));
@@ -2951,90 +2934,87 @@ module DandRiscvSimple (
       decode_to_execute_RS1 <= decode_RS1;
     end
     if(when_Pipeline_l127_9) begin
-      execute_to_memaccess_RS1 <= execute_RS1;
-    end
-    if(when_Pipeline_l127_10) begin
       decode_to_execute_RS2 <= decode_RS2;
     end
-    if(when_Pipeline_l127_11) begin
+    if(when_Pipeline_l127_10) begin
       decode_to_execute_RS1_ADDR <= decode_RS1_ADDR;
     end
-    if(when_Pipeline_l127_12) begin
+    if(when_Pipeline_l127_11) begin
       decode_to_execute_RS2_ADDR <= decode_RS2_ADDR;
     end
-    if(when_Pipeline_l127_13) begin
+    if(when_Pipeline_l127_12) begin
       decode_to_execute_ALU_CTRL <= decode_ALU_CTRL;
     end
-    if(when_Pipeline_l127_14) begin
+    if(when_Pipeline_l127_13) begin
       decode_to_execute_ALU_WORD <= decode_ALU_WORD;
     end
-    if(when_Pipeline_l127_15) begin
+    if(when_Pipeline_l127_14) begin
       decode_to_execute_SRC2_IS_IMM <= decode_SRC2_IS_IMM;
     end
-    if(when_Pipeline_l127_16) begin
+    if(when_Pipeline_l127_15) begin
       decode_to_execute_MEM_CTRL <= decode_MEM_CTRL;
     end
-    if(when_Pipeline_l127_17) begin
+    if(when_Pipeline_l127_16) begin
       execute_to_memaccess_MEM_CTRL <= execute_MEM_CTRL;
     end
-    if(when_Pipeline_l127_18) begin
+    if(when_Pipeline_l127_17) begin
       decode_to_execute_RD_WEN <= decode_RD_WEN;
     end
-    if(when_Pipeline_l127_19) begin
+    if(when_Pipeline_l127_18) begin
       execute_to_memaccess_RD_WEN <= execute_RD_WEN;
     end
-    if(when_Pipeline_l127_20) begin
-      memaccess_to_writeback_RD_WEN <= _zz_DecodePlugin_control_ports_rs1_from_mem_2;
+    if(when_Pipeline_l127_19) begin
+      memaccess_to_writeback_RD_WEN <= _zz_DecodePlugin_hazard_rs1_from_mem_3;
     end
-    if(when_Pipeline_l127_21) begin
+    if(when_Pipeline_l127_20) begin
       decode_to_execute_RD_ADDR <= decode_RD_ADDR;
     end
+    if(when_Pipeline_l127_21) begin
+      execute_to_memaccess_RD_ADDR <= execute_RD_ADDR;
+    end
     if(when_Pipeline_l127_22) begin
-      execute_to_memaccess_RD_ADDR <= _zz_DecodePlugin_control_ports_load_use;
+      memaccess_to_writeback_RD_ADDR <= _zz_DecodePlugin_hazard_rs1_from_mem_2;
     end
     if(when_Pipeline_l127_23) begin
-      memaccess_to_writeback_RD_ADDR <= _zz_DecodePlugin_control_ports_rs1_from_mem_1;
-    end
-    if(when_Pipeline_l127_24) begin
       decode_to_execute_IS_LOAD <= decode_IS_LOAD;
     end
-    if(when_Pipeline_l127_25) begin
+    if(when_Pipeline_l127_24) begin
       execute_to_memaccess_IS_LOAD <= execute_IS_LOAD;
     end
-    if(when_Pipeline_l127_26) begin
-      memaccess_to_writeback_IS_LOAD <= _zz_DecodePlugin_control_ports_load_use_1;
+    if(when_Pipeline_l127_25) begin
+      memaccess_to_writeback_IS_LOAD <= _zz_DecodePlugin_hazard_rs1_from_mem;
     end
-    if(when_Pipeline_l127_27) begin
+    if(when_Pipeline_l127_26) begin
       decode_to_execute_IS_STORE <= decode_IS_STORE;
     end
-    if(when_Pipeline_l127_28) begin
+    if(when_Pipeline_l127_27) begin
       execute_to_memaccess_IS_STORE <= execute_IS_STORE;
     end
-    if(when_Pipeline_l127_29) begin
+    if(when_Pipeline_l127_28) begin
       decode_to_execute_BRANCH_OR_JALR <= decode_BRANCH_OR_JALR;
     end
-    if(when_Pipeline_l127_30) begin
+    if(when_Pipeline_l127_29) begin
       decode_to_execute_CSR_CTRL <= _zz_decode_to_execute_CSR_CTRL;
     end
-    if(when_Pipeline_l127_31) begin
+    if(when_Pipeline_l127_30) begin
       decode_to_execute_CSR_ADDR <= _zz_decode_to_execute_CSR_ADDR;
     end
-    if(when_Pipeline_l127_32) begin
+    if(when_Pipeline_l127_31) begin
       decode_to_execute_CSR_WEN <= decode_CSR_WEN;
     end
-    if(when_Pipeline_l127_33) begin
+    if(when_Pipeline_l127_32) begin
       decode_to_execute_CSR_RDATA <= decode_CSR_RDATA;
     end
-    if(when_Pipeline_l127_34) begin
+    if(when_Pipeline_l127_33) begin
       execute_to_memaccess_ALU_RESULT <= execute_ALU_RESULT;
     end
-    if(when_Pipeline_l127_35) begin
+    if(when_Pipeline_l127_34) begin
       memaccess_to_writeback_ALU_RESULT <= _zz_execute_MEM_WDATA;
     end
-    if(when_Pipeline_l127_36) begin
+    if(when_Pipeline_l127_35) begin
       execute_to_memaccess_MEM_WDATA <= execute_MEM_WDATA;
     end
-    if(when_Pipeline_l127_37) begin
+    if(when_Pipeline_l127_36) begin
       memaccess_to_writeback_DATA_LOAD <= memaccess_DATA_LOAD;
     end
   end
@@ -9733,7 +9713,7 @@ module gshare_predictor (
 );
 
   reg        [1:0]    _zz_GSHARE_pht_predict_taken;
-  reg        [1:0]    _zz_switch_Predictor_l42;
+  reg        [1:0]    _zz_switch_Predictor_l38;
   wire       [1:0]    _zz_BTB_btb_alloc_index_valueNext;
   wire       [0:0]    _zz_BTB_btb_alloc_index_valueNext_1;
   reg        [63:0]   _zz_RAS_ras_predict_pc;
@@ -9870,7 +9850,7 @@ module gshare_predictor (
   wire       [6:0]    GSHARE_predict_index;
   wire       [6:0]    GSHARE_train_index;
   wire                GSHARE_pht_predict_taken;
-  wire       [1:0]    switch_Predictor_l42;
+  wire       [1:0]    switch_Predictor_l38;
   wire       [127:0]  _zz_1;
   wire                _zz_2;
   wire                _zz_3;
@@ -10000,29 +9980,29 @@ module gshare_predictor (
   wire                _zz_127;
   wire                _zz_128;
   wire                _zz_129;
-  wire                when_Predictor_l65;
-  wire                when_Predictor_l74;
-  reg        [3:0]    BTB_btb_valid;
-  reg        [63:0]   BTB_btb_source_pc_0;
-  reg        [63:0]   BTB_btb_source_pc_1;
-  reg        [63:0]   BTB_btb_source_pc_2;
-  reg        [63:0]   BTB_btb_source_pc_3;
-  reg        [3:0]    BTB_btb_call;
-  reg        [3:0]    BTB_btb_ret;
-  reg        [3:0]    BTB_btb_jmp;
-  reg        [63:0]   BTB_btb_target_pc_0;
-  reg        [63:0]   BTB_btb_target_pc_1;
-  reg        [63:0]   BTB_btb_target_pc_2;
-  reg        [63:0]   BTB_btb_target_pc_3;
-  reg                 BTB_btb_is_matched;
-  reg                 BTB_btb_is_call;
-  reg                 BTB_btb_is_ret;
-  reg                 BTB_btb_is_jmp;
-  reg        [63:0]   BTB_btb_read_target_pc;
-  wire                when_Predictor_l98;
-  wire                when_Predictor_l98_1;
-  wire                when_Predictor_l98_2;
-  wire                when_Predictor_l98_3;
+  wire                when_Predictor_l61;
+  wire                when_Predictor_l70;
+  reg        [3:0]    BTB_valid;
+  reg        [63:0]   BTB_source_pc_0;
+  reg        [63:0]   BTB_source_pc_1;
+  reg        [63:0]   BTB_source_pc_2;
+  reg        [63:0]   BTB_source_pc_3;
+  reg        [3:0]    BTB_call;
+  reg        [3:0]    BTB_ret;
+  reg        [3:0]    BTB_jmp;
+  reg        [63:0]   BTB_target_pc_0;
+  reg        [63:0]   BTB_target_pc_1;
+  reg        [63:0]   BTB_target_pc_2;
+  reg        [63:0]   BTB_target_pc_3;
+  reg                 BTB_is_matched;
+  reg                 BTB_is_call;
+  reg                 BTB_is_ret;
+  reg                 BTB_is_jmp;
+  reg        [63:0]   BTB_target_pc_read;
+  wire                when_Predictor_l95;
+  wire                when_Predictor_l95_1;
+  wire                when_Predictor_l95_2;
+  wire                when_Predictor_l95_3;
   wire       [1:0]    BTB_btb_write_index;
   reg                 BTB_btb_alloc_index_willIncrement;
   reg                 BTB_btb_alloc_index_willClear;
@@ -10040,18 +10020,18 @@ module gshare_predictor (
   reg                 BTB_btb_is_miss_vec_3;
   wire                BTB_btb_is_hit;
   wire                BTB_btb_is_miss;
-  wire                when_Predictor_l121;
-  wire                when_Predictor_l122;
-  wire                when_Predictor_l127;
-  wire                when_Predictor_l121_1;
-  wire                when_Predictor_l122_1;
-  wire                when_Predictor_l127_1;
-  wire                when_Predictor_l121_2;
-  wire                when_Predictor_l122_2;
-  wire                when_Predictor_l127_2;
-  wire                when_Predictor_l121_3;
-  wire                when_Predictor_l122_3;
-  wire                when_Predictor_l127_3;
+  wire                when_Predictor_l113;
+  wire                when_Predictor_l114;
+  wire                when_Predictor_l119;
+  wire                when_Predictor_l113_1;
+  wire                when_Predictor_l114_1;
+  wire                when_Predictor_l119_1;
+  wire                when_Predictor_l113_2;
+  wire                when_Predictor_l114_2;
+  wire                when_Predictor_l119_2;
+  wire                when_Predictor_l113_3;
+  wire                when_Predictor_l114_3;
+  wire                when_Predictor_l119_3;
   wire                _zz_BTB_btb_write_index;
   wire                _zz_BTB_btb_write_index_1;
   wire       [3:0]    _zz_130;
@@ -10064,16 +10044,16 @@ module gshare_predictor (
   reg        [63:0]   RAS_ras_regfile_3;
   reg        [1:0]    RAS_ras_next_index;
   reg        [1:0]    RAS_ras_curr_index;
-  reg        [1:0]    RAS_ras_next_index_exe;
-  reg        [1:0]    RAS_ras_curr_index_exe;
+  reg        [1:0]    RAS_ras_next_index_proven;
+  reg        [1:0]    RAS_ras_curr_index_proven;
   wire       [63:0]   RAS_ras_predict_pc;
   wire                RAS_ras_call_matched;
   wire                RAS_ras_ret_matched;
-  wire                when_Predictor_l176;
-  wire                when_Predictor_l178;
-  wire                when_Predictor_l185;
-  wire                when_Predictor_l188;
-  wire                when_Predictor_l202;
+  wire                when_Predictor_l169;
+  wire                when_Predictor_l172;
+  wire                when_Predictor_l180;
+  wire                when_Predictor_l183;
+  wire                when_Predictor_l197;
   wire       [3:0]    _zz_134;
   wire                _zz_135;
   wire                _zz_136;
@@ -10081,7 +10061,7 @@ module gshare_predictor (
   wire                _zz_138;
   wire       [63:0]   _zz_RAS_ras_regfile_0;
   wire       [63:0]   _zz_RAS_ras_regfile_0_1;
-  wire                when_Predictor_l210;
+  wire                when_Predictor_l205;
 
   assign _zz_BTB_btb_alloc_index_valueNext_1 = BTB_btb_alloc_index_willIncrement;
   assign _zz_BTB_btb_alloc_index_valueNext = {1'd0, _zz_BTB_btb_alloc_index_valueNext_1};
@@ -10221,134 +10201,134 @@ module gshare_predictor (
 
   always @(*) begin
     case(GSHARE_train_index)
-      7'b0000000 : _zz_switch_Predictor_l42 = GSHARE_PHT_0;
-      7'b0000001 : _zz_switch_Predictor_l42 = GSHARE_PHT_1;
-      7'b0000010 : _zz_switch_Predictor_l42 = GSHARE_PHT_2;
-      7'b0000011 : _zz_switch_Predictor_l42 = GSHARE_PHT_3;
-      7'b0000100 : _zz_switch_Predictor_l42 = GSHARE_PHT_4;
-      7'b0000101 : _zz_switch_Predictor_l42 = GSHARE_PHT_5;
-      7'b0000110 : _zz_switch_Predictor_l42 = GSHARE_PHT_6;
-      7'b0000111 : _zz_switch_Predictor_l42 = GSHARE_PHT_7;
-      7'b0001000 : _zz_switch_Predictor_l42 = GSHARE_PHT_8;
-      7'b0001001 : _zz_switch_Predictor_l42 = GSHARE_PHT_9;
-      7'b0001010 : _zz_switch_Predictor_l42 = GSHARE_PHT_10;
-      7'b0001011 : _zz_switch_Predictor_l42 = GSHARE_PHT_11;
-      7'b0001100 : _zz_switch_Predictor_l42 = GSHARE_PHT_12;
-      7'b0001101 : _zz_switch_Predictor_l42 = GSHARE_PHT_13;
-      7'b0001110 : _zz_switch_Predictor_l42 = GSHARE_PHT_14;
-      7'b0001111 : _zz_switch_Predictor_l42 = GSHARE_PHT_15;
-      7'b0010000 : _zz_switch_Predictor_l42 = GSHARE_PHT_16;
-      7'b0010001 : _zz_switch_Predictor_l42 = GSHARE_PHT_17;
-      7'b0010010 : _zz_switch_Predictor_l42 = GSHARE_PHT_18;
-      7'b0010011 : _zz_switch_Predictor_l42 = GSHARE_PHT_19;
-      7'b0010100 : _zz_switch_Predictor_l42 = GSHARE_PHT_20;
-      7'b0010101 : _zz_switch_Predictor_l42 = GSHARE_PHT_21;
-      7'b0010110 : _zz_switch_Predictor_l42 = GSHARE_PHT_22;
-      7'b0010111 : _zz_switch_Predictor_l42 = GSHARE_PHT_23;
-      7'b0011000 : _zz_switch_Predictor_l42 = GSHARE_PHT_24;
-      7'b0011001 : _zz_switch_Predictor_l42 = GSHARE_PHT_25;
-      7'b0011010 : _zz_switch_Predictor_l42 = GSHARE_PHT_26;
-      7'b0011011 : _zz_switch_Predictor_l42 = GSHARE_PHT_27;
-      7'b0011100 : _zz_switch_Predictor_l42 = GSHARE_PHT_28;
-      7'b0011101 : _zz_switch_Predictor_l42 = GSHARE_PHT_29;
-      7'b0011110 : _zz_switch_Predictor_l42 = GSHARE_PHT_30;
-      7'b0011111 : _zz_switch_Predictor_l42 = GSHARE_PHT_31;
-      7'b0100000 : _zz_switch_Predictor_l42 = GSHARE_PHT_32;
-      7'b0100001 : _zz_switch_Predictor_l42 = GSHARE_PHT_33;
-      7'b0100010 : _zz_switch_Predictor_l42 = GSHARE_PHT_34;
-      7'b0100011 : _zz_switch_Predictor_l42 = GSHARE_PHT_35;
-      7'b0100100 : _zz_switch_Predictor_l42 = GSHARE_PHT_36;
-      7'b0100101 : _zz_switch_Predictor_l42 = GSHARE_PHT_37;
-      7'b0100110 : _zz_switch_Predictor_l42 = GSHARE_PHT_38;
-      7'b0100111 : _zz_switch_Predictor_l42 = GSHARE_PHT_39;
-      7'b0101000 : _zz_switch_Predictor_l42 = GSHARE_PHT_40;
-      7'b0101001 : _zz_switch_Predictor_l42 = GSHARE_PHT_41;
-      7'b0101010 : _zz_switch_Predictor_l42 = GSHARE_PHT_42;
-      7'b0101011 : _zz_switch_Predictor_l42 = GSHARE_PHT_43;
-      7'b0101100 : _zz_switch_Predictor_l42 = GSHARE_PHT_44;
-      7'b0101101 : _zz_switch_Predictor_l42 = GSHARE_PHT_45;
-      7'b0101110 : _zz_switch_Predictor_l42 = GSHARE_PHT_46;
-      7'b0101111 : _zz_switch_Predictor_l42 = GSHARE_PHT_47;
-      7'b0110000 : _zz_switch_Predictor_l42 = GSHARE_PHT_48;
-      7'b0110001 : _zz_switch_Predictor_l42 = GSHARE_PHT_49;
-      7'b0110010 : _zz_switch_Predictor_l42 = GSHARE_PHT_50;
-      7'b0110011 : _zz_switch_Predictor_l42 = GSHARE_PHT_51;
-      7'b0110100 : _zz_switch_Predictor_l42 = GSHARE_PHT_52;
-      7'b0110101 : _zz_switch_Predictor_l42 = GSHARE_PHT_53;
-      7'b0110110 : _zz_switch_Predictor_l42 = GSHARE_PHT_54;
-      7'b0110111 : _zz_switch_Predictor_l42 = GSHARE_PHT_55;
-      7'b0111000 : _zz_switch_Predictor_l42 = GSHARE_PHT_56;
-      7'b0111001 : _zz_switch_Predictor_l42 = GSHARE_PHT_57;
-      7'b0111010 : _zz_switch_Predictor_l42 = GSHARE_PHT_58;
-      7'b0111011 : _zz_switch_Predictor_l42 = GSHARE_PHT_59;
-      7'b0111100 : _zz_switch_Predictor_l42 = GSHARE_PHT_60;
-      7'b0111101 : _zz_switch_Predictor_l42 = GSHARE_PHT_61;
-      7'b0111110 : _zz_switch_Predictor_l42 = GSHARE_PHT_62;
-      7'b0111111 : _zz_switch_Predictor_l42 = GSHARE_PHT_63;
-      7'b1000000 : _zz_switch_Predictor_l42 = GSHARE_PHT_64;
-      7'b1000001 : _zz_switch_Predictor_l42 = GSHARE_PHT_65;
-      7'b1000010 : _zz_switch_Predictor_l42 = GSHARE_PHT_66;
-      7'b1000011 : _zz_switch_Predictor_l42 = GSHARE_PHT_67;
-      7'b1000100 : _zz_switch_Predictor_l42 = GSHARE_PHT_68;
-      7'b1000101 : _zz_switch_Predictor_l42 = GSHARE_PHT_69;
-      7'b1000110 : _zz_switch_Predictor_l42 = GSHARE_PHT_70;
-      7'b1000111 : _zz_switch_Predictor_l42 = GSHARE_PHT_71;
-      7'b1001000 : _zz_switch_Predictor_l42 = GSHARE_PHT_72;
-      7'b1001001 : _zz_switch_Predictor_l42 = GSHARE_PHT_73;
-      7'b1001010 : _zz_switch_Predictor_l42 = GSHARE_PHT_74;
-      7'b1001011 : _zz_switch_Predictor_l42 = GSHARE_PHT_75;
-      7'b1001100 : _zz_switch_Predictor_l42 = GSHARE_PHT_76;
-      7'b1001101 : _zz_switch_Predictor_l42 = GSHARE_PHT_77;
-      7'b1001110 : _zz_switch_Predictor_l42 = GSHARE_PHT_78;
-      7'b1001111 : _zz_switch_Predictor_l42 = GSHARE_PHT_79;
-      7'b1010000 : _zz_switch_Predictor_l42 = GSHARE_PHT_80;
-      7'b1010001 : _zz_switch_Predictor_l42 = GSHARE_PHT_81;
-      7'b1010010 : _zz_switch_Predictor_l42 = GSHARE_PHT_82;
-      7'b1010011 : _zz_switch_Predictor_l42 = GSHARE_PHT_83;
-      7'b1010100 : _zz_switch_Predictor_l42 = GSHARE_PHT_84;
-      7'b1010101 : _zz_switch_Predictor_l42 = GSHARE_PHT_85;
-      7'b1010110 : _zz_switch_Predictor_l42 = GSHARE_PHT_86;
-      7'b1010111 : _zz_switch_Predictor_l42 = GSHARE_PHT_87;
-      7'b1011000 : _zz_switch_Predictor_l42 = GSHARE_PHT_88;
-      7'b1011001 : _zz_switch_Predictor_l42 = GSHARE_PHT_89;
-      7'b1011010 : _zz_switch_Predictor_l42 = GSHARE_PHT_90;
-      7'b1011011 : _zz_switch_Predictor_l42 = GSHARE_PHT_91;
-      7'b1011100 : _zz_switch_Predictor_l42 = GSHARE_PHT_92;
-      7'b1011101 : _zz_switch_Predictor_l42 = GSHARE_PHT_93;
-      7'b1011110 : _zz_switch_Predictor_l42 = GSHARE_PHT_94;
-      7'b1011111 : _zz_switch_Predictor_l42 = GSHARE_PHT_95;
-      7'b1100000 : _zz_switch_Predictor_l42 = GSHARE_PHT_96;
-      7'b1100001 : _zz_switch_Predictor_l42 = GSHARE_PHT_97;
-      7'b1100010 : _zz_switch_Predictor_l42 = GSHARE_PHT_98;
-      7'b1100011 : _zz_switch_Predictor_l42 = GSHARE_PHT_99;
-      7'b1100100 : _zz_switch_Predictor_l42 = GSHARE_PHT_100;
-      7'b1100101 : _zz_switch_Predictor_l42 = GSHARE_PHT_101;
-      7'b1100110 : _zz_switch_Predictor_l42 = GSHARE_PHT_102;
-      7'b1100111 : _zz_switch_Predictor_l42 = GSHARE_PHT_103;
-      7'b1101000 : _zz_switch_Predictor_l42 = GSHARE_PHT_104;
-      7'b1101001 : _zz_switch_Predictor_l42 = GSHARE_PHT_105;
-      7'b1101010 : _zz_switch_Predictor_l42 = GSHARE_PHT_106;
-      7'b1101011 : _zz_switch_Predictor_l42 = GSHARE_PHT_107;
-      7'b1101100 : _zz_switch_Predictor_l42 = GSHARE_PHT_108;
-      7'b1101101 : _zz_switch_Predictor_l42 = GSHARE_PHT_109;
-      7'b1101110 : _zz_switch_Predictor_l42 = GSHARE_PHT_110;
-      7'b1101111 : _zz_switch_Predictor_l42 = GSHARE_PHT_111;
-      7'b1110000 : _zz_switch_Predictor_l42 = GSHARE_PHT_112;
-      7'b1110001 : _zz_switch_Predictor_l42 = GSHARE_PHT_113;
-      7'b1110010 : _zz_switch_Predictor_l42 = GSHARE_PHT_114;
-      7'b1110011 : _zz_switch_Predictor_l42 = GSHARE_PHT_115;
-      7'b1110100 : _zz_switch_Predictor_l42 = GSHARE_PHT_116;
-      7'b1110101 : _zz_switch_Predictor_l42 = GSHARE_PHT_117;
-      7'b1110110 : _zz_switch_Predictor_l42 = GSHARE_PHT_118;
-      7'b1110111 : _zz_switch_Predictor_l42 = GSHARE_PHT_119;
-      7'b1111000 : _zz_switch_Predictor_l42 = GSHARE_PHT_120;
-      7'b1111001 : _zz_switch_Predictor_l42 = GSHARE_PHT_121;
-      7'b1111010 : _zz_switch_Predictor_l42 = GSHARE_PHT_122;
-      7'b1111011 : _zz_switch_Predictor_l42 = GSHARE_PHT_123;
-      7'b1111100 : _zz_switch_Predictor_l42 = GSHARE_PHT_124;
-      7'b1111101 : _zz_switch_Predictor_l42 = GSHARE_PHT_125;
-      7'b1111110 : _zz_switch_Predictor_l42 = GSHARE_PHT_126;
-      default : _zz_switch_Predictor_l42 = GSHARE_PHT_127;
+      7'b0000000 : _zz_switch_Predictor_l38 = GSHARE_PHT_0;
+      7'b0000001 : _zz_switch_Predictor_l38 = GSHARE_PHT_1;
+      7'b0000010 : _zz_switch_Predictor_l38 = GSHARE_PHT_2;
+      7'b0000011 : _zz_switch_Predictor_l38 = GSHARE_PHT_3;
+      7'b0000100 : _zz_switch_Predictor_l38 = GSHARE_PHT_4;
+      7'b0000101 : _zz_switch_Predictor_l38 = GSHARE_PHT_5;
+      7'b0000110 : _zz_switch_Predictor_l38 = GSHARE_PHT_6;
+      7'b0000111 : _zz_switch_Predictor_l38 = GSHARE_PHT_7;
+      7'b0001000 : _zz_switch_Predictor_l38 = GSHARE_PHT_8;
+      7'b0001001 : _zz_switch_Predictor_l38 = GSHARE_PHT_9;
+      7'b0001010 : _zz_switch_Predictor_l38 = GSHARE_PHT_10;
+      7'b0001011 : _zz_switch_Predictor_l38 = GSHARE_PHT_11;
+      7'b0001100 : _zz_switch_Predictor_l38 = GSHARE_PHT_12;
+      7'b0001101 : _zz_switch_Predictor_l38 = GSHARE_PHT_13;
+      7'b0001110 : _zz_switch_Predictor_l38 = GSHARE_PHT_14;
+      7'b0001111 : _zz_switch_Predictor_l38 = GSHARE_PHT_15;
+      7'b0010000 : _zz_switch_Predictor_l38 = GSHARE_PHT_16;
+      7'b0010001 : _zz_switch_Predictor_l38 = GSHARE_PHT_17;
+      7'b0010010 : _zz_switch_Predictor_l38 = GSHARE_PHT_18;
+      7'b0010011 : _zz_switch_Predictor_l38 = GSHARE_PHT_19;
+      7'b0010100 : _zz_switch_Predictor_l38 = GSHARE_PHT_20;
+      7'b0010101 : _zz_switch_Predictor_l38 = GSHARE_PHT_21;
+      7'b0010110 : _zz_switch_Predictor_l38 = GSHARE_PHT_22;
+      7'b0010111 : _zz_switch_Predictor_l38 = GSHARE_PHT_23;
+      7'b0011000 : _zz_switch_Predictor_l38 = GSHARE_PHT_24;
+      7'b0011001 : _zz_switch_Predictor_l38 = GSHARE_PHT_25;
+      7'b0011010 : _zz_switch_Predictor_l38 = GSHARE_PHT_26;
+      7'b0011011 : _zz_switch_Predictor_l38 = GSHARE_PHT_27;
+      7'b0011100 : _zz_switch_Predictor_l38 = GSHARE_PHT_28;
+      7'b0011101 : _zz_switch_Predictor_l38 = GSHARE_PHT_29;
+      7'b0011110 : _zz_switch_Predictor_l38 = GSHARE_PHT_30;
+      7'b0011111 : _zz_switch_Predictor_l38 = GSHARE_PHT_31;
+      7'b0100000 : _zz_switch_Predictor_l38 = GSHARE_PHT_32;
+      7'b0100001 : _zz_switch_Predictor_l38 = GSHARE_PHT_33;
+      7'b0100010 : _zz_switch_Predictor_l38 = GSHARE_PHT_34;
+      7'b0100011 : _zz_switch_Predictor_l38 = GSHARE_PHT_35;
+      7'b0100100 : _zz_switch_Predictor_l38 = GSHARE_PHT_36;
+      7'b0100101 : _zz_switch_Predictor_l38 = GSHARE_PHT_37;
+      7'b0100110 : _zz_switch_Predictor_l38 = GSHARE_PHT_38;
+      7'b0100111 : _zz_switch_Predictor_l38 = GSHARE_PHT_39;
+      7'b0101000 : _zz_switch_Predictor_l38 = GSHARE_PHT_40;
+      7'b0101001 : _zz_switch_Predictor_l38 = GSHARE_PHT_41;
+      7'b0101010 : _zz_switch_Predictor_l38 = GSHARE_PHT_42;
+      7'b0101011 : _zz_switch_Predictor_l38 = GSHARE_PHT_43;
+      7'b0101100 : _zz_switch_Predictor_l38 = GSHARE_PHT_44;
+      7'b0101101 : _zz_switch_Predictor_l38 = GSHARE_PHT_45;
+      7'b0101110 : _zz_switch_Predictor_l38 = GSHARE_PHT_46;
+      7'b0101111 : _zz_switch_Predictor_l38 = GSHARE_PHT_47;
+      7'b0110000 : _zz_switch_Predictor_l38 = GSHARE_PHT_48;
+      7'b0110001 : _zz_switch_Predictor_l38 = GSHARE_PHT_49;
+      7'b0110010 : _zz_switch_Predictor_l38 = GSHARE_PHT_50;
+      7'b0110011 : _zz_switch_Predictor_l38 = GSHARE_PHT_51;
+      7'b0110100 : _zz_switch_Predictor_l38 = GSHARE_PHT_52;
+      7'b0110101 : _zz_switch_Predictor_l38 = GSHARE_PHT_53;
+      7'b0110110 : _zz_switch_Predictor_l38 = GSHARE_PHT_54;
+      7'b0110111 : _zz_switch_Predictor_l38 = GSHARE_PHT_55;
+      7'b0111000 : _zz_switch_Predictor_l38 = GSHARE_PHT_56;
+      7'b0111001 : _zz_switch_Predictor_l38 = GSHARE_PHT_57;
+      7'b0111010 : _zz_switch_Predictor_l38 = GSHARE_PHT_58;
+      7'b0111011 : _zz_switch_Predictor_l38 = GSHARE_PHT_59;
+      7'b0111100 : _zz_switch_Predictor_l38 = GSHARE_PHT_60;
+      7'b0111101 : _zz_switch_Predictor_l38 = GSHARE_PHT_61;
+      7'b0111110 : _zz_switch_Predictor_l38 = GSHARE_PHT_62;
+      7'b0111111 : _zz_switch_Predictor_l38 = GSHARE_PHT_63;
+      7'b1000000 : _zz_switch_Predictor_l38 = GSHARE_PHT_64;
+      7'b1000001 : _zz_switch_Predictor_l38 = GSHARE_PHT_65;
+      7'b1000010 : _zz_switch_Predictor_l38 = GSHARE_PHT_66;
+      7'b1000011 : _zz_switch_Predictor_l38 = GSHARE_PHT_67;
+      7'b1000100 : _zz_switch_Predictor_l38 = GSHARE_PHT_68;
+      7'b1000101 : _zz_switch_Predictor_l38 = GSHARE_PHT_69;
+      7'b1000110 : _zz_switch_Predictor_l38 = GSHARE_PHT_70;
+      7'b1000111 : _zz_switch_Predictor_l38 = GSHARE_PHT_71;
+      7'b1001000 : _zz_switch_Predictor_l38 = GSHARE_PHT_72;
+      7'b1001001 : _zz_switch_Predictor_l38 = GSHARE_PHT_73;
+      7'b1001010 : _zz_switch_Predictor_l38 = GSHARE_PHT_74;
+      7'b1001011 : _zz_switch_Predictor_l38 = GSHARE_PHT_75;
+      7'b1001100 : _zz_switch_Predictor_l38 = GSHARE_PHT_76;
+      7'b1001101 : _zz_switch_Predictor_l38 = GSHARE_PHT_77;
+      7'b1001110 : _zz_switch_Predictor_l38 = GSHARE_PHT_78;
+      7'b1001111 : _zz_switch_Predictor_l38 = GSHARE_PHT_79;
+      7'b1010000 : _zz_switch_Predictor_l38 = GSHARE_PHT_80;
+      7'b1010001 : _zz_switch_Predictor_l38 = GSHARE_PHT_81;
+      7'b1010010 : _zz_switch_Predictor_l38 = GSHARE_PHT_82;
+      7'b1010011 : _zz_switch_Predictor_l38 = GSHARE_PHT_83;
+      7'b1010100 : _zz_switch_Predictor_l38 = GSHARE_PHT_84;
+      7'b1010101 : _zz_switch_Predictor_l38 = GSHARE_PHT_85;
+      7'b1010110 : _zz_switch_Predictor_l38 = GSHARE_PHT_86;
+      7'b1010111 : _zz_switch_Predictor_l38 = GSHARE_PHT_87;
+      7'b1011000 : _zz_switch_Predictor_l38 = GSHARE_PHT_88;
+      7'b1011001 : _zz_switch_Predictor_l38 = GSHARE_PHT_89;
+      7'b1011010 : _zz_switch_Predictor_l38 = GSHARE_PHT_90;
+      7'b1011011 : _zz_switch_Predictor_l38 = GSHARE_PHT_91;
+      7'b1011100 : _zz_switch_Predictor_l38 = GSHARE_PHT_92;
+      7'b1011101 : _zz_switch_Predictor_l38 = GSHARE_PHT_93;
+      7'b1011110 : _zz_switch_Predictor_l38 = GSHARE_PHT_94;
+      7'b1011111 : _zz_switch_Predictor_l38 = GSHARE_PHT_95;
+      7'b1100000 : _zz_switch_Predictor_l38 = GSHARE_PHT_96;
+      7'b1100001 : _zz_switch_Predictor_l38 = GSHARE_PHT_97;
+      7'b1100010 : _zz_switch_Predictor_l38 = GSHARE_PHT_98;
+      7'b1100011 : _zz_switch_Predictor_l38 = GSHARE_PHT_99;
+      7'b1100100 : _zz_switch_Predictor_l38 = GSHARE_PHT_100;
+      7'b1100101 : _zz_switch_Predictor_l38 = GSHARE_PHT_101;
+      7'b1100110 : _zz_switch_Predictor_l38 = GSHARE_PHT_102;
+      7'b1100111 : _zz_switch_Predictor_l38 = GSHARE_PHT_103;
+      7'b1101000 : _zz_switch_Predictor_l38 = GSHARE_PHT_104;
+      7'b1101001 : _zz_switch_Predictor_l38 = GSHARE_PHT_105;
+      7'b1101010 : _zz_switch_Predictor_l38 = GSHARE_PHT_106;
+      7'b1101011 : _zz_switch_Predictor_l38 = GSHARE_PHT_107;
+      7'b1101100 : _zz_switch_Predictor_l38 = GSHARE_PHT_108;
+      7'b1101101 : _zz_switch_Predictor_l38 = GSHARE_PHT_109;
+      7'b1101110 : _zz_switch_Predictor_l38 = GSHARE_PHT_110;
+      7'b1101111 : _zz_switch_Predictor_l38 = GSHARE_PHT_111;
+      7'b1110000 : _zz_switch_Predictor_l38 = GSHARE_PHT_112;
+      7'b1110001 : _zz_switch_Predictor_l38 = GSHARE_PHT_113;
+      7'b1110010 : _zz_switch_Predictor_l38 = GSHARE_PHT_114;
+      7'b1110011 : _zz_switch_Predictor_l38 = GSHARE_PHT_115;
+      7'b1110100 : _zz_switch_Predictor_l38 = GSHARE_PHT_116;
+      7'b1110101 : _zz_switch_Predictor_l38 = GSHARE_PHT_117;
+      7'b1110110 : _zz_switch_Predictor_l38 = GSHARE_PHT_118;
+      7'b1110111 : _zz_switch_Predictor_l38 = GSHARE_PHT_119;
+      7'b1111000 : _zz_switch_Predictor_l38 = GSHARE_PHT_120;
+      7'b1111001 : _zz_switch_Predictor_l38 = GSHARE_PHT_121;
+      7'b1111010 : _zz_switch_Predictor_l38 = GSHARE_PHT_122;
+      7'b1111011 : _zz_switch_Predictor_l38 = GSHARE_PHT_123;
+      7'b1111100 : _zz_switch_Predictor_l38 = GSHARE_PHT_124;
+      7'b1111101 : _zz_switch_Predictor_l38 = GSHARE_PHT_125;
+      7'b1111110 : _zz_switch_Predictor_l38 = GSHARE_PHT_126;
+      default : _zz_switch_Predictor_l38 = GSHARE_PHT_127;
     endcase
   end
 
@@ -10364,7 +10344,7 @@ module gshare_predictor (
   assign GSHARE_predict_index = (predict_pc[8 : 2] ^ GSHARE_global_branch_history);
   assign GSHARE_train_index = (train_pc[8 : 2] ^ train_history);
   assign GSHARE_pht_predict_taken = _zz_GSHARE_pht_predict_taken[1];
-  assign switch_Predictor_l42 = _zz_switch_Predictor_l42;
+  assign switch_Predictor_l38 = _zz_switch_Predictor_l38;
   assign _zz_1 = ({127'd0,1'b1} <<< GSHARE_train_index);
   assign _zz_2 = _zz_1[0];
   assign _zz_3 = _zz_1[1];
@@ -10494,127 +10474,92 @@ module gshare_predictor (
   assign _zz_127 = _zz_1[125];
   assign _zz_128 = _zz_1[126];
   assign _zz_129 = _zz_1[127];
-  assign when_Predictor_l65 = (! train_taken);
-  assign when_Predictor_l74 = (train_valid && train_mispredicted);
-  assign when_Predictor_l98 = ((BTB_btb_source_pc_0 == predict_pc) && BTB_btb_valid[0]);
+  assign when_Predictor_l61 = (! train_taken);
+  assign when_Predictor_l70 = (train_valid && train_mispredicted);
   always @(*) begin
-    if(when_Predictor_l98) begin
-      BTB_btb_is_matched = 1'b1;
-    end else begin
-      BTB_btb_is_matched = 1'b0;
+    BTB_is_matched = 1'b0;
+    if(when_Predictor_l95) begin
+      BTB_is_matched = 1'b1;
     end
-    if(when_Predictor_l98_1) begin
-      BTB_btb_is_matched = 1'b1;
-    end else begin
-      BTB_btb_is_matched = 1'b0;
+    if(when_Predictor_l95_1) begin
+      BTB_is_matched = 1'b1;
     end
-    if(when_Predictor_l98_2) begin
-      BTB_btb_is_matched = 1'b1;
-    end else begin
-      BTB_btb_is_matched = 1'b0;
+    if(when_Predictor_l95_2) begin
+      BTB_is_matched = 1'b1;
     end
-    if(when_Predictor_l98_3) begin
-      BTB_btb_is_matched = 1'b1;
-    end else begin
-      BTB_btb_is_matched = 1'b0;
+    if(when_Predictor_l95_3) begin
+      BTB_is_matched = 1'b1;
     end
   end
 
   always @(*) begin
-    if(when_Predictor_l98) begin
-      BTB_btb_is_call = BTB_btb_call[0];
-    end else begin
-      BTB_btb_is_call = 1'b0;
+    BTB_is_call = 1'b0;
+    if(when_Predictor_l95) begin
+      BTB_is_call = BTB_call[0];
     end
-    if(when_Predictor_l98_1) begin
-      BTB_btb_is_call = BTB_btb_call[1];
-    end else begin
-      BTB_btb_is_call = 1'b0;
+    if(when_Predictor_l95_1) begin
+      BTB_is_call = BTB_call[1];
     end
-    if(when_Predictor_l98_2) begin
-      BTB_btb_is_call = BTB_btb_call[2];
-    end else begin
-      BTB_btb_is_call = 1'b0;
+    if(when_Predictor_l95_2) begin
+      BTB_is_call = BTB_call[2];
     end
-    if(when_Predictor_l98_3) begin
-      BTB_btb_is_call = BTB_btb_call[3];
-    end else begin
-      BTB_btb_is_call = 1'b0;
+    if(when_Predictor_l95_3) begin
+      BTB_is_call = BTB_call[3];
     end
   end
 
   always @(*) begin
-    if(when_Predictor_l98) begin
-      BTB_btb_is_ret = BTB_btb_ret[0];
-    end else begin
-      BTB_btb_is_ret = 1'b0;
+    BTB_is_ret = 1'b0;
+    if(when_Predictor_l95) begin
+      BTB_is_ret = BTB_ret[0];
     end
-    if(when_Predictor_l98_1) begin
-      BTB_btb_is_ret = BTB_btb_ret[1];
-    end else begin
-      BTB_btb_is_ret = 1'b0;
+    if(when_Predictor_l95_1) begin
+      BTB_is_ret = BTB_ret[1];
     end
-    if(when_Predictor_l98_2) begin
-      BTB_btb_is_ret = BTB_btb_ret[2];
-    end else begin
-      BTB_btb_is_ret = 1'b0;
+    if(when_Predictor_l95_2) begin
+      BTB_is_ret = BTB_ret[2];
     end
-    if(when_Predictor_l98_3) begin
-      BTB_btb_is_ret = BTB_btb_ret[3];
-    end else begin
-      BTB_btb_is_ret = 1'b0;
+    if(when_Predictor_l95_3) begin
+      BTB_is_ret = BTB_ret[3];
     end
   end
 
   always @(*) begin
-    if(when_Predictor_l98) begin
-      BTB_btb_is_jmp = BTB_btb_jmp[0];
-    end else begin
-      BTB_btb_is_jmp = 1'b0;
+    BTB_is_jmp = 1'b0;
+    if(when_Predictor_l95) begin
+      BTB_is_jmp = BTB_jmp[0];
     end
-    if(when_Predictor_l98_1) begin
-      BTB_btb_is_jmp = BTB_btb_jmp[1];
-    end else begin
-      BTB_btb_is_jmp = 1'b0;
+    if(when_Predictor_l95_1) begin
+      BTB_is_jmp = BTB_jmp[1];
     end
-    if(when_Predictor_l98_2) begin
-      BTB_btb_is_jmp = BTB_btb_jmp[2];
-    end else begin
-      BTB_btb_is_jmp = 1'b0;
+    if(when_Predictor_l95_2) begin
+      BTB_is_jmp = BTB_jmp[2];
     end
-    if(when_Predictor_l98_3) begin
-      BTB_btb_is_jmp = BTB_btb_jmp[3];
-    end else begin
-      BTB_btb_is_jmp = 1'b0;
+    if(when_Predictor_l95_3) begin
+      BTB_is_jmp = BTB_jmp[3];
     end
   end
 
   always @(*) begin
-    if(when_Predictor_l98) begin
-      BTB_btb_read_target_pc = BTB_btb_target_pc_0;
-    end else begin
-      BTB_btb_read_target_pc = 64'h0;
+    BTB_target_pc_read = 64'h0;
+    if(when_Predictor_l95) begin
+      BTB_target_pc_read = BTB_target_pc_0;
     end
-    if(when_Predictor_l98_1) begin
-      BTB_btb_read_target_pc = BTB_btb_target_pc_1;
-    end else begin
-      BTB_btb_read_target_pc = 64'h0;
+    if(when_Predictor_l95_1) begin
+      BTB_target_pc_read = BTB_target_pc_1;
     end
-    if(when_Predictor_l98_2) begin
-      BTB_btb_read_target_pc = BTB_btb_target_pc_2;
-    end else begin
-      BTB_btb_read_target_pc = 64'h0;
+    if(when_Predictor_l95_2) begin
+      BTB_target_pc_read = BTB_target_pc_2;
     end
-    if(when_Predictor_l98_3) begin
-      BTB_btb_read_target_pc = BTB_btb_target_pc_3;
-    end else begin
-      BTB_btb_read_target_pc = 64'h0;
+    if(when_Predictor_l95_3) begin
+      BTB_target_pc_read = BTB_target_pc_3;
     end
   end
 
-  assign when_Predictor_l98_1 = ((BTB_btb_source_pc_1 == predict_pc) && BTB_btb_valid[1]);
-  assign when_Predictor_l98_2 = ((BTB_btb_source_pc_2 == predict_pc) && BTB_btb_valid[2]);
-  assign when_Predictor_l98_3 = ((BTB_btb_source_pc_3 == predict_pc) && BTB_btb_valid[3]);
+  assign when_Predictor_l95 = ((BTB_source_pc_0 == predict_pc) && BTB_valid[0]);
+  assign when_Predictor_l95_1 = ((BTB_source_pc_1 == predict_pc) && BTB_valid[1]);
+  assign when_Predictor_l95_2 = ((BTB_source_pc_2 == predict_pc) && BTB_valid[2]);
+  assign when_Predictor_l95_3 = ((BTB_source_pc_3 == predict_pc) && BTB_valid[3]);
   always @(*) begin
     BTB_btb_alloc_index_willIncrement = 1'b0;
     if(BTB_btb_is_miss) begin
@@ -10644,11 +10589,11 @@ module gshare_predictor (
 
   assign BTB_btb_is_hit = (|{BTB_btb_is_hit_vec_3,{BTB_btb_is_hit_vec_2,{BTB_btb_is_hit_vec_1,BTB_btb_is_hit_vec_0}}});
   assign BTB_btb_is_miss = (|{BTB_btb_is_miss_vec_3,{BTB_btb_is_miss_vec_2,{BTB_btb_is_miss_vec_1,BTB_btb_is_miss_vec_0}}});
-  assign when_Predictor_l121 = (train_valid && train_taken);
-  assign when_Predictor_l122 = ((BTB_btb_source_pc_0 == train_pc) && BTB_btb_valid[0]);
+  assign when_Predictor_l113 = (train_valid && train_taken);
+  assign when_Predictor_l114 = ((BTB_source_pc_0 == train_pc) && BTB_valid[0]);
   always @(*) begin
-    if(when_Predictor_l121) begin
-      if(when_Predictor_l122) begin
+    if(when_Predictor_l113) begin
+      if(when_Predictor_l114) begin
         BTB_btb_is_hit_vec_0 = 1'b1;
       end else begin
         BTB_btb_is_hit_vec_0 = 1'b0;
@@ -10658,10 +10603,10 @@ module gshare_predictor (
     end
   end
 
-  assign when_Predictor_l127 = ((BTB_btb_source_pc_0 != train_pc) || (! BTB_btb_valid[0]));
+  assign when_Predictor_l119 = ((BTB_source_pc_0 != train_pc) || (! BTB_valid[0]));
   always @(*) begin
-    if(when_Predictor_l121) begin
-      if(when_Predictor_l127) begin
+    if(when_Predictor_l113) begin
+      if(when_Predictor_l119) begin
         BTB_btb_is_miss_vec_0 = 1'b1;
       end else begin
         BTB_btb_is_miss_vec_0 = 1'b0;
@@ -10671,11 +10616,11 @@ module gshare_predictor (
     end
   end
 
-  assign when_Predictor_l121_1 = (train_valid && train_taken);
-  assign when_Predictor_l122_1 = ((BTB_btb_source_pc_1 == train_pc) && BTB_btb_valid[1]);
+  assign when_Predictor_l113_1 = (train_valid && train_taken);
+  assign when_Predictor_l114_1 = ((BTB_source_pc_1 == train_pc) && BTB_valid[1]);
   always @(*) begin
-    if(when_Predictor_l121_1) begin
-      if(when_Predictor_l122_1) begin
+    if(when_Predictor_l113_1) begin
+      if(when_Predictor_l114_1) begin
         BTB_btb_is_hit_vec_1 = 1'b1;
       end else begin
         BTB_btb_is_hit_vec_1 = 1'b0;
@@ -10685,10 +10630,10 @@ module gshare_predictor (
     end
   end
 
-  assign when_Predictor_l127_1 = ((BTB_btb_source_pc_1 != train_pc) || (! BTB_btb_valid[1]));
+  assign when_Predictor_l119_1 = ((BTB_source_pc_1 != train_pc) || (! BTB_valid[1]));
   always @(*) begin
-    if(when_Predictor_l121_1) begin
-      if(when_Predictor_l127_1) begin
+    if(when_Predictor_l113_1) begin
+      if(when_Predictor_l119_1) begin
         BTB_btb_is_miss_vec_1 = 1'b1;
       end else begin
         BTB_btb_is_miss_vec_1 = 1'b0;
@@ -10698,11 +10643,11 @@ module gshare_predictor (
     end
   end
 
-  assign when_Predictor_l121_2 = (train_valid && train_taken);
-  assign when_Predictor_l122_2 = ((BTB_btb_source_pc_2 == train_pc) && BTB_btb_valid[2]);
+  assign when_Predictor_l113_2 = (train_valid && train_taken);
+  assign when_Predictor_l114_2 = ((BTB_source_pc_2 == train_pc) && BTB_valid[2]);
   always @(*) begin
-    if(when_Predictor_l121_2) begin
-      if(when_Predictor_l122_2) begin
+    if(when_Predictor_l113_2) begin
+      if(when_Predictor_l114_2) begin
         BTB_btb_is_hit_vec_2 = 1'b1;
       end else begin
         BTB_btb_is_hit_vec_2 = 1'b0;
@@ -10712,10 +10657,10 @@ module gshare_predictor (
     end
   end
 
-  assign when_Predictor_l127_2 = ((BTB_btb_source_pc_2 != train_pc) || (! BTB_btb_valid[2]));
+  assign when_Predictor_l119_2 = ((BTB_source_pc_2 != train_pc) || (! BTB_valid[2]));
   always @(*) begin
-    if(when_Predictor_l121_2) begin
-      if(when_Predictor_l127_2) begin
+    if(when_Predictor_l113_2) begin
+      if(when_Predictor_l119_2) begin
         BTB_btb_is_miss_vec_2 = 1'b1;
       end else begin
         BTB_btb_is_miss_vec_2 = 1'b0;
@@ -10725,11 +10670,11 @@ module gshare_predictor (
     end
   end
 
-  assign when_Predictor_l121_3 = (train_valid && train_taken);
-  assign when_Predictor_l122_3 = ((BTB_btb_source_pc_3 == train_pc) && BTB_btb_valid[3]);
+  assign when_Predictor_l113_3 = (train_valid && train_taken);
+  assign when_Predictor_l114_3 = ((BTB_source_pc_3 == train_pc) && BTB_valid[3]);
   always @(*) begin
-    if(when_Predictor_l121_3) begin
-      if(when_Predictor_l122_3) begin
+    if(when_Predictor_l113_3) begin
+      if(when_Predictor_l114_3) begin
         BTB_btb_is_hit_vec_3 = 1'b1;
       end else begin
         BTB_btb_is_hit_vec_3 = 1'b0;
@@ -10739,10 +10684,10 @@ module gshare_predictor (
     end
   end
 
-  assign when_Predictor_l127_3 = ((BTB_btb_source_pc_3 != train_pc) || (! BTB_btb_valid[3]));
+  assign when_Predictor_l119_3 = ((BTB_source_pc_3 != train_pc) || (! BTB_valid[3]));
   always @(*) begin
-    if(when_Predictor_l121_3) begin
-      if(when_Predictor_l127_3) begin
+    if(when_Predictor_l113_3) begin
+      if(when_Predictor_l119_3) begin
         BTB_btb_is_miss_vec_3 = 1'b1;
       end else begin
         BTB_btb_is_miss_vec_3 = 1'b0;
@@ -10759,29 +10704,29 @@ module gshare_predictor (
   assign _zz_131 = ({3'd0,1'b1} <<< BTB_btb_write_index);
   assign _zz_132 = ({3'd0,1'b1} <<< BTB_btb_alloc_index_value);
   assign _zz_133 = ({3'd0,1'b1} <<< BTB_btb_alloc_index_value);
-  assign RAS_ras_call_matched = (BTB_btb_is_matched && BTB_btb_is_call);
-  assign RAS_ras_ret_matched = (BTB_btb_is_matched && BTB_btb_is_ret);
-  assign when_Predictor_l176 = (train_valid && train_is_call);
+  assign RAS_ras_call_matched = (BTB_is_matched && BTB_is_call);
+  assign RAS_ras_ret_matched = (BTB_is_matched && BTB_is_ret);
+  assign when_Predictor_l169 = (train_valid && train_is_call);
   always @(*) begin
-    if(when_Predictor_l176) begin
-      RAS_ras_next_index_exe = (RAS_ras_curr_index_exe + 2'b01);
+    if(when_Predictor_l169) begin
+      RAS_ras_next_index_proven = (RAS_ras_curr_index_proven + 2'b01);
     end else begin
-      if(when_Predictor_l178) begin
-        RAS_ras_next_index_exe = (RAS_ras_curr_index_exe - 2'b01);
+      if(when_Predictor_l172) begin
+        RAS_ras_next_index_proven = (RAS_ras_curr_index_proven - 2'b01);
       end else begin
-        RAS_ras_next_index_exe = RAS_ras_curr_index_exe;
+        RAS_ras_next_index_proven = RAS_ras_curr_index_proven;
       end
     end
   end
 
-  assign when_Predictor_l178 = (train_valid && train_is_ret);
-  assign when_Predictor_l185 = ((train_mispredicted && train_valid) && train_is_call);
+  assign when_Predictor_l172 = (train_valid && train_is_ret);
+  assign when_Predictor_l180 = ((train_mispredicted && train_valid) && train_is_call);
   always @(*) begin
-    if(when_Predictor_l185) begin
-      RAS_ras_next_index = (RAS_ras_curr_index + 2'b01);
+    if(when_Predictor_l180) begin
+      RAS_ras_next_index = (RAS_ras_curr_index_proven + 2'b01);
     end else begin
-      if(when_Predictor_l188) begin
-        RAS_ras_next_index = (RAS_ras_curr_index - 2'b01);
+      if(when_Predictor_l183) begin
+        RAS_ras_next_index = (RAS_ras_curr_index_proven - 2'b01);
       end else begin
         if(RAS_ras_call_matched) begin
           RAS_ras_next_index = (RAS_ras_curr_index + 2'b01);
@@ -10796,8 +10741,8 @@ module gshare_predictor (
     end
   end
 
-  assign when_Predictor_l188 = ((train_mispredicted && train_valid) && train_is_ret);
-  assign when_Predictor_l202 = ((train_mispredicted && train_valid) && train_is_call);
+  assign when_Predictor_l183 = ((train_mispredicted && train_valid) && train_is_ret);
+  assign when_Predictor_l197 = ((train_mispredicted && train_valid) && train_is_call);
   assign _zz_134 = ({3'd0,1'b1} <<< RAS_ras_next_index);
   assign _zz_135 = _zz_134[0];
   assign _zz_136 = _zz_134[1];
@@ -10805,11 +10750,11 @@ module gshare_predictor (
   assign _zz_138 = _zz_134[3];
   assign _zz_RAS_ras_regfile_0 = (train_pc + 64'h0000000000000004);
   assign _zz_RAS_ras_regfile_0_1 = (predict_pc + 64'h0000000000000004);
-  assign when_Predictor_l210 = ((train_mispredicted && train_valid) && train_is_ret);
+  assign when_Predictor_l205 = ((train_mispredicted && train_valid) && train_is_ret);
   assign RAS_ras_predict_pc = _zz_RAS_ras_predict_pc;
   assign predict_history = GSHARE_global_branch_history;
-  assign predict_taken = (BTB_btb_is_matched && (((GSHARE_pht_predict_taken || BTB_btb_is_jmp) || BTB_btb_is_call) || BTB_btb_is_ret));
-  assign predict_pc_next = (RAS_ras_ret_matched ? RAS_ras_predict_pc : ((BTB_btb_is_matched && ((GSHARE_pht_predict_taken || BTB_btb_is_jmp) || BTB_btb_is_call)) ? BTB_btb_read_target_pc : _zz_predict_pc_next));
+  assign predict_taken = (BTB_is_matched && (((GSHARE_pht_predict_taken || BTB_is_jmp) || BTB_is_call) || BTB_is_ret));
+  assign predict_pc_next = (RAS_ras_ret_matched ? RAS_ras_predict_pc : ((BTB_is_matched && ((GSHARE_pht_predict_taken || BTB_is_jmp) || BTB_is_call)) ? BTB_target_pc_read : _zz_predict_pc_next));
   always @(posedge clk or posedge reset) begin
     if(reset) begin
       GSHARE_global_branch_history <= 7'h0;
@@ -10941,24 +10886,24 @@ module gshare_predictor (
       GSHARE_PHT_125 <= 2'b01;
       GSHARE_PHT_126 <= 2'b01;
       GSHARE_PHT_127 <= 2'b01;
-      BTB_btb_valid <= 4'b0000;
-      BTB_btb_source_pc_0 <= 64'h0;
-      BTB_btb_source_pc_1 <= 64'h0;
-      BTB_btb_source_pc_2 <= 64'h0;
-      BTB_btb_source_pc_3 <= 64'h0;
-      BTB_btb_call <= 4'b0000;
-      BTB_btb_ret <= 4'b0000;
-      BTB_btb_jmp <= 4'b0000;
-      BTB_btb_target_pc_0 <= 64'h0;
-      BTB_btb_target_pc_1 <= 64'h0;
-      BTB_btb_target_pc_2 <= 64'h0;
-      BTB_btb_target_pc_3 <= 64'h0;
+      BTB_valid <= 4'b0000;
+      BTB_source_pc_0 <= 64'h0;
+      BTB_source_pc_1 <= 64'h0;
+      BTB_source_pc_2 <= 64'h0;
+      BTB_source_pc_3 <= 64'h0;
+      BTB_call <= 4'b0000;
+      BTB_ret <= 4'b0000;
+      BTB_jmp <= 4'b0000;
+      BTB_target_pc_0 <= 64'h0;
+      BTB_target_pc_1 <= 64'h0;
+      BTB_target_pc_2 <= 64'h0;
+      BTB_target_pc_3 <= 64'h0;
       BTB_btb_alloc_index_value <= 2'b00;
       RAS_ras_curr_index <= 2'b00;
-      RAS_ras_curr_index_exe <= 2'b00;
+      RAS_ras_curr_index_proven <= 2'b00;
     end else begin
       if(train_valid) begin
-        case(switch_Predictor_l42)
+        case(switch_Predictor_l38)
           2'b00 : begin
             if(train_taken) begin
               if(_zz_2) begin
@@ -13279,7 +13224,7 @@ module gshare_predictor (
             end
           end
           default : begin
-            if(when_Predictor_l65) begin
+            if(when_Predictor_l61) begin
               if(_zz_2) begin
                 GSHARE_PHT_0 <= 2'b10;
               end
@@ -14053,7 +13998,7 @@ module gshare_predictor (
           end
         endcase
       end
-      if(when_Predictor_l74) begin
+      if(when_Predictor_l70) begin
         GSHARE_global_branch_history <= {train_history[5 : 0],train_taken};
       end else begin
         if(predict_valid) begin
@@ -14063,72 +14008,72 @@ module gshare_predictor (
       BTB_btb_alloc_index_value <= BTB_btb_alloc_index_valueNext;
       if(BTB_btb_is_hit) begin
         if(_zz_130[0]) begin
-          BTB_btb_source_pc_0 <= train_pc;
+          BTB_source_pc_0 <= train_pc;
         end
         if(_zz_130[1]) begin
-          BTB_btb_source_pc_1 <= train_pc;
+          BTB_source_pc_1 <= train_pc;
         end
         if(_zz_130[2]) begin
-          BTB_btb_source_pc_2 <= train_pc;
+          BTB_source_pc_2 <= train_pc;
         end
         if(_zz_130[3]) begin
-          BTB_btb_source_pc_3 <= train_pc;
+          BTB_source_pc_3 <= train_pc;
         end
-        BTB_btb_call[BTB_btb_write_index] <= train_is_call;
-        BTB_btb_ret[BTB_btb_write_index] <= train_is_ret;
-        BTB_btb_jmp[BTB_btb_write_index] <= train_is_jmp;
+        BTB_call[BTB_btb_write_index] <= train_is_call;
+        BTB_ret[BTB_btb_write_index] <= train_is_ret;
+        BTB_jmp[BTB_btb_write_index] <= train_is_jmp;
         if(_zz_131[0]) begin
-          BTB_btb_target_pc_0 <= train_pc_next;
+          BTB_target_pc_0 <= train_pc_next;
         end
         if(_zz_131[1]) begin
-          BTB_btb_target_pc_1 <= train_pc_next;
+          BTB_target_pc_1 <= train_pc_next;
         end
         if(_zz_131[2]) begin
-          BTB_btb_target_pc_2 <= train_pc_next;
+          BTB_target_pc_2 <= train_pc_next;
         end
         if(_zz_131[3]) begin
-          BTB_btb_target_pc_3 <= train_pc_next;
+          BTB_target_pc_3 <= train_pc_next;
         end
       end else begin
         if(BTB_btb_is_miss) begin
-          BTB_btb_valid[BTB_btb_alloc_index_value] <= 1'b1;
+          BTB_valid[BTB_btb_alloc_index_value] <= 1'b1;
           if(_zz_132[0]) begin
-            BTB_btb_source_pc_0 <= train_pc;
+            BTB_source_pc_0 <= train_pc;
           end
           if(_zz_132[1]) begin
-            BTB_btb_source_pc_1 <= train_pc;
+            BTB_source_pc_1 <= train_pc;
           end
           if(_zz_132[2]) begin
-            BTB_btb_source_pc_2 <= train_pc;
+            BTB_source_pc_2 <= train_pc;
           end
           if(_zz_132[3]) begin
-            BTB_btb_source_pc_3 <= train_pc;
+            BTB_source_pc_3 <= train_pc;
           end
-          BTB_btb_call[BTB_btb_alloc_index_value] <= train_is_call;
-          BTB_btb_ret[BTB_btb_alloc_index_value] <= train_is_ret;
-          BTB_btb_jmp[BTB_btb_alloc_index_value] <= train_is_jmp;
+          BTB_call[BTB_btb_alloc_index_value] <= train_is_call;
+          BTB_ret[BTB_btb_alloc_index_value] <= train_is_ret;
+          BTB_jmp[BTB_btb_alloc_index_value] <= train_is_jmp;
           if(_zz_133[0]) begin
-            BTB_btb_target_pc_0 <= train_pc_next;
+            BTB_target_pc_0 <= train_pc_next;
           end
           if(_zz_133[1]) begin
-            BTB_btb_target_pc_1 <= train_pc_next;
+            BTB_target_pc_1 <= train_pc_next;
           end
           if(_zz_133[2]) begin
-            BTB_btb_target_pc_2 <= train_pc_next;
+            BTB_target_pc_2 <= train_pc_next;
           end
           if(_zz_133[3]) begin
-            BTB_btb_target_pc_3 <= train_pc_next;
+            BTB_target_pc_3 <= train_pc_next;
           end
         end
       end
-      RAS_ras_curr_index_exe <= RAS_ras_next_index;
-      if(when_Predictor_l202) begin
+      RAS_ras_curr_index_proven <= RAS_ras_next_index;
+      if(when_Predictor_l197) begin
         RAS_ras_curr_index <= RAS_ras_next_index;
       end else begin
         if(RAS_ras_call_matched) begin
           RAS_ras_curr_index <= RAS_ras_next_index;
         end else begin
-          if(when_Predictor_l210) begin
+          if(when_Predictor_l205) begin
             RAS_ras_curr_index <= RAS_ras_next_index;
           end else begin
             if(RAS_ras_ret_matched) begin
@@ -14141,7 +14086,7 @@ module gshare_predictor (
   end
 
   always @(posedge clk) begin
-    if(when_Predictor_l202) begin
+    if(when_Predictor_l197) begin
       if(_zz_135) begin
         RAS_ras_regfile_0 <= _zz_RAS_ras_regfile_0;
       end

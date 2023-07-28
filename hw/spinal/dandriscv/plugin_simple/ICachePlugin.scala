@@ -88,7 +88,7 @@ class ICachePlugin(val config : ICacheConfig) extends Plugin[DandRiscvSimple]{
                                useId=true, useLast=true, useRegion=false, useBurst=true, 
                                useLock=false, useCache=false, useSize=true, useQos=false,
                                useLen=true, useResp=true, useProt=false, useStrb=false)
-    val icacheReader = master(Axi4ReadOnly(axiConfig)).setName("icacheReader")
+    val icacheReader = master(Axi4ReadOnly(axiConfig)).setName("icache")
     // ar channel
     icacheReader.ar.valid := icache.next_level.cmd.valid
     icacheReader.ar.payload.id := U(0)

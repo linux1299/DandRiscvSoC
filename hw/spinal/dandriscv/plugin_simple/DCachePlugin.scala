@@ -95,8 +95,8 @@ class DCachePlugin(val config : DCacheConfig) extends Plugin[DandRiscvSimple]{
                                useId=true, useLast=true, useRegion=false, useBurst=true, 
                                useLock=false, useCache=false, useSize=true, useQos=false,
                                useLen=true, useResp=true, useProt=false, useStrb=true)
-    val dcacheReader = master(Axi4ReadOnly(axiConfig)).setName("dcacheReader")
-    val dcacheWriter = master(Axi4WriteOnly(axiConfig)).setName("dcacheWriter")
+    val dcacheReader = master(Axi4ReadOnly(axiConfig)).setName("dcache")
+    val dcacheWriter = master(Axi4WriteOnly(axiConfig)).setName("dcache")
 
     // ar channel
     dcacheReader.ar.valid := dcache.next_level.cmd.valid
@@ -130,12 +130,6 @@ class DCachePlugin(val config : DCacheConfig) extends Plugin[DandRiscvSimple]{
 
     // to dcache ready
     dcache.next_level.cmd.ready := dcache.next_level.cmd.wen ? dcacheReader.ar.ready | dcacheWriter.aw.ready
-
-    memaccess plug new Area{
-      import memaccess._
-      
-    }
-
     
    }
   
