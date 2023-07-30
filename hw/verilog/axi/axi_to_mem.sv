@@ -114,8 +114,8 @@ module axi_to_mem #(
 endmodule
 
 
-`include "axi/assign.svh"
-`include "axi/typedef.svh"
+`include "./hw/verilog/axi/assign.svh"
+`include "./hw/verilog/axi/typedef.svh"
 /// Interface wrapper for module `axi_to_mem`.
 module axi_to_mem_intf #(
   /// See `axi_to_mem`, parameter `AddrWidth`.

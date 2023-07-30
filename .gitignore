@@ -53,3 +53,4 @@ tmp/
 /archive.tar.gz
 *.out32
 target/
+verdiLog/
