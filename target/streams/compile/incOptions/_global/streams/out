@@ -1,26 +1,44 @@
-[0m[[0m[0mdebug[0m] [0m[0mCreated transactional ClassFileManager with tempDir = D:\MyWork\ScalaProj\DandRiscvSoC\target\scala-2.13\classes.bak[0m
+[0m[[0m[0mdebug[0m] [0m[0mCreated transactional ClassFileManager with tempDir = /home/lin/SpinalProjects/DandRiscvSoC/target/scala-2.13/classes.bak[0m
 [0m[[0m[0mdebug[0m] [0m[0mAbout to delete class files:[0m
-[0m[[0m[0mdebug[0m] [0m[0m	gshare_predictor$$anon$1.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	gshare_predictor$$anon$2$$anon$4.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	gshare_predictor$$anon$5.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	gshare_predictor.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	gshare_predictor$$anon$2.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	gshare_predictor$.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	gshare_predictor$$anon$2$$anon$3.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Pipeline.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	ControlPlugin$$anon$4.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	ControlService.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	ControlPlugin$$anon$6.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	ControlPlugin.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	ControlPorts.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	ControlPlugin$$anon$1.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	ControlPlugin$$anon$2.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	ControlPlugin$$anon$5.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	ControlPlugin$$anon$3.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	ControlPorts$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Pipeline$KeyInfo$1.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	PipelineThing.class[0m
 [0m[[0m[0mdebug[0m] [0m[0mWe backup class files:[0m
-[0m[[0m[0mdebug[0m] [0m[0m	gshare_predictor$$anon$1.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	gshare_predictor$$anon$2$$anon$4.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	gshare_predictor$$anon$5.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	gshare_predictor.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	gshare_predictor$$anon$2.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	gshare_predictor$.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	gshare_predictor$$anon$2$$anon$3.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Pipeline.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	ControlPlugin$$anon$4.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	ControlService.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	ControlPlugin$$anon$6.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	ControlPlugin.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	ControlPorts.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	ControlPlugin$$anon$1.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	ControlPlugin$$anon$2.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	ControlPlugin$$anon$5.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	ControlPlugin$$anon$3.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	ControlPorts$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Pipeline$KeyInfo$1.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	PipelineThing.class[0m
 [0m[[0m[0mdebug[0m] [0m[0mRegistering generated classes:[0m
-[0m[[0m[0mdebug[0m] [0m[0m	gshare_predictor$$anon$1.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	gshare_predictor$$anon$2$$anon$4.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	gshare_predictor$$anon$5.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	gshare_predictor.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	gshare_predictor$$anon$2.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	gshare_predictor$.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	gshare_predictor$$anon$2$$anon$3.class[0m
-[0m[[0m[0mdebug[0m] [0m[0mRemoving the temporary directory used for backing up class files: D:\MyWork\ScalaProj\DandRiscvSoC\target\scala-2.13\classes.bak[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Pipeline.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	ControlPlugin$$anon$4.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	ControlService.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	ControlPlugin$$anon$6.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	ControlPlugin.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	ControlPorts.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	ControlPlugin$$anon$1.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	ControlPlugin$$anon$2.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	ControlPlugin$$anon$5.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	ControlPlugin$$anon$3.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	ControlPorts$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Pipeline$KeyInfo$1.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	PipelineThing.class[0m
+[0m[[0m[0mdebug[0m] [0m[0mRemoving the temporary directory used for backing up class files: /home/lin/SpinalProjects/DandRiscvSoC/target/scala-2.13/classes.bak[0m

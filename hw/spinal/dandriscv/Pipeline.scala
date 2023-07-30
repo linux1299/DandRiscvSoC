@@ -125,6 +125,7 @@ trait Pipeline {
           } else {
             val stageBefore = stages(stageIndex - 1)
             inputDefault := RegNextWhen(stageBefore.output(key), stage.dontSample.getOrElse(key, Nil).foldLeft(!stage.arbitration.isStuck)(_ && !_)).setName(s"${stageBefore.getName()}_to_${stage.getName()}_${key.getName()}")
+            
           }
         }
       }

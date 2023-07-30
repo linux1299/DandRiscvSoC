@@ -3400,3 +3400,96 @@ INFO: Schema "PUBLIC" is up to date. No migration necessary.
 2023.07.29 21:08:16 WARN  25 deprecations in total; re-run with -deprecation for details[0m
 2023.07.29 21:08:16 WARN  1 feature warning; re-run with -feature for details[0m
 2023.07.29 21:08:18 INFO  time: compiled projectname in 23s[0m
+Jul 30, 2023 7:45:57 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+Jul 30, 2023 7:56:44 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 207
+2023.07.30 20:02:28 INFO  compiling projectname (1 scala source)[0m
+2023.07.30 20:02:29 INFO  time: compiled projectname in 1.29s[0m
+2023.07.30 20:06:13 INFO  compiling projectname (1 scala source)[0m
+2023.07.30 20:06:13 INFO  time: compiled projectname in 0.76s[0m
+2023.07.30 20:06:15 INFO  compiling projectname (1 scala source)[0m
+2023.07.30 20:06:15 INFO  time: compiled projectname in 0.67s[0m
+2023.07.30 20:06:17 INFO  compiling projectname (1 scala source)[0m
+2023.07.30 20:06:17 INFO  time: compiled projectname in 0.54s[0m
+2023.07.30 20:06:19 INFO  compiling projectname (1 scala source)[0m
+2023.07.30 20:06:19 INFO  time: compiled projectname in 0.57s[0m
+2023.07.30 20:06:19 INFO  compiling projectname (1 scala source)[0m
+2023.07.30 20:06:21 INFO  time: compiled projectname in 0.63s[0m
+2023.07.30 20:06:21 INFO  compiling projectname (1 scala source)[0m
+2023.07.30 20:06:21 INFO  time: compiled projectname in 0.56s[0m
+2023.07.30 20:06:22 INFO  compiling projectname (1 scala source)[0m
+2023.07.30 20:06:22 INFO  time: compiled projectname in 0.45s[0m
+2023.07.30 20:08:08 INFO  compiling projectname (1 scala source)[0m
+2023.07.30 20:08:10 INFO  time: compiled projectname in 2.31s[0m
+2023.07.30 20:12:20 INFO  compiling projectname (1 scala source)[0m
+2023.07.30 20:12:22 INFO  time: compiled projectname in 1.66s[0m
+2023.07.30 20:12:22 INFO  compiling projectname (1 scala source)[0m
+2023.07.30 20:12:23 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Pipeline.scala[0m
+2023.07.30 20:12:24 INFO  time: compiled projectname in 1.64s[0m
+2023.07.30 20:12:36 INFO  compiling projectname (1 scala source)[0m
+2023.07.30 20:12:38 INFO  time: compiled projectname in 1.52s[0m
+2023.07.30 20:12:59 WARN  Using indexes to guess the definition of RegInit[0m
+2023.07.30 20:13:08 INFO  time: code lens generation in 8.47s[0m
+Jul 30, 2023 8:13:15 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 504
+2023.07.30 20:13:48 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Pipeline.scala[0m
+2023.07.30 20:13:48 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Pipeline.scala[0m
+2023.07.30 20:13:48 INFO  compiling projectname (1 scala source)[0m
+2023.07.30 20:13:49 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Pipeline.scala[0m
+2023.07.30 20:13:49 INFO  time: compiled projectname in 1.05s[0m
+2023.07.30 20:13:50 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Pipeline.scala[0m
+2023.07.30 20:14:32 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Pipeline.scala[0m
+2023.07.30 20:14:34 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Pipeline.scala[0m
+2023.07.30 20:14:37 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Pipeline.scala[0m
+2023.07.30 20:14:39 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Pipeline.scala[0m
+2023.07.30 20:14:41 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Pipeline.scala[0m
+2023.07.30 20:14:45 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Pipeline.scala[0m
+2023.07.30 20:14:50 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Pipeline.scala[0m
+2023.07.30 20:15:03 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Pipeline.scala[0m
+2023.07.30 20:15:08 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Pipeline.scala[0m
+2023.07.30 20:16:44 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Pipeline.scala[0m
+2023.07.30 20:16:49 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Pipeline.scala[0m
+2023.07.30 20:16:53 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Pipeline.scala[0m
+2023.07.30 20:16:55 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Pipeline.scala[0m
+2023.07.30 20:17:00 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Pipeline.scala[0m
+2023.07.30 20:17:02 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Pipeline.scala[0m
+2023.07.30 20:17:02 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Pipeline.scala[0m
+2023.07.30 20:17:02 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Pipeline.scala[0m
+2023.07.30 20:17:02 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Pipeline.scala[0m
+2023.07.30 20:17:02 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Pipeline.scala[0m
+2023.07.30 20:17:02 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Pipeline.scala[0m
+2023.07.30 20:17:02 INFO  compiling projectname (1 scala source)[0m
+2023.07.30 20:17:02 INFO  time: compiled projectname in 0.3s[0m
+2023.07.30 20:17:03 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Pipeline.scala[0m
+2023.07.30 20:19:15 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Pipeline.scala[0m
+2023.07.30 20:19:18 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Pipeline.scala[0m
+2023.07.30 20:19:19 INFO  compiling projectname (1 scala source)[0m
+2023.07.30 20:19:19 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Pipeline.scala[0m
+2023.07.30 20:19:21 INFO  time: compiled projectname in 1.66s[0m
+2023.07.30 20:25:18 WARN  Using indexes to guess the definition of arbitration[0m
+2023.07.30 20:25:18 WARN  Using indexes to guess the definition of arbitration[0m
+2023.07.30 20:25:19 WARN  Using indexes to guess the definition of arbitration[0m
+2023.07.30 20:25:22 WARN  Using indexes to guess the definition of arbitration[0m
+2023.07.30 20:25:24 WARN  Using indexes to guess the definition of arbitration[0m
+2023.07.30 20:25:24 WARN  Using indexes to guess the definition of arbitration[0m
+2023.07.30 20:25:25 WARN  Using indexes to guess the definition of arbitration[0m
+2023.07.30 20:25:25 WARN  Using indexes to guess the definition of arbitration[0m
+2023.07.30 20:25:26 WARN  Using indexes to guess the definition of arbitration[0m
+2023.07.30 20:25:26 WARN  Using indexes to guess the definition of arbitration[0m
+2023.07.30 20:25:29 WARN  Using indexes to guess the definition of arbitration[0m
+2023.07.30 20:25:29 WARN  Using indexes to guess the definition of arbitration[0m
+2023.07.30 20:25:29 WARN  Using indexes to guess the definition of arbitration[0m
+2023.07.30 20:25:29 WARN  Using indexes to guess the definition of arbitration[0m
+2023.07.30 20:25:30 INFO  compiling projectname (1 scala source)[0m
+2023.07.30 20:25:30 INFO  time: compiled projectname in 85ms[0m
+2023.07.30 20:26:08 INFO  compiling projectname (1 scala source)[0m
+2023.07.30 20:26:08 INFO  time: compiled projectname in 0.22s[0m
+Jul 30, 2023 8:26:12 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 1012
+Jul 30, 2023 8:26:16 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 1019
+2023.07.30 20:26:20 INFO  compiling projectname (1 scala source)[0m
+2023.07.30 20:26:23 INFO  time: compiled projectname in 3.06s[0m
+2023.07.30 20:26:59 INFO  compiling projectname (1 scala source)[0m
+2023.07.30 20:27:00 INFO  time: compiled projectname in 1.59s[0m

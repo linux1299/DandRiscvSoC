@@ -1,6 +1,6 @@
 // Generator : SpinalHDL v1.8.1    git head : 2a7592004363e5b40ec43e1f122ed8641cd8965b
 // Component : DandRiscvSimple
-// Git hash  : d5e2f739c2904846bc90121ff0c1de86ba1ffa3c
+// Git hash  : 121725e0c64a4dce49d0c7d55be4665a33b1196a
 
 `timescale 1ns/1ps
 
@@ -638,14 +638,14 @@ module DandRiscvSimple (
   reg        [63:0]   execute_to_memaccess_MEM_WDATA;
   wire                when_Pipeline_l127_36;
   reg        [63:0]   memaccess_to_writeback_DATA_LOAD;
-  wire                when_Pipeline_l162;
-  wire                when_Pipeline_l165;
-  wire                when_Pipeline_l162_1;
-  wire                when_Pipeline_l165_1;
-  wire                when_Pipeline_l162_2;
-  wire                when_Pipeline_l165_2;
-  wire                when_Pipeline_l162_3;
-  wire                when_Pipeline_l165_3;
+  wire                when_Pipeline_l163;
+  wire                when_Pipeline_l166;
+  wire                when_Pipeline_l163_1;
+  wire                when_Pipeline_l166_1;
+  wire                when_Pipeline_l163_2;
+  wire                when_Pipeline_l166_2;
+  wire                when_Pipeline_l163_3;
+  wire                when_Pipeline_l166_3;
   function [55:0] zz__zz_memaccess_LSUPlugin_data_lbu(input dummy);
     begin
       zz__zz_memaccess_LSUPlugin_data_lbu[55] = 1'b0;
@@ -2288,16 +2288,16 @@ module DandRiscvSimple (
 
   assign when_AluPlugin_l209 = ((! execute_BPU_BRANCH_TAKEN) || (execute_BPU_PC_NEXT != execute_ALUPlugin_pc_next));
   assign when_AluPlugin_l244 = (execute_RD_ADDR == execute_RS1_ADDR);
-  assign DecodePlugin_hazard_rs1_from_mem = (((_zz_DecodePlugin_hazard_rs1_from_mem_3 && (_zz_DecodePlugin_hazard_rs1_from_mem_2 != 5'h0)) && (_zz_DecodePlugin_hazard_rs1_from_mem_2 == _zz_DecodePlugin_hazard_rs1_from_mem_1)) && (! _zz_DecodePlugin_hazard_rs1_from_mem));
-  assign DecodePlugin_hazard_rs2_from_mem = (((_zz_DecodePlugin_hazard_rs1_from_mem_3 && (_zz_DecodePlugin_hazard_rs1_from_mem_2 != 5'h0)) && (_zz_DecodePlugin_hazard_rs1_from_mem_2 == _zz_DecodePlugin_hazard_rs2_from_mem)) && (! _zz_DecodePlugin_hazard_rs1_from_mem));
-  assign DecodePlugin_hazard_rs1_from_wb = (((_zz_DecodePlugin_hazard_rs1_from_wb_1 && (_zz_DecodePlugin_hazard_rs1_from_wb != 5'h0)) && (_zz_DecodePlugin_hazard_rs1_from_wb == _zz_DecodePlugin_hazard_rs1_from_mem_1)) && (_zz_DecodePlugin_hazard_rs1_from_mem_2 != _zz_DecodePlugin_hazard_rs1_from_mem_1));
-  assign DecodePlugin_hazard_rs2_from_wb = (((_zz_DecodePlugin_hazard_rs1_from_wb_1 && (_zz_DecodePlugin_hazard_rs1_from_wb != 5'h0)) && (_zz_DecodePlugin_hazard_rs1_from_wb == _zz_DecodePlugin_hazard_rs2_from_mem)) && (_zz_DecodePlugin_hazard_rs1_from_mem_2 != _zz_DecodePlugin_hazard_rs2_from_mem));
-  assign DecodePlugin_hazard_load_use = (_zz_DecodePlugin_hazard_rs1_from_mem && (((_zz_DecodePlugin_hazard_rs1_from_mem_2 == _zz_DecodePlugin_hazard_rs1_from_mem_1) && (! DecodePlugin_hazard_rs1_from_wb)) || ((_zz_DecodePlugin_hazard_rs1_from_mem_2 == _zz_DecodePlugin_hazard_rs2_from_mem) && (! DecodePlugin_hazard_rs2_from_wb))));
-  assign DecodePlugin_hazard_ctrl_rs1_from_mem = (_zz_DecodePlugin_hazard_ctrl_rs1_from_mem && DecodePlugin_hazard_rs1_from_mem);
-  assign DecodePlugin_hazard_ctrl_rs2_from_mem = (_zz_DecodePlugin_hazard_ctrl_rs1_from_mem && DecodePlugin_hazard_rs2_from_mem);
-  assign DecodePlugin_hazard_ctrl_rs1_from_wb = (_zz_DecodePlugin_hazard_ctrl_rs1_from_mem && DecodePlugin_hazard_rs1_from_wb);
-  assign DecodePlugin_hazard_ctrl_rs2_from_wb = (_zz_DecodePlugin_hazard_ctrl_rs1_from_mem && DecodePlugin_hazard_rs2_from_wb);
-  assign DecodePlugin_hazard_ctrl_load_use = (_zz_DecodePlugin_hazard_ctrl_rs1_from_mem && DecodePlugin_hazard_load_use);
+  assign DecodePlugin_hazard_rs1_from_mem = ((((memaccess_arbitration_isValid && _zz_DecodePlugin_hazard_rs1_from_mem_3) && (_zz_DecodePlugin_hazard_rs1_from_mem_2 != 5'h0)) && (_zz_DecodePlugin_hazard_rs1_from_mem_2 == _zz_DecodePlugin_hazard_rs1_from_mem_1)) && (! _zz_DecodePlugin_hazard_rs1_from_mem));
+  assign DecodePlugin_hazard_rs2_from_mem = ((((memaccess_arbitration_isValid && _zz_DecodePlugin_hazard_rs1_from_mem_3) && (_zz_DecodePlugin_hazard_rs1_from_mem_2 != 5'h0)) && (_zz_DecodePlugin_hazard_rs1_from_mem_2 == _zz_DecodePlugin_hazard_rs2_from_mem)) && (! _zz_DecodePlugin_hazard_rs1_from_mem));
+  assign DecodePlugin_hazard_rs1_from_wb = ((((writeback_arbitration_isValid && _zz_DecodePlugin_hazard_rs1_from_wb_1) && (_zz_DecodePlugin_hazard_rs1_from_wb != 5'h0)) && (_zz_DecodePlugin_hazard_rs1_from_wb == _zz_DecodePlugin_hazard_rs1_from_mem_1)) && (_zz_DecodePlugin_hazard_rs1_from_mem_2 != _zz_DecodePlugin_hazard_rs1_from_mem_1));
+  assign DecodePlugin_hazard_rs2_from_wb = ((((writeback_arbitration_isValid && _zz_DecodePlugin_hazard_rs1_from_wb_1) && (_zz_DecodePlugin_hazard_rs1_from_wb != 5'h0)) && (_zz_DecodePlugin_hazard_rs1_from_wb == _zz_DecodePlugin_hazard_rs2_from_mem)) && (_zz_DecodePlugin_hazard_rs1_from_mem_2 != _zz_DecodePlugin_hazard_rs2_from_mem));
+  assign DecodePlugin_hazard_load_use = ((memaccess_arbitration_isValid && _zz_DecodePlugin_hazard_rs1_from_mem) && (((_zz_DecodePlugin_hazard_rs1_from_mem_2 == _zz_DecodePlugin_hazard_rs1_from_mem_1) && (! DecodePlugin_hazard_rs1_from_wb)) || ((_zz_DecodePlugin_hazard_rs1_from_mem_2 == _zz_DecodePlugin_hazard_rs2_from_mem) && (! DecodePlugin_hazard_rs2_from_wb))));
+  assign DecodePlugin_hazard_ctrl_rs1_from_mem = ((execute_arbitration_isValid && _zz_DecodePlugin_hazard_ctrl_rs1_from_mem) && DecodePlugin_hazard_rs1_from_mem);
+  assign DecodePlugin_hazard_ctrl_rs2_from_mem = ((execute_arbitration_isValid && _zz_DecodePlugin_hazard_ctrl_rs1_from_mem) && DecodePlugin_hazard_rs2_from_mem);
+  assign DecodePlugin_hazard_ctrl_rs1_from_wb = ((execute_arbitration_isValid && _zz_DecodePlugin_hazard_ctrl_rs1_from_mem) && DecodePlugin_hazard_rs1_from_wb);
+  assign DecodePlugin_hazard_ctrl_rs2_from_wb = ((execute_arbitration_isValid && _zz_DecodePlugin_hazard_ctrl_rs1_from_mem) && DecodePlugin_hazard_rs2_from_wb);
+  assign DecodePlugin_hazard_ctrl_load_use = ((execute_arbitration_isValid && _zz_DecodePlugin_hazard_ctrl_rs1_from_mem) && DecodePlugin_hazard_load_use);
   assign fetch_arbitration_haltItself = 1'b0;
   assign fetch_arbitration_flushIt = 1'b0;
   assign decode_arbitration_haltItself = 1'b0;
@@ -2816,14 +2816,14 @@ module DandRiscvSimple (
   assign writeback_arbitration_isStuck = (writeback_arbitration_haltItself || writeback_arbitration_isStuckByOthers);
   assign writeback_arbitration_isMoving = ((! writeback_arbitration_isStuck) && (! writeback_arbitration_removeIt));
   assign writeback_arbitration_isFiring = ((writeback_arbitration_isValid && (! writeback_arbitration_isStuck)) && (! writeback_arbitration_removeIt));
-  assign when_Pipeline_l162 = ((! fetch_arbitration_isStuck) && (! fetch_arbitration_removeIt));
-  assign when_Pipeline_l165 = ((! decode_arbitration_isStuck) || decode_arbitration_removeIt);
-  assign when_Pipeline_l162_1 = ((! decode_arbitration_isStuck) && (! decode_arbitration_removeIt));
-  assign when_Pipeline_l165_1 = ((! execute_arbitration_isStuck) || execute_arbitration_removeIt);
-  assign when_Pipeline_l162_2 = ((! execute_arbitration_isStuck) && (! execute_arbitration_removeIt));
-  assign when_Pipeline_l165_2 = ((! memaccess_arbitration_isStuck) || memaccess_arbitration_removeIt);
-  assign when_Pipeline_l162_3 = ((! memaccess_arbitration_isStuck) && (! memaccess_arbitration_removeIt));
-  assign when_Pipeline_l165_3 = ((! writeback_arbitration_isStuck) || writeback_arbitration_removeIt);
+  assign when_Pipeline_l163 = ((! fetch_arbitration_isStuck) && (! fetch_arbitration_removeIt));
+  assign when_Pipeline_l166 = ((! decode_arbitration_isStuck) || decode_arbitration_removeIt);
+  assign when_Pipeline_l163_1 = ((! decode_arbitration_isStuck) && (! decode_arbitration_removeIt));
+  assign when_Pipeline_l166_1 = ((! execute_arbitration_isStuck) || execute_arbitration_removeIt);
+  assign when_Pipeline_l163_2 = ((! execute_arbitration_isStuck) && (! execute_arbitration_removeIt));
+  assign when_Pipeline_l166_2 = ((! memaccess_arbitration_isStuck) || memaccess_arbitration_removeIt);
+  assign when_Pipeline_l163_3 = ((! memaccess_arbitration_isStuck) && (! memaccess_arbitration_removeIt));
+  assign when_Pipeline_l166_3 = ((! writeback_arbitration_isStuck) || writeback_arbitration_removeIt);
   always @(posedge clk or posedge reset) begin
     if(reset) begin
       pc_next <= 64'h0000000080000000;
@@ -2871,31 +2871,31 @@ module DandRiscvSimple (
         fetch_valid <= 1'b0;
       end
       execute_ALUPlugin_branch_history <= {execute_ALUPlugin_branch_history[5 : 0],execute_ALUPlugin_branch_taken};
-      if(when_Pipeline_l162) begin
+      if(when_Pipeline_l163) begin
         decode_arbitration_isValid <= fetch_arbitration_isValid;
       end else begin
-        if(when_Pipeline_l165) begin
+        if(when_Pipeline_l166) begin
           decode_arbitration_isValid <= 1'b0;
         end
       end
-      if(when_Pipeline_l162_1) begin
+      if(when_Pipeline_l163_1) begin
         execute_arbitration_isValid <= decode_arbitration_isValid;
       end else begin
-        if(when_Pipeline_l165_1) begin
+        if(when_Pipeline_l166_1) begin
           execute_arbitration_isValid <= 1'b0;
         end
       end
-      if(when_Pipeline_l162_2) begin
+      if(when_Pipeline_l163_2) begin
         memaccess_arbitration_isValid <= execute_arbitration_isValid;
       end else begin
-        if(when_Pipeline_l165_2) begin
+        if(when_Pipeline_l166_2) begin
           memaccess_arbitration_isValid <= 1'b0;
         end
       end
-      if(when_Pipeline_l162_3) begin
+      if(when_Pipeline_l163_3) begin
         writeback_arbitration_isValid <= memaccess_arbitration_isValid;
       end else begin
-        if(when_Pipeline_l165_3) begin
+        if(when_Pipeline_l166_3) begin
           writeback_arbitration_isValid <= 1'b0;
         end
       end
