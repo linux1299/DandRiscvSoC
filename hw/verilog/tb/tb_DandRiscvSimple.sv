@@ -22,22 +22,26 @@ logic ram_i_busy_o;
 logic ram_d_busy_o;
 
 logic                 [NumBanks-1:0]  ram_i_mem_req;
-logic                 [NumBanks-1:0]  ram_i_mem_gnt;
+logic                 [NumBanks-1:0]  ram_i_mem_gnt = {NumBanks{1'b1}};
 logic [AddrWidth-1:0] [NumBanks-1:0]  ram_i_mem_addr;
 logic [DataWidth/NumBanks-1:0] [NumBanks-1:0]  ram_i_mem_wdata;
 logic [DataWidth/NumBanks/8-1:0] [NumBanks-1:0]  ram_i_mem_strb;
 logic                 [NumBanks-1:0]  ram_i_mem_we;
 logic                 [NumBanks-1:0]  ram_i_mem_rvalid;
 logic [DataWidth/NumBanks-1:0] [NumBanks-1:0]  ram_i_mem_rdata;
+logic [NumBanks-1:0] ram_i_mem_rsp_valid;
+logic [DataWidth/NumBanks-1:0] [NumBanks-1:0] ram_i_mem_rsp_rdata;
 
 logic                 [NumBanks-1:0]  ram_d_mem_req;
-logic                 [NumBanks-1:0]  ram_d_mem_gnt;
+logic                 [NumBanks-1:0]  ram_d_mem_gnt = {NumBanks{1'b1}};
 logic [AddrWidth-1:0] [NumBanks-1:0]  ram_d_mem_addr;
 logic [DataWidth/NumBanks-1:0] [NumBanks-1:0]  ram_d_mem_wdata;
 logic [DataWidth/NumBanks/8-1:0] [NumBanks-1:0]  ram_d_mem_strb;
 logic                 [NumBanks-1:0]  ram_d_mem_we;
 logic                 [NumBanks-1:0]  ram_d_mem_rvalid;
 logic [DataWidth/NumBanks-1:0] [NumBanks-1:0]  ram_d_mem_rdata;
+logic [NumBanks-1:0] ram_d_mem_rsp_valid;
+logic [DataWidth/NumBanks-1:0] [NumBanks-1:0] ram_d_mem_rsp_rdata;
 
 //              (__name,         __addr_t,             __id_t,           __data_t,         __strb_t,                __user_t)
 // `AXI_TYPEDEF_ALL(icache_axi, logic [AxiAddrWidth-1:0], logic [3:0], logic [DataWidth-1:0], logic [DataWidth/8-1:0], logic [3:0])
@@ -55,9 +59,9 @@ axi_resp_t icache_axi_rsp;
 axi_req_t dcache_axi_req;
 axi_resp_t dcache_axi_rsp;
 
-reg [63:0] ram_i [0:65535];
-reg [63:0] ram_d [0:65535];
-reg [63:0] ram_tmp [0:65535];
+reg [DataWidth-1:0] ram_i [0:1023];
+reg [DataWidth-1:0] ram_d [0:1023];
+reg [DataWidth-1:0] ram_tmp [0:1023];
 integer fd;
 integer tmp;
 integer i;
@@ -119,9 +123,26 @@ initial begin
   tmp = $fread(ram_tmp, fd);
   for (i = 0; i < 65536; i = i + 1) begin
     for (j = 0; j < 8; j = j + 1) begin
-      ram_i[i][j*8 +: 8] = ram_tmp[i][(7-j)*8 +: 8];
-      ram_d[i][j*8 +: 8] = ram_tmp[i][(7-j)*8 +: 8];
+      ram_i[i][j*8 +: 8] = ram_tmp[i][(DataWidth/8-j)*8 +: 8];
+      ram_d[i][j*8 +: 8] = ram_tmp[i][(DataWidth/8-j)*8 +: 8];
     end
+  end
+end
+always@(posedge clk_axi_in) begin
+  if(ram_i_mem_req) begin
+    ram_i_mem_rsp_valid <= 1'b1;
+    ram_i_mem_rsp_rdata <= ram_i[ram_i_mem_addr];
+  end
+  else begin
+    ram_i_mem_rsp_valid <= 1'b0;
+  end
+
+  if(ram_d_mem_req) begin
+    ram_d_mem_rsp_valid <= 1'b1;
+    ram_d_mem_rsp_rdata <= ram_d[ram_d_mem_addr];
+  end
+  else begin
+    ram_d_mem_rsp_valid <= 1'b0;
   end
 end
 
@@ -213,7 +234,7 @@ axi_to_mem#(
     .mem_gnt_i             ( ram_i_mem_gnt       ),
     .mem_addr_o            ( ram_i_mem_addr      ),
     .mem_wdata_o           ( ram_i_mem_wdata     ),
-    .mem_strb_o            ( ram_i_mem_be        ),
+    .mem_strb_o            ( ram_i_mem_strb      ),
     .mem_atop_o            (       ),
     .mem_we_o              ( ram_i_mem_we        ),
     .mem_rvalid_i          ( ram_i_mem_rsp_valid ),
@@ -237,7 +258,7 @@ axi_to_mem#(
     .mem_gnt_i             ( ram_d_mem_gnt       ),
     .mem_addr_o            ( ram_d_mem_addr      ),
     .mem_wdata_o           ( ram_d_mem_wdata     ),
-    .mem_strb_o            ( ram_d_mem_be        ),
+    .mem_strb_o            ( ram_d_mem_strb      ),
     .mem_atop_o            (       ),
     .mem_we_o              ( ram_d_mem_we        ),
     .mem_rvalid_i          ( ram_d_mem_rsp_valid ),

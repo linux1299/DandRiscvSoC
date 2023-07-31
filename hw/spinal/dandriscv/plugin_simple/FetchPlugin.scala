@@ -40,10 +40,10 @@ with ICacheAccessService
       val int_en_reg = RegInit(False).setName("int_en_reg")
 
       val fetchFSM = new Area{
-        def IDLE : UInt = 0
-        def FETCH : UInt = 1
-        def WAIT : UInt = 2
-        def HALT : UInt  = 3
+        val IDLE  = U(0 , 2 bits).setName("IDLE")
+        val FETCH = U(1 , 2 bits).setName("FETCH")
+        val BUSY  = U(2 , 2 bits).setName("BUSY")
+        val HALT  = U(3 , 2 bits).setName("HALT")
         val fetch_state_next = UInt(2 bits).setName("fetch_state_next")
         val fetch_state = RegNext(fetch_state_next).setName("fetch_state") init(IDLE)
 
@@ -58,7 +58,7 @@ with ICacheAccessService
           }
           is(FETCH) {
             when(icache_access.cmd.isStall){
-              fetch_state_next := WAIT
+              fetch_state_next := BUSY
             }
             .elsewhen(arbitration.isStuck){
               fetch_state_next := HALT
@@ -67,15 +67,15 @@ with ICacheAccessService
               fetch_state_next := FETCH
             }
           }
-          is(WAIT) {
+          is(BUSY) {
             when(arbitration.isStuck){
-              fetch_state_next := WAIT
+              fetch_state_next := BUSY
             }
             .elsewhen(icache_access.cmd.fire){
               fetch_state_next := FETCH
             }
             .otherwise{
-              fetch_state_next := WAIT
+              fetch_state_next := BUSY
             }
           }
           is(HALT){
@@ -86,10 +86,13 @@ with ICacheAccessService
               fetch_state_next := HALT
             }
           }
+          default{
+            fetch_state_next := IDLE
+          }
         }
 
         // when icache is busy, interrupt is high, use reg store interrupt's pc
-        when(fetch.output(INT_EN) & (fetch_state===WAIT || fetch_state_next===WAIT)){
+        when(fetch.output(INT_EN) & (fetch_state===BUSY || fetch_state_next===BUSY)){
           int_en_reg := True
           int_pc_reg := fetch.output(INT_PC)
         }
@@ -116,7 +119,7 @@ with ICacheAccessService
           }
         }
 
-        when(fetch_state_next===FETCH || fetch_state_next===WAIT){
+        when(fetch_state_next===FETCH || fetch_state_next===BUSY){
           fetch_valid := True
         }
         .otherwise{

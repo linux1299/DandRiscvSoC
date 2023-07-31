@@ -23,4 +23,4 @@ ver:
 	verdi  ./simWorkspace/tb_DandRiscvSimple/tb_DandRiscvSimple.fsdb -f ./hw/verilog/tb/tb_DandRiscvSimple.f -ssf -sv -v2k &
 
 push:
-	git push https://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@github.com/linux1299/DandRiscvSoC.git main
+	git push https://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@github.com/linux1299/DandRiscvSoC.git main

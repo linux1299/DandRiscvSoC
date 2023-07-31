@@ -372,8 +372,9 @@ savePropStat = FALSE
 savePropDtl = TRUE
 [QtDialog]
 importDesignForm = 1058,577,715,574
-QwWarnMsgDlg = 1005,561,600,250
-QwUserAskDlg = 1153,606,324,134
+QwWarnMsgDlg = 1005,635,600,250
+schExtrFSM = 1170,617,288,105
+QwUserAskDlg = 1153,604,324,134
 [Relationship]
 hideRecursiceNode = FALSE
 [Session Cache]
@@ -560,7 +561,7 @@ pdmlMacro = ID_BLACK
 font = COURIER12
 annotFont = Helvetica_M_R_10
 [Text.1]
-viewport = 71 26 2486 1217 45
+viewport = 71 26 2486 1214 45
 [TextPrinter]
 Orientation = Landscape
 Indicator = FALSE
@@ -649,6 +650,36 @@ DefaultLogTimeUnit = "1.000000ns"
 [VIA.oneSearch.preference.vgifColumnSettingRC]
 [VIA.oneSearch.preference.vgifColumnSettingRC.setting0]
 parRuleSets = ""
+[VIA.oneSearch.preference.vgifColumnSettingRC.setting0.column0]
+name = Severity
+width = 60
+visualIndex = 1
+isHidden = TRUE
+isUserChangeColumnVisible = FALSE
+[VIA.oneSearch.preference.vgifColumnSettingRC.setting0.column1]
+name = Code
+width = 60
+visualIndex = 2
+isHidden = TRUE
+isUserChangeColumnVisible = FALSE
+[VIA.oneSearch.preference.vgifColumnSettingRC.setting0.column2]
+name = Time
+width = 60
+visualIndex = 0
+isHidden = TRUE
+isUserChangeColumnVisible = FALSE
+[VIA.oneSearch.preference.vgifColumnSettingRC.setting0.column3]
+name = Message
+width = 60
+visualIndex = 4
+isHidden = FALSE
+isUserChangeColumnVisible = FALSE
+[VIA.oneSearch.preference.vgifColumnSettingRC.setting0.column4]
+name = Type
+width = 60
+visualIndex = 3
+isHidden = FALSE
+isUserChangeColumnVisible = FALSE
 [Vi]
 ViFont = "Clean 14"
 ViBG = white
@@ -668,7 +699,7 @@ scope_to_save_with_macro
 open_file_dir
 open_rc_file_dir
 getSignalForm = 0 0 800 479 100 30 100 30
-viewPort = 0 27 2486 534 367 293
+viewPort = 0 27 2486 534 367 282
 signalSpacing = 5
 digitalSignalHeight = 15
 analogSignalHeight = 98
@@ -1130,7 +1161,6 @@ plan_fillColor_error = red
 plan_fillColor_invalid = #F0DCDB
 plan_fillColor_subplan = lightGray
 [schematics]
-viewport = 178 262 638 516
 schBackgroundColor = black lineSolid
 schBackgroundColor_qt = #000000 qt_solidLine 1
 schBodyColor = orange6 lineSolid
@@ -1190,6 +1220,7 @@ schAsmTriColor_qt = #01ffff qt_solidLine
 pre_select = True
 ShowPassThroughNet = False
 ComputedAnnotColor = ID_PURPLE5
+viewport = 0 27 1663 490
 [schematics_print]
 Signature = FALSE
 DesignName = PCU
@@ -1265,7 +1296,7 @@ AddImportArgument = FALSE
 LineBreakWithScope = TRUE
 StopAfterCompileOption = -s
 [wave.0]
-viewPort = 0 27 2486 534 367 293
+viewPort = 0 27 2486 534 367 282
 [wave.1]
 viewPort = 127 219 960 332 100 65
 [wave.2]
