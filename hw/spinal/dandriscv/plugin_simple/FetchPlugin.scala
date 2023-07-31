@@ -116,7 +116,7 @@ with ICacheAccessService
           }
         }
 
-        when(fetch_state_next=/=IDLE){
+        when(fetch_state_next===FETCH || fetch_state_next===WAIT){
           fetch_valid := True
         }
         .otherwise{
@@ -126,7 +126,6 @@ with ICacheAccessService
 
       // insert to stage
       insert(PC) := pc
-      insert(PC_NEXT) := pc_next
       insert(INSTRUCTION) := icache_access.rsp.payload.data
       arbitration.isValid := icache_access.rsp.valid && !(output(INT_EN) || int_en_reg)
 

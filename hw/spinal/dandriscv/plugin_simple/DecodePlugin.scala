@@ -95,7 +95,7 @@ class DecodePlugin() extends Plugin[DandRiscvSimple]
       val mem_ctrl = Bits(MemCtrlEnum.LB.asBits.getWidth bits)
       val is_load = Bool()
       val is_store= Bool()
-      val branch_or_jalr = instruction(opcodeRange)===OP_BRANCH || instruction===JALR
+      // val branch_or_jalr = instruction(opcodeRange)===OP_BRANCH || instruction===JALR
       val csr_ctrl = Bits(CsrCtrlEnum.EBREAK.asBits.getWidth bits)
       val csr_addr = instruction(csrRange).asUInt
       val csr_wen  = csr_ctrl===CsrCtrlEnum.CSRRW.asBits || csr_ctrl===CsrCtrlEnum.CSRRS.asBits || csr_ctrl===CsrCtrlEnum.CSRRC.asBits
@@ -290,7 +290,6 @@ class DecodePlugin() extends Plugin[DandRiscvSimple]
       insert(RD_ADDR) := rd_addr
       insert(IS_LOAD) := is_load
       insert(IS_STORE):= is_store
-      insert(BRANCH_OR_JALR) := branch_or_jalr
       insert(CSR_CTRL) := csr_ctrl
       insert(CSR_ADDR) := csr_addr
       insert(CSR_WEN)  := csr_wen

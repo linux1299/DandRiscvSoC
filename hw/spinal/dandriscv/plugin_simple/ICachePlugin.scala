@@ -71,7 +71,7 @@ class ICachePlugin(val config : ICacheConfig) extends Plugin[DandRiscvSimple]{
 
     val icache_config = ICachePlugin.this.config
     val icache = new ICache(icache_config)
-    val srambanks = new SramBanks(icache_config.wayCount, icache_config.bankWidth, icache_config.bankDepthBits)
+    val srambanks = new SramBanks(icache_config.wayCount, icache_config.bankNum, icache_config.bankWidth, icache_config.bankDepthBits)
 
     // connect icache and cpu ports
     icache_access.cmd <> icache.cpu.cmd

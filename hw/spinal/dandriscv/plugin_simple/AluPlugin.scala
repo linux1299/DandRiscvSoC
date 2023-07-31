@@ -50,6 +50,7 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
       val sraw_result= B((31 downto 0) -> sraw_temp(31)) ## sraw_temp
       val alu_result  = Bits(XLEN bits)
 
+      // branch related
       val pc_next = UInt(addressWidth bits)
       val jal = (input(ALU_CTRL)===AluCtrlEnum.JAL.asBits)
       val jalr= (input(ALU_CTRL)===AluCtrlEnum.JALR.asBits)
@@ -59,7 +60,8 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
       val bge = (input(ALU_CTRL)===AluCtrlEnum.BGE.asBits)
       val bltu= (input(ALU_CTRL)===AluCtrlEnum.BLTU.asBits)
       val bgeu= (input(ALU_CTRL)===AluCtrlEnum.BGEU.asBits) 
-      val branch_or_jump = jal || jalr || beq || bne || blt || bge || bltu || bgeu
+      val branch_or_jalr = jalr || beq || bne || blt || bge || bltu || bgeu
+      val branch_or_jump = branch_or_jalr || jal
       val branch_src1 = Bits(XLEN bits)
       val branch_src2 = Bits(XLEN bits)
       val rd_is_link  = input(RD_ADDR)===U"5'd0" || input(RD_ADDR)===U"5'd5"
@@ -205,12 +207,12 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
       }
       // redirect if predict wrong
       when(branch_or_jump){
-        when(branch_taken){
+        when(branch_taken){ // real: branch taken; predict: not taken or taken wrong pc
           when(!input(BPU_BRANCH_TAKEN) || (input(BPU_PC_NEXT)=/=pc_next)){
             redirect_valid := arbitration.isFiring
             redirect_pc_next := pc_next
           }
-        }.otherwise{
+        }.otherwise{ // real: not taken; predict: taken
           when(input(BPU_BRANCH_TAKEN)){
             redirect_valid := arbitration.isFiring
             redirect_pc_next := input(PC) + 4
@@ -262,7 +264,7 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
       // insert to stage
       insert(ALU_RESULT) := alu_result
       insert(MEM_WDATA) := output(RS2_FROM_WB) ? writebackStage.output(RD) | (output(RS2_FROM_MEM) ? memaccess.output(ALU_RESULT) | output(RS2))
-      insert(PC_NEXT) := pc_next
+      insert(BRANCH_OR_JALR) := branch_or_jalr
       insert(BRANCH_OR_JUMP) := branch_or_jump && arbitration.isFiring
       insert(BRANCH_TAKEN) := branch_taken
       insert(BRANCH_HISTORY):= branch_history

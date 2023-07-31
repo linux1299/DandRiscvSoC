@@ -22,21 +22,21 @@ object GenSimple extends App{
         new ExcepPlugin,
         new LSUPlugin(AW=64, DW=64),
         new ICachePlugin(config = ICacheConfig(
-          cacheSize = 4096,
+          cacheSize = 32*1024, // 32KB
           bytePerLine =64,
           wayCount = 4,
           addressWidth = 64,
           cpuDataWidth = 32,
-          bankWidth = 256,
+          bankWidth = 32,
           busDataWidth = 256
         )),
         new DCachePlugin(config = DCacheConfig(
-          cacheSize = 4096,
+          cacheSize = 32*1024, // 32KB
           bytePerLine =64,
           wayCount = 4,
           addressWidth = 64,
           cpuDataWidth = 64,
-          bankWidth = 256,
+          bankWidth = 64,
           busDataWidth = 256
         ))
       )

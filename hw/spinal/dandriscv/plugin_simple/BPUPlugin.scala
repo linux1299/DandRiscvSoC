@@ -44,7 +44,7 @@ class BPUPlugin(val p : PredictorConfig) extends Plugin[DandRiscvSimple]{
     predictor.train_mispredicted   := execute.output(REDIRECT_VALID)
     predictor.train_history        := execute.output(BRANCH_HISTORY)
     predictor.train_pc             := execute.output(PC)
-    predictor.train_pc_next        := execute.output(PC_NEXT)
+    predictor.train_pc_next        := execute.output(REDIRECT_PC_NEXT)
     predictor.train_is_call        := execute.output(IS_CALL)
     predictor.train_is_ret         := execute.output(IS_RET)
     predictor.train_is_jmp         := execute.output(IS_JMP)

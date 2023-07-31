@@ -7,17 +7,18 @@ import spinal.lib._
 import scala.math._
 
 // ================= sram ports as master================
-case class SramCmd(bankDepthBits : Int, bankWidth : Int) extends Bundle{
+case class SramCmd(bankNum : Int, bankDepthBits : Int, bankWidth : Int) extends Bundle{
   val addr = UInt(bankDepthBits bits)
-  val wen = Bool()
-  val wdata = Bits(bankWidth bits)
+  val wen = Bits(bankNum bits)
+  val wdata = Bits(bankNum*bankWidth bits)
+  val wstrb = Bits(bankNum*bankWidth/8 bits)
 }
-case class SramRsp(bankWidth : Int) extends Bundle{
-  val data = Bits(bankWidth bits)
+case class SramRsp(bankNum : Int, bankWidth : Int) extends Bundle{
+  val data = Bits(bankNum*bankWidth bits)
 }
-case class SramPorts(bankDepthBits : Int, bankWidth : Int) extends Bundle with IMasterSlave{
-  val cmd = Flow(SramCmd(bankDepthBits, bankWidth))
-  val rsp = Flow(SramRsp(bankWidth))
+case class SramPorts(bankNum : Int, bankDepthBits : Int, bankWidth : Int) extends Bundle with IMasterSlave{
+  val cmd = Flow(SramCmd(bankNum, bankDepthBits, bankWidth))
+  val rsp = Flow(SramRsp(bankNum, bankWidth))
 
   override def asMaster(): Unit = {
     master(cmd)
@@ -30,26 +31,30 @@ case class SramPorts(bankDepthBits : Int, bankWidth : Int) extends Bundle with I
   }
 }
 
-case class SramBanks(bankNum : Int = 1, bankWidth : Int = 64, bankDepthBits : Int = 6) extends Component{
+case class SramBanks(wayNum: Int = 2, bankNum : Int = 2, bankWidth : Int = 64, bankDepthBits : Int = 6) extends Component{
 
   val wordCount = pow(2, bankDepthBits.toDouble).toInt
-  val sram = for(i<-0 until bankNum) yield new Area{
-    val ports = slave(SramPorts(bankDepthBits, bankWidth))
-    val banks = Mem(Bits(bankWidth bits), wordCount)
+  val sram = for(i<-0 until wayNum) yield new Area{
+    val ports = slave(SramPorts(bankNum, bankDepthBits, bankWidth))
 
-    banks.write(
-      enable  = ports.cmd.valid,
-      address = ports.cmd.addr,
-      data    = ports.cmd.wdata
-    )
+    val banks = for(j<-0 until bankNum) yield new Area{
+      val bank = Mem(Bits(bankWidth bits), wordCount)
 
-    ports.rsp.data := banks.readSync(
-      enable  = ports.cmd.valid,
-      address = ports.cmd.addr
-    )
+      bank.write(
+        enable  = ports.cmd.valid && ports.cmd.payload.wen(j),
+        address = ports.cmd.payload.addr,
+        data    = ports.cmd.payload.wdata((j+1)*bankWidth-1 downto j*bankWidth),
+        mask    = ports.cmd.payload.wstrb((j+1)*bankWidth/8-1 downto j*bankWidth/8)
+      )
+
+      ports.rsp.data((j+1)*bankWidth-1 downto j*bankWidth) := bank.readSync(
+        enable  = ports.cmd.valid,
+        address = ports.cmd.payload.addr
+      )
+    }
 
     val rsp_valid = RegInit(False)
-    when(ports.cmd.valid){
+    when(ports.cmd.valid && ports.cmd.payload.wen===B(0, bankNum bits)){
       rsp_valid := True
     }.otherwise{
       rsp_valid := False
