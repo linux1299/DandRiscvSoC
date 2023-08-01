@@ -1,14 +1,18 @@
-module axi_slave_if #(
+module axi_slave_mem #(
   //AXI-4
-  parameter AXI_DATA_WIDTH      = 64,
+  parameter AXI_DATA_WIDTH      = 256,
   parameter AXI_ADDR_WIDTH      = 64,
   parameter AXI_ID_WIDTH        = 4,
-  parameter AXI_STRB_WIDTH      = 8,
+  parameter AXI_STRB_WIDTH      = AXI_DATA_WIDTH/8,
   parameter AXI_USER_WIDTH      = 1,
 
   //Buffer Size
-  parameter WRITE_BUFFER_SIZE   = 32,  //KB
-  parameter READ_BUFFER_SIZE    = 32   //KB
+  parameter WRITE_BUFFER_SIZE   = 32*1024,  //Byte
+  parameter READ_BUFFER_SIZE    = 32*1024   //Byte
+
+  parameter ADDR_LSB = clogb2(AXI_DATA_WIDTH/8);
+  parameter AXI_WR_ADDR_BITS    = clogb2(WRITE_BUFFER_SIZE) - ADDR_LSB,
+  parameter AXI_RD_ADDR_BITS    = clogb2(READ_BUFFER_SIZE) - ADDR_LSB
 )
 (
   //AXI-4 Slave Signals
@@ -62,7 +66,15 @@ module axi_slave_if #(
   output wire [AXI_ID_WIDTH-1:0]    b_id,
   output wire [AXI_USER_WIDTH-1:0]  b_user,
   input wire                        b_ready,
-  output wire                       b_valid
+  output wire                       b_valid,
+
+  // mem ports
+  output [AXI_WR_ADDR_BITS-1:0] axi_mem_wraddr,
+  output [AXI_RD_ADDR_BITS-1:0] axi_mem_rdaddr,
+  output                        axi_mem_rden,
+  output                        axi_mem_wren,
+  output [AXI_STRB_WIDTH-1:0]   axi_mem_wmask,
+  output [AXI_DATA_WIDTH-1:0]   axi_mem_wdata
 );
 
   //AXI4 signals
@@ -117,10 +129,6 @@ module axi_slave_if #(
         depth = depth >>1;
       end
   endfunction
-
-  localparam integer ADDR_LSB = clogb2(AXI_DATA_WIDTH/8); // 3
-  localparam integer AXI_WR_ADDR_BITS = clogb2(WRITE_BUFFER_SIZE) + 7; // 32KB = 2^12*64bit
-  localparam integer AXI_RD_ADDR_BITS = clogb2(READ_BUFFER_SIZE) + 7;
 
   //Implement aw_ready generation
   //aw_ready is asserted for one clk clock cycle when both
@@ -330,32 +338,12 @@ module axi_slave_if #(
     end
   end
 
-  //W/R Buffer Interface Signals
-  wire [AXI_WR_ADDR_BITS-1:0] axi_mem_wraddr;
-  wire [AXI_RD_ADDR_BITS-1:0] axi_mem_rdaddr;
-  wire                        axi_mem_rden;
-  wire                        axi_mem_wren;
-  wire [7:0]                  axi_mem_wmask;
-
   //Buffer Interface Singals Generation
   assign axi_mem_wraddr = sig_aw_addr[AXI_WR_ADDR_BITS+ADDR_LSB-1:ADDR_LSB];
   assign axi_mem_rdaddr = sig_ar_addr[AXI_RD_ADDR_BITS+ADDR_LSB-1:ADDR_LSB];
   assign axi_mem_wren   = sig_w_ready && w_valid;
   assign axi_mem_rden   = axi_arv_arr_flag;
   assign axi_mem_wmask  = w_strb;
-
-  ram u_ram(
-    .clk  (clk),
-    .rst_n(rst_n),
-
-    .wr_data(w_data),
-    .wr_addr(axi_mem_wraddr),
-    .wr_en(axi_mem_wren),
-    .wr_mask(axi_mem_wmask),
-
-    .rd_addr(axi_mem_rdaddr),
-    .rd_data(r_data)
-
-  );
+  assign axi_mem_wdata  = w_data;
 
 endmodule

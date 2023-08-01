@@ -145,7 +145,23 @@ always@(posedge clk_axi_in) begin
     ram_d_mem_rsp_valid <= 1'b0;
   end
 end
+wire [63:0] mask = {{8{wr_mask[7]}},
+                    {8{wr_mask[6]}},
+                    {8{wr_mask[5]}},
+                    {8{wr_mask[4]}},
+                    {8{wr_mask[3]}},
+                    {8{wr_mask[2]}},
+                    {8{wr_mask[1]}},
+                    {8{wr_mask[0]}}};
 
+
+always @(posedge clk) begin
+    if (wr_en) begin
+        ram[wr_addr] <= (wr_data & mask) | (ram[wr_addr] & ~mask);
+    end
+end
+
+assign rd_data = ram[rd_addr];
 // ========================== axi clk and reset =============================	 
 initial begin
   clk_axi_in = 'b0     ;  
@@ -217,52 +233,118 @@ DandRiscvSimple u_DandRiscvSimple(
 );
 
 
-axi_to_mem#(
-    .axi_req_t             ( axi_req_t),
-    .axi_resp_t            ( axi_resp_t),
-    .AddrWidth             ( AddrWidth    ),
-    .DataWidth             ( DataWidth ),
-    .IdWidth               ( 4  ),
-    .NumBanks              ( NumBanks ) 
-)icache_axi_to_mem(
-    .clk_i                 ( clk_axi_in          ),
-    .rst_ni                ( rst_n               ),
-    .busy_o                ( ram_i_busy_o        ),
-    .axi_req_i             ( icache_axi_req      ),
-    .axi_resp_o            ( icache_axi_rsp      ),
-    .mem_req_o             ( ram_i_mem_req       ),
-    .mem_gnt_i             ( ram_i_mem_gnt       ),
-    .mem_addr_o            ( ram_i_mem_addr      ),
-    .mem_wdata_o           ( ram_i_mem_wdata     ),
-    .mem_strb_o            ( ram_i_mem_strb      ),
-    .mem_atop_o            (       ),
-    .mem_we_o              ( ram_i_mem_we        ),
-    .mem_rvalid_i          ( ram_i_mem_rsp_valid ),
-    .mem_rdata_i           ( ram_i_mem_rsp_rdata )
+// axi_to_mem#(
+//     .axi_req_t             ( axi_req_t),
+//     .axi_resp_t            ( axi_resp_t),
+//     .AddrWidth             ( AddrWidth    ),
+//     .DataWidth             ( DataWidth ),
+//     .IdWidth               ( 4  ),
+//     .NumBanks              ( NumBanks ) 
+// )icache_axi_to_mem(
+//     .clk_i                 ( clk_axi_in          ),
+//     .rst_ni                ( rst_n               ),
+//     .busy_o                ( ram_i_busy_o        ),
+//     .axi_req_i             ( icache_axi_req      ),
+//     .axi_resp_o            ( icache_axi_rsp      ),
+//     .mem_req_o             ( ram_i_mem_req       ),
+//     .mem_gnt_i             ( ram_i_mem_gnt       ),
+//     .mem_addr_o            ( ram_i_mem_addr      ),
+//     .mem_wdata_o           ( ram_i_mem_wdata     ),
+//     .mem_strb_o            ( ram_i_mem_strb      ),
+//     .mem_atop_o            (       ),
+//     .mem_we_o              ( ram_i_mem_we        ),
+//     .mem_rvalid_i          ( ram_i_mem_rsp_valid ),
+//     .mem_rdata_i           ( ram_i_mem_rsp_rdata )
+// );
+
+// axi_to_mem#(
+//     .axi_req_t             ( axi_req_t),
+//     .axi_resp_t            ( axi_resp_t),
+//     .AddrWidth             ( AddrWidth    ),
+//     .DataWidth             ( DataWidth ),
+//     .IdWidth               ( 4  ),
+//     .NumBanks              ( NumBanks ) 
+// )dcache_axi_to_mem(
+//     .clk_i                 ( clk_axi_in          ),
+//     .rst_ni                ( rst_n               ),
+//     .busy_o                ( ram_d_busy_o        ),
+//     .axi_req_i             ( dcache_axi_req      ),
+//     .axi_resp_o            ( dcache_axi_rsp      ),
+//     .mem_req_o             ( ram_d_mem_req       ),
+//     .mem_gnt_i             ( ram_d_mem_gnt       ),
+//     .mem_addr_o            ( ram_d_mem_addr      ),
+//     .mem_wdata_o           ( ram_d_mem_wdata     ),
+//     .mem_strb_o            ( ram_d_mem_strb      ),
+//     .mem_atop_o            (       ),
+//     .mem_we_o              ( ram_d_mem_we        ),
+//     .mem_rvalid_i          ( ram_d_mem_rsp_valid ),
+//     .mem_rdata_i           ( ram_d_mem_rsp_rdata )
+// );
+
+axi_slave_mem#(
+    .AXI_DATA_WIDTH    ( 256 ),
+    .AXI_ADDR_WIDTH    ( 64 ),
+    .AXI_ID_WIDTH      ( 4 ),
+    .AXI_STRB_WIDTH    ( AXI_DATA_WIDTH/8 ),
+    .AXI_USER_WIDTH    ( 1 ),
+    .WRITE_BUFFER_SIZE ( 32*1024 ),
+    .READ_BUFFER_SIZE  ( 32*1024 ),
+    .AXI_RD_ADDR_BITS  ( clogb2(READ_BUFFER_SIZE) )
+)u_axi_slave_mem_i(
+    .clk               ( clk               ),
+    .rst_n             ( rst_n             ),
+    .aw_addr           ( aw_addr           ),
+    .aw_prot           ( aw_prot           ),
+    .aw_region         ( aw_region         ),
+    .aw_len            ( aw_len            ),
+    .aw_size           ( aw_size           ),
+    .aw_burst          ( aw_burst          ),
+    .aw_lock           ( aw_lock           ),
+    .aw_cache          ( aw_cache          ),
+    .aw_qos            ( aw_qos            ),
+    .aw_id             ( aw_id             ),
+    .aw_user           ( aw_user           ),
+    .aw_ready          ( aw_ready          ),
+    .aw_valid          ( aw_valid          ),
+    .ar_addr           ( ar_addr           ),
+    .ar_prot           ( ar_prot           ),
+    .ar_region         ( ar_region         ),
+    .ar_len            ( ar_len            ),
+    .ar_size           ( ar_size           ),
+    .ar_burst          ( ar_burst          ),
+    .ar_lock           ( ar_lock           ),
+    .ar_cache          ( ar_cache          ),
+    .ar_qos            ( ar_qos            ),
+    .ar_id             ( ar_id             ),
+    .ar_user           ( ar_user           ),
+    .ar_ready          ( ar_ready          ),
+    .ar_valid          ( ar_valid          ),
+    .w_valid           ( w_valid           ),
+    .w_data            ( w_data            ),
+    .w_strb            ( w_strb            ),
+    .w_user            ( w_user            ),
+    .w_last            ( w_last            ),
+    .w_ready           ( w_ready           ),
+    .r_data            ( r_data            ),
+    .r_resp            ( r_resp            ),
+    .r_last            ( r_last            ),
+    .r_id              ( r_id              ),
+    .r_user            ( r_user            ),
+    .r_ready           ( r_ready           ),
+    .r_valid           ( r_valid           ),
+    .b_resp            ( b_resp            ),
+    .b_id              ( b_id              ),
+    .b_user            ( b_user            ),
+    .b_ready           ( b_ready           ),
+    .b_valid           ( b_valid           ),
+    .axi_mem_wraddr    ( axi_mem_wraddr    ),
+    .axi_mem_rdaddr    ( axi_mem_rdaddr    ),
+    .axi_mem_rden      ( axi_mem_rden      ),
+    .axi_mem_wren      ( axi_mem_wren      ),
+    .axi_mem_wmask     ( axi_mem_wmask     ),
+    .axi_mem_wdata     ( axi_mem_wdata     )
 );
 
-axi_to_mem#(
-    .axi_req_t             ( axi_req_t),
-    .axi_resp_t            ( axi_resp_t),
-    .AddrWidth             ( AddrWidth    ),
-    .DataWidth             ( DataWidth ),
-    .IdWidth               ( 4  ),
-    .NumBanks              ( NumBanks ) 
-)dcache_axi_to_mem(
-    .clk_i                 ( clk_axi_in          ),
-    .rst_ni                ( rst_n               ),
-    .busy_o                ( ram_d_busy_o        ),
-    .axi_req_i             ( dcache_axi_req      ),
-    .axi_resp_o            ( dcache_axi_rsp      ),
-    .mem_req_o             ( ram_d_mem_req       ),
-    .mem_gnt_i             ( ram_d_mem_gnt       ),
-    .mem_addr_o            ( ram_d_mem_addr      ),
-    .mem_wdata_o           ( ram_d_mem_wdata     ),
-    .mem_strb_o            ( ram_d_mem_strb      ),
-    .mem_atop_o            (       ),
-    .mem_we_o              ( ram_d_mem_we        ),
-    .mem_rvalid_i          ( ram_d_mem_rsp_valid ),
-    .mem_rdata_i           ( ram_d_mem_rsp_rdata )
-);
+
 
 endmodule
