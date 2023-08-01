@@ -8,11 +8,11 @@ module axi_slave_mem #(
 
   //Buffer Size
   parameter WRITE_BUFFER_SIZE   = 32*1024,  //Byte
-  parameter READ_BUFFER_SIZE    = 32*1024   //Byte
+  parameter READ_BUFFER_SIZE    = 32*1024,  //Byte
 
-  parameter ADDR_LSB = clogb2(AXI_DATA_WIDTH/8);
-  parameter AXI_WR_ADDR_BITS    = clogb2(WRITE_BUFFER_SIZE) - ADDR_LSB,
-  parameter AXI_RD_ADDR_BITS    = clogb2(READ_BUFFER_SIZE) - ADDR_LSB
+  parameter ADDR_LSB = $clog2(AXI_DATA_WIDTH/8),
+  parameter AXI_WR_ADDR_BITS    = $clog2(WRITE_BUFFER_SIZE) - ADDR_LSB,
+  parameter AXI_RD_ADDR_BITS    = $clog2(READ_BUFFER_SIZE) - ADDR_LSB
 )
 (
   //AXI-4 Slave Signals
@@ -74,7 +74,8 @@ module axi_slave_mem #(
   output                        axi_mem_rden,
   output                        axi_mem_wren,
   output [AXI_STRB_WIDTH-1:0]   axi_mem_wmask,
-  output [AXI_DATA_WIDTH-1:0]   axi_mem_wdata
+  output [AXI_DATA_WIDTH-1:0]   axi_mem_wdata,
+  input  [AXI_DATA_WIDTH-1:0]   axi_mem_rdata
 );
 
   //AXI4 signals
@@ -108,7 +109,7 @@ module axi_slave_mem #(
   assign b_user   = sig_b_user;
   assign b_valid  = sig_b_valid;
   assign ar_ready = sig_ar_ready;
-  //assign r_data   = sig_r_data;
+  assign r_data   = axi_mem_rdata;
   assign r_resp   = sig_r_resp;
   assign r_last   = sig_r_last;
   assign r_user   = sig_r_user;
@@ -122,13 +123,13 @@ module axi_slave_mem #(
   assign ar_wrap_en   = ((sig_ar_addr & ar_wrap_size) == ar_wrap_size) ? 1'b1 : 1'b0;
 
   //function for calculating log2
-  function integer clogb2 (input integer depth);
-    begin
-      depth = depth - 1;
-      for (clogb2=0; depth>0; clogb2=clogb2+1)
-        depth = depth >>1;
-      end
-  endfunction
+  // function integer $clog2 (input integer depth);
+  //   begin
+  //     depth = depth - 1;
+  //     for ($clog2=0; depth>0; $clog2=$clog2+1)
+  //       depth = depth >>1;
+  //     end
+  // endfunction
 
   //Implement aw_ready generation
   //aw_ready is asserted for one clk clock cycle when both

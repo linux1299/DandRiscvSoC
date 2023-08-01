@@ -1,6 +1,6 @@
 // Generator : SpinalHDL v1.8.1    git head : 2a7592004363e5b40ec43e1f122ed8641cd8965b
 // Component : DandRiscvSimple
-// Git hash  : d52f9e52f94fa7a506aabec06dd9666a24c3cfd1
+// Git hash  : 6257c5bc3d0ccc285bedabbbb1968205ebcfc44b
 
 `timescale 1ns/1ps
 
@@ -13553,7 +13553,7 @@ module DCache (
   assign cpu_rsp_valid = (is_hit ? _zz_cpu_rsp_valid : _zz_cpu_rsp_valid_1);
   assign cpu_cmd_ready = cpu_cmd_ready_1;
   assign next_level_cmd_payload_addr = {cpu_addr_d1[63 : 5],5'h0};
-  assign next_level_cmd_payload_len = (cpu_wen_d1 ? 4'b0001 : 4'b0010);
+  assign next_level_cmd_payload_len = (cpu_wen_d1 ? 4'b0000 : 4'b0001);
   assign next_level_cmd_payload_size = 3'b101;
   assign next_level_cmd_payload_wen = cpu_wen_d1;
   assign next_level_cmd_payload_wdata = next_level_wdata;
@@ -36913,7 +36913,7 @@ module ICache (
   assign cpu_rsp_valid = (is_hit ? _zz_cpu_rsp_valid : _zz_cpu_rsp_valid_1);
   assign cpu_cmd_ready = cpu_cmd_ready_1;
   assign next_level_cmd_payload_addr = {cpu_addr_d1[63 : 5],5'h0};
-  assign next_level_cmd_payload_len = 4'b0010;
+  assign next_level_cmd_payload_len = 4'b0001;
   assign next_level_cmd_payload_size = 3'b101;
   assign next_level_cmd_valid = next_level_cmd_valid_1;
   always @(posedge clk or posedge reset) begin

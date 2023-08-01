@@ -227,7 +227,7 @@ case class ICache(p : ICacheConfig) extends Component{
 
   // cmd to next level cache
   next_level.cmd.payload.addr := (cpu_addr_d1(addressWidth-1 downto busDataSize) ## U(0, busDataSize bits)).asUInt
-  next_level.cmd.payload.len  := busBurstLen
+  next_level.cmd.payload.len  := (busBurstLen-1)
   next_level.cmd.payload.size := busDataSize
   next_level.cmd.valid := next_level_cmd_valid
 
