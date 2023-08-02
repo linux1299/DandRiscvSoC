@@ -125,7 +125,7 @@ class DCachePlugin(val config : DCacheConfig) extends Plugin[DandRiscvSimple]{
     dcacheReader.r.ready := True
 
     // aw channel
-    dcacheWriter.aw.valid := dcache.next_level.cmd.valid && dcache.next_level.cmd.payload.wen
+    dcacheWriter.aw.valid := dcache.next_level.cmd.valid && dcache.next_level.cmd.payload.wen // TODO:when aw hs, lowdown awvalid
     dcacheWriter.aw.payload.id := U(2)
     dcacheWriter.aw.payload.len := dcache.next_level.cmd.payload.len.resized
     dcacheWriter.aw.payload.size := dcache.next_level.cmd.payload.size

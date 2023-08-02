@@ -1,7 +1,7 @@
-`include "./hw/verilog/axi/typedef.svh"
-`include "./hw/verilog/axi/axi_pkg.sv"
-`include "./hw/verilog/axi/assign.svh"
-`include "./hw/verilog/axi/fifo_v3.sv"
+// `include "./hw/verilog/axi/typedef.svh"
+// `include "./hw/verilog/axi/axi_pkg.sv"
+// `include "./hw/verilog/axi/assign.svh"
+// `include "./hw/verilog/axi/fifo_v3.sv"
 
 `define	half_axi_clk_period			1
 
@@ -60,10 +60,9 @@ logic [DataWidth-1:0]   ram_d_mem_rsp_rdata;
 // axi_req_t dcache_axi_req;
 // axi_resp_t dcache_axi_rsp;
 
-reg [DataWidth-1:0] ram_i   [0:3];
-reg [DataWidth-1:0] ram_d   [0:3];
-// reg [DataWidth-1:0] ram_tmp [0:3];
-reg [7:0] ram_tmp [0:3];
+reg [DataWidth-1:0] ram_i   [0:1023];
+reg [DataWidth-1:0] ram_d   [0:1023];
+reg [7:0] ram_tmp [0:1024*DataWidth/8-1];
 integer fd;
 integer tmp;
 integer i;
@@ -127,9 +126,8 @@ initial begin
 
   for (i = 0; i < 1024; i = i + 1) begin
     for (j = 0; j < DataWidth/8; j = j + 1) begin
-      // ram_i[i][j*8 +: 8] = ram_tmp[i][(DataWidth/8-j)*8 +: 8];
-      ram_i[i][j*8 +: 8] = ram_tmp[j][7:0];
-      ram_d[i][j*8 +: 8] = ram_tmp[i][(DataWidth/8-j)*8 +: 8];
+      ram_i[i][j*8 +: 8] = ram_tmp[i*(DataWidth/8) + j][7:0];
+      ram_d[i][j*8 +: 8] = ram_tmp[i*(DataWidth/8) + j][7:0];
     end
   end
 end
