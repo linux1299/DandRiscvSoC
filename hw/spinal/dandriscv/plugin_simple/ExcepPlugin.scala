@@ -348,9 +348,9 @@ class ExcepPlugin() extends Plugin[DandRiscvSimple]
       insert(CSR_RDATA) := csr_regfile.cpu_ports.rdata
 
       csr_regfile.cpu_ports.raddr := output(CSR_ADDR)
-      clint.ecall := output(CSR_CTRL)===CsrCtrlEnum.ECALL.asBits
-      clint.ebreak:= output(CSR_CTRL)===CsrCtrlEnum.EBREAK.asBits
-      clint.mret  := output(CSR_CTRL)===CsrCtrlEnum.MRET.asBits
+      clint.ecall := arbitration.isValid && output(CSR_CTRL)===CsrCtrlEnum.ECALL.asBits
+      clint.ebreak:= arbitration.isValid && output(CSR_CTRL)===CsrCtrlEnum.EBREAK.asBits
+      clint.mret  := arbitration.isValid && output(CSR_CTRL)===CsrCtrlEnum.MRET.asBits
     }
 
     execute plug new Area{

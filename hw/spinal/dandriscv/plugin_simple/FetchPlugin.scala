@@ -101,7 +101,7 @@ with ICacheAccessService
         }
 
         // pc_next used to fetch instruction
-        when(fetch_state_next===FETCH){
+        when(icache_access.cmd.fire){
           when(int_en_reg){
             pc_next := int_pc_reg
           }

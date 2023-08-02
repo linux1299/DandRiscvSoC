@@ -43,15 +43,15 @@ case class DandRiscvSimpleConfig(){
   }
   
   object AluCtrlEnum extends SpinalEnum(binarySequential){
-    val ADD, SUB, SLT, SLTU, XOR, SLL, SRL, SRA, AND, OR, LUI, AUIPC, JAL, JALR,BEQ, BNE, BLT, BGE, BLTU, BGEU= newElement()
+    val IDLE, ADD, SUB, SLT, SLTU, XOR, SLL, SRL, SRA, AND, OR, LUI, AUIPC, JAL, JALR,BEQ, BNE, BLT, BGE, BLTU, BGEU= newElement()
   }
 
   object MemCtrlEnum extends SpinalEnum(binarySequential){
-    val LB, LBU, LH, LHU, LW, LWU, LD, SB, SH, SW, SD= newElement()
+    val IDLE, LB, LBU, LH, LHU, LW, LWU, LD, SB, SH, SW, SD= newElement()
   }
 
   object CsrCtrlEnum extends SpinalEnum(binarySequential){
-    val ECALL, EBREAK, MRET, CSRRW, CSRRS, CSRRC, CSRRWI, CSRRSI, CSRRCI= newElement()
+    val IDLE, ECALL, EBREAK, MRET, CSRRW, CSRRS, CSRRC, CSRRWI, CSRRSI, CSRRCI= newElement()
   }
 
   // fetch stage insert

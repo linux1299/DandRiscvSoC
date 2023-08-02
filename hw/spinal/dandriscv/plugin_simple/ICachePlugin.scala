@@ -35,7 +35,6 @@ case class ICacheNextLevelPorts(p : ICacheConfig) extends Bundle with IMasterSla
 // ================ cpu and icache ports ===============
 case class ICacheAccessCmd(AW: Int) extends Bundle {
   val addr = UInt(AW bits)
-  val size = UInt(3 bits)
 }
 case class ICacheAccessRsp(DW: Int) extends Bundle {
   val data = Bits(DW bits)

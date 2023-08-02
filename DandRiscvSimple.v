@@ -1,6 +1,6 @@
 // Generator : SpinalHDL v1.8.1    git head : 2a7592004363e5b40ec43e1f122ed8641cd8965b
 // Component : DandRiscvSimple
-// Git hash  : 6257c5bc3d0ccc285bedabbbb1968205ebcfc44b
+// Git hash  : f13b4b8043172b464e72885e2a6ad6821a92709e
 
 `timescale 1ns/1ps
 
@@ -50,46 +50,49 @@ module DandRiscvSimple (
   input               clk,
   input               reset
 );
-  localparam CsrCtrlEnum_ECALL = 4'd0;
-  localparam CsrCtrlEnum_EBREAK = 4'd1;
-  localparam CsrCtrlEnum_MRET = 4'd2;
-  localparam CsrCtrlEnum_CSRRW = 4'd3;
-  localparam CsrCtrlEnum_CSRRS = 4'd4;
-  localparam CsrCtrlEnum_CSRRC = 4'd5;
-  localparam CsrCtrlEnum_CSRRWI = 4'd6;
-  localparam CsrCtrlEnum_CSRRSI = 4'd7;
-  localparam CsrCtrlEnum_CSRRCI = 4'd8;
-  localparam AluCtrlEnum_ADD = 5'd0;
-  localparam AluCtrlEnum_SUB = 5'd1;
-  localparam AluCtrlEnum_SLT = 5'd2;
-  localparam AluCtrlEnum_SLTU = 5'd3;
-  localparam AluCtrlEnum_XOR_1 = 5'd4;
-  localparam AluCtrlEnum_SLL_1 = 5'd5;
-  localparam AluCtrlEnum_SRL_1 = 5'd6;
-  localparam AluCtrlEnum_SRA_1 = 5'd7;
-  localparam AluCtrlEnum_AND_1 = 5'd8;
-  localparam AluCtrlEnum_OR_1 = 5'd9;
-  localparam AluCtrlEnum_LUI = 5'd10;
-  localparam AluCtrlEnum_AUIPC = 5'd11;
-  localparam AluCtrlEnum_JAL = 5'd12;
-  localparam AluCtrlEnum_JALR = 5'd13;
-  localparam AluCtrlEnum_BEQ = 5'd14;
-  localparam AluCtrlEnum_BNE = 5'd15;
-  localparam AluCtrlEnum_BLT = 5'd16;
-  localparam AluCtrlEnum_BGE = 5'd17;
-  localparam AluCtrlEnum_BLTU = 5'd18;
-  localparam AluCtrlEnum_BGEU = 5'd19;
-  localparam MemCtrlEnum_LB = 4'd0;
-  localparam MemCtrlEnum_LBU = 4'd1;
-  localparam MemCtrlEnum_LH = 4'd2;
-  localparam MemCtrlEnum_LHU = 4'd3;
-  localparam MemCtrlEnum_LW = 4'd4;
-  localparam MemCtrlEnum_LWU = 4'd5;
-  localparam MemCtrlEnum_LD = 4'd6;
-  localparam MemCtrlEnum_SB = 4'd7;
-  localparam MemCtrlEnum_SH = 4'd8;
-  localparam MemCtrlEnum_SW = 4'd9;
-  localparam MemCtrlEnum_SD = 4'd10;
+  localparam CsrCtrlEnum_IDLE = 4'd0;
+  localparam CsrCtrlEnum_ECALL = 4'd1;
+  localparam CsrCtrlEnum_EBREAK = 4'd2;
+  localparam CsrCtrlEnum_MRET = 4'd3;
+  localparam CsrCtrlEnum_CSRRW = 4'd4;
+  localparam CsrCtrlEnum_CSRRS = 4'd5;
+  localparam CsrCtrlEnum_CSRRC = 4'd6;
+  localparam CsrCtrlEnum_CSRRWI = 4'd7;
+  localparam CsrCtrlEnum_CSRRSI = 4'd8;
+  localparam CsrCtrlEnum_CSRRCI = 4'd9;
+  localparam AluCtrlEnum_IDLE = 5'd0;
+  localparam AluCtrlEnum_ADD = 5'd1;
+  localparam AluCtrlEnum_SUB = 5'd2;
+  localparam AluCtrlEnum_SLT = 5'd3;
+  localparam AluCtrlEnum_SLTU = 5'd4;
+  localparam AluCtrlEnum_XOR_1 = 5'd5;
+  localparam AluCtrlEnum_SLL_1 = 5'd6;
+  localparam AluCtrlEnum_SRL_1 = 5'd7;
+  localparam AluCtrlEnum_SRA_1 = 5'd8;
+  localparam AluCtrlEnum_AND_1 = 5'd9;
+  localparam AluCtrlEnum_OR_1 = 5'd10;
+  localparam AluCtrlEnum_LUI = 5'd11;
+  localparam AluCtrlEnum_AUIPC = 5'd12;
+  localparam AluCtrlEnum_JAL = 5'd13;
+  localparam AluCtrlEnum_JALR = 5'd14;
+  localparam AluCtrlEnum_BEQ = 5'd15;
+  localparam AluCtrlEnum_BNE = 5'd16;
+  localparam AluCtrlEnum_BLT = 5'd17;
+  localparam AluCtrlEnum_BGE = 5'd18;
+  localparam AluCtrlEnum_BLTU = 5'd19;
+  localparam AluCtrlEnum_BGEU = 5'd20;
+  localparam MemCtrlEnum_IDLE = 4'd0;
+  localparam MemCtrlEnum_LB = 4'd1;
+  localparam MemCtrlEnum_LBU = 4'd2;
+  localparam MemCtrlEnum_LH = 4'd3;
+  localparam MemCtrlEnum_LHU = 4'd4;
+  localparam MemCtrlEnum_LW = 4'd5;
+  localparam MemCtrlEnum_LWU = 4'd6;
+  localparam MemCtrlEnum_LD = 4'd7;
+  localparam MemCtrlEnum_SB = 4'd8;
+  localparam MemCtrlEnum_SH = 4'd9;
+  localparam MemCtrlEnum_SW = 4'd10;
+  localparam MemCtrlEnum_SD = 4'd11;
 
   wire                regFileModule_1_write_ports_rd_wen;
   wire                clint_1_ecall;
@@ -478,7 +481,6 @@ module DandRiscvSimple (
   wire                ICachePlugin_icache_access_cmd_valid;
   wire                ICachePlugin_icache_access_cmd_ready;
   wire       [63:0]   ICachePlugin_icache_access_cmd_payload_addr;
-  wire       [2:0]    ICachePlugin_icache_access_cmd_payload_size;
   wire                ICachePlugin_icache_access_rsp_valid;
   wire       [31:0]   ICachePlugin_icache_access_rsp_payload_data;
   wire                DCachePlugin_dcache_access_cmd_valid;
@@ -507,7 +509,7 @@ module DandRiscvSimple (
   wire                ICachePlugin_icache_access_cmd_fire_1;
   wire                when_FetchPlugin_l82;
   wire                when_FetchPlugin_l95;
-  wire                when_FetchPlugin_l104;
+  wire                ICachePlugin_icache_access_cmd_fire_2;
   wire                when_FetchPlugin_l122;
   reg        [63:0]   decode_DecodePlugin_imm;
   wire       [63:0]   decode_DecodePlugin_rs1;
@@ -1049,7 +1051,6 @@ module DandRiscvSimple (
     .cpu_cmd_valid                   (ICachePlugin_icache_access_cmd_valid             ), //i
     .cpu_cmd_ready                   (iCache_1_cpu_cmd_ready                           ), //o
     .cpu_cmd_payload_addr            (ICachePlugin_icache_access_cmd_payload_addr[63:0]), //i
-    .cpu_cmd_payload_size            (ICachePlugin_icache_access_cmd_payload_size[2:0] ), //i
     .cpu_rsp_valid                   (iCache_1_cpu_rsp_valid                           ), //o
     .cpu_rsp_payload_data            (iCache_1_cpu_rsp_payload_data[31:0]              ), //o
     .sram_0_ports_cmd_valid          (iCache_1_sram_0_ports_cmd_valid                  ), //o
@@ -1486,7 +1487,7 @@ module DandRiscvSimple (
   assign ICachePlugin_icache_access_cmd_fire_1 = (ICachePlugin_icache_access_cmd_valid && ICachePlugin_icache_access_cmd_ready);
   assign when_FetchPlugin_l82 = (! fetch_arbitration_isStuck);
   assign when_FetchPlugin_l95 = (when_FetchPlugin_l108 && ((fetch_state == BUSY) || (fetch_state_next == BUSY)));
-  assign when_FetchPlugin_l104 = (fetch_state_next == FETCH);
+  assign ICachePlugin_icache_access_cmd_fire_2 = (ICachePlugin_icache_access_cmd_valid && ICachePlugin_icache_access_cmd_ready);
   assign when_FetchPlugin_l122 = ((fetch_state_next == FETCH) || (fetch_state_next == BUSY));
   assign fetch_arbitration_isValid = (ICachePlugin_icache_access_rsp_valid && (! (when_FetchPlugin_l108 || int_en_reg)));
   assign ICachePlugin_icache_access_cmd_valid = fetch_valid;
@@ -2518,9 +2519,9 @@ module DandRiscvSimple (
   assign memaccess_arbitration_flushIt = 1'b0;
   assign writeback_arbitration_haltItself = 1'b0;
   assign writeback_arbitration_flushIt = 1'b0;
-  assign clint_1_ecall = (_zz_decode_to_execute_CSR_CTRL == CsrCtrlEnum_ECALL);
-  assign clint_1_ebreak = (_zz_decode_to_execute_CSR_CTRL == CsrCtrlEnum_EBREAK);
-  assign clint_1_mret = (_zz_decode_to_execute_CSR_CTRL == CsrCtrlEnum_MRET);
+  assign clint_1_ecall = (decode_arbitration_isValid && (_zz_decode_to_execute_CSR_CTRL == CsrCtrlEnum_ECALL));
+  assign clint_1_ebreak = (decode_arbitration_isValid && (_zz_decode_to_execute_CSR_CTRL == CsrCtrlEnum_EBREAK));
+  assign clint_1_mret = (decode_arbitration_isValid && (_zz_decode_to_execute_CSR_CTRL == CsrCtrlEnum_MRET));
   assign execute_ExcepPlugin_csrrs_wdata = (execute_RS1 | execute_CSR_RDATA);
   assign execute_ExcepPlugin_csrrc_wdata = ((~ execute_RS1) & execute_CSR_RDATA);
   assign execute_ExcepPlugin_csrrsi_wdata = (execute_IMM | execute_CSR_RDATA);
@@ -3072,7 +3073,7 @@ module DandRiscvSimple (
           int_en_reg <= 1'b0;
         end
       end
-      if(when_FetchPlugin_l104) begin
+      if(ICachePlugin_icache_access_cmd_fire_2) begin
         if(int_en_reg) begin
           pc_next <= int_pc_reg;
         end else begin
@@ -28858,7 +28859,6 @@ module ICache (
   input               cpu_cmd_valid,
   output              cpu_cmd_ready,
   input      [63:0]   cpu_cmd_payload_addr,
-  input      [2:0]    cpu_cmd_payload_size,
   output              cpu_rsp_valid,
   output     [31:0]   cpu_rsp_payload_data,
   output reg          sram_0_ports_cmd_valid,
@@ -28986,40 +28986,42 @@ module ICache (
 
   wire       [6:0]    _zz_flush_cnt_valueNext;
   wire       [0:0]    _zz_flush_cnt_valueNext_1;
-  wire       [3:0]    _zz_next_level_data_cnt_valueNext;
-  wire       [0:0]    _zz_next_level_data_cnt_valueNext_1;
   reg        [50:0]   _zz_cache_tag_0;
   reg                 _zz_cache_hit_0;
   reg                 _zz_cache_replace_info_0;
-  reg                 _zz_cache_victim_0;
+  reg                 _zz_cache_invalid_d1_0;
+  reg                 _zz_cache_replace_info_d1_0;
   wire       [4:0]    _zz_sram_0_ports_cmd_payload_wen_1;
-  wire       [12:0]   _zz_sram_0_ports_cmd_payload_wdata;
-  wire       [12:0]   _zz_sram_0_ports_cmd_payload_wstrb;
-  wire       [12:0]   _zz_sram_0_ports_cmd_payload_wstrb_1;
+  wire       [9:0]    _zz_sram_0_ports_cmd_payload_wdata;
+  wire       [9:0]    _zz_sram_0_ports_cmd_payload_wstrb;
+  wire       [9:0]    _zz_sram_0_ports_cmd_payload_wstrb_1;
   reg        [50:0]   _zz_cache_tag_1;
   reg                 _zz_cache_hit_1;
   reg                 _zz_cache_replace_info_1;
-  reg                 _zz_cache_victim_1;
+  reg                 _zz_cache_invalid_d1_1;
+  reg                 _zz_cache_replace_info_d1_1;
   wire       [4:0]    _zz_sram_1_ports_cmd_payload_wen_1;
-  wire       [12:0]   _zz_sram_1_ports_cmd_payload_wdata;
-  wire       [12:0]   _zz_sram_1_ports_cmd_payload_wstrb;
-  wire       [12:0]   _zz_sram_1_ports_cmd_payload_wstrb_1;
+  wire       [9:0]    _zz_sram_1_ports_cmd_payload_wdata;
+  wire       [9:0]    _zz_sram_1_ports_cmd_payload_wstrb;
+  wire       [9:0]    _zz_sram_1_ports_cmd_payload_wstrb_1;
   reg        [50:0]   _zz_cache_tag_2;
   reg                 _zz_cache_hit_2;
   reg                 _zz_cache_replace_info_2;
-  reg                 _zz_cache_victim_2;
+  reg                 _zz_cache_invalid_d1_2;
+  reg                 _zz_cache_replace_info_d1_2;
   wire       [4:0]    _zz_sram_2_ports_cmd_payload_wen_1;
-  wire       [12:0]   _zz_sram_2_ports_cmd_payload_wdata;
-  wire       [12:0]   _zz_sram_2_ports_cmd_payload_wstrb;
-  wire       [12:0]   _zz_sram_2_ports_cmd_payload_wstrb_1;
+  wire       [9:0]    _zz_sram_2_ports_cmd_payload_wdata;
+  wire       [9:0]    _zz_sram_2_ports_cmd_payload_wstrb;
+  wire       [9:0]    _zz_sram_2_ports_cmd_payload_wstrb_1;
   reg        [50:0]   _zz_cache_tag_3;
   reg                 _zz_cache_hit_3;
   reg                 _zz_cache_replace_info_3;
-  reg                 _zz_cache_victim_3;
+  reg                 _zz_cache_invalid_d1_3;
+  reg                 _zz_cache_replace_info_d1_3;
   wire       [4:0]    _zz_sram_3_ports_cmd_payload_wen_1;
-  wire       [12:0]   _zz_sram_3_ports_cmd_payload_wdata;
-  wire       [12:0]   _zz_sram_3_ports_cmd_payload_wstrb;
-  wire       [12:0]   _zz_sram_3_ports_cmd_payload_wstrb_1;
+  wire       [9:0]    _zz_sram_3_ports_cmd_payload_wdata;
+  wire       [9:0]    _zz_sram_3_ports_cmd_payload_wstrb;
+  wire       [9:0]    _zz_sram_3_ports_cmd_payload_wstrb_1;
   reg        [511:0]  _zz__zz_cpu_rsp_payload_data;
   reg        [511:0]  _zz__zz_cpu_rsp_payload_data_1;
   reg        [31:0]   _zz_cpu_rsp_payload_data_2;
@@ -30570,16 +30572,29 @@ module ICache (
   wire                cache_hit_1;
   wire                cache_hit_2;
   wire                cache_hit_3;
+  wire                cache_invalid_d1_0;
+  wire                cache_invalid_d1_1;
+  wire                cache_invalid_d1_2;
+  wire                cache_invalid_d1_3;
   wire                cache_victim_0;
-  reg                 cache_victim_1;
-  reg                 cache_victim_2;
-  reg                 cache_victim_3;
+  wire                cache_victim_1;
+  wire                cache_victim_2;
+  wire                cache_victim_3;
   wire                cache_replace_info_0;
   wire                cache_replace_info_1;
   wire                cache_replace_info_2;
   wire                cache_replace_info_3;
+  wire                cache_replace_info_d1_0;
+  wire                cache_replace_info_d1_1;
+  wire                cache_replace_info_d1_2;
+  wire                cache_replace_info_d1_3;
   wire       [1:0]    hit_way_id;
   wire       [1:0]    victim_id;
+  wire       [1:0]    victim_id_tmp_0;
+  wire       [1:0]    victim_id_tmp_1;
+  wire       [1:0]    victim_id_tmp_2;
+  wire       [1:0]    victim_id_tmp_3;
+  wire       [1:0]    invalid_id;
   wire                replace_info_full;
   wire                cpu_cmd_fire;
   wire                is_hit;
@@ -30614,14 +30629,14 @@ module ICache (
   reg                 next_level_cmd_valid_1;
   reg                 next_level_data_cnt_willIncrement;
   reg                 next_level_data_cnt_willClear;
-  reg        [3:0]    next_level_data_cnt_valueNext;
-  reg        [3:0]    next_level_data_cnt_value;
+  reg        [0:0]    next_level_data_cnt_valueNext;
+  reg        [0:0]    next_level_data_cnt_value;
   wire                next_level_data_cnt_willOverflowIfInc;
   wire                next_level_data_cnt_willOverflow;
   wire       [6:0]    next_level_bank_addr;
   reg                 next_level_done;
   wire                next_level_cmd_fire;
-  wire                when_ICache_l129;
+  wire                when_ICache_l133;
   wire                _zz_hit_way_id;
   wire                _zz_hit_way_id_1;
   wire                _zz_victim_id;
@@ -30885,6 +30900,8 @@ module ICache (
   wire                _zz_257;
   wire                _zz_258;
   reg        [15:0]   _zz_sram_0_ports_cmd_payload_wen;
+  wire                when_ICache_l166;
+  wire                when_ICache_l173;
   wire       [127:0]  _zz_259;
   wire                _zz_260;
   wire                _zz_261;
@@ -31014,9 +31031,9 @@ module ICache (
   wire                _zz_385;
   wire                _zz_386;
   wire                _zz_387;
-  wire                when_ICache_l194;
-  wire                when_ICache_l215;
-  wire                when_ICache_l218;
+  wire                when_ICache_l193;
+  wire                when_ICache_l214;
+  wire                when_ICache_l217;
   wire       [127:0]  _zz_388;
   wire                _zz_389;
   wire                _zz_390;
@@ -31276,6 +31293,8 @@ module ICache (
   wire                _zz_644;
   wire                _zz_645;
   reg        [15:0]   _zz_sram_1_ports_cmd_payload_wen;
+  wire                when_ICache_l166_1;
+  wire                when_ICache_l173_1;
   wire       [127:0]  _zz_646;
   wire                _zz_647;
   wire                _zz_648;
@@ -31405,9 +31424,9 @@ module ICache (
   wire                _zz_772;
   wire                _zz_773;
   wire                _zz_774;
-  wire                when_ICache_l194_1;
-  wire                when_ICache_l215_1;
-  wire                when_ICache_l218_1;
+  wire                when_ICache_l193_1;
+  wire                when_ICache_l214_1;
+  wire                when_ICache_l217_1;
   wire       [127:0]  _zz_775;
   wire                _zz_776;
   wire                _zz_777;
@@ -31667,6 +31686,8 @@ module ICache (
   wire                _zz_1031;
   wire                _zz_1032;
   reg        [15:0]   _zz_sram_2_ports_cmd_payload_wen;
+  wire                when_ICache_l166_2;
+  wire                when_ICache_l173_2;
   wire       [127:0]  _zz_1033;
   wire                _zz_1034;
   wire                _zz_1035;
@@ -31796,9 +31817,9 @@ module ICache (
   wire                _zz_1159;
   wire                _zz_1160;
   wire                _zz_1161;
-  wire                when_ICache_l194_2;
-  wire                when_ICache_l215_2;
-  wire                when_ICache_l218_2;
+  wire                when_ICache_l193_2;
+  wire                when_ICache_l214_2;
+  wire                when_ICache_l217_2;
   wire       [127:0]  _zz_1162;
   wire                _zz_1163;
   wire                _zz_1164;
@@ -32058,6 +32079,8 @@ module ICache (
   wire                _zz_1418;
   wire                _zz_1419;
   reg        [15:0]   _zz_sram_3_ports_cmd_payload_wen;
+  wire                when_ICache_l166_3;
+  wire                when_ICache_l173_3;
   wire       [127:0]  _zz_1420;
   wire                _zz_1421;
   wire                _zz_1422;
@@ -32187,14 +32210,21 @@ module ICache (
   wire                _zz_1546;
   wire                _zz_1547;
   wire                _zz_1548;
-  wire                when_ICache_l194_3;
-  wire                when_ICache_l215_3;
-  wire                when_ICache_l218_3;
+  wire                when_ICache_l193_3;
+  wire                when_ICache_l214_3;
+  wire                when_ICache_l217_3;
   wire       [511:0]  _zz_cpu_rsp_payload_data;
   wire       [511:0]  _zz_cpu_rsp_payload_data_1;
   function [15:0] zz__zz_sram_0_ports_cmd_payload_wen(input dummy);
     begin
       zz__zz_sram_0_ports_cmd_payload_wen = 16'h0;
+      zz__zz_sram_0_ports_cmd_payload_wen[7] = 1'b1;
+      zz__zz_sram_0_ports_cmd_payload_wen[6] = 1'b1;
+      zz__zz_sram_0_ports_cmd_payload_wen[5] = 1'b1;
+      zz__zz_sram_0_ports_cmd_payload_wen[4] = 1'b1;
+      zz__zz_sram_0_ports_cmd_payload_wen[3] = 1'b1;
+      zz__zz_sram_0_ports_cmd_payload_wen[2] = 1'b1;
+      zz__zz_sram_0_ports_cmd_payload_wen[1] = 1'b1;
       zz__zz_sram_0_ports_cmd_payload_wen[0] = 1'b1;
     end
   endfunction
@@ -32202,6 +32232,13 @@ module ICache (
   function [15:0] zz__zz_sram_1_ports_cmd_payload_wen(input dummy);
     begin
       zz__zz_sram_1_ports_cmd_payload_wen = 16'h0;
+      zz__zz_sram_1_ports_cmd_payload_wen[7] = 1'b1;
+      zz__zz_sram_1_ports_cmd_payload_wen[6] = 1'b1;
+      zz__zz_sram_1_ports_cmd_payload_wen[5] = 1'b1;
+      zz__zz_sram_1_ports_cmd_payload_wen[4] = 1'b1;
+      zz__zz_sram_1_ports_cmd_payload_wen[3] = 1'b1;
+      zz__zz_sram_1_ports_cmd_payload_wen[2] = 1'b1;
+      zz__zz_sram_1_ports_cmd_payload_wen[1] = 1'b1;
       zz__zz_sram_1_ports_cmd_payload_wen[0] = 1'b1;
     end
   endfunction
@@ -32209,6 +32246,13 @@ module ICache (
   function [15:0] zz__zz_sram_2_ports_cmd_payload_wen(input dummy);
     begin
       zz__zz_sram_2_ports_cmd_payload_wen = 16'h0;
+      zz__zz_sram_2_ports_cmd_payload_wen[7] = 1'b1;
+      zz__zz_sram_2_ports_cmd_payload_wen[6] = 1'b1;
+      zz__zz_sram_2_ports_cmd_payload_wen[5] = 1'b1;
+      zz__zz_sram_2_ports_cmd_payload_wen[4] = 1'b1;
+      zz__zz_sram_2_ports_cmd_payload_wen[3] = 1'b1;
+      zz__zz_sram_2_ports_cmd_payload_wen[2] = 1'b1;
+      zz__zz_sram_2_ports_cmd_payload_wen[1] = 1'b1;
       zz__zz_sram_2_ports_cmd_payload_wen[0] = 1'b1;
     end
   endfunction
@@ -32216,6 +32260,13 @@ module ICache (
   function [15:0] zz__zz_sram_3_ports_cmd_payload_wen(input dummy);
     begin
       zz__zz_sram_3_ports_cmd_payload_wen = 16'h0;
+      zz__zz_sram_3_ports_cmd_payload_wen[7] = 1'b1;
+      zz__zz_sram_3_ports_cmd_payload_wen[6] = 1'b1;
+      zz__zz_sram_3_ports_cmd_payload_wen[5] = 1'b1;
+      zz__zz_sram_3_ports_cmd_payload_wen[4] = 1'b1;
+      zz__zz_sram_3_ports_cmd_payload_wen[3] = 1'b1;
+      zz__zz_sram_3_ports_cmd_payload_wen[2] = 1'b1;
+      zz__zz_sram_3_ports_cmd_payload_wen[1] = 1'b1;
       zz__zz_sram_3_ports_cmd_payload_wen[0] = 1'b1;
     end
   endfunction
@@ -32223,21 +32274,19 @@ module ICache (
 
   assign _zz_flush_cnt_valueNext_1 = flush_cnt_willIncrement;
   assign _zz_flush_cnt_valueNext = {6'd0, _zz_flush_cnt_valueNext_1};
-  assign _zz_next_level_data_cnt_valueNext_1 = next_level_data_cnt_willIncrement;
-  assign _zz_next_level_data_cnt_valueNext = {3'd0, _zz_next_level_data_cnt_valueNext_1};
-  assign _zz_sram_0_ports_cmd_payload_wen_1 = (next_level_data_cnt_value * 1'b1);
+  assign _zz_sram_0_ports_cmd_payload_wen_1 = (next_level_data_cnt_value * 4'b1000);
   assign _zz_sram_0_ports_cmd_payload_wdata = (next_level_data_cnt_value * 9'h100);
   assign _zz_sram_0_ports_cmd_payload_wstrb = (_zz_sram_0_ports_cmd_payload_wstrb_1 / 4'b1000);
   assign _zz_sram_0_ports_cmd_payload_wstrb_1 = (next_level_data_cnt_value * 9'h100);
-  assign _zz_sram_1_ports_cmd_payload_wen_1 = (next_level_data_cnt_value * 1'b1);
+  assign _zz_sram_1_ports_cmd_payload_wen_1 = (next_level_data_cnt_value * 4'b1000);
   assign _zz_sram_1_ports_cmd_payload_wdata = (next_level_data_cnt_value * 9'h100);
   assign _zz_sram_1_ports_cmd_payload_wstrb = (_zz_sram_1_ports_cmd_payload_wstrb_1 / 4'b1000);
   assign _zz_sram_1_ports_cmd_payload_wstrb_1 = (next_level_data_cnt_value * 9'h100);
-  assign _zz_sram_2_ports_cmd_payload_wen_1 = (next_level_data_cnt_value * 1'b1);
+  assign _zz_sram_2_ports_cmd_payload_wen_1 = (next_level_data_cnt_value * 4'b1000);
   assign _zz_sram_2_ports_cmd_payload_wdata = (next_level_data_cnt_value * 9'h100);
   assign _zz_sram_2_ports_cmd_payload_wstrb = (_zz_sram_2_ports_cmd_payload_wstrb_1 / 4'b1000);
   assign _zz_sram_2_ports_cmd_payload_wstrb_1 = (next_level_data_cnt_value * 9'h100);
-  assign _zz_sram_3_ports_cmd_payload_wen_1 = (next_level_data_cnt_value * 1'b1);
+  assign _zz_sram_3_ports_cmd_payload_wen_1 = (next_level_data_cnt_value * 4'b1000);
   assign _zz_sram_3_ports_cmd_payload_wdata = (next_level_data_cnt_value * 9'h100);
   assign _zz_sram_3_ports_cmd_payload_wstrb = (_zz_sram_3_ports_cmd_payload_wstrb_1 / 4'b1000);
   assign _zz_sram_3_ports_cmd_payload_wstrb_1 = (next_level_data_cnt_value * 9'h100);
@@ -34041,772 +34090,1284 @@ module ICache (
   always @(*) begin
     case(cpu_set_d1)
       7'b0000000 : begin
-        _zz_cache_victim_0 = ways_0_metas_0_valid;
-        _zz_cache_victim_1 = ways_1_metas_0_valid;
-        _zz_cache_victim_2 = ways_2_metas_0_valid;
-        _zz_cache_victim_3 = ways_3_metas_0_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_0_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_0_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_0_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_0_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_0_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_0_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_0_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_0_replace_info;
       end
       7'b0000001 : begin
-        _zz_cache_victim_0 = ways_0_metas_1_valid;
-        _zz_cache_victim_1 = ways_1_metas_1_valid;
-        _zz_cache_victim_2 = ways_2_metas_1_valid;
-        _zz_cache_victim_3 = ways_3_metas_1_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_1_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_1_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_1_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_1_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_1_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_1_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_1_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_1_replace_info;
       end
       7'b0000010 : begin
-        _zz_cache_victim_0 = ways_0_metas_2_valid;
-        _zz_cache_victim_1 = ways_1_metas_2_valid;
-        _zz_cache_victim_2 = ways_2_metas_2_valid;
-        _zz_cache_victim_3 = ways_3_metas_2_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_2_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_2_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_2_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_2_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_2_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_2_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_2_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_2_replace_info;
       end
       7'b0000011 : begin
-        _zz_cache_victim_0 = ways_0_metas_3_valid;
-        _zz_cache_victim_1 = ways_1_metas_3_valid;
-        _zz_cache_victim_2 = ways_2_metas_3_valid;
-        _zz_cache_victim_3 = ways_3_metas_3_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_3_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_3_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_3_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_3_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_3_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_3_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_3_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_3_replace_info;
       end
       7'b0000100 : begin
-        _zz_cache_victim_0 = ways_0_metas_4_valid;
-        _zz_cache_victim_1 = ways_1_metas_4_valid;
-        _zz_cache_victim_2 = ways_2_metas_4_valid;
-        _zz_cache_victim_3 = ways_3_metas_4_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_4_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_4_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_4_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_4_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_4_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_4_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_4_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_4_replace_info;
       end
       7'b0000101 : begin
-        _zz_cache_victim_0 = ways_0_metas_5_valid;
-        _zz_cache_victim_1 = ways_1_metas_5_valid;
-        _zz_cache_victim_2 = ways_2_metas_5_valid;
-        _zz_cache_victim_3 = ways_3_metas_5_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_5_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_5_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_5_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_5_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_5_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_5_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_5_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_5_replace_info;
       end
       7'b0000110 : begin
-        _zz_cache_victim_0 = ways_0_metas_6_valid;
-        _zz_cache_victim_1 = ways_1_metas_6_valid;
-        _zz_cache_victim_2 = ways_2_metas_6_valid;
-        _zz_cache_victim_3 = ways_3_metas_6_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_6_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_6_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_6_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_6_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_6_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_6_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_6_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_6_replace_info;
       end
       7'b0000111 : begin
-        _zz_cache_victim_0 = ways_0_metas_7_valid;
-        _zz_cache_victim_1 = ways_1_metas_7_valid;
-        _zz_cache_victim_2 = ways_2_metas_7_valid;
-        _zz_cache_victim_3 = ways_3_metas_7_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_7_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_7_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_7_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_7_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_7_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_7_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_7_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_7_replace_info;
       end
       7'b0001000 : begin
-        _zz_cache_victim_0 = ways_0_metas_8_valid;
-        _zz_cache_victim_1 = ways_1_metas_8_valid;
-        _zz_cache_victim_2 = ways_2_metas_8_valid;
-        _zz_cache_victim_3 = ways_3_metas_8_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_8_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_8_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_8_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_8_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_8_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_8_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_8_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_8_replace_info;
       end
       7'b0001001 : begin
-        _zz_cache_victim_0 = ways_0_metas_9_valid;
-        _zz_cache_victim_1 = ways_1_metas_9_valid;
-        _zz_cache_victim_2 = ways_2_metas_9_valid;
-        _zz_cache_victim_3 = ways_3_metas_9_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_9_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_9_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_9_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_9_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_9_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_9_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_9_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_9_replace_info;
       end
       7'b0001010 : begin
-        _zz_cache_victim_0 = ways_0_metas_10_valid;
-        _zz_cache_victim_1 = ways_1_metas_10_valid;
-        _zz_cache_victim_2 = ways_2_metas_10_valid;
-        _zz_cache_victim_3 = ways_3_metas_10_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_10_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_10_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_10_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_10_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_10_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_10_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_10_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_10_replace_info;
       end
       7'b0001011 : begin
-        _zz_cache_victim_0 = ways_0_metas_11_valid;
-        _zz_cache_victim_1 = ways_1_metas_11_valid;
-        _zz_cache_victim_2 = ways_2_metas_11_valid;
-        _zz_cache_victim_3 = ways_3_metas_11_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_11_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_11_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_11_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_11_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_11_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_11_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_11_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_11_replace_info;
       end
       7'b0001100 : begin
-        _zz_cache_victim_0 = ways_0_metas_12_valid;
-        _zz_cache_victim_1 = ways_1_metas_12_valid;
-        _zz_cache_victim_2 = ways_2_metas_12_valid;
-        _zz_cache_victim_3 = ways_3_metas_12_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_12_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_12_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_12_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_12_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_12_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_12_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_12_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_12_replace_info;
       end
       7'b0001101 : begin
-        _zz_cache_victim_0 = ways_0_metas_13_valid;
-        _zz_cache_victim_1 = ways_1_metas_13_valid;
-        _zz_cache_victim_2 = ways_2_metas_13_valid;
-        _zz_cache_victim_3 = ways_3_metas_13_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_13_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_13_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_13_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_13_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_13_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_13_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_13_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_13_replace_info;
       end
       7'b0001110 : begin
-        _zz_cache_victim_0 = ways_0_metas_14_valid;
-        _zz_cache_victim_1 = ways_1_metas_14_valid;
-        _zz_cache_victim_2 = ways_2_metas_14_valid;
-        _zz_cache_victim_3 = ways_3_metas_14_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_14_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_14_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_14_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_14_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_14_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_14_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_14_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_14_replace_info;
       end
       7'b0001111 : begin
-        _zz_cache_victim_0 = ways_0_metas_15_valid;
-        _zz_cache_victim_1 = ways_1_metas_15_valid;
-        _zz_cache_victim_2 = ways_2_metas_15_valid;
-        _zz_cache_victim_3 = ways_3_metas_15_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_15_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_15_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_15_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_15_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_15_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_15_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_15_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_15_replace_info;
       end
       7'b0010000 : begin
-        _zz_cache_victim_0 = ways_0_metas_16_valid;
-        _zz_cache_victim_1 = ways_1_metas_16_valid;
-        _zz_cache_victim_2 = ways_2_metas_16_valid;
-        _zz_cache_victim_3 = ways_3_metas_16_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_16_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_16_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_16_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_16_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_16_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_16_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_16_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_16_replace_info;
       end
       7'b0010001 : begin
-        _zz_cache_victim_0 = ways_0_metas_17_valid;
-        _zz_cache_victim_1 = ways_1_metas_17_valid;
-        _zz_cache_victim_2 = ways_2_metas_17_valid;
-        _zz_cache_victim_3 = ways_3_metas_17_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_17_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_17_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_17_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_17_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_17_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_17_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_17_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_17_replace_info;
       end
       7'b0010010 : begin
-        _zz_cache_victim_0 = ways_0_metas_18_valid;
-        _zz_cache_victim_1 = ways_1_metas_18_valid;
-        _zz_cache_victim_2 = ways_2_metas_18_valid;
-        _zz_cache_victim_3 = ways_3_metas_18_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_18_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_18_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_18_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_18_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_18_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_18_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_18_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_18_replace_info;
       end
       7'b0010011 : begin
-        _zz_cache_victim_0 = ways_0_metas_19_valid;
-        _zz_cache_victim_1 = ways_1_metas_19_valid;
-        _zz_cache_victim_2 = ways_2_metas_19_valid;
-        _zz_cache_victim_3 = ways_3_metas_19_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_19_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_19_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_19_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_19_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_19_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_19_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_19_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_19_replace_info;
       end
       7'b0010100 : begin
-        _zz_cache_victim_0 = ways_0_metas_20_valid;
-        _zz_cache_victim_1 = ways_1_metas_20_valid;
-        _zz_cache_victim_2 = ways_2_metas_20_valid;
-        _zz_cache_victim_3 = ways_3_metas_20_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_20_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_20_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_20_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_20_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_20_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_20_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_20_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_20_replace_info;
       end
       7'b0010101 : begin
-        _zz_cache_victim_0 = ways_0_metas_21_valid;
-        _zz_cache_victim_1 = ways_1_metas_21_valid;
-        _zz_cache_victim_2 = ways_2_metas_21_valid;
-        _zz_cache_victim_3 = ways_3_metas_21_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_21_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_21_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_21_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_21_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_21_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_21_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_21_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_21_replace_info;
       end
       7'b0010110 : begin
-        _zz_cache_victim_0 = ways_0_metas_22_valid;
-        _zz_cache_victim_1 = ways_1_metas_22_valid;
-        _zz_cache_victim_2 = ways_2_metas_22_valid;
-        _zz_cache_victim_3 = ways_3_metas_22_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_22_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_22_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_22_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_22_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_22_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_22_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_22_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_22_replace_info;
       end
       7'b0010111 : begin
-        _zz_cache_victim_0 = ways_0_metas_23_valid;
-        _zz_cache_victim_1 = ways_1_metas_23_valid;
-        _zz_cache_victim_2 = ways_2_metas_23_valid;
-        _zz_cache_victim_3 = ways_3_metas_23_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_23_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_23_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_23_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_23_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_23_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_23_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_23_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_23_replace_info;
       end
       7'b0011000 : begin
-        _zz_cache_victim_0 = ways_0_metas_24_valid;
-        _zz_cache_victim_1 = ways_1_metas_24_valid;
-        _zz_cache_victim_2 = ways_2_metas_24_valid;
-        _zz_cache_victim_3 = ways_3_metas_24_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_24_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_24_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_24_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_24_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_24_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_24_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_24_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_24_replace_info;
       end
       7'b0011001 : begin
-        _zz_cache_victim_0 = ways_0_metas_25_valid;
-        _zz_cache_victim_1 = ways_1_metas_25_valid;
-        _zz_cache_victim_2 = ways_2_metas_25_valid;
-        _zz_cache_victim_3 = ways_3_metas_25_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_25_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_25_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_25_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_25_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_25_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_25_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_25_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_25_replace_info;
       end
       7'b0011010 : begin
-        _zz_cache_victim_0 = ways_0_metas_26_valid;
-        _zz_cache_victim_1 = ways_1_metas_26_valid;
-        _zz_cache_victim_2 = ways_2_metas_26_valid;
-        _zz_cache_victim_3 = ways_3_metas_26_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_26_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_26_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_26_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_26_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_26_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_26_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_26_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_26_replace_info;
       end
       7'b0011011 : begin
-        _zz_cache_victim_0 = ways_0_metas_27_valid;
-        _zz_cache_victim_1 = ways_1_metas_27_valid;
-        _zz_cache_victim_2 = ways_2_metas_27_valid;
-        _zz_cache_victim_3 = ways_3_metas_27_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_27_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_27_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_27_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_27_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_27_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_27_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_27_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_27_replace_info;
       end
       7'b0011100 : begin
-        _zz_cache_victim_0 = ways_0_metas_28_valid;
-        _zz_cache_victim_1 = ways_1_metas_28_valid;
-        _zz_cache_victim_2 = ways_2_metas_28_valid;
-        _zz_cache_victim_3 = ways_3_metas_28_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_28_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_28_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_28_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_28_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_28_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_28_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_28_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_28_replace_info;
       end
       7'b0011101 : begin
-        _zz_cache_victim_0 = ways_0_metas_29_valid;
-        _zz_cache_victim_1 = ways_1_metas_29_valid;
-        _zz_cache_victim_2 = ways_2_metas_29_valid;
-        _zz_cache_victim_3 = ways_3_metas_29_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_29_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_29_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_29_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_29_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_29_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_29_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_29_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_29_replace_info;
       end
       7'b0011110 : begin
-        _zz_cache_victim_0 = ways_0_metas_30_valid;
-        _zz_cache_victim_1 = ways_1_metas_30_valid;
-        _zz_cache_victim_2 = ways_2_metas_30_valid;
-        _zz_cache_victim_3 = ways_3_metas_30_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_30_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_30_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_30_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_30_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_30_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_30_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_30_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_30_replace_info;
       end
       7'b0011111 : begin
-        _zz_cache_victim_0 = ways_0_metas_31_valid;
-        _zz_cache_victim_1 = ways_1_metas_31_valid;
-        _zz_cache_victim_2 = ways_2_metas_31_valid;
-        _zz_cache_victim_3 = ways_3_metas_31_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_31_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_31_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_31_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_31_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_31_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_31_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_31_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_31_replace_info;
       end
       7'b0100000 : begin
-        _zz_cache_victim_0 = ways_0_metas_32_valid;
-        _zz_cache_victim_1 = ways_1_metas_32_valid;
-        _zz_cache_victim_2 = ways_2_metas_32_valid;
-        _zz_cache_victim_3 = ways_3_metas_32_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_32_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_32_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_32_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_32_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_32_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_32_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_32_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_32_replace_info;
       end
       7'b0100001 : begin
-        _zz_cache_victim_0 = ways_0_metas_33_valid;
-        _zz_cache_victim_1 = ways_1_metas_33_valid;
-        _zz_cache_victim_2 = ways_2_metas_33_valid;
-        _zz_cache_victim_3 = ways_3_metas_33_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_33_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_33_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_33_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_33_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_33_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_33_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_33_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_33_replace_info;
       end
       7'b0100010 : begin
-        _zz_cache_victim_0 = ways_0_metas_34_valid;
-        _zz_cache_victim_1 = ways_1_metas_34_valid;
-        _zz_cache_victim_2 = ways_2_metas_34_valid;
-        _zz_cache_victim_3 = ways_3_metas_34_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_34_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_34_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_34_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_34_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_34_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_34_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_34_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_34_replace_info;
       end
       7'b0100011 : begin
-        _zz_cache_victim_0 = ways_0_metas_35_valid;
-        _zz_cache_victim_1 = ways_1_metas_35_valid;
-        _zz_cache_victim_2 = ways_2_metas_35_valid;
-        _zz_cache_victim_3 = ways_3_metas_35_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_35_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_35_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_35_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_35_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_35_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_35_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_35_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_35_replace_info;
       end
       7'b0100100 : begin
-        _zz_cache_victim_0 = ways_0_metas_36_valid;
-        _zz_cache_victim_1 = ways_1_metas_36_valid;
-        _zz_cache_victim_2 = ways_2_metas_36_valid;
-        _zz_cache_victim_3 = ways_3_metas_36_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_36_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_36_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_36_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_36_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_36_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_36_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_36_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_36_replace_info;
       end
       7'b0100101 : begin
-        _zz_cache_victim_0 = ways_0_metas_37_valid;
-        _zz_cache_victim_1 = ways_1_metas_37_valid;
-        _zz_cache_victim_2 = ways_2_metas_37_valid;
-        _zz_cache_victim_3 = ways_3_metas_37_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_37_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_37_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_37_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_37_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_37_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_37_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_37_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_37_replace_info;
       end
       7'b0100110 : begin
-        _zz_cache_victim_0 = ways_0_metas_38_valid;
-        _zz_cache_victim_1 = ways_1_metas_38_valid;
-        _zz_cache_victim_2 = ways_2_metas_38_valid;
-        _zz_cache_victim_3 = ways_3_metas_38_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_38_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_38_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_38_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_38_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_38_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_38_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_38_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_38_replace_info;
       end
       7'b0100111 : begin
-        _zz_cache_victim_0 = ways_0_metas_39_valid;
-        _zz_cache_victim_1 = ways_1_metas_39_valid;
-        _zz_cache_victim_2 = ways_2_metas_39_valid;
-        _zz_cache_victim_3 = ways_3_metas_39_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_39_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_39_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_39_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_39_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_39_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_39_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_39_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_39_replace_info;
       end
       7'b0101000 : begin
-        _zz_cache_victim_0 = ways_0_metas_40_valid;
-        _zz_cache_victim_1 = ways_1_metas_40_valid;
-        _zz_cache_victim_2 = ways_2_metas_40_valid;
-        _zz_cache_victim_3 = ways_3_metas_40_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_40_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_40_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_40_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_40_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_40_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_40_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_40_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_40_replace_info;
       end
       7'b0101001 : begin
-        _zz_cache_victim_0 = ways_0_metas_41_valid;
-        _zz_cache_victim_1 = ways_1_metas_41_valid;
-        _zz_cache_victim_2 = ways_2_metas_41_valid;
-        _zz_cache_victim_3 = ways_3_metas_41_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_41_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_41_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_41_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_41_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_41_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_41_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_41_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_41_replace_info;
       end
       7'b0101010 : begin
-        _zz_cache_victim_0 = ways_0_metas_42_valid;
-        _zz_cache_victim_1 = ways_1_metas_42_valid;
-        _zz_cache_victim_2 = ways_2_metas_42_valid;
-        _zz_cache_victim_3 = ways_3_metas_42_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_42_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_42_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_42_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_42_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_42_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_42_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_42_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_42_replace_info;
       end
       7'b0101011 : begin
-        _zz_cache_victim_0 = ways_0_metas_43_valid;
-        _zz_cache_victim_1 = ways_1_metas_43_valid;
-        _zz_cache_victim_2 = ways_2_metas_43_valid;
-        _zz_cache_victim_3 = ways_3_metas_43_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_43_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_43_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_43_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_43_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_43_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_43_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_43_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_43_replace_info;
       end
       7'b0101100 : begin
-        _zz_cache_victim_0 = ways_0_metas_44_valid;
-        _zz_cache_victim_1 = ways_1_metas_44_valid;
-        _zz_cache_victim_2 = ways_2_metas_44_valid;
-        _zz_cache_victim_3 = ways_3_metas_44_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_44_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_44_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_44_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_44_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_44_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_44_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_44_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_44_replace_info;
       end
       7'b0101101 : begin
-        _zz_cache_victim_0 = ways_0_metas_45_valid;
-        _zz_cache_victim_1 = ways_1_metas_45_valid;
-        _zz_cache_victim_2 = ways_2_metas_45_valid;
-        _zz_cache_victim_3 = ways_3_metas_45_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_45_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_45_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_45_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_45_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_45_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_45_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_45_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_45_replace_info;
       end
       7'b0101110 : begin
-        _zz_cache_victim_0 = ways_0_metas_46_valid;
-        _zz_cache_victim_1 = ways_1_metas_46_valid;
-        _zz_cache_victim_2 = ways_2_metas_46_valid;
-        _zz_cache_victim_3 = ways_3_metas_46_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_46_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_46_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_46_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_46_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_46_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_46_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_46_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_46_replace_info;
       end
       7'b0101111 : begin
-        _zz_cache_victim_0 = ways_0_metas_47_valid;
-        _zz_cache_victim_1 = ways_1_metas_47_valid;
-        _zz_cache_victim_2 = ways_2_metas_47_valid;
-        _zz_cache_victim_3 = ways_3_metas_47_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_47_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_47_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_47_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_47_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_47_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_47_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_47_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_47_replace_info;
       end
       7'b0110000 : begin
-        _zz_cache_victim_0 = ways_0_metas_48_valid;
-        _zz_cache_victim_1 = ways_1_metas_48_valid;
-        _zz_cache_victim_2 = ways_2_metas_48_valid;
-        _zz_cache_victim_3 = ways_3_metas_48_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_48_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_48_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_48_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_48_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_48_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_48_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_48_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_48_replace_info;
       end
       7'b0110001 : begin
-        _zz_cache_victim_0 = ways_0_metas_49_valid;
-        _zz_cache_victim_1 = ways_1_metas_49_valid;
-        _zz_cache_victim_2 = ways_2_metas_49_valid;
-        _zz_cache_victim_3 = ways_3_metas_49_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_49_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_49_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_49_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_49_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_49_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_49_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_49_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_49_replace_info;
       end
       7'b0110010 : begin
-        _zz_cache_victim_0 = ways_0_metas_50_valid;
-        _zz_cache_victim_1 = ways_1_metas_50_valid;
-        _zz_cache_victim_2 = ways_2_metas_50_valid;
-        _zz_cache_victim_3 = ways_3_metas_50_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_50_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_50_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_50_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_50_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_50_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_50_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_50_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_50_replace_info;
       end
       7'b0110011 : begin
-        _zz_cache_victim_0 = ways_0_metas_51_valid;
-        _zz_cache_victim_1 = ways_1_metas_51_valid;
-        _zz_cache_victim_2 = ways_2_metas_51_valid;
-        _zz_cache_victim_3 = ways_3_metas_51_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_51_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_51_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_51_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_51_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_51_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_51_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_51_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_51_replace_info;
       end
       7'b0110100 : begin
-        _zz_cache_victim_0 = ways_0_metas_52_valid;
-        _zz_cache_victim_1 = ways_1_metas_52_valid;
-        _zz_cache_victim_2 = ways_2_metas_52_valid;
-        _zz_cache_victim_3 = ways_3_metas_52_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_52_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_52_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_52_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_52_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_52_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_52_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_52_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_52_replace_info;
       end
       7'b0110101 : begin
-        _zz_cache_victim_0 = ways_0_metas_53_valid;
-        _zz_cache_victim_1 = ways_1_metas_53_valid;
-        _zz_cache_victim_2 = ways_2_metas_53_valid;
-        _zz_cache_victim_3 = ways_3_metas_53_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_53_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_53_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_53_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_53_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_53_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_53_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_53_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_53_replace_info;
       end
       7'b0110110 : begin
-        _zz_cache_victim_0 = ways_0_metas_54_valid;
-        _zz_cache_victim_1 = ways_1_metas_54_valid;
-        _zz_cache_victim_2 = ways_2_metas_54_valid;
-        _zz_cache_victim_3 = ways_3_metas_54_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_54_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_54_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_54_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_54_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_54_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_54_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_54_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_54_replace_info;
       end
       7'b0110111 : begin
-        _zz_cache_victim_0 = ways_0_metas_55_valid;
-        _zz_cache_victim_1 = ways_1_metas_55_valid;
-        _zz_cache_victim_2 = ways_2_metas_55_valid;
-        _zz_cache_victim_3 = ways_3_metas_55_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_55_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_55_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_55_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_55_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_55_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_55_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_55_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_55_replace_info;
       end
       7'b0111000 : begin
-        _zz_cache_victim_0 = ways_0_metas_56_valid;
-        _zz_cache_victim_1 = ways_1_metas_56_valid;
-        _zz_cache_victim_2 = ways_2_metas_56_valid;
-        _zz_cache_victim_3 = ways_3_metas_56_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_56_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_56_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_56_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_56_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_56_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_56_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_56_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_56_replace_info;
       end
       7'b0111001 : begin
-        _zz_cache_victim_0 = ways_0_metas_57_valid;
-        _zz_cache_victim_1 = ways_1_metas_57_valid;
-        _zz_cache_victim_2 = ways_2_metas_57_valid;
-        _zz_cache_victim_3 = ways_3_metas_57_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_57_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_57_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_57_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_57_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_57_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_57_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_57_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_57_replace_info;
       end
       7'b0111010 : begin
-        _zz_cache_victim_0 = ways_0_metas_58_valid;
-        _zz_cache_victim_1 = ways_1_metas_58_valid;
-        _zz_cache_victim_2 = ways_2_metas_58_valid;
-        _zz_cache_victim_3 = ways_3_metas_58_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_58_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_58_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_58_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_58_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_58_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_58_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_58_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_58_replace_info;
       end
       7'b0111011 : begin
-        _zz_cache_victim_0 = ways_0_metas_59_valid;
-        _zz_cache_victim_1 = ways_1_metas_59_valid;
-        _zz_cache_victim_2 = ways_2_metas_59_valid;
-        _zz_cache_victim_3 = ways_3_metas_59_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_59_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_59_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_59_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_59_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_59_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_59_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_59_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_59_replace_info;
       end
       7'b0111100 : begin
-        _zz_cache_victim_0 = ways_0_metas_60_valid;
-        _zz_cache_victim_1 = ways_1_metas_60_valid;
-        _zz_cache_victim_2 = ways_2_metas_60_valid;
-        _zz_cache_victim_3 = ways_3_metas_60_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_60_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_60_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_60_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_60_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_60_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_60_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_60_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_60_replace_info;
       end
       7'b0111101 : begin
-        _zz_cache_victim_0 = ways_0_metas_61_valid;
-        _zz_cache_victim_1 = ways_1_metas_61_valid;
-        _zz_cache_victim_2 = ways_2_metas_61_valid;
-        _zz_cache_victim_3 = ways_3_metas_61_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_61_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_61_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_61_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_61_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_61_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_61_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_61_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_61_replace_info;
       end
       7'b0111110 : begin
-        _zz_cache_victim_0 = ways_0_metas_62_valid;
-        _zz_cache_victim_1 = ways_1_metas_62_valid;
-        _zz_cache_victim_2 = ways_2_metas_62_valid;
-        _zz_cache_victim_3 = ways_3_metas_62_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_62_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_62_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_62_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_62_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_62_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_62_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_62_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_62_replace_info;
       end
       7'b0111111 : begin
-        _zz_cache_victim_0 = ways_0_metas_63_valid;
-        _zz_cache_victim_1 = ways_1_metas_63_valid;
-        _zz_cache_victim_2 = ways_2_metas_63_valid;
-        _zz_cache_victim_3 = ways_3_metas_63_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_63_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_63_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_63_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_63_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_63_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_63_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_63_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_63_replace_info;
       end
       7'b1000000 : begin
-        _zz_cache_victim_0 = ways_0_metas_64_valid;
-        _zz_cache_victim_1 = ways_1_metas_64_valid;
-        _zz_cache_victim_2 = ways_2_metas_64_valid;
-        _zz_cache_victim_3 = ways_3_metas_64_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_64_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_64_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_64_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_64_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_64_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_64_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_64_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_64_replace_info;
       end
       7'b1000001 : begin
-        _zz_cache_victim_0 = ways_0_metas_65_valid;
-        _zz_cache_victim_1 = ways_1_metas_65_valid;
-        _zz_cache_victim_2 = ways_2_metas_65_valid;
-        _zz_cache_victim_3 = ways_3_metas_65_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_65_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_65_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_65_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_65_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_65_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_65_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_65_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_65_replace_info;
       end
       7'b1000010 : begin
-        _zz_cache_victim_0 = ways_0_metas_66_valid;
-        _zz_cache_victim_1 = ways_1_metas_66_valid;
-        _zz_cache_victim_2 = ways_2_metas_66_valid;
-        _zz_cache_victim_3 = ways_3_metas_66_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_66_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_66_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_66_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_66_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_66_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_66_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_66_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_66_replace_info;
       end
       7'b1000011 : begin
-        _zz_cache_victim_0 = ways_0_metas_67_valid;
-        _zz_cache_victim_1 = ways_1_metas_67_valid;
-        _zz_cache_victim_2 = ways_2_metas_67_valid;
-        _zz_cache_victim_3 = ways_3_metas_67_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_67_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_67_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_67_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_67_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_67_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_67_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_67_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_67_replace_info;
       end
       7'b1000100 : begin
-        _zz_cache_victim_0 = ways_0_metas_68_valid;
-        _zz_cache_victim_1 = ways_1_metas_68_valid;
-        _zz_cache_victim_2 = ways_2_metas_68_valid;
-        _zz_cache_victim_3 = ways_3_metas_68_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_68_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_68_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_68_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_68_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_68_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_68_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_68_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_68_replace_info;
       end
       7'b1000101 : begin
-        _zz_cache_victim_0 = ways_0_metas_69_valid;
-        _zz_cache_victim_1 = ways_1_metas_69_valid;
-        _zz_cache_victim_2 = ways_2_metas_69_valid;
-        _zz_cache_victim_3 = ways_3_metas_69_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_69_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_69_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_69_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_69_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_69_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_69_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_69_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_69_replace_info;
       end
       7'b1000110 : begin
-        _zz_cache_victim_0 = ways_0_metas_70_valid;
-        _zz_cache_victim_1 = ways_1_metas_70_valid;
-        _zz_cache_victim_2 = ways_2_metas_70_valid;
-        _zz_cache_victim_3 = ways_3_metas_70_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_70_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_70_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_70_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_70_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_70_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_70_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_70_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_70_replace_info;
       end
       7'b1000111 : begin
-        _zz_cache_victim_0 = ways_0_metas_71_valid;
-        _zz_cache_victim_1 = ways_1_metas_71_valid;
-        _zz_cache_victim_2 = ways_2_metas_71_valid;
-        _zz_cache_victim_3 = ways_3_metas_71_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_71_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_71_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_71_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_71_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_71_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_71_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_71_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_71_replace_info;
       end
       7'b1001000 : begin
-        _zz_cache_victim_0 = ways_0_metas_72_valid;
-        _zz_cache_victim_1 = ways_1_metas_72_valid;
-        _zz_cache_victim_2 = ways_2_metas_72_valid;
-        _zz_cache_victim_3 = ways_3_metas_72_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_72_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_72_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_72_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_72_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_72_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_72_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_72_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_72_replace_info;
       end
       7'b1001001 : begin
-        _zz_cache_victim_0 = ways_0_metas_73_valid;
-        _zz_cache_victim_1 = ways_1_metas_73_valid;
-        _zz_cache_victim_2 = ways_2_metas_73_valid;
-        _zz_cache_victim_3 = ways_3_metas_73_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_73_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_73_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_73_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_73_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_73_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_73_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_73_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_73_replace_info;
       end
       7'b1001010 : begin
-        _zz_cache_victim_0 = ways_0_metas_74_valid;
-        _zz_cache_victim_1 = ways_1_metas_74_valid;
-        _zz_cache_victim_2 = ways_2_metas_74_valid;
-        _zz_cache_victim_3 = ways_3_metas_74_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_74_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_74_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_74_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_74_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_74_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_74_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_74_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_74_replace_info;
       end
       7'b1001011 : begin
-        _zz_cache_victim_0 = ways_0_metas_75_valid;
-        _zz_cache_victim_1 = ways_1_metas_75_valid;
-        _zz_cache_victim_2 = ways_2_metas_75_valid;
-        _zz_cache_victim_3 = ways_3_metas_75_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_75_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_75_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_75_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_75_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_75_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_75_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_75_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_75_replace_info;
       end
       7'b1001100 : begin
-        _zz_cache_victim_0 = ways_0_metas_76_valid;
-        _zz_cache_victim_1 = ways_1_metas_76_valid;
-        _zz_cache_victim_2 = ways_2_metas_76_valid;
-        _zz_cache_victim_3 = ways_3_metas_76_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_76_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_76_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_76_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_76_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_76_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_76_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_76_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_76_replace_info;
       end
       7'b1001101 : begin
-        _zz_cache_victim_0 = ways_0_metas_77_valid;
-        _zz_cache_victim_1 = ways_1_metas_77_valid;
-        _zz_cache_victim_2 = ways_2_metas_77_valid;
-        _zz_cache_victim_3 = ways_3_metas_77_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_77_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_77_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_77_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_77_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_77_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_77_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_77_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_77_replace_info;
       end
       7'b1001110 : begin
-        _zz_cache_victim_0 = ways_0_metas_78_valid;
-        _zz_cache_victim_1 = ways_1_metas_78_valid;
-        _zz_cache_victim_2 = ways_2_metas_78_valid;
-        _zz_cache_victim_3 = ways_3_metas_78_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_78_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_78_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_78_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_78_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_78_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_78_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_78_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_78_replace_info;
       end
       7'b1001111 : begin
-        _zz_cache_victim_0 = ways_0_metas_79_valid;
-        _zz_cache_victim_1 = ways_1_metas_79_valid;
-        _zz_cache_victim_2 = ways_2_metas_79_valid;
-        _zz_cache_victim_3 = ways_3_metas_79_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_79_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_79_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_79_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_79_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_79_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_79_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_79_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_79_replace_info;
       end
       7'b1010000 : begin
-        _zz_cache_victim_0 = ways_0_metas_80_valid;
-        _zz_cache_victim_1 = ways_1_metas_80_valid;
-        _zz_cache_victim_2 = ways_2_metas_80_valid;
-        _zz_cache_victim_3 = ways_3_metas_80_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_80_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_80_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_80_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_80_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_80_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_80_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_80_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_80_replace_info;
       end
       7'b1010001 : begin
-        _zz_cache_victim_0 = ways_0_metas_81_valid;
-        _zz_cache_victim_1 = ways_1_metas_81_valid;
-        _zz_cache_victim_2 = ways_2_metas_81_valid;
-        _zz_cache_victim_3 = ways_3_metas_81_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_81_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_81_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_81_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_81_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_81_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_81_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_81_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_81_replace_info;
       end
       7'b1010010 : begin
-        _zz_cache_victim_0 = ways_0_metas_82_valid;
-        _zz_cache_victim_1 = ways_1_metas_82_valid;
-        _zz_cache_victim_2 = ways_2_metas_82_valid;
-        _zz_cache_victim_3 = ways_3_metas_82_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_82_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_82_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_82_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_82_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_82_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_82_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_82_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_82_replace_info;
       end
       7'b1010011 : begin
-        _zz_cache_victim_0 = ways_0_metas_83_valid;
-        _zz_cache_victim_1 = ways_1_metas_83_valid;
-        _zz_cache_victim_2 = ways_2_metas_83_valid;
-        _zz_cache_victim_3 = ways_3_metas_83_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_83_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_83_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_83_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_83_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_83_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_83_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_83_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_83_replace_info;
       end
       7'b1010100 : begin
-        _zz_cache_victim_0 = ways_0_metas_84_valid;
-        _zz_cache_victim_1 = ways_1_metas_84_valid;
-        _zz_cache_victim_2 = ways_2_metas_84_valid;
-        _zz_cache_victim_3 = ways_3_metas_84_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_84_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_84_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_84_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_84_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_84_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_84_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_84_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_84_replace_info;
       end
       7'b1010101 : begin
-        _zz_cache_victim_0 = ways_0_metas_85_valid;
-        _zz_cache_victim_1 = ways_1_metas_85_valid;
-        _zz_cache_victim_2 = ways_2_metas_85_valid;
-        _zz_cache_victim_3 = ways_3_metas_85_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_85_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_85_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_85_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_85_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_85_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_85_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_85_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_85_replace_info;
       end
       7'b1010110 : begin
-        _zz_cache_victim_0 = ways_0_metas_86_valid;
-        _zz_cache_victim_1 = ways_1_metas_86_valid;
-        _zz_cache_victim_2 = ways_2_metas_86_valid;
-        _zz_cache_victim_3 = ways_3_metas_86_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_86_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_86_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_86_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_86_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_86_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_86_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_86_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_86_replace_info;
       end
       7'b1010111 : begin
-        _zz_cache_victim_0 = ways_0_metas_87_valid;
-        _zz_cache_victim_1 = ways_1_metas_87_valid;
-        _zz_cache_victim_2 = ways_2_metas_87_valid;
-        _zz_cache_victim_3 = ways_3_metas_87_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_87_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_87_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_87_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_87_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_87_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_87_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_87_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_87_replace_info;
       end
       7'b1011000 : begin
-        _zz_cache_victim_0 = ways_0_metas_88_valid;
-        _zz_cache_victim_1 = ways_1_metas_88_valid;
-        _zz_cache_victim_2 = ways_2_metas_88_valid;
-        _zz_cache_victim_3 = ways_3_metas_88_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_88_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_88_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_88_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_88_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_88_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_88_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_88_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_88_replace_info;
       end
       7'b1011001 : begin
-        _zz_cache_victim_0 = ways_0_metas_89_valid;
-        _zz_cache_victim_1 = ways_1_metas_89_valid;
-        _zz_cache_victim_2 = ways_2_metas_89_valid;
-        _zz_cache_victim_3 = ways_3_metas_89_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_89_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_89_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_89_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_89_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_89_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_89_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_89_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_89_replace_info;
       end
       7'b1011010 : begin
-        _zz_cache_victim_0 = ways_0_metas_90_valid;
-        _zz_cache_victim_1 = ways_1_metas_90_valid;
-        _zz_cache_victim_2 = ways_2_metas_90_valid;
-        _zz_cache_victim_3 = ways_3_metas_90_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_90_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_90_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_90_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_90_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_90_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_90_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_90_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_90_replace_info;
       end
       7'b1011011 : begin
-        _zz_cache_victim_0 = ways_0_metas_91_valid;
-        _zz_cache_victim_1 = ways_1_metas_91_valid;
-        _zz_cache_victim_2 = ways_2_metas_91_valid;
-        _zz_cache_victim_3 = ways_3_metas_91_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_91_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_91_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_91_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_91_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_91_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_91_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_91_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_91_replace_info;
       end
       7'b1011100 : begin
-        _zz_cache_victim_0 = ways_0_metas_92_valid;
-        _zz_cache_victim_1 = ways_1_metas_92_valid;
-        _zz_cache_victim_2 = ways_2_metas_92_valid;
-        _zz_cache_victim_3 = ways_3_metas_92_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_92_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_92_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_92_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_92_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_92_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_92_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_92_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_92_replace_info;
       end
       7'b1011101 : begin
-        _zz_cache_victim_0 = ways_0_metas_93_valid;
-        _zz_cache_victim_1 = ways_1_metas_93_valid;
-        _zz_cache_victim_2 = ways_2_metas_93_valid;
-        _zz_cache_victim_3 = ways_3_metas_93_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_93_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_93_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_93_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_93_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_93_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_93_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_93_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_93_replace_info;
       end
       7'b1011110 : begin
-        _zz_cache_victim_0 = ways_0_metas_94_valid;
-        _zz_cache_victim_1 = ways_1_metas_94_valid;
-        _zz_cache_victim_2 = ways_2_metas_94_valid;
-        _zz_cache_victim_3 = ways_3_metas_94_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_94_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_94_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_94_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_94_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_94_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_94_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_94_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_94_replace_info;
       end
       7'b1011111 : begin
-        _zz_cache_victim_0 = ways_0_metas_95_valid;
-        _zz_cache_victim_1 = ways_1_metas_95_valid;
-        _zz_cache_victim_2 = ways_2_metas_95_valid;
-        _zz_cache_victim_3 = ways_3_metas_95_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_95_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_95_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_95_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_95_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_95_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_95_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_95_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_95_replace_info;
       end
       7'b1100000 : begin
-        _zz_cache_victim_0 = ways_0_metas_96_valid;
-        _zz_cache_victim_1 = ways_1_metas_96_valid;
-        _zz_cache_victim_2 = ways_2_metas_96_valid;
-        _zz_cache_victim_3 = ways_3_metas_96_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_96_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_96_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_96_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_96_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_96_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_96_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_96_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_96_replace_info;
       end
       7'b1100001 : begin
-        _zz_cache_victim_0 = ways_0_metas_97_valid;
-        _zz_cache_victim_1 = ways_1_metas_97_valid;
-        _zz_cache_victim_2 = ways_2_metas_97_valid;
-        _zz_cache_victim_3 = ways_3_metas_97_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_97_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_97_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_97_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_97_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_97_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_97_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_97_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_97_replace_info;
       end
       7'b1100010 : begin
-        _zz_cache_victim_0 = ways_0_metas_98_valid;
-        _zz_cache_victim_1 = ways_1_metas_98_valid;
-        _zz_cache_victim_2 = ways_2_metas_98_valid;
-        _zz_cache_victim_3 = ways_3_metas_98_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_98_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_98_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_98_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_98_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_98_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_98_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_98_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_98_replace_info;
       end
       7'b1100011 : begin
-        _zz_cache_victim_0 = ways_0_metas_99_valid;
-        _zz_cache_victim_1 = ways_1_metas_99_valid;
-        _zz_cache_victim_2 = ways_2_metas_99_valid;
-        _zz_cache_victim_3 = ways_3_metas_99_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_99_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_99_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_99_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_99_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_99_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_99_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_99_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_99_replace_info;
       end
       7'b1100100 : begin
-        _zz_cache_victim_0 = ways_0_metas_100_valid;
-        _zz_cache_victim_1 = ways_1_metas_100_valid;
-        _zz_cache_victim_2 = ways_2_metas_100_valid;
-        _zz_cache_victim_3 = ways_3_metas_100_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_100_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_100_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_100_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_100_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_100_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_100_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_100_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_100_replace_info;
       end
       7'b1100101 : begin
-        _zz_cache_victim_0 = ways_0_metas_101_valid;
-        _zz_cache_victim_1 = ways_1_metas_101_valid;
-        _zz_cache_victim_2 = ways_2_metas_101_valid;
-        _zz_cache_victim_3 = ways_3_metas_101_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_101_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_101_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_101_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_101_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_101_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_101_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_101_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_101_replace_info;
       end
       7'b1100110 : begin
-        _zz_cache_victim_0 = ways_0_metas_102_valid;
-        _zz_cache_victim_1 = ways_1_metas_102_valid;
-        _zz_cache_victim_2 = ways_2_metas_102_valid;
-        _zz_cache_victim_3 = ways_3_metas_102_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_102_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_102_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_102_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_102_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_102_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_102_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_102_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_102_replace_info;
       end
       7'b1100111 : begin
-        _zz_cache_victim_0 = ways_0_metas_103_valid;
-        _zz_cache_victim_1 = ways_1_metas_103_valid;
-        _zz_cache_victim_2 = ways_2_metas_103_valid;
-        _zz_cache_victim_3 = ways_3_metas_103_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_103_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_103_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_103_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_103_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_103_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_103_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_103_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_103_replace_info;
       end
       7'b1101000 : begin
-        _zz_cache_victim_0 = ways_0_metas_104_valid;
-        _zz_cache_victim_1 = ways_1_metas_104_valid;
-        _zz_cache_victim_2 = ways_2_metas_104_valid;
-        _zz_cache_victim_3 = ways_3_metas_104_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_104_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_104_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_104_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_104_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_104_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_104_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_104_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_104_replace_info;
       end
       7'b1101001 : begin
-        _zz_cache_victim_0 = ways_0_metas_105_valid;
-        _zz_cache_victim_1 = ways_1_metas_105_valid;
-        _zz_cache_victim_2 = ways_2_metas_105_valid;
-        _zz_cache_victim_3 = ways_3_metas_105_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_105_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_105_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_105_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_105_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_105_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_105_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_105_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_105_replace_info;
       end
       7'b1101010 : begin
-        _zz_cache_victim_0 = ways_0_metas_106_valid;
-        _zz_cache_victim_1 = ways_1_metas_106_valid;
-        _zz_cache_victim_2 = ways_2_metas_106_valid;
-        _zz_cache_victim_3 = ways_3_metas_106_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_106_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_106_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_106_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_106_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_106_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_106_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_106_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_106_replace_info;
       end
       7'b1101011 : begin
-        _zz_cache_victim_0 = ways_0_metas_107_valid;
-        _zz_cache_victim_1 = ways_1_metas_107_valid;
-        _zz_cache_victim_2 = ways_2_metas_107_valid;
-        _zz_cache_victim_3 = ways_3_metas_107_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_107_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_107_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_107_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_107_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_107_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_107_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_107_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_107_replace_info;
       end
       7'b1101100 : begin
-        _zz_cache_victim_0 = ways_0_metas_108_valid;
-        _zz_cache_victim_1 = ways_1_metas_108_valid;
-        _zz_cache_victim_2 = ways_2_metas_108_valid;
-        _zz_cache_victim_3 = ways_3_metas_108_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_108_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_108_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_108_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_108_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_108_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_108_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_108_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_108_replace_info;
       end
       7'b1101101 : begin
-        _zz_cache_victim_0 = ways_0_metas_109_valid;
-        _zz_cache_victim_1 = ways_1_metas_109_valid;
-        _zz_cache_victim_2 = ways_2_metas_109_valid;
-        _zz_cache_victim_3 = ways_3_metas_109_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_109_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_109_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_109_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_109_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_109_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_109_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_109_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_109_replace_info;
       end
       7'b1101110 : begin
-        _zz_cache_victim_0 = ways_0_metas_110_valid;
-        _zz_cache_victim_1 = ways_1_metas_110_valid;
-        _zz_cache_victim_2 = ways_2_metas_110_valid;
-        _zz_cache_victim_3 = ways_3_metas_110_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_110_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_110_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_110_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_110_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_110_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_110_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_110_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_110_replace_info;
       end
       7'b1101111 : begin
-        _zz_cache_victim_0 = ways_0_metas_111_valid;
-        _zz_cache_victim_1 = ways_1_metas_111_valid;
-        _zz_cache_victim_2 = ways_2_metas_111_valid;
-        _zz_cache_victim_3 = ways_3_metas_111_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_111_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_111_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_111_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_111_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_111_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_111_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_111_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_111_replace_info;
       end
       7'b1110000 : begin
-        _zz_cache_victim_0 = ways_0_metas_112_valid;
-        _zz_cache_victim_1 = ways_1_metas_112_valid;
-        _zz_cache_victim_2 = ways_2_metas_112_valid;
-        _zz_cache_victim_3 = ways_3_metas_112_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_112_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_112_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_112_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_112_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_112_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_112_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_112_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_112_replace_info;
       end
       7'b1110001 : begin
-        _zz_cache_victim_0 = ways_0_metas_113_valid;
-        _zz_cache_victim_1 = ways_1_metas_113_valid;
-        _zz_cache_victim_2 = ways_2_metas_113_valid;
-        _zz_cache_victim_3 = ways_3_metas_113_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_113_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_113_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_113_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_113_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_113_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_113_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_113_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_113_replace_info;
       end
       7'b1110010 : begin
-        _zz_cache_victim_0 = ways_0_metas_114_valid;
-        _zz_cache_victim_1 = ways_1_metas_114_valid;
-        _zz_cache_victim_2 = ways_2_metas_114_valid;
-        _zz_cache_victim_3 = ways_3_metas_114_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_114_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_114_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_114_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_114_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_114_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_114_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_114_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_114_replace_info;
       end
       7'b1110011 : begin
-        _zz_cache_victim_0 = ways_0_metas_115_valid;
-        _zz_cache_victim_1 = ways_1_metas_115_valid;
-        _zz_cache_victim_2 = ways_2_metas_115_valid;
-        _zz_cache_victim_3 = ways_3_metas_115_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_115_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_115_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_115_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_115_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_115_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_115_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_115_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_115_replace_info;
       end
       7'b1110100 : begin
-        _zz_cache_victim_0 = ways_0_metas_116_valid;
-        _zz_cache_victim_1 = ways_1_metas_116_valid;
-        _zz_cache_victim_2 = ways_2_metas_116_valid;
-        _zz_cache_victim_3 = ways_3_metas_116_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_116_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_116_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_116_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_116_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_116_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_116_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_116_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_116_replace_info;
       end
       7'b1110101 : begin
-        _zz_cache_victim_0 = ways_0_metas_117_valid;
-        _zz_cache_victim_1 = ways_1_metas_117_valid;
-        _zz_cache_victim_2 = ways_2_metas_117_valid;
-        _zz_cache_victim_3 = ways_3_metas_117_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_117_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_117_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_117_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_117_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_117_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_117_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_117_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_117_replace_info;
       end
       7'b1110110 : begin
-        _zz_cache_victim_0 = ways_0_metas_118_valid;
-        _zz_cache_victim_1 = ways_1_metas_118_valid;
-        _zz_cache_victim_2 = ways_2_metas_118_valid;
-        _zz_cache_victim_3 = ways_3_metas_118_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_118_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_118_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_118_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_118_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_118_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_118_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_118_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_118_replace_info;
       end
       7'b1110111 : begin
-        _zz_cache_victim_0 = ways_0_metas_119_valid;
-        _zz_cache_victim_1 = ways_1_metas_119_valid;
-        _zz_cache_victim_2 = ways_2_metas_119_valid;
-        _zz_cache_victim_3 = ways_3_metas_119_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_119_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_119_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_119_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_119_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_119_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_119_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_119_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_119_replace_info;
       end
       7'b1111000 : begin
-        _zz_cache_victim_0 = ways_0_metas_120_valid;
-        _zz_cache_victim_1 = ways_1_metas_120_valid;
-        _zz_cache_victim_2 = ways_2_metas_120_valid;
-        _zz_cache_victim_3 = ways_3_metas_120_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_120_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_120_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_120_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_120_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_120_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_120_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_120_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_120_replace_info;
       end
       7'b1111001 : begin
-        _zz_cache_victim_0 = ways_0_metas_121_valid;
-        _zz_cache_victim_1 = ways_1_metas_121_valid;
-        _zz_cache_victim_2 = ways_2_metas_121_valid;
-        _zz_cache_victim_3 = ways_3_metas_121_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_121_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_121_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_121_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_121_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_121_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_121_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_121_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_121_replace_info;
       end
       7'b1111010 : begin
-        _zz_cache_victim_0 = ways_0_metas_122_valid;
-        _zz_cache_victim_1 = ways_1_metas_122_valid;
-        _zz_cache_victim_2 = ways_2_metas_122_valid;
-        _zz_cache_victim_3 = ways_3_metas_122_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_122_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_122_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_122_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_122_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_122_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_122_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_122_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_122_replace_info;
       end
       7'b1111011 : begin
-        _zz_cache_victim_0 = ways_0_metas_123_valid;
-        _zz_cache_victim_1 = ways_1_metas_123_valid;
-        _zz_cache_victim_2 = ways_2_metas_123_valid;
-        _zz_cache_victim_3 = ways_3_metas_123_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_123_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_123_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_123_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_123_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_123_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_123_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_123_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_123_replace_info;
       end
       7'b1111100 : begin
-        _zz_cache_victim_0 = ways_0_metas_124_valid;
-        _zz_cache_victim_1 = ways_1_metas_124_valid;
-        _zz_cache_victim_2 = ways_2_metas_124_valid;
-        _zz_cache_victim_3 = ways_3_metas_124_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_124_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_124_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_124_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_124_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_124_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_124_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_124_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_124_replace_info;
       end
       7'b1111101 : begin
-        _zz_cache_victim_0 = ways_0_metas_125_valid;
-        _zz_cache_victim_1 = ways_1_metas_125_valid;
-        _zz_cache_victim_2 = ways_2_metas_125_valid;
-        _zz_cache_victim_3 = ways_3_metas_125_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_125_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_125_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_125_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_125_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_125_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_125_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_125_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_125_replace_info;
       end
       7'b1111110 : begin
-        _zz_cache_victim_0 = ways_0_metas_126_valid;
-        _zz_cache_victim_1 = ways_1_metas_126_valid;
-        _zz_cache_victim_2 = ways_2_metas_126_valid;
-        _zz_cache_victim_3 = ways_3_metas_126_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_126_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_126_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_126_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_126_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_126_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_126_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_126_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_126_replace_info;
       end
       default : begin
-        _zz_cache_victim_0 = ways_0_metas_127_valid;
-        _zz_cache_victim_1 = ways_1_metas_127_valid;
-        _zz_cache_victim_2 = ways_2_metas_127_valid;
-        _zz_cache_victim_3 = ways_3_metas_127_valid;
+        _zz_cache_invalid_d1_0 = ways_0_metas_127_valid;
+        _zz_cache_replace_info_d1_0 = ways_0_metas_127_replace_info;
+        _zz_cache_invalid_d1_1 = ways_1_metas_127_valid;
+        _zz_cache_replace_info_d1_1 = ways_1_metas_127_replace_info;
+        _zz_cache_invalid_d1_2 = ways_2_metas_127_valid;
+        _zz_cache_replace_info_d1_2 = ways_2_metas_127_replace_info;
+        _zz_cache_invalid_d1_3 = ways_3_metas_127_valid;
+        _zz_cache_replace_info_d1_3 = ways_3_metas_127_replace_info;
       end
     endcase
   end
@@ -34902,7 +35463,7 @@ module ICache (
   assign is_miss = ((! (|{cache_hit_3,{cache_hit_2,{cache_hit_1,cache_hit_0}}})) && cpu_cmd_fire_1);
   always @(*) begin
     flush_cnt_willIncrement = 1'b0;
-    if(!when_ICache_l129) begin
+    if(!when_ICache_l133) begin
       if(flush_busy) begin
         flush_cnt_willIncrement = 1'b1;
       end
@@ -34911,7 +35472,7 @@ module ICache (
 
   always @(*) begin
     flush_cnt_willClear = 1'b0;
-    if(when_ICache_l129) begin
+    if(when_ICache_l133) begin
       flush_cnt_willClear = 1'b1;
     end
   end
@@ -34956,18 +35517,18 @@ module ICache (
     end
   end
 
-  assign next_level_data_cnt_willOverflowIfInc = (next_level_data_cnt_value == 4'b1111);
+  assign next_level_data_cnt_willOverflowIfInc = (next_level_data_cnt_value == 1'b1);
   assign next_level_data_cnt_willOverflow = (next_level_data_cnt_willOverflowIfInc && next_level_data_cnt_willIncrement);
   always @(*) begin
-    next_level_data_cnt_valueNext = (next_level_data_cnt_value + _zz_next_level_data_cnt_valueNext);
+    next_level_data_cnt_valueNext = (next_level_data_cnt_value + next_level_data_cnt_willIncrement);
     if(next_level_data_cnt_willClear) begin
-      next_level_data_cnt_valueNext = 4'b0000;
+      next_level_data_cnt_valueNext = 1'b0;
     end
   end
 
   assign next_level_bank_addr = cpu_addr_d1[12 : 6];
   assign next_level_cmd_fire = (next_level_cmd_valid && next_level_cmd_ready);
-  assign when_ICache_l129 = (flush_busy && (flush_cnt_value == 7'h7f));
+  assign when_ICache_l133 = (flush_busy && (flush_cnt_value == 7'h7f));
   assign _zz_hit_way_id = (cache_hit_1 || cache_hit_3);
   assign _zz_hit_way_id_1 = (cache_hit_2 || cache_hit_3);
   assign hit_way_id = {_zz_hit_way_id_1,_zz_hit_way_id};
@@ -35235,17 +35796,19 @@ module ICache (
   assign _zz_256 = _zz_130[125];
   assign _zz_257 = _zz_130[126];
   assign _zz_258 = _zz_130[127];
-  assign cache_victim_0 = (! _zz_cache_victim_0);
+  assign cache_invalid_d1_0 = (! _zz_cache_invalid_d1_0);
+  assign cache_replace_info_d1_0 = _zz_cache_replace_info_d1_0;
+  assign cache_victim_0 = (cache_invalid_d1_0 && (! cache_replace_info_d1_0));
   assign sram_banks_data_0 = sram_0_ports_rsp_payload_data;
   assign sram_banks_valid_0 = sram_0_ports_rsp_valid;
   always @(*) begin
     if(is_hit) begin
       sram_0_ports_cmd_payload_addr = cpu_bank_addr;
     end else begin
-      if(next_level_done) begin
+      if(when_ICache_l166) begin
         sram_0_ports_cmd_payload_addr = cpu_bank_addr_d1;
       end else begin
-        if(next_level_rsp_valid) begin
+        if(when_ICache_l173) begin
           sram_0_ports_cmd_payload_addr = next_level_bank_addr;
         end else begin
           sram_0_ports_cmd_payload_addr = 7'h0;
@@ -35258,10 +35821,10 @@ module ICache (
     if(is_hit) begin
       sram_0_ports_cmd_valid = cache_hit_0;
     end else begin
-      if(next_level_done) begin
-        sram_0_ports_cmd_valid = cache_victim_0;
+      if(when_ICache_l166) begin
+        sram_0_ports_cmd_valid = 1'b1;
       end else begin
-        if(next_level_rsp_valid) begin
+        if(when_ICache_l173) begin
           sram_0_ports_cmd_valid = 1'b1;
         end else begin
           sram_0_ports_cmd_valid = 1'b0;
@@ -35274,10 +35837,10 @@ module ICache (
     if(is_hit) begin
       sram_0_ports_cmd_payload_wen = 16'h0;
     end else begin
-      if(next_level_done) begin
+      if(when_ICache_l166) begin
         sram_0_ports_cmd_payload_wen = 16'h0;
       end else begin
-        if(next_level_rsp_valid) begin
+        if(when_ICache_l173) begin
           sram_0_ports_cmd_payload_wen = (_zz_sram_0_ports_cmd_payload_wen <<< _zz_sram_0_ports_cmd_payload_wen_1);
         end else begin
           sram_0_ports_cmd_payload_wen = 16'h0;
@@ -35290,10 +35853,10 @@ module ICache (
     if(is_hit) begin
       sram_0_ports_cmd_payload_wdata = 512'h0;
     end else begin
-      if(next_level_done) begin
+      if(when_ICache_l166) begin
         sram_0_ports_cmd_payload_wdata = 512'h0;
       end else begin
-        if(next_level_rsp_valid) begin
+        if(when_ICache_l173) begin
           sram_0_ports_cmd_payload_wdata = ({256'h0,next_level_rsp_payload_data} <<< _zz_sram_0_ports_cmd_payload_wdata);
         end else begin
           sram_0_ports_cmd_payload_wdata = 512'h0;
@@ -35306,10 +35869,10 @@ module ICache (
     if(is_hit) begin
       sram_0_ports_cmd_payload_wstrb = 64'h0;
     end else begin
-      if(next_level_done) begin
+      if(when_ICache_l166) begin
         sram_0_ports_cmd_payload_wstrb = 64'h0;
       end else begin
-        if(next_level_rsp_valid) begin
+        if(when_ICache_l173) begin
           sram_0_ports_cmd_payload_wstrb = ({32'h0,32'hffffffff} <<< _zz_sram_0_ports_cmd_payload_wstrb);
         end else begin
           sram_0_ports_cmd_payload_wstrb = 64'h0;
@@ -35320,6 +35883,8 @@ module ICache (
 
   assign _zz_1549 = zz__zz_sram_0_ports_cmd_payload_wen(1'b0);
   always @(*) _zz_sram_0_ports_cmd_payload_wen = _zz_1549;
+  assign when_ICache_l166 = (next_level_done && (2'b00 == victim_id));
+  assign when_ICache_l173 = (next_level_rsp_valid && (2'b00 == victim_id));
   assign _zz_259 = ({127'd0,1'b1} <<< flush_cnt_value);
   assign _zz_260 = _zz_259[0];
   assign _zz_261 = _zz_259[1];
@@ -35449,9 +36014,9 @@ module ICache (
   assign _zz_385 = _zz_259[125];
   assign _zz_386 = _zz_259[126];
   assign _zz_387 = _zz_259[127];
-  assign when_ICache_l194 = (is_hit && replace_info_full);
-  assign when_ICache_l215 = (flush || is_miss);
-  assign when_ICache_l218 = (flush_done || next_level_done);
+  assign when_ICache_l193 = (is_hit && replace_info_full);
+  assign when_ICache_l214 = (flush || is_miss);
+  assign when_ICache_l217 = (flush_done || next_level_done);
   assign _zz_388 = ({127'd0,1'b1} <<< cpu_set);
   assign _zz_389 = _zz_388[0];
   assign _zz_390 = _zz_388[1];
@@ -35584,14 +36149,6 @@ module ICache (
   assign cache_tag_1 = _zz_cache_tag_1;
   assign cache_hit_1 = ((cache_tag_1 == cpu_tag) && _zz_cache_hit_1);
   assign cache_replace_info_1 = _zz_cache_replace_info_1;
-  always @(*) begin
-    if(cache_victim_0) begin
-      cache_victim_1 = 1'b0;
-    end else begin
-      cache_victim_1 = (! _zz_cache_victim_1);
-    end
-  end
-
   assign _zz_517 = ({127'd0,1'b1} <<< cpu_set_d1);
   assign _zz_518 = _zz_517[0];
   assign _zz_519 = _zz_517[1];
@@ -35721,16 +36278,19 @@ module ICache (
   assign _zz_643 = _zz_517[125];
   assign _zz_644 = _zz_517[126];
   assign _zz_645 = _zz_517[127];
+  assign cache_invalid_d1_1 = (! _zz_cache_invalid_d1_1);
+  assign cache_replace_info_d1_1 = _zz_cache_replace_info_d1_1;
+  assign cache_victim_1 = (cache_invalid_d1_1 && (! cache_replace_info_d1_1));
   assign sram_banks_data_1 = sram_1_ports_rsp_payload_data;
   assign sram_banks_valid_1 = sram_1_ports_rsp_valid;
   always @(*) begin
     if(is_hit) begin
       sram_1_ports_cmd_payload_addr = cpu_bank_addr;
     end else begin
-      if(next_level_done) begin
+      if(when_ICache_l166_1) begin
         sram_1_ports_cmd_payload_addr = cpu_bank_addr_d1;
       end else begin
-        if(next_level_rsp_valid) begin
+        if(when_ICache_l173_1) begin
           sram_1_ports_cmd_payload_addr = next_level_bank_addr;
         end else begin
           sram_1_ports_cmd_payload_addr = 7'h0;
@@ -35743,10 +36303,10 @@ module ICache (
     if(is_hit) begin
       sram_1_ports_cmd_valid = cache_hit_1;
     end else begin
-      if(next_level_done) begin
-        sram_1_ports_cmd_valid = cache_victim_1;
+      if(when_ICache_l166_1) begin
+        sram_1_ports_cmd_valid = 1'b1;
       end else begin
-        if(next_level_rsp_valid) begin
+        if(when_ICache_l173_1) begin
           sram_1_ports_cmd_valid = 1'b1;
         end else begin
           sram_1_ports_cmd_valid = 1'b0;
@@ -35759,10 +36319,10 @@ module ICache (
     if(is_hit) begin
       sram_1_ports_cmd_payload_wen = 16'h0;
     end else begin
-      if(next_level_done) begin
+      if(when_ICache_l166_1) begin
         sram_1_ports_cmd_payload_wen = 16'h0;
       end else begin
-        if(next_level_rsp_valid) begin
+        if(when_ICache_l173_1) begin
           sram_1_ports_cmd_payload_wen = (_zz_sram_1_ports_cmd_payload_wen <<< _zz_sram_1_ports_cmd_payload_wen_1);
         end else begin
           sram_1_ports_cmd_payload_wen = 16'h0;
@@ -35775,10 +36335,10 @@ module ICache (
     if(is_hit) begin
       sram_1_ports_cmd_payload_wdata = 512'h0;
     end else begin
-      if(next_level_done) begin
+      if(when_ICache_l166_1) begin
         sram_1_ports_cmd_payload_wdata = 512'h0;
       end else begin
-        if(next_level_rsp_valid) begin
+        if(when_ICache_l173_1) begin
           sram_1_ports_cmd_payload_wdata = ({256'h0,next_level_rsp_payload_data} <<< _zz_sram_1_ports_cmd_payload_wdata);
         end else begin
           sram_1_ports_cmd_payload_wdata = 512'h0;
@@ -35791,10 +36351,10 @@ module ICache (
     if(is_hit) begin
       sram_1_ports_cmd_payload_wstrb = 64'h0;
     end else begin
-      if(next_level_done) begin
+      if(when_ICache_l166_1) begin
         sram_1_ports_cmd_payload_wstrb = 64'h0;
       end else begin
-        if(next_level_rsp_valid) begin
+        if(when_ICache_l173_1) begin
           sram_1_ports_cmd_payload_wstrb = ({32'h0,32'hffffffff} <<< _zz_sram_1_ports_cmd_payload_wstrb);
         end else begin
           sram_1_ports_cmd_payload_wstrb = 64'h0;
@@ -35805,6 +36365,8 @@ module ICache (
 
   assign _zz_1550 = zz__zz_sram_1_ports_cmd_payload_wen(1'b0);
   always @(*) _zz_sram_1_ports_cmd_payload_wen = _zz_1550;
+  assign when_ICache_l166_1 = (next_level_done && (2'b01 == victim_id));
+  assign when_ICache_l173_1 = (next_level_rsp_valid && (2'b01 == victim_id));
   assign _zz_646 = ({127'd0,1'b1} <<< flush_cnt_value);
   assign _zz_647 = _zz_646[0];
   assign _zz_648 = _zz_646[1];
@@ -35934,9 +36496,9 @@ module ICache (
   assign _zz_772 = _zz_646[125];
   assign _zz_773 = _zz_646[126];
   assign _zz_774 = _zz_646[127];
-  assign when_ICache_l194_1 = (is_hit && replace_info_full);
-  assign when_ICache_l215_1 = (flush || is_miss);
-  assign when_ICache_l218_1 = (flush_done || next_level_done);
+  assign when_ICache_l193_1 = (is_hit && replace_info_full);
+  assign when_ICache_l214_1 = (flush || is_miss);
+  assign when_ICache_l217_1 = (flush_done || next_level_done);
   assign _zz_775 = ({127'd0,1'b1} <<< cpu_set);
   assign _zz_776 = _zz_775[0];
   assign _zz_777 = _zz_775[1];
@@ -36069,14 +36631,6 @@ module ICache (
   assign cache_tag_2 = _zz_cache_tag_2;
   assign cache_hit_2 = ((cache_tag_2 == cpu_tag) && _zz_cache_hit_2);
   assign cache_replace_info_2 = _zz_cache_replace_info_2;
-  always @(*) begin
-    if(cache_victim_1) begin
-      cache_victim_2 = 1'b0;
-    end else begin
-      cache_victim_2 = (! _zz_cache_victim_2);
-    end
-  end
-
   assign _zz_904 = ({127'd0,1'b1} <<< cpu_set_d1);
   assign _zz_905 = _zz_904[0];
   assign _zz_906 = _zz_904[1];
@@ -36206,16 +36760,19 @@ module ICache (
   assign _zz_1030 = _zz_904[125];
   assign _zz_1031 = _zz_904[126];
   assign _zz_1032 = _zz_904[127];
+  assign cache_invalid_d1_2 = (! _zz_cache_invalid_d1_2);
+  assign cache_replace_info_d1_2 = _zz_cache_replace_info_d1_2;
+  assign cache_victim_2 = (cache_invalid_d1_2 && (! cache_replace_info_d1_2));
   assign sram_banks_data_2 = sram_2_ports_rsp_payload_data;
   assign sram_banks_valid_2 = sram_2_ports_rsp_valid;
   always @(*) begin
     if(is_hit) begin
       sram_2_ports_cmd_payload_addr = cpu_bank_addr;
     end else begin
-      if(next_level_done) begin
+      if(when_ICache_l166_2) begin
         sram_2_ports_cmd_payload_addr = cpu_bank_addr_d1;
       end else begin
-        if(next_level_rsp_valid) begin
+        if(when_ICache_l173_2) begin
           sram_2_ports_cmd_payload_addr = next_level_bank_addr;
         end else begin
           sram_2_ports_cmd_payload_addr = 7'h0;
@@ -36228,10 +36785,10 @@ module ICache (
     if(is_hit) begin
       sram_2_ports_cmd_valid = cache_hit_2;
     end else begin
-      if(next_level_done) begin
-        sram_2_ports_cmd_valid = cache_victim_2;
+      if(when_ICache_l166_2) begin
+        sram_2_ports_cmd_valid = 1'b1;
       end else begin
-        if(next_level_rsp_valid) begin
+        if(when_ICache_l173_2) begin
           sram_2_ports_cmd_valid = 1'b1;
         end else begin
           sram_2_ports_cmd_valid = 1'b0;
@@ -36244,10 +36801,10 @@ module ICache (
     if(is_hit) begin
       sram_2_ports_cmd_payload_wen = 16'h0;
     end else begin
-      if(next_level_done) begin
+      if(when_ICache_l166_2) begin
         sram_2_ports_cmd_payload_wen = 16'h0;
       end else begin
-        if(next_level_rsp_valid) begin
+        if(when_ICache_l173_2) begin
           sram_2_ports_cmd_payload_wen = (_zz_sram_2_ports_cmd_payload_wen <<< _zz_sram_2_ports_cmd_payload_wen_1);
         end else begin
           sram_2_ports_cmd_payload_wen = 16'h0;
@@ -36260,10 +36817,10 @@ module ICache (
     if(is_hit) begin
       sram_2_ports_cmd_payload_wdata = 512'h0;
     end else begin
-      if(next_level_done) begin
+      if(when_ICache_l166_2) begin
         sram_2_ports_cmd_payload_wdata = 512'h0;
       end else begin
-        if(next_level_rsp_valid) begin
+        if(when_ICache_l173_2) begin
           sram_2_ports_cmd_payload_wdata = ({256'h0,next_level_rsp_payload_data} <<< _zz_sram_2_ports_cmd_payload_wdata);
         end else begin
           sram_2_ports_cmd_payload_wdata = 512'h0;
@@ -36276,10 +36833,10 @@ module ICache (
     if(is_hit) begin
       sram_2_ports_cmd_payload_wstrb = 64'h0;
     end else begin
-      if(next_level_done) begin
+      if(when_ICache_l166_2) begin
         sram_2_ports_cmd_payload_wstrb = 64'h0;
       end else begin
-        if(next_level_rsp_valid) begin
+        if(when_ICache_l173_2) begin
           sram_2_ports_cmd_payload_wstrb = ({32'h0,32'hffffffff} <<< _zz_sram_2_ports_cmd_payload_wstrb);
         end else begin
           sram_2_ports_cmd_payload_wstrb = 64'h0;
@@ -36290,6 +36847,8 @@ module ICache (
 
   assign _zz_1551 = zz__zz_sram_2_ports_cmd_payload_wen(1'b0);
   always @(*) _zz_sram_2_ports_cmd_payload_wen = _zz_1551;
+  assign when_ICache_l166_2 = (next_level_done && (2'b10 == victim_id));
+  assign when_ICache_l173_2 = (next_level_rsp_valid && (2'b10 == victim_id));
   assign _zz_1033 = ({127'd0,1'b1} <<< flush_cnt_value);
   assign _zz_1034 = _zz_1033[0];
   assign _zz_1035 = _zz_1033[1];
@@ -36419,9 +36978,9 @@ module ICache (
   assign _zz_1159 = _zz_1033[125];
   assign _zz_1160 = _zz_1033[126];
   assign _zz_1161 = _zz_1033[127];
-  assign when_ICache_l194_2 = (is_hit && replace_info_full);
-  assign when_ICache_l215_2 = (flush || is_miss);
-  assign when_ICache_l218_2 = (flush_done || next_level_done);
+  assign when_ICache_l193_2 = (is_hit && replace_info_full);
+  assign when_ICache_l214_2 = (flush || is_miss);
+  assign when_ICache_l217_2 = (flush_done || next_level_done);
   assign _zz_1162 = ({127'd0,1'b1} <<< cpu_set);
   assign _zz_1163 = _zz_1162[0];
   assign _zz_1164 = _zz_1162[1];
@@ -36554,14 +37113,6 @@ module ICache (
   assign cache_tag_3 = _zz_cache_tag_3;
   assign cache_hit_3 = ((cache_tag_3 == cpu_tag) && _zz_cache_hit_3);
   assign cache_replace_info_3 = _zz_cache_replace_info_3;
-  always @(*) begin
-    if(cache_victim_2) begin
-      cache_victim_3 = 1'b0;
-    end else begin
-      cache_victim_3 = (! _zz_cache_victim_3);
-    end
-  end
-
   assign _zz_1291 = ({127'd0,1'b1} <<< cpu_set_d1);
   assign _zz_1292 = _zz_1291[0];
   assign _zz_1293 = _zz_1291[1];
@@ -36691,16 +37242,19 @@ module ICache (
   assign _zz_1417 = _zz_1291[125];
   assign _zz_1418 = _zz_1291[126];
   assign _zz_1419 = _zz_1291[127];
+  assign cache_invalid_d1_3 = (! _zz_cache_invalid_d1_3);
+  assign cache_replace_info_d1_3 = _zz_cache_replace_info_d1_3;
+  assign cache_victim_3 = (cache_invalid_d1_3 && (! cache_replace_info_d1_3));
   assign sram_banks_data_3 = sram_3_ports_rsp_payload_data;
   assign sram_banks_valid_3 = sram_3_ports_rsp_valid;
   always @(*) begin
     if(is_hit) begin
       sram_3_ports_cmd_payload_addr = cpu_bank_addr;
     end else begin
-      if(next_level_done) begin
+      if(when_ICache_l166_3) begin
         sram_3_ports_cmd_payload_addr = cpu_bank_addr_d1;
       end else begin
-        if(next_level_rsp_valid) begin
+        if(when_ICache_l173_3) begin
           sram_3_ports_cmd_payload_addr = next_level_bank_addr;
         end else begin
           sram_3_ports_cmd_payload_addr = 7'h0;
@@ -36713,10 +37267,10 @@ module ICache (
     if(is_hit) begin
       sram_3_ports_cmd_valid = cache_hit_3;
     end else begin
-      if(next_level_done) begin
-        sram_3_ports_cmd_valid = cache_victim_3;
+      if(when_ICache_l166_3) begin
+        sram_3_ports_cmd_valid = 1'b1;
       end else begin
-        if(next_level_rsp_valid) begin
+        if(when_ICache_l173_3) begin
           sram_3_ports_cmd_valid = 1'b1;
         end else begin
           sram_3_ports_cmd_valid = 1'b0;
@@ -36729,10 +37283,10 @@ module ICache (
     if(is_hit) begin
       sram_3_ports_cmd_payload_wen = 16'h0;
     end else begin
-      if(next_level_done) begin
+      if(when_ICache_l166_3) begin
         sram_3_ports_cmd_payload_wen = 16'h0;
       end else begin
-        if(next_level_rsp_valid) begin
+        if(when_ICache_l173_3) begin
           sram_3_ports_cmd_payload_wen = (_zz_sram_3_ports_cmd_payload_wen <<< _zz_sram_3_ports_cmd_payload_wen_1);
         end else begin
           sram_3_ports_cmd_payload_wen = 16'h0;
@@ -36745,10 +37299,10 @@ module ICache (
     if(is_hit) begin
       sram_3_ports_cmd_payload_wdata = 512'h0;
     end else begin
-      if(next_level_done) begin
+      if(when_ICache_l166_3) begin
         sram_3_ports_cmd_payload_wdata = 512'h0;
       end else begin
-        if(next_level_rsp_valid) begin
+        if(when_ICache_l173_3) begin
           sram_3_ports_cmd_payload_wdata = ({256'h0,next_level_rsp_payload_data} <<< _zz_sram_3_ports_cmd_payload_wdata);
         end else begin
           sram_3_ports_cmd_payload_wdata = 512'h0;
@@ -36761,10 +37315,10 @@ module ICache (
     if(is_hit) begin
       sram_3_ports_cmd_payload_wstrb = 64'h0;
     end else begin
-      if(next_level_done) begin
+      if(when_ICache_l166_3) begin
         sram_3_ports_cmd_payload_wstrb = 64'h0;
       end else begin
-        if(next_level_rsp_valid) begin
+        if(when_ICache_l173_3) begin
           sram_3_ports_cmd_payload_wstrb = ({32'h0,32'hffffffff} <<< _zz_sram_3_ports_cmd_payload_wstrb);
         end else begin
           sram_3_ports_cmd_payload_wstrb = 64'h0;
@@ -36775,6 +37329,8 @@ module ICache (
 
   assign _zz_1552 = zz__zz_sram_3_ports_cmd_payload_wen(1'b0);
   always @(*) _zz_sram_3_ports_cmd_payload_wen = _zz_1552;
+  assign when_ICache_l166_3 = (next_level_done && (2'b11 == victim_id));
+  assign when_ICache_l173_3 = (next_level_rsp_valid && (2'b11 == victim_id));
   assign _zz_1420 = ({127'd0,1'b1} <<< flush_cnt_value);
   assign _zz_1421 = _zz_1420[0];
   assign _zz_1422 = _zz_1420[1];
@@ -36904,9 +37460,9 @@ module ICache (
   assign _zz_1546 = _zz_1420[125];
   assign _zz_1547 = _zz_1420[126];
   assign _zz_1548 = _zz_1420[127];
-  assign when_ICache_l194_3 = (is_hit && replace_info_full);
-  assign when_ICache_l215_3 = (flush || is_miss);
-  assign when_ICache_l218_3 = (flush_done || next_level_done);
+  assign when_ICache_l193_3 = (is_hit && replace_info_full);
+  assign when_ICache_l214_3 = (flush || is_miss);
+  assign when_ICache_l217_3 = (flush_done || next_level_done);
   assign _zz_cpu_rsp_payload_data = _zz__zz_cpu_rsp_payload_data;
   assign _zz_cpu_rsp_payload_data_1 = _zz__zz_cpu_rsp_payload_data_1;
   assign cpu_rsp_payload_data = (is_hit ? _zz_cpu_rsp_payload_data_2 : _zz_cpu_rsp_payload_data_3);
@@ -38459,7 +39015,7 @@ module ICache (
       cpu_addr_d1 <= 64'h0;
       cpu_cmd_ready_1 <= 1'b1;
       next_level_cmd_valid_1 <= 1'b0;
-      next_level_data_cnt_value <= 4'b0000;
+      next_level_data_cnt_value <= 1'b0;
     end else begin
       flush_cnt_value <= flush_cnt_valueNext;
       if(is_miss) begin
@@ -39250,7 +39806,7 @@ module ICache (
           ways_0_metas_127_valid <= 1'b0;
         end
       end else begin
-        if(when_ICache_l194) begin
+        if(when_ICache_l193) begin
           if(cache_hit_0) begin
             if(_zz_2) begin
               ways_0_metas_0_replace_info <= 1'b1;
@@ -40411,7 +40967,7 @@ module ICache (
               end
             end
           end else begin
-            if(next_level_rsp_valid) begin
+            if(next_level_done) begin
               if(cache_victim_0) begin
                 if(_zz_131) begin
                   ways_0_metas_0_valid <= 1'b1;
@@ -41188,10 +41744,10 @@ module ICache (
           ways_0_metas_127_tag <= cpu_tag_d1;
         end
       end
-      if(when_ICache_l215) begin
+      if(when_ICache_l214) begin
         cpu_cmd_ready_1 <= 1'b0;
       end else begin
-        if(when_ICache_l218) begin
+        if(when_ICache_l217) begin
           cpu_cmd_ready_1 <= 1'b1;
         end
       end
@@ -41965,7 +42521,7 @@ module ICache (
           ways_1_metas_127_valid <= 1'b0;
         end
       end else begin
-        if(when_ICache_l194_1) begin
+        if(when_ICache_l193_1) begin
           if(cache_hit_1) begin
             if(_zz_389) begin
               ways_1_metas_0_replace_info <= 1'b1;
@@ -43126,7 +43682,7 @@ module ICache (
               end
             end
           end else begin
-            if(next_level_rsp_valid) begin
+            if(next_level_done) begin
               if(cache_victim_1) begin
                 if(_zz_518) begin
                   ways_1_metas_0_valid <= 1'b1;
@@ -43903,10 +44459,10 @@ module ICache (
           ways_1_metas_127_tag <= cpu_tag_d1;
         end
       end
-      if(when_ICache_l215_1) begin
+      if(when_ICache_l214_1) begin
         cpu_cmd_ready_1 <= 1'b0;
       end else begin
-        if(when_ICache_l218_1) begin
+        if(when_ICache_l217_1) begin
           cpu_cmd_ready_1 <= 1'b1;
         end
       end
@@ -44680,7 +45236,7 @@ module ICache (
           ways_2_metas_127_valid <= 1'b0;
         end
       end else begin
-        if(when_ICache_l194_2) begin
+        if(when_ICache_l193_2) begin
           if(cache_hit_2) begin
             if(_zz_776) begin
               ways_2_metas_0_replace_info <= 1'b1;
@@ -45841,7 +46397,7 @@ module ICache (
               end
             end
           end else begin
-            if(next_level_rsp_valid) begin
+            if(next_level_done) begin
               if(cache_victim_2) begin
                 if(_zz_905) begin
                   ways_2_metas_0_valid <= 1'b1;
@@ -46618,10 +47174,10 @@ module ICache (
           ways_2_metas_127_tag <= cpu_tag_d1;
         end
       end
-      if(when_ICache_l215_2) begin
+      if(when_ICache_l214_2) begin
         cpu_cmd_ready_1 <= 1'b0;
       end else begin
-        if(when_ICache_l218_2) begin
+        if(when_ICache_l217_2) begin
           cpu_cmd_ready_1 <= 1'b1;
         end
       end
@@ -47395,7 +47951,7 @@ module ICache (
           ways_3_metas_127_valid <= 1'b0;
         end
       end else begin
-        if(when_ICache_l194_3) begin
+        if(when_ICache_l193_3) begin
           if(cache_hit_3) begin
             if(_zz_1163) begin
               ways_3_metas_0_replace_info <= 1'b1;
@@ -48556,7 +49112,7 @@ module ICache (
               end
             end
           end else begin
-            if(next_level_rsp_valid) begin
+            if(next_level_done) begin
               if(cache_victim_3) begin
                 if(_zz_1292) begin
                   ways_3_metas_0_valid <= 1'b1;
@@ -49333,10 +49889,10 @@ module ICache (
           ways_3_metas_127_tag <= cpu_tag_d1;
         end
       end
-      if(when_ICache_l215_3) begin
+      if(when_ICache_l214_3) begin
         cpu_cmd_ready_1 <= 1'b0;
       end else begin
-        if(when_ICache_l218_3) begin
+        if(when_ICache_l217_3) begin
           cpu_cmd_ready_1 <= 1'b1;
         end
       end
@@ -49344,7 +49900,7 @@ module ICache (
   end
 
   always @(posedge clk) begin
-    next_level_done <= (next_level_rsp_valid && (next_level_data_cnt_value == 4'b1111));
+    next_level_done <= (next_level_rsp_valid && (next_level_data_cnt_value == 1'b1));
   end
 
 
