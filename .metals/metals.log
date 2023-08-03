@@ -3850,3 +3850,544 @@ WARNING: Unmatched cancel notification for request id 3729
 2023.08.02 22:33:00 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/DandRiscvSimple.scala[0m
 2023.08.02 22:46:59 INFO  compiling projectname (1 scala source)[0m
 2023.08.02 22:47:01 INFO  time: compiled projectname in 1.81s[0m
+2023.08.03 09:43:36 INFO  Started: Metals version 1.0.0 in folders 'D:\MyWork\ScalaProj\DandRiscvSoC' for client Visual Studio Code 1.80.2.
+°ËÔÂ 03, 2023 9:43:36 ÉÏÎç org.flywaydb.core.internal.license.VersionPrinter printVersionOnly
+ÐÅÏ¢: Flyway Community Edition 9.20.1 by Redgate
+°ËÔÂ 03, 2023 9:43:36 ÉÏÎç org.flywaydb.core.internal.license.VersionPrinter printVersion
+ÐÅÏ¢: See release notes here: https://rd.gt/416ObMi
+°ËÔÂ 03, 2023 9:43:36 ÉÏÎç org.flywaydb.core.internal.license.VersionPrinter printVersion
+ÐÅÏ¢: 
+°ËÔÂ 03, 2023 9:43:40 ÉÏÎç org.flywaydb.core.internal.database.base.BaseDatabaseType createDatabase
+ÐÅÏ¢: Database: jdbc:h2:file:D:\MyWork\ScalaProj\DandRiscvSoC\.metals\metals (H2 2.1)
+°ËÔÂ 03, 2023 9:43:40 ÉÏÎç org.flywaydb.core.internal.command.DbValidate validate
+ÐÅÏ¢: Successfully validated 4 migrations (execution time 00:00.020s)
+°ËÔÂ 03, 2023 9:43:40 ÉÏÎç org.flywaydb.core.internal.command.DbMigrate migrateGroup
+ÐÅÏ¢: Current version of schema "PUBLIC": 4
+°ËÔÂ 03, 2023 9:43:40 ÉÏÎç org.flywaydb.core.internal.command.DbMigrate logSummary
+ÐÅÏ¢: Schema "PUBLIC" is up to date. No migration necessary.
+2023.08.03 09:43:40 INFO  time: initialize in 4.59s
+2023.08.03 09:43:41 WARN  Build server is not auto-connectable.
+2023.08.03 09:43:41 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\DecodePlugin.scala
+2023.08.03 09:43:41 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\LSUPlugin.scala
+2023.08.03 09:43:41 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\DCachePlugin.scala
+2023.08.03 09:43:41 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 09:43:41 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\SramBanks.scala
+2023.08.03 09:43:41 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\gencpu\GenSimple.scala
+2023.08.03 09:43:41 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\AluPlugin.scala
+2023.08.03 09:43:41 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\ExcepPlugin.scala
+2023.08.03 09:43:41 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala
+2023.08.03 09:43:41 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\FetchPlugin.scala
+2023.08.03 09:43:41 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\DCache.scala
+2023.08.03 09:43:41 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\DandRiscvSimple.scala
+2023.08.03 09:43:41 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\ICachePlugin.scala
+2023.08.03 09:43:49 INFO  no build target found for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala. Using presentation compiler with project's scala-library version: 3.3.0
+2023.08.03 09:43:51 INFO  time: code lens generation in 1.63s
+2023.08.03 09:43:51 INFO  time: code lens generation in 1.71s
+2023.08.03 09:43:51 INFO  time: code lens generation in 1.73s
+°ËÔÂ 03, 2023 9:43:52 ÉÏÎç org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+¾¯¸æ: Unmatched cancel notification for request id 13
+°ËÔÂ 03, 2023 9:43:52 ÉÏÎç org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+¾¯¸æ: Unmatched cancel notification for request id 6
+2023.08.03 09:43:52 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+°ËÔÂ 03, 2023 9:43:52 ÉÏÎç org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+¾¯¸æ: Unmatched cancel notification for request id 12
+2023.08.03 09:43:51 INFO  running 'C:\Program Files\Java\jdk-1.8\bin\java.exe -Djline.terminal=jline.UnsupportedTerminal -Dsbt.log.noformat=true -Dfile.encoding=UTF-8 -jar C:\Users\TSINGH~1\AppData\Local\Temp\metals7547387771430326483\sbt-launch.jar -Dbloop.export-jar-classifiers=sources bloopInstall'
+2023.08.03 09:43:52 WARN  Using indexes to guess the definition of cpu_bank_addr
+2023.08.03 09:43:53 INFO  [info] welcome to sbt 1.6.0 (Oracle Corporation Java 1.8.0_371)
+2023.08.03 09:43:55 INFO  [info] loading global plugins from C:\Users\TsinghuaIC\.sbt\1.0\plugins
+2023.08.03 09:43:56 INFO  [info] loading settings for project dandriscvsoc-build-build-build from metals.sbt ...
+2023.08.03 09:43:56 INFO  [info] loading project definition from D:\MyWork\ScalaProj\DandRiscvSoC\project\project\project
+2023.08.03 09:43:56 INFO  [info] loading settings for project dandriscvsoc-build-build from metals.sbt ...
+2023.08.03 09:43:56 INFO  [info] loading project definition from D:\MyWork\ScalaProj\DandRiscvSoC\project\project
+2023.08.03 09:44:02 INFO  [success] Generated .bloop\dandriscvsoc-build-build.json
+2023.08.03 09:44:02 INFO  [success] Total time: 6 s, completed 2023-8-3 9:44:02
+2023.08.03 09:44:02 INFO  [info] loading settings for project dandriscvsoc-build from metals.sbt,plugins.sbt ...
+2023.08.03 09:44:02 INFO  [info] loading project definition from D:\MyWork\ScalaProj\DandRiscvSoC\project
+2023.08.03 09:44:04 INFO  [success] Generated .bloop\dandriscvsoc-build.json
+2023.08.03 09:44:04 INFO  [success] Total time: 2 s, completed 2023-8-3 9:44:04
+2023.08.03 09:44:04 INFO  [info] loading settings for project projectname from build.sbt ...
+2023.08.03 09:44:04 INFO  [info] set current project to projectname (in build file:/D:/MyWork/ScalaProj/DandRiscvSoC/)
+2023.08.03 09:44:04 INFO  [success] Generated .bloop\projectname.json
+2023.08.03 09:44:04 INFO  [success] Generated .bloop\projectname-test.json
+2023.08.03 09:44:04 INFO  [success] Total time: 0 s, completed 2023-8-3 9:44:05
+2023.08.03 09:44:05 INFO  time: ran 'sbt bloopInstall' in 13s
+2023.08.03 09:44:05 INFO  Attempting to connect to the build server...
+2023.08.03 09:44:05 INFO  Setting up current java home C:\Program Files\Java\jdk-1.8 in C:\Users\TsinghuaIC\.bloop\bloop.json
+2023.08.03 09:44:31 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at D:\MyWork\ScalaProj\DandRiscvSoC\.metals\bsp.trace.json or C:\Users\TsinghuaIC\AppData\Local\scalameta\metals\cache\bsp.trace.json
+2023.08.03 09:44:45 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 09:44:51 WARN  Using indexes to guess the definition of is_hit
+2023.08.03 09:44:51 ERROR Timeout waiting for 'build/initialize' response
+2023.08.03 09:44:51 WARN  Retrying connection to the build server Bloop
+2023.08.03 09:44:51 INFO  Bloop uses C:\Program Files\Java\jdk-1.8 defined at C:\Users\TsinghuaIC\.bloop\bloop.json
+2023.08.03 09:44:51 WARN  Using indexes to guess the definition of sram_banks_valid
+2023.08.03 09:44:51 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at D:\MyWork\ScalaProj\DandRiscvSoC\.metals\bsp.trace.json or C:\Users\TsinghuaIC\AppData\Local\scalameta\metals\cache\bsp.trace.json
+2023.08.03 09:44:51 INFO  Attempting to connect to the build server...
+2023.08.03 09:44:51 INFO  Bloop uses C:\Program Files\Java\jdk-1.8 defined at C:\Users\TsinghuaIC\.bloop\bloop.json
+2023.08.03 09:44:51 INFO  Attempting to connect to the build server...
+2023.08.03 09:44:51 INFO  Bloop uses C:\Program Files\Java\jdk-1.8 defined at C:\Users\TsinghuaIC\.bloop\bloop.json
+2023.08.03 09:44:51 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at D:\MyWork\ScalaProj\DandRiscvSoC\project\project\.metals\bsp.trace.json or C:\Users\TsinghuaIC\AppData\Local\scalameta\metals\cache\bsp.trace.json
+2023.08.03 09:44:52 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at D:\MyWork\ScalaProj\DandRiscvSoC\project\.metals\bsp.trace.json or C:\Users\TsinghuaIC\AppData\Local\scalameta\metals\cache\bsp.trace.json
+2023.08.03 09:44:52 WARN  Using indexes to guess the definition of sram_banks_data
+2023.08.03 09:44:56 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+Exception in thread "pool-3-thread-1" java.lang.Error: java.lang.InterruptedException
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1155)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+Caused by: java.lang.InterruptedException
+	at scala.meta.internal.metals.FutureCancelToken.checkCanceled(FutureCancelToken.scala:29)
+	at scala.meta.internal.pc.CompilerAccess.onCompilerJobQueue$$anonfun$1(CompilerAccess.scala:229)
+	at scala.meta.internal.pc.CompilerJobQueue$Job.run(CompilerJobQueue.scala:152)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	... 2 more
+2023.08.03 09:44:56 WARN  Using indexes to guess the definition of sram_banks_data
+2023.08.03 09:44:59 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 09:45:01 WARN  Using indexes to guess the definition of cpu_set
+2023.08.03 09:45:03 WARN  Using indexes to guess the definition of sram
+2023.08.03 09:45:03 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\DCache.scala
+2023.08.03 09:45:12 ERROR Timeout waiting for 'build/initialize' response
+2023.08.03 09:45:12 ERROR Timeout waiting for 'build/initialize' response
+2023.08.03 09:45:12 WARN  Retrying connection to the build server Bloop
+2023.08.03 09:45:12 WARN  Retrying connection to the build server Bloop
+2023.08.03 09:45:12 INFO  Bloop uses C:\Program Files\Java\jdk-1.8 defined at C:\Users\TsinghuaIC\.bloop\bloop.json
+2023.08.03 09:45:12 INFO  Bloop uses C:\Program Files\Java\jdk-1.8 defined at C:\Users\TsinghuaIC\.bloop\bloop.json
+2023.08.03 09:45:12 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at D:\MyWork\ScalaProj\DandRiscvSoC\project\project\.metals\bsp.trace.json or C:\Users\TsinghuaIC\AppData\Local\scalameta\metals\cache\bsp.trace.json
+2023.08.03 09:45:12 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at D:\MyWork\ScalaProj\DandRiscvSoC\project\.metals\bsp.trace.json or C:\Users\TsinghuaIC\AppData\Local\scalameta\metals\cache\bsp.trace.json
+2023.08.03 09:45:32 ERROR Timeout waiting for 'build/initialize' response
+2023.08.03 09:45:32 ERROR Timeout waiting for 'build/initialize' response
+2023.08.03 09:45:32 WARN  Retrying connection to the build server Bloop
+2023.08.03 09:45:32 WARN  Retrying connection to the build server Bloop
+2023.08.03 09:45:32 INFO  Bloop uses C:\Program Files\Java\jdk-1.8 defined at C:\Users\TsinghuaIC\.bloop\bloop.json
+2023.08.03 09:45:32 INFO  Bloop uses C:\Program Files\Java\jdk-1.8 defined at C:\Users\TsinghuaIC\.bloop\bloop.json
+2023.08.03 09:45:32 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at D:\MyWork\ScalaProj\DandRiscvSoC\project\project\.metals\bsp.trace.json or C:\Users\TsinghuaIC\AppData\Local\scalameta\metals\cache\bsp.trace.json
+2023.08.03 09:45:32 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at D:\MyWork\ScalaProj\DandRiscvSoC\project\.metals\bsp.trace.json or C:\Users\TsinghuaIC\AppData\Local\scalameta\metals\cache\bsp.trace.json
+2023.08.03 09:45:52 ERROR Timeout waiting for 'build/initialize' response
+2023.08.03 09:45:52 ERROR Timeout waiting for 'build/initialize' response
+2023.08.03 09:45:52 WARN  Retrying connection to the build server Bloop
+2023.08.03 09:45:52 WARN  Retrying connection to the build server Bloop
+2023.08.03 09:45:52 INFO  Bloop uses C:\Program Files\Java\jdk-1.8 defined at C:\Users\TsinghuaIC\.bloop\bloop.json
+2023.08.03 09:45:52 INFO  Bloop uses C:\Program Files\Java\jdk-1.8 defined at C:\Users\TsinghuaIC\.bloop\bloop.json
+2023.08.03 09:45:52 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at D:\MyWork\ScalaProj\DandRiscvSoC\project\.metals\bsp.trace.json or C:\Users\TsinghuaIC\AppData\Local\scalameta\metals\cache\bsp.trace.json
+2023.08.03 09:45:52 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at D:\MyWork\ScalaProj\DandRiscvSoC\project\project\.metals\bsp.trace.json or C:\Users\TsinghuaIC\AppData\Local\scalameta\metals\cache\bsp.trace.json
+2023.08.03 09:45:53 WARN  Using indexes to guess the definition of replace_info_full
+2023.08.03 09:46:12 ERROR Timeout waiting for 'build/initialize' response
+2023.08.03 09:46:12 WARN  Retrying connection to the build server Bloop
+2023.08.03 09:46:12 ERROR Timeout waiting for 'build/initialize' response
+2023.08.03 09:46:12 WARN  Retrying connection to the build server Bloop
+2023.08.03 09:46:12 INFO  Bloop uses C:\Program Files\Java\jdk-1.8 defined at C:\Users\TsinghuaIC\.bloop\bloop.json
+2023.08.03 09:46:12 INFO  Bloop uses C:\Program Files\Java\jdk-1.8 defined at C:\Users\TsinghuaIC\.bloop\bloop.json
+2023.08.03 09:46:12 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at D:\MyWork\ScalaProj\DandRiscvSoC\project\project\.metals\bsp.trace.json or C:\Users\TsinghuaIC\AppData\Local\scalameta\metals\cache\bsp.trace.json
+2023.08.03 09:46:12 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at D:\MyWork\ScalaProj\DandRiscvSoC\project\.metals\bsp.trace.json or C:\Users\TsinghuaIC\AppData\Local\scalameta\metals\cache\bsp.trace.json
+2023.08.03 09:46:32 ERROR Timeout waiting for 'build/initialize' response
+2023.08.03 09:46:32 ERROR Timeout waiting for 'build/initialize' response
+2023.08.03 09:46:32 WARN  Retrying connection to the build server Bloop
+2023.08.03 09:46:32 WARN  Retrying connection to the build server Bloop
+2023.08.03 09:46:32 INFO  Bloop uses C:\Program Files\Java\jdk-1.8 defined at C:\Users\TsinghuaIC\.bloop\bloop.json
+2023.08.03 09:46:32 INFO  Bloop uses C:\Program Files\Java\jdk-1.8 defined at C:\Users\TsinghuaIC\.bloop\bloop.json
+2023.08.03 09:46:32 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at D:\MyWork\ScalaProj\DandRiscvSoC\project\project\.metals\bsp.trace.json or C:\Users\TsinghuaIC\AppData\Local\scalameta\metals\cache\bsp.trace.json
+2023.08.03 09:46:32 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at D:\MyWork\ScalaProj\DandRiscvSoC\project\.metals\bsp.trace.json or C:\Users\TsinghuaIC\AppData\Local\scalameta\metals\cache\bsp.trace.json
+2023.08.03 09:46:52 ERROR Timeout waiting for 'build/initialize' response
+2023.08.03 09:46:52 ERROR Timeout waiting for 'build/initialize' response
+2023.08.03 09:46:52 ERROR Failed to connect with build server, no functionality will work.
+java.util.concurrent.TimeoutException
+	at java.util.concurrent.CompletableFuture.timedGet(CompletableFuture.java:1784)
+	at java.util.concurrent.CompletableFuture.get(CompletableFuture.java:1928)
+	at scala.meta.internal.metals.BuildServerConnection$.initialize(BuildServerConnection.scala:530)
+	at scala.meta.internal.metals.BuildServerConnection$.$anonfun$fromSockets$1(BuildServerConnection.scala:439)
+	at scala.concurrent.impl.Promise$Transformation.run(Promise.scala:467)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+
+°ËÔÂ 03, 2023 9:47:47 ÉÏÎç org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+¾¯¸æ: Unmatched cancel notification for request id 234
+2023.08.03 09:47:54 WARN  Using indexes to guess the definition of victim_id
+2023.08.03 09:47:54 WARN  Using indexes to guess the definition of bankWidth
+2023.08.03 09:47:54 WARN  Using indexes to guess the definition of bankWidth
+2023.08.03 09:47:54 WARN  Using indexes to guess the definition of next_level_bank_addr
+2023.08.03 09:47:54 WARN  Using indexes to guess the definition of bankWidth
+2023.08.03 09:47:54 WARN  Using indexes to guess the definition of bankDepthBits
+2023.08.03 09:47:54 WARN  Using indexes to guess the definition of bankWidth
+2023.08.03 09:47:57 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\DCache.scala
+2023.08.03 09:48:02 WARN  Using indexes to guess the definition of next_level_rdone
+2023.08.03 09:48:02 WARN  Using indexes to guess the definition of next_level_rdone
+2023.08.03 09:48:09 WARN  Using indexes to guess the definition of cache_victim
+2023.08.03 09:48:09 WARN  Using indexes to guess the definition of cache_victim
+2023.08.03 09:48:09 WARN  Using indexes to guess the definition of next_level_rdone
+2023.08.03 09:48:54 WARN  Using indexes to guess the definition of cpu_set_d1
+2023.08.03 09:49:02 WARN  Using indexes to guess the definition of next_level_rdone
+2023.08.03 09:49:02 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\DCache.scala
+2023.08.03 09:49:21 WARN  Using indexes to guess the definition of cpu_set
+2023.08.03 09:49:22 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\DCache.scala
+2023.08.03 09:49:24 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\DCache.scala
+2023.08.03 09:50:42 WARN  Using indexes to guess the definition of cpu_cmd_ready
+2023.08.03 09:50:42 WARN  Using indexes to guess the definition of valid
+2023.08.03 09:50:43 WARN  Using indexes to guess the definition of cpu_set
+2023.08.03 09:50:45 WARN  Using indexes to guess the definition of cpu_cmd_ready
+2023.08.03 09:50:45 WARN  Using indexes to guess the definition of flush_done
+2023.08.03 09:50:45 WARN  Using indexes to guess the definition of cpu_cmd_ready
+2023.08.03 09:50:45 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 09:50:45 WARN  Using indexes to guess the definition of cpu_set
+2023.08.03 09:51:51 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\AluPlugin.scala
+2023.08.03 09:52:47 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\Predictor.scala
+2023.08.03 09:52:49 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\DandRiscvSimple.scala
+2023.08.03 09:53:20 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\DandRiscvSimple.scala
+2023.08.03 09:53:27 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\DandRiscvSimple.scala
+2023.08.03 09:53:29 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\LSUPlugin.scala
+2023.08.03 09:53:32 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\LSUPlugin.scala
+2023.08.03 09:53:58 WARN  Using indexes to guess the definition of MEM_RDATA
+2023.08.03 09:54:05 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\LSUPlugin.scala
+2023.08.03 09:54:59 WARN  Using indexes to guess the definition of next_level_rdone
+2023.08.03 09:55:00 WARN  Using indexes to guess the definition of next_level_rdone
+2023.08.03 09:55:00 WARN  Using indexes to guess the definition of replace_info
+2023.08.03 09:55:10 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 09:55:27 WARN  Using indexes to guess the definition of next_level_wdone
+2023.08.03 09:55:31 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 09:55:42 WARN  Using indexes to guess the definition of next_level_wdone
+2023.08.03 09:55:42 WARN  Using indexes to guess the definition of next_level_wdone
+2023.08.03 09:56:08 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\DCachePlugin.scala
+2023.08.03 09:56:52 WARN  Using indexes to guess the definition of victim_id
+2023.08.03 09:58:18 WARN  Using indexes to guess the definition of valid
+2023.08.03 09:58:19 WARN  Using indexes to guess the definition of dcache_access
+2023.08.03 09:58:19 WARN  Using indexes to guess the definition of dcache_access
+2023.08.03 09:58:20 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\LSUPlugin.scala
+2023.08.03 09:58:22 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\LSUPlugin.scala
+2023.08.03 09:58:28 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\LSUPlugin.scala
+2023.08.03 09:59:07 WARN  Using indexes to guess the definition of is_write
+2023.08.03 09:59:07 WARN  Using indexes to guess the definition of cpu_tag_d1
+2023.08.03 09:59:57 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:00:34 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:00:45 WARN  Using indexes to guess the definition of replace_info_full
+2023.08.03 10:00:51 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\DCache.scala
+2023.08.03 10:01:47 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:02:27 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:03:17 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:03:17 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:03:17 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:03:24 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:03:44 WARN  Using indexes to guess the definition of valid
+2023.08.03 10:03:47 WARN  Using indexes to guess the definition of vld
+2023.08.03 10:03:47 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:03:55 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:04:15 WARN  Using indexes to guess the definition of wayCount
+2023.08.03 10:04:15 WARN  Using indexes to guess the definition of wayCount
+2023.08.03 10:04:27 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\DCache.scala
+2023.08.03 10:04:43 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\DCache.scala
+2023.08.03 10:04:43 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\DCache.scala
+2023.08.03 10:05:29 WARN  Using indexes to guess the definition of cpu_tag
+2023.08.03 10:05:29 WARN  Using indexes to guess the definition of ways
+2023.08.03 10:05:29 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\DCache.scala
+2023.08.03 10:05:36 WARN  Using indexes to guess the definition of cache_mru
+2023.08.03 10:05:36 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:05:40 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:05:44 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\DCache.scala
+2023.08.03 10:05:45 WARN  Using indexes to guess the definition of vld
+2023.08.03 10:06:02 WARN  Using indexes to guess the definition of vld
+2023.08.03 10:06:02 WARN  Using indexes to guess the definition of vld
+2023.08.03 10:06:03 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\DCache.scala
+2023.08.03 10:06:19 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\DCache.scala
+2023.08.03 10:06:23 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\DCache.scala
+2023.08.03 10:06:28 WARN  Using indexes to guess the definition of cpu_set
+2023.08.03 10:06:28 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:06:28 WARN  Using indexes to guess the definition of cpu_set
+2023.08.03 10:06:30 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:07:25 WARN  Using indexes to guess the definition of cache_invalid_d1
+2023.08.03 10:07:25 WARN  Using indexes to guess the definition of cache_victim
+2023.08.03 10:07:34 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\DCache.scala
+2023.08.03 10:07:48 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\DCache.scala
+2023.08.03 10:08:03 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:08:05 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:08:05 WARN  Using indexes to guess the definition of flush_busy
+2023.08.03 10:08:45 WARN  Using indexes to guess the definition of cache_invld_d1
+2023.08.03 10:08:46 WARN  Using indexes to guess the definition of cpu_set
+2023.08.03 10:08:46 WARN  Using indexes to guess the definition of cpu_tag
+2023.08.03 10:08:49 WARN  Using indexes to guess the definition of cache_victim
+2023.08.03 10:08:49 WARN  Using indexes to guess the definition of ways
+°ËÔÂ 03, 2023 10:08:49 ÉÏÎç org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+¾¯¸æ: Unmatched cancel notification for request id 1258
+2023.08.03 10:08:49 WARN  Using indexes to guess the definition of cpu_set_d1
+2023.08.03 10:08:56 WARN  Using indexes to guess the definition of cache_hit
+2023.08.03 10:09:36 WARN  Using indexes to guess the definition of cache_victim
+2023.08.03 10:09:36 WARN  Using indexes to guess the definition of cache_victim
+2023.08.03 10:10:03 WARN  Using indexes to guess the definition of cache_mru_d1
+2023.08.03 10:11:11 WARN  Using indexes to guess the definition of cpu_set_d1
+2023.08.03 10:11:11 WARN  Using indexes to guess the definition of cpu_set_d1
+2023.08.03 10:11:11 WARN  Using indexes to guess the definition of cpu_set_d1
+2023.08.03 10:11:12 WARN  Using indexes to guess the definition of cache_invld_d1
+2023.08.03 10:11:12 WARN  Using indexes to guess the definition of cpu_set_d1
+2023.08.03 10:11:13 WARN  Using indexes to guess the definition of mru
+2023.08.03 10:11:13 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\DCache.scala
+2023.08.03 10:11:14 WARN  Using indexes to guess the definition of cache_invld_d1
+2023.08.03 10:11:14 WARN  Using indexes to guess the definition of cache_invld_d1
+°ËÔÂ 03, 2023 10:11:14 ÉÏÎç org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+¾¯¸æ: Unmatched cancel notification for request id 1323
+2023.08.03 10:11:17 WARN  Using indexes to guess the definition of cache_mru_d1
+2023.08.03 10:11:17 WARN  Using indexes to guess the definition of cache_mru_d1
+2023.08.03 10:11:28 WARN  Using indexes to guess the definition of ways
+2023.08.03 10:11:28 WARN  Using indexes to guess the definition of cpu_set_d1
+2023.08.03 10:11:30 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\DCache.scala
+2023.08.03 10:11:48 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\DCache.scala
+2023.08.03 10:11:53 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\DCache.scala
+2023.08.03 10:11:57 WARN  Using indexes to guess the definition of mru
+2023.08.03 10:11:57 WARN  Using indexes to guess the definition of cpu_set_d1
+2023.08.03 10:12:04 WARN  Using indexes to guess the definition of cache_invalid_d1
+2023.08.03 10:12:04 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:12:07 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:12:15 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:12:39 WARN  Using indexes to guess the definition of cache_victim
+2023.08.03 10:12:51 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\DCache.scala
+2023.08.03 10:17:12 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:17:52 WARN  Using indexes to guess the definition of is_miss
+2023.08.03 10:17:54 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:17:54 WARN  Using indexes to guess the definition of is_hit
+2023.08.03 10:18:46 WARN  Using indexes to guess the definition of wayCount
+2023.08.03 10:18:51 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:18:51 WARN  Using indexes to guess the definition of wayCount
+2023.08.03 10:18:51 WARN  Using indexes to guess the definition of wayCount
+2023.08.03 10:18:51 WARN  Using indexes to guess the definition of wayCount
+2023.08.03 10:18:58 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:19:01 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:19:01 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:19:01 WARN  Using indexes to guess the definition of wayCount
+2023.08.03 10:26:55 WARN  Using indexes to guess the definition of cache_mru_d1
+2023.08.03 10:26:56 WARN  Using indexes to guess the definition of cache_invld_d1
+2023.08.03 10:26:56 WARN  Using indexes to guess the definition of cache_invld_d1
+2023.08.03 10:27:11 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:27:17 WARN  Using indexes to guess the definition of ways
+2023.08.03 10:27:18 WARN  Using indexes to guess the definition of ways
+2023.08.03 10:27:24 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:27:33 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:27:33 WARN  Using indexes to guess the definition of wayCount
+2023.08.03 10:27:42 WARN  Using indexes to guess the definition of cache_lru_d1
+2023.08.03 10:27:42 WARN  Using indexes to guess the definition of cpu_set_d1
+2023.08.03 10:29:13 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:29:13 WARN  Using indexes to guess the definition of wayCount
+2023.08.03 10:29:19 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:29:50 WARN  Using indexes to guess the definition of cache_invld_d1
+2023.08.03 10:29:50 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:31:39 WARN  Using indexes to guess the definition of cache_victim
+2023.08.03 10:31:39 WARN  Using indexes to guess the definition of cache_lru_d1
+Exception in thread "pool-3-thread-2" java.lang.Error: java.lang.InterruptedException
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1155)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+Caused by: java.lang.InterruptedException
+	at scala.meta.internal.metals.FutureCancelToken.checkCanceled(FutureCancelToken.scala:29)
+	at scala.meta.internal.pc.CompilerAccess.onCompilerJobQueue$$anonfun$1(CompilerAccess.scala:229)
+	at scala.meta.internal.pc.CompilerJobQueue$Job.run(CompilerJobQueue.scala:152)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	... 2 more
+2023.08.03 10:31:43 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:31:43 WARN  Using indexes to guess the definition of wayCount
+2023.08.03 10:31:43 WARN  Using indexes to guess the definition of wayCount
+2023.08.03 10:31:48 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+Exception in thread "pool-3-thread-3" java.lang.Error: java.lang.InterruptedException
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1155)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+Caused by: java.lang.InterruptedException
+	at scala.meta.internal.metals.FutureCancelToken.checkCanceled(FutureCancelToken.scala:29)
+	at scala.meta.internal.pc.CompilerAccess.onCompilerJobQueue$$anonfun$1(CompilerAccess.scala:229)
+	at scala.meta.internal.pc.CompilerJobQueue$Job.run(CompilerJobQueue.scala:152)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	... 2 more
+2023.08.03 10:32:17 WARN  Using indexes to guess the definition of cache_lru_d1
+2023.08.03 10:32:18 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:32:31 WARN  Using indexes to guess the definition of ways
+2023.08.03 10:32:31 WARN  Using indexes to guess the definition of cache_invld_d1
+2023.08.03 10:32:31 WARN  Using indexes to guess the definition of cache_invld_d1
+2023.08.03 10:33:08 WARN  Using indexes to guess the definition of invld_id
+2023.08.03 10:33:08 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:33:30 WARN  Using indexes to guess the definition of invld_id
+2023.08.03 10:33:30 WARN  Using indexes to guess the definition of cache_victim
+2023.08.03 10:33:30 WARN  Using indexes to guess the definition of cache_victim
+2023.08.03 10:33:30 WARN  Using indexes to guess the definition of cache_invld_d1
+2023.08.03 10:33:36 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:34:09 WARN  Using indexes to guess the definition of cache_victim_tmp
+2023.08.03 10:34:14 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:34:15 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:34:15 WARN  Using indexes to guess the definition of wayCount
+2023.08.03 10:34:23 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:34:45 WARN  Using indexes to guess the definition of cpu_set
+2023.08.03 10:34:45 WARN  Using indexes to guess the definition of tag
+2023.08.03 10:35:19 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:35:20 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:35:23 WARN  Using indexes to guess the definition of cpu
+2023.08.03 10:35:25 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:35:36 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:35:48 WARN  Using indexes to guess the definition of cpu_set_d1
+2023.08.03 10:35:48 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:35:48 WARN  Using indexes to guess the definition of cpu_set_d1
+2023.08.03 10:36:44 WARN  Using indexes to guess the definition of cache_hit
+2023.08.03 10:36:54 WARN  Using indexes to guess the definition of cache_victim
+2023.08.03 10:37:15 WARN  Using indexes to guess the definition of tag
+2023.08.03 10:37:16 WARN  Using indexes to guess the definition of tag
+2023.08.03 10:37:28 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:37:42 WARN  Using indexes to guess the definition of invld_id
+2023.08.03 10:37:42 WARN  Using indexes to guess the definition of cache_victim
+°ËÔÂ 03, 2023 10:37:44 ÉÏÎç org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+¾¯¸æ: Unmatched cancel notification for request id 2280
+2023.08.03 10:37:46 WARN  Using indexes to guess the definition of victim_id
+2023.08.03 10:37:46 WARN  Using indexes to guess the definition of cache_victim
+2023.08.03 10:37:47 WARN  Using indexes to guess the definition of victim_id
+2023.08.03 10:37:47 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:37:51 WARN  Using indexes to guess the definition of cache_hit
+2023.08.03 10:38:00 WARN  Using indexes to guess the definition of wayCount
+2023.08.03 10:38:00 WARN  Using indexes to guess the definition of wayCount
+2023.08.03 10:38:01 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:38:30 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:38:30 WARN  Using indexes to guess the definition of wayCount
+2023.08.03 10:38:30 WARN  Using indexes to guess the definition of wayCount
+2023.08.03 10:38:34 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:38:34 WARN  Using indexes to guess the definition of victim_id
+2023.08.03 10:38:37 WARN  Using indexes to guess the definition of cache_victim
+2023.08.03 10:38:37 WARN  Using indexes to guess the definition of cache_victim
+2023.08.03 10:38:37 WARN  Using indexes to guess the definition of cache_lru_d1
+2023.08.03 10:38:37 WARN  Using indexes to guess the definition of cache_invld_d1
+2023.08.03 10:39:11 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\DCache.scala
+2023.08.03 10:39:11 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\DCache.scala
+2023.08.03 10:39:11 WARN  Using indexes to guess the definition of wayCount
+2023.08.03 10:39:23 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\DCache.scala
+2023.08.03 10:39:34 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:39:34 WARN  Using indexes to guess the definition of wayCount
+2023.08.03 10:39:34 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\DCache.scala
+2023.08.03 10:39:37 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\DCache.scala
+2023.08.03 10:39:43 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\DCache.scala
+2023.08.03 10:39:46 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\DCache.scala
+2023.08.03 10:39:51 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:39:52 WARN  Using indexes to guess the definition of wayCount
+2023.08.03 10:39:52 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\DCache.scala
+2023.08.03 10:39:54 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\DCache.scala
+2023.08.03 10:40:02 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:40:02 WARN  Using indexes to guess the definition of wayCount
+2023.08.03 10:40:02 WARN  Using indexes to guess the definition of wayCount
+2023.08.03 10:40:04 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\DCache.scala
+2023.08.03 10:40:09 WARN  Using indexes to guess the definition of victim_id
+2023.08.03 10:40:20 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:40:36 WARN  Using indexes to guess the definition of cache_invld_d1
+2023.08.03 10:40:36 WARN  Using indexes to guess the definition of flush_busy
+2023.08.03 10:40:39 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\DCache.scala
+2023.08.03 10:40:43 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:41:01 WARN  Using indexes to guess the definition of sram_banks_data
+2023.08.03 10:41:04 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\DCache.scala
+2023.08.03 10:41:05 WARN  Using indexes to guess the definition of cache_invld_d1
+2023.08.03 10:41:05 WARN  Using indexes to guess the definition of cpu_set
+2023.08.03 10:41:12 WARN  Using indexes to guess the definition of victim_id
+2023.08.03 10:41:12 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\DCache.scala
+2023.08.03 10:41:23 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:41:25 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 10:41:25 WARN  Using indexes to guess the definition of flush_cnt
+2023.08.03 10:41:25 WARN  Using indexes to guess the definition of wayLineCount
+2023.08.03 10:41:31 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\DCache.scala
+2023.08.03 10:41:38 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\DCache.scala
+2023.08.03 10:42:00 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\DecodePlugin.scala
+2023.08.03 10:42:28 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\DecodePlugin.scala
+2023.08.03 10:44:19 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\DecodePlugin.scala
+2023.08.03 10:44:37 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\DecodePlugin.scala
+2023.08.03 10:55:55 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\DecodePlugin.scala
+2023.08.03 10:55:55 WARN  Using indexes to guess the definition of rd_wen
+2023.08.03 10:56:00 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\DecodePlugin.scala
+2023.08.03 10:56:04 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\DecodePlugin.scala
+2023.08.03 10:56:06 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\DecodePlugin.scala
+2023.08.03 10:56:07 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\DecodePlugin.scala
+2023.08.03 10:56:22 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\DecodePlugin.scala
+2023.08.03 10:56:22 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\DecodePlugin.scala
+2023.08.03 10:58:05 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\DecodePlugin.scala
+2023.08.03 11:01:31 WARN  Using indexes to guess the definition of RegFileReadPorts
+2023.08.03 11:01:33 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\DecodePlugin.scala
+2023.08.03 11:02:17 WARN  Using indexes to guess the definition of read_ports
+2023.08.03 11:02:17 WARN  Using indexes to guess the definition of write_ports
+2023.08.03 11:02:17 WARN  Using indexes to guess the definition of rs1_addr
+2023.08.03 11:02:52 WARN  Using indexes to guess the definition of read_ports
+2023.08.03 11:02:52 WARN  Using indexes to guess the definition of rs1_addr
+2023.08.03 11:02:52 WARN  Using indexes to guess the definition of rd_value
+2023.08.03 11:03:08 WARN  Using indexes to guess the definition of write_ports
+2023.08.03 11:03:08 WARN  Using indexes to guess the definition of rd_value
+°ËÔÂ 03, 2023 11:03:09 ÉÏÎç org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+¾¯¸æ: Unmatched cancel notification for request id 2999
+2023.08.03 11:03:31 WARN  Using indexes to guess the definition of rs1_addr
+2023.08.03 11:03:58 WARN  Using indexes to guess the definition of write_ports
+2023.08.03 11:03:58 WARN  Using indexes to guess the definition of rd_value
+2023.08.03 11:03:58 WARN  Using indexes to guess the definition of rs1_req
+2023.08.03 11:03:58 WARN  Using indexes to guess the definition of write_ports
+2023.08.03 11:04:02 WARN  Using indexes to guess the definition of read_ports
+2023.08.03 11:04:04 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\DecodePlugin.scala
+2023.08.03 11:04:04 WARN  Using indexes to guess the definition of read_value_1
+2023.08.03 11:04:05 WARN  Using indexes to guess the definition of write_ports
+2023.08.03 11:04:05 WARN  Using indexes to guess the definition of write_ports
+2023.08.03 11:04:13 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\DecodePlugin.scala
+°ËÔÂ 03, 2023 11:08:42 ÉÏÎç scala.meta.internal.pc.CompilerAccess handleError
+ÑÏÖØ: A severe compiler error occurred, full details of the error can be found in the error report D:\MyWork\ScalaProj\DandRiscvSoC\.metals\.reports\metals-full\r_compiler-error_1691032122518
+2023.08.03 11:08:45 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\DecodePlugin.scala
+2023.08.03 11:08:52 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\DecodePlugin.scala
+2023.08.03 11:09:12 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\DecodePlugin.scala
+2023.08.03 11:09:12 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\DecodePlugin.scala
+2023.08.03 11:10:18 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\DecodePlugin.scala
+2023.08.03 11:10:20 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\DecodePlugin.scala
+2023.08.03 11:11:09 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\DecodePlugin.scala
+2023.08.03 11:11:24 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\DecodePlugin.scala
+2023.08.03 11:13:04 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\DecodePlugin.scala
+2023.08.03 11:13:05 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\DecodePlugin.scala
+2023.08.03 11:13:08 WARN  Using indexes to guess the definition of wordArray
+2023.08.03 11:13:08 WARN  Using indexes to guess the definition of wordArray
+2023.08.03 11:13:08 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\DecodePlugin.scala
+2023.08.03 11:13:08 WARN  Using indexes to guess the definition of wordArray
+2023.08.03 11:13:09 WARN  Using indexes to guess the definition of wordArray
+2023.08.03 11:13:09 WARN  Using indexes to guess the definition of wordArray
+2023.08.03 11:13:15 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\DecodePlugin.scala
+2023.08.03 11:13:32 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\DecodePlugin.scala
+2023.08.03 11:13:34 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\DecodePlugin.scala
+°ËÔÂ 03, 2023 11:14:04 ÉÏÎç org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+¾¯¸æ: Unmatched cancel notification for request id 3495
+°ËÔÂ 03, 2023 11:14:04 ÉÏÎç org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+¾¯¸æ: Unmatched cancel notification for request id 3496
+°ËÔÂ 03, 2023 11:14:04 ÉÏÎç org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+¾¯¸æ: Unmatched cancel notification for request id 3497
+°ËÔÂ 03, 2023 11:14:04 ÉÏÎç org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+¾¯¸æ: Unmatched cancel notification for request id 3498
+°ËÔÂ 03, 2023 11:14:04 ÉÏÎç org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+¾¯¸æ: Unmatched cancel notification for request id 3499
+2023.08.03 12:25:15 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\DecodePlugin.scala
+2023.08.03 12:29:52 WARN  Using indexes to guess the definition of rs2_addr
+2023.08.03 12:30:02 WARN  Using indexes to guess the definition of rs2_addr
+2023.08.03 12:30:02 WARN  Using indexes to guess the definition of read_ports
+°ËÔÂ 03, 2023 12:31:22 ÏÂÎç org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+¾¯¸æ: Unmatched cancel notification for request id 3568
+2023.08.03 12:36:13 WARN  Using indexes to guess the definition of cache_invld_d1
+2023.08.03 12:36:13 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.03 12:36:17 WARN  Using indexes to guess the definition of victim_id
+2023.08.03 12:37:12 WARN  Using indexes to guess the definition of is_diff
+2023.08.03 12:37:12 WARN  Using indexes to guess the definition of invld_id
+2023.08.03 12:37:12 WARN  Using indexes to guess the definition of cache_victim
+2023.08.03 13:11:34 WARN  no build target for: D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\Riscv.scala
+2023.08.03 17:08:32 INFO  Shutting down server
+2023.08.03 17:08:32 INFO  shutting down Metals
+2023.08.03 17:08:32 INFO  Exiting server
+2023.08.03 17:08:49 INFO  Started: Metals version 1.0.0 in folders 'D:\MyWork\ScalaProj\DandRiscvSoC' for client Visual Studio Code 1.80.2.
+°ËÔÂ 03, 2023 5:08:49 ÏÂÎç org.flywaydb.core.internal.license.VersionPrinter printVersionOnly
+ÐÅÏ¢: Flyway Community Edition 9.20.1 by Redgate
+°ËÔÂ 03, 2023 5:08:49 ÏÂÎç org.flywaydb.core.internal.license.VersionPrinter printVersion
+ÐÅÏ¢: See release notes here: https://rd.gt/416ObMi
+°ËÔÂ 03, 2023 5:08:49 ÏÂÎç org.flywaydb.core.internal.license.VersionPrinter printVersion
+ÐÅÏ¢: 
+°ËÔÂ 03, 2023 5:08:49 ÏÂÎç org.flywaydb.core.internal.database.base.BaseDatabaseType createDatabase
+ÐÅÏ¢: Database: jdbc:h2:file:D:\MyWork\ScalaProj\DandRiscvSoC\.metals\metals (H2 2.1)
+°ËÔÂ 03, 2023 5:08:49 ÏÂÎç org.flywaydb.core.internal.command.DbValidate validate
+ÐÅÏ¢: Successfully validated 4 migrations (execution time 00:00.029s)
+°ËÔÂ 03, 2023 5:08:49 ÏÂÎç org.flywaydb.core.internal.command.DbMigrate migrateGroup
+ÐÅÏ¢: Current version of schema "PUBLIC": 4
+°ËÔÂ 03, 2023 5:08:49 ÏÂÎç org.flywaydb.core.internal.command.DbMigrate logSummary
+ÐÅÏ¢: Schema "PUBLIC" is up to date. No migration necessary.
+2023.08.03 17:08:49 INFO  time: initialize in 0.63s
+2023.08.03 17:08:50 INFO  Attempting to connect to the build server...
+2023.08.03 17:08:50 INFO  Bloop uses C:\Program Files\Java\jdk-1.8 defined at C:\Users\TsinghuaIC\.bloop\bloop.json
+2023.08.03 17:08:50 INFO  skipping build import with status 'Installed'
+2023.08.03 17:08:50 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at D:\MyWork\ScalaProj\DandRiscvSoC\.metals\bsp.trace.json or C:\Users\TsinghuaIC\AppData\Local\scalameta\metals\cache\bsp.trace.json
+2023.08.03 17:08:50 INFO  Attempting to connect to the build server...
+2023.08.03 17:08:50 INFO  Bloop uses C:\Program Files\Java\jdk-1.8 defined at C:\Users\TsinghuaIC\.bloop\bloop.json
+2023.08.03 17:08:50 INFO  Attempting to connect to the build server...
+2023.08.03 17:08:50 INFO  Bloop uses C:\Program Files\Java\jdk-1.8 defined at C:\Users\TsinghuaIC\.bloop\bloop.json
+2023.08.03 17:08:50 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at D:\MyWork\ScalaProj\DandRiscvSoC\project\.metals\bsp.trace.json or C:\Users\TsinghuaIC\AppData\Local\scalameta\metals\cache\bsp.trace.json
+2023.08.03 17:08:51 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at D:\MyWork\ScalaProj\DandRiscvSoC\project\project\.metals\bsp.trace.json or C:\Users\TsinghuaIC\AppData\Local\scalameta\metals\cache\bsp.trace.json
+2023.08.03 17:08:50 INFO  time: Connected to build server in 0.38s
+2023.08.03 17:08:50 INFO  Connected to Build server: Bloop v1.5.8
+2023.08.03 17:08:50 INFO  time: Imported build in 0.15s

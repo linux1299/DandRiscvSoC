@@ -37,21 +37,26 @@ case class RegFileModule(XLEN : Int = 64) extends Component{
   val read_ports = slave(RegFileReadPorts(XLEN))
   val write_ports= slave(RegFileWritePorts(XLEN))
 
-  val reg_file = Mem(Bits(XLEN bits), 32)
+  val wordArray = (0 until 32).map(i => {
+    BigInt(0)
+  })
+  
+  val reg_file = Mem(Bits(XLEN bits), 32) initBigInt(wordArray)
+  val read_value_1 = reg_file.readAsync(
+    address = read_ports.rs1_addr
+    )
+  val read_value_2 = reg_file.readAsync(
+    address = read_ports.rs2_addr
+  )
+
   reg_file.write(
       enable  = write_ports.rd_wen,
       address = write_ports.rd_addr,
       data    = write_ports.rd_value
     )
 
-  read_ports.rs1_value := reg_file.readAsync(
-      //enable  = read_ports.rs1_req,
-      address = read_ports.rs1_addr
-    )
-  read_ports.rs2_value := reg_file.readAsync(
-      //enable  = read_ports.rs2_req,
-      address = read_ports.rs2_addr
-    )
+  read_ports.rs1_value := (write_ports.rd_wen && (write_ports.rd_addr===read_ports.rs1_addr) && read_ports.rs1_req) ? write_ports.rd_value | read_value_1
+  read_ports.rs2_value := (write_ports.rd_wen && (write_ports.rd_addr===read_ports.rs2_addr) && read_ports.rs2_req) ? write_ports.rd_value | read_value_2
 }
 
 // ==================== decode stage ======================

@@ -57,7 +57,6 @@ with DCacheAccessService
       val wen       = input(IS_STORE)
       val is_mem    = input(IS_LOAD) || input(IS_STORE)
       val is_timer  = (addr===MTIME) || (addr===MTIMECMP)
-      val hold      = Bool()
 
       switch(input(MEM_CTRL)){
         is(MemCtrlEnum.LB.asBits){
@@ -112,10 +111,10 @@ with DCacheAccessService
       }
 
       // output mem stage
-      insert(DATA_LOAD):= data_load
+      insert(MEM_RDATA):= data_load
       insert(LSU_WDATA):= wdata
       insert(TIMER_CEN):= is_timer && is_mem && arbitration.isFiring
-      insert(LSU_HOLD) := hold
+      insert(LSU_HOLD) := !dcache_access.cmd.ready
          
       // connect to dcache
       dcache_access.cmd.valid        := !is_timer && is_mem
@@ -124,12 +123,11 @@ with DCacheAccessService
       dcache_access.cmd.payload.wdata:= wdata
       dcache_access.cmd.payload.wstrb:= wstrb
       dcache_access.cmd.payload.size := size
-      hold := !dcache_access.cmd.ready
     }
 
     writebackStage plug new Area{
       import writebackStage._
-      insert(RD) := input(IS_LOAD) ? input(DATA_LOAD) | input(ALU_RESULT)
+      insert(RD) := input(IS_LOAD) ? input(MEM_RDATA) | input(ALU_RESULT)
     }
 }
 }

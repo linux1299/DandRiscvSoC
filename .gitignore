@@ -54,3 +54,7 @@ tmp/
 *.out32
 target/
 verdiLog/
+.bloop/
+.bsp/
+.metals/
+project/

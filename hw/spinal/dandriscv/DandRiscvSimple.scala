@@ -91,7 +91,7 @@ case class DandRiscvSimpleConfig(){
   object REDIRECT_PC_NEXT extends Stageable(UInt(addressWidth bits))
 
   // load store unit
-  object DATA_LOAD extends Stageable(Bits(XLEN bits))
+  object MEM_RDATA extends Stageable(Bits(XLEN bits))
   object LSU_WDATA extends Stageable(Bits(XLEN bits))
   object LSU_HOLD extends Stageable(Bool())
   object TIMER_CEN extends Stageable(Bool())

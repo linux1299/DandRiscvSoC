@@ -26,7 +26,7 @@ case class DCacheConfig(cacheSize : Int,
   def setWidth = log2Up(wayLineCount)
   def tagWidth = addressWidth-setWidth-offsetWidth
   def cpuDataBytesWidth = log2Up(cpuDataWidth/8)
-  def lineBusDataNum = bytePerLine/(bankWidth/8) 
+  def lineBusDataNum = bytePerLine/(busDataWidth/8) 
   def bankWriteBits = bankNum/lineBusDataNum
   // range
   def offsetRange = (offsetWidth-1) downto 0
@@ -56,10 +56,10 @@ case class DCache(p : DCacheConfig) extends Component{
   val next_level = master(DCacheNextLevelPorts(p))
 
   case class LineMeta() extends Bundle{
-    val valid = Reg(Bool()) init(False)
+    val vld = Reg(Bool()) init(False)
     // val dirty = Reg(Bool()) init(False) // TODO:when cache is wb, need dirty bit
     val tag = Reg(UInt(tagWidth bits)) init(0)
-    val replace_info = Reg(Bool()) init(False)
+    val mru = Reg(Bool()) init(False)
   }
 
   val ways = Seq.fill(wayCount)(new Area{
@@ -69,13 +69,19 @@ case class DCache(p : DCacheConfig) extends Component{
   // cache related
   val cache_tag = Vec(UInt(tagWidth bits), wayCount)
   val cache_hit = Vec(Bool(), wayCount)
+  val cache_invld_d1 = Vec(Bool(), wayCount)
   val cache_victim = Vec(Bool(), wayCount)
-  val cache_replace_info = Vec(Bool(), wayCount)
-  val hit_way_id = UInt(log2Up(wayCount) bits)
+  val cache_mru = Vec(Bool(), wayCount)
+  val cache_lru_d1 = Vec(Bool(), wayCount)
+  val hit_id = UInt(log2Up(wayCount) bits)
+  val evict_id  = UInt(log2Up(wayCount) bits)
+  val invld_id  = UInt(log2Up(wayCount) bits)
   val victim_id  = UInt(log2Up(wayCount) bits)
-  val replace_info_full = cache_replace_info.asBits.andR
+  val mru_full = cache_mru.asBits.andR
   val is_hit = cache_hit.asBits.orR & cpu.cmd.fire
+  val is_hit_d1 = RegNext(is_hit)
   val is_miss= !cache_hit.asBits.orR & cpu.cmd.fire
+  val is_diff = !cache_victim.asBits.orR
   val is_write = cpu.cmd.fire & cpu.cmd.payload.wen
   val flush_busy = RegInit(False)
   val flush_cnt  = Counter(0 to wayLineCount-1)
@@ -144,44 +150,41 @@ case class DCache(p : DCacheConfig) extends Component{
   }
   
 
-  // read metas to decide cache hit, acccess sram, update replace_info
-  hit_way_id := OHToUInt(cache_hit)
+  // read metas to decide cache hit, acccess sram, update mru
+  hit_id := OHToUInt(cache_hit)
+  invld_id   := OHToUInt(cache_invld_d1)
   victim_id  := OHToUInt(cache_victim)
+  evict_id   := is_diff ? invld_id | victim_id
+
   for(wayId <- 0 until wayCount){
 
     cache_tag(wayId) := ways(wayId).metas(cpu_set).tag
-    cache_hit(wayId) := (cache_tag(wayId) === cpu_tag) & ways(wayId).metas(cpu_set).valid
-    cache_replace_info(wayId) := ways(wayId).metas(cpu_set).replace_info
-    // replace logic
-    if(wayId==0){
-      cache_victim(0) := !ways(0).metas(cpu_set_d1).valid
-    }
-    else{
-      when(cache_victim(wayId-1)){
-        cache_victim(wayId) := False
-      }.otherwise{
-        cache_victim(wayId) := !ways(wayId).metas(cpu_set_d1).valid
-      }
-    }
+    cache_hit(wayId) := (cache_tag(wayId) === cpu_tag) & ways(wayId).metas(cpu_set).vld
+    cache_mru(wayId) := ways(wayId).metas(cpu_set).mru
+    
+    // victim is the way to be replaced
+    cache_invld_d1(wayId) := !ways(wayId).metas(cpu_set_d1).vld
+    cache_lru_d1(wayId)   := !ways(wayId).metas(cpu_set_d1).mru
+    cache_victim(wayId)   := cache_invld_d1(wayId) & cache_lru_d1(wayId)
 
-    // sram
+    // sram TODO:timing maybe bad
     sram_banks_data(wayId) := sram(wayId).ports.rsp.payload.data
     sram_banks_valid(wayId):= sram(wayId).ports.rsp.valid
-    when(is_hit){ // read hit or write hit
+    when(is_hit && U(wayId)===hit_id){ // read hit or write hit
       sram(wayId).ports.cmd.payload.addr := cpu_bank_addr
-      sram(wayId).ports.cmd.valid        := cache_hit(wayId)
+      sram(wayId).ports.cmd.valid        := True
       sram(wayId).ports.cmd.payload.wen  := (B(0, bankNum-1 bits) ## cpu.cmd.payload.wen) |<< cpu_bank_index
       sram(wayId).ports.cmd.payload.wdata:= (B(0, bankNum*bankWidth-cpuDataWidth bits) ## cpu.cmd.payload.wdata) |<< (cpu_bank_index*bankWidth)
       sram(wayId).ports.cmd.payload.wstrb:= (B(0, (bankNum-1)*bankWidth/8 bits) ## cpu.cmd.payload.wstrb) |<< (cpu_bank_index*bankWidth/8)
     } 
-    .elsewhen(next_level_rdone && !is_write){ // when read next level data done, read data from cache
+    .elsewhen(next_level_rdone && !is_write && U(wayId)===victim_id){ // when read next level data done, read data from cache
       sram(wayId).ports.cmd.payload.addr := cpu_bank_addr_d1
-      sram(wayId).ports.cmd.valid        := cache_victim(wayId)
+      sram(wayId).ports.cmd.valid        := True
       sram(wayId).ports.cmd.payload.wen  := B(0, bankNum bits)
       sram(wayId).ports.cmd.payload.wdata:= (B(0, bankNum*bankWidth-cpuDataWidth bits) ## cpu_wdata_d1) |<< (cpu_bank_index_d1*bankWidth)
       sram(wayId).ports.cmd.payload.wstrb:= (B(0, (bankNum-1)*bankWidth/8 bits) ## cpu_wstrb_d1) |<< (cpu_bank_index_d1*bankWidth/8)
     }
-    .elsewhen(next_level.rsp.valid){ // when read miss, read next level data, write to banks
+    .elsewhen(next_level.rsp.valid && U(wayId)===victim_id){ // when read miss, read next level data, write to banks
       sram(wayId).ports.cmd.payload.addr := next_level_bank_addr
       sram(wayId).ports.cmd.valid        := True
       sram(wayId).ports.cmd.payload.wen  := B(bankNum bits, (bankWriteBits-1 downto 0) -> True, default -> False) |<< (next_level_data_cnt*bankWriteBits)
@@ -196,35 +199,32 @@ case class DCache(p : DCacheConfig) extends Component{
       sram(wayId).ports.cmd.payload.wstrb:= B(0, bankNum*bankWidth/8 bits)
     }
 
-    // metas
+    // ================= metas update =================
     when(flush_busy){
-      ways(wayId).metas(flush_cnt).replace_info := False
-      ways(wayId).metas(flush_cnt).valid := False
+      ways(wayId).metas(flush_cnt).mru := False
+      ways(wayId).metas(flush_cnt).vld := False
     }
     .otherwise{
-      // hit and MRU all 1
-      when(is_hit && replace_info_full){
+      // hit and MRU all 1, set hit way MRU=1, other 0
+      when(is_hit && mru_full){
         when(cache_hit(wayId)) {
-          ways(wayId).metas(cpu_set).replace_info := True
+          ways(wayId).metas(cpu_set).mru := True
         } .otherwise {
-          ways(wayId).metas(cpu_set).replace_info := False
+          ways(wayId).metas(cpu_set).mru := False
         }
       } // hit and MRU not all 1
-      .elsewhen(is_hit){
-        when(cache_hit(wayId)) {
-          ways(wayId).metas(cpu_set).replace_info := True
-        }
+      .elsewhen(is_hit && cache_hit(wayId)){
+        ways(wayId).metas(cpu_set).mru := True
       } // miss and next_level data read done
-      .elsewhen(next_level_rdone){
-        when(cache_victim(wayId)) {
-          ways(wayId).metas(cpu_set_d1).valid := True
-        }
+      .elsewhen(next_level_rdone && U(wayId)===victim_id){
+        ways(wayId).metas(cpu_set_d1).vld := True
       }
     }
     // tags
-    when(next_level_rdone){
+    when(next_level_rdone && U(wayId)===victim_id){
       ways(wayId).metas(cpu_set_d1).tag := cpu_tag_d1
     }
+
     // to cpu ready
     when(flush || is_miss || is_write){
       cpu_cmd_ready := False
@@ -235,9 +235,9 @@ case class DCache(p : DCacheConfig) extends Component{
   }
 
   // resp to cpu ports
-  cpu.rsp.payload.data := is_hit ? sram_banks_data(hit_way_id).subdivideIn(cpuDataWidth bits)(cpu_bank_index) | sram_banks_data(victim_id).subdivideIn(cpuDataWidth bits)(cpu_bank_index_d1)
-  cpu.rsp.valid := is_hit ? sram_banks_valid(hit_way_id) | sram_banks_valid(victim_id)
-  cpu.cmd.ready := cpu_cmd_ready
+  cpu.rsp.payload.data := is_hit_d1 ? sram_banks_data(hit_id).subdivideIn(cpuDataWidth bits)(cpu_bank_index) | sram_banks_data(victim_id).subdivideIn(cpuDataWidth bits)(cpu_bank_index_d1)
+  cpu.rsp.valid        := is_hit_d1 ? sram_banks_valid(hit_id) | sram_banks_valid(victim_id)
+  cpu.cmd.ready        := cpu_cmd_ready
 
   // cmd to next level cache
   next_level.cmd.payload.addr := (cpu_addr_d1(addressWidth-1 downto busDataSize) ## U(0, busDataSize bits)).asUInt
