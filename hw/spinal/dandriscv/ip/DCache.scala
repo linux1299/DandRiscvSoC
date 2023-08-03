@@ -74,7 +74,9 @@ case class DCache(p : DCacheConfig) extends Component{
   val cache_mru = Vec(Bool(), wayCount)
   val cache_lru_d1 = Vec(Bool(), wayCount)
   val hit_id = UInt(log2Up(wayCount) bits)
+  val hit_id_d1 = RegNext(hit_id)
   val evict_id  = UInt(log2Up(wayCount) bits)
+  val evict_id_d1 = RegNext(evict_id)
   val invld_id  = UInt(log2Up(wayCount) bits)
   val victim_id  = UInt(log2Up(wayCount) bits)
   val mru_full = cache_mru.asBits.andR
@@ -92,7 +94,7 @@ case class DCache(p : DCacheConfig) extends Component{
   val cpu_set = cpu.cmd.payload.addr(setRange)
   val cpu_bank_addr   = cpu.cmd.payload.addr(bankAddrRange)
   val cpu_bank_index  = cpu.cmd.payload.addr(bankIndexRange)
-  val cpu_addr_d1     = RegNextWhen(cpu.cmd.payload.addr, is_miss || is_write) init(0)
+  val cpu_addr_d1     = RegNextWhen(cpu.cmd.payload.addr, cpu.cmd.fire) init(0)
   val cpu_set_d1      = cpu_addr_d1(setRange)
   val cpu_tag_d1      = cpu_addr_d1(tagRange)
   val cpu_bank_addr_d1= cpu_addr_d1(bankAddrRange)
@@ -235,12 +237,12 @@ case class DCache(p : DCacheConfig) extends Component{
   }
 
   // resp to cpu ports
-  cpu.rsp.payload.data := is_hit_d1 ? sram_banks_data(hit_id).subdivideIn(cpuDataWidth bits)(cpu_bank_index) | sram_banks_data(victim_id).subdivideIn(cpuDataWidth bits)(cpu_bank_index_d1)
-  cpu.rsp.valid        := is_hit_d1 ? sram_banks_valid(hit_id) | sram_banks_valid(victim_id)
+  cpu.rsp.payload.data := is_hit_d1 ? sram_banks_data(hit_id_d1).subdivideIn(cpuDataWidth bits)(cpu_bank_index_d1) | sram_banks_data(victim_id).subdivideIn(cpuDataWidth bits)(cpu_bank_index_d1)
+  cpu.rsp.valid        := is_hit_d1 ? sram_banks_valid(hit_id_d1) | sram_banks_valid(evict_id_d1)
   cpu.cmd.ready        := cpu_cmd_ready
 
   // cmd to next level cache
-  next_level.cmd.payload.addr := (cpu_addr_d1(addressWidth-1 downto busDataSize) ## U(0, busDataSize bits)).asUInt
+  next_level.cmd.payload.addr := (cpu_addr_d1(addressWidth-1 downto offsetWidth) ## U(0, offsetWidth bits)).asUInt
   next_level.cmd.payload.len  := cpu_wen_d1 ? U(0, 4 bits) | (busBurstLen-1)
   next_level.cmd.payload.size := busDataSize
   next_level.cmd.payload.wen  := cpu_wen_d1

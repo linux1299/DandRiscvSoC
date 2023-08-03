@@ -117,7 +117,7 @@ with DCacheAccessService
       insert(LSU_HOLD) := !dcache_access.cmd.ready
          
       // connect to dcache
-      dcache_access.cmd.valid        := !is_timer && is_mem
+      dcache_access.cmd.valid        := !is_timer && is_mem && arbitration.isValid
       dcache_access.cmd.payload.addr := addr
       dcache_access.cmd.payload.wen  := wen
       dcache_access.cmd.payload.wdata:= wdata

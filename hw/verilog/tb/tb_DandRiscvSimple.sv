@@ -121,7 +121,8 @@ end
 // ==================== initial program in ram =======================
 initial begin
 
-  fd = $fopen ("./ysyx-workbench/am-kernels/tests/alu-tests/build/alutest-riscv64-nemu.bin", "rb");
+  // fd = $fopen ("./ysyx-workbench/am-kernels/tests/alu-tests/build/alutest-riscv64-nemu.bin", "rb");
+  fd = $fopen ("./ysyx-workbench/am-kernels/tests/cpu-tests/build/add-longlong-riscv64-nemu.bin", "rb");
   tmp = $fread(ram_tmp, fd);
 
   for (i = 0; i < 1024; i = i + 1) begin
@@ -182,7 +183,7 @@ end
 
 // ========================== Time out =============================
 initial begin
-  #2000000
+  #20000
   $display("\n============== TimeOut ! Simulation finish ! ============\n");
   $finish;
 end

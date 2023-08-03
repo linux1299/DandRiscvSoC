@@ -75,7 +75,7 @@ with ControlService
     fetch plug new Area{
       import fetch._
       arbitration.haltItself := False
-      arbitration.flushIt := False
+      arbitration.flushIt := execute.output(REDIRECT_VALID)
     }
     
     // control decode stage

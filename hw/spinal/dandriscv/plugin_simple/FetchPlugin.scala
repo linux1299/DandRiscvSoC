@@ -38,6 +38,7 @@ with ICacheAccessService
       val fetch_valid = RegInit(False).setName("fetch_valid")
       val int_pc_reg = Reg(UInt(pipeline.config.addressWidth bits)).setName("int_pc_reg") init(0)
       val int_en_reg = RegInit(False).setName("int_en_reg")
+      val fetch_flush = (output(INT_EN) || int_en_reg || arbitration.flushIt)
 
       val fetchFSM = new Area{
         val IDLE  = U(0 , 2 bits).setName("IDLE")
@@ -92,29 +93,29 @@ with ICacheAccessService
         }
 
         // when icache is busy, interrupt is high, use reg store interrupt's pc
-        when(fetch.output(INT_EN) & (fetch_state===BUSY || fetch_state_next===BUSY)){
+        when(output(INT_EN) & (fetch_state===BUSY || fetch_state_next===BUSY)){
           int_en_reg := True
-          int_pc_reg := fetch.output(INT_PC)
+          int_pc_reg := output(INT_PC)
         }
         .elsewhen(icache_access.rsp.fire){
           int_en_reg := False
         }
 
         // pc_next used to fetch instruction
-        when(icache_access.cmd.fire){
+        when(output(INT_EN)) {
+          pc_next := output(INT_PC)
+        }
+        .elsewhen(execute.output(REDIRECT_VALID)){
+          pc_next := execute.output(REDIRECT_PC_NEXT)
+        }
+        .elsewhen(input(BPU_BRANCH_TAKEN)) {
+          pc_next := input(BPU_PC_NEXT)
+        }
+        .elsewhen(icache_access.cmd.fire) {
           when(int_en_reg){
             pc_next := int_pc_reg
           }
-          .elsewhen(fetch.output(INT_EN)) {
-            pc_next := fetch.output(INT_PC)
-          } 
-          .elsewhen(execute.output(REDIRECT_VALID)){
-            pc_next := execute.output(REDIRECT_PC_NEXT)
-          }
-          .elsewhen(fetch.input(BPU_BRANCH_TAKEN)) {
-            pc_next := fetch.input(BPU_PC_NEXT)
-          } 
-          .otherwise {
+          .otherwise{
             pc_next := pc_next + 4
           }
         }
@@ -130,11 +131,11 @@ with ICacheAccessService
       // insert to stage
       insert(PC) := pc
       insert(INSTRUCTION) := icache_access.rsp.payload.data
-      arbitration.isValid := icache_access.rsp.valid && !(output(INT_EN) || int_en_reg)
+      arbitration.isValid := icache_access.rsp.valid && !fetch_flush
 
       // send cmd to icache
-      icache_access.cmd.valid := fetch_valid
-      icache_access.cmd.addr := pc_next
+      icache_access.cmd.valid := fetch_valid && !fetch_flush
+      icache_access.cmd.addr  := pc_next
     }
 
   }

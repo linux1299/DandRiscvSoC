@@ -1,6 +1,6 @@
 // Generator : SpinalHDL v1.8.1    git head : 2a7592004363e5b40ec43e1f122ed8641cd8965b
 // Component : DandRiscvSimple
-// Git hash  : fb27fa379aeca5a6775600d949f1ad9f3c620d73
+// Git hash  : dc3a7e649ac3f7909c4aacaa24393f79ecc8ce1b
 
 `timescale 1ns/1ps
 
@@ -406,9 +406,9 @@ module DandRiscvSimple (
   wire       [63:0]   fetch_BPU_PC_NEXT;
   wire                fetch_BPU_BRANCH_TAKEN;
   wire       [63:0]   _zz_pc_next;
-  wire                when_FetchPlugin_l111;
-  wire       [63:0]   _zz_pc_next_1;
   wire                when_FetchPlugin_l108;
+  wire       [63:0]   _zz_pc_next_1;
+  wire                when_FetchPlugin_l105;
   wire                fetch_arbitration_haltItself;
   wire                fetch_arbitration_haltByOther;
   reg                 fetch_arbitration_removeIt;
@@ -498,19 +498,20 @@ module DandRiscvSimple (
   reg                 fetch_valid;
   reg        [63:0]   int_pc_reg;
   reg                 int_en_reg;
+  wire                fetch_FetchPlugin_fetch_flush;
   wire       [1:0]    IDLE;
   wire       [1:0]    FETCH;
   wire       [1:0]    BUSY;
   wire       [1:0]    HALT;
   reg        [1:0]    fetch_state_next;
   reg        [1:0]    fetch_state;
-  wire                when_FetchPlugin_l52;
+  wire                when_FetchPlugin_l53;
   wire                ICachePlugin_icache_access_cmd_isStall;
   wire                ICachePlugin_icache_access_cmd_fire_1;
-  wire                when_FetchPlugin_l82;
-  wire                when_FetchPlugin_l95;
+  wire                when_FetchPlugin_l83;
+  wire                when_FetchPlugin_l96;
   wire                ICachePlugin_icache_access_cmd_fire_2;
-  wire                when_FetchPlugin_l122;
+  wire                when_FetchPlugin_l123;
   reg        [63:0]   decode_DecodePlugin_imm;
   wire       [63:0]   decode_DecodePlugin_rs1;
   wire       [63:0]   decode_DecodePlugin_rs2;
@@ -964,7 +965,7 @@ module DandRiscvSimple (
     .predict_pc_next    (gshare_predictor_1_predict_pc_next[63:0]), //o
     .train_valid        (execute_BRANCH_OR_JUMP                  ), //i
     .train_taken        (execute_BRANCH_TAKEN                    ), //i
-    .train_mispredicted (when_FetchPlugin_l111                   ), //i
+    .train_mispredicted (when_FetchPlugin_l108                   ), //i
     .train_history      (execute_BRANCH_HISTORY[6:0]             ), //i
     .train_pc           (execute_PC[63:0]                        ), //i
     .train_pc_next      (_zz_pc_next[63:0]                       ), //i
@@ -1012,7 +1013,7 @@ module DandRiscvSimple (
   Clint clint_1 (
     .pc                       (_zz_fetch_to_decode_PC[63:0]           ), //i
     .pc_next                  (_zz_pc_next[63:0]                      ), //i
-    .pc_next_valid            (when_FetchPlugin_l111                  ), //i
+    .pc_next_valid            (when_FetchPlugin_l108                  ), //i
     .csr_ports_mepc_wen       (clint_1_csr_ports_mepc_wen             ), //o
     .csr_ports_mepc_wdata     (clint_1_csr_ports_mepc_wdata[63:0]     ), //o
     .csr_ports_mcause_wen     (clint_1_csr_ports_mcause_wen           ), //o
@@ -1390,9 +1391,9 @@ module DandRiscvSimple (
   assign fetch_BPU_PC_NEXT = gshare_predictor_1_predict_pc_next;
   assign fetch_BPU_BRANCH_TAKEN = gshare_predictor_1_predict_taken;
   assign _zz_pc_next = execute_REDIRECT_PC_NEXT;
-  assign when_FetchPlugin_l111 = execute_REDIRECT_VALID;
+  assign when_FetchPlugin_l108 = execute_REDIRECT_VALID;
   assign _zz_pc_next_1 = fetch_INT_PC;
-  assign when_FetchPlugin_l108 = fetch_INT_EN;
+  assign when_FetchPlugin_l105 = fetch_INT_EN;
   assign fetch_arbitration_haltByOther = 1'b0;
   always @(*) begin
     fetch_arbitration_removeIt = 1'b0;
@@ -1439,14 +1440,15 @@ module DandRiscvSimple (
 
   assign writeback_arbitration_flushNext = 1'b0;
   assign ICachePlugin_icache_access_cmd_fire = (ICachePlugin_icache_access_cmd_valid && ICachePlugin_icache_access_cmd_ready);
+  assign fetch_FetchPlugin_fetch_flush = ((when_FetchPlugin_l105 || int_en_reg) || fetch_arbitration_flushIt);
   assign IDLE = 2'b00;
   assign FETCH = 2'b01;
   assign BUSY = 2'b10;
   assign HALT = 2'b11;
-  assign when_FetchPlugin_l52 = (! fetch_arbitration_isStuck);
+  assign when_FetchPlugin_l53 = (! fetch_arbitration_isStuck);
   always @(*) begin
     if((fetch_state == IDLE)) begin
-        if(when_FetchPlugin_l52) begin
+        if(when_FetchPlugin_l53) begin
           fetch_state_next = FETCH;
         end else begin
           fetch_state_next = IDLE;
@@ -1472,7 +1474,7 @@ module DandRiscvSimple (
           end
         end
     end else if((fetch_state == HALT)) begin
-        if(when_FetchPlugin_l82) begin
+        if(when_FetchPlugin_l83) begin
           fetch_state_next = FETCH;
         end else begin
           fetch_state_next = HALT;
@@ -1484,12 +1486,12 @@ module DandRiscvSimple (
 
   assign ICachePlugin_icache_access_cmd_isStall = (ICachePlugin_icache_access_cmd_valid && (! ICachePlugin_icache_access_cmd_ready));
   assign ICachePlugin_icache_access_cmd_fire_1 = (ICachePlugin_icache_access_cmd_valid && ICachePlugin_icache_access_cmd_ready);
-  assign when_FetchPlugin_l82 = (! fetch_arbitration_isStuck);
-  assign when_FetchPlugin_l95 = (when_FetchPlugin_l108 && ((fetch_state == BUSY) || (fetch_state_next == BUSY)));
+  assign when_FetchPlugin_l83 = (! fetch_arbitration_isStuck);
+  assign when_FetchPlugin_l96 = (when_FetchPlugin_l105 && ((fetch_state == BUSY) || (fetch_state_next == BUSY)));
   assign ICachePlugin_icache_access_cmd_fire_2 = (ICachePlugin_icache_access_cmd_valid && ICachePlugin_icache_access_cmd_ready);
-  assign when_FetchPlugin_l122 = ((fetch_state_next == FETCH) || (fetch_state_next == BUSY));
-  assign fetch_arbitration_isValid = (ICachePlugin_icache_access_rsp_valid && (! (when_FetchPlugin_l108 || int_en_reg)));
-  assign ICachePlugin_icache_access_cmd_valid = fetch_valid;
+  assign when_FetchPlugin_l123 = ((fetch_state_next == FETCH) || (fetch_state_next == BUSY));
+  assign fetch_arbitration_isValid = (ICachePlugin_icache_access_rsp_valid && (! fetch_FetchPlugin_fetch_flush));
+  assign ICachePlugin_icache_access_cmd_valid = (fetch_valid && (! fetch_FetchPlugin_fetch_flush));
   assign ICachePlugin_icache_access_cmd_payload_addr = pc_next;
   assign decode_DecodePlugin_rs1_req = (! (((decode_INSTRUCTION[6 : 0] == 7'h37) || (decode_INSTRUCTION[6 : 0] == 7'h17)) || (decode_INSTRUCTION[6 : 0] == 7'h67)));
   assign decode_DecodePlugin_rs2_req = (! ((((decode_INSTRUCTION[6 : 0] == 7'h37) || (decode_INSTRUCTION[6 : 0] == 7'h17)) || (decode_INSTRUCTION[6 : 0] == 7'h67)) || ((((decode_INSTRUCTION[6 : 0] == 7'h13) || (decode_INSTRUCTION[6 : 0] == 7'h1b)) || (decode_INSTRUCTION[6 : 0] == 7'h03)) || (decode_INSTRUCTION[6 : 0] == 7'h67))));
@@ -2509,9 +2511,9 @@ module DandRiscvSimple (
   assign DecodePlugin_hazard_ctrl_rs2_from_wb = ((execute_arbitration_isValid && _zz_DecodePlugin_hazard_ctrl_rs1_from_mem) && DecodePlugin_hazard_rs2_from_wb);
   assign DecodePlugin_hazard_ctrl_load_use = ((execute_arbitration_isValid && _zz_DecodePlugin_hazard_ctrl_rs1_from_mem) && DecodePlugin_hazard_load_use);
   assign fetch_arbitration_haltItself = 1'b0;
-  assign fetch_arbitration_flushIt = 1'b0;
+  assign fetch_arbitration_flushIt = when_FetchPlugin_l108;
   assign decode_arbitration_haltItself = 1'b0;
-  assign decode_arbitration_flushIt = when_FetchPlugin_l111;
+  assign decode_arbitration_flushIt = when_FetchPlugin_l108;
   assign execute_arbitration_haltItself = execute_INT_HOLD;
   assign execute_arbitration_flushIt = 1'b0;
   assign memaccess_arbitration_haltItself = ((DecodePlugin_hazard_load_use || DecodePlugin_hazard_ctrl_load_use) || memaccess_LSU_HOLD);
@@ -2925,7 +2927,7 @@ module DandRiscvSimple (
   assign _zz_6 = zz__zz_memaccess_LSUPlugin_wstrb_2(1'b0);
   always @(*) _zz_memaccess_LSUPlugin_wstrb_2 = _zz_6;
   assign _zz_memaccess_LSUPlugin_wstrb_3[7 : 0] = 8'hff;
-  assign DCachePlugin_dcache_access_cmd_valid = ((! memaccess_LSUPlugin_is_timer) && memaccess_LSUPlugin_is_mem);
+  assign DCachePlugin_dcache_access_cmd_valid = (((! memaccess_LSUPlugin_is_timer) && memaccess_LSUPlugin_is_mem) && memaccess_arbitration_isValid);
   assign DCachePlugin_dcache_access_cmd_payload_addr = memaccess_LSUPlugin_addr;
   assign DCachePlugin_dcache_access_cmd_payload_wen = memaccess_IS_STORE;
   assign DCachePlugin_dcache_access_cmd_payload_wdata = memaccess_LSUPlugin_wdata;
@@ -3063,7 +3065,7 @@ module DandRiscvSimple (
       writeback_arbitration_isValid <= 1'b0;
     end else begin
       fetch_state <= fetch_state_next;
-      if(when_FetchPlugin_l95) begin
+      if(when_FetchPlugin_l96) begin
         int_en_reg <= 1'b1;
         int_pc_reg <= _zz_pc_next_1;
       end else begin
@@ -3071,18 +3073,18 @@ module DandRiscvSimple (
           int_en_reg <= 1'b0;
         end
       end
-      if(ICachePlugin_icache_access_cmd_fire_2) begin
-        if(int_en_reg) begin
-          pc_next <= int_pc_reg;
+      if(when_FetchPlugin_l105) begin
+        pc_next <= _zz_pc_next_1;
+      end else begin
+        if(when_FetchPlugin_l108) begin
+          pc_next <= _zz_pc_next;
         end else begin
-          if(when_FetchPlugin_l108) begin
-            pc_next <= _zz_pc_next_1;
+          if(fetch_BPU_BRANCH_TAKEN) begin
+            pc_next <= fetch_BPU_PC_NEXT;
           end else begin
-            if(when_FetchPlugin_l111) begin
-              pc_next <= _zz_pc_next;
-            end else begin
-              if(fetch_BPU_BRANCH_TAKEN) begin
-                pc_next <= fetch_BPU_PC_NEXT;
+            if(ICachePlugin_icache_access_cmd_fire_2) begin
+              if(int_en_reg) begin
+                pc_next <= int_pc_reg;
               end else begin
                 pc_next <= (pc_next + 64'h0000000000000004);
               end
@@ -3090,7 +3092,7 @@ module DandRiscvSimple (
           end
         end
       end
-      if(when_FetchPlugin_l122) begin
+      if(when_FetchPlugin_l123) begin
         fetch_valid <= 1'b1;
       end else begin
         fetch_valid <= 1'b0;
@@ -7185,7 +7187,9 @@ module DCache (
   wire                cache_lru_d1_2;
   wire                cache_lru_d1_3;
   wire       [1:0]    hit_id;
+  reg        [1:0]    hit_id_d1;
   wire       [1:0]    evict_id;
+  reg        [1:0]    evict_id_d1;
   wire       [1:0]    invld_id;
   wire       [1:0]    victim_id;
   wire                mru_full;
@@ -7209,7 +7213,7 @@ module DCache (
   wire       [6:0]    cpu_set;
   wire       [6:0]    cpu_bank_addr;
   wire       [2:0]    cpu_bank_index;
-  wire                when_DCache_l95;
+  wire                cpu_cmd_fire_3;
   reg        [63:0]   cpu_addr_d1;
   wire       [6:0]    cpu_set_d1;
   wire       [50:0]   cpu_tag_d1;
@@ -7241,11 +7245,11 @@ module DCache (
   wire       [255:0]  next_level_wdata_tmp;
   wire       [31:0]   next_level_wstrb;
   wire       [255:0]  next_level_wdata;
-  wire                when_DCache_l120;
+  wire                when_DCache_l122;
   wire                next_level_cmd_fire;
-  wire                when_DCache_l127;
-  wire                when_DCache_l133;
-  wire                when_DCache_l145;
+  wire                when_DCache_l129;
+  wire                when_DCache_l135;
+  wire                when_DCache_l147;
   wire                _zz_hit_id;
   wire                _zz_hit_id_1;
   wire                _zz_invld_id;
@@ -7510,10 +7514,10 @@ module DCache (
   wire                _zz_256;
   wire                _zz_257;
   wire                _zz_258;
-  wire                when_DCache_l173;
+  wire                when_DCache_l175;
   reg        [7:0]    _zz_sram_0_ports_cmd_payload_wen;
-  wire                when_DCache_l180;
-  wire                when_DCache_l187;
+  wire                when_DCache_l182;
+  wire                when_DCache_l189;
   wire       [127:0]  _zz_259;
   wire                _zz_260;
   wire                _zz_261;
@@ -7643,12 +7647,12 @@ module DCache (
   wire                _zz_385;
   wire                _zz_386;
   wire                _zz_387;
-  wire                when_DCache_l209;
-  wire                when_DCache_l216;
-  wire                when_DCache_l219;
-  wire                when_DCache_l224;
-  wire                when_DCache_l229;
-  wire                when_DCache_l232;
+  wire                when_DCache_l211;
+  wire                when_DCache_l218;
+  wire                when_DCache_l221;
+  wire                when_DCache_l226;
+  wire                when_DCache_l231;
+  wire                when_DCache_l234;
   wire       [127:0]  _zz_388;
   wire                _zz_389;
   wire                _zz_390;
@@ -7907,10 +7911,10 @@ module DCache (
   wire                _zz_643;
   wire                _zz_644;
   wire                _zz_645;
-  wire                when_DCache_l173_1;
+  wire                when_DCache_l175_1;
   reg        [7:0]    _zz_sram_1_ports_cmd_payload_wen;
-  wire                when_DCache_l180_1;
-  wire                when_DCache_l187_1;
+  wire                when_DCache_l182_1;
+  wire                when_DCache_l189_1;
   wire       [127:0]  _zz_646;
   wire                _zz_647;
   wire                _zz_648;
@@ -8040,12 +8044,12 @@ module DCache (
   wire                _zz_772;
   wire                _zz_773;
   wire                _zz_774;
-  wire                when_DCache_l209_1;
-  wire                when_DCache_l216_1;
-  wire                when_DCache_l219_1;
-  wire                when_DCache_l224_1;
-  wire                when_DCache_l229_1;
-  wire                when_DCache_l232_1;
+  wire                when_DCache_l211_1;
+  wire                when_DCache_l218_1;
+  wire                when_DCache_l221_1;
+  wire                when_DCache_l226_1;
+  wire                when_DCache_l231_1;
+  wire                when_DCache_l234_1;
   wire       [127:0]  _zz_775;
   wire                _zz_776;
   wire                _zz_777;
@@ -8304,10 +8308,10 @@ module DCache (
   wire                _zz_1030;
   wire                _zz_1031;
   wire                _zz_1032;
-  wire                when_DCache_l173_2;
+  wire                when_DCache_l175_2;
   reg        [7:0]    _zz_sram_2_ports_cmd_payload_wen;
-  wire                when_DCache_l180_2;
-  wire                when_DCache_l187_2;
+  wire                when_DCache_l182_2;
+  wire                when_DCache_l189_2;
   wire       [127:0]  _zz_1033;
   wire                _zz_1034;
   wire                _zz_1035;
@@ -8437,12 +8441,12 @@ module DCache (
   wire                _zz_1159;
   wire                _zz_1160;
   wire                _zz_1161;
-  wire                when_DCache_l209_2;
-  wire                when_DCache_l216_2;
-  wire                when_DCache_l219_2;
-  wire                when_DCache_l224_2;
-  wire                when_DCache_l229_2;
-  wire                when_DCache_l232_2;
+  wire                when_DCache_l211_2;
+  wire                when_DCache_l218_2;
+  wire                when_DCache_l221_2;
+  wire                when_DCache_l226_2;
+  wire                when_DCache_l231_2;
+  wire                when_DCache_l234_2;
   wire       [127:0]  _zz_1162;
   wire                _zz_1163;
   wire                _zz_1164;
@@ -8701,10 +8705,10 @@ module DCache (
   wire                _zz_1417;
   wire                _zz_1418;
   wire                _zz_1419;
-  wire                when_DCache_l173_3;
+  wire                when_DCache_l175_3;
   reg        [7:0]    _zz_sram_3_ports_cmd_payload_wen;
-  wire                when_DCache_l180_3;
-  wire                when_DCache_l187_3;
+  wire                when_DCache_l182_3;
+  wire                when_DCache_l189_3;
   wire       [127:0]  _zz_1420;
   wire                _zz_1421;
   wire                _zz_1422;
@@ -8834,12 +8838,12 @@ module DCache (
   wire                _zz_1546;
   wire                _zz_1547;
   wire                _zz_1548;
-  wire                when_DCache_l209_3;
-  wire                when_DCache_l216_3;
-  wire                when_DCache_l219_3;
-  wire                when_DCache_l224_3;
-  wire                when_DCache_l229_3;
-  wire                when_DCache_l232_3;
+  wire                when_DCache_l211_3;
+  wire                when_DCache_l218_3;
+  wire                when_DCache_l221_3;
+  wire                when_DCache_l226_3;
+  wire                when_DCache_l231_3;
+  wire                when_DCache_l234_3;
   wire       [511:0]  _zz_cpu_rsp_payload_data;
   wire       [511:0]  _zz_cpu_rsp_payload_data_1;
   function [7:0] zz__zz_sram_0_ports_cmd_payload_wen(input dummy);
@@ -12011,7 +12015,7 @@ module DCache (
   end
 
   always @(*) begin
-    case(hit_id)
+    case(hit_id_d1)
       2'b00 : begin
         _zz__zz_cpu_rsp_payload_data = sram_banks_data_0;
         _zz_cpu_rsp_valid = sram_banks_valid_0;
@@ -12033,48 +12037,56 @@ module DCache (
 
   always @(*) begin
     case(victim_id)
-      2'b00 : begin
-        _zz__zz_cpu_rsp_payload_data_1 = sram_banks_data_0;
-        _zz_cpu_rsp_valid_1 = sram_banks_valid_0;
-      end
-      2'b01 : begin
-        _zz__zz_cpu_rsp_payload_data_1 = sram_banks_data_1;
-        _zz_cpu_rsp_valid_1 = sram_banks_valid_1;
-      end
-      2'b10 : begin
-        _zz__zz_cpu_rsp_payload_data_1 = sram_banks_data_2;
-        _zz_cpu_rsp_valid_1 = sram_banks_valid_2;
-      end
-      default : begin
-        _zz__zz_cpu_rsp_payload_data_1 = sram_banks_data_3;
-        _zz_cpu_rsp_valid_1 = sram_banks_valid_3;
-      end
-    endcase
-  end
-
-  always @(*) begin
-    case(cpu_bank_index)
-      3'b000 : _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[63 : 0];
-      3'b001 : _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[127 : 64];
-      3'b010 : _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[191 : 128];
-      3'b011 : _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[255 : 192];
-      3'b100 : _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[319 : 256];
-      3'b101 : _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[383 : 320];
-      3'b110 : _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[447 : 384];
-      default : _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[511 : 448];
+      2'b00 : _zz__zz_cpu_rsp_payload_data_1 = sram_banks_data_0;
+      2'b01 : _zz__zz_cpu_rsp_payload_data_1 = sram_banks_data_1;
+      2'b10 : _zz__zz_cpu_rsp_payload_data_1 = sram_banks_data_2;
+      default : _zz__zz_cpu_rsp_payload_data_1 = sram_banks_data_3;
     endcase
   end
 
   always @(*) begin
     case(cpu_bank_index_d1)
-      3'b000 : _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[63 : 0];
-      3'b001 : _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[127 : 64];
-      3'b010 : _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[191 : 128];
-      3'b011 : _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[255 : 192];
-      3'b100 : _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[319 : 256];
-      3'b101 : _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[383 : 320];
-      3'b110 : _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[447 : 384];
-      default : _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[511 : 448];
+      3'b000 : begin
+        _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[63 : 0];
+        _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[63 : 0];
+      end
+      3'b001 : begin
+        _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[127 : 64];
+        _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[127 : 64];
+      end
+      3'b010 : begin
+        _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[191 : 128];
+        _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[191 : 128];
+      end
+      3'b011 : begin
+        _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[255 : 192];
+        _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[255 : 192];
+      end
+      3'b100 : begin
+        _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[319 : 256];
+        _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[319 : 256];
+      end
+      3'b101 : begin
+        _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[383 : 320];
+        _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[383 : 320];
+      end
+      3'b110 : begin
+        _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[447 : 384];
+        _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[447 : 384];
+      end
+      default : begin
+        _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[511 : 448];
+        _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[511 : 448];
+      end
+    endcase
+  end
+
+  always @(*) begin
+    case(evict_id_d1)
+      2'b00 : _zz_cpu_rsp_valid_1 = sram_banks_valid_0;
+      2'b01 : _zz_cpu_rsp_valid_1 = sram_banks_valid_1;
+      2'b10 : _zz_cpu_rsp_valid_1 = sram_banks_valid_2;
+      default : _zz_cpu_rsp_valid_1 = sram_banks_valid_3;
     endcase
   end
 
@@ -12088,7 +12100,7 @@ module DCache (
   assign is_write = (cpu_cmd_fire_2 && cpu_cmd_payload_wen);
   always @(*) begin
     flush_cnt_willIncrement = 1'b0;
-    if(!when_DCache_l145) begin
+    if(!when_DCache_l147) begin
       if(flush_busy) begin
         flush_cnt_willIncrement = 1'b1;
       end
@@ -12097,7 +12109,7 @@ module DCache (
 
   always @(*) begin
     flush_cnt_willClear = 1'b0;
-    if(when_DCache_l145) begin
+    if(when_DCache_l147) begin
       flush_cnt_willClear = 1'b1;
     end
   end
@@ -12116,16 +12128,16 @@ module DCache (
   assign cpu_set = cpu_cmd_payload_addr[12 : 6];
   assign cpu_bank_addr = cpu_cmd_payload_addr[12 : 6];
   assign cpu_bank_index = cpu_cmd_payload_addr[5 : 3];
-  assign when_DCache_l95 = (is_miss || is_write);
+  assign cpu_cmd_fire_3 = (cpu_cmd_valid && cpu_cmd_ready);
   assign cpu_set_d1 = cpu_addr_d1[12 : 6];
   assign cpu_tag_d1 = cpu_addr_d1[63 : 13];
   assign cpu_bank_addr_d1 = cpu_addr_d1[12 : 6];
   assign cpu_bank_index_d1 = cpu_addr_d1[5 : 3];
   always @(*) begin
     next_level_data_cnt_willIncrement = 1'b0;
-    if(!when_DCache_l127) begin
+    if(!when_DCache_l129) begin
       if(!next_level_rdone) begin
-        if(when_DCache_l133) begin
+        if(when_DCache_l135) begin
           next_level_data_cnt_willIncrement = 1'b1;
         end
       end
@@ -12134,7 +12146,7 @@ module DCache (
 
   always @(*) begin
     next_level_data_cnt_willClear = 1'b0;
-    if(when_DCache_l127) begin
+    if(when_DCache_l129) begin
       next_level_data_cnt_willClear = 1'b1;
     end else begin
       if(next_level_rdone) begin
@@ -12157,11 +12169,11 @@ module DCache (
   assign next_level_wdata_tmp = {192'h0,cpu_wdata_d1};
   assign next_level_wstrb = (next_level_wstrb_tmp <<< _zz_next_level_wstrb);
   assign next_level_wdata = (next_level_wdata_tmp <<< _zz_next_level_wdata);
-  assign when_DCache_l120 = (is_miss || is_write);
+  assign when_DCache_l122 = (is_miss || is_write);
   assign next_level_cmd_fire = (next_level_cmd_valid && next_level_cmd_ready);
-  assign when_DCache_l127 = (is_miss && (! is_write));
-  assign when_DCache_l133 = (next_level_rsp_valid && next_level_rsp_payload_rvalid);
-  assign when_DCache_l145 = (flush_busy && (flush_cnt_value == 7'h7f));
+  assign when_DCache_l129 = (is_miss && (! is_write));
+  assign when_DCache_l135 = (next_level_rsp_valid && next_level_rsp_payload_rvalid);
+  assign when_DCache_l147 = (flush_busy && (flush_cnt_value == 7'h7f));
   assign _zz_hit_id = (cache_hit_1 || cache_hit_3);
   assign _zz_hit_id_1 = (cache_hit_2 || cache_hit_3);
   assign hit_id = {_zz_hit_id_1,_zz_hit_id};
@@ -12438,15 +12450,15 @@ module DCache (
   assign cache_victim_0 = (cache_invld_d1_0 && cache_lru_d1_0);
   assign sram_banks_data_0 = sram_0_ports_rsp_payload_data;
   assign sram_banks_valid_0 = sram_0_ports_rsp_valid;
-  assign when_DCache_l173 = (is_hit && (2'b00 == hit_id));
+  assign when_DCache_l175 = (is_hit && (2'b00 == hit_id));
   always @(*) begin
-    if(when_DCache_l173) begin
+    if(when_DCache_l175) begin
       sram_0_ports_cmd_payload_addr = cpu_bank_addr;
     end else begin
-      if(when_DCache_l180) begin
+      if(when_DCache_l182) begin
         sram_0_ports_cmd_payload_addr = cpu_bank_addr_d1;
       end else begin
-        if(when_DCache_l187) begin
+        if(when_DCache_l189) begin
           sram_0_ports_cmd_payload_addr = next_level_bank_addr;
         end else begin
           sram_0_ports_cmd_payload_addr = 7'h0;
@@ -12456,13 +12468,13 @@ module DCache (
   end
 
   always @(*) begin
-    if(when_DCache_l173) begin
+    if(when_DCache_l175) begin
       sram_0_ports_cmd_valid = 1'b1;
     end else begin
-      if(when_DCache_l180) begin
+      if(when_DCache_l182) begin
         sram_0_ports_cmd_valid = 1'b1;
       end else begin
-        if(when_DCache_l187) begin
+        if(when_DCache_l189) begin
           sram_0_ports_cmd_valid = 1'b1;
         end else begin
           sram_0_ports_cmd_valid = 1'b0;
@@ -12472,13 +12484,13 @@ module DCache (
   end
 
   always @(*) begin
-    if(when_DCache_l173) begin
+    if(when_DCache_l175) begin
       sram_0_ports_cmd_payload_wen = ({7'h0,cpu_cmd_payload_wen} <<< cpu_bank_index);
     end else begin
-      if(when_DCache_l180) begin
+      if(when_DCache_l182) begin
         sram_0_ports_cmd_payload_wen = 8'h0;
       end else begin
-        if(when_DCache_l187) begin
+        if(when_DCache_l189) begin
           sram_0_ports_cmd_payload_wen = (_zz_sram_0_ports_cmd_payload_wen <<< _zz_sram_0_ports_cmd_payload_wen_1);
         end else begin
           sram_0_ports_cmd_payload_wen = 8'h0;
@@ -12488,13 +12500,13 @@ module DCache (
   end
 
   always @(*) begin
-    if(when_DCache_l173) begin
+    if(when_DCache_l175) begin
       sram_0_ports_cmd_payload_wdata = ({448'h0,cpu_cmd_payload_wdata} <<< _zz_sram_0_ports_cmd_payload_wdata);
     end else begin
-      if(when_DCache_l180) begin
+      if(when_DCache_l182) begin
         sram_0_ports_cmd_payload_wdata = ({448'h0,cpu_wdata_d1} <<< _zz_sram_0_ports_cmd_payload_wdata_1);
       end else begin
-        if(when_DCache_l187) begin
+        if(when_DCache_l189) begin
           sram_0_ports_cmd_payload_wdata = ({256'h0,next_level_rsp_payload_data} <<< _zz_sram_0_ports_cmd_payload_wdata_2);
         end else begin
           sram_0_ports_cmd_payload_wdata = 512'h0;
@@ -12504,13 +12516,13 @@ module DCache (
   end
 
   always @(*) begin
-    if(when_DCache_l173) begin
+    if(when_DCache_l175) begin
       sram_0_ports_cmd_payload_wstrb = ({56'h0,cpu_cmd_payload_wstrb} <<< _zz_sram_0_ports_cmd_payload_wstrb);
     end else begin
-      if(when_DCache_l180) begin
+      if(when_DCache_l182) begin
         sram_0_ports_cmd_payload_wstrb = ({56'h0,cpu_wstrb_d1} <<< _zz_sram_0_ports_cmd_payload_wstrb_2);
       end else begin
-        if(when_DCache_l187) begin
+        if(when_DCache_l189) begin
           sram_0_ports_cmd_payload_wstrb = ({32'h0,32'hffffffff} <<< _zz_sram_0_ports_cmd_payload_wstrb_4);
         end else begin
           sram_0_ports_cmd_payload_wstrb = 64'h0;
@@ -12521,8 +12533,8 @@ module DCache (
 
   assign _zz_1549 = zz__zz_sram_0_ports_cmd_payload_wen(1'b0);
   always @(*) _zz_sram_0_ports_cmd_payload_wen = _zz_1549;
-  assign when_DCache_l180 = ((next_level_rdone && (! is_write)) && (2'b00 == victim_id));
-  assign when_DCache_l187 = (next_level_rsp_valid && (2'b00 == victim_id));
+  assign when_DCache_l182 = ((next_level_rdone && (! is_write)) && (2'b00 == victim_id));
+  assign when_DCache_l189 = (next_level_rsp_valid && (2'b00 == victim_id));
   assign _zz_259 = ({127'd0,1'b1} <<< flush_cnt_value);
   assign _zz_260 = _zz_259[0];
   assign _zz_261 = _zz_259[1];
@@ -12652,12 +12664,12 @@ module DCache (
   assign _zz_385 = _zz_259[125];
   assign _zz_386 = _zz_259[126];
   assign _zz_387 = _zz_259[127];
-  assign when_DCache_l209 = (is_hit && mru_full);
-  assign when_DCache_l216 = (is_hit && cache_hit_0);
-  assign when_DCache_l219 = (next_level_rdone && (2'b00 == victim_id));
-  assign when_DCache_l224 = (next_level_rdone && (2'b00 == victim_id));
-  assign when_DCache_l229 = ((flush || is_miss) || is_write);
-  assign when_DCache_l232 = ((flush_done || next_level_rdone) || next_level_wdone);
+  assign when_DCache_l211 = (is_hit && mru_full);
+  assign when_DCache_l218 = (is_hit && cache_hit_0);
+  assign when_DCache_l221 = (next_level_rdone && (2'b00 == victim_id));
+  assign when_DCache_l226 = (next_level_rdone && (2'b00 == victim_id));
+  assign when_DCache_l231 = ((flush || is_miss) || is_write);
+  assign when_DCache_l234 = ((flush_done || next_level_rdone) || next_level_wdone);
   assign _zz_388 = ({127'd0,1'b1} <<< cpu_set);
   assign _zz_389 = _zz_388[0];
   assign _zz_390 = _zz_388[1];
@@ -12924,15 +12936,15 @@ module DCache (
   assign cache_victim_1 = (cache_invld_d1_1 && cache_lru_d1_1);
   assign sram_banks_data_1 = sram_1_ports_rsp_payload_data;
   assign sram_banks_valid_1 = sram_1_ports_rsp_valid;
-  assign when_DCache_l173_1 = (is_hit && (2'b01 == hit_id));
+  assign when_DCache_l175_1 = (is_hit && (2'b01 == hit_id));
   always @(*) begin
-    if(when_DCache_l173_1) begin
+    if(when_DCache_l175_1) begin
       sram_1_ports_cmd_payload_addr = cpu_bank_addr;
     end else begin
-      if(when_DCache_l180_1) begin
+      if(when_DCache_l182_1) begin
         sram_1_ports_cmd_payload_addr = cpu_bank_addr_d1;
       end else begin
-        if(when_DCache_l187_1) begin
+        if(when_DCache_l189_1) begin
           sram_1_ports_cmd_payload_addr = next_level_bank_addr;
         end else begin
           sram_1_ports_cmd_payload_addr = 7'h0;
@@ -12942,13 +12954,13 @@ module DCache (
   end
 
   always @(*) begin
-    if(when_DCache_l173_1) begin
+    if(when_DCache_l175_1) begin
       sram_1_ports_cmd_valid = 1'b1;
     end else begin
-      if(when_DCache_l180_1) begin
+      if(when_DCache_l182_1) begin
         sram_1_ports_cmd_valid = 1'b1;
       end else begin
-        if(when_DCache_l187_1) begin
+        if(when_DCache_l189_1) begin
           sram_1_ports_cmd_valid = 1'b1;
         end else begin
           sram_1_ports_cmd_valid = 1'b0;
@@ -12958,13 +12970,13 @@ module DCache (
   end
 
   always @(*) begin
-    if(when_DCache_l173_1) begin
+    if(when_DCache_l175_1) begin
       sram_1_ports_cmd_payload_wen = ({7'h0,cpu_cmd_payload_wen} <<< cpu_bank_index);
     end else begin
-      if(when_DCache_l180_1) begin
+      if(when_DCache_l182_1) begin
         sram_1_ports_cmd_payload_wen = 8'h0;
       end else begin
-        if(when_DCache_l187_1) begin
+        if(when_DCache_l189_1) begin
           sram_1_ports_cmd_payload_wen = (_zz_sram_1_ports_cmd_payload_wen <<< _zz_sram_1_ports_cmd_payload_wen_1);
         end else begin
           sram_1_ports_cmd_payload_wen = 8'h0;
@@ -12974,13 +12986,13 @@ module DCache (
   end
 
   always @(*) begin
-    if(when_DCache_l173_1) begin
+    if(when_DCache_l175_1) begin
       sram_1_ports_cmd_payload_wdata = ({448'h0,cpu_cmd_payload_wdata} <<< _zz_sram_1_ports_cmd_payload_wdata);
     end else begin
-      if(when_DCache_l180_1) begin
+      if(when_DCache_l182_1) begin
         sram_1_ports_cmd_payload_wdata = ({448'h0,cpu_wdata_d1} <<< _zz_sram_1_ports_cmd_payload_wdata_1);
       end else begin
-        if(when_DCache_l187_1) begin
+        if(when_DCache_l189_1) begin
           sram_1_ports_cmd_payload_wdata = ({256'h0,next_level_rsp_payload_data} <<< _zz_sram_1_ports_cmd_payload_wdata_2);
         end else begin
           sram_1_ports_cmd_payload_wdata = 512'h0;
@@ -12990,13 +13002,13 @@ module DCache (
   end
 
   always @(*) begin
-    if(when_DCache_l173_1) begin
+    if(when_DCache_l175_1) begin
       sram_1_ports_cmd_payload_wstrb = ({56'h0,cpu_cmd_payload_wstrb} <<< _zz_sram_1_ports_cmd_payload_wstrb);
     end else begin
-      if(when_DCache_l180_1) begin
+      if(when_DCache_l182_1) begin
         sram_1_ports_cmd_payload_wstrb = ({56'h0,cpu_wstrb_d1} <<< _zz_sram_1_ports_cmd_payload_wstrb_2);
       end else begin
-        if(when_DCache_l187_1) begin
+        if(when_DCache_l189_1) begin
           sram_1_ports_cmd_payload_wstrb = ({32'h0,32'hffffffff} <<< _zz_sram_1_ports_cmd_payload_wstrb_4);
         end else begin
           sram_1_ports_cmd_payload_wstrb = 64'h0;
@@ -13007,8 +13019,8 @@ module DCache (
 
   assign _zz_1550 = zz__zz_sram_1_ports_cmd_payload_wen(1'b0);
   always @(*) _zz_sram_1_ports_cmd_payload_wen = _zz_1550;
-  assign when_DCache_l180_1 = ((next_level_rdone && (! is_write)) && (2'b01 == victim_id));
-  assign when_DCache_l187_1 = (next_level_rsp_valid && (2'b01 == victim_id));
+  assign when_DCache_l182_1 = ((next_level_rdone && (! is_write)) && (2'b01 == victim_id));
+  assign when_DCache_l189_1 = (next_level_rsp_valid && (2'b01 == victim_id));
   assign _zz_646 = ({127'd0,1'b1} <<< flush_cnt_value);
   assign _zz_647 = _zz_646[0];
   assign _zz_648 = _zz_646[1];
@@ -13138,12 +13150,12 @@ module DCache (
   assign _zz_772 = _zz_646[125];
   assign _zz_773 = _zz_646[126];
   assign _zz_774 = _zz_646[127];
-  assign when_DCache_l209_1 = (is_hit && mru_full);
-  assign when_DCache_l216_1 = (is_hit && cache_hit_1);
-  assign when_DCache_l219_1 = (next_level_rdone && (2'b01 == victim_id));
-  assign when_DCache_l224_1 = (next_level_rdone && (2'b01 == victim_id));
-  assign when_DCache_l229_1 = ((flush || is_miss) || is_write);
-  assign when_DCache_l232_1 = ((flush_done || next_level_rdone) || next_level_wdone);
+  assign when_DCache_l211_1 = (is_hit && mru_full);
+  assign when_DCache_l218_1 = (is_hit && cache_hit_1);
+  assign when_DCache_l221_1 = (next_level_rdone && (2'b01 == victim_id));
+  assign when_DCache_l226_1 = (next_level_rdone && (2'b01 == victim_id));
+  assign when_DCache_l231_1 = ((flush || is_miss) || is_write);
+  assign when_DCache_l234_1 = ((flush_done || next_level_rdone) || next_level_wdone);
   assign _zz_775 = ({127'd0,1'b1} <<< cpu_set);
   assign _zz_776 = _zz_775[0];
   assign _zz_777 = _zz_775[1];
@@ -13410,15 +13422,15 @@ module DCache (
   assign cache_victim_2 = (cache_invld_d1_2 && cache_lru_d1_2);
   assign sram_banks_data_2 = sram_2_ports_rsp_payload_data;
   assign sram_banks_valid_2 = sram_2_ports_rsp_valid;
-  assign when_DCache_l173_2 = (is_hit && (2'b10 == hit_id));
+  assign when_DCache_l175_2 = (is_hit && (2'b10 == hit_id));
   always @(*) begin
-    if(when_DCache_l173_2) begin
+    if(when_DCache_l175_2) begin
       sram_2_ports_cmd_payload_addr = cpu_bank_addr;
     end else begin
-      if(when_DCache_l180_2) begin
+      if(when_DCache_l182_2) begin
         sram_2_ports_cmd_payload_addr = cpu_bank_addr_d1;
       end else begin
-        if(when_DCache_l187_2) begin
+        if(when_DCache_l189_2) begin
           sram_2_ports_cmd_payload_addr = next_level_bank_addr;
         end else begin
           sram_2_ports_cmd_payload_addr = 7'h0;
@@ -13428,13 +13440,13 @@ module DCache (
   end
 
   always @(*) begin
-    if(when_DCache_l173_2) begin
+    if(when_DCache_l175_2) begin
       sram_2_ports_cmd_valid = 1'b1;
     end else begin
-      if(when_DCache_l180_2) begin
+      if(when_DCache_l182_2) begin
         sram_2_ports_cmd_valid = 1'b1;
       end else begin
-        if(when_DCache_l187_2) begin
+        if(when_DCache_l189_2) begin
           sram_2_ports_cmd_valid = 1'b1;
         end else begin
           sram_2_ports_cmd_valid = 1'b0;
@@ -13444,13 +13456,13 @@ module DCache (
   end
 
   always @(*) begin
-    if(when_DCache_l173_2) begin
+    if(when_DCache_l175_2) begin
       sram_2_ports_cmd_payload_wen = ({7'h0,cpu_cmd_payload_wen} <<< cpu_bank_index);
     end else begin
-      if(when_DCache_l180_2) begin
+      if(when_DCache_l182_2) begin
         sram_2_ports_cmd_payload_wen = 8'h0;
       end else begin
-        if(when_DCache_l187_2) begin
+        if(when_DCache_l189_2) begin
           sram_2_ports_cmd_payload_wen = (_zz_sram_2_ports_cmd_payload_wen <<< _zz_sram_2_ports_cmd_payload_wen_1);
         end else begin
           sram_2_ports_cmd_payload_wen = 8'h0;
@@ -13460,13 +13472,13 @@ module DCache (
   end
 
   always @(*) begin
-    if(when_DCache_l173_2) begin
+    if(when_DCache_l175_2) begin
       sram_2_ports_cmd_payload_wdata = ({448'h0,cpu_cmd_payload_wdata} <<< _zz_sram_2_ports_cmd_payload_wdata);
     end else begin
-      if(when_DCache_l180_2) begin
+      if(when_DCache_l182_2) begin
         sram_2_ports_cmd_payload_wdata = ({448'h0,cpu_wdata_d1} <<< _zz_sram_2_ports_cmd_payload_wdata_1);
       end else begin
-        if(when_DCache_l187_2) begin
+        if(when_DCache_l189_2) begin
           sram_2_ports_cmd_payload_wdata = ({256'h0,next_level_rsp_payload_data} <<< _zz_sram_2_ports_cmd_payload_wdata_2);
         end else begin
           sram_2_ports_cmd_payload_wdata = 512'h0;
@@ -13476,13 +13488,13 @@ module DCache (
   end
 
   always @(*) begin
-    if(when_DCache_l173_2) begin
+    if(when_DCache_l175_2) begin
       sram_2_ports_cmd_payload_wstrb = ({56'h0,cpu_cmd_payload_wstrb} <<< _zz_sram_2_ports_cmd_payload_wstrb);
     end else begin
-      if(when_DCache_l180_2) begin
+      if(when_DCache_l182_2) begin
         sram_2_ports_cmd_payload_wstrb = ({56'h0,cpu_wstrb_d1} <<< _zz_sram_2_ports_cmd_payload_wstrb_2);
       end else begin
-        if(when_DCache_l187_2) begin
+        if(when_DCache_l189_2) begin
           sram_2_ports_cmd_payload_wstrb = ({32'h0,32'hffffffff} <<< _zz_sram_2_ports_cmd_payload_wstrb_4);
         end else begin
           sram_2_ports_cmd_payload_wstrb = 64'h0;
@@ -13493,8 +13505,8 @@ module DCache (
 
   assign _zz_1551 = zz__zz_sram_2_ports_cmd_payload_wen(1'b0);
   always @(*) _zz_sram_2_ports_cmd_payload_wen = _zz_1551;
-  assign when_DCache_l180_2 = ((next_level_rdone && (! is_write)) && (2'b10 == victim_id));
-  assign when_DCache_l187_2 = (next_level_rsp_valid && (2'b10 == victim_id));
+  assign when_DCache_l182_2 = ((next_level_rdone && (! is_write)) && (2'b10 == victim_id));
+  assign when_DCache_l189_2 = (next_level_rsp_valid && (2'b10 == victim_id));
   assign _zz_1033 = ({127'd0,1'b1} <<< flush_cnt_value);
   assign _zz_1034 = _zz_1033[0];
   assign _zz_1035 = _zz_1033[1];
@@ -13624,12 +13636,12 @@ module DCache (
   assign _zz_1159 = _zz_1033[125];
   assign _zz_1160 = _zz_1033[126];
   assign _zz_1161 = _zz_1033[127];
-  assign when_DCache_l209_2 = (is_hit && mru_full);
-  assign when_DCache_l216_2 = (is_hit && cache_hit_2);
-  assign when_DCache_l219_2 = (next_level_rdone && (2'b10 == victim_id));
-  assign when_DCache_l224_2 = (next_level_rdone && (2'b10 == victim_id));
-  assign when_DCache_l229_2 = ((flush || is_miss) || is_write);
-  assign when_DCache_l232_2 = ((flush_done || next_level_rdone) || next_level_wdone);
+  assign when_DCache_l211_2 = (is_hit && mru_full);
+  assign when_DCache_l218_2 = (is_hit && cache_hit_2);
+  assign when_DCache_l221_2 = (next_level_rdone && (2'b10 == victim_id));
+  assign when_DCache_l226_2 = (next_level_rdone && (2'b10 == victim_id));
+  assign when_DCache_l231_2 = ((flush || is_miss) || is_write);
+  assign when_DCache_l234_2 = ((flush_done || next_level_rdone) || next_level_wdone);
   assign _zz_1162 = ({127'd0,1'b1} <<< cpu_set);
   assign _zz_1163 = _zz_1162[0];
   assign _zz_1164 = _zz_1162[1];
@@ -13896,15 +13908,15 @@ module DCache (
   assign cache_victim_3 = (cache_invld_d1_3 && cache_lru_d1_3);
   assign sram_banks_data_3 = sram_3_ports_rsp_payload_data;
   assign sram_banks_valid_3 = sram_3_ports_rsp_valid;
-  assign when_DCache_l173_3 = (is_hit && (2'b11 == hit_id));
+  assign when_DCache_l175_3 = (is_hit && (2'b11 == hit_id));
   always @(*) begin
-    if(when_DCache_l173_3) begin
+    if(when_DCache_l175_3) begin
       sram_3_ports_cmd_payload_addr = cpu_bank_addr;
     end else begin
-      if(when_DCache_l180_3) begin
+      if(when_DCache_l182_3) begin
         sram_3_ports_cmd_payload_addr = cpu_bank_addr_d1;
       end else begin
-        if(when_DCache_l187_3) begin
+        if(when_DCache_l189_3) begin
           sram_3_ports_cmd_payload_addr = next_level_bank_addr;
         end else begin
           sram_3_ports_cmd_payload_addr = 7'h0;
@@ -13914,13 +13926,13 @@ module DCache (
   end
 
   always @(*) begin
-    if(when_DCache_l173_3) begin
+    if(when_DCache_l175_3) begin
       sram_3_ports_cmd_valid = 1'b1;
     end else begin
-      if(when_DCache_l180_3) begin
+      if(when_DCache_l182_3) begin
         sram_3_ports_cmd_valid = 1'b1;
       end else begin
-        if(when_DCache_l187_3) begin
+        if(when_DCache_l189_3) begin
           sram_3_ports_cmd_valid = 1'b1;
         end else begin
           sram_3_ports_cmd_valid = 1'b0;
@@ -13930,13 +13942,13 @@ module DCache (
   end
 
   always @(*) begin
-    if(when_DCache_l173_3) begin
+    if(when_DCache_l175_3) begin
       sram_3_ports_cmd_payload_wen = ({7'h0,cpu_cmd_payload_wen} <<< cpu_bank_index);
     end else begin
-      if(when_DCache_l180_3) begin
+      if(when_DCache_l182_3) begin
         sram_3_ports_cmd_payload_wen = 8'h0;
       end else begin
-        if(when_DCache_l187_3) begin
+        if(when_DCache_l189_3) begin
           sram_3_ports_cmd_payload_wen = (_zz_sram_3_ports_cmd_payload_wen <<< _zz_sram_3_ports_cmd_payload_wen_1);
         end else begin
           sram_3_ports_cmd_payload_wen = 8'h0;
@@ -13946,13 +13958,13 @@ module DCache (
   end
 
   always @(*) begin
-    if(when_DCache_l173_3) begin
+    if(when_DCache_l175_3) begin
       sram_3_ports_cmd_payload_wdata = ({448'h0,cpu_cmd_payload_wdata} <<< _zz_sram_3_ports_cmd_payload_wdata);
     end else begin
-      if(when_DCache_l180_3) begin
+      if(when_DCache_l182_3) begin
         sram_3_ports_cmd_payload_wdata = ({448'h0,cpu_wdata_d1} <<< _zz_sram_3_ports_cmd_payload_wdata_1);
       end else begin
-        if(when_DCache_l187_3) begin
+        if(when_DCache_l189_3) begin
           sram_3_ports_cmd_payload_wdata = ({256'h0,next_level_rsp_payload_data} <<< _zz_sram_3_ports_cmd_payload_wdata_2);
         end else begin
           sram_3_ports_cmd_payload_wdata = 512'h0;
@@ -13962,13 +13974,13 @@ module DCache (
   end
 
   always @(*) begin
-    if(when_DCache_l173_3) begin
+    if(when_DCache_l175_3) begin
       sram_3_ports_cmd_payload_wstrb = ({56'h0,cpu_cmd_payload_wstrb} <<< _zz_sram_3_ports_cmd_payload_wstrb);
     end else begin
-      if(when_DCache_l180_3) begin
+      if(when_DCache_l182_3) begin
         sram_3_ports_cmd_payload_wstrb = ({56'h0,cpu_wstrb_d1} <<< _zz_sram_3_ports_cmd_payload_wstrb_2);
       end else begin
-        if(when_DCache_l187_3) begin
+        if(when_DCache_l189_3) begin
           sram_3_ports_cmd_payload_wstrb = ({32'h0,32'hffffffff} <<< _zz_sram_3_ports_cmd_payload_wstrb_4);
         end else begin
           sram_3_ports_cmd_payload_wstrb = 64'h0;
@@ -13979,8 +13991,8 @@ module DCache (
 
   assign _zz_1552 = zz__zz_sram_3_ports_cmd_payload_wen(1'b0);
   always @(*) _zz_sram_3_ports_cmd_payload_wen = _zz_1552;
-  assign when_DCache_l180_3 = ((next_level_rdone && (! is_write)) && (2'b11 == victim_id));
-  assign when_DCache_l187_3 = (next_level_rsp_valid && (2'b11 == victim_id));
+  assign when_DCache_l182_3 = ((next_level_rdone && (! is_write)) && (2'b11 == victim_id));
+  assign when_DCache_l189_3 = (next_level_rsp_valid && (2'b11 == victim_id));
   assign _zz_1420 = ({127'd0,1'b1} <<< flush_cnt_value);
   assign _zz_1421 = _zz_1420[0];
   assign _zz_1422 = _zz_1420[1];
@@ -14110,18 +14122,18 @@ module DCache (
   assign _zz_1546 = _zz_1420[125];
   assign _zz_1547 = _zz_1420[126];
   assign _zz_1548 = _zz_1420[127];
-  assign when_DCache_l209_3 = (is_hit && mru_full);
-  assign when_DCache_l216_3 = (is_hit && cache_hit_3);
-  assign when_DCache_l219_3 = (next_level_rdone && (2'b11 == victim_id));
-  assign when_DCache_l224_3 = (next_level_rdone && (2'b11 == victim_id));
-  assign when_DCache_l229_3 = ((flush || is_miss) || is_write);
-  assign when_DCache_l232_3 = ((flush_done || next_level_rdone) || next_level_wdone);
+  assign when_DCache_l211_3 = (is_hit && mru_full);
+  assign when_DCache_l218_3 = (is_hit && cache_hit_3);
+  assign when_DCache_l221_3 = (next_level_rdone && (2'b11 == victim_id));
+  assign when_DCache_l226_3 = (next_level_rdone && (2'b11 == victim_id));
+  assign when_DCache_l231_3 = ((flush || is_miss) || is_write);
+  assign when_DCache_l234_3 = ((flush_done || next_level_rdone) || next_level_wdone);
   assign _zz_cpu_rsp_payload_data = _zz__zz_cpu_rsp_payload_data;
   assign _zz_cpu_rsp_payload_data_1 = _zz__zz_cpu_rsp_payload_data_1;
   assign cpu_rsp_payload_data = (is_hit_d1 ? _zz_cpu_rsp_payload_data_2 : _zz_cpu_rsp_payload_data_3);
   assign cpu_rsp_valid = (is_hit_d1 ? _zz_cpu_rsp_valid : _zz_cpu_rsp_valid_1);
   assign cpu_cmd_ready = cpu_cmd_ready_1;
-  assign next_level_cmd_payload_addr = {cpu_addr_d1[63 : 5],5'h0};
+  assign next_level_cmd_payload_addr = {cpu_addr_d1[63 : 6],6'h0};
   assign next_level_cmd_payload_len = (cpu_wen_d1 ? 4'b0000 : 4'b0001);
   assign next_level_cmd_payload_size = 3'b101;
   assign next_level_cmd_payload_wen = cpu_wen_d1;
@@ -15677,7 +15689,7 @@ module DCache (
       next_level_data_cnt_value <= 1'b0;
     end else begin
       flush_cnt_value <= flush_cnt_valueNext;
-      if(when_DCache_l95) begin
+      if(cpu_cmd_fire_3) begin
         cpu_addr_d1 <= cpu_cmd_payload_addr;
       end
       if(is_write) begin
@@ -15690,7 +15702,7 @@ module DCache (
         cpu_wdata_d1 <= cpu_cmd_payload_wdata;
       end
       next_level_data_cnt_value <= next_level_data_cnt_valueNext;
-      if(when_DCache_l120) begin
+      if(when_DCache_l122) begin
         next_level_cmd_valid_1 <= 1'b1;
       end else begin
         if(next_level_cmd_fire) begin
@@ -16474,7 +16486,7 @@ module DCache (
           ways_0_metas_127_vld <= 1'b0;
         end
       end else begin
-        if(when_DCache_l209) begin
+        if(when_DCache_l211) begin
           if(cache_hit_0) begin
             if(_zz_2) begin
               ways_0_metas_0_mru <= 1'b1;
@@ -17247,7 +17259,7 @@ module DCache (
             end
           end
         end else begin
-          if(when_DCache_l216) begin
+          if(when_DCache_l218) begin
             if(_zz_2) begin
               ways_0_metas_0_mru <= 1'b1;
             end
@@ -17633,7 +17645,7 @@ module DCache (
               ways_0_metas_127_mru <= 1'b1;
             end
           end else begin
-            if(when_DCache_l219) begin
+            if(when_DCache_l221) begin
               if(_zz_131) begin
                 ways_0_metas_0_vld <= 1'b1;
               end
@@ -18022,7 +18034,7 @@ module DCache (
           end
         end
       end
-      if(when_DCache_l224) begin
+      if(when_DCache_l226) begin
         if(_zz_131) begin
           ways_0_metas_0_tag <= cpu_tag_d1;
         end
@@ -18408,10 +18420,10 @@ module DCache (
           ways_0_metas_127_tag <= cpu_tag_d1;
         end
       end
-      if(when_DCache_l229) begin
+      if(when_DCache_l231) begin
         cpu_cmd_ready_1 <= 1'b0;
       end else begin
-        if(when_DCache_l232) begin
+        if(when_DCache_l234) begin
           cpu_cmd_ready_1 <= 1'b1;
         end
       end
@@ -19185,7 +19197,7 @@ module DCache (
           ways_1_metas_127_vld <= 1'b0;
         end
       end else begin
-        if(when_DCache_l209_1) begin
+        if(when_DCache_l211_1) begin
           if(cache_hit_1) begin
             if(_zz_389) begin
               ways_1_metas_0_mru <= 1'b1;
@@ -19958,7 +19970,7 @@ module DCache (
             end
           end
         end else begin
-          if(when_DCache_l216_1) begin
+          if(when_DCache_l218_1) begin
             if(_zz_389) begin
               ways_1_metas_0_mru <= 1'b1;
             end
@@ -20344,7 +20356,7 @@ module DCache (
               ways_1_metas_127_mru <= 1'b1;
             end
           end else begin
-            if(when_DCache_l219_1) begin
+            if(when_DCache_l221_1) begin
               if(_zz_518) begin
                 ways_1_metas_0_vld <= 1'b1;
               end
@@ -20733,7 +20745,7 @@ module DCache (
           end
         end
       end
-      if(when_DCache_l224_1) begin
+      if(when_DCache_l226_1) begin
         if(_zz_518) begin
           ways_1_metas_0_tag <= cpu_tag_d1;
         end
@@ -21119,10 +21131,10 @@ module DCache (
           ways_1_metas_127_tag <= cpu_tag_d1;
         end
       end
-      if(when_DCache_l229_1) begin
+      if(when_DCache_l231_1) begin
         cpu_cmd_ready_1 <= 1'b0;
       end else begin
-        if(when_DCache_l232_1) begin
+        if(when_DCache_l234_1) begin
           cpu_cmd_ready_1 <= 1'b1;
         end
       end
@@ -21896,7 +21908,7 @@ module DCache (
           ways_2_metas_127_vld <= 1'b0;
         end
       end else begin
-        if(when_DCache_l209_2) begin
+        if(when_DCache_l211_2) begin
           if(cache_hit_2) begin
             if(_zz_776) begin
               ways_2_metas_0_mru <= 1'b1;
@@ -22669,7 +22681,7 @@ module DCache (
             end
           end
         end else begin
-          if(when_DCache_l216_2) begin
+          if(when_DCache_l218_2) begin
             if(_zz_776) begin
               ways_2_metas_0_mru <= 1'b1;
             end
@@ -23055,7 +23067,7 @@ module DCache (
               ways_2_metas_127_mru <= 1'b1;
             end
           end else begin
-            if(when_DCache_l219_2) begin
+            if(when_DCache_l221_2) begin
               if(_zz_905) begin
                 ways_2_metas_0_vld <= 1'b1;
               end
@@ -23444,7 +23456,7 @@ module DCache (
           end
         end
       end
-      if(when_DCache_l224_2) begin
+      if(when_DCache_l226_2) begin
         if(_zz_905) begin
           ways_2_metas_0_tag <= cpu_tag_d1;
         end
@@ -23830,10 +23842,10 @@ module DCache (
           ways_2_metas_127_tag <= cpu_tag_d1;
         end
       end
-      if(when_DCache_l229_2) begin
+      if(when_DCache_l231_2) begin
         cpu_cmd_ready_1 <= 1'b0;
       end else begin
-        if(when_DCache_l232_2) begin
+        if(when_DCache_l234_2) begin
           cpu_cmd_ready_1 <= 1'b1;
         end
       end
@@ -24607,7 +24619,7 @@ module DCache (
           ways_3_metas_127_vld <= 1'b0;
         end
       end else begin
-        if(when_DCache_l209_3) begin
+        if(when_DCache_l211_3) begin
           if(cache_hit_3) begin
             if(_zz_1163) begin
               ways_3_metas_0_mru <= 1'b1;
@@ -25380,7 +25392,7 @@ module DCache (
             end
           end
         end else begin
-          if(when_DCache_l216_3) begin
+          if(when_DCache_l218_3) begin
             if(_zz_1163) begin
               ways_3_metas_0_mru <= 1'b1;
             end
@@ -25766,7 +25778,7 @@ module DCache (
               ways_3_metas_127_mru <= 1'b1;
             end
           end else begin
-            if(when_DCache_l219_3) begin
+            if(when_DCache_l221_3) begin
               if(_zz_1292) begin
                 ways_3_metas_0_vld <= 1'b1;
               end
@@ -26155,7 +26167,7 @@ module DCache (
           end
         end
       end
-      if(when_DCache_l224_3) begin
+      if(when_DCache_l226_3) begin
         if(_zz_1292) begin
           ways_3_metas_0_tag <= cpu_tag_d1;
         end
@@ -26541,10 +26553,10 @@ module DCache (
           ways_3_metas_127_tag <= cpu_tag_d1;
         end
       end
-      if(when_DCache_l229_3) begin
+      if(when_DCache_l231_3) begin
         cpu_cmd_ready_1 <= 1'b0;
       end else begin
-        if(when_DCache_l232_3) begin
+        if(when_DCache_l234_3) begin
           cpu_cmd_ready_1 <= 1'b1;
         end
       end
@@ -26552,6 +26564,8 @@ module DCache (
   end
 
   always @(posedge clk) begin
+    hit_id_d1 <= hit_id;
+    evict_id_d1 <= evict_id;
     is_hit_d1 <= is_hit;
     next_level_rdone <= ((next_level_rsp_valid && next_level_rsp_payload_rvalid) && (next_level_data_cnt_value == 1'b1));
     next_level_wdone <= (next_level_rsp_valid && (next_level_rsp_payload_bresp == 2'b00));
@@ -31142,7 +31156,9 @@ module ICache (
   wire                cache_lru_d1_2;
   wire                cache_lru_d1_3;
   wire       [1:0]    hit_id;
+  reg        [1:0]    hit_id_d1;
   wire       [1:0]    evict_id;
+  reg        [1:0]    evict_id_d1;
   wire       [1:0]    invld_id;
   wire       [1:0]    victim_id;
   wire                mru_full;
@@ -31164,6 +31180,7 @@ module ICache (
   wire       [6:0]    cpu_set;
   wire       [6:0]    cpu_bank_addr;
   wire       [3:0]    cpu_bank_index;
+  wire                cpu_cmd_fire_2;
   reg        [63:0]   cpu_addr_d1;
   wire       [6:0]    cpu_set_d1;
   wire       [50:0]   cpu_tag_d1;
@@ -31188,7 +31205,7 @@ module ICache (
   wire       [6:0]    next_level_bank_addr;
   reg                 next_level_done;
   wire                next_level_cmd_fire;
-  wire                when_ICache_l135;
+  wire                when_ICache_l137;
   wire                _zz_hit_id;
   wire                _zz_hit_id_1;
   wire                _zz_invld_id;
@@ -31453,10 +31470,10 @@ module ICache (
   wire                _zz_256;
   wire                _zz_257;
   wire                _zz_258;
-  wire                when_ICache_l163;
+  wire                when_ICache_l165;
   reg        [15:0]   _zz_sram_0_ports_cmd_payload_wen;
-  wire                when_ICache_l170;
-  wire                when_ICache_l177;
+  wire                when_ICache_l172;
+  wire                when_ICache_l179;
   wire       [127:0]  _zz_259;
   wire                _zz_260;
   wire                _zz_261;
@@ -31586,12 +31603,12 @@ module ICache (
   wire                _zz_385;
   wire                _zz_386;
   wire                _zz_387;
-  wire                when_ICache_l199;
-  wire                when_ICache_l206;
-  wire                when_ICache_l209;
-  wire                when_ICache_l214;
-  wire                when_ICache_l219;
-  wire                when_ICache_l222;
+  wire                when_ICache_l201;
+  wire                when_ICache_l208;
+  wire                when_ICache_l211;
+  wire                when_ICache_l216;
+  wire                when_ICache_l221;
+  wire                when_ICache_l224;
   wire       [127:0]  _zz_388;
   wire                _zz_389;
   wire                _zz_390;
@@ -31850,10 +31867,10 @@ module ICache (
   wire                _zz_643;
   wire                _zz_644;
   wire                _zz_645;
-  wire                when_ICache_l163_1;
+  wire                when_ICache_l165_1;
   reg        [15:0]   _zz_sram_1_ports_cmd_payload_wen;
-  wire                when_ICache_l170_1;
-  wire                when_ICache_l177_1;
+  wire                when_ICache_l172_1;
+  wire                when_ICache_l179_1;
   wire       [127:0]  _zz_646;
   wire                _zz_647;
   wire                _zz_648;
@@ -31983,12 +32000,12 @@ module ICache (
   wire                _zz_772;
   wire                _zz_773;
   wire                _zz_774;
-  wire                when_ICache_l199_1;
-  wire                when_ICache_l206_1;
-  wire                when_ICache_l209_1;
-  wire                when_ICache_l214_1;
-  wire                when_ICache_l219_1;
-  wire                when_ICache_l222_1;
+  wire                when_ICache_l201_1;
+  wire                when_ICache_l208_1;
+  wire                when_ICache_l211_1;
+  wire                when_ICache_l216_1;
+  wire                when_ICache_l221_1;
+  wire                when_ICache_l224_1;
   wire       [127:0]  _zz_775;
   wire                _zz_776;
   wire                _zz_777;
@@ -32247,10 +32264,10 @@ module ICache (
   wire                _zz_1030;
   wire                _zz_1031;
   wire                _zz_1032;
-  wire                when_ICache_l163_2;
+  wire                when_ICache_l165_2;
   reg        [15:0]   _zz_sram_2_ports_cmd_payload_wen;
-  wire                when_ICache_l170_2;
-  wire                when_ICache_l177_2;
+  wire                when_ICache_l172_2;
+  wire                when_ICache_l179_2;
   wire       [127:0]  _zz_1033;
   wire                _zz_1034;
   wire                _zz_1035;
@@ -32380,12 +32397,12 @@ module ICache (
   wire                _zz_1159;
   wire                _zz_1160;
   wire                _zz_1161;
-  wire                when_ICache_l199_2;
-  wire                when_ICache_l206_2;
-  wire                when_ICache_l209_2;
-  wire                when_ICache_l214_2;
-  wire                when_ICache_l219_2;
-  wire                when_ICache_l222_2;
+  wire                when_ICache_l201_2;
+  wire                when_ICache_l208_2;
+  wire                when_ICache_l211_2;
+  wire                when_ICache_l216_2;
+  wire                when_ICache_l221_2;
+  wire                when_ICache_l224_2;
   wire       [127:0]  _zz_1162;
   wire                _zz_1163;
   wire                _zz_1164;
@@ -32644,10 +32661,10 @@ module ICache (
   wire                _zz_1417;
   wire                _zz_1418;
   wire                _zz_1419;
-  wire                when_ICache_l163_3;
+  wire                when_ICache_l165_3;
   reg        [15:0]   _zz_sram_3_ports_cmd_payload_wen;
-  wire                when_ICache_l170_3;
-  wire                when_ICache_l177_3;
+  wire                when_ICache_l172_3;
+  wire                when_ICache_l179_3;
   wire       [127:0]  _zz_1420;
   wire                _zz_1421;
   wire                _zz_1422;
@@ -32777,12 +32794,12 @@ module ICache (
   wire                _zz_1546;
   wire                _zz_1547;
   wire                _zz_1548;
-  wire                when_ICache_l199_3;
-  wire                when_ICache_l206_3;
-  wire                when_ICache_l209_3;
-  wire                when_ICache_l214_3;
-  wire                when_ICache_l219_3;
-  wire                when_ICache_l222_3;
+  wire                when_ICache_l201_3;
+  wire                when_ICache_l208_3;
+  wire                when_ICache_l211_3;
+  wire                when_ICache_l216_3;
+  wire                when_ICache_l221_3;
+  wire                when_ICache_l224_3;
   wire       [511:0]  _zz_cpu_rsp_payload_data;
   wire       [511:0]  _zz_cpu_rsp_payload_data_1;
   function [15:0] zz__zz_sram_0_ports_cmd_payload_wen(input dummy);
@@ -35943,7 +35960,7 @@ module ICache (
   end
 
   always @(*) begin
-    case(hit_id)
+    case(hit_id_d1)
       2'b00 : begin
         _zz__zz_cpu_rsp_payload_data = sram_banks_data_0;
         _zz_cpu_rsp_valid = sram_banks_valid_0;
@@ -35965,64 +35982,88 @@ module ICache (
 
   always @(*) begin
     case(evict_id)
-      2'b00 : begin
-        _zz__zz_cpu_rsp_payload_data_1 = sram_banks_data_0;
-        _zz_cpu_rsp_valid_1 = sram_banks_valid_0;
-      end
-      2'b01 : begin
-        _zz__zz_cpu_rsp_payload_data_1 = sram_banks_data_1;
-        _zz_cpu_rsp_valid_1 = sram_banks_valid_1;
-      end
-      2'b10 : begin
-        _zz__zz_cpu_rsp_payload_data_1 = sram_banks_data_2;
-        _zz_cpu_rsp_valid_1 = sram_banks_valid_2;
-      end
-      default : begin
-        _zz__zz_cpu_rsp_payload_data_1 = sram_banks_data_3;
-        _zz_cpu_rsp_valid_1 = sram_banks_valid_3;
-      end
-    endcase
-  end
-
-  always @(*) begin
-    case(cpu_bank_index)
-      4'b0000 : _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[31 : 0];
-      4'b0001 : _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[63 : 32];
-      4'b0010 : _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[95 : 64];
-      4'b0011 : _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[127 : 96];
-      4'b0100 : _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[159 : 128];
-      4'b0101 : _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[191 : 160];
-      4'b0110 : _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[223 : 192];
-      4'b0111 : _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[255 : 224];
-      4'b1000 : _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[287 : 256];
-      4'b1001 : _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[319 : 288];
-      4'b1010 : _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[351 : 320];
-      4'b1011 : _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[383 : 352];
-      4'b1100 : _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[415 : 384];
-      4'b1101 : _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[447 : 416];
-      4'b1110 : _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[479 : 448];
-      default : _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[511 : 480];
+      2'b00 : _zz__zz_cpu_rsp_payload_data_1 = sram_banks_data_0;
+      2'b01 : _zz__zz_cpu_rsp_payload_data_1 = sram_banks_data_1;
+      2'b10 : _zz__zz_cpu_rsp_payload_data_1 = sram_banks_data_2;
+      default : _zz__zz_cpu_rsp_payload_data_1 = sram_banks_data_3;
     endcase
   end
 
   always @(*) begin
     case(cpu_bank_index_d1)
-      4'b0000 : _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[31 : 0];
-      4'b0001 : _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[63 : 32];
-      4'b0010 : _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[95 : 64];
-      4'b0011 : _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[127 : 96];
-      4'b0100 : _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[159 : 128];
-      4'b0101 : _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[191 : 160];
-      4'b0110 : _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[223 : 192];
-      4'b0111 : _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[255 : 224];
-      4'b1000 : _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[287 : 256];
-      4'b1001 : _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[319 : 288];
-      4'b1010 : _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[351 : 320];
-      4'b1011 : _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[383 : 352];
-      4'b1100 : _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[415 : 384];
-      4'b1101 : _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[447 : 416];
-      4'b1110 : _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[479 : 448];
-      default : _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[511 : 480];
+      4'b0000 : begin
+        _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[31 : 0];
+        _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[31 : 0];
+      end
+      4'b0001 : begin
+        _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[63 : 32];
+        _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[63 : 32];
+      end
+      4'b0010 : begin
+        _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[95 : 64];
+        _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[95 : 64];
+      end
+      4'b0011 : begin
+        _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[127 : 96];
+        _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[127 : 96];
+      end
+      4'b0100 : begin
+        _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[159 : 128];
+        _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[159 : 128];
+      end
+      4'b0101 : begin
+        _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[191 : 160];
+        _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[191 : 160];
+      end
+      4'b0110 : begin
+        _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[223 : 192];
+        _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[223 : 192];
+      end
+      4'b0111 : begin
+        _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[255 : 224];
+        _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[255 : 224];
+      end
+      4'b1000 : begin
+        _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[287 : 256];
+        _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[287 : 256];
+      end
+      4'b1001 : begin
+        _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[319 : 288];
+        _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[319 : 288];
+      end
+      4'b1010 : begin
+        _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[351 : 320];
+        _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[351 : 320];
+      end
+      4'b1011 : begin
+        _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[383 : 352];
+        _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[383 : 352];
+      end
+      4'b1100 : begin
+        _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[415 : 384];
+        _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[415 : 384];
+      end
+      4'b1101 : begin
+        _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[447 : 416];
+        _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[447 : 416];
+      end
+      4'b1110 : begin
+        _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[479 : 448];
+        _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[479 : 448];
+      end
+      default : begin
+        _zz_cpu_rsp_payload_data_2 = _zz_cpu_rsp_payload_data[511 : 480];
+        _zz_cpu_rsp_payload_data_3 = _zz_cpu_rsp_payload_data_1[511 : 480];
+      end
+    endcase
+  end
+
+  always @(*) begin
+    case(evict_id_d1)
+      2'b00 : _zz_cpu_rsp_valid_1 = sram_banks_valid_0;
+      2'b01 : _zz_cpu_rsp_valid_1 = sram_banks_valid_1;
+      2'b10 : _zz_cpu_rsp_valid_1 = sram_banks_valid_2;
+      default : _zz_cpu_rsp_valid_1 = sram_banks_valid_3;
     endcase
   end
 
@@ -36034,7 +36075,7 @@ module ICache (
   assign is_diff = (! (|{cache_victim_3,{cache_victim_2,{cache_victim_1,cache_victim_0}}}));
   always @(*) begin
     flush_cnt_willIncrement = 1'b0;
-    if(!when_ICache_l135) begin
+    if(!when_ICache_l137) begin
       if(flush_busy) begin
         flush_cnt_willIncrement = 1'b1;
       end
@@ -36043,7 +36084,7 @@ module ICache (
 
   always @(*) begin
     flush_cnt_willClear = 1'b0;
-    if(when_ICache_l135) begin
+    if(when_ICache_l137) begin
       flush_cnt_willClear = 1'b1;
     end
   end
@@ -36062,6 +36103,7 @@ module ICache (
   assign cpu_set = cpu_cmd_payload_addr[12 : 6];
   assign cpu_bank_addr = cpu_cmd_payload_addr[12 : 6];
   assign cpu_bank_index = cpu_cmd_payload_addr[5 : 2];
+  assign cpu_cmd_fire_2 = (cpu_cmd_valid && cpu_cmd_ready);
   assign cpu_set_d1 = cpu_addr_d1[12 : 6];
   assign cpu_tag_d1 = cpu_addr_d1[63 : 13];
   assign cpu_bank_addr_d1 = cpu_addr_d1[12 : 6];
@@ -36099,7 +36141,7 @@ module ICache (
 
   assign next_level_bank_addr = cpu_addr_d1[12 : 6];
   assign next_level_cmd_fire = (next_level_cmd_valid && next_level_cmd_ready);
-  assign when_ICache_l135 = (flush_busy && (flush_cnt_value == 7'h7f));
+  assign when_ICache_l137 = (flush_busy && (flush_cnt_value == 7'h7f));
   assign _zz_hit_id = (cache_hit_1 || cache_hit_3);
   assign _zz_hit_id_1 = (cache_hit_2 || cache_hit_3);
   assign hit_id = {_zz_hit_id_1,_zz_hit_id};
@@ -36376,15 +36418,15 @@ module ICache (
   assign cache_victim_0 = (cache_invld_d1_0 && cache_lru_d1_0);
   assign sram_banks_data_0 = sram_0_ports_rsp_payload_data;
   assign sram_banks_valid_0 = sram_0_ports_rsp_valid;
-  assign when_ICache_l163 = (is_hit && (2'b00 == hit_id));
+  assign when_ICache_l165 = (is_hit && (2'b00 == hit_id));
   always @(*) begin
-    if(when_ICache_l163) begin
+    if(when_ICache_l165) begin
       sram_0_ports_cmd_payload_addr = cpu_bank_addr;
     end else begin
-      if(when_ICache_l170) begin
+      if(when_ICache_l172) begin
         sram_0_ports_cmd_payload_addr = cpu_bank_addr_d1;
       end else begin
-        if(when_ICache_l177) begin
+        if(when_ICache_l179) begin
           sram_0_ports_cmd_payload_addr = next_level_bank_addr;
         end else begin
           sram_0_ports_cmd_payload_addr = 7'h0;
@@ -36394,13 +36436,13 @@ module ICache (
   end
 
   always @(*) begin
-    if(when_ICache_l163) begin
+    if(when_ICache_l165) begin
       sram_0_ports_cmd_valid = 1'b1;
     end else begin
-      if(when_ICache_l170) begin
+      if(when_ICache_l172) begin
         sram_0_ports_cmd_valid = 1'b1;
       end else begin
-        if(when_ICache_l177) begin
+        if(when_ICache_l179) begin
           sram_0_ports_cmd_valid = 1'b1;
         end else begin
           sram_0_ports_cmd_valid = 1'b0;
@@ -36410,13 +36452,13 @@ module ICache (
   end
 
   always @(*) begin
-    if(when_ICache_l163) begin
+    if(when_ICache_l165) begin
       sram_0_ports_cmd_payload_wen = 16'h0;
     end else begin
-      if(when_ICache_l170) begin
+      if(when_ICache_l172) begin
         sram_0_ports_cmd_payload_wen = 16'h0;
       end else begin
-        if(when_ICache_l177) begin
+        if(when_ICache_l179) begin
           sram_0_ports_cmd_payload_wen = (_zz_sram_0_ports_cmd_payload_wen <<< _zz_sram_0_ports_cmd_payload_wen_1);
         end else begin
           sram_0_ports_cmd_payload_wen = 16'h0;
@@ -36426,13 +36468,13 @@ module ICache (
   end
 
   always @(*) begin
-    if(when_ICache_l163) begin
+    if(when_ICache_l165) begin
       sram_0_ports_cmd_payload_wdata = 512'h0;
     end else begin
-      if(when_ICache_l170) begin
+      if(when_ICache_l172) begin
         sram_0_ports_cmd_payload_wdata = 512'h0;
       end else begin
-        if(when_ICache_l177) begin
+        if(when_ICache_l179) begin
           sram_0_ports_cmd_payload_wdata = ({256'h0,next_level_rsp_payload_data} <<< _zz_sram_0_ports_cmd_payload_wdata);
         end else begin
           sram_0_ports_cmd_payload_wdata = 512'h0;
@@ -36442,13 +36484,13 @@ module ICache (
   end
 
   always @(*) begin
-    if(when_ICache_l163) begin
+    if(when_ICache_l165) begin
       sram_0_ports_cmd_payload_wstrb = 64'h0;
     end else begin
-      if(when_ICache_l170) begin
+      if(when_ICache_l172) begin
         sram_0_ports_cmd_payload_wstrb = 64'h0;
       end else begin
-        if(when_ICache_l177) begin
+        if(when_ICache_l179) begin
           sram_0_ports_cmd_payload_wstrb = ({32'h0,32'hffffffff} <<< _zz_sram_0_ports_cmd_payload_wstrb);
         end else begin
           sram_0_ports_cmd_payload_wstrb = 64'h0;
@@ -36459,8 +36501,8 @@ module ICache (
 
   assign _zz_1549 = zz__zz_sram_0_ports_cmd_payload_wen(1'b0);
   always @(*) _zz_sram_0_ports_cmd_payload_wen = _zz_1549;
-  assign when_ICache_l170 = (next_level_done && (2'b00 == evict_id));
-  assign when_ICache_l177 = (next_level_rsp_valid && (2'b00 == evict_id));
+  assign when_ICache_l172 = (next_level_done && (2'b00 == evict_id));
+  assign when_ICache_l179 = (next_level_rsp_valid && (2'b00 == evict_id));
   assign _zz_259 = ({127'd0,1'b1} <<< flush_cnt_value);
   assign _zz_260 = _zz_259[0];
   assign _zz_261 = _zz_259[1];
@@ -36590,12 +36632,12 @@ module ICache (
   assign _zz_385 = _zz_259[125];
   assign _zz_386 = _zz_259[126];
   assign _zz_387 = _zz_259[127];
-  assign when_ICache_l199 = (is_hit && mru_full);
-  assign when_ICache_l206 = (is_hit && cache_hit_0);
-  assign when_ICache_l209 = (next_level_done && (2'b00 == evict_id));
-  assign when_ICache_l214 = (next_level_done && (2'b00 == evict_id));
-  assign when_ICache_l219 = (flush || is_miss);
-  assign when_ICache_l222 = (flush_done || next_level_done);
+  assign when_ICache_l201 = (is_hit && mru_full);
+  assign when_ICache_l208 = (is_hit && cache_hit_0);
+  assign when_ICache_l211 = (next_level_done && (2'b00 == evict_id));
+  assign when_ICache_l216 = (next_level_done && (2'b00 == evict_id));
+  assign when_ICache_l221 = (flush || is_miss);
+  assign when_ICache_l224 = (flush_done || next_level_done);
   assign _zz_388 = ({127'd0,1'b1} <<< cpu_set);
   assign _zz_389 = _zz_388[0];
   assign _zz_390 = _zz_388[1];
@@ -36862,15 +36904,15 @@ module ICache (
   assign cache_victim_1 = (cache_invld_d1_1 && cache_lru_d1_1);
   assign sram_banks_data_1 = sram_1_ports_rsp_payload_data;
   assign sram_banks_valid_1 = sram_1_ports_rsp_valid;
-  assign when_ICache_l163_1 = (is_hit && (2'b01 == hit_id));
+  assign when_ICache_l165_1 = (is_hit && (2'b01 == hit_id));
   always @(*) begin
-    if(when_ICache_l163_1) begin
+    if(when_ICache_l165_1) begin
       sram_1_ports_cmd_payload_addr = cpu_bank_addr;
     end else begin
-      if(when_ICache_l170_1) begin
+      if(when_ICache_l172_1) begin
         sram_1_ports_cmd_payload_addr = cpu_bank_addr_d1;
       end else begin
-        if(when_ICache_l177_1) begin
+        if(when_ICache_l179_1) begin
           sram_1_ports_cmd_payload_addr = next_level_bank_addr;
         end else begin
           sram_1_ports_cmd_payload_addr = 7'h0;
@@ -36880,13 +36922,13 @@ module ICache (
   end
 
   always @(*) begin
-    if(when_ICache_l163_1) begin
+    if(when_ICache_l165_1) begin
       sram_1_ports_cmd_valid = 1'b1;
     end else begin
-      if(when_ICache_l170_1) begin
+      if(when_ICache_l172_1) begin
         sram_1_ports_cmd_valid = 1'b1;
       end else begin
-        if(when_ICache_l177_1) begin
+        if(when_ICache_l179_1) begin
           sram_1_ports_cmd_valid = 1'b1;
         end else begin
           sram_1_ports_cmd_valid = 1'b0;
@@ -36896,13 +36938,13 @@ module ICache (
   end
 
   always @(*) begin
-    if(when_ICache_l163_1) begin
+    if(when_ICache_l165_1) begin
       sram_1_ports_cmd_payload_wen = 16'h0;
     end else begin
-      if(when_ICache_l170_1) begin
+      if(when_ICache_l172_1) begin
         sram_1_ports_cmd_payload_wen = 16'h0;
       end else begin
-        if(when_ICache_l177_1) begin
+        if(when_ICache_l179_1) begin
           sram_1_ports_cmd_payload_wen = (_zz_sram_1_ports_cmd_payload_wen <<< _zz_sram_1_ports_cmd_payload_wen_1);
         end else begin
           sram_1_ports_cmd_payload_wen = 16'h0;
@@ -36912,13 +36954,13 @@ module ICache (
   end
 
   always @(*) begin
-    if(when_ICache_l163_1) begin
+    if(when_ICache_l165_1) begin
       sram_1_ports_cmd_payload_wdata = 512'h0;
     end else begin
-      if(when_ICache_l170_1) begin
+      if(when_ICache_l172_1) begin
         sram_1_ports_cmd_payload_wdata = 512'h0;
       end else begin
-        if(when_ICache_l177_1) begin
+        if(when_ICache_l179_1) begin
           sram_1_ports_cmd_payload_wdata = ({256'h0,next_level_rsp_payload_data} <<< _zz_sram_1_ports_cmd_payload_wdata);
         end else begin
           sram_1_ports_cmd_payload_wdata = 512'h0;
@@ -36928,13 +36970,13 @@ module ICache (
   end
 
   always @(*) begin
-    if(when_ICache_l163_1) begin
+    if(when_ICache_l165_1) begin
       sram_1_ports_cmd_payload_wstrb = 64'h0;
     end else begin
-      if(when_ICache_l170_1) begin
+      if(when_ICache_l172_1) begin
         sram_1_ports_cmd_payload_wstrb = 64'h0;
       end else begin
-        if(when_ICache_l177_1) begin
+        if(when_ICache_l179_1) begin
           sram_1_ports_cmd_payload_wstrb = ({32'h0,32'hffffffff} <<< _zz_sram_1_ports_cmd_payload_wstrb);
         end else begin
           sram_1_ports_cmd_payload_wstrb = 64'h0;
@@ -36945,8 +36987,8 @@ module ICache (
 
   assign _zz_1550 = zz__zz_sram_1_ports_cmd_payload_wen(1'b0);
   always @(*) _zz_sram_1_ports_cmd_payload_wen = _zz_1550;
-  assign when_ICache_l170_1 = (next_level_done && (2'b01 == evict_id));
-  assign when_ICache_l177_1 = (next_level_rsp_valid && (2'b01 == evict_id));
+  assign when_ICache_l172_1 = (next_level_done && (2'b01 == evict_id));
+  assign when_ICache_l179_1 = (next_level_rsp_valid && (2'b01 == evict_id));
   assign _zz_646 = ({127'd0,1'b1} <<< flush_cnt_value);
   assign _zz_647 = _zz_646[0];
   assign _zz_648 = _zz_646[1];
@@ -37076,12 +37118,12 @@ module ICache (
   assign _zz_772 = _zz_646[125];
   assign _zz_773 = _zz_646[126];
   assign _zz_774 = _zz_646[127];
-  assign when_ICache_l199_1 = (is_hit && mru_full);
-  assign when_ICache_l206_1 = (is_hit && cache_hit_1);
-  assign when_ICache_l209_1 = (next_level_done && (2'b01 == evict_id));
-  assign when_ICache_l214_1 = (next_level_done && (2'b01 == evict_id));
-  assign when_ICache_l219_1 = (flush || is_miss);
-  assign when_ICache_l222_1 = (flush_done || next_level_done);
+  assign when_ICache_l201_1 = (is_hit && mru_full);
+  assign when_ICache_l208_1 = (is_hit && cache_hit_1);
+  assign when_ICache_l211_1 = (next_level_done && (2'b01 == evict_id));
+  assign when_ICache_l216_1 = (next_level_done && (2'b01 == evict_id));
+  assign when_ICache_l221_1 = (flush || is_miss);
+  assign when_ICache_l224_1 = (flush_done || next_level_done);
   assign _zz_775 = ({127'd0,1'b1} <<< cpu_set);
   assign _zz_776 = _zz_775[0];
   assign _zz_777 = _zz_775[1];
@@ -37348,15 +37390,15 @@ module ICache (
   assign cache_victim_2 = (cache_invld_d1_2 && cache_lru_d1_2);
   assign sram_banks_data_2 = sram_2_ports_rsp_payload_data;
   assign sram_banks_valid_2 = sram_2_ports_rsp_valid;
-  assign when_ICache_l163_2 = (is_hit && (2'b10 == hit_id));
+  assign when_ICache_l165_2 = (is_hit && (2'b10 == hit_id));
   always @(*) begin
-    if(when_ICache_l163_2) begin
+    if(when_ICache_l165_2) begin
       sram_2_ports_cmd_payload_addr = cpu_bank_addr;
     end else begin
-      if(when_ICache_l170_2) begin
+      if(when_ICache_l172_2) begin
         sram_2_ports_cmd_payload_addr = cpu_bank_addr_d1;
       end else begin
-        if(when_ICache_l177_2) begin
+        if(when_ICache_l179_2) begin
           sram_2_ports_cmd_payload_addr = next_level_bank_addr;
         end else begin
           sram_2_ports_cmd_payload_addr = 7'h0;
@@ -37366,13 +37408,13 @@ module ICache (
   end
 
   always @(*) begin
-    if(when_ICache_l163_2) begin
+    if(when_ICache_l165_2) begin
       sram_2_ports_cmd_valid = 1'b1;
     end else begin
-      if(when_ICache_l170_2) begin
+      if(when_ICache_l172_2) begin
         sram_2_ports_cmd_valid = 1'b1;
       end else begin
-        if(when_ICache_l177_2) begin
+        if(when_ICache_l179_2) begin
           sram_2_ports_cmd_valid = 1'b1;
         end else begin
           sram_2_ports_cmd_valid = 1'b0;
@@ -37382,13 +37424,13 @@ module ICache (
   end
 
   always @(*) begin
-    if(when_ICache_l163_2) begin
+    if(when_ICache_l165_2) begin
       sram_2_ports_cmd_payload_wen = 16'h0;
     end else begin
-      if(when_ICache_l170_2) begin
+      if(when_ICache_l172_2) begin
         sram_2_ports_cmd_payload_wen = 16'h0;
       end else begin
-        if(when_ICache_l177_2) begin
+        if(when_ICache_l179_2) begin
           sram_2_ports_cmd_payload_wen = (_zz_sram_2_ports_cmd_payload_wen <<< _zz_sram_2_ports_cmd_payload_wen_1);
         end else begin
           sram_2_ports_cmd_payload_wen = 16'h0;
@@ -37398,13 +37440,13 @@ module ICache (
   end
 
   always @(*) begin
-    if(when_ICache_l163_2) begin
+    if(when_ICache_l165_2) begin
       sram_2_ports_cmd_payload_wdata = 512'h0;
     end else begin
-      if(when_ICache_l170_2) begin
+      if(when_ICache_l172_2) begin
         sram_2_ports_cmd_payload_wdata = 512'h0;
       end else begin
-        if(when_ICache_l177_2) begin
+        if(when_ICache_l179_2) begin
           sram_2_ports_cmd_payload_wdata = ({256'h0,next_level_rsp_payload_data} <<< _zz_sram_2_ports_cmd_payload_wdata);
         end else begin
           sram_2_ports_cmd_payload_wdata = 512'h0;
@@ -37414,13 +37456,13 @@ module ICache (
   end
 
   always @(*) begin
-    if(when_ICache_l163_2) begin
+    if(when_ICache_l165_2) begin
       sram_2_ports_cmd_payload_wstrb = 64'h0;
     end else begin
-      if(when_ICache_l170_2) begin
+      if(when_ICache_l172_2) begin
         sram_2_ports_cmd_payload_wstrb = 64'h0;
       end else begin
-        if(when_ICache_l177_2) begin
+        if(when_ICache_l179_2) begin
           sram_2_ports_cmd_payload_wstrb = ({32'h0,32'hffffffff} <<< _zz_sram_2_ports_cmd_payload_wstrb);
         end else begin
           sram_2_ports_cmd_payload_wstrb = 64'h0;
@@ -37431,8 +37473,8 @@ module ICache (
 
   assign _zz_1551 = zz__zz_sram_2_ports_cmd_payload_wen(1'b0);
   always @(*) _zz_sram_2_ports_cmd_payload_wen = _zz_1551;
-  assign when_ICache_l170_2 = (next_level_done && (2'b10 == evict_id));
-  assign when_ICache_l177_2 = (next_level_rsp_valid && (2'b10 == evict_id));
+  assign when_ICache_l172_2 = (next_level_done && (2'b10 == evict_id));
+  assign when_ICache_l179_2 = (next_level_rsp_valid && (2'b10 == evict_id));
   assign _zz_1033 = ({127'd0,1'b1} <<< flush_cnt_value);
   assign _zz_1034 = _zz_1033[0];
   assign _zz_1035 = _zz_1033[1];
@@ -37562,12 +37604,12 @@ module ICache (
   assign _zz_1159 = _zz_1033[125];
   assign _zz_1160 = _zz_1033[126];
   assign _zz_1161 = _zz_1033[127];
-  assign when_ICache_l199_2 = (is_hit && mru_full);
-  assign when_ICache_l206_2 = (is_hit && cache_hit_2);
-  assign when_ICache_l209_2 = (next_level_done && (2'b10 == evict_id));
-  assign when_ICache_l214_2 = (next_level_done && (2'b10 == evict_id));
-  assign when_ICache_l219_2 = (flush || is_miss);
-  assign when_ICache_l222_2 = (flush_done || next_level_done);
+  assign when_ICache_l201_2 = (is_hit && mru_full);
+  assign when_ICache_l208_2 = (is_hit && cache_hit_2);
+  assign when_ICache_l211_2 = (next_level_done && (2'b10 == evict_id));
+  assign when_ICache_l216_2 = (next_level_done && (2'b10 == evict_id));
+  assign when_ICache_l221_2 = (flush || is_miss);
+  assign when_ICache_l224_2 = (flush_done || next_level_done);
   assign _zz_1162 = ({127'd0,1'b1} <<< cpu_set);
   assign _zz_1163 = _zz_1162[0];
   assign _zz_1164 = _zz_1162[1];
@@ -37834,15 +37876,15 @@ module ICache (
   assign cache_victim_3 = (cache_invld_d1_3 && cache_lru_d1_3);
   assign sram_banks_data_3 = sram_3_ports_rsp_payload_data;
   assign sram_banks_valid_3 = sram_3_ports_rsp_valid;
-  assign when_ICache_l163_3 = (is_hit && (2'b11 == hit_id));
+  assign when_ICache_l165_3 = (is_hit && (2'b11 == hit_id));
   always @(*) begin
-    if(when_ICache_l163_3) begin
+    if(when_ICache_l165_3) begin
       sram_3_ports_cmd_payload_addr = cpu_bank_addr;
     end else begin
-      if(when_ICache_l170_3) begin
+      if(when_ICache_l172_3) begin
         sram_3_ports_cmd_payload_addr = cpu_bank_addr_d1;
       end else begin
-        if(when_ICache_l177_3) begin
+        if(when_ICache_l179_3) begin
           sram_3_ports_cmd_payload_addr = next_level_bank_addr;
         end else begin
           sram_3_ports_cmd_payload_addr = 7'h0;
@@ -37852,13 +37894,13 @@ module ICache (
   end
 
   always @(*) begin
-    if(when_ICache_l163_3) begin
+    if(when_ICache_l165_3) begin
       sram_3_ports_cmd_valid = 1'b1;
     end else begin
-      if(when_ICache_l170_3) begin
+      if(when_ICache_l172_3) begin
         sram_3_ports_cmd_valid = 1'b1;
       end else begin
-        if(when_ICache_l177_3) begin
+        if(when_ICache_l179_3) begin
           sram_3_ports_cmd_valid = 1'b1;
         end else begin
           sram_3_ports_cmd_valid = 1'b0;
@@ -37868,13 +37910,13 @@ module ICache (
   end
 
   always @(*) begin
-    if(when_ICache_l163_3) begin
+    if(when_ICache_l165_3) begin
       sram_3_ports_cmd_payload_wen = 16'h0;
     end else begin
-      if(when_ICache_l170_3) begin
+      if(when_ICache_l172_3) begin
         sram_3_ports_cmd_payload_wen = 16'h0;
       end else begin
-        if(when_ICache_l177_3) begin
+        if(when_ICache_l179_3) begin
           sram_3_ports_cmd_payload_wen = (_zz_sram_3_ports_cmd_payload_wen <<< _zz_sram_3_ports_cmd_payload_wen_1);
         end else begin
           sram_3_ports_cmd_payload_wen = 16'h0;
@@ -37884,13 +37926,13 @@ module ICache (
   end
 
   always @(*) begin
-    if(when_ICache_l163_3) begin
+    if(when_ICache_l165_3) begin
       sram_3_ports_cmd_payload_wdata = 512'h0;
     end else begin
-      if(when_ICache_l170_3) begin
+      if(when_ICache_l172_3) begin
         sram_3_ports_cmd_payload_wdata = 512'h0;
       end else begin
-        if(when_ICache_l177_3) begin
+        if(when_ICache_l179_3) begin
           sram_3_ports_cmd_payload_wdata = ({256'h0,next_level_rsp_payload_data} <<< _zz_sram_3_ports_cmd_payload_wdata);
         end else begin
           sram_3_ports_cmd_payload_wdata = 512'h0;
@@ -37900,13 +37942,13 @@ module ICache (
   end
 
   always @(*) begin
-    if(when_ICache_l163_3) begin
+    if(when_ICache_l165_3) begin
       sram_3_ports_cmd_payload_wstrb = 64'h0;
     end else begin
-      if(when_ICache_l170_3) begin
+      if(when_ICache_l172_3) begin
         sram_3_ports_cmd_payload_wstrb = 64'h0;
       end else begin
-        if(when_ICache_l177_3) begin
+        if(when_ICache_l179_3) begin
           sram_3_ports_cmd_payload_wstrb = ({32'h0,32'hffffffff} <<< _zz_sram_3_ports_cmd_payload_wstrb);
         end else begin
           sram_3_ports_cmd_payload_wstrb = 64'h0;
@@ -37917,8 +37959,8 @@ module ICache (
 
   assign _zz_1552 = zz__zz_sram_3_ports_cmd_payload_wen(1'b0);
   always @(*) _zz_sram_3_ports_cmd_payload_wen = _zz_1552;
-  assign when_ICache_l170_3 = (next_level_done && (2'b11 == evict_id));
-  assign when_ICache_l177_3 = (next_level_rsp_valid && (2'b11 == evict_id));
+  assign when_ICache_l172_3 = (next_level_done && (2'b11 == evict_id));
+  assign when_ICache_l179_3 = (next_level_rsp_valid && (2'b11 == evict_id));
   assign _zz_1420 = ({127'd0,1'b1} <<< flush_cnt_value);
   assign _zz_1421 = _zz_1420[0];
   assign _zz_1422 = _zz_1420[1];
@@ -38048,18 +38090,18 @@ module ICache (
   assign _zz_1546 = _zz_1420[125];
   assign _zz_1547 = _zz_1420[126];
   assign _zz_1548 = _zz_1420[127];
-  assign when_ICache_l199_3 = (is_hit && mru_full);
-  assign when_ICache_l206_3 = (is_hit && cache_hit_3);
-  assign when_ICache_l209_3 = (next_level_done && (2'b11 == evict_id));
-  assign when_ICache_l214_3 = (next_level_done && (2'b11 == evict_id));
-  assign when_ICache_l219_3 = (flush || is_miss);
-  assign when_ICache_l222_3 = (flush_done || next_level_done);
+  assign when_ICache_l201_3 = (is_hit && mru_full);
+  assign when_ICache_l208_3 = (is_hit && cache_hit_3);
+  assign when_ICache_l211_3 = (next_level_done && (2'b11 == evict_id));
+  assign when_ICache_l216_3 = (next_level_done && (2'b11 == evict_id));
+  assign when_ICache_l221_3 = (flush || is_miss);
+  assign when_ICache_l224_3 = (flush_done || next_level_done);
   assign _zz_cpu_rsp_payload_data = _zz__zz_cpu_rsp_payload_data;
   assign _zz_cpu_rsp_payload_data_1 = _zz__zz_cpu_rsp_payload_data_1;
   assign cpu_rsp_payload_data = (is_hit_d1 ? _zz_cpu_rsp_payload_data_2 : _zz_cpu_rsp_payload_data_3);
   assign cpu_rsp_valid = (is_hit_d1 ? _zz_cpu_rsp_valid : _zz_cpu_rsp_valid_1);
   assign cpu_cmd_ready = cpu_cmd_ready_1;
-  assign next_level_cmd_payload_addr = {cpu_addr_d1[63 : 5],5'h0};
+  assign next_level_cmd_payload_addr = {cpu_addr_d1[63 : 6],6'h0};
   assign next_level_cmd_payload_len = 4'b0001;
   assign next_level_cmd_payload_size = 3'b101;
   assign next_level_cmd_valid = next_level_cmd_valid_1;
@@ -39609,7 +39651,7 @@ module ICache (
       next_level_data_cnt_value <= 1'b0;
     end else begin
       flush_cnt_value <= flush_cnt_valueNext;
-      if(is_miss) begin
+      if(cpu_cmd_fire_2) begin
         cpu_addr_d1 <= cpu_cmd_payload_addr;
       end
       next_level_data_cnt_value <= next_level_data_cnt_valueNext;
@@ -40397,7 +40439,7 @@ module ICache (
           ways_0_metas_127_vld <= 1'b0;
         end
       end else begin
-        if(when_ICache_l199) begin
+        if(when_ICache_l201) begin
           if(cache_hit_0) begin
             if(_zz_2) begin
               ways_0_metas_0_mru <= 1'b1;
@@ -41170,7 +41212,7 @@ module ICache (
             end
           end
         end else begin
-          if(when_ICache_l206) begin
+          if(when_ICache_l208) begin
             if(_zz_2) begin
               ways_0_metas_0_mru <= 1'b1;
             end
@@ -41556,7 +41598,7 @@ module ICache (
               ways_0_metas_127_mru <= 1'b1;
             end
           end else begin
-            if(when_ICache_l209) begin
+            if(when_ICache_l211) begin
               if(_zz_131) begin
                 ways_0_metas_0_vld <= 1'b1;
               end
@@ -41945,7 +41987,7 @@ module ICache (
           end
         end
       end
-      if(when_ICache_l214) begin
+      if(when_ICache_l216) begin
         if(_zz_131) begin
           ways_0_metas_0_tag <= cpu_tag_d1;
         end
@@ -42331,10 +42373,10 @@ module ICache (
           ways_0_metas_127_tag <= cpu_tag_d1;
         end
       end
-      if(when_ICache_l219) begin
+      if(when_ICache_l221) begin
         cpu_cmd_ready_1 <= 1'b0;
       end else begin
-        if(when_ICache_l222) begin
+        if(when_ICache_l224) begin
           cpu_cmd_ready_1 <= 1'b1;
         end
       end
@@ -43108,7 +43150,7 @@ module ICache (
           ways_1_metas_127_vld <= 1'b0;
         end
       end else begin
-        if(when_ICache_l199_1) begin
+        if(when_ICache_l201_1) begin
           if(cache_hit_1) begin
             if(_zz_389) begin
               ways_1_metas_0_mru <= 1'b1;
@@ -43881,7 +43923,7 @@ module ICache (
             end
           end
         end else begin
-          if(when_ICache_l206_1) begin
+          if(when_ICache_l208_1) begin
             if(_zz_389) begin
               ways_1_metas_0_mru <= 1'b1;
             end
@@ -44267,7 +44309,7 @@ module ICache (
               ways_1_metas_127_mru <= 1'b1;
             end
           end else begin
-            if(when_ICache_l209_1) begin
+            if(when_ICache_l211_1) begin
               if(_zz_518) begin
                 ways_1_metas_0_vld <= 1'b1;
               end
@@ -44656,7 +44698,7 @@ module ICache (
           end
         end
       end
-      if(when_ICache_l214_1) begin
+      if(when_ICache_l216_1) begin
         if(_zz_518) begin
           ways_1_metas_0_tag <= cpu_tag_d1;
         end
@@ -45042,10 +45084,10 @@ module ICache (
           ways_1_metas_127_tag <= cpu_tag_d1;
         end
       end
-      if(when_ICache_l219_1) begin
+      if(when_ICache_l221_1) begin
         cpu_cmd_ready_1 <= 1'b0;
       end else begin
-        if(when_ICache_l222_1) begin
+        if(when_ICache_l224_1) begin
           cpu_cmd_ready_1 <= 1'b1;
         end
       end
@@ -45819,7 +45861,7 @@ module ICache (
           ways_2_metas_127_vld <= 1'b0;
         end
       end else begin
-        if(when_ICache_l199_2) begin
+        if(when_ICache_l201_2) begin
           if(cache_hit_2) begin
             if(_zz_776) begin
               ways_2_metas_0_mru <= 1'b1;
@@ -46592,7 +46634,7 @@ module ICache (
             end
           end
         end else begin
-          if(when_ICache_l206_2) begin
+          if(when_ICache_l208_2) begin
             if(_zz_776) begin
               ways_2_metas_0_mru <= 1'b1;
             end
@@ -46978,7 +47020,7 @@ module ICache (
               ways_2_metas_127_mru <= 1'b1;
             end
           end else begin
-            if(when_ICache_l209_2) begin
+            if(when_ICache_l211_2) begin
               if(_zz_905) begin
                 ways_2_metas_0_vld <= 1'b1;
               end
@@ -47367,7 +47409,7 @@ module ICache (
           end
         end
       end
-      if(when_ICache_l214_2) begin
+      if(when_ICache_l216_2) begin
         if(_zz_905) begin
           ways_2_metas_0_tag <= cpu_tag_d1;
         end
@@ -47753,10 +47795,10 @@ module ICache (
           ways_2_metas_127_tag <= cpu_tag_d1;
         end
       end
-      if(when_ICache_l219_2) begin
+      if(when_ICache_l221_2) begin
         cpu_cmd_ready_1 <= 1'b0;
       end else begin
-        if(when_ICache_l222_2) begin
+        if(when_ICache_l224_2) begin
           cpu_cmd_ready_1 <= 1'b1;
         end
       end
@@ -48530,7 +48572,7 @@ module ICache (
           ways_3_metas_127_vld <= 1'b0;
         end
       end else begin
-        if(when_ICache_l199_3) begin
+        if(when_ICache_l201_3) begin
           if(cache_hit_3) begin
             if(_zz_1163) begin
               ways_3_metas_0_mru <= 1'b1;
@@ -49303,7 +49345,7 @@ module ICache (
             end
           end
         end else begin
-          if(when_ICache_l206_3) begin
+          if(when_ICache_l208_3) begin
             if(_zz_1163) begin
               ways_3_metas_0_mru <= 1'b1;
             end
@@ -49689,7 +49731,7 @@ module ICache (
               ways_3_metas_127_mru <= 1'b1;
             end
           end else begin
-            if(when_ICache_l209_3) begin
+            if(when_ICache_l211_3) begin
               if(_zz_1292) begin
                 ways_3_metas_0_vld <= 1'b1;
               end
@@ -50078,7 +50120,7 @@ module ICache (
           end
         end
       end
-      if(when_ICache_l214_3) begin
+      if(when_ICache_l216_3) begin
         if(_zz_1292) begin
           ways_3_metas_0_tag <= cpu_tag_d1;
         end
@@ -50464,10 +50506,10 @@ module ICache (
           ways_3_metas_127_tag <= cpu_tag_d1;
         end
       end
-      if(when_ICache_l219_3) begin
+      if(when_ICache_l221_3) begin
         cpu_cmd_ready_1 <= 1'b0;
       end else begin
-        if(when_ICache_l222_3) begin
+        if(when_ICache_l224_3) begin
           cpu_cmd_ready_1 <= 1'b1;
         end
       end
@@ -50475,6 +50517,8 @@ module ICache (
   end
 
   always @(posedge clk) begin
+    hit_id_d1 <= hit_id;
+    evict_id_d1 <= evict_id;
     is_hit_d1 <= is_hit;
     next_level_done <= (next_level_rsp_valid && (next_level_data_cnt_value == 1'b1));
   end
