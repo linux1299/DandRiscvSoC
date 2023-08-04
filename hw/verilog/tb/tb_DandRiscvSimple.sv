@@ -111,7 +111,7 @@ logic          dcache_b_ready            ;
 logic [3:0]    dcache_b_payload_id       ; 
 logic [1:0]    dcache_b_payload_resp     ; 
 
-// ============================== dunp fsdb =============================
+// ============================== dump fsdb =============================
 initial begin
 	$display("\n================== Time:%d, Dump Start ================\n",$time);
 	$fsdbDumpfile("./simWorkspace/tb_DandRiscvSimple/tb_DandRiscvSimple.fsdb");
@@ -293,8 +293,7 @@ axi_slave_mem#(
     .AXI_STRB_WIDTH    ( DataWidth/8 ),
     .AXI_USER_WIDTH    ( 1 ),
     .WRITE_BUFFER_SIZE ( 32*1024 ),
-    .READ_BUFFER_SIZE  ( 32*1024 ),
-    .AXI_RD_ADDR_BITS  ( $clog2(32*1024) )
+    .READ_BUFFER_SIZE  ( 32*1024 )
 )u_axi_slave_mem_i(
     .clk               ( clk_axi_in               ),
     .rst_n             ( rst_n             ),
@@ -359,8 +358,7 @@ axi_slave_mem#(
     .AXI_STRB_WIDTH    ( DataWidth/8 ),
     .AXI_USER_WIDTH    ( 1 ),
     .WRITE_BUFFER_SIZE ( 32*1024 ),
-    .READ_BUFFER_SIZE  ( 32*1024 ),
-    .AXI_RD_ADDR_BITS  ( $clog2(32*1024) )
+    .READ_BUFFER_SIZE  ( 32*1024 )
 )u_axi_slave_mem_d(
     .clk               ( clk_axi_in               ),
     .rst_n             ( rst_n             ),

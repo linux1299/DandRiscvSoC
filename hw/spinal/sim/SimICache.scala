@@ -13,7 +13,8 @@ object SimICache extends App {
           addressWidth = 64,
           cpuDataWidth = 32,
           bankWidth = 256,
-          busDataWidth = 256
+          busDataWidth = 256,
+          directOutput = true
         )
 
   Config.sim.compile(ICache(icache_config)).doSim { dut =>

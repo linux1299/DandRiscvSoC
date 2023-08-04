@@ -13,7 +13,8 @@ case class ICacheConfig(cacheSize : Int,
                         addressWidth : Int,
                         cpuDataWidth : Int,
                         bankWidth : Int,
-                        busDataWidth : Int){
+                        busDataWidth : Int,
+                        directOutput : Boolean){
 
   def lineCount = cacheSize/bytePerLine
   def wayLineCount = lineCount/wayCount
@@ -35,7 +36,7 @@ case class ICacheConfig(cacheSize : Int,
   def bankAddrRange  = (bankDepthBits+offsetWidth-1) downto offsetWidth
   def bankIndexRange = (offsetWidth-1) downto cpuDataBytesWidth
   def nextLevelBankAddrRange = bankAddrRange
-  def cpuDataOnBusRange = (busDataSize-1) downto (log2Up(cpuDataBytesWidth))
+  def cpuDataOnBusRange = (busDataSize-1) downto cpuDataBytesWidth
 
   assert(wayCount>=2)
   assert(bankWidth==cpuDataWidth)

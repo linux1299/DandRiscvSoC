@@ -69,38 +69,48 @@ class ICachePlugin(val config : ICacheConfig) extends Plugin[DandRiscvSimple]{
     import pipeline.config._
 
     val icache_config = ICachePlugin.this.config
-    val icache = new ICache(icache_config)
-    val srambanks = new SramBanks(icache_config.wayCount, icache_config.bankNum, icache_config.bankWidth, icache_config.bankDepthBits)
 
-    // connect icache and cpu ports
-    icache_access.cmd <> icache.cpu.cmd
-    icache_access.rsp <> icache.cpu.rsp
-    icache.flush := False // TODO:
+    if (!icache_config.directOutput){
+      val icache = new ICache(icache_config)
+      val srambanks = new SramBanks(icache_config.wayCount, icache_config.bankNum, icache_config.bankWidth, icache_config.bankDepthBits)
 
-    // sram ports
-    val connect_sram = for(i<-0 until icache_config.wayCount) yield new Area{
-      icache.sram(i).ports <> srambanks.sram(i).ports
+      // connect icache and cpu ports
+      icache_access.cmd <> icache.cpu.cmd
+      icache_access.rsp <> icache.cpu.rsp
+      icache.flush := False // TODO:
+
+      // sram ports
+      val connect_sram = for(i<-0 until icache_config.wayCount) yield new Area{
+        icache.sram(i).ports <> srambanks.sram(i).ports
+      }
+
+      // next level AXI ports
+      val axiConfig = Axi4Config(addressWidth=icache_config.addressWidth, dataWidth=icache_config.busDataWidth, idWidth=4,
+                                 useId=true, useLast=true, useRegion=false, useBurst=true, 
+                                 useLock=false, useCache=false, useSize=true, useQos=false,
+                                 useLen=true, useResp=true, useProt=false, useStrb=false)
+      val icacheReader = master(Axi4ReadOnly(axiConfig)).setName("icache")
+      // ar channel
+      icacheReader.ar.valid := icache.next_level.cmd.valid
+      icacheReader.ar.payload.id := U(0)
+      icacheReader.ar.payload.len := icache.next_level.cmd.payload.len.resized
+      icacheReader.ar.payload.size := icache.next_level.cmd.payload.size
+      icacheReader.ar.payload.burst := B(1) // INCR
+      icacheReader.ar.payload.addr := icache.next_level.cmd.payload.addr
+      icache.next_level.cmd.ready := icacheReader.ar.ready
+
+      // r channel
+      icacheReader.r.ready := True
+      icache.next_level.rsp.valid := icacheReader.r.valid
+      icache.next_level.rsp.payload.data := icacheReader.r.payload.data
     }
-
-    // next level AXI ports
-    val axiConfig = Axi4Config(addressWidth=icache_config.addressWidth, dataWidth=icache_config.busDataWidth, idWidth=4,
-                               useId=true, useLast=true, useRegion=false, useBurst=true, 
-                               useLock=false, useCache=false, useSize=true, useQos=false,
-                               useLen=true, useResp=true, useProt=false, useStrb=false)
-    val icacheReader = master(Axi4ReadOnly(axiConfig)).setName("icache")
-    // ar channel
-    icacheReader.ar.valid := icache.next_level.cmd.valid
-    icacheReader.ar.payload.id := U(0)
-    icacheReader.ar.payload.len := icache.next_level.cmd.payload.len.resized
-    icacheReader.ar.payload.size := icache.next_level.cmd.payload.size
-    icacheReader.ar.payload.burst := B(1) // INCR
-    icacheReader.ar.payload.addr := icache.next_level.cmd.payload.addr
-    icache.next_level.cmd.ready := icacheReader.ar.ready
-
-    // r channel
-    icacheReader.r.ready := True
-    icache.next_level.rsp.valid := icacheReader.r.valid
-    icache.next_level.rsp.payload.data := icacheReader.r.payload.data
+    else {
+      val icacheReader = master(ICacheAccess(icache_config.addressWidth, icache_config.cpuDataWidth)).setName("icache")
+      // connect icache and cpu ports
+      icache_access.cmd <> icacheReader.cmd
+      icache_access.rsp <> icacheReader.rsp
+    }
+    
 
     
    }

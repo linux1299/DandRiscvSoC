@@ -40,6 +40,19 @@ with ICacheAccessService
       val int_en_reg = RegInit(False).setName("int_en_reg")
       val fetch_flush = (output(INT_EN) || int_en_reg || arbitration.flushIt)
 
+      val pc_FIFO = StreamFifo(
+        dataType = UInt(pipeline.config.addressWidth bits),
+        depth    = 2
+      )
+      val instruction_FIFO = StreamFifo(
+        dataType = Bits(32 bits),
+        depth    = 2
+      )
+      val pc_in_stream = Stream(UInt(pipeline.config.addressWidth bits))
+      val pc_out_stream = Stream(UInt(pipeline.config.addressWidth bits))
+      val instruction_in_stream = Stream(Bits(32 bits))
+      val instruction_out_stream = Stream(Bits(32 bits))
+
       val fetchFSM = new Area{
         val IDLE  = U(0 , 2 bits).setName("IDLE")
         val FETCH = U(1 , 2 bits).setName("FETCH")
@@ -128,10 +141,22 @@ with ICacheAccessService
         }
       }
 
+      // output pc and instruction from FIFO or icache
+      pc_in_stream.valid := icache_access.rsp.valid && arbitration.isStuck
+      pc_in_stream.payload := pc
+      pc_out_stream.ready := !arbitration.isStuck
+      instruction_in_stream.valid := icache_access.rsp.valid && arbitration.isStuck
+      instruction_in_stream.payload := icache_access.rsp.payload.data
+      instruction_out_stream.ready := !arbitration.isStuck
+      pc_FIFO.io.push << pc_in_stream
+      pc_FIFO.io.pop  >> pc_out_stream
+      instruction_FIFO.io.push << instruction_in_stream
+      instruction_FIFO.io.pop  >> instruction_out_stream
+
       // insert to stage
-      insert(PC) := pc
-      insert(INSTRUCTION) := icache_access.rsp.payload.data
-      arbitration.isValid := icache_access.rsp.valid && !fetch_flush
+      insert(PC) := pc_out_stream.valid ? pc_out_stream.payload | pc
+      insert(INSTRUCTION) := instruction_out_stream.valid ? instruction_out_stream.payload | icache_access.rsp.payload.data
+      arbitration.isValid := (pc_out_stream.valid || icache_access.rsp.valid) && !fetch_flush
 
       // send cmd to icache
       icache_access.cmd.valid := fetch_valid && !fetch_flush

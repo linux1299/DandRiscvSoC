@@ -13,7 +13,8 @@ case class DCacheConfig(cacheSize : Int,
                         addressWidth : Int,
                         cpuDataWidth : Int,
                         bankWidth : Int,
-                        busDataWidth : Int){
+                        busDataWidth : Int,
+                        directOutput : Boolean){
 
   def lineCount = cacheSize/bytePerLine
   def wayLineCount = lineCount/wayCount
@@ -35,7 +36,7 @@ case class DCacheConfig(cacheSize : Int,
   def bankAddrRange  = (bankDepthBits+offsetWidth-1) downto offsetWidth
   def bankIndexRange = (offsetWidth-1) downto cpuDataBytesWidth
   def nextLevelBankAddrRange = bankAddrRange
-  def cpuDataOnBusRange = (busDataSize-1) downto (log2Up(cpuDataBytesWidth))
+  def cpuDataOnBusRange = (busDataSize-1) downto cpuDataBytesWidth
 
   assert(wayCount>=2)
   assert(bankWidth==cpuDataWidth)
@@ -100,9 +101,9 @@ case class DCache(p : DCacheConfig) extends Component{
   val cpu_bank_addr_d1= cpu_addr_d1(bankAddrRange)
   val cpu_bank_index_d1 = cpu_addr_d1(bankIndexRange)
   val cpu_cmd_ready   = RegInit(True)
-  val cpu_wstrb_d1    = RegNextWhen(cpu.cmd.payload.wstrb, is_write) init(0)
-  val cpu_wen_d1      = RegNextWhen(cpu.cmd.payload.wen, is_write) init(False)
-  val cpu_wdata_d1    = RegNextWhen(cpu.cmd.payload.wdata, is_write) init(0)
+  val cpu_wstrb_d1    = RegNextWhen(cpu.cmd.payload.wstrb, cpu.cmd.fire) init(0)
+  val cpu_wen_d1      = RegNextWhen(cpu.cmd.payload.wen, cpu.cmd.fire) init(False)
+  val cpu_wdata_d1    = RegNextWhen(cpu.cmd.payload.wdata, cpu.cmd.fire) init(0)
 
   // sram related
   val sram_banks_data = Vec(Bits(bankNum*bankWidth bits), wayCount)
@@ -113,7 +114,7 @@ case class DCache(p : DCacheConfig) extends Component{
   val next_level_data_cnt = Counter(0 to lineBusDataNum-1)
   val next_level_bank_addr= cpu_addr_d1(nextLevelBankAddrRange)
   val next_level_rdone = RegNext(next_level.rsp.valid && next_level.rsp.payload.rvalid && next_level_data_cnt===(lineBusDataNum-1))
-  val next_level_wdone = RegNext(next_level.rsp.valid && next_level.rsp.payload.bresp===B(0))
+  val next_level_wdone = RegNext(next_level.rsp.valid && !next_level.rsp.payload.rvalid && next_level.rsp.payload.bresp===B(0))
   val next_level_wstrb_tmp = B(0, busDataWidth/8-cpuDataWidth/8 bits) ## cpu_wstrb_d1
   val next_level_wdata_tmp = B(0, busDataWidth-cpuDataWidth bits) ## cpu_wdata_d1
   val next_level_wstrb = next_level_wstrb_tmp |<< (cpu_addr_d1(cpuDataOnBusRange)*cpuDataWidth/8)
@@ -179,14 +180,14 @@ case class DCache(p : DCacheConfig) extends Component{
       sram(wayId).ports.cmd.payload.wdata:= (B(0, bankNum*bankWidth-cpuDataWidth bits) ## cpu.cmd.payload.wdata) |<< (cpu_bank_index*bankWidth)
       sram(wayId).ports.cmd.payload.wstrb:= (B(0, (bankNum-1)*bankWidth/8 bits) ## cpu.cmd.payload.wstrb) |<< (cpu_bank_index*bankWidth/8)
     } 
-    .elsewhen(next_level_rdone && !is_write && U(wayId)===victim_id){ // when read next level data done, read data from cache
+    .elsewhen(next_level_rdone && !is_write && U(wayId)===evict_id){ // when read next level data done, read data from evict_id way
       sram(wayId).ports.cmd.payload.addr := cpu_bank_addr_d1
       sram(wayId).ports.cmd.valid        := True
       sram(wayId).ports.cmd.payload.wen  := B(0, bankNum bits)
-      sram(wayId).ports.cmd.payload.wdata:= (B(0, bankNum*bankWidth-cpuDataWidth bits) ## cpu_wdata_d1) |<< (cpu_bank_index_d1*bankWidth)
-      sram(wayId).ports.cmd.payload.wstrb:= (B(0, (bankNum-1)*bankWidth/8 bits) ## cpu_wstrb_d1) |<< (cpu_bank_index_d1*bankWidth/8)
+      sram(wayId).ports.cmd.payload.wdata:= B(0, bankNum*bankWidth bits)
+      sram(wayId).ports.cmd.payload.wstrb:= B(0, bankNum*bankWidth/8 bits)
     }
-    .elsewhen(next_level.rsp.valid && U(wayId)===victim_id){ // when read miss, read next level data, write to banks
+    .elsewhen(next_level.rsp.valid && U(wayId)===evict_id){ // when read miss, read next level data, write to banks
       sram(wayId).ports.cmd.payload.addr := next_level_bank_addr
       sram(wayId).ports.cmd.valid        := True
       sram(wayId).ports.cmd.payload.wen  := B(bankNum bits, (bankWriteBits-1 downto 0) -> True, default -> False) |<< (next_level_data_cnt*bankWriteBits)
@@ -218,12 +219,12 @@ case class DCache(p : DCacheConfig) extends Component{
       .elsewhen(is_hit && cache_hit(wayId)){
         ways(wayId).metas(cpu_set).mru := True
       } // miss and next_level data read done
-      .elsewhen(next_level_rdone && U(wayId)===victim_id){
+      .elsewhen(next_level_rdone && U(wayId)===evict_id){
         ways(wayId).metas(cpu_set_d1).vld := True
       }
     }
     // tags
-    when(next_level_rdone && U(wayId)===victim_id){
+    when(next_level_rdone && U(wayId)===evict_id){
       ways(wayId).metas(cpu_set_d1).tag := cpu_tag_d1
     }
 
@@ -237,7 +238,7 @@ case class DCache(p : DCacheConfig) extends Component{
   }
 
   // resp to cpu ports
-  cpu.rsp.payload.data := is_hit_d1 ? sram_banks_data(hit_id_d1).subdivideIn(cpuDataWidth bits)(cpu_bank_index_d1) | sram_banks_data(victim_id).subdivideIn(cpuDataWidth bits)(cpu_bank_index_d1)
+  cpu.rsp.payload.data := is_hit_d1 ? sram_banks_data(hit_id_d1).subdivideIn(cpuDataWidth bits)(cpu_bank_index_d1) | sram_banks_data(evict_id).subdivideIn(cpuDataWidth bits)(cpu_bank_index_d1)
   cpu.rsp.valid        := is_hit_d1 ? sram_banks_valid(hit_id_d1) | sram_banks_valid(evict_id_d1)
   cpu.cmd.ready        := cpu_cmd_ready
 

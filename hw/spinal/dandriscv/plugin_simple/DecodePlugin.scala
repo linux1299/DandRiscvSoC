@@ -127,7 +127,7 @@ class DecodePlugin() extends Plugin[DandRiscvSimple]
 
       // choose ALU's type
       switch(instruction){
-        is(ADD, ADDW, ADDI, ADDIW, AUIPC, SB, SH, SW, SD){
+        is(ADD, ADDW, ADDI, ADDIW, SB, SH, SW, SD){
           alu_ctrl := AluCtrlEnum.ADD.asBits
         }
         is(SUB, SUBW){

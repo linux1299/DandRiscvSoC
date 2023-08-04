@@ -96,14 +96,15 @@ with ControlService
       insert(CTRL_RS2_FROM_MEM) := hazard.ctrl_rs2_from_mem
       insert(CTRL_RS1_FROM_WB)  := hazard.ctrl_rs1_from_wb
       insert(CTRL_RS2_FROM_WB)  := hazard.ctrl_rs2_from_wb
-      arbitration.haltItself := output(INT_HOLD)
+      arbitration.haltItself :=  hazard.load_use || hazard.ctrl_load_use || output(INT_HOLD)
       arbitration.flushIt := False
     }
 
     // control memaccess stage
     memaccess plug new Area{
       import memaccess._
-      arbitration.haltItself := hazard.load_use || hazard.ctrl_load_use || output(LSU_HOLD)
+      // arbitration.haltItself := hazard.load_use || hazard.ctrl_load_use || output(LSU_HOLD)
+      arbitration.haltItself := output(LSU_HOLD)
       arbitration.flushIt := False
     }
 

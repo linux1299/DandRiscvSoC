@@ -17,7 +17,7 @@ object Riscv{
   def OP_ALU_WORD = B"0111011"
   def OP_LOAD = B"0000011"
   def OP_JALR = B"1100111"
-  def OP_JAL = B"1100111"
+  def OP_JAL = B"1101111"
   def OP_STORE = B"0100011"
   def OP_BRANCH = B"1100011"
   def OP_LUI = B"0110111"

@@ -129,7 +129,7 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
 
       // ================= caclulate alu result =====================
       switch(input(ALU_CTRL)){
-        is(AluCtrlEnum.ADD.asBits, AluCtrlEnum.AUIPC.asBits){
+        is(AluCtrlEnum.ADD.asBits){
           when(input(ALU_WORD)===True){
             alu_result := addw_result
           }.otherwise{
@@ -182,8 +182,11 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
         is(AluCtrlEnum.LUI.asBits){
           alu_result := input(IMM)
         }
+        is(AluCtrlEnum.JAL.asBits, AluCtrlEnum.JALR.asBits, AluCtrlEnum.AUIPC.asBits){
+          alu_result := add_result.asBits
+        }
         default{
-          alu_result := B(0, XLEN bits)
+          alu_result := add_result.asBits
         }
       }
 
@@ -201,7 +204,7 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
 
       // calculate pc_next
       when(input(ALU_CTRL)===AluCtrlEnum.JALR.asBits){
-        pc_next := ((src1.asSInt + input(IMM).asSInt) & ~S(1, XLEN bits)).asUInt // jalr
+        pc_next := ((branch_src1.asSInt + input(IMM).asSInt) & ~S(1, XLEN bits)).asUInt // jalr
       }.otherwise{
         pc_next := (input(PC).asSInt + input(IMM).asSInt).asUInt // jal or branch
       }
