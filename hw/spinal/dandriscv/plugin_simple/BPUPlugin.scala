@@ -35,8 +35,8 @@ class BPUPlugin(val p : PredictorConfig) extends Plugin[DandRiscvSimple]{
     val predictor_config = BPUPlugin.this.p
     val predictor = new gshare_predictor(predictor_config)
     
-    predictor.predict_pc           := fetch.output(PC)
-    predictor.predict_valid        := fetch.arbitration.isValid
+    predictor.predict_pc           := fetch.output(PC_NEXT)
+    predictor.predict_valid        := fetch.output(PREDICT_VALID)
     fetch.insert(BPU_BRANCH_TAKEN) := predictor.predict_taken
     fetch.insert(BPU_PC_NEXT)      := predictor.predict_pc_next
     predictor.train_valid          := execute.output(BRANCH_OR_JUMP)

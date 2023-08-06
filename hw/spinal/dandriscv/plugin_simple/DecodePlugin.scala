@@ -37,23 +37,30 @@ case class RegFileModule(XLEN : Int = 64) extends Component{
   val read_ports = slave(RegFileReadPorts(XLEN))
   val write_ports= slave(RegFileWritePorts(XLEN))
 
-  val wordArray = (0 until 32).map(i => {
-    BigInt(0)
-  })
-  
-  val reg_file = Mem(Bits(XLEN bits), 32) initBigInt(wordArray)
-  val read_value_1 = reg_file.readAsync(
-    address = read_ports.rs1_addr
-    )
-  val read_value_2 = reg_file.readAsync(
-    address = read_ports.rs2_addr
-  )
+  // val wordArray = (0 until 32).map(i => {
+  //   BigInt(0)
+  // })
 
-  reg_file.write(
-      enable  = write_ports.rd_wen,
-      address = write_ports.rd_addr,
-      data    = write_ports.rd_value
-    )
+  // val reg_file = Mem(Bits(XLEN bits), 32) // initBigInt(wordArray)
+  // val read_value_1 = reg_file.readAsync(
+  //   address = read_ports.rs1_addr
+  //   )
+  // val read_value_2 = reg_file.readAsync(
+  //   address = read_ports.rs2_addr
+  // )
+
+  // reg_file.write(
+  //     enable  = write_ports.rd_wen,
+  //     address = write_ports.rd_addr,
+  //     data    = write_ports.rd_value
+  //   )
+
+  val reg_file = Vec(Reg(Bits(XLEN bits)) init(0), 32).setName("reg_file")
+  val read_value_1 = reg_file(read_ports.rs1_addr)
+  val read_value_2 = reg_file(read_ports.rs2_addr)
+  when(write_ports.rd_wen && write_ports.rd_addr=/=U(0, 5 bits)){
+    reg_file(write_ports.rd_addr) := write_ports.rd_value
+  }
 
   read_ports.rs1_value := (write_ports.rd_wen && (write_ports.rd_addr===read_ports.rs1_addr) && read_ports.rs1_req) ? write_ports.rd_value | read_value_1
   read_ports.rs2_value := (write_ports.rd_wen && (write_ports.rd_addr===read_ports.rs2_addr) && read_ports.rs2_req) ? write_ports.rd_value | read_value_2
@@ -168,6 +175,24 @@ class DecodePlugin() extends Plugin[DandRiscvSimple]
         }
         is(JALR){
           alu_ctrl := AluCtrlEnum.JALR.asBits
+        }
+        is(BEQ(false)){
+          alu_ctrl := AluCtrlEnum.BEQ.asBits
+        }
+        is(BNE(false)){
+          alu_ctrl := AluCtrlEnum.BNE.asBits
+        }
+        is(BLT(false)){
+          alu_ctrl := AluCtrlEnum.BNE.asBits
+        }
+        is(BGE(false)){
+          alu_ctrl := AluCtrlEnum.BGE.asBits
+        }
+        is(BLTU(false)){
+          alu_ctrl := AluCtrlEnum.BLTU.asBits
+        }
+        is(BGEU(false)){
+          alu_ctrl := AluCtrlEnum.BGEU.asBits
         }
         default {
           alu_ctrl := B(0)

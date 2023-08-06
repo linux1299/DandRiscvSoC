@@ -39,6 +39,7 @@ with ICacheAccessService
       val int_pc_reg = Reg(UInt(pipeline.config.addressWidth bits)).setName("int_pc_reg") init(0)
       val int_en_reg = RegInit(False).setName("int_en_reg")
       val fetch_flush = (output(INT_EN) || int_en_reg || arbitration.flushIt)
+      val predict_taken = RegNext(input(BPU_BRANCH_TAKEN))
 
       val pc_FIFO = StreamFifo(
         dataType = UInt(pipeline.config.addressWidth bits),
@@ -155,6 +156,9 @@ with ICacheAccessService
 
       // insert to stage
       insert(PC) := pc_out_stream.valid ? pc_out_stream.payload | pc
+      insert(PC_NEXT) := pc_next
+      insert(PREDICT_VALID) := icache_access.cmd.fire
+      insert(PREDICT_TAKEN) := predict_taken
       insert(INSTRUCTION) := instruction_out_stream.valid ? instruction_out_stream.payload | icache_access.rsp.payload.data
       arbitration.isValid := (pc_out_stream.valid || icache_access.rsp.valid) && !fetch_flush
 

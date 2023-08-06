@@ -8,7 +8,7 @@ VSRC=..
 TARGET_ARCH=
 
 # Choose name of executable 
-PRODUCTBASE=$(VSRC)/./simWorkspace/tb_DandRiscvSimple/tb_DandRiscvSimple.simv
+PRODUCTBASE=$(VSRC)/./simWorkspace/tb_DandRiscvSmallest/tb_DandRiscvSmallest.simv
 
 PRODUCT=$(PRODUCTBASE)
 
@@ -42,7 +42,7 @@ PRE_LDFLAGS=  -no-pie  -Wl,--no-as-needed
 # Loader Flags
 LDFLAGS=-L/usr/lib/x86_64-linux-gnu -L/lib/x86_64-linux-gnu -Wl,--no-as-needed -rdynamic  -Wl,-rpath=/home/lin/vcs_verdi/vcs2018/vcs/O-2018.09-SP2/linux64/lib -L/home/lin/vcs_verdi/vcs2018/vcs/O-2018.09-SP2/linux64/lib 
 # Picarchive Flags
-PICLDFLAGS=-Wl,-rpath-link=./ -Wl,-rpath='$$ORIGIN'/tb_DandRiscvSimple.simv.daidir/ -Wl,-rpath=./tb_DandRiscvSimple.simv.daidir/ -Wl,-rpath='$$ORIGIN'/tb_DandRiscvSimple.simv.daidir//scsim.db.dir 
+PICLDFLAGS=-Wl,-rpath-link=./ -Wl,-rpath='$$ORIGIN'/tb_DandRiscvSmallest.simv.daidir/ -Wl,-rpath=./tb_DandRiscvSmallest.simv.daidir/ -Wl,-rpath='$$ORIGIN'/tb_DandRiscvSmallest.simv.daidir//scsim.db.dir 
 
 # C run time startup
 CRT0=

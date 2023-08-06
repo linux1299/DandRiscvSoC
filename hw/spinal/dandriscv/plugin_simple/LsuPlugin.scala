@@ -77,6 +77,9 @@ with DCacheAccessService
         is(MemCtrlEnum.LWU.asBits){
           data_load := data_lwu
         }
+        is(MemCtrlEnum.LD.asBits){
+          data_load := data_dcache
+        }
         default{
           data_load := B(0, XLEN bits)
         }
@@ -128,6 +131,10 @@ with DCacheAccessService
     writebackStage plug new Area{
       import writebackStage._
       insert(RD) := input(IS_LOAD) ? input(MEM_RDATA) | input(ALU_RESULT)
+
+      // for test:
+      output(PC) := input(PC)
+      output(INSTRUCTION) := input(INSTRUCTION)
     }
 }
 }

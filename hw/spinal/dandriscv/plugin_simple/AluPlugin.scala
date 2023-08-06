@@ -80,6 +80,9 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
         when(input(RS1_FROM_MEM)){
           src1 := memaccess.input(ALU_RESULT)
         }
+        .elsewhen(input(RS1_FROM_LOAD)){
+          src1 := memaccess.input(MEM_RDATA)
+        }
         .elsewhen(input(RS1_FROM_WB)){
           src1 := writebackStage.output(RD)
         }
@@ -98,6 +101,9 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
         when(input(RS2_FROM_MEM)){
           src2 := memaccess.input(ALU_RESULT)
         }
+        .elsewhen(input(RS2_FROM_LOAD)){
+          src2 := memaccess.input(MEM_RDATA)
+        }
         .elsewhen(input(RS2_FROM_WB)){
           src2 := writebackStage.output(RD)
         }
@@ -110,6 +116,9 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
       when(input(CTRL_RS1_FROM_MEM)){
         branch_src1 := memaccess.output(ALU_RESULT).asBits
       }
+      .elsewhen(input(CTRL_RS1_FROM_LOAD)){
+        branch_src1 := memaccess.output(MEM_RDATA).asBits
+      }
       .elsewhen(input(CTRL_RS1_FROM_WB)){
         branch_src1 := writebackStage.output(RD).asBits
       }
@@ -119,6 +128,9 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
 
       when(input(CTRL_RS2_FROM_MEM)){
         branch_src2 := memaccess.output(ALU_RESULT).asBits
+      }
+      .elsewhen(input(CTRL_RS2_FROM_LOAD)){
+        branch_src2 := memaccess.output(MEM_RDATA).asBits
       }
       .elsewhen(input(CTRL_RS2_FROM_WB)){
         branch_src2 := writebackStage.output(RD).asBits
@@ -200,7 +212,11 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
       val bgeu_result = bgeu && (branch_src1.asUInt >= branch_src2.asUInt)
       val branch_taken = beq_result || bne_result || blt_result || bge_result || bltu_result || bgeu_result || jal || jalr
       val branch_history = RegInit(U(0, PredictorHistoryLen bits))
-      branch_history := (branch_history(PredictorHistoryLen-2 downto 0).asBits ## branch_taken).asUInt
+      // branch_history := (branch_history(PredictorHistoryLen-2 downto 0).asBits ## branch_taken).asUInt
+      when(arbitration.isFiring){
+        branch_history := (branch_history(PredictorHistoryLen-2 downto 0).asBits ## branch_taken).asUInt
+      }
+      
 
       // calculate pc_next
       when(input(ALU_CTRL)===AluCtrlEnum.JALR.asBits){
@@ -211,12 +227,12 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
       // redirect if predict wrong
       when(branch_or_jump){
         when(branch_taken){ // real: branch taken; predict: not taken or taken wrong pc
-          when(!input(BPU_BRANCH_TAKEN) || (input(BPU_PC_NEXT)=/=pc_next)){
+          when(!input(PREDICT_TAKEN) || (input(PC_NEXT)=/=pc_next)){
             redirect_valid := arbitration.isFiring
             redirect_pc_next := pc_next
           }
         }.otherwise{ // real: not taken; predict: taken
-          when(input(BPU_BRANCH_TAKEN)){
+          when(input(PREDICT_TAKEN)){
             redirect_valid := arbitration.isFiring
             redirect_pc_next := input(PC) + 4
           }

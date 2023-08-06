@@ -17,12 +17,16 @@ case class ControlPorts() extends Bundle {
 
   val rs1_from_mem = Bool()
   val rs2_from_mem = Bool()
+  val rs1_from_load = Bool()
+  val rs2_from_load = Bool()
   val rs1_from_wb = Bool()
   val rs2_from_wb = Bool()
   val load_use = Bool()
 
   val ctrl_rs1_from_mem = Bool()
   val ctrl_rs2_from_mem = Bool()
+  val ctrl_rs1_from_load= Bool()
+  val ctrl_rs2_from_load= Bool()
   val ctrl_rs1_from_wb = Bool()
   val ctrl_rs2_from_wb = Bool()
   val ctrl_load_use = Bool()
@@ -58,13 +62,17 @@ with ControlService
       // data hazard detect
       hazard.rs1_from_mem := memaccess.arbitration.isValid && memaccess.output(RD_WEN)      && memaccess.output(RD_ADDR)=/=U(0, 5 bits)      && memaccess.output(RD_ADDR)===execute.output(RS1_ADDR) && !memaccess.output(IS_LOAD)
       hazard.rs2_from_mem := memaccess.arbitration.isValid && memaccess.output(RD_WEN)      && memaccess.output(RD_ADDR)=/=U(0, 5 bits)      && memaccess.output(RD_ADDR)===execute.output(RS2_ADDR) && !memaccess.output(IS_LOAD)
-      hazard.rs1_from_wb  := writebackStage.arbitration.isValid && writebackStage.output(RD_WEN) && writebackStage.output(RD_ADDR)=/=U(0, 5 bits) && writebackStage.output(RD_ADDR)===execute.output(RS1_ADDR) && memaccess.output(RD_ADDR)=/=execute.output(RS1_ADDR)
-      hazard.rs2_from_wb  := writebackStage.arbitration.isValid && writebackStage.output(RD_WEN) && writebackStage.output(RD_ADDR)=/=U(0, 5 bits) && writebackStage.output(RD_ADDR)===execute.output(RS2_ADDR) && memaccess.output(RD_ADDR)=/=execute.output(RS2_ADDR)
+      hazard.rs1_from_load := memaccess.arbitration.isValid && memaccess.output(RD_WEN)      && memaccess.output(RD_ADDR)=/=U(0, 5 bits)      && memaccess.output(RD_ADDR)===execute.output(RS1_ADDR) && memaccess.output(IS_LOAD)
+      hazard.rs2_from_load := memaccess.arbitration.isValid && memaccess.output(RD_WEN)      && memaccess.output(RD_ADDR)=/=U(0, 5 bits)      && memaccess.output(RD_ADDR)===execute.output(RS2_ADDR) && memaccess.output(IS_LOAD)
+      hazard.rs1_from_wb  := writebackStage.arbitration.isValid && writebackStage.output(RD_WEN) && writebackStage.output(RD_ADDR)=/=U(0, 5 bits) && writebackStage.output(RD_ADDR)===execute.output(RS1_ADDR) && (memaccess.output(RD_ADDR)=/=execute.output(RS1_ADDR) || !memaccess.arbitration.isValid)
+      hazard.rs2_from_wb  := writebackStage.arbitration.isValid && writebackStage.output(RD_WEN) && writebackStage.output(RD_ADDR)=/=U(0, 5 bits) && writebackStage.output(RD_ADDR)===execute.output(RS2_ADDR) && (memaccess.output(RD_ADDR)=/=execute.output(RS2_ADDR) || !memaccess.arbitration.isValid)
       hazard.load_use     := memaccess.arbitration.isValid && memaccess.output(IS_LOAD)     && ((memaccess.output(RD_ADDR)===execute.output(RS1_ADDR) && !hazard.rs1_from_wb) || (memaccess.output(RD_ADDR)===execute.output(RS2_ADDR) && !hazard.rs2_from_wb))
       
       // control hazadr detect
       hazard.ctrl_rs1_from_mem := execute.arbitration.isValid &&  execute.output(BRANCH_OR_JALR) && hazard.rs1_from_mem
       hazard.ctrl_rs2_from_mem := execute.arbitration.isValid &&  execute.output(BRANCH_OR_JALR) && hazard.rs2_from_mem
+      hazard.ctrl_rs1_from_load:= execute.arbitration.isValid &&  execute.output(BRANCH_OR_JALR) && hazard.rs1_from_load
+      hazard.ctrl_rs2_from_load:= execute.arbitration.isValid &&  execute.output(BRANCH_OR_JALR) && hazard.rs2_from_load
       hazard.ctrl_rs1_from_wb  := execute.arbitration.isValid &&  execute.output(BRANCH_OR_JALR) && hazard.rs1_from_wb
       hazard.ctrl_rs2_from_wb  := execute.arbitration.isValid &&  execute.output(BRANCH_OR_JALR) && hazard.rs2_from_wb
       hazard.ctrl_load_use     := execute.arbitration.isValid &&  execute.output(BRANCH_OR_JALR) && hazard.load_use
@@ -90,10 +98,14 @@ with ControlService
       import execute._
       insert(RS1_FROM_MEM) := hazard.rs1_from_mem
       insert(RS2_FROM_MEM) := hazard.rs2_from_mem
+      insert(RS1_FROM_LOAD) := hazard.rs1_from_load
+      insert(RS2_FROM_LOAD) := hazard.rs2_from_load
       insert(RS1_FROM_WB) := hazard.rs1_from_wb
       insert(RS2_FROM_WB) := hazard.rs2_from_wb
       insert(CTRL_RS1_FROM_MEM) := hazard.ctrl_rs1_from_mem
       insert(CTRL_RS2_FROM_MEM) := hazard.ctrl_rs2_from_mem
+      insert(CTRL_RS1_FROM_LOAD) := hazard.ctrl_rs1_from_load
+      insert(CTRL_RS2_FROM_LOAD) := hazard.ctrl_rs2_from_load
       insert(CTRL_RS1_FROM_WB)  := hazard.ctrl_rs1_from_wb
       insert(CTRL_RS2_FROM_WB)  := hazard.ctrl_rs2_from_wb
       arbitration.haltItself :=  hazard.load_use || hazard.ctrl_load_use || output(INT_HOLD)

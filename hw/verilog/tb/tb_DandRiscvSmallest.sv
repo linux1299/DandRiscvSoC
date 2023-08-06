@@ -31,6 +31,27 @@ integer tmp;
 integer i;
 integer j;
 
+// ========================== axi clk and reset =============================	 
+initial begin
+  clk_axi_in = 'b0     ;  
+  forever begin
+    #`half_axi_clk_period 
+    clk_axi_in = ~clk_axi_in ;
+  end
+end
+initial begin
+  rst_n = 1'b0;
+  # 50
+  rst_n = 1'b1;
+end
+
+// ========================== Time out =============================
+initial begin
+  #20000
+  $display("\n============== TimeOut ! Simulation finish ! ============\n");
+  $finish;
+end
+
 // ============================== dump fsdb =============================
 initial begin
 	$display("\n================== Time:%d, Dump Start ================\n",$time);
@@ -42,7 +63,7 @@ end
 initial begin
 
   // fd = $fopen ("./ysyx-workbench/am-kernels/tests/alu-tests/build/alutest-riscv64-nemu.bin", "rb");
-  fd = $fopen ("./ysyx-workbench/am-kernels/tests/cpu-tests/build/add-longlong-riscv64-nemu.bin", "rb");
+  fd = $fopen ("../../oscpu/bin/non-output/cpu-tests/add-cpu-tests.bin", "rb");
   tmp = $fread(ram_tmp, fd);
 
   for (i = 0; i < 1024; i = i + 1) begin
@@ -63,12 +84,22 @@ always@(posedge clk_axi_in) begin
     icache_rsp_valid <= 1'b0;
   end
 
+  // if(dcache_cmd_valid) begin
+  //   dcache_rsp_valid <= 1'b1;
+  //   dcache_rsp_payload_data <= ram_d[dcache_cmd_payload_addr[12:3]];
+  // end
+  // else begin
+  //   dcache_rsp_valid <= 1'b0;
+  // end
+end
+
+always@(*) begin
   if(dcache_cmd_valid) begin
-    dcache_rsp_valid <= 1'b1;
-    dcache_rsp_payload_data <= ram_d[dcache_cmd_payload_addr[12:3]];
+    dcache_rsp_valid = 1'b1;
+    dcache_rsp_payload_data = ram_d[dcache_cmd_payload_addr[12:3]];
   end
   else begin
-    dcache_rsp_valid <= 1'b0;
+    dcache_rsp_valid = 1'b0;
   end
 end
 

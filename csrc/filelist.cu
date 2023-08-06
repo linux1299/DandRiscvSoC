@@ -1,20 +1,20 @@
 PIC_LD=ld
 
 ARCHIVE_OBJS=
-ARCHIVE_OBJS += _82096_archive_1.so
-_82096_archive_1.so : archive.36/_82096_archive_1.a
+ARCHIVE_OBJS += _171571_archive_1.so
+_171571_archive_1.so : archive.16/_171571_archive_1.a
 	@$(AR) -s $<
-	@$(PIC_LD) -shared  -Bsymbolic  -o .//../simWorkspace/tb_DandRiscvSimple/tb_DandRiscvSimple.simv.daidir//_82096_archive_1.so --whole-archive $< --no-whole-archive
+	@$(PIC_LD) -shared  -Bsymbolic  -o .//../simWorkspace/tb_DandRiscvSmallest/tb_DandRiscvSmallest.simv.daidir//_171571_archive_1.so --whole-archive $< --no-whole-archive
 	@rm -f $@
-	@ln -sf .//../simWorkspace/tb_DandRiscvSimple/tb_DandRiscvSimple.simv.daidir//_82096_archive_1.so $@
+	@ln -sf .//../simWorkspace/tb_DandRiscvSmallest/tb_DandRiscvSmallest.simv.daidir//_171571_archive_1.so $@
 
 
 ARCHIVE_OBJS += _prev_archive_1.so
-_prev_archive_1.so : archive.36/_prev_archive_1.a
+_prev_archive_1.so : archive.16/_prev_archive_1.a
 	@$(AR) -s $<
-	@$(PIC_LD) -shared  -Bsymbolic  -o .//../simWorkspace/tb_DandRiscvSimple/tb_DandRiscvSimple.simv.daidir//_prev_archive_1.so --whole-archive $< --no-whole-archive
+	@$(PIC_LD) -shared  -Bsymbolic  -o .//../simWorkspace/tb_DandRiscvSmallest/tb_DandRiscvSmallest.simv.daidir//_prev_archive_1.so --whole-archive $< --no-whole-archive
 	@rm -f $@
-	@ln -sf .//../simWorkspace/tb_DandRiscvSimple/tb_DandRiscvSimple.simv.daidir//_prev_archive_1.so $@
+	@ln -sf .//../simWorkspace/tb_DandRiscvSmallest/tb_DandRiscvSmallest.simv.daidir//_prev_archive_1.so $@
 
 
 
@@ -33,9 +33,9 @@ $(O0_OBJS) : %.o: %.c
 	$(CC_CG) $(CFLAGS_CG) -c -o $@ $<
 
 $(VCS_ARC0) : $(VCS_OBJS0)
-	$(PIC_LD) -shared  -Bsymbolic  -o .//../simWorkspace/tb_DandRiscvSimple/tb_DandRiscvSimple.simv.daidir//$(VCS_ARC0) $(VCS_OBJS0)
+	$(PIC_LD) -shared  -Bsymbolic  -o .//../simWorkspace/tb_DandRiscvSmallest/tb_DandRiscvSmallest.simv.daidir//$(VCS_ARC0) $(VCS_OBJS0)
 	rm -f $(VCS_ARC0)
-	@ln -sf .//../simWorkspace/tb_DandRiscvSimple/tb_DandRiscvSimple.simv.daidir//$(VCS_ARC0) $(VCS_ARC0)
+	@ln -sf .//../simWorkspace/tb_DandRiscvSmallest/tb_DandRiscvSmallest.simv.daidir//$(VCS_ARC0) $(VCS_ARC0)
 
 CU_UDP_OBJS = \
 
