@@ -56,5 +56,5 @@ target/
 verdiLog/
 .bloop/
 .bsp/
-.metals/
+.metals/*
 project/

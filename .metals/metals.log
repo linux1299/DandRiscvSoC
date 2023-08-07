@@ -4800,3 +4800,41 @@ Caused by: java.lang.InterruptedException
 2023.08.04 16:37:37 INFO  compiling projectname (5 scala sources)
 2023.08.04 16:37:38 WARN  2 deprecations (since 2.13.3); re-run with -deprecation for details
 2023.08.04 16:37:38 INFO  time: compiled projectname in 1.25s
+2023.08.07 19:31:54 INFO  Started: Metals version 1.0.0 in folders '/home/lin/SpinalProjects/DandRiscvSoC' for client Visual Studio Code 1.80.2.[0m
+Aug 07, 2023 7:31:54 PM org.flywaydb.core.internal.license.VersionPrinter printVersionOnly
+INFO: Flyway Community Edition 9.20.1 by Redgate
+Aug 07, 2023 7:31:54 PM org.flywaydb.core.internal.license.VersionPrinter printVersion
+INFO: See release notes here: https://rd.gt/416ObMi
+Aug 07, 2023 7:31:54 PM org.flywaydb.core.internal.license.VersionPrinter printVersion
+INFO: 
+Aug 07, 2023 7:31:55 PM org.flywaydb.core.internal.database.base.BaseDatabaseType createDatabase
+INFO: Database: jdbc:h2:file:/home/lin/SpinalProjects/DandRiscvSoC/.metals/metals (H2 2.1)
+Aug 07, 2023 7:31:55 PM org.flywaydb.core.internal.command.DbValidate validate
+INFO: Successfully validated 4 migrations (execution time 00:00.024s)
+Aug 07, 2023 7:31:55 PM org.flywaydb.core.internal.command.DbMigrate migrateGroup
+INFO: Current version of schema "PUBLIC": 4
+Aug 07, 2023 7:31:55 PM org.flywaydb.core.internal.command.DbMigrate logSummary
+INFO: Schema "PUBLIC" is up to date. No migration necessary.
+2023.08.07 19:31:55 INFO  time: initialize in 0.96s[0m
+2023.08.07 19:31:57 INFO  Attempting to connect to the build server...[0m
+2023.08.07 19:31:57 INFO  Bloop uses /usr/lib/jvm/java-11-openjdk-amd64 defined at /home/lin/.bloop/bloop.json[0m
+2023.08.07 19:32:00 INFO  no build target found for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/DandRiscvSimple.scala. Using presentation compiler with project's scala-library version: 3.3.0[0m
+2023.08.07 19:32:01 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/lin/SpinalProjects/DandRiscvSoC/.metals/bsp.trace.json or /home/lin/.cache/metals/bsp.trace.json[0m
+2023.08.07 19:32:01 INFO  Attempting to connect to the build server...[0m
+2023.08.07 19:32:01 INFO  Bloop uses /usr/lib/jvm/java-11-openjdk-amd64 defined at /home/lin/.bloop/bloop.json[0m
+2023.08.07 19:32:01 INFO  Attempting to connect to the build server...[0m
+2023.08.07 19:32:01 INFO  Bloop uses /usr/lib/jvm/java-11-openjdk-amd64 defined at /home/lin/.bloop/bloop.json[0m
+2023.08.07 19:32:01 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/lin/SpinalProjects/DandRiscvSoC/project/.metals/bsp.trace.json or /home/lin/.cache/metals/bsp.trace.json[0m
+2023.08.07 19:32:02 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/lin/SpinalProjects/DandRiscvSoC/project/project/.metals/bsp.trace.json or /home/lin/.cache/metals/bsp.trace.json[0m
+2023.08.07 19:32:01 INFO  time: Connected to build server in 4.97s[0m
+2023.08.07 19:32:01 INFO  Connected to Build server: Bloop v1.5.8[0m
+2023.08.07 19:32:02 INFO  time: Imported build in 0.12s[0m
+2023.08.07 19:32:03 INFO  time: code lens generation in 6.31s[0m
+2023.08.07 19:32:03 INFO  no build target found for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/FetchPlugin.scala. Using presentation compiler with project's scala-library version: 3.3.0[0m
+2023.08.07 19:32:03 INFO  time: code lens generation in 6.97s[0m
+2023.08.07 19:32:04 WARN  Could not find java sources in /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/lib/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/lib/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/lib/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/lib/src.zip. Java symbols will not be available.[0m
+2023.08.07 19:32:07 INFO  time: code lens generation in 10s[0m
+2023.08.07 19:32:07 INFO  time: code lens generation in 10s[0m
+2023.08.07 19:32:07 WARN  Could not find java sources in /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/lib/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/lib/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/lib/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/lib/src.zip. Java symbols will not be available.[0m
+2023.08.07 19:32:07 WARN  Could not find java sources in /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/lib/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/lib/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/lib/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/lib/src.zip. Java symbols will not be available.[0m
+2023.08.07 19:32:07 INFO  time: indexed workspace in 5.15s[0m
