@@ -36,101 +36,118 @@ with DCacheAccessService
     memaccess plug new Area{
       import memaccess._
 
-      val data_dcache = dcache_access.rsp.payload.data
-      val data_lb     = B((XLEN-8-1 downto 0) -> data_dcache(7)) ## data_dcache(7 downto 0)
-      val data_lbu    = B((XLEN-8-1 downto 0) -> False) ## data_dcache(7 downto 0)
-      val data_lh     = B((XLEN-16-1 downto 0) -> data_dcache(15)) ## data_dcache(15 downto 0)
-      val data_lhu    = B((XLEN-16-1 downto 0) -> False) ## data_dcache(15 downto 0)
-      val data_lw     = B((XLEN-32-1 downto 0) -> data_dcache(31)) ## data_dcache(31 downto 0)
-      val data_lwu    = B((XLEN-32-1 downto 0) -> False) ## data_dcache(31 downto 0)
-      val data_load   = Bits(XLEN bits)
+      val dcache_rdata = dcache_access.rsp.payload.data
+      val dcache_lb   = B((XLEN-8-1 downto 0) -> dcache_rdata(7)) ## dcache_rdata(7 downto 0)
+      val dcache_lbu  = B((XLEN-8-1 downto 0) -> False) ## dcache_rdata(7 downto 0)
+      val dcache_lh   = B((XLEN-16-1 downto 0) -> dcache_rdata(15)) ## dcache_rdata(15 downto 0)
+      val dcache_lhu  = B((XLEN-16-1 downto 0) -> False) ## dcache_rdata(15 downto 0)
+      val dcache_lw   = B((XLEN-32-1 downto 0) -> dcache_rdata(31)) ## dcache_rdata(31 downto 0)
+      val dcache_lwu  = B((XLEN-32-1 downto 0) -> False) ## dcache_rdata(31 downto 0)
+      val dcache_data_load = Bits(XLEN bits)
 
       val mem_wdata = input(MEM_WDATA)
-      val wdata_sb  = B((XLEN-8-1 downto 0) -> mem_wdata(7)) ## mem_wdata(7 downto 0)
-      val wdata_sh  = B((XLEN-16-1 downto 0) -> mem_wdata(15)) ## mem_wdata(15 downto 0)
-      val wdata_sw  = B((XLEN-32-1 downto 0) -> mem_wdata(31)) ## mem_wdata(31 downto 0)
+      val dcache_sb = B((XLEN-8-1 downto 0) -> mem_wdata(7)) ## mem_wdata(7 downto 0)
+      val dcache_sh = B((XLEN-16-1 downto 0) -> mem_wdata(15)) ## mem_wdata(15 downto 0)
+      val dcache_sw = B((XLEN-32-1 downto 0) -> mem_wdata(31)) ## mem_wdata(31 downto 0)
+      val dcache_wdata = Bits(XLEN bits)
+      val dcache_wstrb = Bits(XLEN/8 bits)
+      val dcache_wen   = input(IS_STORE)
 
-      val addr      = input(ALU_RESULT).asUInt
-      val wdata     = Bits(XLEN bits)
-      val wstrb     = Bits(XLEN/8 bits)
-      val size      = UInt(3 bits)
-      val wen       = input(IS_STORE)
+      val cpu_addr  = input(ALU_RESULT).asUInt
       val is_mem    = input(IS_LOAD) || input(IS_STORE)
-      val is_timer  = (addr===MTIME) || (addr===MTIMECMP)
-
+      val is_timer  = (cpu_addr===MTIME) || (cpu_addr===MTIMECMP)
+      
+      val lsu_ready = RegInit(True)
+      val lsu_addr  = UInt(XLEN bits)
+      val lsu_rdata = Bits(XLEN bits)
+      val lsu_wdata = Bits(XLEN bits)
+      val lsu_wen   = Bool()
+      val lsu_wstrb = Bits(XLEN/8 bits)
+      
       switch(input(MEM_CTRL)){
         is(MemCtrlEnum.LB.asBits){
-          data_load := data_lb
+          dcache_data_load := dcache_lb
         }
         is(MemCtrlEnum.LBU.asBits){
-          data_load := data_lbu
+          dcache_data_load := dcache_lbu
         }
         is(MemCtrlEnum.LH.asBits){
-          data_load := data_lh
+          dcache_data_load := dcache_lh
         }
         is(MemCtrlEnum.LHU.asBits){
-          data_load := data_lhu
+          dcache_data_load := dcache_lhu
         }
         is(MemCtrlEnum.LW.asBits){
-          data_load := data_lw
+          dcache_data_load := dcache_lw
         }
         is(MemCtrlEnum.LWU.asBits){
-          data_load := data_lwu
+          dcache_data_load := dcache_lwu
         }
         is(MemCtrlEnum.LD.asBits){
-          data_load := data_dcache
+          dcache_data_load := dcache_rdata
         }
         default{
-          data_load := B(0, XLEN bits)
+          dcache_data_load := B(0, XLEN bits)
         }
       }
 
       switch(input(MEM_CTRL)){
         is(MemCtrlEnum.SB.asBits){
-          wdata := wdata_sb
-          wstrb := B(wstrb.getWidth bits, 0->true, default -> false)
-          size  := U(0, 3 bits)
+          dcache_wdata := dcache_sb
+          dcache_wstrb := B(dcache_wstrb.getWidth bits, 0->true, default -> false)
         }
         is(MemCtrlEnum.SH.asBits){
-          wdata := wdata_sh
-          wstrb := B(wstrb.getWidth bits, (1 downto 0)->true, default -> false)
-          size  := U(1, 3 bits)
+          dcache_wdata := dcache_sh
+          dcache_wstrb := B(dcache_wstrb.getWidth bits, (1 downto 0)->true, default -> false)
         }
         is(MemCtrlEnum.SW.asBits){
-          wdata := wdata_sw
-          wstrb := B(wstrb.getWidth bits, (3 downto 0)->true, default -> false)
-          size  := U(2, 3 bits)
+          dcache_wdata := dcache_sw
+          dcache_wstrb := B(dcache_wstrb.getWidth bits, (3 downto 0)->true, default -> false)
         }
         is(MemCtrlEnum.SD.asBits){
-          wdata := mem_wdata
-          wstrb := B(wstrb.getWidth bits, (7 downto 0)->true)
-          size  := U(3, 3 bits)
+          dcache_wdata := mem_wdata
+          dcache_wstrb := B(dcache_wstrb.getWidth bits, (7 downto 0)->true)
         }
         default{
-          wdata := B(0, XLEN bits)
-          wstrb := B(wstrb.getWidth bits, default -> false)
-          size  := U(0, 3 bits)
+          dcache_wdata := B(0, XLEN bits)
+          dcache_wstrb := B(dcache_wstrb.getWidth bits, default -> false)
         }
       }
 
+      // for unalign mem access
+      // val lsu_aligned = cpu_addr(2 downto 0)===U"3'd0" // 8 byte align
+      // val lsu_addr_end = UInt(4 bits)
+      // val lsu_crossover = cpu_addr(3) // LSU req cross over 8 byte boundry
+      // val lsu_len = lsu_aligned ? U(0, 8 bits) | (U(0, 7 bits) ## lsu_crossover).asUInt
+      // val lsu_addr_align = cpu_addr(63 downto 3) ## U(0, 3 bits)
+      // val lsu_offset_align_low = ((U(0, 3 bits) ## cpu_addr(2 downto 0)) |<< 3).asUInt
+      // val lsu_offset_align_high= UInt(6 bits)
+      // val lsu_full_mask = Bits(128 bits)
+      // val lsu_full_strb = Bits(16 bits)
+      // lsu_offset_align_high := U(64, 7 bits) - lsu_offset_align_low
+      lsu_rdata := dcache_data_load //TODO:need add unalign access
+      lsu_wdata := dcache_wdata //TODO:need add unalign access
+      lsu_addr  := cpu_addr //TODO:need add unalign access
+      lsu_wen   := dcache_wen
+      lsu_wstrb := dcache_wstrb
+
       // output mem stage
-      insert(MEM_RDATA):= data_load
-      insert(LSU_WDATA):= wdata
+      insert(LSU_RDATA):= lsu_rdata
+      insert(LSU_WDATA):= lsu_wdata
       insert(TIMER_CEN):= is_timer && is_mem && arbitration.isFiring
       insert(LSU_HOLD) := !dcache_access.cmd.ready
          
       // connect to dcache
       dcache_access.cmd.valid        := !is_timer && is_mem && arbitration.isValid
-      dcache_access.cmd.payload.addr := addr
-      dcache_access.cmd.payload.wen  := wen
-      dcache_access.cmd.payload.wdata:= wdata
-      dcache_access.cmd.payload.wstrb:= wstrb
-      dcache_access.cmd.payload.size := size
+      dcache_access.cmd.payload.addr := lsu_addr
+      dcache_access.cmd.payload.wen  := lsu_wen
+      dcache_access.cmd.payload.wdata:= lsu_wdata
+      dcache_access.cmd.payload.wstrb:= lsu_wstrb
     }
 
     writebackStage plug new Area{
       import writebackStage._
-      insert(RD) := input(IS_LOAD) ? input(MEM_RDATA) | input(ALU_RESULT)
+      insert(RD) := input(IS_LOAD) ? input(LSU_RDATA) | input(ALU_RESULT)
 
       // for test:
       output(PC) := input(PC)

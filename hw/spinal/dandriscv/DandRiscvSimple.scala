@@ -94,7 +94,7 @@ case class DandRiscvSimpleConfig(){
   object REDIRECT_PC_NEXT extends Stageable(UInt(addressWidth bits))
 
   // load store unit
-  object MEM_RDATA extends Stageable(Bits(XLEN bits))
+  object LSU_RDATA extends Stageable(Bits(XLEN bits))
   object LSU_WDATA extends Stageable(Bits(XLEN bits))
   object LSU_HOLD extends Stageable(Bool())
   object TIMER_CEN extends Stageable(Bool())
@@ -109,14 +109,14 @@ case class DandRiscvSimpleConfig(){
   // control unit
   object RS1_FROM_MEM extends Stageable(Bool())
   object RS2_FROM_MEM extends Stageable(Bool())
-  object RS1_FROM_LOAD extends Stageable(Bool())
-  object RS2_FROM_LOAD extends Stageable(Bool())
+  // object RS1_FROM_LOAD extends Stageable(Bool())
+  // object RS2_FROM_LOAD extends Stageable(Bool())
   object RS1_FROM_WB extends Stageable(Bool())
   object RS2_FROM_WB extends Stageable(Bool())
   object CTRL_RS1_FROM_MEM extends Stageable(Bool())
   object CTRL_RS2_FROM_MEM extends Stageable(Bool())
-  object CTRL_RS1_FROM_LOAD extends Stageable(Bool())
-  object CTRL_RS2_FROM_LOAD extends Stageable(Bool())
+  // object CTRL_RS1_FROM_LOAD extends Stageable(Bool())
+  // object CTRL_RS2_FROM_LOAD extends Stageable(Bool())
   object CTRL_RS1_FROM_WB extends Stageable(Bool())
   object CTRL_RS2_FROM_WB extends Stageable(Bool())
   

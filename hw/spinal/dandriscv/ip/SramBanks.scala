@@ -31,7 +31,7 @@ case class SramPorts(bankNum : Int, bankDepthBits : Int, bankWidth : Int) extend
   }
 }
 
-case class SramBanks(wayNum: Int = 2, bankNum : Int = 2, bankWidth : Int = 64, bankDepthBits : Int = 6) extends Component{
+case class SramBanks(syncRead: Boolean, wayNum: Int = 2, bankNum : Int = 2, bankWidth : Int = 64, bankDepthBits : Int = 6) extends Component{
 
   val wordCount = pow(2, bankDepthBits.toDouble).toInt
   val sram = for(i<-0 until wayNum) yield new Area{
@@ -47,18 +47,39 @@ case class SramBanks(wayNum: Int = 2, bankNum : Int = 2, bankWidth : Int = 64, b
         mask    = ports.cmd.payload.wstrb((j+1)*bankWidth/8-1 downto j*bankWidth/8)
       )
 
-      ports.rsp.data((j+1)*bankWidth-1 downto j*bankWidth) := bank.readSync(
+      if(syncRead){
+        ports.rsp.data((j+1)*bankWidth-1 downto j*bankWidth) := bank.readSync(
         enable  = ports.cmd.valid,
         address = ports.cmd.payload.addr
       )
+      }
+      else{
+        ports.rsp.data((j+1)*bankWidth-1 downto j*bankWidth) := bank.readAsync(
+        address = ports.cmd.payload.addr
+      )
+      }
+      
     }
 
-    val rsp_valid = RegInit(False)
-    when(ports.cmd.valid && ports.cmd.payload.wen===B(0, bankNum bits)){
-      rsp_valid := True
-    }.otherwise{
-      rsp_valid := False
+    if (syncRead){
+      val rsp_valid = RegInit(False)
+      when(ports.cmd.valid && ports.cmd.payload.wen===B(0, bankNum bits)){
+        rsp_valid := True
+      }.otherwise{
+        rsp_valid := False
+      }
+      ports.rsp.valid := rsp_valid
     }
-    ports.rsp.valid := rsp_valid
+    else{
+      val rsp_valid = Bool()
+      when(ports.cmd.valid && ports.cmd.payload.wen===B(0, bankNum bits)){
+        rsp_valid := True
+      }.otherwise{
+        rsp_valid := False
+      }
+      ports.rsp.valid := rsp_valid
+    }
+    
+    
   }
 }
