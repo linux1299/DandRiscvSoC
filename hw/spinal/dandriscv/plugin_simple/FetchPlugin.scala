@@ -5,6 +5,7 @@ import spinal.lib._
 import spinal.lib.fsm._
 
 import dandriscv._
+import dandriscv.ip._
 import dandriscv.plugin._
 import dandriscv.plugin_simple._
 
@@ -41,18 +42,20 @@ with ICacheAccessService
       val fetch_flush = (output(INT_EN) || int_en_reg || arbitration.flushIt)
       val predict_taken = RegNext(input(BPU_BRANCH_TAKEN))
 
-      val pc_FIFO = StreamFifo(
-        dataType = UInt(pipeline.config.addressWidth bits),
-        depth    = 2
-      )
-      val instruction_FIFO = StreamFifo(
-        dataType = Bits(32 bits),
-        depth    = 2
-      )
-      val pc_in_stream = Stream(UInt(pipeline.config.addressWidth bits))
+      // val pc_FIFO = StreamFifo(
+      //   dataType = UInt(pipeline.config.addressWidth bits),
+      //   depth    = 2
+      // )
+      // val instruction_FIFO = StreamFifo(
+      //   dataType = Bits(32 bits),
+      //   depth    = 2
+      // )
+      val pc_in_stream =  Stream(UInt(pipeline.config.addressWidth bits))
       val pc_out_stream = Stream(UInt(pipeline.config.addressWidth bits))
+      val pc_stream_fifo = FIFO(UInt(pipeline.config.addressWidth bits), 2)
       val instruction_in_stream = Stream(Bits(32 bits))
-      val instruction_out_stream = Stream(Bits(32 bits))
+      val instruction_out_stream =Stream(Bits(32 bits))
+      val instruction_stream_fifo = FIFO(Bits(32 bits), 2)
 
       val fetchFSM = new Area{
         val IDLE  = U(0 , 2 bits).setName("IDLE")
@@ -143,17 +146,23 @@ with ICacheAccessService
       }
 
       // output pc and instruction from FIFO or icache
-      pc_in_stream.valid   := icache_access.rsp.valid && arbitration.isStuck
+      pc_in_stream.valid   := icache_access.rsp.valid && (arbitration.isStuck || fetchFSM.fetch_state===fetchFSM.HALT) //TODO:all pc stream into FIFO
       pc_in_stream.payload := pc
       pc_out_stream.ready  := !arbitration.isStuck
-      pc_FIFO.io.push << pc_in_stream
-      pc_FIFO.io.pop  >> pc_out_stream
+      // pc_stream_fifo.ports.s_ports.valid := pc_in_stream.valid
+      // pc_stream_fifo.ports.s_ports.payload := pc_in_stream.payload
+      // pc_stream_fifo.ports.m_ports.ready := pc_out_stream.ready
+      // pc_FIFO.io.push << pc_in_stream
+      // pc_FIFO.io.pop  >> pc_out_stream
 
       instruction_in_stream.valid   := icache_access.rsp.valid && arbitration.isStuck
       instruction_in_stream.payload := icache_access.rsp.payload.data
       instruction_out_stream.ready  := !arbitration.isStuck
-      instruction_FIFO.io.push << instruction_in_stream
-      instruction_FIFO.io.pop  >> instruction_out_stream
+      // instruction_FIFO.io.push << instruction_in_stream
+      // instruction_FIFO.io.pop  >> instruction_out_stream
+      // instruction_stream_fifo.ports.s_ports.valid := instruction_in_stream.valid
+      // instruction_stream_fifo.ports.s_ports.payload := instruction_in_stream.payload
+      // instruction_stream_fifo.ports.m_ports.ready := instruction_out_stream.ready
 
       // insert to stage
       insert(PC) := pc_out_stream.valid ? pc_out_stream.payload | pc
@@ -161,7 +170,7 @@ with ICacheAccessService
       insert(PREDICT_VALID) := icache_access.cmd.fire
       insert(PREDICT_TAKEN) := predict_taken
       insert(INSTRUCTION) := instruction_out_stream.valid ? instruction_out_stream.payload | icache_access.rsp.payload.data
-      arbitration.isValid := (pc_out_stream.valid || (icache_access.rsp.valid && !arbitration.isStuck)) && !fetch_flush
+      arbitration.isValid := (pc_out_stream.valid || (icache_access.rsp.valid && !(arbitration.isStuck || fetchFSM.fetch_state===fetchFSM.HALT))) && !fetch_flush
 
       // send cmd to icache
       icache_access.cmd.valid := fetch_valid && !fetch_flush

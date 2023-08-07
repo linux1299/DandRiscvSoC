@@ -127,7 +127,7 @@ DandRiscvSimple u_DandRiscvSimple(
     .dcache_cmd_payload_wen   ( dcache_cmd_payload_wen   ),
     .dcache_cmd_payload_wdata ( dcache_cmd_payload_wdata ),
     .dcache_cmd_payload_wstrb ( dcache_cmd_payload_wstrb ),
-    .dcache_cmd_payload_size  ( dcache_cmd_payload_size  ),
+    // .dcache_cmd_payload_size  ( dcache_cmd_payload_size  ),
     .dcache_rsp_valid         ( dcache_rsp_valid         ),
     .dcache_rsp_payload_data  ( dcache_rsp_payload_data  ),
     .clk                      ( clk_axi_in               ),
