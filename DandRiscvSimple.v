@@ -1,6 +1,6 @@
 // Generator : SpinalHDL v1.8.1    git head : 2a7592004363e5b40ec43e1f122ed8641cd8965b
 // Component : DandRiscvSimple
-// Git hash  : 0a1b179f16b1f8cd90d53469bd7bd0a863cdd2e3
+// Git hash  : d7e2bf3a65465d65762c061b1018950f57c99076
 
 `timescale 1ns/1ps
 
@@ -16,7 +16,6 @@ module DandRiscvSimple (
   output              dcache_cmd_payload_wen,
   output     [63:0]   dcache_cmd_payload_wdata,
   output     [7:0]    dcache_cmd_payload_wstrb,
-  output     [2:0]    dcache_cmd_payload_size,
   input               dcache_rsp_valid,
   input      [63:0]   dcache_rsp_payload_data,
   input               clk,
@@ -135,6 +134,7 @@ module DandRiscvSimple (
   wire                memaccess_LSU_HOLD;
   wire                memaccess_TIMER_CEN;
   wire       [63:0]   memaccess_LSU_WDATA;
+  wire       [63:0]   memaccess_LSU_RDATA;
   wire                execute_INT_HOLD;
   wire       [63:0]   execute_REDIRECT_PC_NEXT;
   wire                execute_REDIRECT_VALID;
@@ -190,7 +190,7 @@ module DandRiscvSimple (
   wire       [31:0]   writeback_INSTRUCTION;
   wire       [63:0]   writeback_PC;
   wire       [63:0]   writeback_ALU_RESULT;
-  wire       [63:0]   writeback_MEM_RDATA;
+  wire       [63:0]   writeback_LSU_RDATA;
   wire                writeback_IS_LOAD;
   wire       [3:0]    memaccess_MEM_CTRL;
   wire                memaccess_IS_LOAD;
@@ -211,23 +211,17 @@ module DandRiscvSimple (
   wire                execute_PREDICT_TAKEN;
   wire                execute_ALU_WORD;
   wire                execute_CTRL_RS2_FROM_WB;
-  wire                execute_CTRL_RS2_FROM_LOAD;
   wire                execute_CTRL_RS2_FROM_MEM;
   wire                execute_CTRL_RS1_FROM_WB;
-  wire       [63:0]   _zz_execute_ALUPlugin_branch_src1;
-  wire                execute_CTRL_RS1_FROM_LOAD;
   wire       [63:0]   _zz_execute_MEM_WDATA;
   wire                execute_CTRL_RS1_FROM_MEM;
   wire       [63:0]   execute_RS2;
   wire                execute_RS2_FROM_WB;
-  wire                execute_RS2_FROM_LOAD;
   wire                execute_RS2_FROM_MEM;
   wire       [63:0]   execute_IMM;
   wire                execute_SRC2_IS_IMM;
   wire       [63:0]   execute_RS1;
   wire                execute_RS1_FROM_WB;
-  wire       [63:0]   memaccess_MEM_RDATA;
-  wire                execute_RS1_FROM_LOAD;
   wire       [63:0]   memaccess_ALU_RESULT;
   wire                execute_RS1_FROM_MEM;
   wire       [63:0]   execute_PC;
@@ -308,15 +302,11 @@ module DandRiscvSimple (
   wire       [4:0]    DecodePlugin_hazard_decode_rs2_addr;
   wire                DecodePlugin_hazard_rs1_from_mem;
   wire                DecodePlugin_hazard_rs2_from_mem;
-  wire                DecodePlugin_hazard_rs1_from_load;
-  wire                DecodePlugin_hazard_rs2_from_load;
   wire                DecodePlugin_hazard_rs1_from_wb;
   wire                DecodePlugin_hazard_rs2_from_wb;
   wire                DecodePlugin_hazard_load_use;
   wire                DecodePlugin_hazard_ctrl_rs1_from_mem;
   wire                DecodePlugin_hazard_ctrl_rs2_from_mem;
-  wire                DecodePlugin_hazard_ctrl_rs1_from_load;
-  wire                DecodePlugin_hazard_ctrl_rs2_from_load;
   wire                DecodePlugin_hazard_ctrl_rs1_from_wb;
   wire                DecodePlugin_hazard_ctrl_rs2_from_wb;
   wire                DecodePlugin_hazard_ctrl_load_use;
@@ -331,7 +321,6 @@ module DandRiscvSimple (
   wire                DCachePlugin_dcache_access_cmd_payload_wen;
   wire       [63:0]   DCachePlugin_dcache_access_cmd_payload_wdata;
   wire       [7:0]    DCachePlugin_dcache_access_cmd_payload_wstrb;
-  wire       [2:0]    DCachePlugin_dcache_access_cmd_payload_size;
   wire                DCachePlugin_dcache_access_rsp_valid;
   wire       [63:0]   DCachePlugin_dcache_access_rsp_payload_data;
   reg        [63:0]   pc_next;
@@ -482,41 +471,46 @@ module DandRiscvSimple (
   wire       [63:0]   execute_ExcepPlugin_csrrc_wdata;
   wire       [63:0]   execute_ExcepPlugin_csrrsi_wdata;
   wire       [63:0]   execute_ExcepPlugin_csrrci_wdata;
-  wire                _zz_memaccess_LSUPlugin_data_lb;
-  reg        [55:0]   _zz_memaccess_LSUPlugin_data_lb_1;
-  wire       [63:0]   memaccess_LSUPlugin_data_lb;
-  reg        [55:0]   _zz_memaccess_LSUPlugin_data_lbu;
-  wire       [63:0]   memaccess_LSUPlugin_data_lbu;
-  wire                _zz_memaccess_LSUPlugin_data_lh;
-  reg        [47:0]   _zz_memaccess_LSUPlugin_data_lh_1;
-  wire       [63:0]   memaccess_LSUPlugin_data_lh;
-  reg        [47:0]   _zz_memaccess_LSUPlugin_data_lhu;
-  wire       [63:0]   memaccess_LSUPlugin_data_lhu;
-  wire                _zz_memaccess_LSUPlugin_data_lw;
-  reg        [31:0]   _zz_memaccess_LSUPlugin_data_lw_1;
-  wire       [63:0]   memaccess_LSUPlugin_data_lw;
-  reg        [31:0]   _zz_memaccess_LSUPlugin_data_lwu;
-  wire       [63:0]   memaccess_LSUPlugin_data_lwu;
-  reg        [63:0]   memaccess_LSUPlugin_data_load;
-  wire                _zz_memaccess_LSUPlugin_wdata_sb;
-  reg        [55:0]   _zz_memaccess_LSUPlugin_wdata_sb_1;
-  wire       [63:0]   memaccess_LSUPlugin_wdata_sb;
-  wire                _zz_memaccess_LSUPlugin_wdata_sh;
-  reg        [47:0]   _zz_memaccess_LSUPlugin_wdata_sh_1;
-  wire       [63:0]   memaccess_LSUPlugin_wdata_sh;
-  wire                _zz_memaccess_LSUPlugin_wdata_sw;
-  reg        [31:0]   _zz_memaccess_LSUPlugin_wdata_sw_1;
-  wire       [63:0]   memaccess_LSUPlugin_wdata_sw;
-  wire       [63:0]   memaccess_LSUPlugin_addr;
-  reg        [63:0]   memaccess_LSUPlugin_wdata;
-  reg        [7:0]    memaccess_LSUPlugin_wstrb;
-  reg        [2:0]    memaccess_LSUPlugin_size;
+  wire                _zz_memaccess_LSUPlugin_dcache_lb;
+  reg        [55:0]   _zz_memaccess_LSUPlugin_dcache_lb_1;
+  wire       [63:0]   memaccess_LSUPlugin_dcache_lb;
+  reg        [55:0]   _zz_memaccess_LSUPlugin_dcache_lbu;
+  wire       [63:0]   memaccess_LSUPlugin_dcache_lbu;
+  wire                _zz_memaccess_LSUPlugin_dcache_lh;
+  reg        [47:0]   _zz_memaccess_LSUPlugin_dcache_lh_1;
+  wire       [63:0]   memaccess_LSUPlugin_dcache_lh;
+  reg        [47:0]   _zz_memaccess_LSUPlugin_dcache_lhu;
+  wire       [63:0]   memaccess_LSUPlugin_dcache_lhu;
+  wire                _zz_memaccess_LSUPlugin_dcache_lw;
+  reg        [31:0]   _zz_memaccess_LSUPlugin_dcache_lw_1;
+  wire       [63:0]   memaccess_LSUPlugin_dcache_lw;
+  reg        [31:0]   _zz_memaccess_LSUPlugin_dcache_lwu;
+  wire       [63:0]   memaccess_LSUPlugin_dcache_lwu;
+  reg        [63:0]   memaccess_LSUPlugin_dcache_data_load;
+  wire                _zz_memaccess_LSUPlugin_dcache_sb;
+  reg        [55:0]   _zz_memaccess_LSUPlugin_dcache_sb_1;
+  wire       [63:0]   memaccess_LSUPlugin_dcache_sb;
+  wire                _zz_memaccess_LSUPlugin_dcache_sh;
+  reg        [47:0]   _zz_memaccess_LSUPlugin_dcache_sh_1;
+  wire       [63:0]   memaccess_LSUPlugin_dcache_sh;
+  wire                _zz_memaccess_LSUPlugin_dcache_sw;
+  reg        [31:0]   _zz_memaccess_LSUPlugin_dcache_sw_1;
+  wire       [63:0]   memaccess_LSUPlugin_dcache_sw;
+  reg        [63:0]   memaccess_LSUPlugin_dcache_wdata;
+  reg        [7:0]    memaccess_LSUPlugin_dcache_wstrb;
+  wire       [63:0]   memaccess_LSUPlugin_cpu_addr;
   wire                memaccess_LSUPlugin_is_mem;
   wire                memaccess_LSUPlugin_is_timer;
-  reg        [7:0]    _zz_memaccess_LSUPlugin_wstrb;
-  reg        [7:0]    _zz_memaccess_LSUPlugin_wstrb_1;
-  reg        [7:0]    _zz_memaccess_LSUPlugin_wstrb_2;
-  wire       [7:0]    _zz_memaccess_LSUPlugin_wstrb_3;
+  wire                memaccess_LSUPlugin_lsu_ready;
+  wire       [63:0]   memaccess_LSUPlugin_lsu_addr;
+  wire       [63:0]   memaccess_LSUPlugin_lsu_rdata;
+  wire       [63:0]   memaccess_LSUPlugin_lsu_wdata;
+  wire                memaccess_LSUPlugin_lsu_wen;
+  wire       [7:0]    memaccess_LSUPlugin_lsu_wstrb;
+  reg        [7:0]    _zz_memaccess_LSUPlugin_dcache_wstrb;
+  reg        [7:0]    _zz_memaccess_LSUPlugin_dcache_wstrb_1;
+  reg        [7:0]    _zz_memaccess_LSUPlugin_dcache_wstrb_2;
+  wire       [7:0]    _zz_memaccess_LSUPlugin_dcache_wstrb_3;
   wire                when_Pipeline_l127;
   reg        [63:0]   fetch_to_decode_PC;
   wire                when_Pipeline_l127_1;
@@ -598,7 +592,7 @@ module DandRiscvSimple (
   wire                when_Pipeline_l127_39;
   reg        [63:0]   execute_to_memaccess_MEM_WDATA;
   wire                when_Pipeline_l127_40;
-  reg        [63:0]   memaccess_to_writeback_MEM_RDATA;
+  reg        [63:0]   memaccess_to_writeback_LSU_RDATA;
   wire                when_Pipeline_l163;
   wire                when_Pipeline_l166;
   wire                when_Pipeline_l163_1;
@@ -607,175 +601,175 @@ module DandRiscvSimple (
   wire                when_Pipeline_l166_2;
   wire                when_Pipeline_l163_3;
   wire                when_Pipeline_l166_3;
-  function [55:0] zz__zz_memaccess_LSUPlugin_data_lbu(input dummy);
+  function [55:0] zz__zz_memaccess_LSUPlugin_dcache_lbu(input dummy);
     begin
-      zz__zz_memaccess_LSUPlugin_data_lbu[55] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[54] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[53] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[52] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[51] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[50] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[49] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[48] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[47] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[46] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[45] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[44] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[43] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[42] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[41] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[40] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[39] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[38] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[37] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[36] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[35] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[34] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[33] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[32] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[31] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[30] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[29] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[28] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[27] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[26] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[25] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[24] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[23] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[22] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[21] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[20] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[19] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[18] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[17] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[16] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[15] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[14] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[13] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[12] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[11] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[10] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[9] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[8] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[7] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[6] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[5] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[4] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[3] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[2] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[1] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lbu[0] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[55] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[54] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[53] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[52] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[51] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[50] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[49] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[48] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[47] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[46] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[45] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[44] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[43] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[42] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[41] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[40] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[39] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[38] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[37] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[36] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[35] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[34] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[33] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[32] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[31] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[30] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[29] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[28] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[27] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[26] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[25] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[24] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[23] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[22] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[21] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[20] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[19] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[18] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[17] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[16] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[15] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[14] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[13] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[12] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[11] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[10] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[9] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[8] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[7] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[6] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[5] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[4] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[3] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[2] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[1] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lbu[0] = 1'b0;
     end
   endfunction
   wire [55:0] _zz_1;
-  function [47:0] zz__zz_memaccess_LSUPlugin_data_lhu(input dummy);
+  function [47:0] zz__zz_memaccess_LSUPlugin_dcache_lhu(input dummy);
     begin
-      zz__zz_memaccess_LSUPlugin_data_lhu[47] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lhu[46] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lhu[45] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lhu[44] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lhu[43] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lhu[42] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lhu[41] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lhu[40] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lhu[39] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lhu[38] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lhu[37] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lhu[36] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lhu[35] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lhu[34] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lhu[33] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lhu[32] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lhu[31] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lhu[30] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lhu[29] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lhu[28] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lhu[27] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lhu[26] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lhu[25] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lhu[24] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lhu[23] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lhu[22] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lhu[21] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lhu[20] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lhu[19] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lhu[18] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lhu[17] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lhu[16] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lhu[15] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lhu[14] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lhu[13] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lhu[12] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lhu[11] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lhu[10] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lhu[9] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lhu[8] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lhu[7] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lhu[6] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lhu[5] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lhu[4] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lhu[3] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lhu[2] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lhu[1] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lhu[0] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lhu[47] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lhu[46] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lhu[45] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lhu[44] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lhu[43] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lhu[42] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lhu[41] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lhu[40] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lhu[39] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lhu[38] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lhu[37] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lhu[36] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lhu[35] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lhu[34] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lhu[33] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lhu[32] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lhu[31] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lhu[30] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lhu[29] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lhu[28] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lhu[27] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lhu[26] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lhu[25] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lhu[24] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lhu[23] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lhu[22] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lhu[21] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lhu[20] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lhu[19] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lhu[18] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lhu[17] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lhu[16] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lhu[15] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lhu[14] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lhu[13] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lhu[12] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lhu[11] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lhu[10] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lhu[9] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lhu[8] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lhu[7] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lhu[6] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lhu[5] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lhu[4] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lhu[3] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lhu[2] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lhu[1] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lhu[0] = 1'b0;
     end
   endfunction
   wire [47:0] _zz_2;
-  function [31:0] zz__zz_memaccess_LSUPlugin_data_lwu(input dummy);
+  function [31:0] zz__zz_memaccess_LSUPlugin_dcache_lwu(input dummy);
     begin
-      zz__zz_memaccess_LSUPlugin_data_lwu[31] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lwu[30] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lwu[29] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lwu[28] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lwu[27] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lwu[26] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lwu[25] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lwu[24] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lwu[23] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lwu[22] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lwu[21] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lwu[20] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lwu[19] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lwu[18] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lwu[17] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lwu[16] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lwu[15] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lwu[14] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lwu[13] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lwu[12] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lwu[11] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lwu[10] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lwu[9] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lwu[8] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lwu[7] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lwu[6] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lwu[5] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lwu[4] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lwu[3] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lwu[2] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lwu[1] = 1'b0;
-      zz__zz_memaccess_LSUPlugin_data_lwu[0] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lwu[31] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lwu[30] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lwu[29] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lwu[28] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lwu[27] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lwu[26] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lwu[25] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lwu[24] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lwu[23] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lwu[22] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lwu[21] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lwu[20] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lwu[19] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lwu[18] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lwu[17] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lwu[16] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lwu[15] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lwu[14] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lwu[13] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lwu[12] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lwu[11] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lwu[10] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lwu[9] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lwu[8] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lwu[7] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lwu[6] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lwu[5] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lwu[4] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lwu[3] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lwu[2] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lwu[1] = 1'b0;
+      zz__zz_memaccess_LSUPlugin_dcache_lwu[0] = 1'b0;
     end
   endfunction
   wire [31:0] _zz_3;
-  function [7:0] zz__zz_memaccess_LSUPlugin_wstrb(input dummy);
+  function [7:0] zz__zz_memaccess_LSUPlugin_dcache_wstrb(input dummy);
     begin
-      zz__zz_memaccess_LSUPlugin_wstrb = 8'h0;
-      zz__zz_memaccess_LSUPlugin_wstrb[0] = 1'b1;
+      zz__zz_memaccess_LSUPlugin_dcache_wstrb = 8'h0;
+      zz__zz_memaccess_LSUPlugin_dcache_wstrb[0] = 1'b1;
     end
   endfunction
   wire [7:0] _zz_4;
-  function [7:0] zz__zz_memaccess_LSUPlugin_wstrb_1(input dummy);
+  function [7:0] zz__zz_memaccess_LSUPlugin_dcache_wstrb_1(input dummy);
     begin
-      zz__zz_memaccess_LSUPlugin_wstrb_1 = 8'h0;
-      zz__zz_memaccess_LSUPlugin_wstrb_1[1 : 0] = 2'b11;
+      zz__zz_memaccess_LSUPlugin_dcache_wstrb_1 = 8'h0;
+      zz__zz_memaccess_LSUPlugin_dcache_wstrb_1[1 : 0] = 2'b11;
     end
   endfunction
   wire [7:0] _zz_5;
-  function [7:0] zz__zz_memaccess_LSUPlugin_wstrb_2(input dummy);
+  function [7:0] zz__zz_memaccess_LSUPlugin_dcache_wstrb_2(input dummy);
     begin
-      zz__zz_memaccess_LSUPlugin_wstrb_2 = 8'h0;
-      zz__zz_memaccess_LSUPlugin_wstrb_2[3 : 0] = 4'b1111;
+      zz__zz_memaccess_LSUPlugin_dcache_wstrb_2 = 8'h0;
+      zz__zz_memaccess_LSUPlugin_dcache_wstrb_2[3 : 0] = 4'b1111;
     end
   endfunction
   wire [7:0] _zz_6;
@@ -922,10 +916,11 @@ module DandRiscvSimple (
     .clk       (clk                      ), //i
     .reset     (reset                    )  //i
   );
-  assign writeback_RD = (writeback_IS_LOAD ? writeback_MEM_RDATA : writeback_ALU_RESULT);
+  assign writeback_RD = (writeback_IS_LOAD ? writeback_LSU_RDATA : writeback_ALU_RESULT);
   assign memaccess_LSU_HOLD = (! DCachePlugin_dcache_access_cmd_ready);
   assign memaccess_TIMER_CEN = ((memaccess_LSUPlugin_is_timer && memaccess_LSUPlugin_is_mem) && memaccess_arbitration_isFiring);
-  assign memaccess_LSU_WDATA = memaccess_LSUPlugin_wdata;
+  assign memaccess_LSU_WDATA = memaccess_LSUPlugin_lsu_wdata;
+  assign memaccess_LSU_RDATA = memaccess_LSUPlugin_lsu_rdata;
   assign execute_INT_HOLD = clint_1_int_hold;
   assign execute_REDIRECT_PC_NEXT = execute_ALUPlugin_redirect_pc_next;
   assign execute_REDIRECT_VALID = execute_ALUPlugin_redirect_valid;
@@ -981,7 +976,7 @@ module DandRiscvSimple (
   assign writeback_INSTRUCTION = memaccess_to_writeback_INSTRUCTION;
   assign writeback_PC = memaccess_to_writeback_PC;
   assign writeback_ALU_RESULT = memaccess_to_writeback_ALU_RESULT;
-  assign writeback_MEM_RDATA = memaccess_to_writeback_MEM_RDATA;
+  assign writeback_LSU_RDATA = memaccess_to_writeback_LSU_RDATA;
   assign writeback_IS_LOAD = memaccess_to_writeback_IS_LOAD;
   assign memaccess_MEM_CTRL = execute_to_memaccess_MEM_CTRL;
   assign memaccess_IS_LOAD = execute_to_memaccess_IS_LOAD;
@@ -1002,23 +997,17 @@ module DandRiscvSimple (
   assign execute_PREDICT_TAKEN = decode_to_execute_PREDICT_TAKEN;
   assign execute_ALU_WORD = decode_to_execute_ALU_WORD;
   assign execute_CTRL_RS2_FROM_WB = DecodePlugin_hazard_ctrl_rs2_from_wb;
-  assign execute_CTRL_RS2_FROM_LOAD = DecodePlugin_hazard_ctrl_rs2_from_load;
   assign execute_CTRL_RS2_FROM_MEM = DecodePlugin_hazard_ctrl_rs2_from_mem;
   assign execute_CTRL_RS1_FROM_WB = DecodePlugin_hazard_ctrl_rs1_from_wb;
-  assign _zz_execute_ALUPlugin_branch_src1 = memaccess_MEM_RDATA;
-  assign execute_CTRL_RS1_FROM_LOAD = DecodePlugin_hazard_ctrl_rs1_from_load;
   assign _zz_execute_MEM_WDATA = memaccess_ALU_RESULT;
   assign execute_CTRL_RS1_FROM_MEM = DecodePlugin_hazard_ctrl_rs1_from_mem;
   assign execute_RS2 = decode_to_execute_RS2;
   assign execute_RS2_FROM_WB = DecodePlugin_hazard_rs2_from_wb;
-  assign execute_RS2_FROM_LOAD = DecodePlugin_hazard_rs2_from_load;
   assign execute_RS2_FROM_MEM = DecodePlugin_hazard_rs2_from_mem;
   assign execute_IMM = decode_to_execute_IMM;
   assign execute_SRC2_IS_IMM = decode_to_execute_SRC2_IS_IMM;
   assign execute_RS1 = decode_to_execute_RS1;
   assign execute_RS1_FROM_WB = DecodePlugin_hazard_rs1_from_wb;
-  assign memaccess_MEM_RDATA = memaccess_LSUPlugin_data_load;
-  assign execute_RS1_FROM_LOAD = DecodePlugin_hazard_rs1_from_load;
   assign memaccess_ALU_RESULT = execute_to_memaccess_ALU_RESULT;
   assign execute_RS1_FROM_MEM = DecodePlugin_hazard_rs1_from_mem;
   assign execute_PC = decode_to_execute_PC;
@@ -1137,17 +1126,17 @@ module DandRiscvSimple (
   assign fetch_FetchPlugin_pc_in_stream_valid = (ICachePlugin_icache_access_rsp_valid && fetch_arbitration_isStuck);
   assign fetch_FetchPlugin_pc_in_stream_payload = pc;
   assign fetch_FetchPlugin_pc_out_stream_ready = (! fetch_arbitration_isStuck);
-  assign fetch_FetchPlugin_instruction_in_stream_valid = (ICachePlugin_icache_access_rsp_valid && fetch_arbitration_isStuck);
-  assign fetch_FetchPlugin_instruction_in_stream_payload = ICachePlugin_icache_access_rsp_payload_data;
-  assign fetch_FetchPlugin_instruction_out_stream_ready = (! fetch_arbitration_isStuck);
   assign fetch_FetchPlugin_pc_in_stream_ready = fetch_FetchPlugin_pc_FIFO_io_push_ready;
   assign fetch_FetchPlugin_pc_out_stream_valid = fetch_FetchPlugin_pc_FIFO_io_pop_valid;
   assign fetch_FetchPlugin_pc_out_stream_payload = fetch_FetchPlugin_pc_FIFO_io_pop_payload;
+  assign fetch_FetchPlugin_instruction_in_stream_valid = (ICachePlugin_icache_access_rsp_valid && fetch_arbitration_isStuck);
+  assign fetch_FetchPlugin_instruction_in_stream_payload = ICachePlugin_icache_access_rsp_payload_data;
+  assign fetch_FetchPlugin_instruction_out_stream_ready = (! fetch_arbitration_isStuck);
   assign fetch_FetchPlugin_instruction_in_stream_ready = fetch_FetchPlugin_instruction_FIFO_io_push_ready;
   assign fetch_FetchPlugin_instruction_out_stream_valid = fetch_FetchPlugin_instruction_FIFO_io_pop_valid;
   assign fetch_FetchPlugin_instruction_out_stream_payload = fetch_FetchPlugin_instruction_FIFO_io_pop_payload;
   assign ICachePlugin_icache_access_cmd_fire_3 = (ICachePlugin_icache_access_cmd_valid && ICachePlugin_icache_access_cmd_ready);
-  assign fetch_arbitration_isValid = ((fetch_FetchPlugin_pc_out_stream_valid || ICachePlugin_icache_access_rsp_valid) && (! fetch_FetchPlugin_fetch_flush));
+  assign fetch_arbitration_isValid = ((fetch_FetchPlugin_pc_out_stream_valid || (ICachePlugin_icache_access_rsp_valid && (! fetch_arbitration_isStuck))) && (! fetch_FetchPlugin_fetch_flush));
   assign ICachePlugin_icache_access_cmd_valid = (fetch_valid && (! fetch_FetchPlugin_fetch_flush));
   assign ICachePlugin_icache_access_cmd_payload_addr = pc_next;
   assign decode_DecodePlugin_rs1_req = (! (((decode_INSTRUCTION[6 : 0] == 7'h37) || (decode_INSTRUCTION[6 : 0] == 7'h17)) || (decode_INSTRUCTION[6 : 0] == 7'h6f)));
@@ -2048,14 +2037,10 @@ module DandRiscvSimple (
       if(execute_RS1_FROM_MEM) begin
         execute_ALUPlugin_src1 = memaccess_ALU_RESULT;
       end else begin
-        if(execute_RS1_FROM_LOAD) begin
-          execute_ALUPlugin_src1 = memaccess_MEM_RDATA;
+        if(execute_RS1_FROM_WB) begin
+          execute_ALUPlugin_src1 = _zz_execute_MEM_WDATA_1;
         end else begin
-          if(execute_RS1_FROM_WB) begin
-            execute_ALUPlugin_src1 = _zz_execute_MEM_WDATA_1;
-          end else begin
-            execute_ALUPlugin_src1 = execute_RS1;
-          end
+          execute_ALUPlugin_src1 = execute_RS1;
         end
       end
     end
@@ -2071,14 +2056,10 @@ module DandRiscvSimple (
         if(execute_RS2_FROM_MEM) begin
           execute_ALUPlugin_src2 = memaccess_ALU_RESULT;
         end else begin
-          if(execute_RS2_FROM_LOAD) begin
-            execute_ALUPlugin_src2 = memaccess_MEM_RDATA;
+          if(execute_RS2_FROM_WB) begin
+            execute_ALUPlugin_src2 = _zz_execute_MEM_WDATA_1;
           end else begin
-            if(execute_RS2_FROM_WB) begin
-              execute_ALUPlugin_src2 = _zz_execute_MEM_WDATA_1;
-            end else begin
-              execute_ALUPlugin_src2 = execute_RS2;
-            end
+            execute_ALUPlugin_src2 = execute_RS2;
           end
         end
       end
@@ -2090,14 +2071,10 @@ module DandRiscvSimple (
     if(execute_CTRL_RS1_FROM_MEM) begin
       execute_ALUPlugin_branch_src1 = _zz_execute_MEM_WDATA;
     end else begin
-      if(execute_CTRL_RS1_FROM_LOAD) begin
-        execute_ALUPlugin_branch_src1 = _zz_execute_ALUPlugin_branch_src1;
+      if(execute_CTRL_RS1_FROM_WB) begin
+        execute_ALUPlugin_branch_src1 = _zz_execute_MEM_WDATA_1;
       end else begin
-        if(execute_CTRL_RS1_FROM_WB) begin
-          execute_ALUPlugin_branch_src1 = _zz_execute_MEM_WDATA_1;
-        end else begin
-          execute_ALUPlugin_branch_src1 = execute_RS1;
-        end
+        execute_ALUPlugin_branch_src1 = execute_RS1;
       end
     end
   end
@@ -2106,14 +2083,10 @@ module DandRiscvSimple (
     if(execute_CTRL_RS2_FROM_MEM) begin
       execute_ALUPlugin_branch_src2 = _zz_execute_MEM_WDATA;
     end else begin
-      if(execute_CTRL_RS2_FROM_LOAD) begin
-        execute_ALUPlugin_branch_src2 = _zz_execute_ALUPlugin_branch_src1;
+      if(execute_CTRL_RS2_FROM_WB) begin
+        execute_ALUPlugin_branch_src2 = _zz_execute_MEM_WDATA_1;
       end else begin
-        if(execute_CTRL_RS2_FROM_WB) begin
-          execute_ALUPlugin_branch_src2 = _zz_execute_MEM_WDATA_1;
-        end else begin
-          execute_ALUPlugin_branch_src2 = execute_RS2;
-        end
+        execute_ALUPlugin_branch_src2 = execute_RS2;
       end
     end
   end
@@ -2195,15 +2168,11 @@ module DandRiscvSimple (
   assign when_AluPlugin_l265 = (execute_RD_ADDR == execute_RS1_ADDR);
   assign DecodePlugin_hazard_rs1_from_mem = ((((memaccess_arbitration_isValid && _zz_DecodePlugin_hazard_rs1_from_mem_3) && (_zz_DecodePlugin_hazard_rs1_from_mem_2 != 5'h0)) && (_zz_DecodePlugin_hazard_rs1_from_mem_2 == _zz_DecodePlugin_hazard_rs1_from_mem_1)) && (! _zz_DecodePlugin_hazard_rs1_from_mem));
   assign DecodePlugin_hazard_rs2_from_mem = ((((memaccess_arbitration_isValid && _zz_DecodePlugin_hazard_rs1_from_mem_3) && (_zz_DecodePlugin_hazard_rs1_from_mem_2 != 5'h0)) && (_zz_DecodePlugin_hazard_rs1_from_mem_2 == _zz_DecodePlugin_hazard_rs2_from_mem)) && (! _zz_DecodePlugin_hazard_rs1_from_mem));
-  assign DecodePlugin_hazard_rs1_from_load = ((((memaccess_arbitration_isValid && _zz_DecodePlugin_hazard_rs1_from_mem_3) && (_zz_DecodePlugin_hazard_rs1_from_mem_2 != 5'h0)) && (_zz_DecodePlugin_hazard_rs1_from_mem_2 == _zz_DecodePlugin_hazard_rs1_from_mem_1)) && _zz_DecodePlugin_hazard_rs1_from_mem);
-  assign DecodePlugin_hazard_rs2_from_load = ((((memaccess_arbitration_isValid && _zz_DecodePlugin_hazard_rs1_from_mem_3) && (_zz_DecodePlugin_hazard_rs1_from_mem_2 != 5'h0)) && (_zz_DecodePlugin_hazard_rs1_from_mem_2 == _zz_DecodePlugin_hazard_rs2_from_mem)) && _zz_DecodePlugin_hazard_rs1_from_mem);
   assign DecodePlugin_hazard_rs1_from_wb = ((((writeback_arbitration_isValid && _zz_DecodePlugin_hazard_rs1_from_wb_1) && (_zz_DecodePlugin_hazard_rs1_from_wb != 5'h0)) && (_zz_DecodePlugin_hazard_rs1_from_wb == _zz_DecodePlugin_hazard_rs1_from_mem_1)) && ((_zz_DecodePlugin_hazard_rs1_from_mem_2 != _zz_DecodePlugin_hazard_rs1_from_mem_1) || (! memaccess_arbitration_isValid)));
   assign DecodePlugin_hazard_rs2_from_wb = ((((writeback_arbitration_isValid && _zz_DecodePlugin_hazard_rs1_from_wb_1) && (_zz_DecodePlugin_hazard_rs1_from_wb != 5'h0)) && (_zz_DecodePlugin_hazard_rs1_from_wb == _zz_DecodePlugin_hazard_rs2_from_mem)) && ((_zz_DecodePlugin_hazard_rs1_from_mem_2 != _zz_DecodePlugin_hazard_rs2_from_mem) || (! memaccess_arbitration_isValid)));
   assign DecodePlugin_hazard_load_use = ((memaccess_arbitration_isValid && _zz_DecodePlugin_hazard_rs1_from_mem) && (((_zz_DecodePlugin_hazard_rs1_from_mem_2 == _zz_DecodePlugin_hazard_rs1_from_mem_1) && (! DecodePlugin_hazard_rs1_from_wb)) || ((_zz_DecodePlugin_hazard_rs1_from_mem_2 == _zz_DecodePlugin_hazard_rs2_from_mem) && (! DecodePlugin_hazard_rs2_from_wb))));
   assign DecodePlugin_hazard_ctrl_rs1_from_mem = ((execute_arbitration_isValid && _zz_DecodePlugin_hazard_ctrl_rs1_from_mem) && DecodePlugin_hazard_rs1_from_mem);
   assign DecodePlugin_hazard_ctrl_rs2_from_mem = ((execute_arbitration_isValid && _zz_DecodePlugin_hazard_ctrl_rs1_from_mem) && DecodePlugin_hazard_rs2_from_mem);
-  assign DecodePlugin_hazard_ctrl_rs1_from_load = ((execute_arbitration_isValid && _zz_DecodePlugin_hazard_ctrl_rs1_from_mem) && DecodePlugin_hazard_rs1_from_load);
-  assign DecodePlugin_hazard_ctrl_rs2_from_load = ((execute_arbitration_isValid && _zz_DecodePlugin_hazard_ctrl_rs1_from_mem) && DecodePlugin_hazard_rs2_from_load);
   assign DecodePlugin_hazard_ctrl_rs1_from_wb = ((execute_arbitration_isValid && _zz_DecodePlugin_hazard_ctrl_rs1_from_mem) && DecodePlugin_hazard_rs1_from_wb);
   assign DecodePlugin_hazard_ctrl_rs2_from_wb = ((execute_arbitration_isValid && _zz_DecodePlugin_hazard_ctrl_rs1_from_mem) && DecodePlugin_hazard_rs2_from_wb);
   assign DecodePlugin_hazard_ctrl_load_use = ((execute_arbitration_isValid && _zz_DecodePlugin_hazard_ctrl_rs1_from_mem) && DecodePlugin_hazard_load_use);
@@ -2243,395 +2212,386 @@ module DandRiscvSimple (
   end
 
   assign timer_1_addr = _zz_execute_MEM_WDATA;
-  assign _zz_memaccess_LSUPlugin_data_lb = DCachePlugin_dcache_access_rsp_payload_data[7];
+  assign _zz_memaccess_LSUPlugin_dcache_lb = DCachePlugin_dcache_access_rsp_payload_data[7];
   always @(*) begin
-    _zz_memaccess_LSUPlugin_data_lb_1[55] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[54] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[53] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[52] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[51] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[50] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[49] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[48] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[47] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[46] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[45] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[44] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[43] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[42] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[41] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[40] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[39] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[38] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[37] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[36] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[35] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[34] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[33] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[32] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[31] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[30] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[29] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[28] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[27] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[26] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[25] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[24] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[23] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[22] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[21] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[20] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[19] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[18] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[17] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[16] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[15] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[14] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[13] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[12] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[11] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[10] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[9] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[8] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[7] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[6] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[5] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[4] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[3] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[2] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[1] = _zz_memaccess_LSUPlugin_data_lb;
-    _zz_memaccess_LSUPlugin_data_lb_1[0] = _zz_memaccess_LSUPlugin_data_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[55] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[54] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[53] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[52] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[51] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[50] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[49] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[48] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[47] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[46] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[45] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[44] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[43] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[42] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[41] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[40] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[39] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[38] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[37] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[36] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[35] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[34] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[33] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[32] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[31] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[30] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[29] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[28] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[27] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[26] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[25] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[24] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[23] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[22] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[21] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[20] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[19] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[18] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[17] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[16] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[15] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[14] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[13] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[12] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[11] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[10] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[9] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[8] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[7] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[6] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[5] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[4] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[3] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[2] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[1] = _zz_memaccess_LSUPlugin_dcache_lb;
+    _zz_memaccess_LSUPlugin_dcache_lb_1[0] = _zz_memaccess_LSUPlugin_dcache_lb;
   end
 
-  assign memaccess_LSUPlugin_data_lb = {_zz_memaccess_LSUPlugin_data_lb_1,DCachePlugin_dcache_access_rsp_payload_data[7 : 0]};
-  assign _zz_1 = zz__zz_memaccess_LSUPlugin_data_lbu(1'b0);
-  always @(*) _zz_memaccess_LSUPlugin_data_lbu = _zz_1;
-  assign memaccess_LSUPlugin_data_lbu = {_zz_memaccess_LSUPlugin_data_lbu,DCachePlugin_dcache_access_rsp_payload_data[7 : 0]};
-  assign _zz_memaccess_LSUPlugin_data_lh = DCachePlugin_dcache_access_rsp_payload_data[15];
+  assign memaccess_LSUPlugin_dcache_lb = {_zz_memaccess_LSUPlugin_dcache_lb_1,DCachePlugin_dcache_access_rsp_payload_data[7 : 0]};
+  assign _zz_1 = zz__zz_memaccess_LSUPlugin_dcache_lbu(1'b0);
+  always @(*) _zz_memaccess_LSUPlugin_dcache_lbu = _zz_1;
+  assign memaccess_LSUPlugin_dcache_lbu = {_zz_memaccess_LSUPlugin_dcache_lbu,DCachePlugin_dcache_access_rsp_payload_data[7 : 0]};
+  assign _zz_memaccess_LSUPlugin_dcache_lh = DCachePlugin_dcache_access_rsp_payload_data[15];
   always @(*) begin
-    _zz_memaccess_LSUPlugin_data_lh_1[47] = _zz_memaccess_LSUPlugin_data_lh;
-    _zz_memaccess_LSUPlugin_data_lh_1[46] = _zz_memaccess_LSUPlugin_data_lh;
-    _zz_memaccess_LSUPlugin_data_lh_1[45] = _zz_memaccess_LSUPlugin_data_lh;
-    _zz_memaccess_LSUPlugin_data_lh_1[44] = _zz_memaccess_LSUPlugin_data_lh;
-    _zz_memaccess_LSUPlugin_data_lh_1[43] = _zz_memaccess_LSUPlugin_data_lh;
-    _zz_memaccess_LSUPlugin_data_lh_1[42] = _zz_memaccess_LSUPlugin_data_lh;
-    _zz_memaccess_LSUPlugin_data_lh_1[41] = _zz_memaccess_LSUPlugin_data_lh;
-    _zz_memaccess_LSUPlugin_data_lh_1[40] = _zz_memaccess_LSUPlugin_data_lh;
-    _zz_memaccess_LSUPlugin_data_lh_1[39] = _zz_memaccess_LSUPlugin_data_lh;
-    _zz_memaccess_LSUPlugin_data_lh_1[38] = _zz_memaccess_LSUPlugin_data_lh;
-    _zz_memaccess_LSUPlugin_data_lh_1[37] = _zz_memaccess_LSUPlugin_data_lh;
-    _zz_memaccess_LSUPlugin_data_lh_1[36] = _zz_memaccess_LSUPlugin_data_lh;
-    _zz_memaccess_LSUPlugin_data_lh_1[35] = _zz_memaccess_LSUPlugin_data_lh;
-    _zz_memaccess_LSUPlugin_data_lh_1[34] = _zz_memaccess_LSUPlugin_data_lh;
-    _zz_memaccess_LSUPlugin_data_lh_1[33] = _zz_memaccess_LSUPlugin_data_lh;
-    _zz_memaccess_LSUPlugin_data_lh_1[32] = _zz_memaccess_LSUPlugin_data_lh;
-    _zz_memaccess_LSUPlugin_data_lh_1[31] = _zz_memaccess_LSUPlugin_data_lh;
-    _zz_memaccess_LSUPlugin_data_lh_1[30] = _zz_memaccess_LSUPlugin_data_lh;
-    _zz_memaccess_LSUPlugin_data_lh_1[29] = _zz_memaccess_LSUPlugin_data_lh;
-    _zz_memaccess_LSUPlugin_data_lh_1[28] = _zz_memaccess_LSUPlugin_data_lh;
-    _zz_memaccess_LSUPlugin_data_lh_1[27] = _zz_memaccess_LSUPlugin_data_lh;
-    _zz_memaccess_LSUPlugin_data_lh_1[26] = _zz_memaccess_LSUPlugin_data_lh;
-    _zz_memaccess_LSUPlugin_data_lh_1[25] = _zz_memaccess_LSUPlugin_data_lh;
-    _zz_memaccess_LSUPlugin_data_lh_1[24] = _zz_memaccess_LSUPlugin_data_lh;
-    _zz_memaccess_LSUPlugin_data_lh_1[23] = _zz_memaccess_LSUPlugin_data_lh;
-    _zz_memaccess_LSUPlugin_data_lh_1[22] = _zz_memaccess_LSUPlugin_data_lh;
-    _zz_memaccess_LSUPlugin_data_lh_1[21] = _zz_memaccess_LSUPlugin_data_lh;
-    _zz_memaccess_LSUPlugin_data_lh_1[20] = _zz_memaccess_LSUPlugin_data_lh;
-    _zz_memaccess_LSUPlugin_data_lh_1[19] = _zz_memaccess_LSUPlugin_data_lh;
-    _zz_memaccess_LSUPlugin_data_lh_1[18] = _zz_memaccess_LSUPlugin_data_lh;
-    _zz_memaccess_LSUPlugin_data_lh_1[17] = _zz_memaccess_LSUPlugin_data_lh;
-    _zz_memaccess_LSUPlugin_data_lh_1[16] = _zz_memaccess_LSUPlugin_data_lh;
-    _zz_memaccess_LSUPlugin_data_lh_1[15] = _zz_memaccess_LSUPlugin_data_lh;
-    _zz_memaccess_LSUPlugin_data_lh_1[14] = _zz_memaccess_LSUPlugin_data_lh;
-    _zz_memaccess_LSUPlugin_data_lh_1[13] = _zz_memaccess_LSUPlugin_data_lh;
-    _zz_memaccess_LSUPlugin_data_lh_1[12] = _zz_memaccess_LSUPlugin_data_lh;
-    _zz_memaccess_LSUPlugin_data_lh_1[11] = _zz_memaccess_LSUPlugin_data_lh;
-    _zz_memaccess_LSUPlugin_data_lh_1[10] = _zz_memaccess_LSUPlugin_data_lh;
-    _zz_memaccess_LSUPlugin_data_lh_1[9] = _zz_memaccess_LSUPlugin_data_lh;
-    _zz_memaccess_LSUPlugin_data_lh_1[8] = _zz_memaccess_LSUPlugin_data_lh;
-    _zz_memaccess_LSUPlugin_data_lh_1[7] = _zz_memaccess_LSUPlugin_data_lh;
-    _zz_memaccess_LSUPlugin_data_lh_1[6] = _zz_memaccess_LSUPlugin_data_lh;
-    _zz_memaccess_LSUPlugin_data_lh_1[5] = _zz_memaccess_LSUPlugin_data_lh;
-    _zz_memaccess_LSUPlugin_data_lh_1[4] = _zz_memaccess_LSUPlugin_data_lh;
-    _zz_memaccess_LSUPlugin_data_lh_1[3] = _zz_memaccess_LSUPlugin_data_lh;
-    _zz_memaccess_LSUPlugin_data_lh_1[2] = _zz_memaccess_LSUPlugin_data_lh;
-    _zz_memaccess_LSUPlugin_data_lh_1[1] = _zz_memaccess_LSUPlugin_data_lh;
-    _zz_memaccess_LSUPlugin_data_lh_1[0] = _zz_memaccess_LSUPlugin_data_lh;
+    _zz_memaccess_LSUPlugin_dcache_lh_1[47] = _zz_memaccess_LSUPlugin_dcache_lh;
+    _zz_memaccess_LSUPlugin_dcache_lh_1[46] = _zz_memaccess_LSUPlugin_dcache_lh;
+    _zz_memaccess_LSUPlugin_dcache_lh_1[45] = _zz_memaccess_LSUPlugin_dcache_lh;
+    _zz_memaccess_LSUPlugin_dcache_lh_1[44] = _zz_memaccess_LSUPlugin_dcache_lh;
+    _zz_memaccess_LSUPlugin_dcache_lh_1[43] = _zz_memaccess_LSUPlugin_dcache_lh;
+    _zz_memaccess_LSUPlugin_dcache_lh_1[42] = _zz_memaccess_LSUPlugin_dcache_lh;
+    _zz_memaccess_LSUPlugin_dcache_lh_1[41] = _zz_memaccess_LSUPlugin_dcache_lh;
+    _zz_memaccess_LSUPlugin_dcache_lh_1[40] = _zz_memaccess_LSUPlugin_dcache_lh;
+    _zz_memaccess_LSUPlugin_dcache_lh_1[39] = _zz_memaccess_LSUPlugin_dcache_lh;
+    _zz_memaccess_LSUPlugin_dcache_lh_1[38] = _zz_memaccess_LSUPlugin_dcache_lh;
+    _zz_memaccess_LSUPlugin_dcache_lh_1[37] = _zz_memaccess_LSUPlugin_dcache_lh;
+    _zz_memaccess_LSUPlugin_dcache_lh_1[36] = _zz_memaccess_LSUPlugin_dcache_lh;
+    _zz_memaccess_LSUPlugin_dcache_lh_1[35] = _zz_memaccess_LSUPlugin_dcache_lh;
+    _zz_memaccess_LSUPlugin_dcache_lh_1[34] = _zz_memaccess_LSUPlugin_dcache_lh;
+    _zz_memaccess_LSUPlugin_dcache_lh_1[33] = _zz_memaccess_LSUPlugin_dcache_lh;
+    _zz_memaccess_LSUPlugin_dcache_lh_1[32] = _zz_memaccess_LSUPlugin_dcache_lh;
+    _zz_memaccess_LSUPlugin_dcache_lh_1[31] = _zz_memaccess_LSUPlugin_dcache_lh;
+    _zz_memaccess_LSUPlugin_dcache_lh_1[30] = _zz_memaccess_LSUPlugin_dcache_lh;
+    _zz_memaccess_LSUPlugin_dcache_lh_1[29] = _zz_memaccess_LSUPlugin_dcache_lh;
+    _zz_memaccess_LSUPlugin_dcache_lh_1[28] = _zz_memaccess_LSUPlugin_dcache_lh;
+    _zz_memaccess_LSUPlugin_dcache_lh_1[27] = _zz_memaccess_LSUPlugin_dcache_lh;
+    _zz_memaccess_LSUPlugin_dcache_lh_1[26] = _zz_memaccess_LSUPlugin_dcache_lh;
+    _zz_memaccess_LSUPlugin_dcache_lh_1[25] = _zz_memaccess_LSUPlugin_dcache_lh;
+    _zz_memaccess_LSUPlugin_dcache_lh_1[24] = _zz_memaccess_LSUPlugin_dcache_lh;
+    _zz_memaccess_LSUPlugin_dcache_lh_1[23] = _zz_memaccess_LSUPlugin_dcache_lh;
+    _zz_memaccess_LSUPlugin_dcache_lh_1[22] = _zz_memaccess_LSUPlugin_dcache_lh;
+    _zz_memaccess_LSUPlugin_dcache_lh_1[21] = _zz_memaccess_LSUPlugin_dcache_lh;
+    _zz_memaccess_LSUPlugin_dcache_lh_1[20] = _zz_memaccess_LSUPlugin_dcache_lh;
+    _zz_memaccess_LSUPlugin_dcache_lh_1[19] = _zz_memaccess_LSUPlugin_dcache_lh;
+    _zz_memaccess_LSUPlugin_dcache_lh_1[18] = _zz_memaccess_LSUPlugin_dcache_lh;
+    _zz_memaccess_LSUPlugin_dcache_lh_1[17] = _zz_memaccess_LSUPlugin_dcache_lh;
+    _zz_memaccess_LSUPlugin_dcache_lh_1[16] = _zz_memaccess_LSUPlugin_dcache_lh;
+    _zz_memaccess_LSUPlugin_dcache_lh_1[15] = _zz_memaccess_LSUPlugin_dcache_lh;
+    _zz_memaccess_LSUPlugin_dcache_lh_1[14] = _zz_memaccess_LSUPlugin_dcache_lh;
+    _zz_memaccess_LSUPlugin_dcache_lh_1[13] = _zz_memaccess_LSUPlugin_dcache_lh;
+    _zz_memaccess_LSUPlugin_dcache_lh_1[12] = _zz_memaccess_LSUPlugin_dcache_lh;
+    _zz_memaccess_LSUPlugin_dcache_lh_1[11] = _zz_memaccess_LSUPlugin_dcache_lh;
+    _zz_memaccess_LSUPlugin_dcache_lh_1[10] = _zz_memaccess_LSUPlugin_dcache_lh;
+    _zz_memaccess_LSUPlugin_dcache_lh_1[9] = _zz_memaccess_LSUPlugin_dcache_lh;
+    _zz_memaccess_LSUPlugin_dcache_lh_1[8] = _zz_memaccess_LSUPlugin_dcache_lh;
+    _zz_memaccess_LSUPlugin_dcache_lh_1[7] = _zz_memaccess_LSUPlugin_dcache_lh;
+    _zz_memaccess_LSUPlugin_dcache_lh_1[6] = _zz_memaccess_LSUPlugin_dcache_lh;
+    _zz_memaccess_LSUPlugin_dcache_lh_1[5] = _zz_memaccess_LSUPlugin_dcache_lh;
+    _zz_memaccess_LSUPlugin_dcache_lh_1[4] = _zz_memaccess_LSUPlugin_dcache_lh;
+    _zz_memaccess_LSUPlugin_dcache_lh_1[3] = _zz_memaccess_LSUPlugin_dcache_lh;
+    _zz_memaccess_LSUPlugin_dcache_lh_1[2] = _zz_memaccess_LSUPlugin_dcache_lh;
+    _zz_memaccess_LSUPlugin_dcache_lh_1[1] = _zz_memaccess_LSUPlugin_dcache_lh;
+    _zz_memaccess_LSUPlugin_dcache_lh_1[0] = _zz_memaccess_LSUPlugin_dcache_lh;
   end
 
-  assign memaccess_LSUPlugin_data_lh = {_zz_memaccess_LSUPlugin_data_lh_1,DCachePlugin_dcache_access_rsp_payload_data[15 : 0]};
-  assign _zz_2 = zz__zz_memaccess_LSUPlugin_data_lhu(1'b0);
-  always @(*) _zz_memaccess_LSUPlugin_data_lhu = _zz_2;
-  assign memaccess_LSUPlugin_data_lhu = {_zz_memaccess_LSUPlugin_data_lhu,DCachePlugin_dcache_access_rsp_payload_data[15 : 0]};
-  assign _zz_memaccess_LSUPlugin_data_lw = DCachePlugin_dcache_access_rsp_payload_data[31];
+  assign memaccess_LSUPlugin_dcache_lh = {_zz_memaccess_LSUPlugin_dcache_lh_1,DCachePlugin_dcache_access_rsp_payload_data[15 : 0]};
+  assign _zz_2 = zz__zz_memaccess_LSUPlugin_dcache_lhu(1'b0);
+  always @(*) _zz_memaccess_LSUPlugin_dcache_lhu = _zz_2;
+  assign memaccess_LSUPlugin_dcache_lhu = {_zz_memaccess_LSUPlugin_dcache_lhu,DCachePlugin_dcache_access_rsp_payload_data[15 : 0]};
+  assign _zz_memaccess_LSUPlugin_dcache_lw = DCachePlugin_dcache_access_rsp_payload_data[31];
   always @(*) begin
-    _zz_memaccess_LSUPlugin_data_lw_1[31] = _zz_memaccess_LSUPlugin_data_lw;
-    _zz_memaccess_LSUPlugin_data_lw_1[30] = _zz_memaccess_LSUPlugin_data_lw;
-    _zz_memaccess_LSUPlugin_data_lw_1[29] = _zz_memaccess_LSUPlugin_data_lw;
-    _zz_memaccess_LSUPlugin_data_lw_1[28] = _zz_memaccess_LSUPlugin_data_lw;
-    _zz_memaccess_LSUPlugin_data_lw_1[27] = _zz_memaccess_LSUPlugin_data_lw;
-    _zz_memaccess_LSUPlugin_data_lw_1[26] = _zz_memaccess_LSUPlugin_data_lw;
-    _zz_memaccess_LSUPlugin_data_lw_1[25] = _zz_memaccess_LSUPlugin_data_lw;
-    _zz_memaccess_LSUPlugin_data_lw_1[24] = _zz_memaccess_LSUPlugin_data_lw;
-    _zz_memaccess_LSUPlugin_data_lw_1[23] = _zz_memaccess_LSUPlugin_data_lw;
-    _zz_memaccess_LSUPlugin_data_lw_1[22] = _zz_memaccess_LSUPlugin_data_lw;
-    _zz_memaccess_LSUPlugin_data_lw_1[21] = _zz_memaccess_LSUPlugin_data_lw;
-    _zz_memaccess_LSUPlugin_data_lw_1[20] = _zz_memaccess_LSUPlugin_data_lw;
-    _zz_memaccess_LSUPlugin_data_lw_1[19] = _zz_memaccess_LSUPlugin_data_lw;
-    _zz_memaccess_LSUPlugin_data_lw_1[18] = _zz_memaccess_LSUPlugin_data_lw;
-    _zz_memaccess_LSUPlugin_data_lw_1[17] = _zz_memaccess_LSUPlugin_data_lw;
-    _zz_memaccess_LSUPlugin_data_lw_1[16] = _zz_memaccess_LSUPlugin_data_lw;
-    _zz_memaccess_LSUPlugin_data_lw_1[15] = _zz_memaccess_LSUPlugin_data_lw;
-    _zz_memaccess_LSUPlugin_data_lw_1[14] = _zz_memaccess_LSUPlugin_data_lw;
-    _zz_memaccess_LSUPlugin_data_lw_1[13] = _zz_memaccess_LSUPlugin_data_lw;
-    _zz_memaccess_LSUPlugin_data_lw_1[12] = _zz_memaccess_LSUPlugin_data_lw;
-    _zz_memaccess_LSUPlugin_data_lw_1[11] = _zz_memaccess_LSUPlugin_data_lw;
-    _zz_memaccess_LSUPlugin_data_lw_1[10] = _zz_memaccess_LSUPlugin_data_lw;
-    _zz_memaccess_LSUPlugin_data_lw_1[9] = _zz_memaccess_LSUPlugin_data_lw;
-    _zz_memaccess_LSUPlugin_data_lw_1[8] = _zz_memaccess_LSUPlugin_data_lw;
-    _zz_memaccess_LSUPlugin_data_lw_1[7] = _zz_memaccess_LSUPlugin_data_lw;
-    _zz_memaccess_LSUPlugin_data_lw_1[6] = _zz_memaccess_LSUPlugin_data_lw;
-    _zz_memaccess_LSUPlugin_data_lw_1[5] = _zz_memaccess_LSUPlugin_data_lw;
-    _zz_memaccess_LSUPlugin_data_lw_1[4] = _zz_memaccess_LSUPlugin_data_lw;
-    _zz_memaccess_LSUPlugin_data_lw_1[3] = _zz_memaccess_LSUPlugin_data_lw;
-    _zz_memaccess_LSUPlugin_data_lw_1[2] = _zz_memaccess_LSUPlugin_data_lw;
-    _zz_memaccess_LSUPlugin_data_lw_1[1] = _zz_memaccess_LSUPlugin_data_lw;
-    _zz_memaccess_LSUPlugin_data_lw_1[0] = _zz_memaccess_LSUPlugin_data_lw;
+    _zz_memaccess_LSUPlugin_dcache_lw_1[31] = _zz_memaccess_LSUPlugin_dcache_lw;
+    _zz_memaccess_LSUPlugin_dcache_lw_1[30] = _zz_memaccess_LSUPlugin_dcache_lw;
+    _zz_memaccess_LSUPlugin_dcache_lw_1[29] = _zz_memaccess_LSUPlugin_dcache_lw;
+    _zz_memaccess_LSUPlugin_dcache_lw_1[28] = _zz_memaccess_LSUPlugin_dcache_lw;
+    _zz_memaccess_LSUPlugin_dcache_lw_1[27] = _zz_memaccess_LSUPlugin_dcache_lw;
+    _zz_memaccess_LSUPlugin_dcache_lw_1[26] = _zz_memaccess_LSUPlugin_dcache_lw;
+    _zz_memaccess_LSUPlugin_dcache_lw_1[25] = _zz_memaccess_LSUPlugin_dcache_lw;
+    _zz_memaccess_LSUPlugin_dcache_lw_1[24] = _zz_memaccess_LSUPlugin_dcache_lw;
+    _zz_memaccess_LSUPlugin_dcache_lw_1[23] = _zz_memaccess_LSUPlugin_dcache_lw;
+    _zz_memaccess_LSUPlugin_dcache_lw_1[22] = _zz_memaccess_LSUPlugin_dcache_lw;
+    _zz_memaccess_LSUPlugin_dcache_lw_1[21] = _zz_memaccess_LSUPlugin_dcache_lw;
+    _zz_memaccess_LSUPlugin_dcache_lw_1[20] = _zz_memaccess_LSUPlugin_dcache_lw;
+    _zz_memaccess_LSUPlugin_dcache_lw_1[19] = _zz_memaccess_LSUPlugin_dcache_lw;
+    _zz_memaccess_LSUPlugin_dcache_lw_1[18] = _zz_memaccess_LSUPlugin_dcache_lw;
+    _zz_memaccess_LSUPlugin_dcache_lw_1[17] = _zz_memaccess_LSUPlugin_dcache_lw;
+    _zz_memaccess_LSUPlugin_dcache_lw_1[16] = _zz_memaccess_LSUPlugin_dcache_lw;
+    _zz_memaccess_LSUPlugin_dcache_lw_1[15] = _zz_memaccess_LSUPlugin_dcache_lw;
+    _zz_memaccess_LSUPlugin_dcache_lw_1[14] = _zz_memaccess_LSUPlugin_dcache_lw;
+    _zz_memaccess_LSUPlugin_dcache_lw_1[13] = _zz_memaccess_LSUPlugin_dcache_lw;
+    _zz_memaccess_LSUPlugin_dcache_lw_1[12] = _zz_memaccess_LSUPlugin_dcache_lw;
+    _zz_memaccess_LSUPlugin_dcache_lw_1[11] = _zz_memaccess_LSUPlugin_dcache_lw;
+    _zz_memaccess_LSUPlugin_dcache_lw_1[10] = _zz_memaccess_LSUPlugin_dcache_lw;
+    _zz_memaccess_LSUPlugin_dcache_lw_1[9] = _zz_memaccess_LSUPlugin_dcache_lw;
+    _zz_memaccess_LSUPlugin_dcache_lw_1[8] = _zz_memaccess_LSUPlugin_dcache_lw;
+    _zz_memaccess_LSUPlugin_dcache_lw_1[7] = _zz_memaccess_LSUPlugin_dcache_lw;
+    _zz_memaccess_LSUPlugin_dcache_lw_1[6] = _zz_memaccess_LSUPlugin_dcache_lw;
+    _zz_memaccess_LSUPlugin_dcache_lw_1[5] = _zz_memaccess_LSUPlugin_dcache_lw;
+    _zz_memaccess_LSUPlugin_dcache_lw_1[4] = _zz_memaccess_LSUPlugin_dcache_lw;
+    _zz_memaccess_LSUPlugin_dcache_lw_1[3] = _zz_memaccess_LSUPlugin_dcache_lw;
+    _zz_memaccess_LSUPlugin_dcache_lw_1[2] = _zz_memaccess_LSUPlugin_dcache_lw;
+    _zz_memaccess_LSUPlugin_dcache_lw_1[1] = _zz_memaccess_LSUPlugin_dcache_lw;
+    _zz_memaccess_LSUPlugin_dcache_lw_1[0] = _zz_memaccess_LSUPlugin_dcache_lw;
   end
 
-  assign memaccess_LSUPlugin_data_lw = {_zz_memaccess_LSUPlugin_data_lw_1,DCachePlugin_dcache_access_rsp_payload_data[31 : 0]};
-  assign _zz_3 = zz__zz_memaccess_LSUPlugin_data_lwu(1'b0);
-  always @(*) _zz_memaccess_LSUPlugin_data_lwu = _zz_3;
-  assign memaccess_LSUPlugin_data_lwu = {_zz_memaccess_LSUPlugin_data_lwu,DCachePlugin_dcache_access_rsp_payload_data[31 : 0]};
-  assign _zz_memaccess_LSUPlugin_wdata_sb = memaccess_MEM_WDATA[7];
+  assign memaccess_LSUPlugin_dcache_lw = {_zz_memaccess_LSUPlugin_dcache_lw_1,DCachePlugin_dcache_access_rsp_payload_data[31 : 0]};
+  assign _zz_3 = zz__zz_memaccess_LSUPlugin_dcache_lwu(1'b0);
+  always @(*) _zz_memaccess_LSUPlugin_dcache_lwu = _zz_3;
+  assign memaccess_LSUPlugin_dcache_lwu = {_zz_memaccess_LSUPlugin_dcache_lwu,DCachePlugin_dcache_access_rsp_payload_data[31 : 0]};
+  assign _zz_memaccess_LSUPlugin_dcache_sb = memaccess_MEM_WDATA[7];
   always @(*) begin
-    _zz_memaccess_LSUPlugin_wdata_sb_1[55] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[54] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[53] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[52] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[51] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[50] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[49] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[48] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[47] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[46] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[45] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[44] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[43] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[42] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[41] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[40] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[39] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[38] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[37] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[36] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[35] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[34] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[33] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[32] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[31] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[30] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[29] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[28] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[27] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[26] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[25] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[24] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[23] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[22] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[21] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[20] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[19] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[18] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[17] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[16] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[15] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[14] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[13] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[12] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[11] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[10] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[9] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[8] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[7] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[6] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[5] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[4] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[3] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[2] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[1] = _zz_memaccess_LSUPlugin_wdata_sb;
-    _zz_memaccess_LSUPlugin_wdata_sb_1[0] = _zz_memaccess_LSUPlugin_wdata_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[55] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[54] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[53] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[52] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[51] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[50] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[49] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[48] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[47] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[46] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[45] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[44] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[43] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[42] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[41] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[40] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[39] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[38] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[37] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[36] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[35] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[34] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[33] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[32] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[31] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[30] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[29] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[28] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[27] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[26] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[25] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[24] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[23] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[22] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[21] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[20] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[19] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[18] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[17] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[16] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[15] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[14] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[13] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[12] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[11] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[10] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[9] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[8] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[7] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[6] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[5] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[4] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[3] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[2] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[1] = _zz_memaccess_LSUPlugin_dcache_sb;
+    _zz_memaccess_LSUPlugin_dcache_sb_1[0] = _zz_memaccess_LSUPlugin_dcache_sb;
   end
 
-  assign memaccess_LSUPlugin_wdata_sb = {_zz_memaccess_LSUPlugin_wdata_sb_1,memaccess_MEM_WDATA[7 : 0]};
-  assign _zz_memaccess_LSUPlugin_wdata_sh = memaccess_MEM_WDATA[15];
+  assign memaccess_LSUPlugin_dcache_sb = {_zz_memaccess_LSUPlugin_dcache_sb_1,memaccess_MEM_WDATA[7 : 0]};
+  assign _zz_memaccess_LSUPlugin_dcache_sh = memaccess_MEM_WDATA[15];
   always @(*) begin
-    _zz_memaccess_LSUPlugin_wdata_sh_1[47] = _zz_memaccess_LSUPlugin_wdata_sh;
-    _zz_memaccess_LSUPlugin_wdata_sh_1[46] = _zz_memaccess_LSUPlugin_wdata_sh;
-    _zz_memaccess_LSUPlugin_wdata_sh_1[45] = _zz_memaccess_LSUPlugin_wdata_sh;
-    _zz_memaccess_LSUPlugin_wdata_sh_1[44] = _zz_memaccess_LSUPlugin_wdata_sh;
-    _zz_memaccess_LSUPlugin_wdata_sh_1[43] = _zz_memaccess_LSUPlugin_wdata_sh;
-    _zz_memaccess_LSUPlugin_wdata_sh_1[42] = _zz_memaccess_LSUPlugin_wdata_sh;
-    _zz_memaccess_LSUPlugin_wdata_sh_1[41] = _zz_memaccess_LSUPlugin_wdata_sh;
-    _zz_memaccess_LSUPlugin_wdata_sh_1[40] = _zz_memaccess_LSUPlugin_wdata_sh;
-    _zz_memaccess_LSUPlugin_wdata_sh_1[39] = _zz_memaccess_LSUPlugin_wdata_sh;
-    _zz_memaccess_LSUPlugin_wdata_sh_1[38] = _zz_memaccess_LSUPlugin_wdata_sh;
-    _zz_memaccess_LSUPlugin_wdata_sh_1[37] = _zz_memaccess_LSUPlugin_wdata_sh;
-    _zz_memaccess_LSUPlugin_wdata_sh_1[36] = _zz_memaccess_LSUPlugin_wdata_sh;
-    _zz_memaccess_LSUPlugin_wdata_sh_1[35] = _zz_memaccess_LSUPlugin_wdata_sh;
-    _zz_memaccess_LSUPlugin_wdata_sh_1[34] = _zz_memaccess_LSUPlugin_wdata_sh;
-    _zz_memaccess_LSUPlugin_wdata_sh_1[33] = _zz_memaccess_LSUPlugin_wdata_sh;
-    _zz_memaccess_LSUPlugin_wdata_sh_1[32] = _zz_memaccess_LSUPlugin_wdata_sh;
-    _zz_memaccess_LSUPlugin_wdata_sh_1[31] = _zz_memaccess_LSUPlugin_wdata_sh;
-    _zz_memaccess_LSUPlugin_wdata_sh_1[30] = _zz_memaccess_LSUPlugin_wdata_sh;
-    _zz_memaccess_LSUPlugin_wdata_sh_1[29] = _zz_memaccess_LSUPlugin_wdata_sh;
-    _zz_memaccess_LSUPlugin_wdata_sh_1[28] = _zz_memaccess_LSUPlugin_wdata_sh;
-    _zz_memaccess_LSUPlugin_wdata_sh_1[27] = _zz_memaccess_LSUPlugin_wdata_sh;
-    _zz_memaccess_LSUPlugin_wdata_sh_1[26] = _zz_memaccess_LSUPlugin_wdata_sh;
-    _zz_memaccess_LSUPlugin_wdata_sh_1[25] = _zz_memaccess_LSUPlugin_wdata_sh;
-    _zz_memaccess_LSUPlugin_wdata_sh_1[24] = _zz_memaccess_LSUPlugin_wdata_sh;
-    _zz_memaccess_LSUPlugin_wdata_sh_1[23] = _zz_memaccess_LSUPlugin_wdata_sh;
-    _zz_memaccess_LSUPlugin_wdata_sh_1[22] = _zz_memaccess_LSUPlugin_wdata_sh;
-    _zz_memaccess_LSUPlugin_wdata_sh_1[21] = _zz_memaccess_LSUPlugin_wdata_sh;
-    _zz_memaccess_LSUPlugin_wdata_sh_1[20] = _zz_memaccess_LSUPlugin_wdata_sh;
-    _zz_memaccess_LSUPlugin_wdata_sh_1[19] = _zz_memaccess_LSUPlugin_wdata_sh;
-    _zz_memaccess_LSUPlugin_wdata_sh_1[18] = _zz_memaccess_LSUPlugin_wdata_sh;
-    _zz_memaccess_LSUPlugin_wdata_sh_1[17] = _zz_memaccess_LSUPlugin_wdata_sh;
-    _zz_memaccess_LSUPlugin_wdata_sh_1[16] = _zz_memaccess_LSUPlugin_wdata_sh;
-    _zz_memaccess_LSUPlugin_wdata_sh_1[15] = _zz_memaccess_LSUPlugin_wdata_sh;
-    _zz_memaccess_LSUPlugin_wdata_sh_1[14] = _zz_memaccess_LSUPlugin_wdata_sh;
-    _zz_memaccess_LSUPlugin_wdata_sh_1[13] = _zz_memaccess_LSUPlugin_wdata_sh;
-    _zz_memaccess_LSUPlugin_wdata_sh_1[12] = _zz_memaccess_LSUPlugin_wdata_sh;
-    _zz_memaccess_LSUPlugin_wdata_sh_1[11] = _zz_memaccess_LSUPlugin_wdata_sh;
-    _zz_memaccess_LSUPlugin_wdata_sh_1[10] = _zz_memaccess_LSUPlugin_wdata_sh;
-    _zz_memaccess_LSUPlugin_wdata_sh_1[9] = _zz_memaccess_LSUPlugin_wdata_sh;
-    _zz_memaccess_LSUPlugin_wdata_sh_1[8] = _zz_memaccess_LSUPlugin_wdata_sh;
-    _zz_memaccess_LSUPlugin_wdata_sh_1[7] = _zz_memaccess_LSUPlugin_wdata_sh;
-    _zz_memaccess_LSUPlugin_wdata_sh_1[6] = _zz_memaccess_LSUPlugin_wdata_sh;
-    _zz_memaccess_LSUPlugin_wdata_sh_1[5] = _zz_memaccess_LSUPlugin_wdata_sh;
-    _zz_memaccess_LSUPlugin_wdata_sh_1[4] = _zz_memaccess_LSUPlugin_wdata_sh;
-    _zz_memaccess_LSUPlugin_wdata_sh_1[3] = _zz_memaccess_LSUPlugin_wdata_sh;
-    _zz_memaccess_LSUPlugin_wdata_sh_1[2] = _zz_memaccess_LSUPlugin_wdata_sh;
-    _zz_memaccess_LSUPlugin_wdata_sh_1[1] = _zz_memaccess_LSUPlugin_wdata_sh;
-    _zz_memaccess_LSUPlugin_wdata_sh_1[0] = _zz_memaccess_LSUPlugin_wdata_sh;
+    _zz_memaccess_LSUPlugin_dcache_sh_1[47] = _zz_memaccess_LSUPlugin_dcache_sh;
+    _zz_memaccess_LSUPlugin_dcache_sh_1[46] = _zz_memaccess_LSUPlugin_dcache_sh;
+    _zz_memaccess_LSUPlugin_dcache_sh_1[45] = _zz_memaccess_LSUPlugin_dcache_sh;
+    _zz_memaccess_LSUPlugin_dcache_sh_1[44] = _zz_memaccess_LSUPlugin_dcache_sh;
+    _zz_memaccess_LSUPlugin_dcache_sh_1[43] = _zz_memaccess_LSUPlugin_dcache_sh;
+    _zz_memaccess_LSUPlugin_dcache_sh_1[42] = _zz_memaccess_LSUPlugin_dcache_sh;
+    _zz_memaccess_LSUPlugin_dcache_sh_1[41] = _zz_memaccess_LSUPlugin_dcache_sh;
+    _zz_memaccess_LSUPlugin_dcache_sh_1[40] = _zz_memaccess_LSUPlugin_dcache_sh;
+    _zz_memaccess_LSUPlugin_dcache_sh_1[39] = _zz_memaccess_LSUPlugin_dcache_sh;
+    _zz_memaccess_LSUPlugin_dcache_sh_1[38] = _zz_memaccess_LSUPlugin_dcache_sh;
+    _zz_memaccess_LSUPlugin_dcache_sh_1[37] = _zz_memaccess_LSUPlugin_dcache_sh;
+    _zz_memaccess_LSUPlugin_dcache_sh_1[36] = _zz_memaccess_LSUPlugin_dcache_sh;
+    _zz_memaccess_LSUPlugin_dcache_sh_1[35] = _zz_memaccess_LSUPlugin_dcache_sh;
+    _zz_memaccess_LSUPlugin_dcache_sh_1[34] = _zz_memaccess_LSUPlugin_dcache_sh;
+    _zz_memaccess_LSUPlugin_dcache_sh_1[33] = _zz_memaccess_LSUPlugin_dcache_sh;
+    _zz_memaccess_LSUPlugin_dcache_sh_1[32] = _zz_memaccess_LSUPlugin_dcache_sh;
+    _zz_memaccess_LSUPlugin_dcache_sh_1[31] = _zz_memaccess_LSUPlugin_dcache_sh;
+    _zz_memaccess_LSUPlugin_dcache_sh_1[30] = _zz_memaccess_LSUPlugin_dcache_sh;
+    _zz_memaccess_LSUPlugin_dcache_sh_1[29] = _zz_memaccess_LSUPlugin_dcache_sh;
+    _zz_memaccess_LSUPlugin_dcache_sh_1[28] = _zz_memaccess_LSUPlugin_dcache_sh;
+    _zz_memaccess_LSUPlugin_dcache_sh_1[27] = _zz_memaccess_LSUPlugin_dcache_sh;
+    _zz_memaccess_LSUPlugin_dcache_sh_1[26] = _zz_memaccess_LSUPlugin_dcache_sh;
+    _zz_memaccess_LSUPlugin_dcache_sh_1[25] = _zz_memaccess_LSUPlugin_dcache_sh;
+    _zz_memaccess_LSUPlugin_dcache_sh_1[24] = _zz_memaccess_LSUPlugin_dcache_sh;
+    _zz_memaccess_LSUPlugin_dcache_sh_1[23] = _zz_memaccess_LSUPlugin_dcache_sh;
+    _zz_memaccess_LSUPlugin_dcache_sh_1[22] = _zz_memaccess_LSUPlugin_dcache_sh;
+    _zz_memaccess_LSUPlugin_dcache_sh_1[21] = _zz_memaccess_LSUPlugin_dcache_sh;
+    _zz_memaccess_LSUPlugin_dcache_sh_1[20] = _zz_memaccess_LSUPlugin_dcache_sh;
+    _zz_memaccess_LSUPlugin_dcache_sh_1[19] = _zz_memaccess_LSUPlugin_dcache_sh;
+    _zz_memaccess_LSUPlugin_dcache_sh_1[18] = _zz_memaccess_LSUPlugin_dcache_sh;
+    _zz_memaccess_LSUPlugin_dcache_sh_1[17] = _zz_memaccess_LSUPlugin_dcache_sh;
+    _zz_memaccess_LSUPlugin_dcache_sh_1[16] = _zz_memaccess_LSUPlugin_dcache_sh;
+    _zz_memaccess_LSUPlugin_dcache_sh_1[15] = _zz_memaccess_LSUPlugin_dcache_sh;
+    _zz_memaccess_LSUPlugin_dcache_sh_1[14] = _zz_memaccess_LSUPlugin_dcache_sh;
+    _zz_memaccess_LSUPlugin_dcache_sh_1[13] = _zz_memaccess_LSUPlugin_dcache_sh;
+    _zz_memaccess_LSUPlugin_dcache_sh_1[12] = _zz_memaccess_LSUPlugin_dcache_sh;
+    _zz_memaccess_LSUPlugin_dcache_sh_1[11] = _zz_memaccess_LSUPlugin_dcache_sh;
+    _zz_memaccess_LSUPlugin_dcache_sh_1[10] = _zz_memaccess_LSUPlugin_dcache_sh;
+    _zz_memaccess_LSUPlugin_dcache_sh_1[9] = _zz_memaccess_LSUPlugin_dcache_sh;
+    _zz_memaccess_LSUPlugin_dcache_sh_1[8] = _zz_memaccess_LSUPlugin_dcache_sh;
+    _zz_memaccess_LSUPlugin_dcache_sh_1[7] = _zz_memaccess_LSUPlugin_dcache_sh;
+    _zz_memaccess_LSUPlugin_dcache_sh_1[6] = _zz_memaccess_LSUPlugin_dcache_sh;
+    _zz_memaccess_LSUPlugin_dcache_sh_1[5] = _zz_memaccess_LSUPlugin_dcache_sh;
+    _zz_memaccess_LSUPlugin_dcache_sh_1[4] = _zz_memaccess_LSUPlugin_dcache_sh;
+    _zz_memaccess_LSUPlugin_dcache_sh_1[3] = _zz_memaccess_LSUPlugin_dcache_sh;
+    _zz_memaccess_LSUPlugin_dcache_sh_1[2] = _zz_memaccess_LSUPlugin_dcache_sh;
+    _zz_memaccess_LSUPlugin_dcache_sh_1[1] = _zz_memaccess_LSUPlugin_dcache_sh;
+    _zz_memaccess_LSUPlugin_dcache_sh_1[0] = _zz_memaccess_LSUPlugin_dcache_sh;
   end
 
-  assign memaccess_LSUPlugin_wdata_sh = {_zz_memaccess_LSUPlugin_wdata_sh_1,memaccess_MEM_WDATA[15 : 0]};
-  assign _zz_memaccess_LSUPlugin_wdata_sw = memaccess_MEM_WDATA[31];
+  assign memaccess_LSUPlugin_dcache_sh = {_zz_memaccess_LSUPlugin_dcache_sh_1,memaccess_MEM_WDATA[15 : 0]};
+  assign _zz_memaccess_LSUPlugin_dcache_sw = memaccess_MEM_WDATA[31];
   always @(*) begin
-    _zz_memaccess_LSUPlugin_wdata_sw_1[31] = _zz_memaccess_LSUPlugin_wdata_sw;
-    _zz_memaccess_LSUPlugin_wdata_sw_1[30] = _zz_memaccess_LSUPlugin_wdata_sw;
-    _zz_memaccess_LSUPlugin_wdata_sw_1[29] = _zz_memaccess_LSUPlugin_wdata_sw;
-    _zz_memaccess_LSUPlugin_wdata_sw_1[28] = _zz_memaccess_LSUPlugin_wdata_sw;
-    _zz_memaccess_LSUPlugin_wdata_sw_1[27] = _zz_memaccess_LSUPlugin_wdata_sw;
-    _zz_memaccess_LSUPlugin_wdata_sw_1[26] = _zz_memaccess_LSUPlugin_wdata_sw;
-    _zz_memaccess_LSUPlugin_wdata_sw_1[25] = _zz_memaccess_LSUPlugin_wdata_sw;
-    _zz_memaccess_LSUPlugin_wdata_sw_1[24] = _zz_memaccess_LSUPlugin_wdata_sw;
-    _zz_memaccess_LSUPlugin_wdata_sw_1[23] = _zz_memaccess_LSUPlugin_wdata_sw;
-    _zz_memaccess_LSUPlugin_wdata_sw_1[22] = _zz_memaccess_LSUPlugin_wdata_sw;
-    _zz_memaccess_LSUPlugin_wdata_sw_1[21] = _zz_memaccess_LSUPlugin_wdata_sw;
-    _zz_memaccess_LSUPlugin_wdata_sw_1[20] = _zz_memaccess_LSUPlugin_wdata_sw;
-    _zz_memaccess_LSUPlugin_wdata_sw_1[19] = _zz_memaccess_LSUPlugin_wdata_sw;
-    _zz_memaccess_LSUPlugin_wdata_sw_1[18] = _zz_memaccess_LSUPlugin_wdata_sw;
-    _zz_memaccess_LSUPlugin_wdata_sw_1[17] = _zz_memaccess_LSUPlugin_wdata_sw;
-    _zz_memaccess_LSUPlugin_wdata_sw_1[16] = _zz_memaccess_LSUPlugin_wdata_sw;
-    _zz_memaccess_LSUPlugin_wdata_sw_1[15] = _zz_memaccess_LSUPlugin_wdata_sw;
-    _zz_memaccess_LSUPlugin_wdata_sw_1[14] = _zz_memaccess_LSUPlugin_wdata_sw;
-    _zz_memaccess_LSUPlugin_wdata_sw_1[13] = _zz_memaccess_LSUPlugin_wdata_sw;
-    _zz_memaccess_LSUPlugin_wdata_sw_1[12] = _zz_memaccess_LSUPlugin_wdata_sw;
-    _zz_memaccess_LSUPlugin_wdata_sw_1[11] = _zz_memaccess_LSUPlugin_wdata_sw;
-    _zz_memaccess_LSUPlugin_wdata_sw_1[10] = _zz_memaccess_LSUPlugin_wdata_sw;
-    _zz_memaccess_LSUPlugin_wdata_sw_1[9] = _zz_memaccess_LSUPlugin_wdata_sw;
-    _zz_memaccess_LSUPlugin_wdata_sw_1[8] = _zz_memaccess_LSUPlugin_wdata_sw;
-    _zz_memaccess_LSUPlugin_wdata_sw_1[7] = _zz_memaccess_LSUPlugin_wdata_sw;
-    _zz_memaccess_LSUPlugin_wdata_sw_1[6] = _zz_memaccess_LSUPlugin_wdata_sw;
-    _zz_memaccess_LSUPlugin_wdata_sw_1[5] = _zz_memaccess_LSUPlugin_wdata_sw;
-    _zz_memaccess_LSUPlugin_wdata_sw_1[4] = _zz_memaccess_LSUPlugin_wdata_sw;
-    _zz_memaccess_LSUPlugin_wdata_sw_1[3] = _zz_memaccess_LSUPlugin_wdata_sw;
-    _zz_memaccess_LSUPlugin_wdata_sw_1[2] = _zz_memaccess_LSUPlugin_wdata_sw;
-    _zz_memaccess_LSUPlugin_wdata_sw_1[1] = _zz_memaccess_LSUPlugin_wdata_sw;
-    _zz_memaccess_LSUPlugin_wdata_sw_1[0] = _zz_memaccess_LSUPlugin_wdata_sw;
+    _zz_memaccess_LSUPlugin_dcache_sw_1[31] = _zz_memaccess_LSUPlugin_dcache_sw;
+    _zz_memaccess_LSUPlugin_dcache_sw_1[30] = _zz_memaccess_LSUPlugin_dcache_sw;
+    _zz_memaccess_LSUPlugin_dcache_sw_1[29] = _zz_memaccess_LSUPlugin_dcache_sw;
+    _zz_memaccess_LSUPlugin_dcache_sw_1[28] = _zz_memaccess_LSUPlugin_dcache_sw;
+    _zz_memaccess_LSUPlugin_dcache_sw_1[27] = _zz_memaccess_LSUPlugin_dcache_sw;
+    _zz_memaccess_LSUPlugin_dcache_sw_1[26] = _zz_memaccess_LSUPlugin_dcache_sw;
+    _zz_memaccess_LSUPlugin_dcache_sw_1[25] = _zz_memaccess_LSUPlugin_dcache_sw;
+    _zz_memaccess_LSUPlugin_dcache_sw_1[24] = _zz_memaccess_LSUPlugin_dcache_sw;
+    _zz_memaccess_LSUPlugin_dcache_sw_1[23] = _zz_memaccess_LSUPlugin_dcache_sw;
+    _zz_memaccess_LSUPlugin_dcache_sw_1[22] = _zz_memaccess_LSUPlugin_dcache_sw;
+    _zz_memaccess_LSUPlugin_dcache_sw_1[21] = _zz_memaccess_LSUPlugin_dcache_sw;
+    _zz_memaccess_LSUPlugin_dcache_sw_1[20] = _zz_memaccess_LSUPlugin_dcache_sw;
+    _zz_memaccess_LSUPlugin_dcache_sw_1[19] = _zz_memaccess_LSUPlugin_dcache_sw;
+    _zz_memaccess_LSUPlugin_dcache_sw_1[18] = _zz_memaccess_LSUPlugin_dcache_sw;
+    _zz_memaccess_LSUPlugin_dcache_sw_1[17] = _zz_memaccess_LSUPlugin_dcache_sw;
+    _zz_memaccess_LSUPlugin_dcache_sw_1[16] = _zz_memaccess_LSUPlugin_dcache_sw;
+    _zz_memaccess_LSUPlugin_dcache_sw_1[15] = _zz_memaccess_LSUPlugin_dcache_sw;
+    _zz_memaccess_LSUPlugin_dcache_sw_1[14] = _zz_memaccess_LSUPlugin_dcache_sw;
+    _zz_memaccess_LSUPlugin_dcache_sw_1[13] = _zz_memaccess_LSUPlugin_dcache_sw;
+    _zz_memaccess_LSUPlugin_dcache_sw_1[12] = _zz_memaccess_LSUPlugin_dcache_sw;
+    _zz_memaccess_LSUPlugin_dcache_sw_1[11] = _zz_memaccess_LSUPlugin_dcache_sw;
+    _zz_memaccess_LSUPlugin_dcache_sw_1[10] = _zz_memaccess_LSUPlugin_dcache_sw;
+    _zz_memaccess_LSUPlugin_dcache_sw_1[9] = _zz_memaccess_LSUPlugin_dcache_sw;
+    _zz_memaccess_LSUPlugin_dcache_sw_1[8] = _zz_memaccess_LSUPlugin_dcache_sw;
+    _zz_memaccess_LSUPlugin_dcache_sw_1[7] = _zz_memaccess_LSUPlugin_dcache_sw;
+    _zz_memaccess_LSUPlugin_dcache_sw_1[6] = _zz_memaccess_LSUPlugin_dcache_sw;
+    _zz_memaccess_LSUPlugin_dcache_sw_1[5] = _zz_memaccess_LSUPlugin_dcache_sw;
+    _zz_memaccess_LSUPlugin_dcache_sw_1[4] = _zz_memaccess_LSUPlugin_dcache_sw;
+    _zz_memaccess_LSUPlugin_dcache_sw_1[3] = _zz_memaccess_LSUPlugin_dcache_sw;
+    _zz_memaccess_LSUPlugin_dcache_sw_1[2] = _zz_memaccess_LSUPlugin_dcache_sw;
+    _zz_memaccess_LSUPlugin_dcache_sw_1[1] = _zz_memaccess_LSUPlugin_dcache_sw;
+    _zz_memaccess_LSUPlugin_dcache_sw_1[0] = _zz_memaccess_LSUPlugin_dcache_sw;
   end
 
-  assign memaccess_LSUPlugin_wdata_sw = {_zz_memaccess_LSUPlugin_wdata_sw_1,memaccess_MEM_WDATA[31 : 0]};
-  assign memaccess_LSUPlugin_addr = memaccess_ALU_RESULT;
+  assign memaccess_LSUPlugin_dcache_sw = {_zz_memaccess_LSUPlugin_dcache_sw_1,memaccess_MEM_WDATA[31 : 0]};
+  assign memaccess_LSUPlugin_cpu_addr = memaccess_ALU_RESULT;
   assign memaccess_LSUPlugin_is_mem = (memaccess_IS_LOAD || memaccess_IS_STORE);
-  assign memaccess_LSUPlugin_is_timer = ((memaccess_LSUPlugin_addr == 64'h000000000200bff8) || (memaccess_LSUPlugin_addr == 64'h0000000002004000));
+  assign memaccess_LSUPlugin_is_timer = ((memaccess_LSUPlugin_cpu_addr == 64'h000000000200bff8) || (memaccess_LSUPlugin_cpu_addr == 64'h0000000002004000));
+  assign memaccess_LSUPlugin_lsu_ready = 1'b1;
   always @(*) begin
     if((memaccess_MEM_CTRL == MemCtrlEnum_LB)) begin
-        memaccess_LSUPlugin_data_load = memaccess_LSUPlugin_data_lb;
+        memaccess_LSUPlugin_dcache_data_load = memaccess_LSUPlugin_dcache_lb;
     end else if((memaccess_MEM_CTRL == MemCtrlEnum_LBU)) begin
-        memaccess_LSUPlugin_data_load = memaccess_LSUPlugin_data_lbu;
+        memaccess_LSUPlugin_dcache_data_load = memaccess_LSUPlugin_dcache_lbu;
     end else if((memaccess_MEM_CTRL == MemCtrlEnum_LH)) begin
-        memaccess_LSUPlugin_data_load = memaccess_LSUPlugin_data_lh;
+        memaccess_LSUPlugin_dcache_data_load = memaccess_LSUPlugin_dcache_lh;
     end else if((memaccess_MEM_CTRL == MemCtrlEnum_LHU)) begin
-        memaccess_LSUPlugin_data_load = memaccess_LSUPlugin_data_lhu;
+        memaccess_LSUPlugin_dcache_data_load = memaccess_LSUPlugin_dcache_lhu;
     end else if((memaccess_MEM_CTRL == MemCtrlEnum_LW)) begin
-        memaccess_LSUPlugin_data_load = memaccess_LSUPlugin_data_lw;
+        memaccess_LSUPlugin_dcache_data_load = memaccess_LSUPlugin_dcache_lw;
     end else if((memaccess_MEM_CTRL == MemCtrlEnum_LWU)) begin
-        memaccess_LSUPlugin_data_load = memaccess_LSUPlugin_data_lwu;
+        memaccess_LSUPlugin_dcache_data_load = memaccess_LSUPlugin_dcache_lwu;
     end else if((memaccess_MEM_CTRL == MemCtrlEnum_LD)) begin
-        memaccess_LSUPlugin_data_load = DCachePlugin_dcache_access_rsp_payload_data;
+        memaccess_LSUPlugin_dcache_data_load = DCachePlugin_dcache_access_rsp_payload_data;
     end else begin
-        memaccess_LSUPlugin_data_load = 64'h0;
+        memaccess_LSUPlugin_dcache_data_load = 64'h0;
     end
   end
 
   always @(*) begin
     if((memaccess_MEM_CTRL == MemCtrlEnum_SB)) begin
-        memaccess_LSUPlugin_wdata = memaccess_LSUPlugin_wdata_sb;
+        memaccess_LSUPlugin_dcache_wdata = memaccess_LSUPlugin_dcache_sb;
     end else if((memaccess_MEM_CTRL == MemCtrlEnum_SH)) begin
-        memaccess_LSUPlugin_wdata = memaccess_LSUPlugin_wdata_sh;
+        memaccess_LSUPlugin_dcache_wdata = memaccess_LSUPlugin_dcache_sh;
     end else if((memaccess_MEM_CTRL == MemCtrlEnum_SW)) begin
-        memaccess_LSUPlugin_wdata = memaccess_LSUPlugin_wdata_sw;
+        memaccess_LSUPlugin_dcache_wdata = memaccess_LSUPlugin_dcache_sw;
     end else if((memaccess_MEM_CTRL == MemCtrlEnum_SD)) begin
-        memaccess_LSUPlugin_wdata = memaccess_MEM_WDATA;
+        memaccess_LSUPlugin_dcache_wdata = memaccess_MEM_WDATA;
     end else begin
-        memaccess_LSUPlugin_wdata = 64'h0;
+        memaccess_LSUPlugin_dcache_wdata = 64'h0;
     end
   end
 
-  assign _zz_4 = zz__zz_memaccess_LSUPlugin_wstrb(1'b0);
-  always @(*) _zz_memaccess_LSUPlugin_wstrb = _zz_4;
+  assign _zz_4 = zz__zz_memaccess_LSUPlugin_dcache_wstrb(1'b0);
+  always @(*) _zz_memaccess_LSUPlugin_dcache_wstrb = _zz_4;
   always @(*) begin
     if((memaccess_MEM_CTRL == MemCtrlEnum_SB)) begin
-        memaccess_LSUPlugin_wstrb = _zz_memaccess_LSUPlugin_wstrb;
+        memaccess_LSUPlugin_dcache_wstrb = _zz_memaccess_LSUPlugin_dcache_wstrb;
     end else if((memaccess_MEM_CTRL == MemCtrlEnum_SH)) begin
-        memaccess_LSUPlugin_wstrb = _zz_memaccess_LSUPlugin_wstrb_1;
+        memaccess_LSUPlugin_dcache_wstrb = _zz_memaccess_LSUPlugin_dcache_wstrb_1;
     end else if((memaccess_MEM_CTRL == MemCtrlEnum_SW)) begin
-        memaccess_LSUPlugin_wstrb = _zz_memaccess_LSUPlugin_wstrb_2;
+        memaccess_LSUPlugin_dcache_wstrb = _zz_memaccess_LSUPlugin_dcache_wstrb_2;
     end else if((memaccess_MEM_CTRL == MemCtrlEnum_SD)) begin
-        memaccess_LSUPlugin_wstrb = _zz_memaccess_LSUPlugin_wstrb_3;
+        memaccess_LSUPlugin_dcache_wstrb = _zz_memaccess_LSUPlugin_dcache_wstrb_3;
     end else begin
-        memaccess_LSUPlugin_wstrb = 8'h0;
+        memaccess_LSUPlugin_dcache_wstrb = 8'h0;
     end
   end
 
-  always @(*) begin
-    if((memaccess_MEM_CTRL == MemCtrlEnum_SB)) begin
-        memaccess_LSUPlugin_size = 3'b000;
-    end else if((memaccess_MEM_CTRL == MemCtrlEnum_SH)) begin
-        memaccess_LSUPlugin_size = 3'b001;
-    end else if((memaccess_MEM_CTRL == MemCtrlEnum_SW)) begin
-        memaccess_LSUPlugin_size = 3'b010;
-    end else if((memaccess_MEM_CTRL == MemCtrlEnum_SD)) begin
-        memaccess_LSUPlugin_size = 3'b011;
-    end else begin
-        memaccess_LSUPlugin_size = 3'b000;
-    end
-  end
-
-  assign _zz_5 = zz__zz_memaccess_LSUPlugin_wstrb_1(1'b0);
-  always @(*) _zz_memaccess_LSUPlugin_wstrb_1 = _zz_5;
-  assign _zz_6 = zz__zz_memaccess_LSUPlugin_wstrb_2(1'b0);
-  always @(*) _zz_memaccess_LSUPlugin_wstrb_2 = _zz_6;
-  assign _zz_memaccess_LSUPlugin_wstrb_3[7 : 0] = 8'hff;
+  assign _zz_5 = zz__zz_memaccess_LSUPlugin_dcache_wstrb_1(1'b0);
+  always @(*) _zz_memaccess_LSUPlugin_dcache_wstrb_1 = _zz_5;
+  assign _zz_6 = zz__zz_memaccess_LSUPlugin_dcache_wstrb_2(1'b0);
+  always @(*) _zz_memaccess_LSUPlugin_dcache_wstrb_2 = _zz_6;
+  assign _zz_memaccess_LSUPlugin_dcache_wstrb_3[7 : 0] = 8'hff;
+  assign memaccess_LSUPlugin_lsu_rdata = memaccess_LSUPlugin_dcache_data_load;
+  assign memaccess_LSUPlugin_lsu_wdata = memaccess_LSUPlugin_dcache_wdata;
+  assign memaccess_LSUPlugin_lsu_addr = memaccess_LSUPlugin_cpu_addr;
+  assign memaccess_LSUPlugin_lsu_wen = memaccess_IS_STORE;
+  assign memaccess_LSUPlugin_lsu_wstrb = memaccess_LSUPlugin_dcache_wstrb;
   assign DCachePlugin_dcache_access_cmd_valid = (((! memaccess_LSUPlugin_is_timer) && memaccess_LSUPlugin_is_mem) && memaccess_arbitration_isValid);
-  assign DCachePlugin_dcache_access_cmd_payload_addr = memaccess_LSUPlugin_addr;
-  assign DCachePlugin_dcache_access_cmd_payload_wen = memaccess_IS_STORE;
-  assign DCachePlugin_dcache_access_cmd_payload_wdata = memaccess_LSUPlugin_wdata;
-  assign DCachePlugin_dcache_access_cmd_payload_wstrb = memaccess_LSUPlugin_wstrb;
-  assign DCachePlugin_dcache_access_cmd_payload_size = memaccess_LSUPlugin_size;
+  assign DCachePlugin_dcache_access_cmd_payload_addr = memaccess_LSUPlugin_lsu_addr;
+  assign DCachePlugin_dcache_access_cmd_payload_wen = memaccess_LSUPlugin_lsu_wen;
+  assign DCachePlugin_dcache_access_cmd_payload_wdata = memaccess_LSUPlugin_lsu_wdata;
+  assign DCachePlugin_dcache_access_cmd_payload_wstrb = memaccess_LSUPlugin_lsu_wstrb;
   assign icache_cmd_valid = ICachePlugin_icache_access_cmd_valid;
   assign ICachePlugin_icache_access_cmd_ready = icache_cmd_ready;
   assign icache_cmd_payload_addr = ICachePlugin_icache_access_cmd_payload_addr;
@@ -2643,7 +2603,6 @@ module DandRiscvSimple (
   assign dcache_cmd_payload_wen = DCachePlugin_dcache_access_cmd_payload_wen;
   assign dcache_cmd_payload_wdata = DCachePlugin_dcache_access_cmd_payload_wdata;
   assign dcache_cmd_payload_wstrb = DCachePlugin_dcache_access_cmd_payload_wstrb;
-  assign dcache_cmd_payload_size = DCachePlugin_dcache_access_cmd_payload_size;
   assign DCachePlugin_dcache_access_rsp_valid = dcache_rsp_valid;
   assign DCachePlugin_dcache_access_rsp_payload_data = dcache_rsp_payload_data;
   assign when_Pipeline_l127 = (! decode_arbitration_isStuck);
@@ -2926,7 +2885,7 @@ module DandRiscvSimple (
       execute_to_memaccess_MEM_WDATA <= execute_MEM_WDATA;
     end
     if(when_Pipeline_l127_40) begin
-      memaccess_to_writeback_MEM_RDATA <= _zz_execute_ALUPlugin_branch_src1;
+      memaccess_to_writeback_LSU_RDATA <= memaccess_LSU_RDATA;
     end
   end
 

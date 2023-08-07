@@ -72,7 +72,7 @@ class ICachePlugin(val config : ICacheConfig) extends Plugin[DandRiscvSimple]{
 
     if (!icache_config.directOutput){
       val icache = new ICache(icache_config)
-      val srambanks = new SramBanks(icache_config.wayCount, icache_config.bankNum, icache_config.bankWidth, icache_config.bankDepthBits)
+      val srambanks = new SramBanks(true, icache_config.wayCount, icache_config.bankNum, icache_config.bankWidth, icache_config.bankDepthBits)
 
       // connect icache and cpu ports
       icache_access.cmd <> icache.cpu.cmd
@@ -105,10 +105,10 @@ class ICachePlugin(val config : ICacheConfig) extends Plugin[DandRiscvSimple]{
       icache.next_level.rsp.payload.data := icacheReader.r.payload.data
     }
     else {
-      val icacheReader = master(ICacheAccess(icache_config.addressWidth, icache_config.cpuDataWidth)).setName("icache")
+      val icacheMaster = master(ICacheAccess(icache_config.addressWidth, icache_config.cpuDataWidth)).setName("icache")
       // connect icache and cpu ports
-      icache_access.cmd <> icacheReader.cmd
-      icache_access.rsp <> icacheReader.rsp
+      icache_access.cmd <> icacheMaster.cmd
+      icache_access.rsp <> icacheMaster.rsp
     }
     
 

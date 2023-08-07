@@ -4800,6 +4800,7 @@ Caused by: java.lang.InterruptedException
 2023.08.04 16:37:37 INFO  compiling projectname (5 scala sources)
 2023.08.04 16:37:38 WARN  2 deprecations (since 2.13.3); re-run with -deprecation for details
 2023.08.04 16:37:38 INFO  time: compiled projectname in 1.25s
+<<<<<<< HEAD
 2023.08.07 19:31:54 INFO  Started: Metals version 1.0.0 in folders '/home/lin/SpinalProjects/DandRiscvSoC' for client Visual Studio Code 1.80.2.[0m
 Aug 07, 2023 7:31:54 PM org.flywaydb.core.internal.license.VersionPrinter printVersionOnly
 INFO: Flyway Community Edition 9.20.1 by Redgate
@@ -4838,3 +4839,101 @@ INFO: Schema "PUBLIC" is up to date. No migration necessary.
 2023.08.07 19:32:07 WARN  Could not find java sources in /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/lib/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/lib/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/lib/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/lib/src.zip. Java symbols will not be available.[0m
 2023.08.07 19:32:07 WARN  Could not find java sources in /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/lib/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/lib/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/lib/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/lib/src.zip. Java symbols will not be available.[0m
 2023.08.07 19:32:07 INFO  time: indexed workspace in 5.15s[0m
+=======
+°ËÔÂ 05, 2023 4:18:40 ÏÂÎç org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+ÐÅÏ¢: Unsupported notification method: $/setTrace
+°ËÔÂ 05, 2023 11:39:58 ÏÂÎç org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+ÐÅÏ¢: Unsupported notification method: $/setTrace
+2023.08.07 09:17:12 INFO  compiling projectname (8 scala sources)
+2023.08.07 09:17:15 WARN  1 deprecation (since 2.13.0)
+2023.08.07 09:17:15 WARN  1 deprecation (since 2.13.3)
+2023.08.07 09:17:15 WARN  2 deprecations in total; re-run with -deprecation for details
+2023.08.07 09:17:15 INFO  time: compiled projectname in 3.64s
+2023.08.07 09:54:54 INFO  Shutting down server
+2023.08.07 09:54:54 INFO  shutting down Metals
+2023.08.07 09:54:54 INFO  Shut down connection with build server.
+2023.08.07 09:54:54 INFO  Shut down connection with build server.
+2023.08.07 09:54:54 INFO  Shut down connection with build server.
+2023.08.07 09:54:54 INFO  Exiting server
+2023.08.07 10:11:28 INFO  Started: Metals version 1.0.0 in folders 'D:\MyWork\ScalaProj\DandRiscvSoC' for client Visual Studio Code 1.81.0.
+°ËÔÂ 07, 2023 10:11:28 ÉÏÎç org.flywaydb.core.internal.license.VersionPrinter printVersionOnly
+ÐÅÏ¢: Flyway Community Edition 9.20.1 by Redgate
+°ËÔÂ 07, 2023 10:11:28 ÉÏÎç org.flywaydb.core.internal.license.VersionPrinter printVersion
+ÐÅÏ¢: See release notes here: https://rd.gt/416ObMi
+°ËÔÂ 07, 2023 10:11:28 ÉÏÎç org.flywaydb.core.internal.license.VersionPrinter printVersion
+ÐÅÏ¢: 
+°ËÔÂ 07, 2023 10:11:28 ÉÏÎç org.flywaydb.core.internal.database.base.BaseDatabaseType createDatabase
+ÐÅÏ¢: Database: jdbc:h2:file:D:\MyWork\ScalaProj\DandRiscvSoC\.metals\metals (H2 2.1)
+°ËÔÂ 07, 2023 10:11:28 ÉÏÎç org.flywaydb.core.internal.command.DbValidate validate
+ÐÅÏ¢: Successfully validated 4 migrations (execution time 00:00.025s)
+°ËÔÂ 07, 2023 10:11:28 ÉÏÎç org.flywaydb.core.internal.command.DbMigrate migrateGroup
+ÐÅÏ¢: Current version of schema "PUBLIC": 4
+°ËÔÂ 07, 2023 10:11:29 ÉÏÎç org.flywaydb.core.internal.command.DbMigrate logSummary
+ÐÅÏ¢: Schema "PUBLIC" is up to date. No migration necessary.
+2023.08.07 10:11:29 INFO  time: initialize in 0.7s
+2023.08.07 10:11:29 INFO  Attempting to connect to the build server...
+2023.08.07 10:11:29 INFO  Bloop uses C:\Program Files\Java\jdk-1.8 defined at C:\Users\TsinghuaIC\.bloop\bloop.json
+2023.08.07 10:11:29 INFO  skipping build import with status 'Installed'
+2023.08.07 10:11:29 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at D:\MyWork\ScalaProj\DandRiscvSoC\.metals\bsp.trace.json or C:\Users\TsinghuaIC\AppData\Local\scalameta\metals\cache\bsp.trace.json
+2023.08.07 10:11:29 INFO  Attempting to connect to the build server...
+2023.08.07 10:11:29 INFO  Bloop uses C:\Program Files\Java\jdk-1.8 defined at C:\Users\TsinghuaIC\.bloop\bloop.json
+2023.08.07 10:11:29 INFO  Attempting to connect to the build server...
+2023.08.07 10:11:29 INFO  Bloop uses C:\Program Files\Java\jdk-1.8 defined at C:\Users\TsinghuaIC\.bloop\bloop.json
+2023.08.07 10:11:29 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at D:\MyWork\ScalaProj\DandRiscvSoC\project\project\.metals\bsp.trace.json or C:\Users\TsinghuaIC\AppData\Local\scalameta\metals\cache\bsp.trace.json
+2023.08.07 10:11:29 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at D:\MyWork\ScalaProj\DandRiscvSoC\project\.metals\bsp.trace.json or C:\Users\TsinghuaIC\AppData\Local\scalameta\metals\cache\bsp.trace.json
+2023.08.07 10:11:29 INFO  time: Connected to build server in 0.23s
+2023.08.07 10:11:29 INFO  Connected to Build server: Bloop v1.5.8
+2023.08.07 10:11:29 INFO  time: Imported build in 0.11s
+2023.08.07 10:11:33 INFO  time: indexed workspace in 3.9s
+2023.08.07 10:11:58 INFO  Shutting down server
+2023.08.07 10:11:58 INFO  shutting down Metals
+2023.08.07 10:11:58 INFO  Shut down connection with build server.
+2023.08.07 10:11:58 INFO  Shut down connection with build server.
+2023.08.07 10:11:58 INFO  Shut down connection with build server.
+2023.08.07 10:11:58 INFO  Exiting server
+2023.08.07 10:12:07 INFO  Started: Metals version 1.0.0 in folders 'D:\MyWork\ScalaProj\DandRiscvSoC' for client Visual Studio Code 1.81.0.
+°ËÔÂ 07, 2023 10:12:07 ÉÏÎç org.flywaydb.core.internal.license.VersionPrinter printVersionOnly
+ÐÅÏ¢: Flyway Community Edition 9.20.1 by Redgate
+°ËÔÂ 07, 2023 10:12:07 ÉÏÎç org.flywaydb.core.internal.license.VersionPrinter printVersion
+ÐÅÏ¢: See release notes here: https://rd.gt/416ObMi
+°ËÔÂ 07, 2023 10:12:07 ÉÏÎç org.flywaydb.core.internal.license.VersionPrinter printVersion
+ÐÅÏ¢: 
+°ËÔÂ 07, 2023 10:12:08 ÉÏÎç org.flywaydb.core.internal.database.base.BaseDatabaseType createDatabase
+ÐÅÏ¢: Database: jdbc:h2:file:D:\MyWork\ScalaProj\DandRiscvSoC\.metals\metals (H2 2.1)
+°ËÔÂ 07, 2023 10:12:08 ÉÏÎç org.flywaydb.core.internal.command.DbValidate validate
+ÐÅÏ¢: Successfully validated 4 migrations (execution time 00:00.025s)
+°ËÔÂ 07, 2023 10:12:08 ÉÏÎç org.flywaydb.core.internal.command.DbMigrate migrateGroup
+ÐÅÏ¢: Current version of schema "PUBLIC": 4
+°ËÔÂ 07, 2023 10:12:08 ÉÏÎç org.flywaydb.core.internal.command.DbMigrate logSummary
+ÐÅÏ¢: Schema "PUBLIC" is up to date. No migration necessary.
+2023.08.07 10:12:08 INFO  time: initialize in 1.01s
+2023.08.07 10:12:09 INFO  Attempting to connect to the build server...
+2023.08.07 10:12:09 INFO  Bloop uses C:\Program Files\Java\jdk-1.8 defined at C:\Users\TsinghuaIC\.bloop\bloop.json
+2023.08.07 10:12:08 INFO  skipping build import with status 'Installed'
+2023.08.07 10:12:09 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at D:\MyWork\ScalaProj\DandRiscvSoC\.metals\bsp.trace.json or C:\Users\TsinghuaIC\AppData\Local\scalameta\metals\cache\bsp.trace.json
+2023.08.07 10:12:09 INFO  Attempting to connect to the build server...
+2023.08.07 10:12:09 INFO  Bloop uses C:\Program Files\Java\jdk-1.8 defined at C:\Users\TsinghuaIC\.bloop\bloop.json
+2023.08.07 10:12:09 INFO  Attempting to connect to the build server...
+2023.08.07 10:12:09 INFO  Bloop uses C:\Program Files\Java\jdk-1.8 defined at C:\Users\TsinghuaIC\.bloop\bloop.json
+2023.08.07 10:12:09 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at D:\MyWork\ScalaProj\DandRiscvSoC\project\project\.metals\bsp.trace.json or C:\Users\TsinghuaIC\AppData\Local\scalameta\metals\cache\bsp.trace.json
+2023.08.07 10:12:09 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at D:\MyWork\ScalaProj\DandRiscvSoC\project\.metals\bsp.trace.json or C:\Users\TsinghuaIC\AppData\Local\scalameta\metals\cache\bsp.trace.json
+2023.08.07 10:12:09 INFO  time: Connected to build server in 0.19s
+2023.08.07 10:12:09 INFO  Connected to Build server: Bloop v1.5.8
+2023.08.07 10:12:12 INFO  time: indexed workspace in 2.27s
+°ËÔÂ 07, 2023 10:59:44 ÉÏÎç org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+ÐÅÏ¢: Unsupported notification method: $/setTrace
+°ËÔÂ 07, 2023 10:59:44 ÉÏÎç org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+ÐÅÏ¢: Unsupported notification method: $/setTrace
+2023.08.07 11:04:09 INFO  compiling projectname (1 scala source)
+2023.08.07 11:04:09 WARN  1 deprecation (since 2.13.0); re-run with -deprecation for details
+2023.08.07 11:04:10 INFO  time: compiled projectname in 1.04s
+2023.08.07 11:06:27 INFO  compiling projectname (1 scala source)
+2023.08.07 11:06:27 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\FetchPlugin.scala
+2023.08.07 11:06:27 WARN  1 deprecation (since 2.13.0); re-run with -deprecation for details
+2023.08.07 11:06:27 INFO  time: compiled projectname in 0.84s
+°ËÔÂ 07, 2023 11:06:37 ÉÏÎç org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+¾¯¸æ: Unmatched cancel notification for request id 147
+2023.08.07 11:06:44 INFO  compiling projectname (1 scala source)
+2023.08.07 11:06:46 WARN  1 deprecation (since 2.13.0); re-run with -deprecation for details
+2023.08.07 11:06:46 INFO  time: compiled projectname in 2.12s
+>>>>>>> 5554d0c0c04b48d2ddc7c5793712eb5960835726

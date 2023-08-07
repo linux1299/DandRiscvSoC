@@ -43,7 +43,6 @@ case class DCacheAccessCmd(AW: Int, DW: Int) extends Bundle {
   val wen  = Bool()
   val wdata= Bits(DW bits)
   val wstrb= Bits(DW/8 bits)
-  val size = UInt(3 bits)
 }
 case class DCacheAccessRsp(DW: Int) extends Bundle {
   val data = Bits(DW bits)
@@ -82,7 +81,7 @@ class DCachePlugin(val config : DCacheConfig) extends Plugin[DandRiscvSimple]{
 
     if (!dcache_config.directOutput){
       val dcache = new DCache(dcache_config)
-      val srambanks   = new SramBanks(dcache_config.wayCount, dcache_config.bankNum, dcache_config.bankWidth, dcache_config.bankDepthBits)
+      val srambanks   = new SramBanks(false, dcache_config.wayCount, dcache_config.bankNum, dcache_config.bankWidth, dcache_config.bankDepthBits)
 
       // impl dcache access logic
       dcache_access.cmd <> dcache.cpu.cmd
@@ -153,10 +152,10 @@ class DCachePlugin(val config : DCacheConfig) extends Plugin[DandRiscvSimple]{
       dcache.next_level.rsp.payload.rvalid := dcacheReader.r.valid
     }
     else {
-      val dcacheReader = master(DCacheAccess(dcache_config.addressWidth, dcache_config.cpuDataWidth)).setName("dcache")
+      val dcacheMaster = master(DCacheAccess(dcache_config.addressWidth, dcache_config.cpuDataWidth)).setName("dcache")
       // connect dcache and cpu ports
-      dcache_access.cmd <> dcacheReader.cmd
-      dcache_access.rsp <> dcacheReader.rsp
+      dcache_access.cmd <> dcacheMaster.cmd
+      dcache_access.rsp <> dcacheMaster.rsp
     }
 
     

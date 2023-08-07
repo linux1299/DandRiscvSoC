@@ -143,14 +143,15 @@ with ICacheAccessService
       }
 
       // output pc and instruction from FIFO or icache
-      pc_in_stream.valid := icache_access.rsp.valid && arbitration.isStuck
+      pc_in_stream.valid   := icache_access.rsp.valid && arbitration.isStuck
       pc_in_stream.payload := pc
-      pc_out_stream.ready := !arbitration.isStuck
-      instruction_in_stream.valid := icache_access.rsp.valid && arbitration.isStuck
-      instruction_in_stream.payload := icache_access.rsp.payload.data
-      instruction_out_stream.ready := !arbitration.isStuck
+      pc_out_stream.ready  := !arbitration.isStuck
       pc_FIFO.io.push << pc_in_stream
       pc_FIFO.io.pop  >> pc_out_stream
+
+      instruction_in_stream.valid   := icache_access.rsp.valid && arbitration.isStuck
+      instruction_in_stream.payload := icache_access.rsp.payload.data
+      instruction_out_stream.ready  := !arbitration.isStuck
       instruction_FIFO.io.push << instruction_in_stream
       instruction_FIFO.io.pop  >> instruction_out_stream
 
@@ -160,7 +161,7 @@ with ICacheAccessService
       insert(PREDICT_VALID) := icache_access.cmd.fire
       insert(PREDICT_TAKEN) := predict_taken
       insert(INSTRUCTION) := instruction_out_stream.valid ? instruction_out_stream.payload | icache_access.rsp.payload.data
-      arbitration.isValid := (pc_out_stream.valid || icache_access.rsp.valid) && !fetch_flush
+      arbitration.isValid := (pc_out_stream.valid || (icache_access.rsp.valid && !arbitration.isStuck)) && !fetch_flush
 
       // send cmd to icache
       icache_access.cmd.valid := fetch_valid && !fetch_flush
