@@ -1,6 +1,6 @@
 // Generator : SpinalHDL v1.8.1    git head : 2a7592004363e5b40ec43e1f122ed8641cd8965b
 // Component : DandRiscvSimple
-// Git hash  : d7e2bf3a65465d65762c061b1018950f57c99076
+// Git hash  : 928f07ebf13ad0d8e08ff2ac95aaf1122da7690e
 
 `timescale 1ns/1ps
 
@@ -70,16 +70,16 @@ module DandRiscvSimple (
   wire                clint_1_ebreak;
   wire                clint_1_mret;
   wire       [63:0]   timer_1_addr;
-  wire                fetch_FetchPlugin_pc_FIFO_io_push_ready;
-  wire                fetch_FetchPlugin_pc_FIFO_io_pop_valid;
-  wire       [63:0]   fetch_FetchPlugin_pc_FIFO_io_pop_payload;
-  wire       [1:0]    fetch_FetchPlugin_pc_FIFO_io_occupancy;
-  wire       [1:0]    fetch_FetchPlugin_pc_FIFO_io_availability;
-  wire                fetch_FetchPlugin_instruction_FIFO_io_push_ready;
-  wire                fetch_FetchPlugin_instruction_FIFO_io_pop_valid;
-  wire       [31:0]   fetch_FetchPlugin_instruction_FIFO_io_pop_payload;
-  wire       [1:0]    fetch_FetchPlugin_instruction_FIFO_io_occupancy;
-  wire       [1:0]    fetch_FetchPlugin_instruction_FIFO_io_availability;
+  wire                fetch_FetchPlugin_pc_stream_fifo_ports_m_ports_valid;
+  wire       [63:0]   fetch_FetchPlugin_pc_stream_fifo_ports_m_ports_payload;
+  wire                fetch_FetchPlugin_pc_stream_fifo_ports_s_ports_ready;
+  wire       [63:0]   fetch_FetchPlugin_pc_stream_fifo_next_payload;
+  wire                fetch_FetchPlugin_predict_taken_fifo_ports_m_ports_valid;
+  wire                fetch_FetchPlugin_predict_taken_fifo_ports_m_ports_payload;
+  wire                fetch_FetchPlugin_predict_taken_fifo_ports_s_ports_ready;
+  wire                fetch_FetchPlugin_instruction_stream_fifo_ports_m_ports_valid;
+  wire       [31:0]   fetch_FetchPlugin_instruction_stream_fifo_ports_m_ports_payload;
+  wire                fetch_FetchPlugin_instruction_stream_fifo_ports_s_ports_ready;
   wire                gshare_predictor_1_predict_taken;
   wire       [6:0]    gshare_predictor_1_predict_history;
   wire       [63:0]   gshare_predictor_1_predict_pc_next;
@@ -177,12 +177,11 @@ module DandRiscvSimple (
   wire       [63:0]   decode_IMM;
   wire       [63:0]   fetch_INT_PC;
   wire                fetch_INT_EN;
+  wire                decode_PREDICT_TAKEN;
+  wire                fetch_PREDICT_VALID;
   wire       [31:0]   memaccess_INSTRUCTION;
   wire       [31:0]   execute_INSTRUCTION;
   wire       [31:0]   fetch_INSTRUCTION;
-  wire                decode_PREDICT_TAKEN;
-  wire                fetch_PREDICT_TAKEN;
-  wire                fetch_PREDICT_VALID;
   wire       [63:0]   decode_PC_NEXT;
   wire       [63:0]   fetch_PC_NEXT;
   wire       [63:0]   memaccess_PC;
@@ -235,12 +234,13 @@ module DandRiscvSimple (
   wire       [63:0]   decode_PC;
   wire       [63:0]   _zz_execute_to_memaccess_PC;
   wire       [63:0]   _zz_fetch_to_decode_PC_NEXT;
+  wire                fetch_PREDICT_TAKEN;
   wire       [63:0]   fetch_BPU_PC_NEXT;
-  wire       [63:0]   _zz_pc_next;
-  wire                when_FetchPlugin_l122;
-  wire       [63:0]   _zz_pc_next_1;
   wire                fetch_BPU_BRANCH_TAKEN;
+  wire       [63:0]   _zz_pc_next;
   wire                when_FetchPlugin_l119;
+  wire       [63:0]   _zz_pc_next_1;
+  wire                when_FetchPlugin_l116;
   wire                fetch_arbitration_haltItself;
   wire                fetch_arbitration_haltByOther;
   reg                 fetch_arbitration_removeIt;
@@ -324,39 +324,45 @@ module DandRiscvSimple (
   wire                DCachePlugin_dcache_access_rsp_valid;
   wire       [63:0]   DCachePlugin_dcache_access_rsp_payload_data;
   reg        [63:0]   pc_next;
-  wire                ICachePlugin_icache_access_cmd_fire;
-  reg        [63:0]   pc;
   reg                 fetch_valid;
   reg        [63:0]   int_pc_reg;
   reg                 int_en_reg;
   wire                fetch_FetchPlugin_fetch_flush;
-  reg                 fetch_FetchPlugin_predict_taken;
   wire                fetch_FetchPlugin_pc_in_stream_valid;
   wire                fetch_FetchPlugin_pc_in_stream_ready;
   wire       [63:0]   fetch_FetchPlugin_pc_in_stream_payload;
   wire                fetch_FetchPlugin_pc_out_stream_valid;
   wire                fetch_FetchPlugin_pc_out_stream_ready;
   wire       [63:0]   fetch_FetchPlugin_pc_out_stream_payload;
+  wire                fetch_FetchPlugin_predict_taken_in_valid;
+  wire                fetch_FetchPlugin_predict_taken_in_ready;
+  wire                fetch_FetchPlugin_predict_taken_in_payload;
+  wire                fetch_FetchPlugin_predict_taken_out_valid;
+  wire                fetch_FetchPlugin_predict_taken_out_ready;
+  wire                fetch_FetchPlugin_predict_taken_out_payload;
   wire                fetch_FetchPlugin_instruction_in_stream_valid;
   wire                fetch_FetchPlugin_instruction_in_stream_ready;
   wire       [31:0]   fetch_FetchPlugin_instruction_in_stream_payload;
   wire                fetch_FetchPlugin_instruction_out_stream_valid;
   wire                fetch_FetchPlugin_instruction_out_stream_ready;
   wire       [31:0]   fetch_FetchPlugin_instruction_out_stream_payload;
+  wire                fetch_FetchPlugin_fifo_all_valid;
   wire       [1:0]    IDLE;
   wire       [1:0]    FETCH;
   wire       [1:0]    BUSY;
   wire       [1:0]    HALT;
   reg        [1:0]    fetch_state_next;
   reg        [1:0]    fetch_state;
-  wire                when_FetchPlugin_l67;
+  wire                when_FetchPlugin_l64;
   wire                ICachePlugin_icache_access_cmd_isStall;
+  wire                ICachePlugin_icache_access_cmd_fire;
+  wire                when_FetchPlugin_l94;
+  wire                when_FetchPlugin_l107;
   wire                ICachePlugin_icache_access_cmd_fire_1;
-  wire                when_FetchPlugin_l97;
-  wire                when_FetchPlugin_l110;
+  wire                when_FetchPlugin_l134;
   wire                ICachePlugin_icache_access_cmd_fire_2;
-  wire                when_FetchPlugin_l137;
   wire                ICachePlugin_icache_access_cmd_fire_3;
+  wire                ICachePlugin_icache_access_cmd_fire_4;
   reg        [63:0]   decode_DecodePlugin_imm;
   wire       [63:0]   decode_DecodePlugin_rs1;
   wire       [63:0]   decode_DecodePlugin_rs2;
@@ -524,17 +530,17 @@ module DandRiscvSimple (
   wire                when_Pipeline_l127_5;
   reg        [63:0]   decode_to_execute_PC_NEXT;
   wire                when_Pipeline_l127_6;
-  reg                 fetch_to_decode_PREDICT_TAKEN;
-  wire                when_Pipeline_l127_7;
-  reg                 decode_to_execute_PREDICT_TAKEN;
-  wire                when_Pipeline_l127_8;
   reg        [31:0]   fetch_to_decode_INSTRUCTION;
-  wire                when_Pipeline_l127_9;
+  wire                when_Pipeline_l127_7;
   reg        [31:0]   decode_to_execute_INSTRUCTION;
-  wire                when_Pipeline_l127_10;
+  wire                when_Pipeline_l127_8;
   reg        [31:0]   execute_to_memaccess_INSTRUCTION;
-  wire                when_Pipeline_l127_11;
+  wire                when_Pipeline_l127_9;
   reg        [31:0]   memaccess_to_writeback_INSTRUCTION;
+  wire                when_Pipeline_l127_10;
+  reg                 fetch_to_decode_PREDICT_TAKEN;
+  wire                when_Pipeline_l127_11;
+  reg                 decode_to_execute_PREDICT_TAKEN;
   wire                when_Pipeline_l127_12;
   reg        [63:0]   decode_to_execute_IMM;
   wire                when_Pipeline_l127_13;
@@ -801,31 +807,39 @@ module DandRiscvSimple (
   assign _zz_execute_ALUPlugin_pc_next_6 = ($signed(_zz_execute_ALUPlugin_pc_next_7) + $signed(_zz_execute_ALUPlugin_pc_next_8));
   assign _zz_execute_ALUPlugin_pc_next_7 = execute_PC;
   assign _zz_execute_ALUPlugin_pc_next_8 = execute_IMM;
-  StreamFifo fetch_FetchPlugin_pc_FIFO (
-    .io_push_valid   (fetch_FetchPlugin_pc_in_stream_valid          ), //i
-    .io_push_ready   (fetch_FetchPlugin_pc_FIFO_io_push_ready       ), //o
-    .io_push_payload (fetch_FetchPlugin_pc_in_stream_payload[63:0]  ), //i
-    .io_pop_valid    (fetch_FetchPlugin_pc_FIFO_io_pop_valid        ), //o
-    .io_pop_ready    (fetch_FetchPlugin_pc_out_stream_ready         ), //i
-    .io_pop_payload  (fetch_FetchPlugin_pc_FIFO_io_pop_payload[63:0]), //o
-    .io_flush        (1'b0                                          ), //i
-    .io_occupancy    (fetch_FetchPlugin_pc_FIFO_io_occupancy[1:0]   ), //o
-    .io_availability (fetch_FetchPlugin_pc_FIFO_io_availability[1:0]), //o
-    .clk             (clk                                           ), //i
-    .reset           (reset                                         )  //i
+  FIFO fetch_FetchPlugin_pc_stream_fifo (
+    .ports_s_ports_valid   (fetch_FetchPlugin_pc_in_stream_valid                        ), //i
+    .ports_s_ports_ready   (fetch_FetchPlugin_pc_stream_fifo_ports_s_ports_ready        ), //o
+    .ports_s_ports_payload (fetch_FetchPlugin_pc_in_stream_payload[63:0]                ), //i
+    .ports_m_ports_valid   (fetch_FetchPlugin_pc_stream_fifo_ports_m_ports_valid        ), //o
+    .ports_m_ports_ready   (fetch_FetchPlugin_pc_out_stream_ready                       ), //i
+    .ports_m_ports_payload (fetch_FetchPlugin_pc_stream_fifo_ports_m_ports_payload[63:0]), //o
+    .flush                 (fetch_FetchPlugin_fetch_flush                               ), //i
+    .next_payload          (fetch_FetchPlugin_pc_stream_fifo_next_payload[63:0]         ), //o
+    .clk                   (clk                                                         ), //i
+    .reset                 (reset                                                       )  //i
   );
-  StreamFifo_1 fetch_FetchPlugin_instruction_FIFO (
-    .io_push_valid   (fetch_FetchPlugin_instruction_in_stream_valid          ), //i
-    .io_push_ready   (fetch_FetchPlugin_instruction_FIFO_io_push_ready       ), //o
-    .io_push_payload (fetch_FetchPlugin_instruction_in_stream_payload[31:0]  ), //i
-    .io_pop_valid    (fetch_FetchPlugin_instruction_FIFO_io_pop_valid        ), //o
-    .io_pop_ready    (fetch_FetchPlugin_instruction_out_stream_ready         ), //i
-    .io_pop_payload  (fetch_FetchPlugin_instruction_FIFO_io_pop_payload[31:0]), //o
-    .io_flush        (1'b0                                                   ), //i
-    .io_occupancy    (fetch_FetchPlugin_instruction_FIFO_io_occupancy[1:0]   ), //o
-    .io_availability (fetch_FetchPlugin_instruction_FIFO_io_availability[1:0]), //o
-    .clk             (clk                                                    ), //i
-    .reset           (reset                                                  )  //i
+  FIFO_1 fetch_FetchPlugin_predict_taken_fifo (
+    .ports_s_ports_valid   (fetch_FetchPlugin_predict_taken_in_valid                  ), //i
+    .ports_s_ports_ready   (fetch_FetchPlugin_predict_taken_fifo_ports_s_ports_ready  ), //o
+    .ports_s_ports_payload (fetch_FetchPlugin_predict_taken_in_payload                ), //i
+    .ports_m_ports_valid   (fetch_FetchPlugin_predict_taken_fifo_ports_m_ports_valid  ), //o
+    .ports_m_ports_ready   (fetch_FetchPlugin_predict_taken_out_ready                 ), //i
+    .ports_m_ports_payload (fetch_FetchPlugin_predict_taken_fifo_ports_m_ports_payload), //o
+    .flush                 (fetch_FetchPlugin_fetch_flush                             ), //i
+    .clk                   (clk                                                       ), //i
+    .reset                 (reset                                                     )  //i
+  );
+  FIFO_2 fetch_FetchPlugin_instruction_stream_fifo (
+    .ports_s_ports_valid   (fetch_FetchPlugin_instruction_in_stream_valid                        ), //i
+    .ports_s_ports_ready   (fetch_FetchPlugin_instruction_stream_fifo_ports_s_ports_ready        ), //o
+    .ports_s_ports_payload (fetch_FetchPlugin_instruction_in_stream_payload[31:0]                ), //i
+    .ports_m_ports_valid   (fetch_FetchPlugin_instruction_stream_fifo_ports_m_ports_valid        ), //o
+    .ports_m_ports_ready   (fetch_FetchPlugin_instruction_out_stream_ready                       ), //i
+    .ports_m_ports_payload (fetch_FetchPlugin_instruction_stream_fifo_ports_m_ports_payload[31:0]), //o
+    .flush                 (fetch_FetchPlugin_fetch_flush                                        ), //i
+    .clk                   (clk                                                                  ), //i
+    .reset                 (reset                                                                )  //i
   );
   gshare_predictor gshare_predictor_1 (
     .predict_pc         (_zz_fetch_to_decode_PC_NEXT[63:0]       ), //i
@@ -835,7 +849,7 @@ module DandRiscvSimple (
     .predict_pc_next    (gshare_predictor_1_predict_pc_next[63:0]), //o
     .train_valid        (execute_BRANCH_OR_JUMP                  ), //i
     .train_taken        (execute_BRANCH_TAKEN                    ), //i
-    .train_mispredicted (when_FetchPlugin_l122                   ), //i
+    .train_mispredicted (when_FetchPlugin_l119                   ), //i
     .train_history      (execute_BRANCH_HISTORY[6:0]             ), //i
     .train_pc           (_zz_execute_to_memaccess_PC[63:0]       ), //i
     .train_pc_next      (_zz_pc_next[63:0]                       ), //i
@@ -883,7 +897,7 @@ module DandRiscvSimple (
   Clint clint_1 (
     .pc                       (_zz_fetch_to_decode_PC[63:0]           ), //i
     .pc_next                  (_zz_pc_next[63:0]                      ), //i
-    .pc_next_valid            (when_FetchPlugin_l122                  ), //i
+    .pc_next_valid            (when_FetchPlugin_l119                  ), //i
     .csr_ports_mepc_wen       (clint_1_csr_ports_mepc_wen             ), //o
     .csr_ports_mepc_wdata     (clint_1_csr_ports_mepc_wdata[63:0]     ), //o
     .csr_ports_mcause_wen     (clint_1_csr_ports_mcause_wen           ), //o
@@ -963,16 +977,15 @@ module DandRiscvSimple (
   assign decode_IMM = decode_DecodePlugin_imm;
   assign fetch_INT_PC = clint_1_int_pc;
   assign fetch_INT_EN = clint_1_int_en;
+  assign decode_PREDICT_TAKEN = fetch_to_decode_PREDICT_TAKEN;
+  assign fetch_PREDICT_VALID = ICachePlugin_icache_access_cmd_fire_4;
   assign memaccess_INSTRUCTION = execute_to_memaccess_INSTRUCTION;
   assign execute_INSTRUCTION = decode_to_execute_INSTRUCTION;
-  assign fetch_INSTRUCTION = (fetch_FetchPlugin_instruction_out_stream_valid ? fetch_FetchPlugin_instruction_out_stream_payload : ICachePlugin_icache_access_rsp_payload_data);
-  assign decode_PREDICT_TAKEN = fetch_to_decode_PREDICT_TAKEN;
-  assign fetch_PREDICT_TAKEN = fetch_FetchPlugin_predict_taken;
-  assign fetch_PREDICT_VALID = ICachePlugin_icache_access_cmd_fire_3;
+  assign fetch_INSTRUCTION = fetch_FetchPlugin_instruction_out_stream_payload;
   assign decode_PC_NEXT = fetch_to_decode_PC_NEXT;
-  assign fetch_PC_NEXT = pc_next;
+  assign fetch_PC_NEXT = fetch_FetchPlugin_pc_stream_fifo_next_payload;
   assign memaccess_PC = execute_to_memaccess_PC;
-  assign fetch_PC = (fetch_FetchPlugin_pc_out_stream_valid ? fetch_FetchPlugin_pc_out_stream_payload : pc);
+  assign fetch_PC = fetch_FetchPlugin_pc_out_stream_payload;
   assign writeback_INSTRUCTION = memaccess_to_writeback_INSTRUCTION;
   assign writeback_PC = memaccess_to_writeback_PC;
   assign writeback_ALU_RESULT = memaccess_to_writeback_ALU_RESULT;
@@ -1021,12 +1034,13 @@ module DandRiscvSimple (
   assign decode_PC = fetch_to_decode_PC;
   assign _zz_execute_to_memaccess_PC = execute_PC;
   assign _zz_fetch_to_decode_PC_NEXT = fetch_PC_NEXT;
-  assign fetch_BPU_PC_NEXT = gshare_predictor_1_predict_pc_next;
+  assign fetch_PREDICT_TAKEN = fetch_FetchPlugin_predict_taken_out_payload;
+  assign fetch_BPU_PC_NEXT = 64'h0;
+  assign fetch_BPU_BRANCH_TAKEN = 1'b0;
   assign _zz_pc_next = execute_REDIRECT_PC_NEXT;
-  assign when_FetchPlugin_l122 = execute_REDIRECT_VALID;
+  assign when_FetchPlugin_l119 = execute_REDIRECT_VALID;
   assign _zz_pc_next_1 = fetch_INT_PC;
-  assign fetch_BPU_BRANCH_TAKEN = gshare_predictor_1_predict_taken;
-  assign when_FetchPlugin_l119 = fetch_INT_EN;
+  assign when_FetchPlugin_l116 = fetch_INT_EN;
   assign fetch_arbitration_haltByOther = 1'b0;
   always @(*) begin
     fetch_arbitration_removeIt = 1'b0;
@@ -1072,16 +1086,16 @@ module DandRiscvSimple (
   end
 
   assign writeback_arbitration_flushNext = 1'b0;
-  assign ICachePlugin_icache_access_cmd_fire = (ICachePlugin_icache_access_cmd_valid && ICachePlugin_icache_access_cmd_ready);
-  assign fetch_FetchPlugin_fetch_flush = ((when_FetchPlugin_l119 || int_en_reg) || fetch_arbitration_flushIt);
+  assign fetch_FetchPlugin_fetch_flush = ((when_FetchPlugin_l116 || int_en_reg) || fetch_arbitration_flushIt);
+  assign fetch_FetchPlugin_fifo_all_valid = (fetch_FetchPlugin_pc_out_stream_valid && fetch_FetchPlugin_instruction_out_stream_valid);
   assign IDLE = 2'b00;
   assign FETCH = 2'b01;
   assign BUSY = 2'b10;
   assign HALT = 2'b11;
-  assign when_FetchPlugin_l67 = (! fetch_arbitration_isStuck);
+  assign when_FetchPlugin_l64 = (! fetch_arbitration_isStuck);
   always @(*) begin
     if((fetch_state == IDLE)) begin
-        if(when_FetchPlugin_l67) begin
+        if(when_FetchPlugin_l64) begin
           fetch_state_next = FETCH;
         end else begin
           fetch_state_next = IDLE;
@@ -1100,14 +1114,14 @@ module DandRiscvSimple (
         if(fetch_arbitration_isStuck) begin
           fetch_state_next = BUSY;
         end else begin
-          if(ICachePlugin_icache_access_cmd_fire_1) begin
+          if(ICachePlugin_icache_access_cmd_fire) begin
             fetch_state_next = FETCH;
           end else begin
             fetch_state_next = BUSY;
           end
         end
     end else if((fetch_state == HALT)) begin
-        if(when_FetchPlugin_l97) begin
+        if(when_FetchPlugin_l94) begin
           fetch_state_next = FETCH;
         end else begin
           fetch_state_next = HALT;
@@ -1118,25 +1132,33 @@ module DandRiscvSimple (
   end
 
   assign ICachePlugin_icache_access_cmd_isStall = (ICachePlugin_icache_access_cmd_valid && (! ICachePlugin_icache_access_cmd_ready));
+  assign ICachePlugin_icache_access_cmd_fire = (ICachePlugin_icache_access_cmd_valid && ICachePlugin_icache_access_cmd_ready);
+  assign when_FetchPlugin_l94 = (! fetch_arbitration_isStuck);
+  assign when_FetchPlugin_l107 = (when_FetchPlugin_l116 && ((fetch_state == BUSY) || (fetch_state_next == BUSY)));
   assign ICachePlugin_icache_access_cmd_fire_1 = (ICachePlugin_icache_access_cmd_valid && ICachePlugin_icache_access_cmd_ready);
-  assign when_FetchPlugin_l97 = (! fetch_arbitration_isStuck);
-  assign when_FetchPlugin_l110 = (when_FetchPlugin_l119 && ((fetch_state == BUSY) || (fetch_state_next == BUSY)));
+  assign when_FetchPlugin_l134 = ((fetch_state_next == FETCH) || (fetch_state_next == BUSY));
   assign ICachePlugin_icache_access_cmd_fire_2 = (ICachePlugin_icache_access_cmd_valid && ICachePlugin_icache_access_cmd_ready);
-  assign when_FetchPlugin_l137 = ((fetch_state_next == FETCH) || (fetch_state_next == BUSY));
-  assign fetch_FetchPlugin_pc_in_stream_valid = (ICachePlugin_icache_access_rsp_valid && fetch_arbitration_isStuck);
-  assign fetch_FetchPlugin_pc_in_stream_payload = pc;
-  assign fetch_FetchPlugin_pc_out_stream_ready = (! fetch_arbitration_isStuck);
-  assign fetch_FetchPlugin_pc_in_stream_ready = fetch_FetchPlugin_pc_FIFO_io_push_ready;
-  assign fetch_FetchPlugin_pc_out_stream_valid = fetch_FetchPlugin_pc_FIFO_io_pop_valid;
-  assign fetch_FetchPlugin_pc_out_stream_payload = fetch_FetchPlugin_pc_FIFO_io_pop_payload;
-  assign fetch_FetchPlugin_instruction_in_stream_valid = (ICachePlugin_icache_access_rsp_valid && fetch_arbitration_isStuck);
-  assign fetch_FetchPlugin_instruction_in_stream_payload = ICachePlugin_icache_access_rsp_payload_data;
-  assign fetch_FetchPlugin_instruction_out_stream_ready = (! fetch_arbitration_isStuck);
-  assign fetch_FetchPlugin_instruction_in_stream_ready = fetch_FetchPlugin_instruction_FIFO_io_push_ready;
-  assign fetch_FetchPlugin_instruction_out_stream_valid = fetch_FetchPlugin_instruction_FIFO_io_pop_valid;
-  assign fetch_FetchPlugin_instruction_out_stream_payload = fetch_FetchPlugin_instruction_FIFO_io_pop_payload;
+  assign fetch_FetchPlugin_pc_in_stream_valid = ICachePlugin_icache_access_cmd_fire_2;
+  assign fetch_FetchPlugin_pc_in_stream_payload = pc_next;
+  assign fetch_FetchPlugin_pc_out_stream_ready = fetch_arbitration_isFiring;
+  assign fetch_FetchPlugin_pc_in_stream_ready = fetch_FetchPlugin_pc_stream_fifo_ports_s_ports_ready;
+  assign fetch_FetchPlugin_pc_out_stream_valid = fetch_FetchPlugin_pc_stream_fifo_ports_m_ports_valid;
+  assign fetch_FetchPlugin_pc_out_stream_payload = fetch_FetchPlugin_pc_stream_fifo_ports_m_ports_payload;
   assign ICachePlugin_icache_access_cmd_fire_3 = (ICachePlugin_icache_access_cmd_valid && ICachePlugin_icache_access_cmd_ready);
-  assign fetch_arbitration_isValid = ((fetch_FetchPlugin_pc_out_stream_valid || (ICachePlugin_icache_access_rsp_valid && (! fetch_arbitration_isStuck))) && (! fetch_FetchPlugin_fetch_flush));
+  assign fetch_FetchPlugin_predict_taken_in_valid = ICachePlugin_icache_access_cmd_fire_3;
+  assign fetch_FetchPlugin_predict_taken_in_payload = fetch_PREDICT_TAKEN;
+  assign fetch_FetchPlugin_predict_taken_out_ready = fetch_arbitration_isFiring;
+  assign fetch_FetchPlugin_predict_taken_in_ready = fetch_FetchPlugin_predict_taken_fifo_ports_s_ports_ready;
+  assign fetch_FetchPlugin_predict_taken_out_valid = fetch_FetchPlugin_predict_taken_fifo_ports_m_ports_valid;
+  assign fetch_FetchPlugin_predict_taken_out_payload = fetch_FetchPlugin_predict_taken_fifo_ports_m_ports_payload;
+  assign fetch_FetchPlugin_instruction_in_stream_valid = ICachePlugin_icache_access_rsp_valid;
+  assign fetch_FetchPlugin_instruction_in_stream_payload = ICachePlugin_icache_access_rsp_payload_data;
+  assign fetch_FetchPlugin_instruction_out_stream_ready = fetch_arbitration_isFiring;
+  assign fetch_FetchPlugin_instruction_in_stream_ready = fetch_FetchPlugin_instruction_stream_fifo_ports_s_ports_ready;
+  assign fetch_FetchPlugin_instruction_out_stream_valid = fetch_FetchPlugin_instruction_stream_fifo_ports_m_ports_valid;
+  assign fetch_FetchPlugin_instruction_out_stream_payload = fetch_FetchPlugin_instruction_stream_fifo_ports_m_ports_payload;
+  assign ICachePlugin_icache_access_cmd_fire_4 = (ICachePlugin_icache_access_cmd_valid && ICachePlugin_icache_access_cmd_ready);
+  assign fetch_arbitration_isValid = ((fetch_FetchPlugin_fifo_all_valid && (! fetch_arbitration_isStuck)) && (! fetch_FetchPlugin_fetch_flush));
   assign ICachePlugin_icache_access_cmd_valid = (fetch_valid && (! fetch_FetchPlugin_fetch_flush));
   assign ICachePlugin_icache_access_cmd_payload_addr = pc_next;
   assign decode_DecodePlugin_rs1_req = (! (((decode_INSTRUCTION[6 : 0] == 7'h37) || (decode_INSTRUCTION[6 : 0] == 7'h17)) || (decode_INSTRUCTION[6 : 0] == 7'h6f)));
@@ -2177,9 +2199,9 @@ module DandRiscvSimple (
   assign DecodePlugin_hazard_ctrl_rs2_from_wb = ((execute_arbitration_isValid && _zz_DecodePlugin_hazard_ctrl_rs1_from_mem) && DecodePlugin_hazard_rs2_from_wb);
   assign DecodePlugin_hazard_ctrl_load_use = ((execute_arbitration_isValid && _zz_DecodePlugin_hazard_ctrl_rs1_from_mem) && DecodePlugin_hazard_load_use);
   assign fetch_arbitration_haltItself = 1'b0;
-  assign fetch_arbitration_flushIt = when_FetchPlugin_l122;
+  assign fetch_arbitration_flushIt = when_FetchPlugin_l119;
   assign decode_arbitration_haltItself = 1'b0;
-  assign decode_arbitration_flushIt = when_FetchPlugin_l122;
+  assign decode_arbitration_flushIt = when_FetchPlugin_l119;
   assign execute_arbitration_haltItself = ((DecodePlugin_hazard_load_use || DecodePlugin_hazard_ctrl_load_use) || execute_INT_HOLD);
   assign execute_arbitration_flushIt = 1'b0;
   assign memaccess_arbitration_haltItself = memaccess_LSU_HOLD;
@@ -2613,10 +2635,10 @@ module DandRiscvSimple (
   assign when_Pipeline_l127_5 = (! execute_arbitration_isStuck);
   assign when_Pipeline_l127_6 = (! decode_arbitration_isStuck);
   assign when_Pipeline_l127_7 = (! execute_arbitration_isStuck);
-  assign when_Pipeline_l127_8 = (! decode_arbitration_isStuck);
-  assign when_Pipeline_l127_9 = (! execute_arbitration_isStuck);
-  assign when_Pipeline_l127_10 = (! memaccess_arbitration_isStuck);
-  assign when_Pipeline_l127_11 = (! writeback_arbitration_isStuck);
+  assign when_Pipeline_l127_8 = (! memaccess_arbitration_isStuck);
+  assign when_Pipeline_l127_9 = (! writeback_arbitration_isStuck);
+  assign when_Pipeline_l127_10 = (! decode_arbitration_isStuck);
+  assign when_Pipeline_l127_11 = (! execute_arbitration_isStuck);
   assign when_Pipeline_l127_12 = (! execute_arbitration_isStuck);
   assign when_Pipeline_l127_13 = (! execute_arbitration_isStuck);
   assign when_Pipeline_l127_14 = (! execute_arbitration_isStuck);
@@ -2693,7 +2715,7 @@ module DandRiscvSimple (
       writeback_arbitration_isValid <= 1'b0;
     end else begin
       fetch_state <= fetch_state_next;
-      if(when_FetchPlugin_l110) begin
+      if(when_FetchPlugin_l107) begin
         int_en_reg <= 1'b1;
         int_pc_reg <= _zz_pc_next_1;
       end else begin
@@ -2701,16 +2723,16 @@ module DandRiscvSimple (
           int_en_reg <= 1'b0;
         end
       end
-      if(when_FetchPlugin_l119) begin
+      if(when_FetchPlugin_l116) begin
         pc_next <= _zz_pc_next_1;
       end else begin
-        if(when_FetchPlugin_l122) begin
+        if(when_FetchPlugin_l119) begin
           pc_next <= _zz_pc_next;
         end else begin
           if(fetch_BPU_BRANCH_TAKEN) begin
             pc_next <= fetch_BPU_PC_NEXT;
           end else begin
-            if(ICachePlugin_icache_access_cmd_fire_2) begin
+            if(ICachePlugin_icache_access_cmd_fire_1) begin
               if(int_en_reg) begin
                 pc_next <= int_pc_reg;
               end else begin
@@ -2720,7 +2742,7 @@ module DandRiscvSimple (
           end
         end
       end
-      if(when_FetchPlugin_l137) begin
+      if(when_FetchPlugin_l134) begin
         fetch_valid <= 1'b1;
       end else begin
         fetch_valid <= 1'b0;
@@ -2760,10 +2782,6 @@ module DandRiscvSimple (
   end
 
   always @(posedge clk) begin
-    if(ICachePlugin_icache_access_cmd_fire) begin
-      pc <= pc_next;
-    end
-    fetch_FetchPlugin_predict_taken <= fetch_BPU_BRANCH_TAKEN;
     if(when_Pipeline_l127) begin
       fetch_to_decode_PC <= _zz_fetch_to_decode_PC;
     end
@@ -2783,22 +2801,22 @@ module DandRiscvSimple (
       decode_to_execute_PC_NEXT <= decode_PC_NEXT;
     end
     if(when_Pipeline_l127_6) begin
-      fetch_to_decode_PREDICT_TAKEN <= fetch_PREDICT_TAKEN;
-    end
-    if(when_Pipeline_l127_7) begin
-      decode_to_execute_PREDICT_TAKEN <= decode_PREDICT_TAKEN;
-    end
-    if(when_Pipeline_l127_8) begin
       fetch_to_decode_INSTRUCTION <= fetch_INSTRUCTION;
     end
-    if(when_Pipeline_l127_9) begin
+    if(when_Pipeline_l127_7) begin
       decode_to_execute_INSTRUCTION <= decode_INSTRUCTION;
     end
-    if(when_Pipeline_l127_10) begin
+    if(when_Pipeline_l127_8) begin
       execute_to_memaccess_INSTRUCTION <= execute_INSTRUCTION;
     end
-    if(when_Pipeline_l127_11) begin
+    if(when_Pipeline_l127_9) begin
       memaccess_to_writeback_INSTRUCTION <= memaccess_INSTRUCTION;
+    end
+    if(when_Pipeline_l127_10) begin
+      fetch_to_decode_PREDICT_TAKEN <= fetch_PREDICT_TAKEN;
+    end
+    if(when_Pipeline_l127_11) begin
+      decode_to_execute_PREDICT_TAKEN <= decode_PREDICT_TAKEN;
     end
     if(when_Pipeline_l127_12) begin
       decode_to_execute_IMM <= decode_IMM;
@@ -7956,142 +7974,91 @@ module gshare_predictor (
 
 endmodule
 
-module StreamFifo_1 (
-  input               io_push_valid,
-  output              io_push_ready,
-  input      [31:0]   io_push_payload,
-  output              io_pop_valid,
-  input               io_pop_ready,
-  output     [31:0]   io_pop_payload,
-  input               io_flush,
-  output     [1:0]    io_occupancy,
-  output     [1:0]    io_availability,
+module FIFO_2 (
+  input               ports_s_ports_valid,
+  output              ports_s_ports_ready,
+  input      [31:0]   ports_s_ports_payload,
+  output              ports_m_ports_valid,
+  input               ports_m_ports_ready,
+  output     [31:0]   ports_m_ports_payload,
+  input               flush,
   input               clk,
   input               reset
 );
 
-  reg        [31:0]   _zz_logic_ram_port0;
-  wire                _zz_logic_ram_port;
-  wire                _zz_io_pop_payload;
-  wire       [0:0]    _zz_io_availability;
-  reg                 _zz_1;
-  reg                 logic_pushPtr_willIncrement;
-  reg                 logic_pushPtr_willClear;
-  reg        [0:0]    logic_pushPtr_valueNext;
-  reg        [0:0]    logic_pushPtr_value;
-  wire                logic_pushPtr_willOverflowIfInc;
-  wire                logic_pushPtr_willOverflow;
-  reg                 logic_popPtr_willIncrement;
-  reg                 logic_popPtr_willClear;
-  reg        [0:0]    logic_popPtr_valueNext;
-  reg        [0:0]    logic_popPtr_value;
-  wire                logic_popPtr_willOverflowIfInc;
-  wire                logic_popPtr_willOverflow;
-  wire                logic_ptrMatch;
-  reg                 logic_risingOccupancy;
-  wire                logic_pushing;
-  wire                logic_popping;
-  wire                logic_empty;
-  wire                logic_full;
-  reg                 _zz_io_pop_valid;
-  wire                when_Stream_l1122;
-  wire       [0:0]    logic_ptrDif;
-  reg [31:0] logic_ram [0:1];
-
-  assign _zz_io_availability = (logic_popPtr_value - logic_pushPtr_value);
-  assign _zz_io_pop_payload = 1'b1;
-  always @(posedge clk) begin
-    if(_zz_io_pop_payload) begin
-      _zz_logic_ram_port0 <= logic_ram[logic_popPtr_valueNext];
-    end
-  end
-
-  always @(posedge clk) begin
-    if(_zz_1) begin
-      logic_ram[logic_pushPtr_value] <= io_push_payload;
-    end
-  end
+  reg        [31:0]   _zz_ports_m_ports_payload;
+  reg        [2:0]    read_ptr;
+  reg        [2:0]    write_ptr;
+  wire       [1:0]    read_addr;
+  wire       [1:0]    next_read_addr;
+  wire       [1:0]    write_addr;
+  wire                fifo_empty;
+  wire                fifo_full;
+  reg        [31:0]   fifo_ram_0;
+  reg        [31:0]   fifo_ram_1;
+  reg        [31:0]   fifo_ram_2;
+  reg        [31:0]   fifo_ram_3;
+  wire                ports_m_ports_fire;
+  wire       [3:0]    _zz_1;
+  wire                ports_s_ports_fire;
 
   always @(*) begin
-    _zz_1 = 1'b0;
-    if(logic_pushing) begin
-      _zz_1 = 1'b1;
-    end
+    case(read_addr)
+      2'b00 : _zz_ports_m_ports_payload = fifo_ram_0;
+      2'b01 : _zz_ports_m_ports_payload = fifo_ram_1;
+      2'b10 : _zz_ports_m_ports_payload = fifo_ram_2;
+      default : _zz_ports_m_ports_payload = fifo_ram_3;
+    endcase
   end
 
-  always @(*) begin
-    logic_pushPtr_willIncrement = 1'b0;
-    if(logic_pushing) begin
-      logic_pushPtr_willIncrement = 1'b1;
-    end
-  end
-
-  always @(*) begin
-    logic_pushPtr_willClear = 1'b0;
-    if(io_flush) begin
-      logic_pushPtr_willClear = 1'b1;
-    end
-  end
-
-  assign logic_pushPtr_willOverflowIfInc = (logic_pushPtr_value == 1'b1);
-  assign logic_pushPtr_willOverflow = (logic_pushPtr_willOverflowIfInc && logic_pushPtr_willIncrement);
-  always @(*) begin
-    logic_pushPtr_valueNext = (logic_pushPtr_value + logic_pushPtr_willIncrement);
-    if(logic_pushPtr_willClear) begin
-      logic_pushPtr_valueNext = 1'b0;
-    end
-  end
-
-  always @(*) begin
-    logic_popPtr_willIncrement = 1'b0;
-    if(logic_popping) begin
-      logic_popPtr_willIncrement = 1'b1;
-    end
-  end
-
-  always @(*) begin
-    logic_popPtr_willClear = 1'b0;
-    if(io_flush) begin
-      logic_popPtr_willClear = 1'b1;
-    end
-  end
-
-  assign logic_popPtr_willOverflowIfInc = (logic_popPtr_value == 1'b1);
-  assign logic_popPtr_willOverflow = (logic_popPtr_willOverflowIfInc && logic_popPtr_willIncrement);
-  always @(*) begin
-    logic_popPtr_valueNext = (logic_popPtr_value + logic_popPtr_willIncrement);
-    if(logic_popPtr_willClear) begin
-      logic_popPtr_valueNext = 1'b0;
-    end
-  end
-
-  assign logic_ptrMatch = (logic_pushPtr_value == logic_popPtr_value);
-  assign logic_pushing = (io_push_valid && io_push_ready);
-  assign logic_popping = (io_pop_valid && io_pop_ready);
-  assign logic_empty = (logic_ptrMatch && (! logic_risingOccupancy));
-  assign logic_full = (logic_ptrMatch && logic_risingOccupancy);
-  assign io_push_ready = (! logic_full);
-  assign io_pop_valid = ((! logic_empty) && (! (_zz_io_pop_valid && (! logic_full))));
-  assign io_pop_payload = _zz_logic_ram_port0;
-  assign when_Stream_l1122 = (logic_pushing != logic_popping);
-  assign logic_ptrDif = (logic_pushPtr_value - logic_popPtr_value);
-  assign io_occupancy = {(logic_risingOccupancy && logic_ptrMatch),logic_ptrDif};
-  assign io_availability = {((! logic_risingOccupancy) && logic_ptrMatch),_zz_io_availability};
+  assign read_addr = read_ptr[1 : 0];
+  assign next_read_addr = (read_addr + 2'b01);
+  assign write_addr = write_ptr[1 : 0];
+  assign fifo_empty = (read_ptr == write_ptr);
+  assign fifo_full = ((read_addr == write_addr) && (read_ptr[2] != write_ptr[2]));
+  assign ports_m_ports_fire = (ports_m_ports_valid && ports_m_ports_ready);
+  assign _zz_1 = ({3'd0,1'b1} <<< write_addr);
+  assign ports_s_ports_fire = (ports_s_ports_valid && ports_s_ports_ready);
+  assign ports_s_ports_ready = (! fifo_full);
+  assign ports_m_ports_valid = (! fifo_empty);
+  assign ports_m_ports_payload = _zz_ports_m_ports_payload;
   always @(posedge clk or posedge reset) begin
     if(reset) begin
-      logic_pushPtr_value <= 1'b0;
-      logic_popPtr_value <= 1'b0;
-      logic_risingOccupancy <= 1'b0;
-      _zz_io_pop_valid <= 1'b0;
+      read_ptr <= 3'b000;
+      write_ptr <= 3'b000;
     end else begin
-      logic_pushPtr_value <= logic_pushPtr_valueNext;
-      logic_popPtr_value <= logic_popPtr_valueNext;
-      _zz_io_pop_valid <= (logic_popPtr_valueNext == logic_pushPtr_value);
-      if(when_Stream_l1122) begin
-        logic_risingOccupancy <= logic_pushing;
+      if(flush) begin
+        read_ptr <= 3'b000;
+      end else begin
+        if(ports_m_ports_fire) begin
+          read_ptr <= (read_ptr + 3'b001);
+        end
       end
-      if(io_flush) begin
-        logic_risingOccupancy <= 1'b0;
+      if(flush) begin
+        write_ptr <= 3'b000;
+      end else begin
+        if(ports_s_ports_fire) begin
+          write_ptr <= (write_ptr + 3'b001);
+        end
+      end
+    end
+  end
+
+  always @(posedge clk) begin
+    if(!flush) begin
+      if(ports_s_ports_fire) begin
+        if(_zz_1[0]) begin
+          fifo_ram_0 <= ports_s_ports_payload;
+        end
+        if(_zz_1[1]) begin
+          fifo_ram_1 <= ports_s_ports_payload;
+        end
+        if(_zz_1[2]) begin
+          fifo_ram_2 <= ports_s_ports_payload;
+        end
+        if(_zz_1[3]) begin
+          fifo_ram_3 <= ports_s_ports_payload;
+        end
       end
     end
   end
@@ -8099,144 +8066,195 @@ module StreamFifo_1 (
 
 endmodule
 
-module StreamFifo (
-  input               io_push_valid,
-  output              io_push_ready,
-  input      [63:0]   io_push_payload,
-  output              io_pop_valid,
-  input               io_pop_ready,
-  output     [63:0]   io_pop_payload,
-  input               io_flush,
-  output     [1:0]    io_occupancy,
-  output     [1:0]    io_availability,
+module FIFO_1 (
+  input               ports_s_ports_valid,
+  output              ports_s_ports_ready,
+  input               ports_s_ports_payload,
+  output              ports_m_ports_valid,
+  input               ports_m_ports_ready,
+  output              ports_m_ports_payload,
+  input               flush,
   input               clk,
   input               reset
 );
 
-  reg        [63:0]   _zz_logic_ram_port0;
-  wire                _zz_logic_ram_port;
-  wire                _zz_io_pop_payload;
-  wire       [63:0]   _zz_logic_ram_port_1;
-  wire       [0:0]    _zz_io_availability;
-  reg                 _zz_1;
-  reg                 logic_pushPtr_willIncrement;
-  reg                 logic_pushPtr_willClear;
-  reg        [0:0]    logic_pushPtr_valueNext;
-  reg        [0:0]    logic_pushPtr_value;
-  wire                logic_pushPtr_willOverflowIfInc;
-  wire                logic_pushPtr_willOverflow;
-  reg                 logic_popPtr_willIncrement;
-  reg                 logic_popPtr_willClear;
-  reg        [0:0]    logic_popPtr_valueNext;
-  reg        [0:0]    logic_popPtr_value;
-  wire                logic_popPtr_willOverflowIfInc;
-  wire                logic_popPtr_willOverflow;
-  wire                logic_ptrMatch;
-  reg                 logic_risingOccupancy;
-  wire                logic_pushing;
-  wire                logic_popping;
-  wire                logic_empty;
-  wire                logic_full;
-  reg                 _zz_io_pop_valid;
-  wire                when_Stream_l1122;
-  wire       [0:0]    logic_ptrDif;
-  reg [63:0] logic_ram [0:1];
-
-  assign _zz_io_availability = (logic_popPtr_value - logic_pushPtr_value);
-  assign _zz_io_pop_payload = 1'b1;
-  assign _zz_logic_ram_port_1 = io_push_payload;
-  always @(posedge clk) begin
-    if(_zz_io_pop_payload) begin
-      _zz_logic_ram_port0 <= logic_ram[logic_popPtr_valueNext];
-    end
-  end
-
-  always @(posedge clk) begin
-    if(_zz_1) begin
-      logic_ram[logic_pushPtr_value] <= _zz_logic_ram_port_1;
-    end
-  end
+  reg                 _zz_ports_m_ports_payload;
+  reg        [2:0]    read_ptr;
+  reg        [2:0]    write_ptr;
+  wire       [1:0]    read_addr;
+  wire       [1:0]    next_read_addr;
+  wire       [1:0]    write_addr;
+  wire                fifo_empty;
+  wire                fifo_full;
+  reg                 fifo_ram_0;
+  reg                 fifo_ram_1;
+  reg                 fifo_ram_2;
+  reg                 fifo_ram_3;
+  wire                ports_m_ports_fire;
+  wire       [3:0]    _zz_1;
+  wire                ports_s_ports_fire;
 
   always @(*) begin
-    _zz_1 = 1'b0;
-    if(logic_pushing) begin
-      _zz_1 = 1'b1;
-    end
+    case(read_addr)
+      2'b00 : _zz_ports_m_ports_payload = fifo_ram_0;
+      2'b01 : _zz_ports_m_ports_payload = fifo_ram_1;
+      2'b10 : _zz_ports_m_ports_payload = fifo_ram_2;
+      default : _zz_ports_m_ports_payload = fifo_ram_3;
+    endcase
   end
 
-  always @(*) begin
-    logic_pushPtr_willIncrement = 1'b0;
-    if(logic_pushing) begin
-      logic_pushPtr_willIncrement = 1'b1;
-    end
-  end
-
-  always @(*) begin
-    logic_pushPtr_willClear = 1'b0;
-    if(io_flush) begin
-      logic_pushPtr_willClear = 1'b1;
-    end
-  end
-
-  assign logic_pushPtr_willOverflowIfInc = (logic_pushPtr_value == 1'b1);
-  assign logic_pushPtr_willOverflow = (logic_pushPtr_willOverflowIfInc && logic_pushPtr_willIncrement);
-  always @(*) begin
-    logic_pushPtr_valueNext = (logic_pushPtr_value + logic_pushPtr_willIncrement);
-    if(logic_pushPtr_willClear) begin
-      logic_pushPtr_valueNext = 1'b0;
-    end
-  end
-
-  always @(*) begin
-    logic_popPtr_willIncrement = 1'b0;
-    if(logic_popping) begin
-      logic_popPtr_willIncrement = 1'b1;
-    end
-  end
-
-  always @(*) begin
-    logic_popPtr_willClear = 1'b0;
-    if(io_flush) begin
-      logic_popPtr_willClear = 1'b1;
-    end
-  end
-
-  assign logic_popPtr_willOverflowIfInc = (logic_popPtr_value == 1'b1);
-  assign logic_popPtr_willOverflow = (logic_popPtr_willOverflowIfInc && logic_popPtr_willIncrement);
-  always @(*) begin
-    logic_popPtr_valueNext = (logic_popPtr_value + logic_popPtr_willIncrement);
-    if(logic_popPtr_willClear) begin
-      logic_popPtr_valueNext = 1'b0;
-    end
-  end
-
-  assign logic_ptrMatch = (logic_pushPtr_value == logic_popPtr_value);
-  assign logic_pushing = (io_push_valid && io_push_ready);
-  assign logic_popping = (io_pop_valid && io_pop_ready);
-  assign logic_empty = (logic_ptrMatch && (! logic_risingOccupancy));
-  assign logic_full = (logic_ptrMatch && logic_risingOccupancy);
-  assign io_push_ready = (! logic_full);
-  assign io_pop_valid = ((! logic_empty) && (! (_zz_io_pop_valid && (! logic_full))));
-  assign io_pop_payload = _zz_logic_ram_port0;
-  assign when_Stream_l1122 = (logic_pushing != logic_popping);
-  assign logic_ptrDif = (logic_pushPtr_value - logic_popPtr_value);
-  assign io_occupancy = {(logic_risingOccupancy && logic_ptrMatch),logic_ptrDif};
-  assign io_availability = {((! logic_risingOccupancy) && logic_ptrMatch),_zz_io_availability};
+  assign read_addr = read_ptr[1 : 0];
+  assign next_read_addr = (read_addr + 2'b01);
+  assign write_addr = write_ptr[1 : 0];
+  assign fifo_empty = (read_ptr == write_ptr);
+  assign fifo_full = ((read_addr == write_addr) && (read_ptr[2] != write_ptr[2]));
+  assign ports_m_ports_fire = (ports_m_ports_valid && ports_m_ports_ready);
+  assign _zz_1 = ({3'd0,1'b1} <<< write_addr);
+  assign ports_s_ports_fire = (ports_s_ports_valid && ports_s_ports_ready);
+  assign ports_s_ports_ready = (! fifo_full);
+  assign ports_m_ports_valid = (! fifo_empty);
+  assign ports_m_ports_payload = _zz_ports_m_ports_payload;
   always @(posedge clk or posedge reset) begin
     if(reset) begin
-      logic_pushPtr_value <= 1'b0;
-      logic_popPtr_value <= 1'b0;
-      logic_risingOccupancy <= 1'b0;
-      _zz_io_pop_valid <= 1'b0;
+      read_ptr <= 3'b000;
+      write_ptr <= 3'b000;
     end else begin
-      logic_pushPtr_value <= logic_pushPtr_valueNext;
-      logic_popPtr_value <= logic_popPtr_valueNext;
-      _zz_io_pop_valid <= (logic_popPtr_valueNext == logic_pushPtr_value);
-      if(when_Stream_l1122) begin
-        logic_risingOccupancy <= logic_pushing;
+      if(flush) begin
+        read_ptr <= 3'b000;
+      end else begin
+        if(ports_m_ports_fire) begin
+          read_ptr <= (read_ptr + 3'b001);
+        end
       end
-      if(io_flush) begin
-        logic_risingOccupancy <= 1'b0;
+      if(flush) begin
+        write_ptr <= 3'b000;
+      end else begin
+        if(ports_s_ports_fire) begin
+          write_ptr <= (write_ptr + 3'b001);
+        end
+      end
+    end
+  end
+
+  always @(posedge clk) begin
+    if(!flush) begin
+      if(ports_s_ports_fire) begin
+        if(_zz_1[0]) begin
+          fifo_ram_0 <= ports_s_ports_payload;
+        end
+        if(_zz_1[1]) begin
+          fifo_ram_1 <= ports_s_ports_payload;
+        end
+        if(_zz_1[2]) begin
+          fifo_ram_2 <= ports_s_ports_payload;
+        end
+        if(_zz_1[3]) begin
+          fifo_ram_3 <= ports_s_ports_payload;
+        end
+      end
+    end
+  end
+
+
+endmodule
+
+module FIFO (
+  input               ports_s_ports_valid,
+  output              ports_s_ports_ready,
+  input      [63:0]   ports_s_ports_payload,
+  output              ports_m_ports_valid,
+  input               ports_m_ports_ready,
+  output     [63:0]   ports_m_ports_payload,
+  input               flush,
+  output     [63:0]   next_payload,
+  input               clk,
+  input               reset
+);
+
+  reg        [63:0]   _zz_ports_m_ports_payload;
+  reg        [63:0]   _zz_next_payload;
+  reg        [2:0]    read_ptr;
+  reg        [2:0]    write_ptr;
+  wire       [1:0]    read_addr;
+  wire       [1:0]    next_read_addr;
+  wire       [1:0]    write_addr;
+  wire                fifo_empty;
+  wire                fifo_full;
+  reg        [63:0]   fifo_ram_0;
+  reg        [63:0]   fifo_ram_1;
+  reg        [63:0]   fifo_ram_2;
+  reg        [63:0]   fifo_ram_3;
+  wire                ports_m_ports_fire;
+  wire       [3:0]    _zz_1;
+  wire                ports_s_ports_fire;
+
+  always @(*) begin
+    case(read_addr)
+      2'b00 : _zz_ports_m_ports_payload = fifo_ram_0;
+      2'b01 : _zz_ports_m_ports_payload = fifo_ram_1;
+      2'b10 : _zz_ports_m_ports_payload = fifo_ram_2;
+      default : _zz_ports_m_ports_payload = fifo_ram_3;
+    endcase
+  end
+
+  always @(*) begin
+    case(next_read_addr)
+      2'b00 : _zz_next_payload = fifo_ram_0;
+      2'b01 : _zz_next_payload = fifo_ram_1;
+      2'b10 : _zz_next_payload = fifo_ram_2;
+      default : _zz_next_payload = fifo_ram_3;
+    endcase
+  end
+
+  assign read_addr = read_ptr[1 : 0];
+  assign next_read_addr = (read_addr + 2'b01);
+  assign write_addr = write_ptr[1 : 0];
+  assign fifo_empty = (read_ptr == write_ptr);
+  assign fifo_full = ((read_addr == write_addr) && (read_ptr[2] != write_ptr[2]));
+  assign ports_m_ports_fire = (ports_m_ports_valid && ports_m_ports_ready);
+  assign _zz_1 = ({3'd0,1'b1} <<< write_addr);
+  assign ports_s_ports_fire = (ports_s_ports_valid && ports_s_ports_ready);
+  assign ports_s_ports_ready = (! fifo_full);
+  assign ports_m_ports_valid = (! fifo_empty);
+  assign ports_m_ports_payload = _zz_ports_m_ports_payload;
+  assign next_payload = _zz_next_payload;
+  always @(posedge clk or posedge reset) begin
+    if(reset) begin
+      read_ptr <= 3'b000;
+      write_ptr <= 3'b000;
+    end else begin
+      if(flush) begin
+        read_ptr <= 3'b000;
+      end else begin
+        if(ports_m_ports_fire) begin
+          read_ptr <= (read_ptr + 3'b001);
+        end
+      end
+      if(flush) begin
+        write_ptr <= 3'b000;
+      end else begin
+        if(ports_s_ports_fire) begin
+          write_ptr <= (write_ptr + 3'b001);
+        end
+      end
+    end
+  end
+
+  always @(posedge clk) begin
+    if(!flush) begin
+      if(ports_s_ports_fire) begin
+        if(_zz_1[0]) begin
+          fifo_ram_0 <= ports_s_ports_payload;
+        end
+        if(_zz_1[1]) begin
+          fifo_ram_1 <= ports_s_ports_payload;
+        end
+        if(_zz_1[2]) begin
+          fifo_ram_2 <= ports_s_ports_payload;
+        end
+        if(_zz_1[3]) begin
+          fifo_ram_3 <= ports_s_ports_payload;
+        end
       end
     end
   end

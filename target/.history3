@@ -10,3 +10,11 @@
 1691138240870:runMain dandriscv.gencpu.GenSmallest
 1691398628422:runMain dandriscv.gencpu.GenSimple
 1691398633944:runMain dandriscv.gencpu.GenSmallest
+1691493070623:runMain dandriscv.ip.FIFO
+1691494035580:runMain dandriscv.gencpu.GenSmallest
+1691494419305:runMain dandriscv.ip.FIFO
+1691496673043:runMain dandriscv.gencpu.GenSmallest
+1691496806439:runMain dandriscv.ip.FIFO
+1691496878824:runMain dandriscv.gencpu.GenSmallest
+1691498122387:runMain dandriscv.ip.FIFO
+1691498261429:runMain dandriscv.gencpu.GenSmallest

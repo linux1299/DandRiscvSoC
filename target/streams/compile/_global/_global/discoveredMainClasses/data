@@ -1,1 +1,1 @@
-["dandriscv.gencpu.GenSimple","dandriscv.gencpu.GenSmallest","sim.SimICache"]
+["dandriscv.gencpu.GenSimple","dandriscv.gencpu.GenSmallest","dandriscv.ip.FIFO","sim.SimICache"]

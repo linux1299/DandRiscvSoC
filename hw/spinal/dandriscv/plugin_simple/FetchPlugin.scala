@@ -35,27 +35,21 @@ with ICacheAccessService
       import fetch._
 
       val pc_next = Reg(UInt(pipeline.config.addressWidth bits)).setName("pc_next") init(resetVector)
-      val pc = RegNextWhen(pc_next, icache_access.cmd.fire).setName("pc")
       val fetch_valid = RegInit(False).setName("fetch_valid")
       val int_pc_reg = Reg(UInt(pipeline.config.addressWidth bits)).setName("int_pc_reg") init(0)
       val int_en_reg = RegInit(False).setName("int_en_reg")
       val fetch_flush = (output(INT_EN) || int_en_reg || arbitration.flushIt)
-      val predict_taken = RegNext(input(BPU_BRANCH_TAKEN))
-
-      // val pc_FIFO = StreamFifo(
-      //   dataType = UInt(pipeline.config.addressWidth bits),
-      //   depth    = 2
-      // )
-      // val instruction_FIFO = StreamFifo(
-      //   dataType = Bits(32 bits),
-      //   depth    = 2
-      // )
+      
       val pc_in_stream =  Stream(UInt(pipeline.config.addressWidth bits))
       val pc_out_stream = Stream(UInt(pipeline.config.addressWidth bits))
-      val pc_stream_fifo = FIFO(UInt(pipeline.config.addressWidth bits), 2)
+      val pc_stream_fifo = FIFO(UInt(pipeline.config.addressWidth bits), 4, true)
+      val predict_taken_in  = Stream(Bool()) // input(BPU_BRANCH_TAKEN)
+      val predict_taken_out = Stream(Bool())
+      val predict_taken_fifo = FIFO(Bool(), 4)
       val instruction_in_stream = Stream(Bits(32 bits))
       val instruction_out_stream =Stream(Bits(32 bits))
-      val instruction_stream_fifo = FIFO(Bits(32 bits), 2)
+      val instruction_stream_fifo = FIFO(Bits(32 bits), 4)
+      val fifo_all_valid = pc_out_stream.valid && instruction_out_stream.valid
 
       val fetchFSM = new Area{
         val IDLE  = U(0 , 2 bits).setName("IDLE")
@@ -146,31 +140,35 @@ with ICacheAccessService
       }
 
       // output pc and instruction from FIFO or icache
-      pc_in_stream.valid   := icache_access.rsp.valid && (arbitration.isStuck || fetchFSM.fetch_state===fetchFSM.HALT) //TODO:all pc stream into FIFO
-      pc_in_stream.payload := pc
-      pc_out_stream.ready  := !arbitration.isStuck
-      // pc_stream_fifo.ports.s_ports.valid := pc_in_stream.valid
-      // pc_stream_fifo.ports.s_ports.payload := pc_in_stream.payload
-      // pc_stream_fifo.ports.m_ports.ready := pc_out_stream.ready
-      // pc_FIFO.io.push << pc_in_stream
-      // pc_FIFO.io.pop  >> pc_out_stream
+      pc_in_stream.valid   := icache_access.cmd.fire //all pc stream into FIFO
+      pc_in_stream.payload := pc_next
+      pc_out_stream.ready  := arbitration.isFiring
+      pc_in_stream <> pc_stream_fifo.ports.s_ports
+      pc_out_stream <> pc_stream_fifo.ports.m_ports
+      pc_stream_fifo.flush := fetch_flush
 
-      instruction_in_stream.valid   := icache_access.rsp.valid && arbitration.isStuck
+      predict_taken_in.valid := icache_access.cmd.fire
+      predict_taken_in.payload := input(PREDICT_TAKEN)
+      predict_taken_out.ready := arbitration.isFiring
+      predict_taken_in <> predict_taken_fifo.ports.s_ports
+      predict_taken_out <> predict_taken_fifo.ports.m_ports
+      predict_taken_fifo.flush := fetch_flush
+
+      instruction_in_stream.valid   := icache_access.rsp.valid
       instruction_in_stream.payload := icache_access.rsp.payload.data
-      instruction_out_stream.ready  := !arbitration.isStuck
-      // instruction_FIFO.io.push << instruction_in_stream
-      // instruction_FIFO.io.pop  >> instruction_out_stream
-      // instruction_stream_fifo.ports.s_ports.valid := instruction_in_stream.valid
-      // instruction_stream_fifo.ports.s_ports.payload := instruction_in_stream.payload
-      // instruction_stream_fifo.ports.m_ports.ready := instruction_out_stream.ready
+      instruction_out_stream.ready  := arbitration.isFiring
+      instruction_in_stream <> instruction_stream_fifo.ports.s_ports
+      instruction_out_stream <> instruction_stream_fifo.ports.m_ports
+      instruction_stream_fifo.flush := fetch_flush
 
       // insert to stage
-      insert(PC) := pc_out_stream.valid ? pc_out_stream.payload | pc
-      insert(PC_NEXT) := pc_next
+      insert(PC) := pc_out_stream.payload
+      insert(PC_NEXT) := pc_stream_fifo.next_payload
+      insert(INSTRUCTION) := instruction_out_stream.payload
       insert(PREDICT_VALID) := icache_access.cmd.fire
-      insert(PREDICT_TAKEN) := predict_taken
-      insert(INSTRUCTION) := instruction_out_stream.valid ? instruction_out_stream.payload | icache_access.rsp.payload.data
-      arbitration.isValid := (pc_out_stream.valid || (icache_access.rsp.valid && !(arbitration.isStuck || fetchFSM.fetch_state===fetchFSM.HALT))) && !fetch_flush
+      insert(PREDICT_TAKEN) := predict_taken_out.payload
+      insert(PREDICT_PC)    := pc_next
+      arbitration.isValid := fifo_all_valid && !arbitration.isStuck && !fetch_flush
 
       // send cmd to icache
       icache_access.cmd.valid := fetch_valid && !fetch_flush

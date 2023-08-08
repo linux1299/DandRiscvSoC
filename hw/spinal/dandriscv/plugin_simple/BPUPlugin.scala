@@ -37,8 +37,10 @@ class BPUPlugin(val p : PredictorConfig) extends Plugin[DandRiscvSimple]{
     
     predictor.predict_pc           := fetch.output(PC_NEXT)
     predictor.predict_valid        := fetch.output(PREDICT_VALID)
-    fetch.insert(BPU_BRANCH_TAKEN) := predictor.predict_taken
-    fetch.insert(BPU_PC_NEXT)      := predictor.predict_pc_next
+    // fetch.insert(BPU_BRANCH_TAKEN) := predictor.predict_taken
+    // fetch.insert(BPU_PC_NEXT)      := predictor.predict_pc_next
+    fetch.insert(BPU_BRANCH_TAKEN) := False //TODO:
+    fetch.insert(BPU_PC_NEXT)      := U(0) //TODO:
     predictor.train_valid          := execute.output(BRANCH_OR_JUMP)
     predictor.train_taken          := execute.output(BRANCH_TAKEN)
     predictor.train_mispredicted   := execute.output(REDIRECT_VALID)

@@ -57,9 +57,11 @@ case class DandRiscvSimpleConfig(){
   // fetch stage insert
   object PC extends Stageable(UInt(addressWidth bits))
   object PC_NEXT extends Stageable(UInt(addressWidth bits))
+  object INSTRUCTION extends Stageable(Bits(32 bits))
   object PREDICT_VALID extends Stageable(Bool())
   object PREDICT_TAKEN extends Stageable(Bool())
-  object INSTRUCTION extends Stageable(Bits(32 bits))
+  object PREDICT_PC extends Stageable(UInt(addressWidth bits))
+  
   
   // decode stage insert
   object RS1 extends Stageable(Bits(XLEN bits))
