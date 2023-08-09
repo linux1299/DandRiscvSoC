@@ -61,6 +61,10 @@ case class DandRiscvSimpleConfig(){
   object PREDICT_VALID extends Stageable(Bool())
   object PREDICT_TAKEN extends Stageable(Bool())
   object PREDICT_PC extends Stageable(UInt(addressWidth bits))
+  object FETCH_DEC_JAL extends Stageable(Bool())
+  object FETCH_DEC_JALR extends Stageable(Bool())
+  object FETCH_DEC_BRANCH extends Stageable(Bool())
+  object FETCH_DEC_IMM extends Stageable(Bits(XLEN bits))
   
   
   // decode stage insert

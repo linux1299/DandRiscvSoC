@@ -50,10 +50,22 @@ case class FIFO[T <: Data](dataType: T, DEPTH : Int = 2, READ_NEXT : Boolean = f
   ports.m_ports.payload := fifo_ram(read_addr)
   
   val next_payload = ifGen(READ_NEXT){out cloneOf(dataType)}
+  val fifo_cnt = ifGen(READ_NEXT) {Reg(UInt(PTR_WIDTH bits)) init(0)}
+  val next_valid = ifGen(READ_NEXT){out Bool()}
   if(next_payload!=null){
     next_payload.setName("next_payload")
     next_payload := fifo_ram(next_read_addr)
+    when(ports.s_ports.fire && !ports.m_ports.fire){ //write
+      fifo_cnt := fifo_cnt + 1
+    }
+    .elsewhen(!ports.s_ports.fire && ports.m_ports.fire){
+      fifo_cnt := fifo_cnt - 1
+    }
   }
+  if(next_valid!=null){
+    next_valid := (fifo_cnt >= U(2))
+  }
+  
   
 }
 

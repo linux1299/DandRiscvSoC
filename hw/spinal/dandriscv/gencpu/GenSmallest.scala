@@ -11,6 +11,7 @@ object GenSmallest extends App{
       plugins = List(
         new FetchPlugin,
         new BPUPlugin(p = PredictorConfig(
+          predictorType = "STATIC",
           addressWidth =64, 
           RAS_ENTRIES = 4, 
           BTB_ENTRIES = 4, 

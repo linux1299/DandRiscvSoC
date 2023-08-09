@@ -4944,3 +4944,31 @@ INFO: Schema "PUBLIC" is up to date. No migration necessary.
 信息: See release notes here: https://rd.gt/416ObMi
 八月 09, 2023 9:18:02 上午 org.flywaydb.core.internal.license.VersionPrinter printVersion
 信息: 
+八月 09, 2023 9:18:06 上午 org.flywaydb.core.internal.database.base.BaseDatabaseType createDatabase
+信息: Database: jdbc:h2:file:D:\MyWork\ScalaProj\DandRiscvSoC\.metals\metals (H2 2.1)
+八月 09, 2023 9:18:06 上午 org.flywaydb.core.internal.command.DbValidate validate
+信息: Successfully validated 4 migrations (execution time 00:00.013s)
+八月 09, 2023 9:18:06 上午 org.flywaydb.core.internal.command.DbMigrate migrateGroup
+信息: Current version of schema "PUBLIC": 4
+八月 09, 2023 9:18:06 上午 org.flywaydb.core.internal.command.DbMigrate logSummary
+信息: Schema "PUBLIC" is up to date. No migration necessary.
+2023.08.09 09:18:07 INFO  time: initialize in 4.74s
+2023.08.09 09:18:07 INFO  Attempting to connect to the build server...
+2023.08.09 09:18:07 INFO  Bloop uses C:\Program Files\Java\jdk-1.8 defined at C:\Users\TsinghuaIC\.bloop\bloop.json
+2023.08.09 09:18:07 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at D:\MyWork\ScalaProj\DandRiscvSoC\.metals\bsp.trace.json or C:\Users\TsinghuaIC\AppData\Local\scalameta\metals\cache\bsp.trace.json
+2023.08.09 09:18:07 INFO  Attempting to connect to the build server...
+2023.08.09 09:18:07 INFO  Bloop uses C:\Program Files\Java\jdk-1.8 defined at C:\Users\TsinghuaIC\.bloop\bloop.json
+2023.08.09 09:18:07 INFO  Attempting to connect to the build server...
+2023.08.09 09:18:07 INFO  Bloop uses C:\Program Files\Java\jdk-1.8 defined at C:\Users\TsinghuaIC\.bloop\bloop.json
+2023.08.09 09:18:07 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at D:\MyWork\ScalaProj\DandRiscvSoC\project\.metals\bsp.trace.json or C:\Users\TsinghuaIC\AppData\Local\scalameta\metals\cache\bsp.trace.json
+2023.08.09 09:18:07 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at D:\MyWork\ScalaProj\DandRiscvSoC\project\project\.metals\bsp.trace.json or C:\Users\TsinghuaIC\AppData\Local\scalameta\metals\cache\bsp.trace.json
+2023.08.09 09:18:07 INFO  time: Connected to build server in 0.27s
+2023.08.09 09:18:07 INFO  Connected to Build server: Bloop v1.5.8
+2023.08.09 09:18:09 INFO  no build target found for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\FetchPlugin.scala. Using presentation compiler with project's scala-library version: 3.3.0
+2023.08.09 09:18:09 INFO  time: code lens generation in 2.23s
+2023.08.09 09:18:10 INFO  no build target found for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala. Using presentation compiler with project's scala-library version: 3.3.0
+2023.08.09 09:18:11 INFO  time: code lens generation in 4.2s
+2023.08.09 09:18:14 INFO  time: indexed workspace in 4.93s
+2023.08.09 09:18:16 INFO  compiling projectname (4 scala sources)
+2023.08.09 09:18:19 WARN  1 deprecation (since 2.13.0); re-run with -deprecation for details
+2023.08.09 09:18:19 INFO  time: compiled projectname in 4.06s

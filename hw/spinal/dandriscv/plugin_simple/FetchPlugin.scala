@@ -49,7 +49,7 @@ with ICacheAccessService
       val instruction_in_stream = Stream(Bits(32 bits))
       val instruction_out_stream =Stream(Bits(32 bits))
       val instruction_stream_fifo = FIFO(Bits(32 bits), 4)
-      val fifo_all_valid = pc_out_stream.valid && instruction_out_stream.valid
+      val fifo_all_valid = pc_out_stream.valid && instruction_out_stream.valid && pc_stream_fifo.next_valid
 
       val fetchFSM = new Area{
         val IDLE  = U(0 , 2 bits).setName("IDLE")

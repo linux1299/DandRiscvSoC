@@ -323,6 +323,12 @@ class DecodePlugin() extends Plugin[DandRiscvSimple]
       insert(CSR_CTRL) := csr_ctrl
       insert(CSR_ADDR) := csr_addr
       insert(CSR_WEN)  := csr_wen
+      // insert to fetch stage
+      fetch.insert(FETCH_DEC_JAL) :=    fetch.output(INSTRUCTION)(opcodeRange)===OP_JAL
+      fetch.insert(FETCH_DEC_JALR) :=   fetch.output(INSTRUCTION)(opcodeRange)===OP_JALR
+      fetch.insert(FETCH_DEC_BRANCH) := fetch.output(INSTRUCTION)(opcodeRange)===OP_BRANCH
+      fetch.insert(FETCH_DEC_IMM) := IMM_ALL(fetch.output(INSTRUCTION), XLEN).b_type_imm ? IMM_ALL(fetch.output(INSTRUCTION), XLEN).b_sext | IMM_ALL(fetch.output(INSTRUCTION), XLEN).j_sext
+
 
       // hazard control input
       hazard.decode_rs1_req := rs1_req

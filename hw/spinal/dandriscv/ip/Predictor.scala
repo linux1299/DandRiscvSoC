@@ -219,3 +219,30 @@ case class gshare_predictor(val p : PredictorConfig) extends Component {
   predict_taken   := BTB.is_matched && (GSHARE.pht_predict_taken || BTB.is_jmp || BTB.is_call || BTB.is_ret)
   predict_pc_next := RAS.ras_ret_matched ? RAS.ras_predict_pc | ((BTB.is_matched && (GSHARE.pht_predict_taken || BTB.is_jmp || BTB.is_call)) ? BTB.target_pc_read | (predict_pc+4))
 }
+
+// ================ static predictor =================
+case class static_predictor(val p : PredictorConfig) extends Component {
+  import p._
+
+  val predict_pc = in UInt(addressWidth bits)
+  val predict_imm = in Bits(addressWidth bits)
+  val predict_valid = in Bool()
+  val predict_jal = in Bool()
+  val predict_branch = in Bool()
+  val predict_taken = out Bool()
+  val predict_pc_next = out UInt(addressWidth bits)
+
+  when(predict_valid && predict_jal){
+    predict_taken := True
+    predict_pc_next := (predict_pc.asSInt + predict_imm.asSInt).asUInt
+  }
+  .elsewhen(predict_valid && predict_branch){
+    predict_taken := predict_imm(addressWidth-1)
+    predict_pc_next := (predict_pc.asSInt + predict_imm.asSInt).asUInt
+  }
+  .otherwise{
+    predict_taken := False
+    predict_pc_next := U(0)
+  }
+
+}
