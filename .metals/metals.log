@@ -4937,3 +4937,10 @@ INFO: Schema "PUBLIC" is up to date. No migration necessary.
 2023.08.07 11:06:46 WARN  1 deprecation (since 2.13.0); re-run with -deprecation for details
 2023.08.07 11:06:46 INFO  time: compiled projectname in 2.12s
 >>>>>>> 5554d0c0c04b48d2ddc7c5793712eb5960835726
+2023.08.09 09:18:02 INFO  Started: Metals version 1.0.0 in folders 'D:\MyWork\ScalaProj\DandRiscvSoC' for client Visual Studio Code 1.81.0.
+八月 09, 2023 9:18:02 上午 org.flywaydb.core.internal.license.VersionPrinter printVersionOnly
+信息: Flyway Community Edition 9.20.1 by Redgate
+八月 09, 2023 9:18:02 上午 org.flywaydb.core.internal.license.VersionPrinter printVersion
+信息: See release notes here: https://rd.gt/416ObMi
+八月 09, 2023 9:18:02 上午 org.flywaydb.core.internal.license.VersionPrinter printVersion
+信息: 

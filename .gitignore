@@ -58,3 +58,4 @@ verdiLog/
 .bsp/
 .metals/*
 project/
+*.db
