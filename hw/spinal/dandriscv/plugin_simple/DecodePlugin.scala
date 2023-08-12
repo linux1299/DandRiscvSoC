@@ -62,8 +62,8 @@ case class RegFileModule(XLEN : Int = 64) extends Component{
     reg_file(write_ports.rd_addr) := write_ports.rd_value
   }
 
-  read_ports.rs1_value := (write_ports.rd_wen && (write_ports.rd_addr===read_ports.rs1_addr) && read_ports.rs1_req) ? write_ports.rd_value | read_value_1
-  read_ports.rs2_value := (write_ports.rd_wen && (write_ports.rd_addr===read_ports.rs2_addr) && read_ports.rs2_req) ? write_ports.rd_value | read_value_2
+  read_ports.rs1_value := (write_ports.rd_wen && (write_ports.rd_addr===read_ports.rs1_addr && write_ports.rd_addr=/=U(0,5 bits)) && read_ports.rs1_req) ? write_ports.rd_value | read_value_1
+  read_ports.rs2_value := (write_ports.rd_wen && (write_ports.rd_addr===read_ports.rs2_addr && write_ports.rd_addr=/=U(0,5 bits)) && read_ports.rs2_req) ? write_ports.rd_value | read_value_2
 }
 
 // ==================== decode stage ======================
@@ -101,7 +101,7 @@ class DecodePlugin() extends Plugin[DandRiscvSimple]
       val rd_wen = Bool()
       val rd_addr = instruction(rdRange).asUInt
       val alu_ctrl = Bits(AluCtrlEnum.ADD.asBits.getWidth bits)
-      val alu_word = instruction(opcodeRange)===OP_ALU_WORD
+      val alu_word = instruction(opcodeRange)===OP_ALU_WORD || instruction(opcodeRange)===OP_IMM_WORD
       val src2_is_imm = imm_all.i_type_imm || imm_all.s_type_imm || imm_all.u_type_imm
 
       val mem_ctrl = Bits(MemCtrlEnum.LB.asBits.getWidth bits)
@@ -161,7 +161,7 @@ class DecodePlugin() extends Plugin[DandRiscvSimple]
         is(AND, ANDI){
           alu_ctrl := AluCtrlEnum.AND.asBits
         }
-        is(OR){
+        is(OR, ORI){
           alu_ctrl := AluCtrlEnum.OR.asBits
         }
         is(LUI){

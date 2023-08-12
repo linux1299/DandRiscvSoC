@@ -55,7 +55,10 @@ case class FIFO[T <: Data](dataType: T, DEPTH : Int = 2, READ_NEXT : Boolean = f
   if(next_payload!=null){
     next_payload.setName("next_payload")
     next_payload := fifo_ram(next_read_addr)
-    when(ports.s_ports.fire && !ports.m_ports.fire){ //write
+    when(flush){
+      fifo_cnt := 0
+    }
+    .elsewhen(ports.s_ports.fire && !ports.m_ports.fire){ //write
       fifo_cnt := fifo_cnt + 1
     }
     .elsewhen(!ports.s_ports.fire && ports.m_ports.fire){

@@ -8,7 +8,7 @@ import dandriscv.ip._
 import dandriscv.plugin._
 import math._
 
-case class PredictorConfig(predictorType : String = "STATIC",
+case class PredictorConfig(predictorType : String = "GSHARE",
                           addressWidth : Int=64, 
                           RAS_ENTRIES : Int=4, 
                           BTB_ENTRIES : Int=4, 
