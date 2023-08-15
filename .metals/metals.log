@@ -4972,3 +4972,364 @@ INFO: Schema "PUBLIC" is up to date. No migration necessary.
 2023.08.09 09:18:16 INFO  compiling projectname (4 scala sources)
 2023.08.09 09:18:19 WARN  1 deprecation (since 2.13.0); re-run with -deprecation for details
 2023.08.09 09:18:19 INFO  time: compiled projectname in 4.06s
+2023.08.09 15:52:21 INFO  compiling projectname (1 scala source)
+2023.08.09 15:52:21 INFO  time: compiled projectname in 0.16s
+2023.08.09 15:52:26 INFO  compiling projectname (1 scala source)
+2023.08.09 15:52:26 INFO  time: compiled projectname in 0.11s
+2023.08.09 15:52:30 INFO  compiling projectname (1 scala source)
+2023.08.09 15:52:31 INFO  time: compiled projectname in 1.36s
+2023.08.09 15:53:00 INFO  compiling projectname (1 scala source)
+2023.08.09 15:53:00 INFO  time: compiled projectname in 0.84s
+2023.08.09 16:15:19 INFO  compiling projectname (1 scala source)
+2023.08.09 16:15:19 INFO  time: compiled projectname in 0.97s
+2023.08.09 16:15:19 INFO  compiling projectname (2 scala sources)
+2023.08.09 16:15:20 INFO  time: compiled projectname in 0.23s
+2023.08.09 16:15:22 INFO  compiling projectname (1 scala source)
+2023.08.09 16:15:22 INFO  time: compiled projectname in 0.87s
+2023.08.09 16:15:22 INFO  compiling projectname (2 scala sources)
+2023.08.09 16:15:23 INFO  time: compiled projectname in 0.26s
+八月 09, 2023 4:15:24 下午 org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+警告: Unmatched cancel notification for request id 439
+2023.08.09 16:15:25 INFO  compiling projectname (1 scala source)
+2023.08.09 16:15:25 INFO  time: compiled projectname in 0.92s
+2023.08.09 16:15:25 INFO  compiling projectname (2 scala sources)
+2023.08.09 16:15:27 INFO  time: compiled projectname in 0.35s
+2023.08.09 16:15:38 INFO  compiling projectname (1 scala source)
+2023.08.09 16:15:38 INFO  time: compiled projectname in 0.82s
+2023.08.09 16:15:38 INFO  compiling projectname (2 scala sources)
+2023.08.09 16:15:39 INFO  time: compiled projectname in 0.25s
+2023.08.09 16:15:41 INFO  compiling projectname (1 scala source)
+2023.08.09 16:15:41 INFO  time: compiled projectname in 0.87s
+2023.08.09 16:15:41 INFO  compiling projectname (2 scala sources)
+2023.08.09 16:15:42 INFO  time: compiled projectname in 0.24s
+2023.08.09 16:15:44 INFO  compiling projectname (1 scala source)
+2023.08.09 16:15:44 INFO  time: compiled projectname in 0.86s
+2023.08.09 16:15:44 INFO  compiling projectname (2 scala sources)
+2023.08.09 16:15:45 INFO  time: compiled projectname in 0.27s
+2023.08.09 16:15:48 INFO  compiling projectname (1 scala source)
+2023.08.09 16:15:48 INFO  time: compiled projectname in 0.87s
+2023.08.09 16:15:57 INFO  compiling projectname (1 scala source)
+2023.08.09 16:15:57 INFO  time: compiled projectname in 0.85s
+八月 09, 2023 4:16:00 下午 org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+警告: Unmatched cancel notification for request id 536
+2023.08.09 16:16:03 INFO  compiling projectname (1 scala source)
+2023.08.09 16:16:03 INFO  time: compiled projectname in 0.86s
+2023.08.09 16:16:06 INFO  Deduplicating compilation of projectname from bsp client 'Metals 1.0.0' (since 6h 57m 58.356s)
+2023.08.09 16:16:08 INFO  Deduplicating compilation of projectname from bsp client 'Metals 1.0.0' (since 6h 58m 0.558s)
+2023.08.09 16:16:14 INFO  compiling projectname (1 scala source)
+2023.08.09 16:16:14 INFO  time: compiled projectname in 0.89s
+2023.08.09 16:16:44 INFO  compiling projectname (1 scala source)
+2023.08.09 16:16:44 INFO  time: compiled projectname in 0.71s
+2023.08.09 16:16:48 INFO  compiling projectname (1 scala source)
+2023.08.09 16:16:48 INFO  time: compiled projectname in 0.69s
+2023.08.09 16:16:59 INFO  compiling projectname (1 scala source)
+2023.08.09 16:16:59 INFO  time: compiled projectname in 0.72s
+2023.08.09 16:24:03 INFO  compiling projectname (1 scala source)
+2023.08.09 16:24:03 INFO  time: compiled projectname in 0.16s
+2023.08.09 16:24:06 INFO  compiling projectname (1 scala source)
+2023.08.09 16:24:06 INFO  time: compiled projectname in 0.72s
+2023.08.09 16:24:09 INFO  compiling projectname (1 scala source)
+2023.08.09 16:24:09 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\FIFO.scala
+2023.08.09 16:24:10 INFO  time: compiled projectname in 1.53s
+2023.08.09 16:25:36 INFO  compiling projectname (1 scala source)
+2023.08.09 16:25:36 INFO  time: compiled projectname in 0.95s
+Exception in thread "pool-5-thread-1" java.lang.Error: java.lang.InterruptedException
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1155)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+Caused by: java.lang.InterruptedException
+	at scala.meta.internal.metals.FutureCancelToken.checkCanceled(FutureCancelToken.scala:29)
+	at scala.meta.internal.pc.CompilerAccess.$anonfun$onCompilerJobQueue$1(CompilerAccess.scala:229)
+	at scala.meta.internal.pc.CompilerJobQueue$Job.run(CompilerJobQueue.scala:152)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	... 2 more
+2023.08.09 16:25:50 INFO  compiling projectname (1 scala source)
+2023.08.09 16:25:50 INFO  time: compiled projectname in 0.14s
+2023.08.09 16:25:53 INFO  compiling projectname (1 scala source)
+2023.08.09 16:25:53 INFO  time: compiled projectname in 0.67s
+八月 09, 2023 4:25:55 下午 org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+警告: Unmatched cancel notification for request id 1144
+2023.08.09 16:25:57 WARN  Using indexes to guess the definition of fifo_cnt
+2023.08.09 16:25:59 INFO  compiling projectname (1 scala source)
+2023.08.09 16:25:59 INFO  time: compiled projectname in 0.65s
+Exception in thread "pool-5-thread-2" java.lang.Error: java.lang.InterruptedException
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1155)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+Caused by: java.lang.InterruptedException
+	at scala.meta.internal.metals.FutureCancelToken.checkCanceled(FutureCancelToken.scala:29)
+	at scala.meta.internal.pc.CompilerAccess.$anonfun$onCompilerJobQueue$1(CompilerAccess.scala:229)
+	at scala.meta.internal.pc.CompilerJobQueue$Job.run(CompilerJobQueue.scala:152)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	... 2 more
+2023.08.09 16:28:03 INFO  compiling projectname (1 scala source)
+2023.08.09 16:28:03 WARN  1 deprecation (since 2.13.0); re-run with -deprecation for details
+2023.08.09 16:28:03 INFO  time: compiled projectname in 0.69s
+八月 09, 2023 4:28:33 下午 org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+警告: Unmatched cancel notification for request id 1288
+2023.08.09 16:29:09 INFO  compiling projectname (1 scala source)
+2023.08.09 16:29:09 INFO  time: compiled projectname in 0.14s
+2023.08.09 16:29:23 INFO  compiling projectname (1 scala source)
+2023.08.09 16:29:23 INFO  time: compiled projectname in 0.19s
+2023.08.09 16:29:28 INFO  compiling projectname (1 scala source)
+2023.08.09 16:29:28 INFO  time: compiled projectname in 0.15s
+2023.08.09 16:29:30 INFO  compiling projectname (1 scala source)
+2023.08.09 16:29:30 WARN  1 deprecation (since 2.13.3); re-run with -deprecation for details
+2023.08.09 16:29:30 INFO  time: compiled projectname in 0.84s
+2023.08.09 16:29:42 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\DecodePlugin.scala
+2023.08.09 16:29:42 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\DecodePlugin.scala
+2023.08.09 16:29:42 INFO  compiling projectname (1 scala source)
+2023.08.09 16:29:42 WARN  1 deprecation (since 2.13.3); re-run with -deprecation for details
+2023.08.09 16:29:42 INFO  time: compiled projectname in 0.86s
+2023.08.09 16:30:05 INFO  compiling projectname (1 scala source)
+2023.08.09 16:30:05 WARN  1 deprecation (since 2.13.3); re-run with -deprecation for details
+2023.08.09 16:30:05 INFO  time: compiled projectname in 0.89s
+八月 09, 2023 4:30:07 下午 org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+警告: Unmatched cancel notification for request id 1580
+2023.08.09 16:30:09 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\DecodePlugin.scala
+2023.08.09 16:30:09 INFO  compiling projectname (1 scala source)
+2023.08.09 16:30:10 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\DecodePlugin.scala
+2023.08.09 16:30:10 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\DecodePlugin.scala
+2023.08.09 16:30:09 WARN  1 deprecation (since 2.13.3); re-run with -deprecation for details
+2023.08.09 16:30:09 INFO  time: compiled projectname in 0.84s
+2023.08.09 16:30:50 INFO  compiling projectname (1 scala source)
+2023.08.09 16:30:50 INFO  time: compiled projectname in 0.83s
+2023.08.09 16:30:53 INFO  compiling projectname (1 scala source)
+2023.08.09 16:30:53 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\DandRiscvSimple.scala
+2023.08.09 16:30:53 INFO  time: compiled projectname in 0.98s
+2023.08.09 16:31:00 INFO  compiling projectname (1 scala source)
+2023.08.09 16:31:00 INFO  time: compiled projectname in 0.16s
+2023.08.09 16:31:09 INFO  compiling projectname (1 scala source)
+2023.08.09 16:31:09 INFO  time: compiled projectname in 0.15s
+2023.08.09 16:32:11 INFO  compiling projectname (1 scala source)
+2023.08.09 16:32:11 INFO  time: compiled projectname in 0.15s
+2023.08.09 16:34:09 INFO  compiling projectname (1 scala source)
+2023.08.09 16:34:09 INFO  time: compiled projectname in 0.15s
+2023.08.09 16:34:37 INFO  compiling projectname (1 scala source)
+2023.08.09 16:34:37 INFO  time: compiled projectname in 0.14s
+2023.08.09 16:34:44 INFO  compiling projectname (1 scala source)
+2023.08.09 16:34:44 INFO  time: compiled projectname in 75ms
+2023.08.09 16:34:57 INFO  compiling projectname (1 scala source)
+2023.08.09 16:34:57 INFO  time: compiled projectname in 0.16s
+2023.08.09 16:35:05 INFO  compiling projectname (1 scala source)
+2023.08.09 16:35:05 INFO  time: compiled projectname in 0.15s
+2023.08.09 16:35:07 INFO  compiling projectname (1 scala source)
+2023.08.09 16:35:07 INFO  time: compiled projectname in 0.13s
+2023.08.09 16:35:09 INFO  compiling projectname (1 scala source)
+2023.08.09 16:35:09 INFO  time: compiled projectname in 0.15s
+2023.08.09 16:35:31 INFO  compiling projectname (1 scala source)
+2023.08.09 16:35:31 INFO  time: compiled projectname in 0.19s
+2023.08.09 16:35:33 INFO  compiling projectname (1 scala source)
+2023.08.09 16:35:33 INFO  time: compiled projectname in 0.13s
+2023.08.09 16:35:36 INFO  compiling projectname (1 scala source)
+2023.08.09 16:35:36 INFO  time: compiled projectname in 0.14s
+2023.08.09 16:35:51 INFO  compiling projectname (1 scala source)
+2023.08.09 16:35:51 INFO  time: compiled projectname in 0.19s
+2023.08.09 16:36:05 INFO  compiling projectname (1 scala source)
+2023.08.09 16:36:05 INFO  time: compiled projectname in 0.15s
+八月 09, 2023 4:36:15 下午 org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+警告: Unmatched cancel notification for request id 2164
+2023.08.09 16:36:15 INFO  compiling projectname (1 scala source)
+2023.08.09 16:36:15 INFO  time: compiled projectname in 0.14s
+2023.08.09 16:36:18 INFO  compiling projectname (1 scala source)
+2023.08.09 16:36:18 WARN  1 deprecation (since 2.13.3); re-run with -deprecation for details
+2023.08.09 16:36:18 INFO  time: compiled projectname in 0.89s
+2023.08.09 16:37:51 INFO  compiling projectname (1 scala source)
+2023.08.09 16:37:51 INFO  time: compiled projectname in 0.13s
+2023.08.09 16:38:07 INFO  compiling projectname (1 scala source)
+2023.08.09 16:38:07 INFO  time: compiled projectname in 66ms
+2023.08.09 16:38:10 INFO  compiling projectname (1 scala source)
+2023.08.09 16:38:10 INFO  time: compiled projectname in 0.56s
+2023.08.09 16:38:10 INFO  compiling projectname (3 scala sources)
+2023.08.09 16:38:12 INFO  time: compiled projectname in 0.94s
+2023.08.09 16:39:35 INFO  compiling projectname (1 scala source)
+2023.08.09 16:39:35 INFO  time: compiled projectname in 0.58s
+2023.08.09 16:39:55 INFO  compiling projectname (1 scala source)
+2023.08.09 16:39:55 INFO  time: compiled projectname in 0.11s
+2023.08.09 16:41:09 INFO  compiling projectname (2 scala sources)
+2023.08.09 16:41:09 INFO  time: compiled projectname in 0.16s
+2023.08.09 16:41:34 INFO  compiling projectname (2 scala sources)
+2023.08.09 16:41:34 INFO  time: compiled projectname in 0.14s
+2023.08.09 16:41:44 INFO  compiling projectname (2 scala sources)
+2023.08.09 16:41:44 INFO  time: compiled projectname in 0.92s
+2023.08.09 16:42:35 INFO  compiling projectname (1 scala source)
+2023.08.09 16:42:35 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\Predictor.scala
+2023.08.09 16:42:35 INFO  time: compiled projectname in 0.81s
+2023.08.09 16:43:08 INFO  compiling projectname (1 scala source)
+2023.08.09 16:43:08 INFO  time: compiled projectname in 0.17s
+2023.08.09 16:43:09 WARN  Using indexes to guess the definition of predict_pc
+2023.08.09 16:43:10 INFO  compiling projectname (1 scala source)
+2023.08.09 16:43:10 INFO  time: compiled projectname in 0.13s
+八月 09, 2023 4:43:15 下午 org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+警告: Unmatched cancel notification for request id 3158
+2023.08.09 16:43:16 INFO  compiling projectname (1 scala source)
+2023.08.09 16:43:16 INFO  time: compiled projectname in 0.83s
+2023.08.09 16:43:49 INFO  compiling projectname (1 scala source)
+2023.08.09 16:43:49 INFO  time: compiled projectname in 0.83s
+2023.08.09 16:43:58 INFO  compiling projectname (1 scala source)
+2023.08.09 16:43:59 INFO  time: compiled projectname in 1.13s
+八月 09, 2023 4:44:02 下午 org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+警告: Unmatched cancel notification for request id 3292
+2023.08.09 16:44:19 INFO  compiling projectname (1 scala source)
+2023.08.09 16:44:19 INFO  time: compiled projectname in 0.96s
+2023.08.09 16:45:38 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala
+2023.08.09 16:45:38 INFO  compiling projectname (1 scala source)
+2023.08.09 16:45:38 INFO  time: compiled projectname in 0.11s
+2023.08.09 16:45:39 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala
+2023.08.09 16:45:40 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala
+2023.08.09 16:45:43 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala
+2023.08.09 16:45:43 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala
+2023.08.09 16:45:43 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala
+2023.08.09 16:45:43 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala
+2023.08.09 16:45:43 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala
+2023.08.09 16:45:43 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala
+2023.08.09 16:45:43 WARN  Using indexes to guess the definition of execute
+2023.08.09 16:45:43 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala
+2023.08.09 16:45:43 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala
+2023.08.09 16:45:43 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala
+2023.08.09 16:45:43 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala
+2023.08.09 16:45:43 INFO  compiling projectname (1 scala source)
+2023.08.09 16:45:43 INFO  time: compiled projectname in 0.11s
+2023.08.09 16:45:45 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala
+2023.08.09 16:45:45 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala
+2023.08.09 16:45:45 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala
+2023.08.09 16:45:45 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala
+2023.08.09 16:45:45 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala
+2023.08.09 16:45:45 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala
+2023.08.09 16:45:45 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala
+2023.08.09 16:45:45 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala
+2023.08.09 16:45:45 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala
+2023.08.09 16:45:45 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala
+2023.08.09 16:45:45 WARN  Using indexes to guess the definition of output
+2023.08.09 16:45:45 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala
+2023.08.09 16:45:45 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala
+2023.08.09 16:45:45 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala
+2023.08.09 16:45:45 INFO  compiling projectname (1 scala source)
+2023.08.09 16:45:45 INFO  time: compiled projectname in 0.1s
+2023.08.09 16:45:45 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala
+2023.08.09 16:45:47 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala
+2023.08.09 16:45:47 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala
+2023.08.09 16:45:47 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala
+2023.08.09 16:45:47 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala
+2023.08.09 16:45:47 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala
+2023.08.09 16:45:47 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala
+2023.08.09 16:45:47 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala
+2023.08.09 16:45:47 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala
+2023.08.09 16:45:47 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala
+2023.08.09 16:45:47 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala
+2023.08.09 16:45:48 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala
+2023.08.09 16:45:48 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala
+2023.08.09 16:45:48 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala
+2023.08.09 16:45:48 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala
+2023.08.09 16:45:48 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala
+2023.08.09 16:45:48 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala
+2023.08.09 16:45:48 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala
+2023.08.09 16:45:48 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala
+2023.08.09 16:45:48 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala
+2023.08.09 16:45:48 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala
+2023.08.09 16:45:48 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala
+2023.08.09 16:45:48 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala
+2023.08.09 16:45:48 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala
+2023.08.09 16:45:49 INFO  compiling projectname (1 scala source)
+2023.08.09 16:45:49 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\BPUPlugin.scala
+2023.08.09 16:45:49 INFO  time: compiled projectname in 0.58s
+2023.08.09 16:46:38 INFO  compiling projectname (1 scala source)
+2023.08.09 16:46:38 INFO  time: compiled projectname in 0.11s
+2023.08.09 16:46:40 INFO  compiling projectname (1 scala source)
+2023.08.09 16:46:40 INFO  time: compiled projectname in 0.11s
+八月 09, 2023 4:46:51 下午 scala.meta.internal.pc.CompilerAccess retryWithCleanCompiler
+信息: compiler crashed due to an error in the Scala compiler, retrying with new compiler instance.
+2023.08.09 16:47:22 INFO  compiling projectname (2 scala sources)
+2023.08.09 16:47:22 INFO  time: compiled projectname in 0.87s
+2023.08.09 16:47:25 INFO  Deduplicating compilation of projectname from bsp client 'Metals 1.0.0' (since 7h 29m 17.523s)
+2023.08.09 16:48:06 INFO  compiling projectname (1 scala source)
+2023.08.09 16:48:06 INFO  time: compiled projectname in 0.57s
+2023.08.09 16:48:34 INFO  compiling projectname (1 scala source)
+2023.08.09 16:48:34 INFO  time: compiled projectname in 0.47s
+2023.08.09 16:49:56 INFO  compiling projectname (1 scala source)
+2023.08.09 16:49:56 INFO  time: compiled projectname in 0.76s
+2023.08.09 16:50:03 WARN  Could not load snapshot text for D:\MyWork\ScalaProj\DandRiscvSoC\hw\spinal\dandriscv\ip\Predictor.scala
+2023.08.09 16:50:03 INFO  compiling projectname (1 scala source)
+2023.08.09 16:50:03 INFO  time: compiled projectname in 0.79s
+八月 09, 2023 4:50:17 下午 org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+警告: Unmatched cancel notification for request id 4071
+八月 09, 2023 4:50:18 下午 org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleNotification
+警告: Notification threw an exception: {
+  "jsonrpc": "2.0",
+  "method": "textDocument/didClose",
+  "params": {
+    "textDocument": {
+      "uri": "jar:file%3A///C%3A/Program%2520Files/Java/jdk-1.8/src.zip%21/java/lang/Object.java"
+    }
+  }
+}
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint.lambda$null$0(GenericEndpoint.java:67)
+	at org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint.notify(GenericEndpoint.java:152)
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.handleNotification(RemoteEndpoint.java:220)
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.consume(RemoteEndpoint.java:187)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.handleMessage(StreamMessageProducer.java:194)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.listen(StreamMessageProducer.java:94)
+	at org.eclipse.lsp4j.jsonrpc.json.ConcurrentMessageProcessor.run(ConcurrentMessageProcessor.java:113)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+Caused by: java.lang.reflect.InvocationTargetException
+	at sun.reflect.GeneratedMethodAccessor9.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint.lambda$null$0(GenericEndpoint.java:65)
+	... 11 more
+Caused by: java.lang.NoClassDefFoundError: com/sun/source/tree/Tree
+	at scala.meta.internal.pc.JavaPresentationCompiler.<init>(JavaPresentationCompiler.scala:47)
+	at scala.meta.internal.metals.Compilers.loadJavaCompilerForTarget(Compilers.scala:894)
+	at scala.meta.internal.metals.Compilers.$anonfun$loadJavaCompiler$1(Compilers.scala:865)
+	at scala.Option.flatMap(Option.scala:283)
+	at scala.meta.internal.metals.Compilers.loadJavaCompiler(Compilers.scala:865)
+	at scala.meta.internal.metals.Compilers.fromBuildTarget$1(Compilers.scala:746)
+	at scala.meta.internal.metals.Compilers.loadCompiler(Compilers.scala:754)
+	at scala.meta.internal.metals.Compilers.didClose(Compilers.scala:215)
+	at scala.meta.internal.metals.MetalsLspService.didClose(MetalsLspService.scala:1124)
+	at scala.meta.internal.metals.WorkspaceLspService.didClose(WorkspaceLspService.scala:333)
+	at scala.meta.metals.lsp.DelegatingScalaService.didClose(DelegatingScalaService.scala:53)
+	... 15 more
+Caused by: java.lang.ClassNotFoundException: com.sun.source.tree.Tree
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:387)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:418)
+	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:355)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:351)
+	... 26 more
+
+八月 09, 2023 4:50:19 下午 org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+警告: Unmatched cancel notification for request id 4083
+八月 09, 2023 4:50:19 下午 org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+警告: Unmatched cancel notification for request id 4084
+八月 09, 2023 4:50:19 下午 org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+警告: Unmatched cancel notification for request id 4085
+八月 09, 2023 4:50:19 下午 org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+警告: Unmatched cancel notification for request id 4087
+八月 09, 2023 4:50:27 下午 org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+警告: Unmatched cancel notification for request id 4114
+2023.08.09 16:50:35 INFO  compiling projectname (1 scala source)
+2023.08.09 16:50:35 INFO  time: compiled projectname in 0.7s
+2023.08.09 16:52:04 INFO  compiling projectname (1 scala source)
+2023.08.09 16:52:04 INFO  time: compiled projectname in 0.67s
+2023.08.09 16:52:27 INFO  compiling projectname (1 scala source)
+2023.08.09 16:52:27 INFO  time: compiled projectname in 0.74s
+2023.08.09 16:53:25 INFO  compiling projectname (1 scala source)
+2023.08.09 16:53:25 INFO  time: compiled projectname in 0.86s
+八月 09, 2023 5:30:10 下午 org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+信息: Unsupported notification method: $/setTrace
+八月 09, 2023 5:30:10 下午 org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+信息: Unsupported notification method: $/setTrace
+2023.08.14 13:23:10 INFO  compiling projectname (4 scala sources)
+2023.08.14 13:23:12 WARN  1 deprecation (since 2.13.3); re-run with -deprecation for details
+2023.08.14 13:23:12 INFO  time: compiled projectname in 2.33s
+2023.08.15 09:53:56 INFO  Shutting down server
+2023.08.15 09:53:56 INFO  shutting down Metals
+2023.08.15 09:53:56 INFO  Shut down connection with build server.
+2023.08.15 09:53:56 INFO  Shut down connection with build server.
+2023.08.15 09:53:56 INFO  Shut down connection with build server.
+2023.08.15 09:53:56 INFO  Exiting server

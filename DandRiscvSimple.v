@@ -1,6 +1,6 @@
 // Generator : SpinalHDL v1.8.1    git head : 2a7592004363e5b40ec43e1f122ed8641cd8965b
 // Component : DandRiscvSimple
-// Git hash  : 4b6502e7e6e495c0f02be674c17c713c0b87bc06
+// Git hash  : 27e6d85932f09a32812ef74132324902650b7f32
 
 `timescale 1ns/1ps
 
@@ -131,6 +131,8 @@ module DandRiscvSimple (
   wire       [63:0]   _zz_execute_ALUPlugin_pc_next_6;
   wire       [63:0]   _zz_execute_ALUPlugin_pc_next_7;
   wire       [63:0]   _zz_execute_ALUPlugin_pc_next_8;
+  wire       [5:0]    _zz_memaccess_LSUPlugin_lsu_rdata;
+  wire       [5:0]    _zz_memaccess_LSUPlugin_lsu_wdata;
   wire       [63:0]   writeback_RD;
   wire                memaccess_LSU_HOLD;
   wire                memaccess_TIMER_CEN;
@@ -506,6 +508,7 @@ module DandRiscvSimple (
   reg        [63:0]   memaccess_LSUPlugin_dcache_wdata;
   reg        [7:0]    memaccess_LSUPlugin_dcache_wstrb;
   wire       [63:0]   memaccess_LSUPlugin_cpu_addr;
+  wire       [2:0]    memaccess_LSUPlugin_cpu_addr_offset;
   wire                memaccess_LSUPlugin_is_mem;
   wire                memaccess_LSUPlugin_is_timer;
   wire                memaccess_LSUPlugin_lsu_ready;
@@ -808,6 +811,8 @@ module DandRiscvSimple (
   assign _zz_execute_ALUPlugin_pc_next_6 = ($signed(_zz_execute_ALUPlugin_pc_next_7) + $signed(_zz_execute_ALUPlugin_pc_next_8));
   assign _zz_execute_ALUPlugin_pc_next_7 = execute_PC;
   assign _zz_execute_ALUPlugin_pc_next_8 = execute_IMM;
+  assign _zz_memaccess_LSUPlugin_lsu_rdata = ({3'd0,memaccess_LSUPlugin_cpu_addr_offset} <<< 3);
+  assign _zz_memaccess_LSUPlugin_lsu_wdata = ({3'd0,memaccess_LSUPlugin_cpu_addr_offset} <<< 3);
   FIFO fetch_FetchPlugin_pc_stream_fifo (
     .ports_s_ports_valid   (fetch_FetchPlugin_pc_in_stream_valid                        ), //i
     .ports_s_ports_ready   (fetch_FetchPlugin_pc_stream_fifo_ports_s_ports_ready        ), //o
@@ -2548,6 +2553,7 @@ module DandRiscvSimple (
 
   assign memaccess_LSUPlugin_dcache_sw = {_zz_memaccess_LSUPlugin_dcache_sw_1,memaccess_MEM_WDATA[31 : 0]};
   assign memaccess_LSUPlugin_cpu_addr = memaccess_ALU_RESULT;
+  assign memaccess_LSUPlugin_cpu_addr_offset = memaccess_LSUPlugin_cpu_addr[2 : 0];
   assign memaccess_LSUPlugin_is_mem = (memaccess_IS_LOAD || memaccess_IS_STORE);
   assign memaccess_LSUPlugin_is_timer = ((memaccess_LSUPlugin_cpu_addr == 64'h000000000200bff8) || (memaccess_LSUPlugin_cpu_addr == 64'h0000000002004000));
   assign memaccess_LSUPlugin_lsu_ready = 1'b1;
@@ -2606,11 +2612,11 @@ module DandRiscvSimple (
   assign _zz_6 = zz__zz_memaccess_LSUPlugin_dcache_wstrb_2(1'b0);
   always @(*) _zz_memaccess_LSUPlugin_dcache_wstrb_2 = _zz_6;
   assign _zz_memaccess_LSUPlugin_dcache_wstrb_3[7 : 0] = 8'hff;
-  assign memaccess_LSUPlugin_lsu_rdata = memaccess_LSUPlugin_dcache_data_load;
-  assign memaccess_LSUPlugin_lsu_wdata = memaccess_LSUPlugin_dcache_wdata;
+  assign memaccess_LSUPlugin_lsu_rdata = (memaccess_LSUPlugin_dcache_data_load <<< _zz_memaccess_LSUPlugin_lsu_rdata);
+  assign memaccess_LSUPlugin_lsu_wdata = (memaccess_LSUPlugin_dcache_wdata <<< _zz_memaccess_LSUPlugin_lsu_wdata);
   assign memaccess_LSUPlugin_lsu_addr = memaccess_LSUPlugin_cpu_addr;
   assign memaccess_LSUPlugin_lsu_wen = memaccess_IS_STORE;
-  assign memaccess_LSUPlugin_lsu_wstrb = memaccess_LSUPlugin_dcache_wstrb;
+  assign memaccess_LSUPlugin_lsu_wstrb = (memaccess_LSUPlugin_dcache_wstrb <<< memaccess_LSUPlugin_cpu_addr_offset);
   assign DCachePlugin_dcache_access_cmd_valid = (((! memaccess_LSUPlugin_is_timer) && memaccess_LSUPlugin_is_mem) && memaccess_arbitration_isValid);
   assign DCachePlugin_dcache_access_cmd_payload_addr = memaccess_LSUPlugin_lsu_addr;
   assign DCachePlugin_dcache_access_cmd_payload_wen = memaccess_LSUPlugin_lsu_wen;

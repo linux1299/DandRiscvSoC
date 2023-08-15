@@ -54,6 +54,7 @@ with DCacheAccessService
       val dcache_wen   = input(IS_STORE)
 
       val cpu_addr  = input(ALU_RESULT).asUInt
+      val cpu_addr_offset = cpu_addr(2 downto 0)
       val is_mem    = input(IS_LOAD) || input(IS_STORE)
       val is_timer  = (cpu_addr===MTIME) || (cpu_addr===MTIMECMP)
       
@@ -125,11 +126,11 @@ with DCacheAccessService
       // val lsu_full_mask = Bits(128 bits)
       // val lsu_full_strb = Bits(16 bits)
       // lsu_offset_align_high := U(64, 7 bits) - lsu_offset_align_low
-      lsu_rdata := dcache_data_load //TODO:need add unalign access
-      lsu_wdata := dcache_wdata //TODO:need add unalign access
+      lsu_rdata := dcache_data_load |<< (cpu_addr_offset << 3)  //TODO:need add unalign access
+      lsu_wdata := dcache_wdata |<< (cpu_addr_offset << 3)//TODO:need add unalign access
       lsu_addr  := cpu_addr //TODO:need add unalign access
       lsu_wen   := dcache_wen
-      lsu_wstrb := dcache_wstrb
+      lsu_wstrb := dcache_wstrb |<< cpu_addr_offset
 
       // output mem stage
       insert(LSU_RDATA):= lsu_rdata
