@@ -63,7 +63,7 @@ end
 initial begin
 
   // fd = $fopen ("./ysyx-workbench/am-kernels/tests/alu-tests/build/alutest-riscv64-nemu.bin", "rb");
-  fd = $fopen ("../../oscpu/bin/non-output/riscv-tests/lbu-riscv-tests.bin", "rb");
+  fd = $fopen ("../../oscpu/bin/non-output/riscv-tests/jalr-riscv-tests.bin", "rb");
   tmp = $fread(ram_tmp, fd);
 
   for (i = 0; i < 1024; i = i + 1) begin

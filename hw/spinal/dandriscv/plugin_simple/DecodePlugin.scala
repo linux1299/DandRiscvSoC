@@ -183,7 +183,7 @@ class DecodePlugin() extends Plugin[DandRiscvSimple]
           alu_ctrl := AluCtrlEnum.BNE.asBits
         }
         is(BLT(false)){
-          alu_ctrl := AluCtrlEnum.BNE.asBits
+          alu_ctrl := AluCtrlEnum.BLT.asBits
         }
         is(BGE(false)){
           alu_ctrl := AluCtrlEnum.BGE.asBits

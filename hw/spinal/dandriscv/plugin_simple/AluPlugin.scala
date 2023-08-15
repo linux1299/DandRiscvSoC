@@ -91,11 +91,11 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
         }
       }
       
-      when(input(SRC2_IS_IMM)){
-        src2 := input(IMM)
-      }
-      .elsewhen(jal || jalr){
+      when(jal || jalr){
         src2 := B(4, XLEN bits)
+      }
+      .elsewhen(input(SRC2_IS_IMM)){
+        src2 := input(IMM)
       }
       .otherwise{
         when(input(RS2_FROM_MEM)){

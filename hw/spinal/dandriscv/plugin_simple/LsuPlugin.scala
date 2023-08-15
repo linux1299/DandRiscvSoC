@@ -36,7 +36,12 @@ with DCacheAccessService
     memaccess plug new Area{
       import memaccess._
 
-      val dcache_rdata = dcache_access.rsp.payload.data
+      val cpu_addr  = input(ALU_RESULT).asUInt
+      val cpu_addr_offset = cpu_addr(2 downto 0)
+      val is_mem    = input(IS_LOAD) || input(IS_STORE)
+      val is_timer  = (cpu_addr===MTIME) || (cpu_addr===MTIMECMP)
+
+      val dcache_rdata = dcache_access.rsp.payload.data |>> (cpu_addr_offset << 3)
       val dcache_lb   = B((XLEN-8-1 downto 0) -> dcache_rdata(7)) ## dcache_rdata(7 downto 0)
       val dcache_lbu  = B((XLEN-8-1 downto 0) -> False) ## dcache_rdata(7 downto 0)
       val dcache_lh   = B((XLEN-16-1 downto 0) -> dcache_rdata(15)) ## dcache_rdata(15 downto 0)
@@ -52,11 +57,6 @@ with DCacheAccessService
       val dcache_wdata = Bits(XLEN bits)
       val dcache_wstrb = Bits(XLEN/8 bits)
       val dcache_wen   = input(IS_STORE)
-
-      val cpu_addr  = input(ALU_RESULT).asUInt
-      val cpu_addr_offset = cpu_addr(2 downto 0)
-      val is_mem    = input(IS_LOAD) || input(IS_STORE)
-      val is_timer  = (cpu_addr===MTIME) || (cpu_addr===MTIMECMP)
       
       val lsu_ready = RegInit(True)
       val lsu_addr  = UInt(XLEN bits)
@@ -126,7 +126,7 @@ with DCacheAccessService
       // val lsu_full_mask = Bits(128 bits)
       // val lsu_full_strb = Bits(16 bits)
       // lsu_offset_align_high := U(64, 7 bits) - lsu_offset_align_low
-      lsu_rdata := dcache_data_load |<< (cpu_addr_offset << 3)  //TODO:need add unalign access
+      lsu_rdata := dcache_data_load  //TODO:need add unalign access
       lsu_wdata := dcache_wdata |<< (cpu_addr_offset << 3)//TODO:need add unalign access
       lsu_addr  := cpu_addr //TODO:need add unalign access
       lsu_wen   := dcache_wen
