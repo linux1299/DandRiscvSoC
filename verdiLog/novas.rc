@@ -3,6 +3,11 @@
 work = ./work
 [Annotation]
 3D_Active_Annotation = FALSE
+[Association]
+TEXT = vi
+MIF = maker
+html = netscape
+PDF = acroread
 [CommandSyntax.finsim]
 InvokeCommand = 
 FullFileName = TRUE
@@ -111,6 +116,7 @@ FSM = 1
 Branch = 1
 [DesignTree]
 IfShowModule = {TRUE, FALSE}
+IfFilterPowerAwareInstruments = FALSE
 [DisabledMessages]
 version = Verdi_O-2018.09-SP2
 [Editor]
@@ -221,15 +227,20 @@ Selection-LineWidth = 1
 Orientation = Landscape
 [FileBrowser]
 nWaveRestoreRCDirHistory = "\"/home/lin/SpinalProjects/DandRiscvSoC/simWorkspace/tb_DandRiscvSimple/DandRiscvSimple_debug_total.rc\""
-nWaveOpenFsdbDirHistory = "\"/home/lin/SpinalProjects/DandRiscvSoC/simWorkspace/tb_DandRiscvSimple/DandRiscvSimple_debug_total.rc\""
+nWaveOpenFsdbDirHistory = "\"/home/lin/SpinalProjects/DandRiscvSoC/simWorkspace/tb_DandRiscvSimple/DandRiscvSimple_debug_total.rc\"" "\"/home/lin/SpinalProjects/DandRiscvSoC/simWorkspace/tb_DandRiscvSimple/tb_DandRiscvSimple.fsdb\""
 [Form]
 version = Verdi_O-2018.09-SP2
 wave/unknownSave.fm = 200,100,520,275
 [General]
 autoSaveSession = FALSE
 TclAutoSource = 
-cmd_enter_form = FALSE
 SyncBrowserDir = TRUE
+verdiAppFont = "Bitstream Vera Sans Mono,-1,18,5,50,0,0,0,0,0", ""
+DblClick = 250
+Find_Delimiter = .
+ViewMouse13Swap = FALSE
+cmd_enter_form = FALSE
+verdiMonoFont = "Fixed 20"
 version = Verdi_O-2018.09-SP2
 SignalCaseInSensitive = FALSE
 ShowWndCtntDuringResizing = FALSE
@@ -269,17 +280,21 @@ simulation_file_type = *.fsdb;*.fsdb.gz;*.fsdb.bz2;*.ff;*.dump
 PrefetchViewableAnnot = TRUE
 import_default_language = Verilog
 import_from = source
+ProfileTime = FALSE
 [Hier]
 filterTimeout = 1500
 [ImportLiberty]
-SearchPriority = .lib++
-bSkipStateCell = False
 bImportPowerInfo = False
+CellNameToCase = 
+PinNameToCase = 
+SearchPriority = .lib++>.db>.lib
+bSkipStateCell = False
 bSkipFFCell = False
 bScpecifyCellNameCase = False
 bSpecifyPinNameCase = False
-CellNameToCase = 
-PinNameToCase = 
+[InteractiveDebug]
+tbvLocalWatchArrayLimit = 50
+tbvDataViewSuperNodeEnabled = FALSE
 [Language]
 EditWindow_Font = COURIER12
 Background = ID_WHITE
@@ -331,6 +346,7 @@ Text_font = COURIER12
 nMemory_font = Fixed 14
 Wave_getsignal_form_font = -f COURIER12
 Text_annotFont = Helvetica_M_R_10
+schematics_fixFontSize = False
 [OtherEditor]
 cmd1 = "xterm -font 9x15 -fg black -bg gray -e"
 name = "vi"
@@ -371,20 +387,25 @@ FileName = test.ps
 PaperSize = A4 - 210x297 (mm)
 ColorPrint = FALSE
 [PropertyTools]
+Dnd_Sig_To_Wave = FALSE
+Dnd_Sig_To_Wave_With_Exp_Group = TRUE
+Mask_Non_Active_Time_on_Wave = FALSE
+Show_Cycle_Info = TRUE
 saveWaveformStat = TRUE
 savePropStat = FALSE
 savePropDtl = TRUE
 [QtDialog]
 importDesignForm = 1058,577,715,574
 schExtrFSM = 1170,617,288,105
-QwWarnMsgDlg = 676,746,600,250
 restoreSigDlg = 1038,451,551,438
 ActiveFileDialog = 975,534,678,272
 SetWindowTimeUnitDialog = 1097,627,433,86
-openFileDlg = 1013,428,602,483
 QwInfoMsgDlg = 544,385,750,250
 saveSigDlg = 1678,820,551,386
-QwUserAskDlg = 1793,948,324,134
+monoFontDlg = 1657,750,366,432
+openFileDlg = 692,798,602,483
+QwWarnMsgDlg = 676,783,600,250
+QwUserAskDlg = 1781,951,349,188
 [Relationship]
 hideRecursiceNode = FALSE
 [Session Cache]
@@ -393,6 +414,11 @@ hideRecursiceNode = FALSE
 5 = string (session file name)
 1 = /home/lin/SpinalProjects/DandRiscvSoC/verdiLog/novas_autosave.ses
 2 = /home/lin/verdiLog/novas_autosave.ses
+[Signal List]
+sigListBackgroundColor = ID_GRAY6
+sigListForegroundColor = ID_BLACK
+sigListHighlightColor = ID_BLUE3
+signalNumberInOnePage = 500
 [Simulation]
 scsPath = scsim
 scsOption = 
@@ -418,13 +444,15 @@ vcs_mixPath = simv
 vcs_mixOption = -vhdlrun "-vhpi debussy:FSDBDumpCmd"
 scs_mixPath = scsim
 scs_mixOption = -vhpi debussy:FSDBDumpCmd
-interactiveDebugging = {True, False}
-KeepBreakPoints = False
-ScsDebugAll = False
-simType = {vcssv, xl, nc, vcs, mti, mti_vlog, vhnc, scs, mixnc}
-thirdpartyIdx = -1
 iscCmdSep = FALSE
-NoAppendOption = False
+thirdpartyIdx = -1
+simType = vcssv
+interactiveDebugging = FALSE
+NoAppendOption = FALSE
+ScsDebugAll = FALSE
+bSVTBMode = FALSE
+SimMode = TRUE
+KeepBreakPoints = FALSE
 [SimulationPlus]
 xlPath = verilog
 xlOption = 
@@ -448,16 +476,21 @@ vcs_mixPath = simv
 vcs_mixOption = -vhdlrun "-vhpi debussy:FSDBDumpCmd"
 scs_mixPath = scsim
 scs_mixOption = -vhpi debussy:FSDBDumpCmd
+iscCmdSep = FALSE
+interactive_fsdb_file = inter.fsdb
+simXLMode = FALSE
+invokeSimPath = work
 vcs_svPath = simv
 vcs_svOption = 
-simType = vcssv
 thirdpartyIdx = -1
+simType = vcssv
 interactiveDebugging = FALSE
-KeepBreakPoints = FALSE
-iscCmdSep = FALSE
-ScsDebugAll = FALSE
 NoAppendOption = FALSE
-invokeSimPath = work
+ScsDebugAll = FALSE
+bSVTBMode = FALSE
+SimMode = TRUE
+KeepBreakPoints = FALSE
+smartlog = FALSE
 [SimulationPlus2]
 eventDumpUnfinish = FALSE
 [Source]
@@ -568,10 +601,10 @@ hdlSynopsysComment = ID_GREEN2
 pdmlIdentifier = ID_BLACK
 pdmlCommand = ID_BLACK
 pdmlMacro = ID_BLACK
-font = COURIER12
-annotFont = Helvetica_M_R_10
+font = FIXED20
+annotFont = Helvetica_M_R_14
 [Text.1]
-viewport = 71 33 3766 1887 45
+viewport = 71 33 3766 1947 45
 [TextPrinter]
 Orientation = Landscape
 Indicator = FALSE
@@ -653,43 +686,17 @@ Button3 = "Next ? Time" "#${Arg:Next Time} $stop;.\n"
 Button2 = "Next 1000 Time" "#1000 $stop;.\n"
 Button1 = "Dump All Signals" "$fsdbDumpvars;\n"
 [VIA]
+viaLogViewerDefaultRuleInterForm = "share/VIA/Apps/PredefinedRules/UVM_OVM_i_rule.rc"
 viaLogViewerDefaultRuleOneSearchForm = "share/VIA/Apps/PredefinedRules/Misc/Onesearch_rule.rc"
+[VIA.interactiveDebug.preference]
+DefaultDisplayTimeUnit = "1.000000ns"
+DefaultLogTimeUnit = "1.000000ns"
 [VIA.oneSearch.preference]
 DefaultDisplayTimeUnit = "1.000000ns"
 DefaultLogTimeUnit = "1.000000ns"
 [VIA.oneSearch.preference.vgifColumnSettingRC]
 [VIA.oneSearch.preference.vgifColumnSettingRC.setting0]
 parRuleSets = ""
-[VIA.oneSearch.preference.vgifColumnSettingRC.setting0.column0]
-name = Type
-width = 60
-visualIndex = 3
-isHidden = FALSE
-isUserChangeColumnVisible = FALSE
-[VIA.oneSearch.preference.vgifColumnSettingRC.setting0.column1]
-name = Severity
-width = 60
-visualIndex = 1
-isHidden = TRUE
-isUserChangeColumnVisible = FALSE
-[VIA.oneSearch.preference.vgifColumnSettingRC.setting0.column2]
-name = Code
-width = 60
-visualIndex = 2
-isHidden = TRUE
-isUserChangeColumnVisible = FALSE
-[VIA.oneSearch.preference.vgifColumnSettingRC.setting0.column3]
-name = Time
-width = 60
-visualIndex = 0
-isHidden = TRUE
-isUserChangeColumnVisible = FALSE
-[VIA.oneSearch.preference.vgifColumnSettingRC.setting0.column4]
-name = Message
-width = 60
-visualIndex = 4
-isHidden = FALSE
-isUserChangeColumnVisible = FALSE
 [Vi]
 ViFont = "Clean 14"
 ViBG = white
@@ -709,7 +716,7 @@ scope_to_save_with_macro
 open_file_dir
 open_rc_file_dir
 getSignalForm = 0 0 800 479 100 30 100 30
-viewPort = 0 27 3766 896 384 282
+viewPort = 0 28 3766 1117 470 305
 signalSpacing = 5
 digitalSignalHeight = 15
 analogSignalHeight = 98
@@ -987,14 +994,14 @@ open_file_time_range = FALSE
 value_window_aligment = Right
 signal_window_alignment = Auto
 ShowDeltaTime = TRUE
-legend_window_font = -f COURIER12 -c ID_CYAN5
-value_window_font = -f COURIER12 -c ID_CYAN5
-curve_window_font = -f COURIER12 -c ID_CYAN5
-group_name_font = -f COURIER12 -c ID_GREEN5
-ruler_value_font = -f COURIER12 -c ID_CYAN5
-analog_ruler_value_font = -f COURIER12 -c ID_CYAN5
-comment_string_font = -f COURIER12 -c ID_RED5
-getsignal_form_font = -f COURIER12
+legend_window_font = -f FIXED20 -c ID_CYAN5
+value_window_font = -f FIXED20 -c ID_CYAN5
+curve_window_font = -f FIXED20 -c ID_CYAN5
+group_name_font = -f FIXED20 -c ID_GREEN5
+ruler_value_font = -f FIXED20 -c ID_CYAN5
+analog_ruler_value_font = -f FIXED20 -c ID_CYAN5
+comment_string_font = -f FIXED20 -c ID_RED5
+getsignal_form_font = -f FIXED20
 SigsCheckNum = on 1000
 filter_synthesized_net = off n
 filterOutNet = on
@@ -1137,6 +1144,10 @@ warnPopupWarnIfHvpReadOnly = true
 unmappedObjsReportLevel = def_var_inst
 unmappedObjsReportInst = true
 unmappedObjsNumOfObjs = High
+[hwswdebug]
+eclipse = NULL
+eclipse_options = NULL
+debugger_type = Eclipse
 [ikos]
 TPLanguage = VHDL
 TPName = Voyager
@@ -1165,47 +1176,49 @@ showCellBitRangeWithAddr = TRUE
 wordsShownInOneRow = 8
 syncCursorTime = FALSE
 fixCellColumnWidth = FALSE
-font = Courier 12
+font = Fixed 20
 [planColors]
 plan_fillColor_inactive = lightGray
 plan_fillColor_warning = orange
 plan_fillColor_error = red
 plan_fillColor_invalid = #F0DCDB
 plan_fillColor_subplan = lightGray
+[rctSchema]
+tsDefaultTRM = TRAN
+tsDefaultView = SSFG
+tsShowCycDetail = False
+tsFlatMDA = False
+tsClkSkewSave = True
+tsClkSkewSetting = 0
+tsMaxForLoopToUnroll = 0
+tsBBoxSave = True
+tsBBoxSetting = 
+tsBBoxEmptyModule = False
+tsBBoxIgnoreProtected = False
+tsIPSave = True
+tsIPSetting = 
+tsSymLibSetting = 
+tsSimModelSetting = 
+tsCellModelSetting = 0
+tsContBAError = FALSE
+tsMaxLeafNum = 32768
 [schematics]
-schBackgroundColor = black lineSolid
 schBackgroundColor_qt = #000000 qt_solidLine 1
-schBodyColor = orange6 lineSolid
 schBodyColor_qt = #ffb973 qt_solidLine 1
-schAsmBodyColor = blue7 lineSolid
 schAsmBodyColor_qt = #a5a5ff qt_solidLine 1
-schPortColor = orange6 lineSolid
 schPortColor_qt = #ffb973 qt_solidLine 1
-schCellNameColor = Gray6 lineSolid
 schCellNameColor_qt = #e0e0e0 qt_solidLine 1
-schCLKNetColor = red6 lineSolid
 schCLKNetColor_qt = #ff7373 qt_solidLine 1
-schPWRNetColor = red4 lineSolid
 schPWRNetColor_qt = #ff0101 qt_solidLine 1
-schGNDNetColor = cyan4 lineSolid
 schGNDNetColor_qt = #01ffff qt_solidLine 1
-schSIGNetColor = green8 lineSolid
 schSIGNetColor_qt = #cdffcd qt_solidLine 1
-schTraceColor = yellow4 lineSolid
 schTraceColor_qt = #ffff01 qt_solidLine 2
-schBackAnnotateColor = white lineSolid
 schBackAnnotateColor_qt = #ffffff qt_solidLine 1
-schValue0 = yellow4 lineSolid
 schValue0_qt = #ffff01 qt_solidLine 1
-schValue1 = green3 lineSolid
 schValue1_qt = #008000 qt_solidLine 1
-schValueX = red4 lineSolid
 schValueX_qt = #ff0101 qt_solidLine 1
-schValueZ = purple7 lineSolid
 schValueZ_qt = #ffcdff qt_solidLine 1
-dimColor = cyan2 lineSolid
 dimColor_qt = #008080 qt_solidLine 1
-schPreSelColor = green4 lineDash
 schPreSelColor_qt = #01ff01 qt_dashLine 2
 schSIGBusNetColor = green8 lineSolid
 schSIGBusNetColor_qt = #cdffcd qt_solidLine
@@ -1215,7 +1228,6 @@ schPWRBusNetColor = red4 lineSolid
 schPWRBusNetColor_qt = #ff0101 qt_solidLine
 schCLKBusNetColor = red6 lineSolid
 schCLKBusNetColor_qt = #ff7373 qt_solidLine
-schEdgeSensitiveColor = orange6 lineSolid
 schEdgeSensitiveColor_qt = #ffb973 qt_solidLine
 schAnnotColor = cyan4 lineSolid
 schAnnotColor_qt = #01ffff qt_solidLine
@@ -1229,10 +1241,202 @@ schAsmRegColor = cyan4 lineSolid
 schAsmRegColor_qt = #01ffff qt_solidLine
 schAsmTriColor = cyan4 lineSolid
 schAsmTriColor_qt = #01ffff qt_solidLine
-pre_select = True
-ShowPassThroughNet = False
 ComputedAnnotColor = ID_PURPLE5
 viewport = 0 27 1663 490
+AutoMergeSettingFile = 
+PowerMapFile = 
+GroundMapFile = 
+CopyScopeNameDelimiter = 
+RegNamingRule = 
+schBackgroundColor = ID_BLACK lineSolid 1
+schBodyColor = ID_ORANGE6 lineSolid 1
+schAsmBodyColor = ID_BLUE7 lineSolid 1
+schPortColor = ID_ORANGE6 lineSolid 1
+schCellNameColor = ID_GRAY6 lineSolid 1
+schEdgeSensitiveColor = ID_ORANGE6 lineSolid 1
+schCLKNetColor = ID_RED6 lineSolid 1
+schPWRNetColor = ID_RED5 lineSolid 1
+schGNDNetColor = ID_CYAN5 lineSolid 1
+schSIGNetColor = ID_GREEN8 lineSolid 1
+schBusNetColor = ID_GREEN8 lineSolid 2
+schGlobalSigNetColor = ID_GREEN2 lineSolid 1
+schHilightColor = ID_RED4 lineDash 2
+schTraceColor = ID_YELLOW5 lineSolid 2
+schBackAnnotateColor = ID_WHITE lineSolid 1
+schValue0 = ID_YELLOW5 lineSolid 1
+schValue1 = ID_GREEN2 lineSolid 1
+schValueX = ID_RED5 lineSolid 1
+schValueZ = ID_PURPLE7 lineSolid 1
+dimColor = ID_CYAN2 lineSolid 1
+schPreSelColor = ID_GREEN5 lineDash 2
+schTipBackColor = ID_YELLOW8 lineSolid 1
+schRubberBandColor = ID_YELLOW5 lineSolid 1
+schDenaliModule = ID_GREEN4 lineSolid 1
+schFsmBlock = ID_BLUE7 lineSolid 1
+schFFBlackBoxColor = ID_BLUE7 lineSolid 1
+schLatchBlackBoxColor = ID_BLUE7 lineSolid 1
+schMacroBlackBoxColor = ID_BLUE7 lineSolid 1
+schValuePropagationConstantNet0Color = ID_BLUE4 lineSolid 1
+schValuePropagationConstantNet1Color = ID_RED4 lineSolid 1
+schAutoMergeGroupNetColor = ID_GREEN5 lineSolid 1
+schInstPowerAnnot = ID_GREEN5 lineSolid 1
+schPdmlIsoNonCoverNetColor = ID_RED5 lineDash 1
+schPdmlLvsNonCoverNetColor = ID_GREEN5 lineDash 1
+schClockMapGroupColor = ID_GREEN5 lineSolid 1
+schClockMapLastCommonInstColor = ID_RED5 lineSolid 1
+schClockMapConvergenceInstColor = ID_YELLOW5 lineSolid 1
+schPdmlLvsNetColor = ID_GRAY4 lineSolid 1
+schHierFlattenScopeInstColor = ID_BLUE6 lineSolid 2
+schHierFlattenScopeInsidePinColor = ID_PURPLE5 lineSolid 1
+schSDCCreateClockColor = ID_RED5 lineSolid 1
+schSDCCreateGeneralClockColor = ID_GREEN5 lineSolid 1
+schSDCSetCaseAnalysis = ID_YELLOW5 lineSolid 1
+schSDCSetDisbaleTiming = ID_PURPLE5 lineSolid 1
+schSubcktCellColor = ID_GREEN5 lineSolid 1
+schCloudCellColor = ID_BLUE6 lineDashDot 2
+schPunchPortColor = ID_RED5 lineSolid 1
+schPowerPadColor = ID_RED5 lineSolid 1
+schZciSignal = ID_CYAN5 lineSolid 1
+schGridColor = ID_GRAY3 lineSolid 1
+schCtrlPointColor = ID_GREEN5 lineSolid 1
+schCtrlPointOutlineColor = ID_BLACK lineSolid 1
+schActiveWireSegColor = ID_RED5 lineSolid 2
+schLockedObjColor = ID_RED5 lineSolid 1
+schMixLvlBoundColor = ID_YELLOW5 lineDash 1
+schNameObjLinkLine = ID_RED5 lineDash 1
+schWarning = ID_RED5 lineSolid 1
+schPaperOutline = ID_WHITE lineSolid 1
+schPaperInline = ID_WHITE lineDash 1
+schBundleNetColor = ID_BLUE4 lineSolid 4
+schAbstractLink = ID_YELLOW5 lineDash 1
+schLinkLabel = ID_GREEN4 lineSolid 1
+schCmtLinking = ID_YELLOW5 lineDash 2
+schInputPortColor = ID_ORANGE6 lineSolid 1
+schOutputPortColor = ID_ORANGE6 lineSolid 1
+schInOutPortColor = ID_ORANGE6 lineSolid 1
+schInputInstPortColor = ID_ORANGE6 lineSolid 1
+schOutputInstPortColor = ID_ORANGE6 lineSolid 1
+schInOutInstPortColor = ID_ORANGE6 lineSolid 1
+schZoomByAreaColor = ID_YELLOW5 lineSolid 1
+schAreaSelectColor = ID_YELLOW5 lineSolid 1
+schCmtBgColor = ID_YELLOW4 lineSolid 1
+schCmtGraphicsColor = ID_YELLOW4 lineSolid 2
+schRevisedObjColor = ID_PURPLE5 lineSolid 2
+schBlackBoxColor = ID_YELLOW4 lineSolid 1
+schFirstSelectedColor = ID_GREEN5 lineSolid 2
+schFillBackgroundColor = ID_BLACK blank
+schFillBodyColor = ID_ORANGE6 blank
+schFillTriColor = ID_ORANGE6 blank
+schFillRegColor = ID_ORANGE6 blank
+schFillLatchColor = ID_ORANGE6 blank
+schFillAsmBodyColor = ID_BLUE7 blank
+schFillAsmTriColor = ID_BLUE7 dots
+schFillAsmRegColor = ID_BLUE7 slant_left
+schFillAsmLatchColor = ID_BLUE7 hZigZag
+schFillTipBackColor = ID_GRAY6 blank
+schFillFsmBlock = ID_BLUE7 blank
+schFillBlackBoxColor = ID_BLUE3 dots
+schFillCmtColor = ID_YELLOW4 fill_solid
+fanInOutLevel = 1
+schColorTheme = default
+schSwapDragBtn13 = False
+schEnableLMBDnd = off
+EntityName = True
+ArchName = True
+toolbar = True
+msgLine = True
+fixFontSize = False
+portName = False
+pinName = False
+pinNameOldLayout = False
+skipTopLevelNameWhenCopyHierPath = False
+instName = False
+pinNetName = False
+localNetName = False
+completeName = False
+parameterList = False
+highContrastMode = False
+annotate = False
+showPropagatedValue = False
+showConstantNet = False
+annotateInColor = False
+annotateLeadingZeros = False
+Tip = False
+ExpandRTL = False
+pre_select = True
+autoFit = False
+schemaTip = False
+modulePortName = False
+stopOnModuleBoundary = False
+stopOnFSM = True
+stopOnMOSCell = FALSE
+TraceWithPolarity = False
+shortName = True
+AutoMerge = False
+ShowPowerTip = True
+schModuleName = True
+DisplayLengthwiseTransistor = False
+FullHierTip = False
+NetConnectedToPortTip = False
+InferenceLibCell = False
+DisplayPowerCell = False
+ShowPGPin = True
+ShowSelectionToolbar = False
+ShowPreselectionToolbar = False
+HiearchyFlattenMode = False
+UpperPassThroughNets = False
+ShowAllHierPortsOnBoundary = False
+LineupRegistersVertically = False
+HighlightTracedNet = False
+fullHierPartialDis = False
+ComboGLKFromSDC = False
+ClkTreeListAllPorts = False
+ShowPassThroughNet = False
+DetailRTL = False
+DetailMux = True
+DetailLevel = 4
+RecogFSM = True
+ExpandGenBlock = True
+RecogMem = True
+sdfDelayScale = Default
+sdfDelayType = Typical
+sdfDelayPrecision = 0.01
+MagnifierSize = Medium
+MagnifierRatio = X4
+HideUnusedPin = True
+HideUnusedPinThreshold = 15
+bMaxTraceCnt = False
+MaxTraceCnt = 0
+MultiProcTrace = False
+MultiProcTimeOut = 5
+MultiProcNum = 2
+AdvanceTraceBus = FALSE
+TurnOffMouseGesture = FALSE
+QuickTrace2Point = FALSE
+ShowLocOption = TRUE
+InputPinLeft = True
+InputPinRight = True
+InputPinTop = True
+InputPinBottom = True
+OutputPinLeft = True
+OutputPinRight = True
+OutputPinTop = True
+OutputPinBottom = True
+InoutPinLeft = True
+InoutPinRight = True
+InoutPinTop = True
+InoutPinBottom = True
+PinIntervalGrids = 2
+PageView = False
+AutoCacualte = False
+PageSize = A4
+PageOrient = Landscape
+PnRAutoFlipPort = True
+PnRAutoFlipPortFourSide = False
+IsShowConstantValue = True
+clockTreeBrowser-MarkerColor = ID_YELLOW5
+clockTreeBrowser-SelectedColor = ID_BLUE5
+clockTreeBrowser-ViolationColor = ID_RED5
 [schematics_print]
 Signature = FALSE
 DesignName = PCU
@@ -1293,10 +1497,93 @@ TPOption =
 AddImportArgument = TRUE
 LineBreakWithScope = TRUE
 StopAfterCompileOption = -tcl
+[tAnalyzer]
+pageSize = 30000
+cellAlignLeft = TRUE
+cellAlignCenter = FALSE
+cellAlignRight = FALSE
+leadingZeros = FALSE
+[tRelation]
+CellAlign = left
+AlignAttByCol = FALSE
+[tSchema]
+tfgRegViewBG = ID_BLACK
+tfgStmtViewBG = ID_GRAY1
+tfgSchemaViewBG = ID_BLACK
+tfgSelectedBG = ID_RED4
+tfgFolderBG = ID_YELLOW4
+tfgNormalValue = ID_CYAN4
+tfgSetDirtyValue = ID_RED5
+tfgSetCleanValue = ID_ORANGE5
+tfgChangedValue = ID_YELLOW5
+tfgActiveBG = ID_RED5
+tfgDefaultBG = ID_GRAY4
+tfgWinWaveWavefkrm = ID_GREEN4
+tfgNWaveHLOutput = ID_YELLOW5
+tfgNwaveHLActive = ID_YELLOW5
+tfgNwaveHLNonActive = ID_GRAY3
+tfgValueComputed = ID_GREEN5
+tfgValueNonComputed = ID_CYAN4
+tfgValue0 = ID_YELLOW5
+tfgValue1 = ID_ORANGE5
+tfgValueX = ID_PURPLE7
+tfgValueZ = ID_ORANGE8
+tsDefaultSize = 0
+[tbvBreakpointDialog]
+alwaysOnTop = FALSE
+[tbvCovergroupDebug]
+showMismatchBin = TRUE
+tbvSkipExpandThreadInObj = TRUE
+tbvSkipExpandSubTreeInObjFilter = FALSE
+tbvSkipExpandSubTreeInObjSearch = FALSE
+[tbvDynDumpingOptions]
+dynamicDumpMDA = TRUE
+dynamicDumpStruct = TRUE
+dynamicDumpSystemCStruct = TRUE
+dynamicDumpSystemCPlain = TRUE
+dynamicDumpSystemCFIFO = TRUE
+[tbvObjectRefDialog]
+alwaysOnTop = FALSE
+[tbvRestart]
+reissueBP = TRUE
+reissueForce = TRUE
+reissueDump = TRUE
+[tbvReverseDebug]
+autoAddCheckpointsInUVMPhase = FALSE
+stopCheckpoints = 0
+reverseDebug = FALSE
+genCheckpoints = 0
+useHybrid = TRUE
 [turboSchema_Printer_Options]
 Orientation = Landscape
 [turbo_library]
 bdb_load_scope = 
+[uvmFactory]
+FactQfOn = TRUE
+FactOICOn = TRUE
+FactTbOff = TRUE
+FactOverrideAlignment = left
+[uvmPhase]
+PhaseObjLimit = 5000
+PhaseTbOff = FALSE
+PhaseObjectAlignment = left
+[uvmRegister]
+RegTreeDepth = 0
+RegShowInHier = TRUE
+RegShowDeclName = FALSE
+RegShowNavTxtFields = FALSE
+RegTbOff = FALSE
+[uvmResource]
+RsrcAHOn = TRUE
+RsrcQfOn = TRUE
+RsrcTbOff = TRUE
+RsrcScopeAlignment = left
+[uvmSequence]
+SeqTreeDepth = 1
+SeqQFTimeRange = FALSE
+SeqQfOn = TRUE
+SeqTbOff = TRUE
+SeqSequenceAlignment = left
 [vdCovFilteringSearchesStrings]
 keepLastUsedFiltersMaxNum = 10
 [verisity]
@@ -1308,7 +1595,7 @@ AddImportArgument = FALSE
 LineBreakWithScope = TRUE
 StopAfterCompileOption = -s
 [wave.0]
-viewPort = 0 27 3766 896 384 282
+viewPort = 0 28 3766 1117 470 305
 [wave.1]
 viewPort = 127 219 960 332 100 65
 [wave.2]

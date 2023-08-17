@@ -235,15 +235,15 @@ wave/unknownSave.fm = 200,100,520,275
 autoSaveSession = FALSE
 TclAutoSource = 
 SyncBrowserDir = TRUE
-version = Verdi_O-2018.09-SP2
 verdiAppFont = "Bitstream Vera Sans Mono,-1,18,5,50,0,0,0,0,0", ""
-verdiMonoFont = "Fixed 20"
-SignalCaseInSensitive = FALSE
-ShowWndCtntDuringResizing = FALSE
 DblClick = 250
 Find_Delimiter = .
 ViewMouse13Swap = FALSE
 cmd_enter_form = FALSE
+verdiMonoFont = "Fixed 20"
+version = Verdi_O-2018.09-SP2
+SignalCaseInSensitive = FALSE
+ShowWndCtntDuringResizing = FALSE
 [GlobalProp]
 ErrWindow_Font = Helvetica_M_R_12
 [Globals]
@@ -346,6 +346,7 @@ Text_font = COURIER12
 nMemory_font = Fixed 14
 Wave_getsignal_form_font = -f COURIER12
 Text_annotFont = Helvetica_M_R_10
+schematics_fixFontSize = False
 [OtherEditor]
 cmd1 = "xterm -font 9x15 -fg black -bg gray -e"
 name = "vi"
@@ -386,25 +387,25 @@ FileName = test.ps
 PaperSize = A4 - 210x297 (mm)
 ColorPrint = FALSE
 [PropertyTools]
-saveWaveformStat = TRUE
-savePropStat = FALSE
-savePropDtl = TRUE
 Dnd_Sig_To_Wave = FALSE
 Dnd_Sig_To_Wave_With_Exp_Group = TRUE
 Mask_Non_Active_Time_on_Wave = FALSE
 Show_Cycle_Info = TRUE
+saveWaveformStat = TRUE
+savePropStat = FALSE
+savePropDtl = TRUE
 [QtDialog]
 importDesignForm = 1058,577,715,574
 schExtrFSM = 1170,617,288,105
-QwWarnMsgDlg = 676,746,600,250
 restoreSigDlg = 1038,451,551,438
 ActiveFileDialog = 975,534,678,272
 SetWindowTimeUnitDialog = 1097,627,433,86
 QwInfoMsgDlg = 544,385,750,250
 saveSigDlg = 1678,820,551,386
-QwUserAskDlg = 1793,948,324,134
-openFileDlg = 1653,772,602,483
 monoFontDlg = 1657,750,366,432
+openFileDlg = 692,798,602,483
+QwWarnMsgDlg = 676,783,600,250
+QwUserAskDlg = 1781,951,349,188
 [Relationship]
 hideRecursiceNode = FALSE
 [Session Cache]
@@ -480,7 +481,7 @@ interactive_fsdb_file = inter.fsdb
 simXLMode = FALSE
 invokeSimPath = work
 vcs_svPath = simv
-vcs_svOption =  
+vcs_svOption = 
 thirdpartyIdx = -1
 simType = vcssv
 interactiveDebugging = FALSE
@@ -603,7 +604,7 @@ pdmlMacro = ID_BLACK
 font = FIXED20
 annotFont = Helvetica_M_R_14
 [Text.1]
-viewport = 71 33 3766 1887 45
+viewport = 71 33 3766 1947 45
 [TextPrinter]
 Orientation = Landscape
 Indicator = FALSE
@@ -685,8 +686,8 @@ Button3 = "Next ? Time" "#${Arg:Next Time} $stop;.\n"
 Button2 = "Next 1000 Time" "#1000 $stop;.\n"
 Button1 = "Dump All Signals" "$fsdbDumpvars;\n"
 [VIA]
-viaLogViewerDefaultRuleOneSearchForm = "share/VIA/Apps/PredefinedRules/Misc/Onesearch_rule.rc"
 viaLogViewerDefaultRuleInterForm = "share/VIA/Apps/PredefinedRules/UVM_OVM_i_rule.rc"
+viaLogViewerDefaultRuleOneSearchForm = "share/VIA/Apps/PredefinedRules/Misc/Onesearch_rule.rc"
 [VIA.interactiveDebug.preference]
 DefaultDisplayTimeUnit = "1.000000ns"
 DefaultLogTimeUnit = "1.000000ns"
@@ -696,36 +697,6 @@ DefaultLogTimeUnit = "1.000000ns"
 [VIA.oneSearch.preference.vgifColumnSettingRC]
 [VIA.oneSearch.preference.vgifColumnSettingRC.setting0]
 parRuleSets = ""
-[VIA.oneSearch.preference.vgifColumnSettingRC.setting0.column0]
-name = Type
-width = 60
-visualIndex = 3
-isHidden = FALSE
-isUserChangeColumnVisible = FALSE
-[VIA.oneSearch.preference.vgifColumnSettingRC.setting0.column1]
-name = Severity
-width = 60
-visualIndex = 1
-isHidden = TRUE
-isUserChangeColumnVisible = FALSE
-[VIA.oneSearch.preference.vgifColumnSettingRC.setting0.column2]
-name = Code
-width = 60
-visualIndex = 2
-isHidden = TRUE
-isUserChangeColumnVisible = FALSE
-[VIA.oneSearch.preference.vgifColumnSettingRC.setting0.column3]
-name = Time
-width = 60
-visualIndex = 0
-isHidden = TRUE
-isUserChangeColumnVisible = FALSE
-[VIA.oneSearch.preference.vgifColumnSettingRC.setting0.column4]
-name = Message
-width = 60
-visualIndex = 4
-isHidden = FALSE
-isUserChangeColumnVisible = FALSE
 [Vi]
 ViFont = "Clean 14"
 ViBG = white
@@ -745,7 +716,7 @@ scope_to_save_with_macro
 open_file_dir
 open_rc_file_dir
 getSignalForm = 0 0 800 479 100 30 100 30
-viewPort = 0 28 3766 915 605 282
+viewPort = 0 28 3766 1117 470 305
 signalSpacing = 5
 digitalSignalHeight = 15
 analogSignalHeight = 98
@@ -1116,7 +1087,7 @@ OutputPinStatus = 2
 RevisedComponentColor = ID_BLUE5
 SpareCellColor = ID_RED5
 UserName = lin
-CommentFormat = Novas ECO updated by ${UserName} ${Date} ${Time}
+CommentFormat = Novas ECO updated by ${UserName} ${Date} ${Time} 
 PrefixN = eco_n
 PrefixP = eco_p
 PrefixI = eco_i
@@ -1205,7 +1176,7 @@ showCellBitRangeWithAddr = TRUE
 wordsShownInOneRow = 8
 syncCursorTime = FALSE
 fixCellColumnWidth = FALSE
-font = Courier 12
+font = Fixed 20
 [planColors]
 plan_fillColor_inactive = lightGray
 plan_fillColor_warning = orange
@@ -1221,13 +1192,13 @@ tsClkSkewSave = True
 tsClkSkewSetting = 0
 tsMaxForLoopToUnroll = 0
 tsBBoxSave = True
-tsBBoxSetting =  
+tsBBoxSetting = 
 tsBBoxEmptyModule = False
 tsBBoxIgnoreProtected = False
 tsIPSave = True
-tsIPSetting =  
-tsSymLibSetting =  
-tsSimModelSetting =  
+tsIPSetting = 
+tsSymLibSetting = 
+tsSimModelSetting = 
 tsCellModelSetting = 0
 tsContBAError = FALSE
 tsMaxLeafNum = 32768
@@ -1624,7 +1595,7 @@ AddImportArgument = FALSE
 LineBreakWithScope = TRUE
 StopAfterCompileOption = -s
 [wave.0]
-viewPort = 0 27 3766 896 384 282
+viewPort = 0 28 3766 1117 470 305
 [wave.1]
 viewPort = 127 219 960 332 100 65
 [wave.2]

@@ -4,6 +4,7 @@ module tb_DandRiscvSmallest();
 
 
 parameter DataWidth = 64;
+parameter size = 17;
 
 logic          clk_axi_in;
 logic          rst_n;
@@ -23,9 +24,9 @@ logic [2:0]    dcache_cmd_payload_size;
 logic          dcache_rsp_valid;
 logic [63:0]   dcache_rsp_payload_data;
 
-reg [DataWidth-1:0] ram_i   [0:1023];
-reg [DataWidth-1:0] ram_d   [0:1023];
-reg [7:0] ram_tmp [0:1024*DataWidth/8-1];
+reg [DataWidth-1:0] ram_i   [0:(1<<size)-1];
+reg [DataWidth-1:0] ram_d   [0:(1<<size)-1];
+reg [7:0] ram_tmp [0:(1<<size)*DataWidth/8-1];
 integer fd;
 integer tmp;
 integer i;
@@ -47,7 +48,7 @@ end
 
 // ========================== Time out =============================
 initial begin
-  #20000
+  #200000
   $display("\n============== TimeOut ! Simulation finish ! ============\n");
   $finish;
 end
@@ -63,10 +64,10 @@ end
 initial begin
 
   // fd = $fopen ("./ysyx-workbench/am-kernels/tests/alu-tests/build/alutest-riscv64-nemu.bin", "rb");
-  fd = $fopen ("../../oscpu/bin/non-output/riscv-tests/jalr-riscv-tests.bin", "rb");
+  fd = $fopen ("../../oscpu/bin/custom-output/yield-test/amtest-yield-test.bin", "rb");
   tmp = $fread(ram_tmp, fd);
 
-  for (i = 0; i < 1024; i = i + 1) begin
+  for (i = 0; i < (1<<size); i = i + 1) begin
     for (j = 0; j < DataWidth/8; j = j + 1) begin
       ram_i[i][j*8 +: 8] = ram_tmp[i*(DataWidth/8) + j][7:0];
       ram_d[i][j*8 +: 8] = ram_tmp[i*(DataWidth/8) + j][7:0];
@@ -78,7 +79,7 @@ end
 always@(posedge clk_axi_in) begin
   if(icache_cmd_valid) begin
     icache_rsp_valid <= 1'b1;
-    icache_rsp_payload_data <= ram_i[icache_cmd_payload_addr[12:3]][icache_cmd_payload_addr[2]*32+:32];
+    icache_rsp_payload_data <= ram_i[icache_cmd_payload_addr[size+2:3]][icache_cmd_payload_addr[2]*32+:32];
   end
   else begin
     icache_rsp_valid <= 1'b0;
@@ -86,7 +87,7 @@ always@(posedge clk_axi_in) begin
 
   // if(dcache_cmd_valid) begin
   //   dcache_rsp_valid <= 1'b1;
-  //   dcache_rsp_payload_data <= ram_d[dcache_cmd_payload_addr[12:3]];
+  //   dcache_rsp_payload_data <= ram_d[dcache_cmd_payload_addr[size+2:3]];
   // end
   // else begin
   //   dcache_rsp_valid <= 1'b0;
@@ -96,7 +97,7 @@ end
 always@(*) begin
   if(dcache_cmd_valid) begin
     dcache_rsp_valid = 1'b1;
-    dcache_rsp_payload_data = ram_d[dcache_cmd_payload_addr[12:3]];
+    dcache_rsp_payload_data = ram_d[dcache_cmd_payload_addr[size+2:3]];
   end
   else begin
     dcache_rsp_valid = 1'b0;
@@ -111,7 +112,7 @@ for(k=0; k<DataWidth/8; k=k+1) begin: assign_mask
 end
 always @(posedge clk_axi_in) begin
   if (dcache_cmd_valid && dcache_cmd_payload_wen) begin
-    ram_d[dcache_cmd_payload_addr[12:3]] <= (dcache_cmd_payload_wdata & mask) | (ram_d[dcache_cmd_payload_addr[12:3]] & ~mask);
+    ram_d[dcache_cmd_payload_addr[size+2:3]] <= (dcache_cmd_payload_wdata & mask) | (ram_d[dcache_cmd_payload_addr[size+2:3]] & ~mask);
   end
 end
 
@@ -135,5 +136,10 @@ DandRiscvSimple u_DandRiscvSimple(
 );
 
 
+logic [31:0] instrCnt = 0;
+always@(posedge clk_axi_in) begin
+  if(u_DandRiscvSimple.writeback_arbitration_isValid)
+    instrCnt <= instrCnt+1;
+end
 
 endmodule
