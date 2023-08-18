@@ -63,8 +63,8 @@ end
 // ==================== initial program in ram =======================
 initial begin
 
-  // fd = $fopen ("./ysyx-workbench/am-kernels/tests/alu-tests/build/alutest-riscv64-nemu.bin", "rb");
-  fd = $fopen ("../../oscpu/bin/custom-output/yield-test/amtest-yield-test.bin", "rb");
+  // fd = $fopen ("../../oscpu/bin/custom-output/yield-test/amtest-yield-test.bin", "rb");
+  fd = $fopen ("../../oscpu/bin/non-output/cpu-tests/bubble-sort-cpu-tests.bin", "rb");
   tmp = $fread(ram_tmp, fd);
 
   for (i = 0; i < (1<<size); i = i + 1) begin

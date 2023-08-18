@@ -1,6 +1,6 @@
 // Generator : SpinalHDL v1.8.1    git head : 2a7592004363e5b40ec43e1f122ed8641cd8965b
 // Component : DandRiscvSimple
-// Git hash  : 470f6a8598e62c1117e876f379762e391240929a
+// Git hash  : 21db6593957213c9846f160e87f63edae4a25b3a
 
 `timescale 1ns/1ps
 
@@ -65,7 +65,6 @@ module DandRiscvSimple (
   localparam MemCtrlEnum_SW = 4'd10;
   localparam MemCtrlEnum_SD = 4'd11;
 
-  wire                fetch_FetchPlugin_instruction_stream_fifo_flush;
   wire                regFileModule_1_write_ports_rd_wen;
   wire                clint_1_ecall;
   wire                clint_1_ebreak;
@@ -364,10 +363,12 @@ module DandRiscvSimple (
   wire                when_FetchPlugin_l96;
   wire                when_FetchPlugin_l109;
   wire                when_FetchPlugin_l126;
-  wire                when_FetchPlugin_l141;
+  wire                when_FetchPlugin_l129;
+  wire                when_FetchPlugin_l136;
   wire                ICachePlugin_icache_access_cmd_fire_1;
   wire                ICachePlugin_icache_access_cmd_fire_2;
   wire                ICachePlugin_icache_access_cmd_fire_3;
+  wire                ICachePlugin_icache_access_cmd_fire_4;
   reg        [63:0]   decode_DecodePlugin_imm;
   wire       [63:0]   decode_DecodePlugin_rs1;
   wire       [63:0]   decode_DecodePlugin_rs2;
@@ -847,7 +848,7 @@ module DandRiscvSimple (
     .ports_m_ports_valid   (fetch_FetchPlugin_instruction_stream_fifo_ports_m_ports_valid        ), //o
     .ports_m_ports_ready   (fetch_FetchPlugin_instruction_out_stream_ready                       ), //i
     .ports_m_ports_payload (fetch_FetchPlugin_instruction_stream_fifo_ports_m_ports_payload[31:0]), //o
-    .flush                 (fetch_FetchPlugin_instruction_stream_fifo_flush                      ), //i
+    .flush                 (fetch_FetchPlugin_fetch_flush                                        ), //i
     .clk                   (clk                                                                  ), //i
     .reset                 (reset                                                                )  //i
   );
@@ -989,7 +990,7 @@ module DandRiscvSimple (
   assign fetch_INT_PC = clint_1_int_pc;
   assign fetch_INT_EN = clint_1_int_en;
   assign decode_PREDICT_TAKEN = fetch_to_decode_PREDICT_TAKEN;
-  assign fetch_PREDICT_VALID = ICachePlugin_icache_access_cmd_fire_3;
+  assign fetch_PREDICT_VALID = ICachePlugin_icache_access_cmd_fire_4;
   assign memaccess_INSTRUCTION = execute_to_memaccess_INSTRUCTION;
   assign execute_INSTRUCTION = decode_to_execute_INSTRUCTION;
   assign fetch_INSTRUCTION = fetch_FetchPlugin_instruction_out_stream_payload;
@@ -1147,16 +1148,18 @@ module DandRiscvSimple (
   assign when_FetchPlugin_l96 = (! fetch_arbitration_isStuck);
   assign when_FetchPlugin_l109 = ((fetch_state == BUSY) || (fetch_state_next == BUSY));
   assign when_FetchPlugin_l126 = (fetch_state_next == FETCH);
-  assign when_FetchPlugin_l141 = (fetch_state_next == BUSY);
+  assign when_FetchPlugin_l129 = (fetch_state_next == BUSY);
+  assign when_FetchPlugin_l136 = ((fetch_state == FETCH) || (fetch_state == HALT));
   assign ICachePlugin_icache_access_cmd_fire_1 = (ICachePlugin_icache_access_cmd_valid && ICachePlugin_icache_access_cmd_ready);
-  assign fetch_FetchPlugin_pc_in_stream_valid = ICachePlugin_icache_access_cmd_fire_1;
+  assign ICachePlugin_icache_access_cmd_fire_2 = (ICachePlugin_icache_access_cmd_valid && ICachePlugin_icache_access_cmd_ready);
+  assign fetch_FetchPlugin_pc_in_stream_valid = ICachePlugin_icache_access_cmd_fire_2;
   assign fetch_FetchPlugin_pc_in_stream_payload = pc_next;
   assign fetch_FetchPlugin_pc_out_stream_ready = fetch_arbitration_isFiring;
   assign fetch_FetchPlugin_pc_in_stream_ready = fetch_FetchPlugin_pc_stream_fifo_ports_s_ports_ready;
   assign fetch_FetchPlugin_pc_out_stream_valid = fetch_FetchPlugin_pc_stream_fifo_ports_m_ports_valid;
   assign fetch_FetchPlugin_pc_out_stream_payload = fetch_FetchPlugin_pc_stream_fifo_ports_m_ports_payload;
-  assign ICachePlugin_icache_access_cmd_fire_2 = (ICachePlugin_icache_access_cmd_valid && ICachePlugin_icache_access_cmd_ready);
-  assign fetch_FetchPlugin_predict_taken_in_valid = ICachePlugin_icache_access_cmd_fire_2;
+  assign ICachePlugin_icache_access_cmd_fire_3 = (ICachePlugin_icache_access_cmd_valid && ICachePlugin_icache_access_cmd_ready);
+  assign fetch_FetchPlugin_predict_taken_in_valid = ICachePlugin_icache_access_cmd_fire_3;
   assign fetch_FetchPlugin_predict_taken_in_payload = fetch_PREDICT_TAKEN;
   assign fetch_FetchPlugin_predict_taken_out_ready = fetch_arbitration_isFiring;
   assign fetch_FetchPlugin_predict_taken_in_ready = fetch_FetchPlugin_predict_taken_fifo_ports_s_ports_ready;
@@ -1168,8 +1171,7 @@ module DandRiscvSimple (
   assign fetch_FetchPlugin_instruction_in_stream_ready = fetch_FetchPlugin_instruction_stream_fifo_ports_s_ports_ready;
   assign fetch_FetchPlugin_instruction_out_stream_valid = fetch_FetchPlugin_instruction_stream_fifo_ports_m_ports_valid;
   assign fetch_FetchPlugin_instruction_out_stream_payload = fetch_FetchPlugin_instruction_stream_fifo_ports_m_ports_payload;
-  assign fetch_FetchPlugin_instruction_stream_fifo_flush = (fetch_FetchPlugin_fetch_flush || fetch_FetchPlugin_fetch_flush_d1);
-  assign ICachePlugin_icache_access_cmd_fire_3 = (ICachePlugin_icache_access_cmd_valid && ICachePlugin_icache_access_cmd_ready);
+  assign ICachePlugin_icache_access_cmd_fire_4 = (ICachePlugin_icache_access_cmd_valid && ICachePlugin_icache_access_cmd_ready);
   assign fetch_arbitration_isValid = ((fetch_FetchPlugin_fifo_all_valid && (! fetch_arbitration_isStuck)) && (! fetch_FetchPlugin_fetch_flush));
   assign ICachePlugin_icache_access_cmd_valid = (fetch_valid && (! fetch_FetchPlugin_fetch_flush));
   assign ICachePlugin_icache_access_cmd_payload_addr = pc_next;
@@ -2742,6 +2744,14 @@ module DandRiscvSimple (
       end
       if(when_FetchPlugin_l126) begin
         fetch_valid <= 1'b1;
+      end else begin
+        if(when_FetchPlugin_l129) begin
+          fetch_valid <= 1'b1;
+        end else begin
+          fetch_valid <= 1'b0;
+        end
+      end
+      if(when_FetchPlugin_l136) begin
         if(pc_next_d1_valid) begin
           pc_next <= pc_next_d1;
         end else begin
@@ -2753,16 +2763,13 @@ module DandRiscvSimple (
             end else begin
               if(fetch_BPU_BRANCH_TAKEN) begin
                 pc_next <= fetch_BPU_PC_NEXT;
+              end else begin
+                if(ICachePlugin_icache_access_cmd_fire_1) begin
+                  pc_next <= (pc_next + 64'h0000000000000004);
+                end
               end
             end
           end
-        end
-      end else begin
-        if(when_FetchPlugin_l141) begin
-          fetch_valid <= 1'b1;
-          pc_next <= pc_next;
-        end else begin
-          fetch_valid <= 1'b0;
         end
       end
       if(fetch_FetchPlugin_fetch_flush) begin

@@ -125,6 +125,15 @@ with ICacheAccessService
         // use pc_next to fetch instrution
         when(fetch_state_next===FETCH){
           fetch_valid := True
+        }
+        .elsewhen(fetch_state_next===BUSY){
+          fetch_valid := True
+        }
+        .otherwise{
+          fetch_valid := False
+        }
+
+        when(fetch_state===FETCH || fetch_state===HALT){
           when(pc_next_d1_valid){
             pc_next := pc_next_d1
           }
@@ -137,14 +146,11 @@ with ICacheAccessService
           .elsewhen(input(BPU_BRANCH_TAKEN)) {
             pc_next := input(BPU_PC_NEXT)
           }
+          .elsewhen(icache_access.cmd.fire){
+            pc_next := pc_next + 4
+          }
         }
-        .elsewhen(fetch_state_next===BUSY){
-          fetch_valid := True
-          pc_next := pc_next
-        }
-        .otherwise{
-          fetch_valid := False
-        }
+
       }
 
       // rsp is delayed 1 or more cycle, fetch_flush is also needed to delay
@@ -174,7 +180,7 @@ with ICacheAccessService
       instruction_out_stream.ready  := arbitration.isFiring
       instruction_in_stream <> instruction_stream_fifo.ports.s_ports
       instruction_out_stream <> instruction_stream_fifo.ports.m_ports
-      instruction_stream_fifo.flush := fetch_flush || fetch_flush_d1
+      instruction_stream_fifo.flush := fetch_flush
 
       // insert to stage
       insert(PC) := pc_out_stream.payload

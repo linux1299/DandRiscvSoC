@@ -47,4 +47,4 @@ ver2:
 
 
 push:
-	git push https://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@github.com/linux1299/DandRiscvSoC.git main
+	git push https://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@github.com/linux1299/DandRiscvSoC.git main

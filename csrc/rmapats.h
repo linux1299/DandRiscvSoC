@@ -2470,11 +2470,16 @@ void  hs_0_M_23_21__tb_DandRiscvSmallest_simv_daidir (UB  * pcode, scalar  val);
 void  hs_0_M_23_0__tb_DandRiscvSmallest_simv_daidir (UB  * pcode, scalar  val);
 void  hs_0_M_23_1__tb_DandRiscvSmallest_simv_daidir (UB  * pcode, scalar  val, U  I677, scalar  * I1303, U  did);
 void  hs_0_M_23_2__tb_DandRiscvSmallest_simv_daidir (UB  * pcode);
+void  hs_0_M_23_5__tb_DandRiscvSmallest_simv_daidir (UB  * pcode, UB  val);
+void  hs_0_M_24_21__tb_DandRiscvSmallest_simv_daidir (UB  * pcode, scalar  val);
 void  hs_0_M_24_0__tb_DandRiscvSmallest_simv_daidir (UB  * pcode, scalar  val);
-void  hs_0_M_25_21__tb_DandRiscvSmallest_simv_daidir (UB  * pcode, scalar  val);
+void  hs_0_M_24_1__tb_DandRiscvSmallest_simv_daidir (UB  * pcode, scalar  val, U  I677, scalar  * I1303, U  did);
+void  hs_0_M_24_2__tb_DandRiscvSmallest_simv_daidir (UB  * pcode);
 void  hs_0_M_25_0__tb_DandRiscvSmallest_simv_daidir (UB  * pcode, scalar  val);
-void  hs_0_M_25_1__tb_DandRiscvSmallest_simv_daidir (UB  * pcode, scalar  val, U  I677, scalar  * I1303, U  did);
-void  hs_0_M_25_2__tb_DandRiscvSmallest_simv_daidir (UB  * pcode);
+void  hs_0_M_26_21__tb_DandRiscvSmallest_simv_daidir (UB  * pcode, scalar  val);
+void  hs_0_M_26_0__tb_DandRiscvSmallest_simv_daidir (UB  * pcode, scalar  val);
+void  hs_0_M_26_1__tb_DandRiscvSmallest_simv_daidir (UB  * pcode, scalar  val, U  I677, scalar  * I1303, U  did);
+void  hs_0_M_26_2__tb_DandRiscvSmallest_simv_daidir (UB  * pcode);
 void  hsG_0__0 (struct dummyq_struct * I1289, EBLK  * I1283, U  I685);
 #ifdef __cplusplus
 }
