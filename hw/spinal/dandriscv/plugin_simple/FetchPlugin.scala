@@ -8,6 +8,7 @@ import dandriscv._
 import dandriscv.ip._
 import dandriscv.plugin._
 import dandriscv.plugin_simple._
+import scala.tools.reflect.FastTrack
 
 
 class FetchPlugin(resetVector : BigInt = 0x80000000l, addressWidth : Int = 64) //
@@ -36,9 +37,10 @@ with ICacheAccessService
 
       val pc_next = Reg(UInt(pipeline.config.addressWidth bits)).setName("pc_next") init(resetVector)
       val fetch_valid = RegInit(False).setName("fetch_valid")
-      val int_pc_reg = Reg(UInt(pipeline.config.addressWidth bits)).setName("int_pc_reg") init(0)
-      val int_en_reg = RegInit(False).setName("int_en_reg")
-      val fetch_flush = (output(INT_EN) || int_en_reg || arbitration.flushIt)
+      val pc_next_d1 = Reg(UInt(pipeline.config.addressWidth bits)).setName("pc_next_d1") init(0)
+      val pc_next_d1_valid = RegInit(False).setName("pc_next_d1_valid")
+      val fetch_flush = (output(INT_EN) || pc_next_d1_valid || arbitration.flushIt)
+      val fetch_flush_d1 = RegInit(False)
       
       val pc_in_stream =  Stream(UInt(pipeline.config.addressWidth bits))
       val pc_out_stream = Stream(UInt(pipeline.config.addressWidth bits))
@@ -103,40 +105,53 @@ with ICacheAccessService
           }
         }
 
-        // when icache is busy, interrupt is high, use reg store interrupt's pc
-        when(output(INT_EN) & (fetch_state===BUSY || fetch_state_next===BUSY)){
-          int_en_reg := True
-          int_pc_reg := output(INT_PC)
+        // when icache is busy, interrupt or redirect is high, use reg store these pc
+        when(fetch_state===BUSY || fetch_state_next===BUSY){
+          pc_next_d1_valid := True
+          when(output(INT_EN)){
+            pc_next_d1 := output(INT_PC)
+          }
+          .elsewhen(execute.output(REDIRECT_VALID)){
+            pc_next_d1 := execute.output(REDIRECT_PC_NEXT)
+          }
+          .elsewhen(input(BPU_BRANCH_TAKEN)){
+            pc_next_d1 := input(BPU_PC_NEXT)
+          }
         }
         .elsewhen(icache_access.rsp.fire){
-          int_en_reg := False
+          pc_next_d1_valid := False
         }
 
-        // pc_next used to fetch instruction
-        when(output(INT_EN)) {
-          pc_next := output(INT_PC)
-        }
-        .elsewhen(execute.output(REDIRECT_VALID)){
-          pc_next := execute.output(REDIRECT_PC_NEXT)
-        }
-        .elsewhen(input(BPU_BRANCH_TAKEN)) {
-          pc_next := input(BPU_PC_NEXT)
-        }
-        .elsewhen(icache_access.cmd.fire) {
-          when(int_en_reg){
-            pc_next := int_pc_reg
-          }
-          .otherwise{
-            pc_next := pc_next + 4
-          }
-        }
-
-        when(fetch_state_next===FETCH || fetch_state_next===BUSY){
+        // use pc_next to fetch instrution
+        when(fetch_state_next===FETCH){
           fetch_valid := True
+          when(pc_next_d1_valid){
+            pc_next := pc_next_d1
+          }
+          .elsewhen(output(INT_EN)) {
+            pc_next := output(INT_PC)
+          }
+          .elsewhen(execute.output(REDIRECT_VALID)){
+            pc_next := execute.output(REDIRECT_PC_NEXT)
+          }
+          .elsewhen(input(BPU_BRANCH_TAKEN)) {
+            pc_next := input(BPU_PC_NEXT)
+          }
+        }
+        .elsewhen(fetch_state_next===BUSY){
+          fetch_valid := True
+          pc_next := pc_next
         }
         .otherwise{
           fetch_valid := False
         }
+      }
+
+      // rsp is delayed 1 or more cycle, fetch_flush is also needed to delay
+      when(fetch_flush){
+        fetch_flush_d1 := True
+      }.elsewhen(icache_access.rsp.valid){
+        fetch_flush_d1 := False
       }
 
       // output pc and instruction from FIFO or icache
@@ -154,12 +169,12 @@ with ICacheAccessService
       predict_taken_out <> predict_taken_fifo.ports.m_ports
       predict_taken_fifo.flush := fetch_flush
 
-      instruction_in_stream.valid   := icache_access.rsp.valid
+      instruction_in_stream.valid   := icache_access.rsp.valid && !pc_next_d1_valid
       instruction_in_stream.payload := icache_access.rsp.payload.data
       instruction_out_stream.ready  := arbitration.isFiring
       instruction_in_stream <> instruction_stream_fifo.ports.s_ports
       instruction_out_stream <> instruction_stream_fifo.ports.m_ports
-      instruction_stream_fifo.flush := fetch_flush
+      instruction_stream_fifo.flush := fetch_flush || fetch_flush_d1
 
       // insert to stage
       insert(PC) := pc_out_stream.payload

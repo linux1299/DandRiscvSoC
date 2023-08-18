@@ -154,6 +154,7 @@ case class Clint(MXLEN : Int = 64, addressWidth : Int = 64) extends Component{
   val pc = in UInt(addressWidth bits)
   val pc_next = in UInt(addressWidth bits)
   val pc_next_valid = in Bool()
+  val instruction_valid = in Bool()
   val csr_ports= master(CsrClintPorts(MXLEN))
   val timer_int= in Bool()
   val int_en = out Bool()
@@ -171,18 +172,9 @@ case class Clint(MXLEN : Int = 64, addressWidth : Int = 64) extends Component{
   }
 
   val int_state = Bits(IntTypeEnum.IDLE.asBits.getWidth bits)
-  val csr_state = Reg(Bits(CsrEnum.IDLE.asBits.getWidth bits)) init(CsrEnum.IDLE.asBits)
-  val mepc_wdata = Reg(Bits(MXLEN bits)) init(0)
-  val mcause_wdata = Reg(Bits(MXLEN bits)) init(0)
-
-  csr_ports.mepc_wen.setAsReg() init(False)
-  csr_ports.mepc_wdata.setAsReg() init(0)
-  csr_ports.mcause_wen.setAsReg() init(False)
-  csr_ports.mcause_wdata.setAsReg() init(0)
-  csr_ports.mstatus_wen.setAsReg() init(False)
-  csr_ports.mstatus_wdata.setAsReg() init(0)
-  int_en.setAsReg() init(False)
-  int_pc.setAsReg() init(0)
+  val pc_next_d1 = RegNextWhen(pc_next, pc_next_valid) init(0)
+  val mepc_wdata = Bits(MXLEN bits)
+  val mcause_wdata = Bits(MXLEN bits)
 
   // interrupt type
   when(ecall || ebreak){
@@ -194,47 +186,44 @@ case class Clint(MXLEN : Int = 64, addressWidth : Int = 64) extends Component{
   }.otherwise{
     int_state := IntTypeEnum.IDLE.asBits
   }
-  // csr state
-  switch(csr_state){
-    is(CsrEnum.IDLE.asBits){
-      when(int_state===IntTypeEnum.EXPT.asBits || int_state===IntTypeEnum.TIME.asBits){
-        csr_state := CsrEnum.EXPT_TIME.asBits
-      }.elsewhen(int_state===IntTypeEnum.MRET.asBits){
-        csr_state := CsrEnum.MRET.asBits
-      }
-    }
-    is(CsrEnum.EXPT_TIME.asBits){
-      csr_state := CsrEnum.WRITE.asBits
-    }
-    is(CsrEnum.MRET.asBits, CsrEnum.WRITE.asBits){
-      csr_state := CsrEnum.IDLE.asBits
-    }
-  }
+
   // mepc wdata
-  when(csr_state===CsrEnum.IDLE.asBits){
-    when(pc_next_valid){
+  when(int_state===IntTypeEnum.TIME.asBits){ // exact async exception
+    when(instruction_valid){
       mepc_wdata := pc_next.asBits
-    }.otherwise{
+    }
+    .otherwise{
+      mepc_wdata := pc_next_d1.asBits
+    }
+  }
+  .otherwise{ // sync exception
+    when(instruction_valid){
       mepc_wdata := pc.asBits
+    }.otherwise{
+      mepc_wdata := pc_next_d1.asBits
     }
   }
+  
   // mcause wdata
-  when(csr_state===CsrEnum.IDLE.asBits){
-    when(int_state===IntTypeEnum.EXPT.asBits){
-      when(ecall){
-        mcause_wdata := B(11, MXLEN bits)
-      }.elsewhen(ebreak){
-        mcause_wdata := B(3, MXLEN bits)
-      }.otherwise{
-        mcause_wdata := B(10, MXLEN bits)
-      }
-    }.elsewhen(int_state===IntTypeEnum.TIME.asBits){
-      mcause_wdata := B"64'h8000_0000_0000_0007"
+  when(int_state===IntTypeEnum.EXPT.asBits){
+    when(ecall){
+      mcause_wdata := B(11, MXLEN bits)
+    }.elsewhen(ebreak){
+      mcause_wdata := B(3, MXLEN bits)
+    }.otherwise{
+      mcause_wdata := B(10, MXLEN bits)
     }
+  }.elsewhen(int_state===IntTypeEnum.TIME.asBits){
+    mcause_wdata := B"64'h8000_0000_0000_0007"
+  }.otherwise{
+    mcause_wdata := 0
   }
+
   // write to csr
-  switch(csr_state){
-    is(CsrEnum.WRITE.asBits){
+  switch(int_state){
+    is(IntTypeEnum.EXPT.asBits , IntTypeEnum.TIME.asBits){
+      int_en := True
+      int_pc := csr_ports.mtvec.asUInt
       csr_ports.mepc_wen := True
       csr_ports.mcause_wen := True
       csr_ports.mstatus_wen := True
@@ -243,31 +232,32 @@ case class Clint(MXLEN : Int = 64, addressWidth : Int = 64) extends Component{
       csr_ports.mstatus_wdata := csr_ports.mstatus(63 downto 8) ## csr_ports.mstatus(3) ## csr_ports.mstatus(6 downto 4) ## False ## csr_ports.mstatus(2 downto 0)
       //                                                            MPIE[7]=MIE[3]                                          MIE[3]=0
     }
-    is(CsrEnum.MRET.asBits){
+    is(IntTypeEnum.MRET.asBits){
+      int_en := True
+      int_pc := csr_ports.mepc.asUInt
+      csr_ports.mepc_wen := False
+      csr_ports.mcause_wen := False
       csr_ports.mstatus_wen := True
+      csr_ports.mepc_wdata := 0
+      csr_ports.mcause_wdata := 0
       csr_ports.mstatus_wdata := csr_ports.mstatus(63 downto 8) ## True ## csr_ports.mstatus(6 downto 4) ## csr_ports.mstatus(7) ## csr_ports.mstatus(2 downto 0)
       //                                                            MPIE[7]=MIE[3]                                          MIE[3]=MPIE[7]
     }
     default{
+      int_en := False
+      int_pc := 0
       csr_ports.mepc_wen := False
       csr_ports.mcause_wen := False
-      csr_ports.mstatus_wen := False
+      csr_ports.mstatus_wen := True
+      csr_ports.mepc_wdata := 0
+      csr_ports.mcause_wdata := 0
+      csr_ports.mstatus_wdata := 0
     }
   }
-  // send interrupt pc
-  when(csr_state=== CsrEnum.WRITE.asBits){
-    int_en := True
-    int_pc := csr_ports.mtvec.asUInt
-  }
-  .elsewhen(csr_state=== CsrEnum.MRET.asBits){
-    int_en := True
-    int_pc := csr_ports.mepc.asUInt
-  }
-  .otherwise{
-    int_en := False
-  }
+
   // stall instruction fetch
-  int_hold := int_state=/=IntTypeEnum.IDLE.asBits || csr_state=/=CsrEnum.IDLE.asBits
+  // int_hold := int_state=/=IntTypeEnum.IDLE.asBits
+  int_hold := False
 
 }
 
@@ -391,6 +381,7 @@ class ExcepPlugin() extends Plugin[DandRiscvSimple]
       csr_regfile.cpu_ports.wen := output(CSR_WEN)
       csr_regfile.cpu_ports.waddr := output(CSR_ADDR)
 
+      clint.instruction_valid := arbitration.isValid
       clint.pc_next := output(REDIRECT_PC_NEXT)
       clint.pc_next_valid := output(REDIRECT_VALID)
       insert(INT_HOLD) := clint.int_hold

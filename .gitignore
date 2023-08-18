@@ -57,5 +57,6 @@ verdiLog/
 .bloop/
 .bsp/
 .metals/*
+.metals/metals.log
 project/
 *.db

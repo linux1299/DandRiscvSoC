@@ -69,7 +69,8 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
       val is_call= False
       val is_ret = False
       val is_jmp = False
-      val redirect_pc_next = U(0, addressWidth bits)
+      // val redirect_pc_next = U(0, addressWidth bits)
+      val redirect_pc_next = input(PC) + 4
       val redirect_valid = False
 
       // ================= select op's source data ==================
@@ -231,12 +232,13 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
             redirect_valid := arbitration.isFiring
             redirect_pc_next := pc_next
           }
-        }.otherwise{ // real: not taken; predict: taken
-          when(input(PREDICT_TAKEN)){
-            redirect_valid := arbitration.isFiring
-            redirect_pc_next := input(PC) + 4
-          }
         }
+        // .otherwise{ // real: not taken; predict: taken
+        //   when(input(PREDICT_TAKEN)){
+        //     redirect_valid := arbitration.isFiring
+        //     redirect_pc_next := input(PC) + 4
+        //   }
+        // }
       }
       // call or return
       when(jal){

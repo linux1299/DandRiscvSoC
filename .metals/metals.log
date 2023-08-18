@@ -5372,3 +5372,10 @@ INFO: Schema "PUBLIC" is up to date. No migration necessary.
 2023.08.16 22:52:09 INFO  time: indexed workspace in 6.38s[0m
 2023.08.16 22:52:09 WARN  no build target for: /home/lin/SpinalProjects/SpinalTemplateSbt/hw/spinal/projectname/MyTopLevel.scala[0m
 2023.08.16 22:52:11 WARN  no build target for: /home/lin/SpinalProjects/SpinalTemplateSbt/hw/spinal/projectname/MyTopLevel.scala[0m
+2023.08.18 16:23:12 INFO  Started: Metals version 1.0.0 in folders 'D:\MyWork\DandRiscvSoC' for client Visual Studio Code 1.81.1.
+╟ктб 18, 2023 4:23:12 обнГ org.flywaydb.core.internal.license.VersionPrinter printVersionOnly
+пео╒: Flyway Community Edition 9.20.1 by Redgate
+╟ктб 18, 2023 4:23:12 обнГ org.flywaydb.core.internal.license.VersionPrinter printVersion
+пео╒: See release notes here: https://rd.gt/416ObMi
+╟ктб 18, 2023 4:23:12 обнГ org.flywaydb.core.internal.license.VersionPrinter printVersion
+пео╒: 

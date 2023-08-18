@@ -1,6 +1,6 @@
 // Generator : SpinalHDL v1.8.1    git head : 2a7592004363e5b40ec43e1f122ed8641cd8965b
 // Component : DandRiscvSimple
-// Git hash  : 2b04219b8f81708ab2f1a53ec6778e237f225075
+// Git hash  : 470f6a8598e62c1117e876f379762e391240929a
 
 `timescale 1ns/1ps
 
@@ -65,6 +65,7 @@ module DandRiscvSimple (
   localparam MemCtrlEnum_SW = 4'd10;
   localparam MemCtrlEnum_SD = 4'd11;
 
+  wire                fetch_FetchPlugin_instruction_stream_fifo_flush;
   wire                regFileModule_1_write_ports_rd_wen;
   wire                clint_1_ecall;
   wire                clint_1_ebreak;
@@ -241,9 +242,9 @@ module DandRiscvSimple (
   wire       [63:0]   fetch_BPU_PC_NEXT;
   wire                fetch_BPU_BRANCH_TAKEN;
   wire       [63:0]   _zz_pc_next;
-  wire                when_FetchPlugin_l119;
+  wire                when_FetchPlugin_l114;
   wire       [63:0]   _zz_pc_next_1;
-  wire                when_FetchPlugin_l116;
+  wire                when_FetchPlugin_l111;
   wire                fetch_arbitration_haltItself;
   wire                fetch_arbitration_haltByOther;
   reg                 fetch_arbitration_removeIt;
@@ -328,9 +329,10 @@ module DandRiscvSimple (
   wire       [63:0]   DCachePlugin_dcache_access_rsp_payload_data;
   reg        [63:0]   pc_next;
   reg                 fetch_valid;
-  reg        [63:0]   int_pc_reg;
-  reg                 int_en_reg;
+  reg        [63:0]   pc_next_d1;
+  reg                 pc_next_d1_valid;
   wire                fetch_FetchPlugin_fetch_flush;
+  reg                 fetch_FetchPlugin_fetch_flush_d1;
   wire                fetch_FetchPlugin_pc_in_stream_valid;
   wire                fetch_FetchPlugin_pc_in_stream_ready;
   wire       [63:0]   fetch_FetchPlugin_pc_in_stream_payload;
@@ -356,16 +358,16 @@ module DandRiscvSimple (
   wire       [1:0]    HALT;
   reg        [1:0]    fetch_state_next;
   reg        [1:0]    fetch_state;
-  wire                when_FetchPlugin_l64;
+  wire                when_FetchPlugin_l66;
   wire                ICachePlugin_icache_access_cmd_isStall;
   wire                ICachePlugin_icache_access_cmd_fire;
-  wire                when_FetchPlugin_l94;
-  wire                when_FetchPlugin_l107;
+  wire                when_FetchPlugin_l96;
+  wire                when_FetchPlugin_l109;
+  wire                when_FetchPlugin_l126;
+  wire                when_FetchPlugin_l141;
   wire                ICachePlugin_icache_access_cmd_fire_1;
-  wire                when_FetchPlugin_l134;
   wire                ICachePlugin_icache_access_cmd_fire_2;
   wire                ICachePlugin_icache_access_cmd_fire_3;
-  wire                ICachePlugin_icache_access_cmd_fire_4;
   reg        [63:0]   decode_DecodePlugin_imm;
   wire       [63:0]   decode_DecodePlugin_rs1;
   wire       [63:0]   decode_DecodePlugin_rs2;
@@ -455,15 +457,15 @@ module DandRiscvSimple (
   reg                 execute_ALUPlugin_is_jmp;
   reg        [63:0]   execute_ALUPlugin_redirect_pc_next;
   reg                 execute_ALUPlugin_redirect_valid;
-  wire                when_AluPlugin_l76;
-  wire                when_AluPlugin_l94;
-  wire                when_AluPlugin_l145;
-  wire                when_AluPlugin_l152;
+  wire                when_AluPlugin_l77;
+  wire                when_AluPlugin_l95;
+  wire                when_AluPlugin_l146;
+  wire                when_AluPlugin_l153;
   wire       [62:0]   _zz_execute_ALUPlugin_alu_result;
   wire       [62:0]   _zz_execute_ALUPlugin_alu_result_1;
-  wire                when_AluPlugin_l168;
-  wire                when_AluPlugin_l175;
-  wire                when_AluPlugin_l182;
+  wire                when_AluPlugin_l169;
+  wire                when_AluPlugin_l176;
+  wire                when_AluPlugin_l183;
   wire                execute_ALUPlugin_beq_result;
   wire                execute_ALUPlugin_bne_result;
   wire                execute_ALUPlugin_blt_result;
@@ -472,9 +474,9 @@ module DandRiscvSimple (
   wire                execute_ALUPlugin_bgeu_result;
   wire                execute_ALUPlugin_branch_taken;
   reg        [6:0]    execute_ALUPlugin_branch_history;
-  wire                when_AluPlugin_l222;
-  wire                when_AluPlugin_l230;
-  wire                when_AluPlugin_l265;
+  wire                when_AluPlugin_l223;
+  wire                when_AluPlugin_l231;
+  wire                when_AluPlugin_l267;
   reg        [63:0]   execute_ExcepPlugin_csr_wdata;
   wire       [63:0]   execute_ExcepPlugin_csrrs_wdata;
   wire       [63:0]   execute_ExcepPlugin_csrrc_wdata;
@@ -845,7 +847,7 @@ module DandRiscvSimple (
     .ports_m_ports_valid   (fetch_FetchPlugin_instruction_stream_fifo_ports_m_ports_valid        ), //o
     .ports_m_ports_ready   (fetch_FetchPlugin_instruction_out_stream_ready                       ), //i
     .ports_m_ports_payload (fetch_FetchPlugin_instruction_stream_fifo_ports_m_ports_payload[31:0]), //o
-    .flush                 (fetch_FetchPlugin_fetch_flush                                        ), //i
+    .flush                 (fetch_FetchPlugin_instruction_stream_fifo_flush                      ), //i
     .clk                   (clk                                                                  ), //i
     .reset                 (reset                                                                )  //i
   );
@@ -857,7 +859,7 @@ module DandRiscvSimple (
     .predict_pc_next    (gshare_predictor_1_predict_pc_next[63:0]), //o
     .train_valid        (execute_BRANCH_OR_JUMP                  ), //i
     .train_taken        (execute_BRANCH_TAKEN                    ), //i
-    .train_mispredicted (when_FetchPlugin_l119                   ), //i
+    .train_mispredicted (when_FetchPlugin_l114                   ), //i
     .train_history      (execute_BRANCH_HISTORY[6:0]             ), //i
     .train_pc           (_zz_execute_to_memaccess_PC[63:0]       ), //i
     .train_pc_next      (_zz_pc_next[63:0]                       ), //i
@@ -905,7 +907,8 @@ module DandRiscvSimple (
   Clint clint_1 (
     .pc                       (_zz_fetch_to_decode_PC[63:0]           ), //i
     .pc_next                  (_zz_pc_next[63:0]                      ), //i
-    .pc_next_valid            (when_FetchPlugin_l119                  ), //i
+    .pc_next_valid            (when_FetchPlugin_l114                  ), //i
+    .instruction_valid        (execute_arbitration_isValid            ), //i
     .csr_ports_mepc_wen       (clint_1_csr_ports_mepc_wen             ), //o
     .csr_ports_mepc_wdata     (clint_1_csr_ports_mepc_wdata[63:0]     ), //o
     .csr_ports_mcause_wen     (clint_1_csr_ports_mcause_wen           ), //o
@@ -986,7 +989,7 @@ module DandRiscvSimple (
   assign fetch_INT_PC = clint_1_int_pc;
   assign fetch_INT_EN = clint_1_int_en;
   assign decode_PREDICT_TAKEN = fetch_to_decode_PREDICT_TAKEN;
-  assign fetch_PREDICT_VALID = ICachePlugin_icache_access_cmd_fire_4;
+  assign fetch_PREDICT_VALID = ICachePlugin_icache_access_cmd_fire_3;
   assign memaccess_INSTRUCTION = execute_to_memaccess_INSTRUCTION;
   assign execute_INSTRUCTION = decode_to_execute_INSTRUCTION;
   assign fetch_INSTRUCTION = fetch_FetchPlugin_instruction_out_stream_payload;
@@ -1046,9 +1049,9 @@ module DandRiscvSimple (
   assign fetch_BPU_PC_NEXT = 64'h0;
   assign fetch_BPU_BRANCH_TAKEN = 1'b0;
   assign _zz_pc_next = execute_REDIRECT_PC_NEXT;
-  assign when_FetchPlugin_l119 = execute_REDIRECT_VALID;
+  assign when_FetchPlugin_l114 = execute_REDIRECT_VALID;
   assign _zz_pc_next_1 = fetch_INT_PC;
-  assign when_FetchPlugin_l116 = fetch_INT_EN;
+  assign when_FetchPlugin_l111 = fetch_INT_EN;
   assign fetch_arbitration_haltByOther = 1'b0;
   always @(*) begin
     fetch_arbitration_removeIt = 1'b0;
@@ -1094,16 +1097,16 @@ module DandRiscvSimple (
   end
 
   assign writeback_arbitration_flushNext = 1'b0;
-  assign fetch_FetchPlugin_fetch_flush = ((when_FetchPlugin_l116 || int_en_reg) || fetch_arbitration_flushIt);
+  assign fetch_FetchPlugin_fetch_flush = ((when_FetchPlugin_l111 || pc_next_d1_valid) || fetch_arbitration_flushIt);
   assign fetch_FetchPlugin_fifo_all_valid = ((fetch_FetchPlugin_pc_out_stream_valid && fetch_FetchPlugin_instruction_out_stream_valid) && fetch_FetchPlugin_pc_stream_fifo_next_valid);
   assign IDLE = 2'b00;
   assign FETCH = 2'b01;
   assign BUSY = 2'b10;
   assign HALT = 2'b11;
-  assign when_FetchPlugin_l64 = (! fetch_arbitration_isStuck);
+  assign when_FetchPlugin_l66 = (! fetch_arbitration_isStuck);
   always @(*) begin
     if((fetch_state == IDLE)) begin
-        if(when_FetchPlugin_l64) begin
+        if(when_FetchPlugin_l66) begin
           fetch_state_next = FETCH;
         end else begin
           fetch_state_next = IDLE;
@@ -1129,7 +1132,7 @@ module DandRiscvSimple (
           end
         end
     end else if((fetch_state == HALT)) begin
-        if(when_FetchPlugin_l94) begin
+        if(when_FetchPlugin_l96) begin
           fetch_state_next = FETCH;
         end else begin
           fetch_state_next = HALT;
@@ -1141,31 +1144,32 @@ module DandRiscvSimple (
 
   assign ICachePlugin_icache_access_cmd_isStall = (ICachePlugin_icache_access_cmd_valid && (! ICachePlugin_icache_access_cmd_ready));
   assign ICachePlugin_icache_access_cmd_fire = (ICachePlugin_icache_access_cmd_valid && ICachePlugin_icache_access_cmd_ready);
-  assign when_FetchPlugin_l94 = (! fetch_arbitration_isStuck);
-  assign when_FetchPlugin_l107 = (when_FetchPlugin_l116 && ((fetch_state == BUSY) || (fetch_state_next == BUSY)));
+  assign when_FetchPlugin_l96 = (! fetch_arbitration_isStuck);
+  assign when_FetchPlugin_l109 = ((fetch_state == BUSY) || (fetch_state_next == BUSY));
+  assign when_FetchPlugin_l126 = (fetch_state_next == FETCH);
+  assign when_FetchPlugin_l141 = (fetch_state_next == BUSY);
   assign ICachePlugin_icache_access_cmd_fire_1 = (ICachePlugin_icache_access_cmd_valid && ICachePlugin_icache_access_cmd_ready);
-  assign when_FetchPlugin_l134 = ((fetch_state_next == FETCH) || (fetch_state_next == BUSY));
-  assign ICachePlugin_icache_access_cmd_fire_2 = (ICachePlugin_icache_access_cmd_valid && ICachePlugin_icache_access_cmd_ready);
-  assign fetch_FetchPlugin_pc_in_stream_valid = ICachePlugin_icache_access_cmd_fire_2;
+  assign fetch_FetchPlugin_pc_in_stream_valid = ICachePlugin_icache_access_cmd_fire_1;
   assign fetch_FetchPlugin_pc_in_stream_payload = pc_next;
   assign fetch_FetchPlugin_pc_out_stream_ready = fetch_arbitration_isFiring;
   assign fetch_FetchPlugin_pc_in_stream_ready = fetch_FetchPlugin_pc_stream_fifo_ports_s_ports_ready;
   assign fetch_FetchPlugin_pc_out_stream_valid = fetch_FetchPlugin_pc_stream_fifo_ports_m_ports_valid;
   assign fetch_FetchPlugin_pc_out_stream_payload = fetch_FetchPlugin_pc_stream_fifo_ports_m_ports_payload;
-  assign ICachePlugin_icache_access_cmd_fire_3 = (ICachePlugin_icache_access_cmd_valid && ICachePlugin_icache_access_cmd_ready);
-  assign fetch_FetchPlugin_predict_taken_in_valid = ICachePlugin_icache_access_cmd_fire_3;
+  assign ICachePlugin_icache_access_cmd_fire_2 = (ICachePlugin_icache_access_cmd_valid && ICachePlugin_icache_access_cmd_ready);
+  assign fetch_FetchPlugin_predict_taken_in_valid = ICachePlugin_icache_access_cmd_fire_2;
   assign fetch_FetchPlugin_predict_taken_in_payload = fetch_PREDICT_TAKEN;
   assign fetch_FetchPlugin_predict_taken_out_ready = fetch_arbitration_isFiring;
   assign fetch_FetchPlugin_predict_taken_in_ready = fetch_FetchPlugin_predict_taken_fifo_ports_s_ports_ready;
   assign fetch_FetchPlugin_predict_taken_out_valid = fetch_FetchPlugin_predict_taken_fifo_ports_m_ports_valid;
   assign fetch_FetchPlugin_predict_taken_out_payload = fetch_FetchPlugin_predict_taken_fifo_ports_m_ports_payload;
-  assign fetch_FetchPlugin_instruction_in_stream_valid = ICachePlugin_icache_access_rsp_valid;
+  assign fetch_FetchPlugin_instruction_in_stream_valid = (ICachePlugin_icache_access_rsp_valid && (! pc_next_d1_valid));
   assign fetch_FetchPlugin_instruction_in_stream_payload = ICachePlugin_icache_access_rsp_payload_data;
   assign fetch_FetchPlugin_instruction_out_stream_ready = fetch_arbitration_isFiring;
   assign fetch_FetchPlugin_instruction_in_stream_ready = fetch_FetchPlugin_instruction_stream_fifo_ports_s_ports_ready;
   assign fetch_FetchPlugin_instruction_out_stream_valid = fetch_FetchPlugin_instruction_stream_fifo_ports_m_ports_valid;
   assign fetch_FetchPlugin_instruction_out_stream_payload = fetch_FetchPlugin_instruction_stream_fifo_ports_m_ports_payload;
-  assign ICachePlugin_icache_access_cmd_fire_4 = (ICachePlugin_icache_access_cmd_valid && ICachePlugin_icache_access_cmd_ready);
+  assign fetch_FetchPlugin_instruction_stream_fifo_flush = (fetch_FetchPlugin_fetch_flush || fetch_FetchPlugin_fetch_flush_d1);
+  assign ICachePlugin_icache_access_cmd_fire_3 = (ICachePlugin_icache_access_cmd_valid && ICachePlugin_icache_access_cmd_ready);
   assign fetch_arbitration_isValid = ((fetch_FetchPlugin_fifo_all_valid && (! fetch_arbitration_isStuck)) && (! fetch_FetchPlugin_fetch_flush));
   assign ICachePlugin_icache_access_cmd_valid = (fetch_valid && (! fetch_FetchPlugin_fetch_flush));
   assign ICachePlugin_icache_access_cmd_payload_addr = pc_next;
@@ -1972,7 +1976,7 @@ module DandRiscvSimple (
       if(execute_ALUPlugin_jalr) begin
         if(execute_ALUPlugin_rd_is_link) begin
           if(execute_ALUPlugin_rs1_is_link) begin
-            if(when_AluPlugin_l265) begin
+            if(when_AluPlugin_l267) begin
               execute_ALUPlugin_is_call = 1'b1;
             end else begin
               execute_ALUPlugin_is_call = 1'b1;
@@ -1997,7 +2001,7 @@ module DandRiscvSimple (
       if(execute_ALUPlugin_jalr) begin
         if(execute_ALUPlugin_rd_is_link) begin
           if(execute_ALUPlugin_rs1_is_link) begin
-            if(!when_AluPlugin_l265) begin
+            if(!when_AluPlugin_l267) begin
               execute_ALUPlugin_is_ret = 1'b1;
             end
           end
@@ -2030,15 +2034,11 @@ module DandRiscvSimple (
   end
 
   always @(*) begin
-    execute_ALUPlugin_redirect_pc_next = 64'h0;
+    execute_ALUPlugin_redirect_pc_next = (execute_PC + 64'h0000000000000004);
     if(execute_ALUPlugin_branch_or_jump) begin
       if(execute_ALUPlugin_branch_taken) begin
-        if(when_AluPlugin_l230) begin
+        if(when_AluPlugin_l231) begin
           execute_ALUPlugin_redirect_pc_next = execute_ALUPlugin_pc_next;
-        end
-      end else begin
-        if(execute_PREDICT_TAKEN) begin
-          execute_ALUPlugin_redirect_pc_next = (execute_PC + 64'h0000000000000004);
         end
       end
     end
@@ -2048,20 +2048,16 @@ module DandRiscvSimple (
     execute_ALUPlugin_redirect_valid = 1'b0;
     if(execute_ALUPlugin_branch_or_jump) begin
       if(execute_ALUPlugin_branch_taken) begin
-        if(when_AluPlugin_l230) begin
-          execute_ALUPlugin_redirect_valid = execute_arbitration_isFiring;
-        end
-      end else begin
-        if(execute_PREDICT_TAKEN) begin
+        if(when_AluPlugin_l231) begin
           execute_ALUPlugin_redirect_valid = execute_arbitration_isFiring;
         end
       end
     end
   end
 
-  assign when_AluPlugin_l76 = (((execute_ALU_CTRL == AluCtrlEnum_AUIPC) || execute_ALUPlugin_jal) || execute_ALUPlugin_jalr);
+  assign when_AluPlugin_l77 = (((execute_ALU_CTRL == AluCtrlEnum_AUIPC) || execute_ALUPlugin_jal) || execute_ALUPlugin_jalr);
   always @(*) begin
-    if(when_AluPlugin_l76) begin
+    if(when_AluPlugin_l77) begin
       execute_ALUPlugin_src1 = execute_PC;
     end else begin
       if(execute_RS1_FROM_MEM) begin
@@ -2076,9 +2072,9 @@ module DandRiscvSimple (
     end
   end
 
-  assign when_AluPlugin_l94 = (execute_ALUPlugin_jal || execute_ALUPlugin_jalr);
+  assign when_AluPlugin_l95 = (execute_ALUPlugin_jal || execute_ALUPlugin_jalr);
   always @(*) begin
-    if(when_AluPlugin_l94) begin
+    if(when_AluPlugin_l95) begin
       execute_ALUPlugin_src2 = 64'h0000000000000004;
     end else begin
       if(execute_SRC2_IS_IMM) begin
@@ -2121,16 +2117,16 @@ module DandRiscvSimple (
     end
   end
 
-  assign when_AluPlugin_l145 = (execute_ALU_WORD == 1'b1);
+  assign when_AluPlugin_l146 = (execute_ALU_WORD == 1'b1);
   always @(*) begin
     if((execute_ALU_CTRL == AluCtrlEnum_ADD)) begin
-        if(when_AluPlugin_l145) begin
+        if(when_AluPlugin_l146) begin
           execute_ALUPlugin_alu_result = execute_ALUPlugin_addw_result;
         end else begin
           execute_ALUPlugin_alu_result = execute_ALUPlugin_add_result;
         end
     end else if((execute_ALU_CTRL == AluCtrlEnum_SUB)) begin
-        if(when_AluPlugin_l152) begin
+        if(when_AluPlugin_l153) begin
           execute_ALUPlugin_alu_result = execute_ALUPlugin_subw_result;
         end else begin
           execute_ALUPlugin_alu_result = execute_ALUPlugin_sub_result;
@@ -2142,19 +2138,19 @@ module DandRiscvSimple (
     end else if((execute_ALU_CTRL == AluCtrlEnum_XOR_1)) begin
         execute_ALUPlugin_alu_result = execute_ALUPlugin_xor_result;
     end else if((execute_ALU_CTRL == AluCtrlEnum_SLL_1)) begin
-        if(when_AluPlugin_l168) begin
+        if(when_AluPlugin_l169) begin
           execute_ALUPlugin_alu_result = execute_ALUPlugin_sllw_result;
         end else begin
           execute_ALUPlugin_alu_result = execute_ALUPlugin_sll_result;
         end
     end else if((execute_ALU_CTRL == AluCtrlEnum_SRL_1)) begin
-        if(when_AluPlugin_l175) begin
+        if(when_AluPlugin_l176) begin
           execute_ALUPlugin_alu_result = execute_ALUPlugin_srlw_result;
         end else begin
           execute_ALUPlugin_alu_result = execute_ALUPlugin_srl_result;
         end
     end else if((execute_ALU_CTRL == AluCtrlEnum_SRA_1)) begin
-        if(when_AluPlugin_l182) begin
+        if(when_AluPlugin_l183) begin
           execute_ALUPlugin_alu_result = execute_ALUPlugin_sraw_result;
         end else begin
           execute_ALUPlugin_alu_result = execute_ALUPlugin_sra_result;
@@ -2172,12 +2168,12 @@ module DandRiscvSimple (
     end
   end
 
-  assign when_AluPlugin_l152 = (execute_ALU_WORD == 1'b1);
+  assign when_AluPlugin_l153 = (execute_ALU_WORD == 1'b1);
   assign _zz_execute_ALUPlugin_alu_result[62 : 0] = 63'h0;
   assign _zz_execute_ALUPlugin_alu_result_1[62 : 0] = 63'h0;
-  assign when_AluPlugin_l168 = (execute_ALU_WORD == 1'b1);
-  assign when_AluPlugin_l175 = (execute_ALU_WORD == 1'b1);
-  assign when_AluPlugin_l182 = (execute_ALU_WORD == 1'b1);
+  assign when_AluPlugin_l169 = (execute_ALU_WORD == 1'b1);
+  assign when_AluPlugin_l176 = (execute_ALU_WORD == 1'b1);
+  assign when_AluPlugin_l183 = (execute_ALU_WORD == 1'b1);
   assign execute_ALUPlugin_beq_result = (execute_ALUPlugin_beq && (execute_ALUPlugin_branch_src1 == execute_ALUPlugin_branch_src2));
   assign execute_ALUPlugin_bne_result = (execute_ALUPlugin_bne && (execute_ALUPlugin_branch_src1 != execute_ALUPlugin_branch_src2));
   assign execute_ALUPlugin_blt_result = (execute_ALUPlugin_blt && ($signed(_zz_execute_ALUPlugin_blt_result) < $signed(_zz_execute_ALUPlugin_blt_result_1)));
@@ -2185,17 +2181,17 @@ module DandRiscvSimple (
   assign execute_ALUPlugin_bltu_result = (execute_ALUPlugin_bltu && (execute_ALUPlugin_branch_src1 < execute_ALUPlugin_branch_src2));
   assign execute_ALUPlugin_bgeu_result = (execute_ALUPlugin_bgeu && (execute_ALUPlugin_branch_src2 <= execute_ALUPlugin_branch_src1));
   assign execute_ALUPlugin_branch_taken = (((((((execute_ALUPlugin_beq_result || execute_ALUPlugin_bne_result) || execute_ALUPlugin_blt_result) || execute_ALUPlugin_bge_result) || execute_ALUPlugin_bltu_result) || execute_ALUPlugin_bgeu_result) || execute_ALUPlugin_jal) || execute_ALUPlugin_jalr);
-  assign when_AluPlugin_l222 = (execute_ALU_CTRL == AluCtrlEnum_JALR);
+  assign when_AluPlugin_l223 = (execute_ALU_CTRL == AluCtrlEnum_JALR);
   always @(*) begin
-    if(when_AluPlugin_l222) begin
+    if(when_AluPlugin_l223) begin
       execute_ALUPlugin_pc_next = _zz_execute_ALUPlugin_pc_next;
     end else begin
       execute_ALUPlugin_pc_next = _zz_execute_ALUPlugin_pc_next_6;
     end
   end
 
-  assign when_AluPlugin_l230 = ((! execute_PREDICT_TAKEN) || (execute_PC_NEXT != execute_ALUPlugin_pc_next));
-  assign when_AluPlugin_l265 = (execute_RD_ADDR == execute_RS1_ADDR);
+  assign when_AluPlugin_l231 = ((! execute_PREDICT_TAKEN) || (execute_PC_NEXT != execute_ALUPlugin_pc_next));
+  assign when_AluPlugin_l267 = (execute_RD_ADDR == execute_RS1_ADDR);
   assign DecodePlugin_hazard_rs1_from_mem = ((((memaccess_arbitration_isValid && _zz_DecodePlugin_hazard_rs1_from_mem_3) && (_zz_DecodePlugin_hazard_rs1_from_mem_2 != 5'h0)) && (_zz_DecodePlugin_hazard_rs1_from_mem_2 == _zz_DecodePlugin_hazard_rs1_from_mem_1)) && (! _zz_DecodePlugin_hazard_rs1_from_mem));
   assign DecodePlugin_hazard_rs2_from_mem = ((((memaccess_arbitration_isValid && _zz_DecodePlugin_hazard_rs1_from_mem_3) && (_zz_DecodePlugin_hazard_rs1_from_mem_2 != 5'h0)) && (_zz_DecodePlugin_hazard_rs1_from_mem_2 == _zz_DecodePlugin_hazard_rs2_from_mem)) && (! _zz_DecodePlugin_hazard_rs1_from_mem));
   assign DecodePlugin_hazard_rs1_from_wb = ((((writeback_arbitration_isValid && _zz_DecodePlugin_hazard_rs1_from_wb_1) && (_zz_DecodePlugin_hazard_rs1_from_wb != 5'h0)) && (_zz_DecodePlugin_hazard_rs1_from_wb == _zz_DecodePlugin_hazard_rs1_from_mem_1)) && ((_zz_DecodePlugin_hazard_rs1_from_mem_2 != _zz_DecodePlugin_hazard_rs1_from_mem_1) || (! memaccess_arbitration_isValid)));
@@ -2207,9 +2203,9 @@ module DandRiscvSimple (
   assign DecodePlugin_hazard_ctrl_rs2_from_wb = ((execute_arbitration_isValid && _zz_DecodePlugin_hazard_ctrl_rs1_from_mem) && DecodePlugin_hazard_rs2_from_wb);
   assign DecodePlugin_hazard_ctrl_load_use = ((execute_arbitration_isValid && _zz_DecodePlugin_hazard_ctrl_rs1_from_mem) && DecodePlugin_hazard_load_use);
   assign fetch_arbitration_haltItself = 1'b0;
-  assign fetch_arbitration_flushIt = when_FetchPlugin_l119;
+  assign fetch_arbitration_flushIt = when_FetchPlugin_l114;
   assign decode_arbitration_haltItself = 1'b0;
-  assign decode_arbitration_flushIt = when_FetchPlugin_l119;
+  assign decode_arbitration_flushIt = when_FetchPlugin_l114;
   assign execute_arbitration_haltItself = ((DecodePlugin_hazard_load_use || DecodePlugin_hazard_ctrl_load_use) || execute_INT_HOLD);
   assign execute_arbitration_flushIt = 1'b0;
   assign memaccess_arbitration_haltItself = memaccess_LSU_HOLD;
@@ -2715,8 +2711,9 @@ module DandRiscvSimple (
     if(reset) begin
       pc_next <= 64'h0000000080000000;
       fetch_valid <= 1'b0;
-      int_pc_reg <= 64'h0;
-      int_en_reg <= 1'b0;
+      pc_next_d1 <= 64'h0;
+      pc_next_d1_valid <= 1'b0;
+      fetch_FetchPlugin_fetch_flush_d1 <= 1'b0;
       fetch_state <= IDLE;
       execute_ALUPlugin_branch_history <= 7'h0;
       decode_arbitration_isValid <= 1'b0;
@@ -2725,37 +2722,55 @@ module DandRiscvSimple (
       writeback_arbitration_isValid <= 1'b0;
     end else begin
       fetch_state <= fetch_state_next;
-      if(when_FetchPlugin_l107) begin
-        int_en_reg <= 1'b1;
-        int_pc_reg <= _zz_pc_next_1;
+      if(when_FetchPlugin_l109) begin
+        pc_next_d1_valid <= 1'b1;
+        if(when_FetchPlugin_l111) begin
+          pc_next_d1 <= _zz_pc_next_1;
+        end else begin
+          if(when_FetchPlugin_l114) begin
+            pc_next_d1 <= _zz_pc_next;
+          end else begin
+            if(fetch_BPU_BRANCH_TAKEN) begin
+              pc_next_d1 <= fetch_BPU_PC_NEXT;
+            end
+          end
+        end
       end else begin
         if(ICachePlugin_icache_access_rsp_valid) begin
-          int_en_reg <= 1'b0;
+          pc_next_d1_valid <= 1'b0;
         end
       end
-      if(when_FetchPlugin_l116) begin
-        pc_next <= _zz_pc_next_1;
-      end else begin
-        if(when_FetchPlugin_l119) begin
-          pc_next <= _zz_pc_next;
+      if(when_FetchPlugin_l126) begin
+        fetch_valid <= 1'b1;
+        if(pc_next_d1_valid) begin
+          pc_next <= pc_next_d1;
         end else begin
-          if(fetch_BPU_BRANCH_TAKEN) begin
-            pc_next <= fetch_BPU_PC_NEXT;
+          if(when_FetchPlugin_l111) begin
+            pc_next <= _zz_pc_next_1;
           end else begin
-            if(ICachePlugin_icache_access_cmd_fire_1) begin
-              if(int_en_reg) begin
-                pc_next <= int_pc_reg;
-              end else begin
-                pc_next <= (pc_next + 64'h0000000000000004);
+            if(when_FetchPlugin_l114) begin
+              pc_next <= _zz_pc_next;
+            end else begin
+              if(fetch_BPU_BRANCH_TAKEN) begin
+                pc_next <= fetch_BPU_PC_NEXT;
               end
             end
           end
         end
-      end
-      if(when_FetchPlugin_l134) begin
-        fetch_valid <= 1'b1;
       end else begin
-        fetch_valid <= 1'b0;
+        if(when_FetchPlugin_l141) begin
+          fetch_valid <= 1'b1;
+          pc_next <= pc_next;
+        end else begin
+          fetch_valid <= 1'b0;
+        end
+      end
+      if(fetch_FetchPlugin_fetch_flush) begin
+        fetch_FetchPlugin_fetch_flush_d1 <= 1'b1;
+      end else begin
+        if(ICachePlugin_icache_access_rsp_valid) begin
+          fetch_FetchPlugin_fetch_flush_d1 <= 1'b0;
+        end
       end
       if(execute_arbitration_isFiring) begin
         execute_ALUPlugin_branch_history <= {execute_ALUPlugin_branch_history[5 : 0],execute_ALUPlugin_branch_taken};
@@ -2934,18 +2949,18 @@ module Timer (
   wire       [63:0]   _zz_mtime;
   reg        [63:0]   mtime;
   reg        [63:0]   mtimecmp;
-  wire                when_ExcepPlugin_l287;
-  wire                when_ExcepPlugin_l300;
-  wire                when_ExcepPlugin_l302;
+  wire                when_ExcepPlugin_l277;
+  wire                when_ExcepPlugin_l290;
+  wire                when_ExcepPlugin_l292;
 
   assign _zz_mtime = (mtime + 64'h0000000000000001);
-  assign when_ExcepPlugin_l287 = (wen && cen);
-  assign when_ExcepPlugin_l300 = (addr == 64'h000000000200bff8);
+  assign when_ExcepPlugin_l277 = (wen && cen);
+  assign when_ExcepPlugin_l290 = (addr == 64'h000000000200bff8);
   always @(*) begin
-    if(when_ExcepPlugin_l300) begin
+    if(when_ExcepPlugin_l290) begin
       rdata = mtime;
     end else begin
-      if(when_ExcepPlugin_l302) begin
+      if(when_ExcepPlugin_l292) begin
         rdata = mtimecmp;
       end else begin
         rdata = 64'h0;
@@ -2953,14 +2968,14 @@ module Timer (
     end
   end
 
-  assign when_ExcepPlugin_l302 = (addr == 64'h0000000002004000);
+  assign when_ExcepPlugin_l292 = (addr == 64'h0000000002004000);
   assign timer_int = (mtimecmp <= mtime);
   always @(posedge clk or posedge reset) begin
     if(reset) begin
       mtime <= 64'h0;
       mtimecmp <= 64'hffffffffffffffff;
     end else begin
-      if(when_ExcepPlugin_l287) begin
+      if(when_ExcepPlugin_l277) begin
         case(addr)
           64'h000000000200bff8 : begin
             mtime <= wdata;
@@ -2984,6 +2999,7 @@ module Clint (
   input      [63:0]   pc,
   input      [63:0]   pc_next,
   input               pc_next_valid,
+  input               instruction_valid,
   output reg          csr_ports_mepc_wen,
   output reg [63:0]   csr_ports_mepc_wdata,
   output reg          csr_ports_mcause_wen,
@@ -3006,36 +3022,27 @@ module Clint (
   input               clk,
   input               reset
 );
-  localparam CsrEnum_IDLE = 2'd0;
-  localparam CsrEnum_EXPT_TIME = 2'd1;
-  localparam CsrEnum_MRET = 2'd2;
-  localparam CsrEnum_WRITE = 2'd3;
   localparam IntTypeEnum_IDLE = 2'd0;
   localparam IntTypeEnum_EXPT = 2'd1;
   localparam IntTypeEnum_TIME_1 = 2'd2;
   localparam IntTypeEnum_MRET = 2'd3;
 
   reg        [1:0]    int_state;
-  reg        [1:0]    csr_state;
+  reg        [63:0]   pc_next_d1;
   reg        [63:0]   mepc_wdata;
   reg        [63:0]   mcause_wdata;
-  wire                when_ExcepPlugin_l188;
-  wire                when_ExcepPlugin_l190;
-  wire                when_ExcepPlugin_l200;
-  wire                when_ExcepPlugin_l202;
-  wire                when_ExcepPlugin_l214;
-  wire                when_ExcepPlugin_l222;
-  wire                when_ExcepPlugin_l223;
-  wire                when_ExcepPlugin_l231;
-  wire                when_ExcepPlugin_l258;
-  wire                when_ExcepPlugin_l262;
+  wire                when_ExcepPlugin_l180;
+  wire                when_ExcepPlugin_l182;
+  wire                when_ExcepPlugin_l191;
+  wire                when_ExcepPlugin_l208;
+  wire                when_ExcepPlugin_l216;
 
-  assign when_ExcepPlugin_l188 = (ecall || ebreak);
+  assign when_ExcepPlugin_l180 = (ecall || ebreak);
   always @(*) begin
-    if(when_ExcepPlugin_l188) begin
+    if(when_ExcepPlugin_l180) begin
       int_state = IntTypeEnum_EXPT;
     end else begin
-      if(when_ExcepPlugin_l190) begin
+      if(when_ExcepPlugin_l182) begin
         int_state = IntTypeEnum_TIME_1;
       end else begin
         if(mret) begin
@@ -3047,92 +3054,133 @@ module Clint (
     end
   end
 
-  assign when_ExcepPlugin_l190 = ((csr_ports_global_int_en && csr_ports_mtime_int_en) && timer_int);
-  assign when_ExcepPlugin_l200 = ((int_state == IntTypeEnum_EXPT) || (int_state == IntTypeEnum_TIME_1));
-  assign when_ExcepPlugin_l202 = (int_state == IntTypeEnum_MRET);
-  assign when_ExcepPlugin_l214 = (csr_state == CsrEnum_IDLE);
-  assign when_ExcepPlugin_l222 = (csr_state == CsrEnum_IDLE);
-  assign when_ExcepPlugin_l223 = (int_state == IntTypeEnum_EXPT);
-  assign when_ExcepPlugin_l231 = (int_state == IntTypeEnum_TIME_1);
-  assign when_ExcepPlugin_l258 = (csr_state == CsrEnum_WRITE);
-  assign when_ExcepPlugin_l262 = (csr_state == CsrEnum_MRET);
-  assign int_hold = ((int_state != IntTypeEnum_IDLE) || (csr_state != CsrEnum_IDLE));
+  assign when_ExcepPlugin_l182 = ((csr_ports_global_int_en && csr_ports_mtime_int_en) && timer_int);
+  assign when_ExcepPlugin_l191 = (int_state == IntTypeEnum_TIME_1);
+  always @(*) begin
+    if(when_ExcepPlugin_l191) begin
+      if(instruction_valid) begin
+        mepc_wdata = pc_next;
+      end else begin
+        mepc_wdata = pc_next_d1;
+      end
+    end else begin
+      if(instruction_valid) begin
+        mepc_wdata = pc;
+      end else begin
+        mepc_wdata = pc_next_d1;
+      end
+    end
+  end
+
+  assign when_ExcepPlugin_l208 = (int_state == IntTypeEnum_EXPT);
+  always @(*) begin
+    if(when_ExcepPlugin_l208) begin
+      if(ecall) begin
+        mcause_wdata = 64'h000000000000000b;
+      end else begin
+        if(ebreak) begin
+          mcause_wdata = 64'h0000000000000003;
+        end else begin
+          mcause_wdata = 64'h000000000000000a;
+        end
+      end
+    end else begin
+      if(when_ExcepPlugin_l216) begin
+        mcause_wdata = 64'h8000000000000007;
+      end else begin
+        mcause_wdata = 64'h0;
+      end
+    end
+  end
+
+  assign when_ExcepPlugin_l216 = (int_state == IntTypeEnum_TIME_1);
+  always @(*) begin
+    if((int_state == IntTypeEnum_EXPT) || (int_state == IntTypeEnum_TIME_1)) begin
+        int_en = 1'b1;
+    end else if((int_state == IntTypeEnum_MRET)) begin
+        int_en = 1'b1;
+    end else begin
+        int_en = 1'b0;
+    end
+  end
+
+  always @(*) begin
+    if((int_state == IntTypeEnum_EXPT) || (int_state == IntTypeEnum_TIME_1)) begin
+        int_pc = csr_ports_mtvec;
+    end else if((int_state == IntTypeEnum_MRET)) begin
+        int_pc = csr_ports_mepc;
+    end else begin
+        int_pc = 64'h0;
+    end
+  end
+
+  always @(*) begin
+    if((int_state == IntTypeEnum_EXPT) || (int_state == IntTypeEnum_TIME_1)) begin
+        csr_ports_mepc_wen = 1'b1;
+    end else if((int_state == IntTypeEnum_MRET)) begin
+        csr_ports_mepc_wen = 1'b0;
+    end else begin
+        csr_ports_mepc_wen = 1'b0;
+    end
+  end
+
+  always @(*) begin
+    if((int_state == IntTypeEnum_EXPT) || (int_state == IntTypeEnum_TIME_1)) begin
+        csr_ports_mcause_wen = 1'b1;
+    end else if((int_state == IntTypeEnum_MRET)) begin
+        csr_ports_mcause_wen = 1'b0;
+    end else begin
+        csr_ports_mcause_wen = 1'b0;
+    end
+  end
+
+  always @(*) begin
+    if((int_state == IntTypeEnum_EXPT) || (int_state == IntTypeEnum_TIME_1)) begin
+        csr_ports_mstatus_wen = 1'b1;
+    end else if((int_state == IntTypeEnum_MRET)) begin
+        csr_ports_mstatus_wen = 1'b1;
+    end else begin
+        csr_ports_mstatus_wen = 1'b1;
+    end
+  end
+
+  always @(*) begin
+    if((int_state == IntTypeEnum_EXPT) || (int_state == IntTypeEnum_TIME_1)) begin
+        csr_ports_mepc_wdata = mepc_wdata;
+    end else if((int_state == IntTypeEnum_MRET)) begin
+        csr_ports_mepc_wdata = 64'h0;
+    end else begin
+        csr_ports_mepc_wdata = 64'h0;
+    end
+  end
+
+  always @(*) begin
+    if((int_state == IntTypeEnum_EXPT) || (int_state == IntTypeEnum_TIME_1)) begin
+        csr_ports_mcause_wdata = mcause_wdata;
+    end else if((int_state == IntTypeEnum_MRET)) begin
+        csr_ports_mcause_wdata = 64'h0;
+    end else begin
+        csr_ports_mcause_wdata = 64'h0;
+    end
+  end
+
+  always @(*) begin
+    if((int_state == IntTypeEnum_EXPT) || (int_state == IntTypeEnum_TIME_1)) begin
+        csr_ports_mstatus_wdata = {{{{csr_ports_mstatus[63 : 8],csr_ports_mstatus[3]},csr_ports_mstatus[6 : 4]},1'b0},csr_ports_mstatus[2 : 0]};
+    end else if((int_state == IntTypeEnum_MRET)) begin
+        csr_ports_mstatus_wdata = {{{{csr_ports_mstatus[63 : 8],1'b1},csr_ports_mstatus[6 : 4]},csr_ports_mstatus[7]},csr_ports_mstatus[2 : 0]};
+    end else begin
+        csr_ports_mstatus_wdata = 64'h0;
+    end
+  end
+
+  assign int_hold = 1'b0;
   always @(posedge clk or posedge reset) begin
     if(reset) begin
-      csr_state <= CsrEnum_IDLE;
-      mepc_wdata <= 64'h0;
-      mcause_wdata <= 64'h0;
-      csr_ports_mepc_wen <= 1'b0;
-      csr_ports_mepc_wdata <= 64'h0;
-      csr_ports_mcause_wen <= 1'b0;
-      csr_ports_mcause_wdata <= 64'h0;
-      csr_ports_mstatus_wen <= 1'b0;
-      csr_ports_mstatus_wdata <= 64'h0;
-      int_en <= 1'b0;
-      int_pc <= 64'h0;
+      pc_next_d1 <= 64'h0;
     end else begin
-      if((csr_state == CsrEnum_IDLE)) begin
-          if(when_ExcepPlugin_l200) begin
-            csr_state <= CsrEnum_EXPT_TIME;
-          end else begin
-            if(when_ExcepPlugin_l202) begin
-              csr_state <= CsrEnum_MRET;
-            end
-          end
-      end else if((csr_state == CsrEnum_EXPT_TIME)) begin
-          csr_state <= CsrEnum_WRITE;
-      end else if((csr_state == CsrEnum_MRET) || (csr_state == CsrEnum_WRITE)) begin
-          csr_state <= CsrEnum_IDLE;
-      end
-      if(when_ExcepPlugin_l214) begin
-        if(pc_next_valid) begin
-          mepc_wdata <= pc_next;
-        end else begin
-          mepc_wdata <= pc;
-        end
-      end
-      if(when_ExcepPlugin_l222) begin
-        if(when_ExcepPlugin_l223) begin
-          if(ecall) begin
-            mcause_wdata <= 64'h000000000000000b;
-          end else begin
-            if(ebreak) begin
-              mcause_wdata <= 64'h0000000000000003;
-            end else begin
-              mcause_wdata <= 64'h000000000000000a;
-            end
-          end
-        end else begin
-          if(when_ExcepPlugin_l231) begin
-            mcause_wdata <= 64'h8000000000000007;
-          end
-        end
-      end
-      if((csr_state == CsrEnum_WRITE)) begin
-          csr_ports_mepc_wen <= 1'b1;
-          csr_ports_mcause_wen <= 1'b1;
-          csr_ports_mstatus_wen <= 1'b1;
-          csr_ports_mepc_wdata <= mepc_wdata;
-          csr_ports_mcause_wdata <= mcause_wdata;
-          csr_ports_mstatus_wdata <= {{{{csr_ports_mstatus[63 : 8],csr_ports_mstatus[3]},csr_ports_mstatus[6 : 4]},1'b0},csr_ports_mstatus[2 : 0]};
-      end else if((csr_state == CsrEnum_MRET)) begin
-          csr_ports_mstatus_wen <= 1'b1;
-          csr_ports_mstatus_wdata <= {{{{csr_ports_mstatus[63 : 8],1'b1},csr_ports_mstatus[6 : 4]},csr_ports_mstatus[7]},csr_ports_mstatus[2 : 0]};
-      end else begin
-          csr_ports_mepc_wen <= 1'b0;
-          csr_ports_mcause_wen <= 1'b0;
-          csr_ports_mstatus_wen <= 1'b0;
-      end
-      if(when_ExcepPlugin_l258) begin
-        int_en <= 1'b1;
-        int_pc <= csr_ports_mtvec;
-      end else begin
-        if(when_ExcepPlugin_l262) begin
-          int_en <= 1'b1;
-          int_pc <= csr_ports_mepc;
-        end else begin
-          int_en <= 1'b0;
-        end
+      if(pc_next_valid) begin
+        pc_next_d1 <= pc_next;
       end
     end
   end
