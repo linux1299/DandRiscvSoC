@@ -5379,3 +5379,173 @@ INFO: Schema "PUBLIC" is up to date. No migration necessary.
 –≈œ¢: See release notes here: https://rd.gt/416ObMi
 ∞À‘¬ 18, 2023 4:23:12 œ¬ŒÁ org.flywaydb.core.internal.license.VersionPrinter printVersion
 –≈œ¢: 
+2023.08.21 20:17:19 2023.08.21 20:17:28 INFO  Started: Metals version 1.0.0 in folders '/home/lin/SpinalProjects/DandRiscvSoC' for client Visual Studio Code 1.80.2.[0m
+Aug 21, 2023 8:17:28 PM org.flywaydb.core.internal.license.VersionPrinter printVersionOnly
+INFO: Flyway Community Edition 9.20.1 by Redgate
+Aug 21, 2023 8:17:28 PM org.flywaydb.core.internal.license.VersionPrinter printVersion
+INFO: See release notes here: https://rd.gt/416ObMi
+Aug 21, 2023 8:17:28 PM org.flywaydb.core.internal.license.VersionPrinter printVersion
+INFO: 
+Aug 21, 2023 8:17:28 PM org.flywaydb.core.internal.database.base.BaseDatabaseType createDatabase
+INFO: Database: jdbc:h2:file:/home/lin/SpinalProjects/DandRiscvSoC/.metals/metals (H2 2.1)
+Aug 21, 2023 8:17:28 PM org.flywaydb.core.internal.command.DbValidate validate
+INFO: Successfully validated 4 migrations (execution time 00:00.031s)
+Aug 21, 2023 8:17:28 PM org.flywaydb.core.internal.command.DbMigrate migrateGroup
+INFO: Current version of schema "PUBLIC": 4
+Aug 21, 2023 8:17:28 PM org.flywaydb.core.internal.command.DbMigrate logSummary
+INFO: Schema "PUBLIC" is up to date. No migration necessary.
+2023.08.21 20:17:29 INFO  time: initialize in 0.93s[0m
+2023.08.21 20:17:30 INFO  Attempting to connect to the build server...[0m
+2023.08.21 20:17:30 INFO  Bloop uses /usr/lib/jvm/java-11-openjdk-amd64 defined at /home/lin/.bloop/bloop.json[0m
+2023.08.21 20:17:30 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/lin/SpinalProjects/DandRiscvSoC/.metals/bsp.trace.json or /home/lin/.cache/metals/bsp.trace.json[0m
+2023.08.21 20:17:30 INFO  Attempting to connect to the build server...[0m
+2023.08.21 20:17:30 INFO  Bloop uses /usr/lib/jvm/java-11-openjdk-amd64 defined at /home/lin/.bloop/bloop.json[0m
+2023.08.21 20:17:30 INFO  Attempting to connect to the build server...[0m
+2023.08.21 20:17:30 INFO  Bloop uses /usr/lib/jvm/java-11-openjdk-amd64 defined at /home/lin/.bloop/bloop.json[0m
+2023.08.21 20:17:30 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/lin/SpinalProjects/DandRiscvSoC/project/project/.metals/bsp.trace.json or /home/lin/.cache/metals/bsp.trace.json[0m
+2023.08.21 20:17:31 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/lin/SpinalProjects/DandRiscvSoC/project/.metals/bsp.trace.json or /home/lin/.cache/metals/bsp.trace.json[0m
+2023.08.21 20:17:31 INFO  time: Connected to build server in 0.65s[0m
+2023.08.21 20:17:31 INFO  Connected to Build server: Bloop v1.5.8[0m
+Aug 21, 2023 8:17:31 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+2023.08.21 20:17:33 INFO  no build target found for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ControlPlugin.scala. Using presentation compiler with project's scala-library version: 3.3.0[0m
+2023.08.21 20:17:33 INFO  time: code lens generation in 3.76s[0m
+2023.08.21 20:17:35 WARN  Could not find java sources in /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/lib/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/lib/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/lib/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/lib/src.zip. Java symbols will not be available.[0m
+2023.08.21 20:17:35 WARN  Could not find java sources in /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/lib/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/lib/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/lib/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/lib/src.zip. Java symbols will not be available.[0m
+2023.08.21 20:17:35 WARN  Could not find java sources in /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/lib/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/lib/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/lib/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/lib/src.zip. Java symbols will not be available.[0m
+2023.08.21 20:17:35 INFO  time: indexed workspace in 1.79s[0m
+2023.08.21 20:17:35 WARN  no build target for: /home/lin/SpinalProjects/SpinalTemplateSbt/hw/spinal/projectname/MyTopLevel.scala[0m
+2023.08.21 20:17:37 WARN  no build target for: /home/lin/SpinalProjects/SpinalTemplateSbt/hw/spinal/projectname/MyTopLevel.scala[0m
+Aug 21, 2023 9:40:39 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 10
+2023.08.21 21:57:19 INFO  compiling projectname (1 scala source)[0m
+2023.08.21 21:57:21 INFO  time: compiled projectname in 1.46s[0m
+2023.08.21 21:57:23 INFO  compiling projectname (1 scala source)[0m
+2023.08.21 21:57:25 INFO  time: compiled projectname in 1.26s[0m
+2023.08.22 19:11:58 WARN  Using indexes to guess the definition of insert[0m
+Aug 22, 2023 7:12:13 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 404
+2023.08.22 19:18:57 INFO  compiling projectname (3 scala sources)[0m
+2023.08.22 19:18:59 INFO  time: compiled projectname in 2.41s[0m
+Aug 22, 2023 7:33:28 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 505
+2023.08.22 19:35:53 INFO  compiling projectname (1 scala source)[0m
+2023.08.22 19:35:54 INFO  time: compiled projectname in 1.14s[0m
+2023.08.22 19:37:03 INFO  compiling projectname (1 scala source)[0m
+2023.08.22 19:37:03 WARN  1 deprecation (since 2.13.3); re-run with -deprecation for details[0m
+2023.08.22 19:37:03 INFO  time: compiled projectname in 0.9s[0m
+2023.08.22 19:37:40 INFO  compiling projectname (1 scala source)[0m
+2023.08.22 19:37:40 INFO  time: compiled projectname in 0.16s[0m
+2023.08.22 19:37:41 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/AluPlugin.scala[0m
+2023.08.22 19:38:17 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/AluPlugin.scala[0m
+2023.08.22 19:38:17 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/AluPlugin.scala[0m
+2023.08.22 19:38:17 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/AluPlugin.scala[0m
+2023.08.22 19:38:17 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/AluPlugin.scala[0m
+2023.08.22 19:38:17 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/AluPlugin.scala[0m
+2023.08.22 19:38:17 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/AluPlugin.scala[0m
+2023.08.22 19:38:17 WARN  Using indexes to guess the definition of AluCtrlEnum[0m
+2023.08.22 19:38:17 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/AluPlugin.scala[0m
+2023.08.22 19:38:17 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/AluPlugin.scala[0m
+2023.08.22 19:38:17 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/AluPlugin.scala[0m
+2023.08.22 19:38:17 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/AluPlugin.scala[0m
+2023.08.22 19:38:17 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/AluPlugin.scala[0m
+2023.08.22 19:38:17 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/AluPlugin.scala[0m
+2023.08.22 19:38:17 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/AluPlugin.scala[0m
+2023.08.22 19:38:17 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/AluPlugin.scala[0m
+2023.08.22 19:38:17 WARN  Using indexes to guess the definition of input[0m
+2023.08.22 19:38:17 INFO  compiling projectname (1 scala source)[0m
+2023.08.22 19:38:17 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/AluPlugin.scala[0m
+2023.08.22 19:38:17 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/AluPlugin.scala[0m
+2023.08.22 19:38:17 INFO  time: compiled projectname in 0.18s[0m
+2023.08.22 19:38:17 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/AluPlugin.scala[0m
+2023.08.22 19:38:17 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/AluPlugin.scala[0m
+2023.08.22 19:38:17 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/AluPlugin.scala[0m
+2023.08.22 19:38:17 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/AluPlugin.scala[0m
+2023.08.22 19:38:17 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/AluPlugin.scala[0m
+2023.08.22 19:38:21 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/AluPlugin.scala[0m
+2023.08.22 19:38:21 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/AluPlugin.scala[0m
+2023.08.22 19:38:22 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/AluPlugin.scala[0m
+2023.08.22 19:38:23 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/AluPlugin.scala[0m
+2023.08.22 19:38:24 INFO  compiling projectname (1 scala source)[0m
+2023.08.22 19:38:24 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/AluPlugin.scala[0m
+2023.08.22 19:38:24 INFO  time: compiled projectname in 0.81s[0m
+2023.08.22 21:30:24 INFO  compiling projectname (1 scala source)[0m
+2023.08.22 21:30:24 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ExcepPlugin.scala[0m
+2023.08.22 21:30:25 INFO  time: compiled projectname in 1.47s[0m
+2023.08.22 21:41:01 INFO  compiling projectname (1 scala source)[0m
+2023.08.22 21:41:03 INFO  time: compiled projectname in 1.51s[0m
+2023.08.22 21:41:16 INFO  compiling projectname (1 scala source)[0m
+2023.08.22 21:41:17 INFO  time: compiled projectname in 1.41s[0m
+2023.08.22 21:41:42 INFO  compiling projectname (1 scala source)[0m
+2023.08.22 21:41:43 INFO  time: compiled projectname in 1.16s[0m
+2023.08.22 21:42:35 INFO  compiling projectname (1 scala source)[0m
+2023.08.22 21:42:36 INFO  time: compiled projectname in 1.06s[0m
+2023.08.22 21:43:20 INFO  compiling projectname (1 scala source)[0m
+2023.08.22 21:43:20 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ExcepPlugin.scala[0m
+2023.08.22 21:43:20 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ExcepPlugin.scala[0m
+2023.08.22 21:43:22 INFO  time: compiled projectname in 1.27s[0m
+2023.08.22 21:43:23 INFO  compiling projectname (1 scala source)[0m
+2023.08.22 21:43:25 INFO  time: compiled projectname in 1.08s[0m
+2023.08.22 21:45:26 INFO  compiling projectname (1 scala source)[0m
+2023.08.22 21:45:28 INFO  time: compiled projectname in 1.35s[0m
+2023.08.22 21:58:06 INFO  compiling projectname (1 scala source)[0m
+2023.08.22 21:58:06 INFO  time: compiled projectname in 0.75s[0m
+Aug 22, 2023 9:58:43 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 1556
+2023.08.22 21:58:48 INFO  compiling projectname (1 scala source)[0m
+2023.08.22 21:58:48 INFO  time: compiled projectname in 0.77s[0m
+2023.08.22 22:02:12 INFO  compiling projectname (1 scala source)[0m
+2023.08.22 22:02:12 INFO  time: compiled projectname in 0.97s[0m
+2023.08.22 22:02:18 WARN  Using indexes to guess the definition of output[0m
+2023.08.22 22:02:18 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ControlPlugin.scala[0m
+2023.08.22 22:02:18 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ControlPlugin.scala[0m
+2023.08.22 22:02:18 INFO  compiling projectname (1 scala source)[0m
+2023.08.22 22:02:18 WARN  Using indexes to guess the definition of INT_EN[0m
+2023.08.22 22:02:18 INFO  time: compiled projectname in 51ms[0m
+2023.08.22 22:02:18 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ControlPlugin.scala[0m
+2023.08.22 22:02:21 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ControlPlugin.scala[0m
+2023.08.22 22:02:21 INFO  compiling projectname (1 scala source)[0m
+2023.08.22 22:02:21 INFO  time: compiled projectname in 0.81s[0m
+2023.08.22 22:02:27 INFO  compiling projectname (1 scala source)[0m
+2023.08.22 22:02:28 INFO  time: compiled projectname in 1.37s[0m
+2023.08.22 22:06:35 INFO  compiling projectname (1 scala source)[0m
+2023.08.22 22:06:35 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ControlPlugin.scala[0m
+2023.08.22 22:06:36 INFO  time: compiled projectname in 1.01s[0m
+2023.08.22 22:51:40 INFO  compiling projectname (1 scala source)[0m
+2023.08.22 22:51:40 INFO  time: compiled projectname in 0.98s[0m
+Aug 22, 2023 10:53:11 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 1819
+Aug 22, 2023 10:54:20 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 1897
+Aug 22, 2023 10:54:20 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 1901
+Aug 22, 2023 10:54:20 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 1902
+2023.08.22 22:54:41 INFO  compiling projectname (1 scala source)[0m
+2023.08.22 22:54:41 INFO  time: compiled projectname in 0.2s[0m
+2023.08.22 22:54:41 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ControlPlugin.scala[0m
+2023.08.22 22:54:43 INFO  compiling projectname (1 scala source)[0m
+2023.08.22 22:54:43 INFO  time: compiled projectname in 0.21s[0m
+2023.08.22 22:54:43 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ControlPlugin.scala[0m
+2023.08.22 22:55:02 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ControlPlugin.scala[0m
+2023.08.22 22:55:06 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ControlPlugin.scala[0m
+2023.08.22 22:55:07 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ControlPlugin.scala[0m
+2023.08.22 22:55:08 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ControlPlugin.scala[0m
+2023.08.22 22:55:08 INFO  compiling projectname (1 scala source)[0m
+2023.08.22 22:55:09 INFO  time: compiled projectname in 1.05s[0m
+2023.08.23 19:02:57 INFO  compiling projectname (1 scala source)[0m
+2023.08.23 19:02:57 INFO  time: compiled projectname in 0.31s[0m
+2023.08.23 19:03:28 WARN  Using indexes to guess the definition of output[0m
+2023.08.23 19:03:28 INFO  compiling projectname (1 scala source)[0m
+2023.08.23 19:03:28 INFO  time: compiled projectname in 0.2s[0m
+2023.08.23 19:03:29 INFO  compiling projectname (1 scala source)[0m
+2023.08.23 19:03:29 INFO  time: compiled projectname in 0.26s[0m
+2023.08.23 19:03:42 INFO  compiling projectname (1 scala source)[0m
+2023.08.23 19:03:42 INFO  time: compiled projectname in 0.21s[0m
+2023.08.23 19:03:56 INFO  compiling projectname (1 scala source)[0m
+2023.08.23 19:03:56 WARN  Using indexes to guess the definition of LSU_RDATA[0m
+2023.08.23 19:03:56 INFO  time: compiled projectname in 0.24s[0m
+2023.08.23 19:03:56 INFO  compiling projectname (1 scala source)[0m
+2023.08.23 19:03:57 INFO  time: compiled projectname in 1.22s[0m
+2023.08.23 19:16:24 INFO  compiling projectname (1 scala source)[0m
+2023.08.23 19:16:25 INFO  time: compiled projectname in 1.25s[0m

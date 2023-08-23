@@ -27,7 +27,7 @@ ver:
 all2: clean com2 sim2
 re2: com2 sim2
 com2:
-	vcs -sverilog +v2k -timescale=1ns/1ns  -full64               \
+	vcs -sverilog +v2k -timescale=1ns/1ns  -full64 -cpp g++ -cc gcc -LDFLAGS -Wl,--no-as-needed \
 	-f ./hw/verilog/tb/tb_DandRiscvSmallest.f                       \
 	-debug_all                                 \
 	-o ./simWorkspace/tb_DandRiscvSmallest/tb_DandRiscvSmallest.simv  \

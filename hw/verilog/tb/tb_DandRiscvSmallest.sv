@@ -48,7 +48,7 @@ end
 
 // ========================== Time out =============================
 initial begin
-  #200000
+  #100000ns
   $display("\n============== TimeOut ! Simulation finish ! ============\n");
   $finish;
 end
@@ -58,13 +58,15 @@ initial begin
 	$display("\n================== Time:%d, Dump Start ================\n",$time);
 	$fsdbDumpfile("./simWorkspace/tb_DandRiscvSmallest/tb_DandRiscvSmallest.fsdb");
 	$fsdbDumpvars(0, "tb_DandRiscvSmallest", "+mda");
+  // #40 $fsdbDumpoff;
+  // #50000ns $fsdbDumpon;
+  // #50000ns $fsdbDumpoff;
 end
 
 // ==================== initial program in ram =======================
 initial begin
 
-  // fd = $fopen ("../../oscpu/bin/custom-output/yield-test/amtest-yield-test.bin", "rb");
-  fd = $fopen ("../../oscpu/bin/non-output/cpu-tests/bubble-sort-cpu-tests.bin", "rb");
+  fd = $fopen ("../../oscpu/bin/non-output/coremark/coremark.bin", "rb");
   tmp = $fread(ram_tmp, fd);
 
   for (i = 0; i < (1<<size); i = i + 1) begin

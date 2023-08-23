@@ -43,7 +43,7 @@ case class DandRiscvSimpleConfig(){
   }
   
   object AluCtrlEnum extends SpinalEnum(binarySequential){
-    val IDLE, ADD, SUB, SLT, SLTU, XOR, SLL, SRL, SRA, AND, OR, LUI, AUIPC, JAL, JALR, BEQ, BNE, BLT, BGE, BLTU, BGEU= newElement()
+    val IDLE, ADD, SUB, SLT, SLTU, XOR, SLL, SRL, SRA, AND, OR, LUI, AUIPC, JAL, JALR, BEQ, BNE, BLT, BGE, BLTU, BGEU, CSR= newElement()
   }
 
   object MemCtrlEnum extends SpinalEnum(binarySequential){
@@ -70,6 +70,8 @@ case class DandRiscvSimpleConfig(){
   // decode stage insert
   object RS1 extends Stageable(Bits(XLEN bits))
   object RS2 extends Stageable(Bits(XLEN bits))
+  object SRC1 extends Stageable(Bits(XLEN bits))
+  object SRC2 extends Stageable(Bits(XLEN bits))
   object IMM extends Stageable(Bits(XLEN bits))
   object RS1_ADDR extends Stageable(UInt(5 bits))
   object RS2_ADDR extends Stageable(UInt(5 bits))
@@ -115,14 +117,14 @@ case class DandRiscvSimpleConfig(){
   // control unit
   object RS1_FROM_MEM extends Stageable(Bool())
   object RS2_FROM_MEM extends Stageable(Bool())
-  // object RS1_FROM_LOAD extends Stageable(Bool())
-  // object RS2_FROM_LOAD extends Stageable(Bool())
+  object RS1_FROM_LOAD extends Stageable(Bool())
+  object RS2_FROM_LOAD extends Stageable(Bool())
   object RS1_FROM_WB extends Stageable(Bool())
   object RS2_FROM_WB extends Stageable(Bool())
   object CTRL_RS1_FROM_MEM extends Stageable(Bool())
   object CTRL_RS2_FROM_MEM extends Stageable(Bool())
-  // object CTRL_RS1_FROM_LOAD extends Stageable(Bool())
-  // object CTRL_RS2_FROM_LOAD extends Stageable(Bool())
+  object CTRL_RS1_FROM_LOAD extends Stageable(Bool())
+  object CTRL_RS2_FROM_LOAD extends Stageable(Bool())
   object CTRL_RS1_FROM_WB extends Stageable(Bool())
   object CTRL_RS2_FROM_WB extends Stageable(Bool())
   

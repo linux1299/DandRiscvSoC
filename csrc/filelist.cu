@@ -1,16 +1,16 @@
 PIC_LD=ld
 
 ARCHIVE_OBJS=
-ARCHIVE_OBJS += _33834_archive_1.so
-_33834_archive_1.so : archive.13/_33834_archive_1.a
+ARCHIVE_OBJS += _94255_archive_1.so
+_94255_archive_1.so : archive.22/_94255_archive_1.a
 	@$(AR) -s $<
-	@$(PIC_LD) -shared  -Bsymbolic  -o .//../simWorkspace/tb_DandRiscvSmallest/tb_DandRiscvSmallest.simv.daidir//_33834_archive_1.so --whole-archive $< --no-whole-archive
+	@$(PIC_LD) -shared  -Bsymbolic  -o .//../simWorkspace/tb_DandRiscvSmallest/tb_DandRiscvSmallest.simv.daidir//_94255_archive_1.so --whole-archive $< --no-whole-archive
 	@rm -f $@
-	@ln -sf .//../simWorkspace/tb_DandRiscvSmallest/tb_DandRiscvSmallest.simv.daidir//_33834_archive_1.so $@
+	@ln -sf .//../simWorkspace/tb_DandRiscvSmallest/tb_DandRiscvSmallest.simv.daidir//_94255_archive_1.so $@
 
 
 ARCHIVE_OBJS += _prev_archive_1.so
-_prev_archive_1.so : archive.13/_prev_archive_1.a
+_prev_archive_1.so : archive.22/_prev_archive_1.a
 	@$(AR) -s $<
 	@$(PIC_LD) -shared  -Bsymbolic  -o .//../simWorkspace/tb_DandRiscvSmallest/tb_DandRiscvSmallest.simv.daidir//_prev_archive_1.so --whole-archive $< --no-whole-archive
 	@rm -f $@

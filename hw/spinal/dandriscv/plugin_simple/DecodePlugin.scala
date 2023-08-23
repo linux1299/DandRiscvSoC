@@ -194,6 +194,9 @@ class DecodePlugin() extends Plugin[DandRiscvSimple]
         is(BGEU(false)){
           alu_ctrl := AluCtrlEnum.BGEU.asBits
         }
+        is(CSRRW,CSRRS,CSRRC,CSRRWI,CSRRSI,CSRRCI){
+          alu_ctrl := AluCtrlEnum.CSR.asBits
+        }
         default {
           alu_ctrl := B(0)
         }

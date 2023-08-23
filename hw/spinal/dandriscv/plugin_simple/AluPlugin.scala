@@ -81,9 +81,9 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
         when(input(RS1_FROM_MEM)){
           src1 := memaccess.input(ALU_RESULT)
         }
-        // .elsewhen(input(RS1_FROM_LOAD)){
-        //   src1 := memaccess.input(MEM_RDATA)
-        // }
+        .elsewhen(input(RS1_FROM_LOAD)){
+          src1 := memaccess.input(LSU_RDATA)
+        }
         .elsewhen(input(RS1_FROM_WB)){
           src1 := writebackStage.output(RD)
         }
@@ -102,9 +102,9 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
         when(input(RS2_FROM_MEM)){
           src2 := memaccess.input(ALU_RESULT)
         }
-        // .elsewhen(input(RS2_FROM_LOAD)){
-        //   src2 := memaccess.input(MEM_RDATA)
-        // }
+        .elsewhen(input(RS2_FROM_LOAD)){
+          src2 := memaccess.input(LSU_RDATA)
+        }
         .elsewhen(input(RS2_FROM_WB)){
           src2 := writebackStage.output(RD)
         }
@@ -117,9 +117,9 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
       when(input(CTRL_RS1_FROM_MEM)){
         branch_src1 := memaccess.output(ALU_RESULT).asBits
       }
-      // .elsewhen(input(CTRL_RS1_FROM_LOAD)){
-      //   branch_src1 := memaccess.output(MEM_RDATA).asBits
-      // }
+      .elsewhen(input(CTRL_RS1_FROM_LOAD)){
+        branch_src1 := memaccess.output(LSU_RDATA).asBits
+      }
       .elsewhen(input(CTRL_RS1_FROM_WB)){
         branch_src1 := writebackStage.output(RD).asBits
       }
@@ -130,9 +130,9 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
       when(input(CTRL_RS2_FROM_MEM)){
         branch_src2 := memaccess.output(ALU_RESULT).asBits
       }
-      // .elsewhen(input(CTRL_RS2_FROM_LOAD)){
-      //   branch_src2 := memaccess.output(MEM_RDATA).asBits
-      // }
+      .elsewhen(input(CTRL_RS2_FROM_LOAD)){
+        branch_src2 := memaccess.output(LSU_RDATA).asBits
+      }
       .elsewhen(input(CTRL_RS2_FROM_WB)){
         branch_src2 := writebackStage.output(RD).asBits
       }
@@ -197,6 +197,9 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
         }
         is(AluCtrlEnum.JAL.asBits, AluCtrlEnum.JALR.asBits, AluCtrlEnum.AUIPC.asBits){
           alu_result := add_result.asBits
+        }
+        is(AluCtrlEnum.CSR.asBits){
+          alu_result := input(CSR_RDATA)
         }
         default{
           alu_result := add_result.asBits
@@ -284,7 +287,7 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
       
       // insert to stage
       insert(ALU_RESULT) := alu_result
-      insert(MEM_WDATA) := output(RS2_FROM_WB) ? writebackStage.output(RD) | (output(RS2_FROM_MEM) ? memaccess.output(ALU_RESULT) | output(RS2))
+      insert(MEM_WDATA) := output(RS2_FROM_WB) ? writebackStage.output(RD) | (output(RS2_FROM_MEM) ? memaccess.output(ALU_RESULT) | (output(RS2_FROM_LOAD) ? memaccess.output(LSU_RDATA) | output(RS2)) )
       insert(BRANCH_OR_JALR) := branch_or_jalr
       insert(BRANCH_OR_JUMP) := branch_or_jump && arbitration.isFiring
       insert(BRANCH_TAKEN) := branch_taken
@@ -294,7 +297,8 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
       insert(IS_RET) := is_ret
       insert(REDIRECT_VALID):= redirect_valid
       insert(REDIRECT_PC_NEXT) := redirect_pc_next
-
+      insert(SRC1) := src1
+      insert(SRC2) := src2
     }
 
   }

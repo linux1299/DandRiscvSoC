@@ -248,7 +248,7 @@ case class Clint(MXLEN : Int = 64, addressWidth : Int = 64) extends Component{
       int_pc := 0
       csr_ports.mepc_wen := False
       csr_ports.mcause_wen := False
-      csr_ports.mstatus_wen := True
+      csr_ports.mstatus_wen := False
       csr_ports.mepc_wdata := 0
       csr_ports.mcause_wdata := 0
       csr_ports.mstatus_wdata := 0
@@ -328,27 +328,31 @@ class ExcepPlugin() extends Plugin[DandRiscvSimple]
 
     fetch plug new Area{
       import fetch._
-      clint.pc := output(PC)
+      
       insert(INT_EN) := clint.int_en
       insert(INT_PC) := clint.int_pc
     }
 
     decode plug new Area{
       import decode._
-      insert(CSR_RDATA) := csr_regfile.cpu_ports.rdata
 
+      insert(CSR_RDATA) := csr_regfile.cpu_ports.rdata
       csr_regfile.cpu_ports.raddr := output(CSR_ADDR)
-      clint.ecall := arbitration.isValid && output(CSR_CTRL)===CsrCtrlEnum.ECALL.asBits
-      clint.ebreak:= arbitration.isValid && output(CSR_CTRL)===CsrCtrlEnum.EBREAK.asBits
-      clint.mret  := arbitration.isValid && output(CSR_CTRL)===CsrCtrlEnum.MRET.asBits
+      
     }
 
     execute plug new Area{
       import execute._
+
+      clint.pc := output(PC)
+      clint.ecall := arbitration.isValid && output(CSR_CTRL)===CsrCtrlEnum.ECALL.asBits
+      clint.ebreak:= arbitration.isValid && output(CSR_CTRL)===CsrCtrlEnum.EBREAK.asBits
+      clint.mret  := arbitration.isValid && output(CSR_CTRL)===CsrCtrlEnum.MRET.asBits
+
       val csr_wdata = Bits(MXLEN bits)
-      val csrrw_wdata = input(RS1)
-      val csrrs_wdata = input(RS1) | input(CSR_RDATA)
-      val csrrc_wdata = ~input(RS1) & input(CSR_RDATA)
+      val csrrw_wdata = input(SRC1)
+      val csrrs_wdata = input(SRC1) | input(CSR_RDATA)
+      val csrrc_wdata = ~input(SRC1) & input(CSR_RDATA)
       val csrrwi_wdata = input(IMM)
       val csrrsi_wdata = input(IMM) | input(CSR_RDATA)
       val csrrci_wdata = ~input(IMM) & input(CSR_RDATA)

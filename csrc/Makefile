@@ -38,9 +38,9 @@ LD=g++
 # Strip Flags for target product
 STRIPFLAGS= 
 
-PRE_LDFLAGS=  -no-pie  -Wl,--no-as-needed 
+PRE_LDFLAGS=  -no-pie 
 # Loader Flags
-LDFLAGS=-L/usr/lib/x86_64-linux-gnu -L/lib/x86_64-linux-gnu -Wl,--no-as-needed -rdynamic  -Wl,-rpath=/home/lin/vcs_verdi/vcs2018/vcs/O-2018.09-SP2/linux64/lib -L/home/lin/vcs_verdi/vcs2018/vcs/O-2018.09-SP2/linux64/lib 
+LDFLAGS= -Wl,--no-as-needed -rdynamic  -Wl,-rpath=/home/lin/vcs_verdi/vcs2018/vcs/O-2018.09-SP2/linux64/lib -L/home/lin/vcs_verdi/vcs2018/vcs/O-2018.09-SP2/linux64/lib 
 # Picarchive Flags
 PICLDFLAGS=-Wl,-rpath-link=./ -Wl,-rpath='$$ORIGIN'/tb_DandRiscvSmallest.simv.daidir/ -Wl,-rpath=./tb_DandRiscvSmallest.simv.daidir/ -Wl,-rpath='$$ORIGIN'/tb_DandRiscvSmallest.simv.daidir//scsim.db.dir 
 
