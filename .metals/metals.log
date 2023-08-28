@@ -5549,3 +5549,42 @@ WARNING: Unmatched cancel notification for request id 1902
 2023.08.23 19:03:57 INFO  time: compiled projectname in 1.22s[0m
 2023.08.23 19:16:24 INFO  compiling projectname (1 scala source)[0m
 2023.08.23 19:16:25 INFO  time: compiled projectname in 1.25s[0m
+Aug 25, 2023 8:14:19 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 2420
+Aug 25, 2023 8:14:19 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 2421
+2023.08.25 20:14:20 INFO  compiling projectname (1 scala source)[0m
+2023.08.25 20:14:22 WARN  1 deprecation (since 2.13.0); re-run with -deprecation for details[0m
+2023.08.25 20:14:22 INFO  time: compiled projectname in 1.92s[0m
+2023.08.25 20:14:32 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/FetchPlugin.scala[0m
+2023.08.25 20:14:32 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/FetchPlugin.scala[0m
+2023.08.25 20:14:32 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/FetchPlugin.scala[0m
+2023.08.25 20:14:32 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/FetchPlugin.scala[0m
+2023.08.25 20:14:32 INFO  compiling projectname (1 scala source)[0m
+2023.08.25 20:14:32 WARN  Using indexes to guess the definition of cmd[0m
+2023.08.25 20:14:34 WARN  1 deprecation (since 2.13.0); re-run with -deprecation for details[0m
+2023.08.25 20:14:34 INFO  time: compiled projectname in 1.94s[0m
+2023.08.25 20:14:38 INFO  compiling projectname (1 scala source)[0m
+2023.08.25 20:14:39 WARN  1 deprecation (since 2.13.0); re-run with -deprecation for details[0m
+2023.08.25 20:14:39 INFO  time: compiled projectname in 1.22s[0m
+2023.08.25 20:18:09 INFO  compiling projectname (1 scala source)[0m
+2023.08.25 20:18:11 INFO  time: compiled projectname in 1.35s[0m
+Aug 25, 2023 8:55:54 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 2612
+2023.08.25 21:04:44 INFO  compiling projectname (1 scala source)[0m
+2023.08.25 21:04:44 WARN  1 deprecation (since 2.13.0); re-run with -deprecation for details[0m
+2023.08.25 21:04:44 INFO  time: compiled projectname in 0.97s[0m
+2023.08.25 21:06:38 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/FetchPlugin.scala[0m
+2023.08.25 21:06:38 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/FetchPlugin.scala[0m
+2023.08.25 21:06:38 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/FetchPlugin.scala[0m
+2023.08.25 21:06:38 INFO  compiling projectname (1 scala source)[0m
+2023.08.25 21:06:38 WARN  1 deprecation (since 2.13.0); re-run with -deprecation for details[0m
+2023.08.25 21:06:40 INFO  time: compiled projectname in 1.03s[0m
+2023.08.25 21:07:31 INFO  compiling projectname (1 scala source)[0m
+2023.08.25 21:07:32 INFO  time: compiled projectname in 1.34s[0m
+2023.08.25 21:07:38 INFO  compiling projectname (1 scala source)[0m
+2023.08.25 21:07:38 INFO  time: compiled projectname in 0.69s[0m
+2023.08.25 21:23:30 INFO  compiling projectname (1 scala source)[0m
+2023.08.25 21:23:30 INFO  time: compiled projectname in 0.9s[0m
+2023.08.25 21:32:13 INFO  compiling projectname (1 scala source)[0m
+2023.08.25 21:32:13 INFO  time: compiled projectname in 0.96s[0m

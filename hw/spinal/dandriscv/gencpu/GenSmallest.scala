@@ -13,8 +13,8 @@ object GenSmallest extends App{
         new BPUPlugin(p = PredictorConfig(
           predictorType = "GSHARE",
           addressWidth =64, 
-          RAS_ENTRIES = 4, 
-          BTB_ENTRIES = 4, 
+          RAS_ENTRIES = 64, 
+          BTB_ENTRIES = 64, 
           PHT_ENTRIES = 128
         )),
         new DecodePlugin,

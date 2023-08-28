@@ -236,12 +236,12 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
             redirect_pc_next := pc_next
           }
         }
-        // .otherwise{ // real: not taken; predict: taken
-        //   when(input(PREDICT_TAKEN)){
-        //     redirect_valid := arbitration.isFiring
-        //     redirect_pc_next := input(PC) + 4
-        //   }
-        // }
+        .otherwise{ // real: not taken; predict: taken
+          when(input(PREDICT_TAKEN)){
+            redirect_valid := arbitration.isFiring
+            redirect_pc_next := input(PC) + 4
+          }
+        }
       }
       // call or return
       when(jal){

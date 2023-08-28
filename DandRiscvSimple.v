@@ -1,6 +1,6 @@
 // Generator : SpinalHDL v1.8.1    git head : 2a7592004363e5b40ec43e1f122ed8641cd8965b
 // Component : DandRiscvSimple
-// Git hash  : 862801b8b82abdf2d9d9418ab2d0e97c6bfc047a
+// Git hash  : 8c744c9923b004dc0227ef3edcb8d56a763e5edb
 
 `timescale 1ns/1ps
 
@@ -180,7 +180,9 @@ module DandRiscvSimple (
   wire       [63:0]   decode_IMM;
   wire       [63:0]   fetch_INT_PC;
   wire                fetch_INT_EN;
+  wire       [63:0]   fetch_PREDICT_PC;
   wire                decode_PREDICT_TAKEN;
+  wire                fetch_PREDICT_TAKEN;
   wire                fetch_PREDICT_VALID;
   wire       [31:0]   memaccess_INSTRUCTION;
   wire       [31:0]   execute_INSTRUCTION;
@@ -242,8 +244,6 @@ module DandRiscvSimple (
   wire       [31:0]   decode_INSTRUCTION;
   wire       [63:0]   decode_PC;
   wire       [63:0]   _zz_execute_to_memaccess_PC;
-  wire       [63:0]   _zz_fetch_to_decode_PC_NEXT;
-  wire                fetch_PREDICT_TAKEN;
   wire       [63:0]   fetch_BPU_PC_NEXT;
   wire                fetch_BPU_BRANCH_TAKEN;
   wire       [63:0]   _zz_pc_next;
@@ -863,7 +863,7 @@ module DandRiscvSimple (
     .reset                 (reset                                                                )  //i
   );
   gshare_predictor gshare_predictor_1 (
-    .predict_pc         (_zz_fetch_to_decode_PC_NEXT[63:0]       ), //i
+    .predict_pc         (fetch_PREDICT_PC[63:0]                  ), //i
     .predict_valid      (fetch_PREDICT_VALID                     ), //i
     .predict_taken      (gshare_predictor_1_predict_taken        ), //o
     .predict_history    (gshare_predictor_1_predict_history[6:0] ), //o
@@ -998,7 +998,9 @@ module DandRiscvSimple (
   assign decode_IMM = decode_DecodePlugin_imm;
   assign fetch_INT_PC = clint_1_int_pc;
   assign fetch_INT_EN = clint_1_int_en;
+  assign fetch_PREDICT_PC = pc_next;
   assign decode_PREDICT_TAKEN = fetch_to_decode_PREDICT_TAKEN;
+  assign fetch_PREDICT_TAKEN = fetch_FetchPlugin_predict_taken_out_payload;
   assign fetch_PREDICT_VALID = ICachePlugin_icache_access_cmd_fire_4;
   assign memaccess_INSTRUCTION = execute_to_memaccess_INSTRUCTION;
   assign execute_INSTRUCTION = decode_to_execute_INSTRUCTION;
@@ -1060,10 +1062,8 @@ module DandRiscvSimple (
   assign decode_INSTRUCTION = fetch_to_decode_INSTRUCTION;
   assign decode_PC = fetch_to_decode_PC;
   assign _zz_execute_to_memaccess_PC = execute_PC;
-  assign _zz_fetch_to_decode_PC_NEXT = fetch_PC_NEXT;
-  assign fetch_PREDICT_TAKEN = fetch_FetchPlugin_predict_taken_out_payload;
-  assign fetch_BPU_PC_NEXT = 64'h0;
-  assign fetch_BPU_BRANCH_TAKEN = 1'b0;
+  assign fetch_BPU_PC_NEXT = gshare_predictor_1_predict_pc_next;
+  assign fetch_BPU_BRANCH_TAKEN = gshare_predictor_1_predict_taken;
   assign _zz_pc_next = execute_REDIRECT_PC_NEXT;
   assign when_FetchPlugin_l114 = execute_REDIRECT_VALID;
   assign _zz_pc_next_1 = fetch_INT_PC;
@@ -1175,7 +1175,7 @@ module DandRiscvSimple (
   assign fetch_FetchPlugin_pc_out_stream_payload = fetch_FetchPlugin_pc_stream_fifo_ports_m_ports_payload;
   assign ICachePlugin_icache_access_cmd_fire_3 = (ICachePlugin_icache_access_cmd_valid && ICachePlugin_icache_access_cmd_ready);
   assign fetch_FetchPlugin_predict_taken_in_valid = ICachePlugin_icache_access_cmd_fire_3;
-  assign fetch_FetchPlugin_predict_taken_in_payload = fetch_PREDICT_TAKEN;
+  assign fetch_FetchPlugin_predict_taken_in_payload = fetch_BPU_BRANCH_TAKEN;
   assign fetch_FetchPlugin_predict_taken_out_ready = fetch_arbitration_isFiring;
   assign fetch_FetchPlugin_predict_taken_in_ready = fetch_FetchPlugin_predict_taken_fifo_ports_s_ports_ready;
   assign fetch_FetchPlugin_predict_taken_out_valid = fetch_FetchPlugin_predict_taken_fifo_ports_m_ports_valid;
@@ -2060,6 +2060,10 @@ module DandRiscvSimple (
         if(when_AluPlugin_l234) begin
           execute_ALUPlugin_redirect_pc_next = execute_ALUPlugin_pc_next;
         end
+      end else begin
+        if(execute_PREDICT_TAKEN) begin
+          execute_ALUPlugin_redirect_pc_next = (execute_PC + 64'h0000000000000004);
+        end
       end
     end
   end
@@ -2069,6 +2073,10 @@ module DandRiscvSimple (
     if(execute_ALUPlugin_branch_or_jump) begin
       if(execute_ALUPlugin_branch_taken) begin
         if(when_AluPlugin_l234) begin
+          execute_ALUPlugin_redirect_valid = execute_arbitration_isFiring;
+        end
+      end else begin
+        if(execute_PREDICT_TAKEN) begin
           execute_ALUPlugin_redirect_valid = execute_arbitration_isFiring;
         end
       end
@@ -2867,7 +2875,7 @@ module DandRiscvSimple (
       memaccess_to_writeback_PC <= memaccess_PC;
     end
     if(when_Pipeline_l127_4) begin
-      fetch_to_decode_PC_NEXT <= _zz_fetch_to_decode_PC_NEXT;
+      fetch_to_decode_PC_NEXT <= fetch_PC_NEXT;
     end
     if(when_Pipeline_l127_5) begin
       decode_to_execute_PC_NEXT <= decode_PC_NEXT;

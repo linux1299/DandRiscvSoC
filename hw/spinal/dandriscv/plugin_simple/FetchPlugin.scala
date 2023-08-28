@@ -169,7 +169,7 @@ with ICacheAccessService
       pc_stream_fifo.flush := fetch_flush
 
       predict_taken_in.valid := icache_access.cmd.fire
-      predict_taken_in.payload := input(PREDICT_TAKEN)
+      predict_taken_in.payload := input(BPU_BRANCH_TAKEN)
       predict_taken_out.ready := arbitration.isFiring
       predict_taken_in <> predict_taken_fifo.ports.s_ports
       predict_taken_out <> predict_taken_fifo.ports.m_ports
@@ -184,11 +184,11 @@ with ICacheAccessService
 
       // insert to stage
       insert(PC) := pc_out_stream.payload
-      insert(PC_NEXT) := pc_stream_fifo.next_payload
+      insert(PC_NEXT) := pc_stream_fifo.next_payload // for exe redirect
       insert(INSTRUCTION) := instruction_out_stream.payload
-      insert(PREDICT_VALID) := icache_access.cmd.fire
-      insert(PREDICT_TAKEN) := predict_taken_out.payload
-      insert(PREDICT_PC)    := pc_next
+      insert(PREDICT_VALID) := icache_access.cmd.fire // for BPU
+      insert(PREDICT_TAKEN) := predict_taken_out.payload //for exe redirect
+      insert(PREDICT_PC)    := pc_next // for BPU
       arbitration.isValid := fifo_all_valid && !arbitration.isStuck && !fetch_flush
 
       // send cmd to icache
