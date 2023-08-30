@@ -135,6 +135,7 @@ end
 always@(posedge clk_axi_in) begin
   if(ram_i_mem_read) begin
     ram_i_mem_rsp_valid <= 1'b1;
+    ram_i_mem_rsp_rdata = ram_i[ram_i_mem_raddr];
   end
   else begin
     ram_i_mem_rsp_valid <= 1'b0;
@@ -154,8 +155,6 @@ always@(*) begin
   else begin
     ram_d_mem_rsp_valid = 1'b0;
   end
-
-  ram_i_mem_rsp_rdata = ram_i[ram_i_mem_raddr];
   ram_d_mem_rsp_rdata = ram_d[ram_d_mem_raddr];
 end
 

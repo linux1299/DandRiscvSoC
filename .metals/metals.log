@@ -5590,3 +5590,39 @@ WARNING: Unmatched cancel notification for request id 2612
 2023.08.25 21:32:13 INFO  time: compiled projectname in 0.96s[0m
 2023.08.28 19:24:23 INFO  compiling projectname (1 scala source)[0m
 2023.08.28 19:24:24 INFO  time: compiled projectname in 1.24s[0m
+2023.08.29 13:35:57 INFO  Started: Metals version 1.0.1 in folders 'D:\MyWork\DandRiscvSoC' for client Visual Studio Code 1.81.1.
+╟ктб 29, 2023 1:35:57 обнГ org.flywaydb.core.internal.license.VersionPrinter printVersionOnly
+пео╒: Flyway Community Edition 9.21.2 by Redgate
+╟ктб 29, 2023 1:35:57 обнГ org.flywaydb.core.internal.license.VersionPrinter printVersion
+пео╒: See release notes here: https://rd.gt/416ObMi
+╟ктб 29, 2023 1:35:57 обнГ org.flywaydb.core.internal.license.VersionPrinter printVersion
+пео╒: 
+╟ктб 29, 2023 1:36:01 обнГ org.flywaydb.core.FlywayExecutor execute
+пео╒: Database: jdbc:h2:file:D:\MyWork\DandRiscvSoC\.metals\metals (H2 2.1)
+╟ктб 29, 2023 1:36:01 обнГ org.flywaydb.core.internal.command.DbValidate validate
+пео╒: Successfully validated 4 migrations (execution time 00:00.012s)
+╟ктб 29, 2023 1:36:01 обнГ org.flywaydb.core.internal.command.DbMigrate migrateGroup
+пео╒: Current version of schema "PUBLIC": 4
+╟ктб 29, 2023 1:36:01 обнГ org.flywaydb.core.internal.command.DbMigrate logSummary
+пео╒: Schema "PUBLIC" is up to date. No migration necessary.
+2023.08.29 13:36:02 INFO  time: initialize in 4.73s
+2023.08.29 13:36:02 WARN  Build server is not auto-connectable.
+2023.08.29 13:36:02 WARN  no build target for: D:\MyWork\DandRiscvSoC\hw\spinal\dandriscv\gencpu\GenSimple.scala
+2023.08.29 13:36:02 WARN  no build target for: D:\MyWork\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\ICachePlugin.scala
+2023.08.29 13:36:02 WARN  no build target for: D:\MyWork\DandRiscvSoC\hw\spinal\dandriscv\gencpu\GenSmallest.scala
+2023.08.29 13:36:02 WARN  no build target for: D:\MyWork\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala
+2023.08.29 13:36:02 WARN  no build target for: D:\MyWork\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\AluPlugin.scala
+2023.08.29 13:37:59 INFO  no build target found for D:\MyWork\DandRiscvSoC\hw\spinal\dandriscv\ip\ICache.scala. Using presentation compiler with project's scala-library version: 3.3.0
+2023.08.29 13:38:01 INFO  time: code lens generation in 1.56s
+╟ктб 29, 2023 5:36:49 обнГ org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+пео╒: Unsupported notification method: $/setTrace
+2023.08.29 17:37:11 WARN  no build target for: D:\MyWork\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\FetchPlugin.scala
+2023.08.29 17:37:13 WARN  no build target for: D:\MyWork\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\ExcepPlugin.scala
+2023.08.29 17:39:52 WARN  no build target for: D:\MyWork\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\ControlPlugin.scala
+2023.08.29 17:47:43 WARN  no build target for: D:\MyWork\DandRiscvSoC\hw\spinal\dandriscv\ip\DCache.scala
+2023.08.29 17:49:51 WARN  no build target for: D:\MyWork\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\ExcepPlugin.scala
+2023.08.29 17:49:51 WARN  no build target for: D:\MyWork\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\ExcepPlugin.scala
+2023.08.29 17:49:51 WARN  no build target for: D:\MyWork\DandRiscvSoC\hw\spinal\dandriscv\plugin_simple\ExcepPlugin.scala
+2023.08.30 14:41:11 INFO  Shutting down server
+2023.08.30 14:41:11 INFO  shutting down Metals
+2023.08.30 14:41:11 INFO  Exiting server

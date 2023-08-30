@@ -136,7 +136,7 @@ with DCacheAccessService
       insert(LSU_RDATA):= lsu_rdata
       insert(LSU_WDATA):= lsu_wdata
       insert(TIMER_CEN):= is_timer && is_mem && arbitration.isFiring
-      insert(LSU_HOLD) := !dcache_access.cmd.ready
+      insert(LSU_HOLD) := !dcache_access.cmd.ready && !dcache_access.stall
          
       // connect to dcache
       dcache_access.cmd.valid        := !is_timer && is_mem && arbitration.isValid

@@ -50,6 +50,7 @@ case class DCacheAccessRsp(DW: Int) extends Bundle {
 case class DCacheAccess(AW: Int, DW: Int) extends Bundle with IMasterSlave{
   val cmd = Stream(DCacheAccessCmd(AW, DW))
   val rsp = Flow(DCacheAccessRsp(DW))
+  val stall = Bool()
   override def asMaster(): Unit = {
     master(cmd)
     slave(rsp)
@@ -87,6 +88,7 @@ class DCachePlugin(val config : DCacheConfig) extends Plugin[DandRiscvSimple]{
       dcache_access.cmd <> dcache.cpu.cmd
       dcache_access.rsp <> dcache.cpu.rsp
       dcache.flush := False // TODO:
+      dcache_access.stall <> dcache.stall
 
       // sram ports
       val connect_sram = for(i<-0 until dcache_config.wayCount) yield new Area{
