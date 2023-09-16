@@ -21,3 +21,7 @@
 1691570952529:runMain  dandriscv.gencpu.GenSmallest
 1692354149253:runMain dandriscv.gencpu.GenSmallest
 1693378905099:runMain dandriscv.gencpu.GenSimple
+1693401823687:runMain dandriscv.gencpu.GenSimple
+1694609401621:runMain dandriscv.gencpu.GenSmallest
+1694695114838:runMain dandriscv.gencpu.GenSimple
+1694851854636:runMain dandriscv.gencpu.GenSmallest

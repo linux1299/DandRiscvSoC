@@ -128,7 +128,8 @@ case class DCache(p : DCacheConfig) extends Component{
   when(is_miss || is_write){ // cache miss or write
     next_level_cmd_valid := True
   }
-  .elsewhen(next_level.cmd.fire){
+  // .elsewhen(next_level.cmd.fire){
+  .otherwise{
     next_level_cmd_valid := False
   }
 
@@ -246,13 +247,13 @@ case class DCache(p : DCacheConfig) extends Component{
   cpu.rsp.payload.data := is_hit_d1 ? sram_banks_data(hit_id).subdivideIn(cpuDataWidth bits)(cpu_bank_index) | sram_banks_data(evict_id).subdivideIn(cpuDataWidth bits)(cpu_bank_index)
   cpu.rsp.valid        := is_hit_d1 ? sram_banks_valid(hit_id) | sram_banks_valid(evict_id)
   cpu.cmd.ready        := cpu_cmd_ready
-  stall                := is_miss || is_write
+  stall                := (is_miss || is_write || !cpu_cmd_ready) && !next_level_wdone
 
   // cmd to next level cache
   next_level.cmd.payload.addr := (cpu_addr(addressWidth-1 downto offsetWidth) ## U(0, offsetWidth bits)).asUInt
   next_level.cmd.payload.len  := cpu_wen ? U(0, 4 bits) | (busBurstLen-1)
   next_level.cmd.payload.size := busDataSize
-  next_level.cmd.payload.wen  := cpu_wen
+  next_level.cmd.payload.wen  := cpu_wen // Delay(is_write, 1)
   next_level.cmd.payload.wdata:= next_level_wdata
   next_level.cmd.payload.wstrb:= next_level_wstrb
   next_level.cmd.valid        := next_level_cmd_valid

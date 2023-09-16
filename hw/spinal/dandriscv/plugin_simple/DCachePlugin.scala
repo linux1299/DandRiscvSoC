@@ -103,6 +103,72 @@ class DCachePlugin(val config : DCacheConfig) extends Plugin[DandRiscvSimple]{
       val dcacheReader = master(Axi4ReadOnly(axiConfig)).setName("dcache")
       val dcacheWriter = master(Axi4WriteOnly(axiConfig)).setName("dcache")
       val handshake_cnt = RegInit(False)
+      
+
+      // ar channel
+      dcacheReader.ar.valid.setAsReg() init(False)
+      dcacheReader.ar.payload.id.setAsReg() init(0)
+      dcacheReader.ar.payload.len.setAsReg() init(0)
+      dcacheReader.ar.payload.size.setAsReg() init(0)
+      dcacheReader.ar.payload.burst.setAsReg() init(0)
+      dcacheReader.ar.payload.addr.setAsReg() init(0)
+      
+      when(dcache.next_level.cmd.valid && !dcache.next_level.cmd.payload.wen){
+        dcacheReader.ar.valid      := True
+      }
+      .elsewhen(dcacheReader.ar.fire){
+        dcacheReader.ar.valid      := False
+      }
+      dcacheReader.ar.payload.id   := U(1)
+      dcacheReader.ar.payload.len  := dcache.next_level.cmd.payload.len.resized
+      dcacheReader.ar.payload.size := dcache.next_level.cmd.payload.size
+      dcacheReader.ar.payload.burst := B(1) // INCR
+      dcacheReader.ar.payload.addr := dcache.next_level.cmd.payload.addr
+
+      // r channel
+      dcacheReader.r.ready := True
+
+      // aw channel      
+      dcacheWriter.aw.valid.setAsReg() init(False)
+      dcacheWriter.aw.payload.id.setAsReg() init(0)
+      dcacheWriter.aw.payload.len.setAsReg() init(0)
+      dcacheWriter.aw.payload.size.setAsReg() init(0)
+      dcacheWriter.aw.payload.burst.setAsReg() init(0)
+      dcacheWriter.aw.payload.addr.setAsReg() init(0)
+
+      when(dcache.next_level.cmd.valid && dcache.next_level.cmd.payload.wen){
+        dcacheWriter.aw.valid := True
+      }
+      .elsewhen(dcacheWriter.aw.fire){
+        dcacheWriter.aw.valid := False
+      }
+      dcacheWriter.aw.payload.id := U(2)
+      dcacheWriter.aw.payload.len := dcache.next_level.cmd.payload.len.resized
+      dcacheWriter.aw.payload.size := dcache.next_level.cmd.payload.size
+      dcacheWriter.aw.payload.burst := B(1) // INCR
+      dcacheWriter.aw.payload.addr := dcache.next_level.cmd.payload.addr
+
+      // w channel
+      dcacheWriter.w.valid.setAsReg() init(False)
+      dcacheWriter.w.payload.data.setAsReg() init(0)
+      dcacheWriter.w.payload.strb.setAsReg() init(0)
+      dcacheWriter.w.payload.last.setAsReg() init(False)
+
+      when(dcache.next_level.cmd.valid && dcache.next_level.cmd.payload.wen){
+        dcacheWriter.w.valid := True
+      }
+      .elsewhen(dcacheWriter.w.fire){
+        dcacheWriter.w.valid := False
+      }
+      dcacheWriter.w.payload.data := dcache.next_level.cmd.payload.wdata
+      dcacheWriter.w.payload.strb := dcache.next_level.cmd.payload.wstrb
+      dcacheWriter.w.payload.last := True
+
+      // b channel
+      dcacheWriter.b.ready := True
+
+
+      // to dcache signal
       when(handshake_cnt===False){
         when(dcacheWriter.aw.fire && dcacheWriter.w.fire){
           handshake_cnt := False
@@ -115,38 +181,7 @@ class DCachePlugin(val config : DCacheConfig) extends Plugin[DandRiscvSimple]{
           handshake_cnt := False
         }
       }
-
-      // ar channel
-      dcacheReader.ar.valid := dcache.next_level.cmd.valid && !dcache.next_level.cmd.payload.wen
-      dcacheReader.ar.payload.id := U(1)
-      dcacheReader.ar.payload.len := dcache.next_level.cmd.payload.len.resized
-      dcacheReader.ar.payload.size := dcache.next_level.cmd.payload.size
-      dcacheReader.ar.payload.burst := B(1) // INCR
-      dcacheReader.ar.payload.addr := dcache.next_level.cmd.payload.addr
-
-      // r channel
-      dcacheReader.r.ready := True
-
-      // aw channel
-      // dcacheWriter.aw.valid := dcache.next_level.cmd.valid && dcache.next_level.cmd.payload.wen // TODO:when aw hs, lowdown awvalid
-      dcacheWriter.aw.valid := dcache.next_level.cmd.valid && dcache.next_level.cmd.payload.wen
-      dcacheWriter.aw.payload.id := U(2)
-      dcacheWriter.aw.payload.len := dcache.next_level.cmd.payload.len.resized
-      dcacheWriter.aw.payload.size := dcache.next_level.cmd.payload.size
-      dcacheWriter.aw.payload.burst := B(1) // INCR
-      dcacheWriter.aw.payload.addr := dcache.next_level.cmd.payload.addr
-
-      // w channel
-      dcacheWriter.w.valid        := dcacheWriter.aw.valid
-      dcacheWriter.w.payload.data := dcache.next_level.cmd.payload.wdata
-      dcacheWriter.w.payload.strb := dcache.next_level.cmd.payload.wstrb
-      dcacheWriter.w.payload.last := True
-
-      // b channel
-      dcacheWriter.b.ready := True
-
-
-      // to dcache signal
+      
       dcache.next_level.cmd.ready := dcache.next_level.cmd.wen ? ((dcacheWriter.aw.fire && dcacheWriter.w.fire) || (handshake_cnt && (dcacheWriter.aw.fire || dcacheWriter.w.fire))) | dcacheReader.ar.ready
       dcache.next_level.rsp.valid := dcache.next_level.cmd.wen ? dcacheWriter.b.valid | dcacheReader.r.valid
       dcache.next_level.rsp.payload.bresp := dcacheWriter.b.payload.resp
@@ -158,6 +193,7 @@ class DCachePlugin(val config : DCacheConfig) extends Plugin[DandRiscvSimple]{
       // connect dcache and cpu ports
       dcache_access.cmd <> dcacheMaster.cmd
       dcache_access.rsp <> dcacheMaster.rsp
+      dcache_access.stall := False
     }
 
     

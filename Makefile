@@ -5,7 +5,7 @@ all: clean com sim
 re: com sim
 
 com:
-	vcs -sverilog +v2k -timescale=1ns/1ns  -full64               \
+	vcs -sverilog +v2k -timescale=1ns/1ns  -full64 -cpp g++ -cc gcc -LDFLAGS -Wl,--no-as-needed \
 	-f ./hw/verilog/tb/tb_DandRiscvSimple.f                       \
 	-debug_all                                 \
 	-o ./simWorkspace/tb_DandRiscvSimple/tb_DandRiscvSimple.simv  \

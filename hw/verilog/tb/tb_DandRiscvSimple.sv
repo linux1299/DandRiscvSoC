@@ -9,11 +9,12 @@ module tb_DandRiscvSimple();
 
 parameter AddrWidth = 32;
 parameter AxiAddrWidth = 32;
-parameter DataWidth = 256;
+parameter DataWidth = 64;
 parameter AxiProt = 3'b000;
 parameter AxiRegion = 4'b0000;
 parameter AxiCache = 4'b0000;
 parameter AxiQos = 4'b0000;
+parameter size = 17;
 
 logic          clk_axi_in;
 logic          rst_n;
@@ -60,9 +61,9 @@ logic [DataWidth-1:0]   ram_d_mem_rsp_rdata;
 // axi_req_t dcache_axi_req;
 // axi_resp_t dcache_axi_rsp;
 
-reg [DataWidth-1:0] ram_i   [0:1023];
-reg [DataWidth-1:0] ram_d   [0:1023];
-reg [7:0] ram_tmp [0:1024*DataWidth/8-1];
+reg [DataWidth-1:0] ram_i   [0:(1<<size)-1];
+reg [DataWidth-1:0] ram_d   [0:(1<<size)-1];
+reg [7:0] ram_tmp [0:(1<<size)*DataWidth/8-1];
 integer fd;
 integer tmp;
 integer i;
@@ -77,7 +78,7 @@ logic [2:0]    icache_ar_payload_size    ;
 logic [1:0]    icache_ar_payload_burst   ; 
 logic          icache_r_valid            ; 
 logic          icache_r_ready            ; 
-logic [255:0]  icache_r_payload_data     ; 
+logic [63 :0]  icache_r_payload_data     ; 
 logic [3:0]    icache_r_payload_id       ; 
 logic [1:0]    icache_r_payload_resp     ; 
 logic          icache_r_payload_last     ; 
@@ -90,7 +91,7 @@ logic [2:0]    dcache_ar_payload_size    ;
 logic [1:0]    dcache_ar_payload_burst   ; 
 logic          dcache_r_valid            ; 
 logic          dcache_r_ready            ; 
-logic [255:0]  dcache_r_payload_data     ; 
+logic [63 :0]  dcache_r_payload_data     ; 
 logic [3:0]    dcache_r_payload_id       ; 
 logic [1:0]    dcache_r_payload_resp     ; 
 logic          dcache_r_payload_last     ; 
@@ -103,7 +104,7 @@ logic [2:0]    dcache_aw_payload_size    ;
 logic [1:0]    dcache_aw_payload_burst   ; 
 logic          dcache_w_valid            ; 
 logic          dcache_w_ready            ; 
-logic [255:0]  dcache_w_payload_data     ; 
+logic [63 :0]  dcache_w_payload_data     ; 
 logic [31:0]   dcache_w_payload_strb     ; 
 logic          dcache_w_payload_last     ; 
 logic          dcache_b_valid            ; 
@@ -121,11 +122,11 @@ end
 // ==================== initial program in ram =======================
 initial begin
 
-  // fd = $fopen ("./ysyx-workbench/am-kernels/tests/alu-tests/build/alutest-riscv64-nemu.bin", "rb");
-  fd = $fopen ("./ysyx-workbench/am-kernels/tests/cpu-tests/build/add-longlong-riscv64-nemu.bin", "rb");
+  fd = $fopen ("../../oscpu/bin/non-output/coremark/coremark.bin", "rb");
+  // fd = $fopen ("./ysyx-workbench/am-kernels/tests/cpu-tests/build/add-longlong-riscv64-nemu.bin", "rb");
   tmp = $fread(ram_tmp, fd);
 
-  for (i = 0; i < 1024; i = i + 1) begin
+  for (i = 0; i < (1<<size); i = i + 1) begin
     for (j = 0; j < DataWidth/8; j = j + 1) begin
       ram_i[i][j*8 +: 8] = ram_tmp[i*(DataWidth/8) + j][7:0];
       ram_d[i][j*8 +: 8] = ram_tmp[i*(DataWidth/8) + j][7:0];
@@ -296,8 +297,8 @@ axi_slave_mem#(
     .AXI_ID_WIDTH      ( 4 ),
     .AXI_STRB_WIDTH    ( DataWidth/8 ),
     .AXI_USER_WIDTH    ( 1 ),
-    .WRITE_BUFFER_SIZE ( 32*1024 ),
-    .READ_BUFFER_SIZE  ( 32*1024 )
+    .WRITE_BUFFER_SIZE ( 2*1024*1024 ),
+    .READ_BUFFER_SIZE  ( 2*1024*1024 )
 )u_axi_slave_mem_i(
     .clk               ( clk_axi_in               ),
     .rst_n             ( rst_n             ),
@@ -312,7 +313,7 @@ axi_slave_mem#(
     .aw_qos            ( AxiQos    ),
     .aw_id             ( 'b0    ),
     .aw_user           ( 1'b0    ),
-    .aw_ready          ( 'b0    ),
+    .aw_ready          (      ),
     .aw_valid          ( 'b0    ),
     .ar_addr           ( icache_ar_payload_addr    ),
     .ar_prot           ( AxiProt    ),
@@ -337,7 +338,7 @@ axi_slave_mem#(
     .r_resp            ( icache_r_payload_resp    ),
     .r_last            ( icache_r_payload_last    ),
     .r_id              ( icache_r_payload_id    ),
-    .r_user            ( 1'b0    ),
+    .r_user            (      ),
     .r_ready           ( icache_r_ready    ),
     .r_valid           ( icache_r_valid    ),
     .b_resp            (     ),
@@ -361,8 +362,8 @@ axi_slave_mem#(
     .AXI_ID_WIDTH      ( 4 ),
     .AXI_STRB_WIDTH    ( DataWidth/8 ),
     .AXI_USER_WIDTH    ( 1 ),
-    .WRITE_BUFFER_SIZE ( 32*1024 ),
-    .READ_BUFFER_SIZE  ( 32*1024 )
+    .WRITE_BUFFER_SIZE ( 2*1024*1024 ),
+    .READ_BUFFER_SIZE  ( 2*1024*1024 )
 )u_axi_slave_mem_d(
     .clk               ( clk_axi_in               ),
     .rst_n             ( rst_n             ),
@@ -402,7 +403,7 @@ axi_slave_mem#(
     .r_resp            ( dcache_r_payload_resp    ),
     .r_last            ( dcache_r_payload_last    ),
     .r_id              ( dcache_r_payload_id    ),
-    .r_user            ( 1'b0    ),
+    .r_user            (      ),
     .r_ready           ( dcache_r_ready    ),
     .r_valid           ( dcache_r_valid    ),
     .b_resp            ( dcache_b_payload_resp    ),
@@ -419,6 +420,10 @@ axi_slave_mem#(
     .axi_mem_rdata     ( ram_d_mem_rsp_rdata)
 );
 
-
+logic [31:0] instrCnt = 0;
+always@(posedge clk_axi_in) begin
+  if(u_DandRiscvSimple.writeback_arbitration_isFiring)
+    instrCnt <= instrCnt+1;
+end
 
 endmodule

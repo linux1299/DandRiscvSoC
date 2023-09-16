@@ -1,3 +1,5 @@
+`timescale 1ns / 1ps
+
 module axi_slave_mem #(
   //AXI-4
   parameter AXI_DATA_WIDTH      = 256,

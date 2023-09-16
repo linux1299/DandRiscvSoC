@@ -126,7 +126,8 @@ with ControlService
     // control writeback stage
     writeback plug new Area{
       import writeback._
-      arbitration.haltItself := False
+      // arbitration.haltItself := False
+      arbitration.haltItself := memaccess.output(LSU_HOLD)
       arbitration.flushIt := False
     }
 

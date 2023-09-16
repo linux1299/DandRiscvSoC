@@ -37,10 +37,8 @@ with ICacheAccessService
 
       val pc_next = Reg(UInt(pipeline.config.addressWidth bits)).setName("pc_next") init(resetVector)
       val fetch_valid = RegInit(False).setName("fetch_valid")
-      val pc_next_d1 = Reg(UInt(pipeline.config.addressWidth bits)).setName("pc_next_d1") init(0)
-      val pc_next_d1_valid = RegInit(False).setName("pc_next_d1_valid")
-      val fetch_flush = (output(INT_EN) || pc_next_d1_valid || arbitration.flushIt)
-      val fetch_flush_d1 = RegInit(False)
+      val rsp_flush = RegInit(False).setName("rsp_flush")
+      val fetch_flush = (output(INT_EN) || arbitration.flushIt)
       
       val pc_in_stream =  Stream(UInt(pipeline.config.addressWidth bits))
       val pc_out_stream = Stream(UInt(pipeline.config.addressWidth bits))
@@ -56,7 +54,6 @@ with ICacheAccessService
       val fetchFSM = new Area{
         val IDLE  = U(0 , 2 bits).setName("IDLE")
         val FETCH = U(1 , 2 bits).setName("FETCH")
-        val BUSY  = U(2 , 2 bits).setName("BUSY")
         val HALT  = U(3 , 2 bits).setName("HALT")
         val fetch_state_next = UInt(2 bits).setName("fetch_state_next")
         val fetch_state = RegNext(fetch_state_next).setName("fetch_state") init(IDLE)
@@ -71,29 +68,15 @@ with ICacheAccessService
             }
           }
           is(FETCH) {
-            when(icache_access.cmd.isStall){
-              fetch_state_next := BUSY
-            }
-            .elsewhen(arbitration.isStuck){
+            when(icache_access.cmd.isStall || arbitration.isStuck){
               fetch_state_next := HALT
             }
             .otherwise{
               fetch_state_next := FETCH
             }
           }
-          is(BUSY) {
-            when(arbitration.isStuck){
-              fetch_state_next := BUSY
-            }
-            .elsewhen(icache_access.cmd.fire){
-              fetch_state_next := FETCH
-            }
-            .otherwise{
-              fetch_state_next := BUSY
-            }
-          }
           is(HALT){
-            when(!arbitration.isStuck){
+            when(icache_access.cmd.ready && !arbitration.isStuck){
               fetch_state_next := FETCH
             }
             .otherwise{
@@ -105,59 +88,43 @@ with ICacheAccessService
           }
         }
 
-        // when icache is busy, interrupt or redirect is high, use reg store these pc
-        when(fetch_state===BUSY || fetch_state_next===BUSY){
-          pc_next_d1_valid := True
+        // when fetch is stalling and need jump, invalid prev rsp
+        when(!icache_access.cmd.ready){
           when(output(INT_EN)){
-            pc_next_d1 := output(INT_PC)
+            rsp_flush := True
           }
           .elsewhen(execute.output(REDIRECT_VALID)){
-            pc_next_d1 := execute.output(REDIRECT_PC_NEXT)
+            rsp_flush := True
           }
           .elsewhen(input(BPU_BRANCH_TAKEN)){
-            pc_next_d1 := input(BPU_PC_NEXT)
+            rsp_flush := True
           }
         }
         .elsewhen(icache_access.rsp.fire){
-          pc_next_d1_valid := False
+          rsp_flush := False
         }
-
+        
         // use pc_next to fetch instrution
         when(fetch_state_next===FETCH){
-          fetch_valid := True
-        }
-        .elsewhen(fetch_state_next===BUSY){
           fetch_valid := True
         }
         .otherwise{
           fetch_valid := False
         }
 
-        when(fetch_state===FETCH || fetch_state===HALT){
-          when(pc_next_d1_valid){
-            pc_next := pc_next_d1
-          }
-          .elsewhen(output(INT_EN)) {
-            pc_next := output(INT_PC)
-          }
-          .elsewhen(execute.output(REDIRECT_VALID)){
-            pc_next := execute.output(REDIRECT_PC_NEXT)
-          }
-          .elsewhen(input(BPU_BRANCH_TAKEN)) {
-            pc_next := input(BPU_PC_NEXT)
-          }
-          .elsewhen(icache_access.cmd.fire){
-            pc_next := pc_next + 4
-          }
+        when(output(INT_EN)){
+          pc_next := output(INT_PC)
+        }
+        .elsewhen(execute.output(REDIRECT_VALID)){
+          pc_next := execute.output(REDIRECT_PC_NEXT)
+        }
+        .elsewhen(input(BPU_BRANCH_TAKEN)) {
+          pc_next := input(BPU_PC_NEXT)
+        }
+        .elsewhen(icache_access.cmd.fire){
+          pc_next := pc_next + 4
         }
 
-      }
-
-      // rsp is delayed 1 or more cycle, fetch_flush is also needed to delay
-      when(fetch_flush){
-        fetch_flush_d1 := True
-      }.elsewhen(icache_access.rsp.valid){
-        fetch_flush_d1 := False
       }
 
       // output pc and instruction from FIFO or icache
@@ -175,7 +142,7 @@ with ICacheAccessService
       predict_taken_out <> predict_taken_fifo.ports.m_ports
       predict_taken_fifo.flush := fetch_flush
 
-      instruction_in_stream.valid   := icache_access.rsp.valid && !pc_next_d1_valid
+      instruction_in_stream.valid   := icache_access.rsp.valid && !rsp_flush && !fetch_flush
       instruction_in_stream.payload := icache_access.rsp.payload.data
       instruction_out_stream.ready  := arbitration.isFiring
       instruction_in_stream <> instruction_stream_fifo.ports.s_ports
