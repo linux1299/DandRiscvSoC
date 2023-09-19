@@ -6009,3 +6009,82 @@ WARNING: Unmatched cancel notification for request id 270
 2023.09.14 21:38:31 INFO  compiling projectname (1 scala source)[0m
 2023.09.14 21:38:31 WARN  1 deprecation (since 2.13.0); re-run with -deprecation for details[0m
 2023.09.14 21:38:31 INFO  time: compiled projectname in 0.91s[0m
+Sep 16, 2023 4:48:29 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 406
+Sep 16, 2023 4:48:29 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 407
+Sep 16, 2023 4:48:29 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 408
+2023.09.19 19:41:33 INFO  Bloop uses /usr/lib/jvm/java-11-openjdk-amd64 defined at /home/lin/.bloop/bloop.json[0m
+Sep 19, 2023 7:41:33 PM scala.meta.internal.pc.CompilerAccess handleError
+SEVERE: A severe compiler error occurred, full details of the error can be found in the error report /home/lin/SpinalProjects/DandRiscvSoC/.metals/.reports/metals-full/2023-09-19/r_compiler-error_19-41-33-574
+2023.09.19 19:41:33 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/lin/SpinalProjects/DandRiscvSoC/.metals/bsp.trace.json or /home/lin/.cache/metals/bsp.trace.json[0m
+2023.09.19 19:41:33 INFO  Connected to Build server: Bloop v1.5.8[0m
+2023.09.19 19:41:33 INFO  Bloop uses /usr/lib/jvm/java-11-openjdk-amd64 defined at /home/lin/.bloop/bloop.json[0m
+2023.09.19 19:41:33 INFO  Bloop uses /usr/lib/jvm/java-11-openjdk-amd64 defined at /home/lin/.bloop/bloop.json[0m
+2023.09.19 19:41:33 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/lin/SpinalProjects/DandRiscvSoC/project/.metals/bsp.trace.json or /home/lin/.cache/metals/bsp.trace.json[0m
+2023.09.19 19:41:33 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/lin/SpinalProjects/DandRiscvSoC/project/project/.metals/bsp.trace.json or /home/lin/.cache/metals/bsp.trace.json[0m
+2023.09.19 19:43:46 WARN  Using indexes to guess the definition of next_level_wstrb[0m
+2023.09.19 19:43:48 WARN  Using indexes to guess the definition of next_level_wdata[0m
+2023.09.19 19:43:48 WARN  Using indexes to guess the definition of next_level_wdata[0m
+Sep 19, 2023 7:46:28 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 571
+Sep 19, 2023 7:47:27 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 630
+2023.09.19 19:50:44 INFO  compiling projectname (1 scala source)[0m
+2023.09.19 19:50:46 INFO  time: compiled projectname in 2.06s[0m
+2023.09.19 19:52:34 INFO  compiling projectname (1 scala source)[0m
+2023.09.19 19:52:36 INFO  time: compiled projectname in 1.72s[0m
+2023.09.19 19:54:05 WARN  Using indexes to guess the definition of cpu_wen[0m
+2023.09.19 19:54:07 WARN  Using indexes to guess the definition of is_write[0m
+2023.09.19 19:54:24 WARN  Using indexes to guess the definition of cpu_addr[0m
+2023.09.19 19:54:48 WARN  Using indexes to guess the definition of offsetWidth[0m
+2023.09.19 19:54:48 WARN  Using indexes to guess the definition of cpu_addr[0m
+2023.09.19 19:54:50 WARN  Using indexes to guess the definition of cpu_addr[0m
+2023.09.19 19:54:54 INFO  compiling projectname (1 scala source)[0m
+2023.09.19 19:54:55 INFO  time: compiled projectname in 1.29s[0m
+2023.09.19 19:55:21 INFO  compiling projectname (1 scala source)[0m
+2023.09.19 19:55:22 INFO  time: compiled projectname in 1.44s[0m
+2023.09.19 20:28:25 WARN  Using indexes to guess the definition of next_level_wdata[0m
+2023.09.19 20:28:25 WARN  Using indexes to guess the definition of next_level_wdata[0m
+2023.09.19 20:28:30 WARN  Using indexes to guess the definition of cpu_wdata[0m
+2023.09.19 20:28:30 WARN  Using indexes to guess the definition of cpu_wdata[0m
+2023.09.19 20:28:32 WARN  Using indexes to guess the definition of cmd[0m
+Sep 19, 2023 8:29:07 PM scala.meta.internal.pc.CompilerAccess retryWithCleanCompiler
+INFO: compiler crashed due to an error in the Scala compiler, retrying with new compiler instance.
+Sep 19, 2023 8:29:07 PM scala.meta.internal.pc.CompilerAccess handleError
+SEVERE: A severe compiler error occurred, full details of the error can be found in the error report /home/lin/SpinalProjects/DandRiscvSoC/.metals/.reports/metals-full/2023-09-19/r_compiler-error_20-29-07-595
+2023.09.19 20:29:16 WARN  Using indexes to guess the definition of stall[0m
+2023.09.19 20:29:16 WARN  Using indexes to guess the definition of stall[0m
+2023.09.19 20:29:16 WARN  Using indexes to guess the definition of dcache_access[0m
+2023.09.19 20:29:17 WARN  Using indexes to guess the definition of dcache_access[0m
+2023.09.19 20:29:19 WARN  Using indexes to guess the definition of TIMER_CEN[0m
+2023.09.19 20:29:35 WARN  Using indexes to guess the definition of XLEN[0m
+2023.09.19 20:29:45 WARN  Using indexes to guess the definition of MEM_WDATA[0m
+2023.09.19 20:29:46 WARN  Using indexes to guess the definition of MEM_WDATA[0m
+Sep 19, 2023 8:30:17 PM scala.meta.internal.pc.CompilerAccess retryWithCleanCompiler
+INFO: compiler crashed due to an error in the Scala compiler, retrying with new compiler instance.
+2023.09.19 20:50:29 WARN  Using indexes to guess the definition of next_level_rdone[0m
+2023.09.19 20:50:29 WARN  Using indexes to guess the definition of next_level_rdone[0m
+2023.09.19 20:50:31 WARN  Using indexes to guess the definition of next_level_rdone[0m
+2023.09.19 20:50:31 WARN  Using indexes to guess the definition of next_level_wdone[0m
+2023.09.19 20:50:45 WARN  Using indexes to guess the definition of rvalid[0m
+2023.09.19 20:50:45 WARN  Using indexes to guess the definition of rvalid[0m
+Sep 19, 2023 8:50:48 PM scala.meta.internal.pc.CompletionProvider expected$1
+WARNING: String index out of range: -1
+2023.09.19 20:51:02 INFO  compiling projectname (1 scala source)[0m
+2023.09.19 20:51:04 INFO  time: compiled projectname in 1.32s[0m
+2023.09.19 20:51:04 WARN  Using indexes to guess the definition of next_level_rvalid[0m
+2023.09.19 20:51:04 WARN  Using indexes to guess the definition of next_level[0m
+2023.09.19 20:51:04 WARN  Using indexes to guess the definition of rsp[0m
+2023.09.19 20:51:06 WARN  Using indexes to guess the definition of next_level[0m
+2023.09.19 20:51:22 INFO  compiling projectname (1 scala source)[0m
+2023.09.19 20:51:24 INFO  time: compiled projectname in 1.08s[0m
+2023.09.19 20:51:37 WARN  Using indexes to guess the definition of next_level_rdone[0m
+2023.09.19 20:51:37 WARN  Using indexes to guess the definition of next_level_wdone[0m
+2023.09.19 20:51:40 INFO  compiling projectname (1 scala source)[0m
+2023.09.19 20:51:42 INFO  time: compiled projectname in 1.77s[0m
+2023.09.19 20:51:47 WARN  Using indexes to guess the definition of next_level[0m
+2023.09.19 20:51:47 WARN  Using indexes to guess the definition of rsp[0m
+2023.09.19 20:51:48 INFO  compiling projectname (1 scala source)[0m
+2023.09.19 20:51:48 INFO  time: compiled projectname in 0.96s[0m

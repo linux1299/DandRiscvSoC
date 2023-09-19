@@ -18,12 +18,12 @@ case class DCacheConfig(cacheSize : Int,
 
   def lineCount = cacheSize/bytePerLine
   def wayLineCount = lineCount/wayCount
-  def busBurstLen = bytePerLine*8/busDataWidth
-  def busDataSize = log2Up(busDataWidth/8)
+  def busBurstLen = bytePerLine*8/busDataWidth // 2
+  def busDataSize = log2Up(busDataWidth/8) // 5
   def bankNum = bytePerLine/(bankWidth/8)
   def bankDepth = cacheSize*8/wayCount/bankNum/bankWidth
   def bankDepthBits = log2Up(bankDepth)
-  def offsetWidth = log2Up(bytePerLine)
+  def offsetWidth = log2Up(bytePerLine) // 6
   def setWidth = log2Up(wayLineCount)
   def tagWidth = addressWidth-setWidth-offsetWidth
   def cpuDataBytesWidth = log2Up(cpuDataWidth/8)
@@ -36,7 +36,7 @@ case class DCacheConfig(cacheSize : Int,
   def bankAddrRange  = (bankDepthBits+offsetWidth-1) downto offsetWidth
   def bankIndexRange = (offsetWidth-1) downto cpuDataBytesWidth
   def nextLevelBankAddrRange = bankAddrRange
-  def cpuDataOnBusRange = (busDataSize-1) downto cpuDataBytesWidth
+  def cpuDataOnBusRange = (busDataSize-1) downto cpuDataBytesWidth // [4:3]
 
   assert(wayCount>=2)
   assert(bankWidth==cpuDataWidth)
@@ -118,7 +118,8 @@ case class DCache(p : DCacheConfig) extends Component{
   val next_level_cmd_valid = RegInit(False)
   val next_level_data_cnt = Counter(0 to lineBusDataNum-1)
   val next_level_bank_addr= cpu_addr(nextLevelBankAddrRange)
-  val next_level_rdone = RegNext(next_level.rsp.valid && next_level.rsp.payload.rvalid && next_level_data_cnt===(lineBusDataNum-1))
+  val next_level_rvalid = next_level.rsp.valid && next_level.rsp.payload.rvalid
+  val next_level_rdone = RegNext(next_level_rvalid && next_level_data_cnt===(lineBusDataNum-1))
   val next_level_wdone = RegNext(next_level.rsp.valid && !next_level.rsp.payload.rvalid && next_level.rsp.payload.bresp===B(0))
   val next_level_wstrb_tmp = B(0, busDataWidth/8-cpuDataWidth/8 bits) ## cpu_wstrb
   val next_level_wdata_tmp = B(0, busDataWidth-cpuDataWidth bits) ## cpu_wdata
@@ -139,7 +140,7 @@ case class DCache(p : DCacheConfig) extends Component{
   .elsewhen(next_level_rdone){
     next_level_data_cnt.clear()
   }
-  .elsewhen(next_level.rsp.valid && next_level.rsp.payload.rvalid){
+  .elsewhen(next_level_rvalid){
     next_level_data_cnt.increment()
   }
 
@@ -193,7 +194,7 @@ case class DCache(p : DCacheConfig) extends Component{
       sram(wayId).ports.cmd.payload.wdata:= B(0, bankNum*bankWidth bits)
       sram(wayId).ports.cmd.payload.wstrb:= B(0, bankNum*bankWidth/8 bits)
     }
-    .elsewhen(next_level.rsp.valid && U(wayId)===evict_id){ // when read miss, read next level data, write to banks
+    .elsewhen(next_level_rvalid && U(wayId)===evict_id){ // when read miss, read next level data, write to banks
       sram(wayId).ports.cmd.payload.addr := next_level_bank_addr
       sram(wayId).ports.cmd.valid        := True
       sram(wayId).ports.cmd.payload.wen  := B(bankNum bits, (bankWriteBits-1 downto 0) -> True, default -> False) |<< (next_level_data_cnt*bankWriteBits)
@@ -250,7 +251,7 @@ case class DCache(p : DCacheConfig) extends Component{
   stall                := (is_miss || is_write || !cpu_cmd_ready) && !next_level_wdone
 
   // cmd to next level cache
-  next_level.cmd.payload.addr := (cpu_addr(addressWidth-1 downto offsetWidth) ## U(0, offsetWidth bits)).asUInt
+  next_level.cmd.payload.addr := cpu_wen ? (cpu_addr(addressWidth-1 downto busDataSize) ## U(0, busDataSize bits)).asUInt | (cpu_addr(addressWidth-1 downto offsetWidth) ## U(0, offsetWidth bits)).asUInt
   next_level.cmd.payload.len  := cpu_wen ? U(0, 4 bits) | (busBurstLen-1)
   next_level.cmd.payload.size := busDataSize
   next_level.cmd.payload.wen  := cpu_wen // Delay(is_write, 1)
