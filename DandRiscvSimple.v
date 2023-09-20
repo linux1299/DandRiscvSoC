@@ -1,6 +1,6 @@
 // Generator : SpinalHDL v1.8.1    git head : 2a7592004363e5b40ec43e1f122ed8641cd8965b
 // Component : DandRiscvSimple
-// Git hash  : c1bb1f2e5af8fa23a722c99ed7c5dd2e0bbbd2e7
+// Git hash  : 96754daeeb615332de21a1d49e783375d261a255
 
 `timescale 1ns/1ps
 
@@ -561,9 +561,11 @@ module DandRiscvSimple (
   wire                when_FetchPlugin_l92;
   wire                when_FetchPlugin_l108;
   wire                ICachePlugin_icache_access_cmd_fire;
+  wire                when_FetchPlugin_l121;
   wire                ICachePlugin_icache_access_cmd_fire_1;
   wire                ICachePlugin_icache_access_cmd_fire_2;
   wire                ICachePlugin_icache_access_cmd_fire_3;
+  wire                ICachePlugin_icache_access_cmd_fire_4;
   reg        [63:0]   decode_DecodePlugin_imm;
   wire       [63:0]   decode_DecodePlugin_rs1;
   wire       [63:0]   decode_DecodePlugin_rs2;
@@ -1455,7 +1457,7 @@ module DandRiscvSimple (
   assign fetch_PREDICT_PC = pc_next;
   assign decode_PREDICT_TAKEN = fetch_to_decode_PREDICT_TAKEN;
   assign fetch_PREDICT_TAKEN = fetch_FetchPlugin_predict_taken_out_payload;
-  assign fetch_PREDICT_VALID = ICachePlugin_icache_access_cmd_fire_3;
+  assign fetch_PREDICT_VALID = ICachePlugin_icache_access_cmd_fire_4;
   assign memaccess_INSTRUCTION = execute_to_memaccess_INSTRUCTION;
   assign execute_INSTRUCTION = decode_to_execute_INSTRUCTION;
   assign fetch_INSTRUCTION = fetch_FetchPlugin_instruction_out_stream_payload;
@@ -1603,15 +1605,17 @@ module DandRiscvSimple (
   assign when_FetchPlugin_l92 = (! ICachePlugin_icache_access_cmd_ready);
   assign when_FetchPlugin_l108 = (fetch_state_next == FETCH);
   assign ICachePlugin_icache_access_cmd_fire = (ICachePlugin_icache_access_cmd_valid && ICachePlugin_icache_access_cmd_ready);
+  assign when_FetchPlugin_l121 = (fetch_BPU_BRANCH_TAKEN && ICachePlugin_icache_access_cmd_fire);
   assign ICachePlugin_icache_access_cmd_fire_1 = (ICachePlugin_icache_access_cmd_valid && ICachePlugin_icache_access_cmd_ready);
-  assign fetch_FetchPlugin_pc_in_stream_valid = ICachePlugin_icache_access_cmd_fire_1;
+  assign ICachePlugin_icache_access_cmd_fire_2 = (ICachePlugin_icache_access_cmd_valid && ICachePlugin_icache_access_cmd_ready);
+  assign fetch_FetchPlugin_pc_in_stream_valid = ICachePlugin_icache_access_cmd_fire_2;
   assign fetch_FetchPlugin_pc_in_stream_payload = pc_next;
   assign fetch_FetchPlugin_pc_out_stream_ready = fetch_arbitration_isFiring;
   assign fetch_FetchPlugin_pc_in_stream_ready = fetch_FetchPlugin_pc_stream_fifo_ports_s_ports_ready;
   assign fetch_FetchPlugin_pc_out_stream_valid = fetch_FetchPlugin_pc_stream_fifo_ports_m_ports_valid;
   assign fetch_FetchPlugin_pc_out_stream_payload = fetch_FetchPlugin_pc_stream_fifo_ports_m_ports_payload;
-  assign ICachePlugin_icache_access_cmd_fire_2 = (ICachePlugin_icache_access_cmd_valid && ICachePlugin_icache_access_cmd_ready);
-  assign fetch_FetchPlugin_predict_taken_in_valid = ICachePlugin_icache_access_cmd_fire_2;
+  assign ICachePlugin_icache_access_cmd_fire_3 = (ICachePlugin_icache_access_cmd_valid && ICachePlugin_icache_access_cmd_ready);
+  assign fetch_FetchPlugin_predict_taken_in_valid = ICachePlugin_icache_access_cmd_fire_3;
   assign fetch_FetchPlugin_predict_taken_in_payload = fetch_BPU_BRANCH_TAKEN;
   assign fetch_FetchPlugin_predict_taken_out_ready = fetch_arbitration_isFiring;
   assign fetch_FetchPlugin_predict_taken_in_ready = fetch_FetchPlugin_predict_taken_fifo_ports_s_ports_ready;
@@ -1623,7 +1627,7 @@ module DandRiscvSimple (
   assign fetch_FetchPlugin_instruction_in_stream_ready = fetch_FetchPlugin_instruction_stream_fifo_ports_s_ports_ready;
   assign fetch_FetchPlugin_instruction_out_stream_valid = fetch_FetchPlugin_instruction_stream_fifo_ports_m_ports_valid;
   assign fetch_FetchPlugin_instruction_out_stream_payload = fetch_FetchPlugin_instruction_stream_fifo_ports_m_ports_payload;
-  assign ICachePlugin_icache_access_cmd_fire_3 = (ICachePlugin_icache_access_cmd_valid && ICachePlugin_icache_access_cmd_ready);
+  assign ICachePlugin_icache_access_cmd_fire_4 = (ICachePlugin_icache_access_cmd_valid && ICachePlugin_icache_access_cmd_ready);
   assign fetch_arbitration_isValid = ((fetch_FetchPlugin_fifo_all_valid && (! fetch_arbitration_isStuck)) && (! fetch_FetchPlugin_fetch_flush));
   assign ICachePlugin_icache_access_cmd_valid = (fetch_valid && (! fetch_FetchPlugin_fetch_flush));
   assign ICachePlugin_icache_access_cmd_payload_addr = pc_next;
@@ -3278,10 +3282,10 @@ module DandRiscvSimple (
         if(when_FetchPlugin_l96) begin
           pc_next <= _zz_pc_next;
         end else begin
-          if(fetch_BPU_BRANCH_TAKEN) begin
+          if(when_FetchPlugin_l121) begin
             pc_next <= fetch_BPU_PC_NEXT;
           end else begin
-            if(ICachePlugin_icache_access_cmd_fire) begin
+            if(ICachePlugin_icache_access_cmd_fire_1) begin
               pc_next <= (pc_next + 64'h0000000000000004);
             end
           end

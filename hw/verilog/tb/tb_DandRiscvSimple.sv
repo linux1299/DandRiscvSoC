@@ -122,7 +122,8 @@ end
 // ==================== initial program in ram =======================
 initial begin
 
-  fd = $fopen ("../../oscpu/bin/non-output/coremark/coremark.bin", "rb");
+  // fd = $fopen ("../../oscpu/bin/non-output/coremark/coremark.bin", "rb");
+  fd = $fopen ("../../oscpu/bin/non-output/dhrystone/dhrystone.bin", "rb");
   // fd = $fopen ("./ysyx-workbench/am-kernels/tests/cpu-tests/build/add-longlong-riscv64-nemu.bin", "rb");
   tmp = $fread(ram_tmp, fd);
 
@@ -188,7 +189,7 @@ end
 
 // ========================== Time out =============================
 initial begin
-  #20000
+  #50000
   $display("\n============== TimeOut ! Simulation finish ! ============\n");
   $finish;
 end

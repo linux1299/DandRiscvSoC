@@ -6088,3 +6088,27 @@ WARNING: String index out of range: -1
 2023.09.19 20:51:47 WARN  Using indexes to guess the definition of rsp[0m
 2023.09.19 20:51:48 INFO  compiling projectname (1 scala source)[0m
 2023.09.19 20:51:48 INFO  time: compiled projectname in 0.96s[0m
+2023.09.20 19:39:52 WARN  Using indexes to guess the definition of build[0m
+2023.09.20 19:39:53 WARN  Using indexes to guess the definition of build[0m
+2023.09.20 19:40:06 WARN  Using indexes to guess the definition of Plugin[0m
+2023.09.20 19:40:06 WARN  Using indexes to guess the definition of Plugin[0m
+2023.09.20 20:12:32 WARN  Using indexes to guess the definition of predict_taken[0m
+2023.09.20 20:12:32 WARN  Using indexes to guess the definition of predict_taken[0m
+2023.09.20 20:12:41 WARN  Using indexes to guess the definition of predict_history[0m
+2023.09.20 20:12:41 WARN  Using indexes to guess the definition of predict_pc_next[0m
+2023.09.20 20:15:29 INFO  compiling projectname (1 scala source)[0m
+2023.09.20 20:15:31 WARN  1 deprecation (since 2.13.0); re-run with -deprecation for details[0m
+2023.09.20 20:15:31 INFO  time: compiled projectname in 1.88s[0m
+2023.09.20 20:16:34 INFO  compiling projectname (1 scala source)[0m
+2023.09.20 20:16:35 WARN  1 deprecation (since 2.13.0); re-run with -deprecation for details[0m
+2023.09.20 20:16:35 INFO  time: compiled projectname in 1.42s[0m
+2023.09.20 20:17:45 WARN  Using indexes to guess the definition of output[0m
+2023.09.20 20:17:47 WARN  Using indexes to guess the definition of predict_taken[0m
+2023.09.20 20:17:48 WARN  Using indexes to guess the definition of predict_pc_next[0m
+2023.09.20 20:21:06 INFO  compiling projectname (1 scala source)[0m
+2023.09.20 20:21:06 WARN  1 deprecation (since 2.13.0); re-run with -deprecation for details[0m
+2023.09.20 20:21:07 INFO  time: compiled projectname in 1.31s[0m
+2023.09.20 20:29:02 INFO  compiling projectname (1 scala source)[0m
+2023.09.20 20:29:03 WARN  1 deprecation (since 2.13.0); re-run with -deprecation for details[0m
+2023.09.20 20:29:03 INFO  time: compiled projectname in 1.16s[0m
+2023.09.20 20:29:08 WARN  Using indexes to guess the definition of input[0m

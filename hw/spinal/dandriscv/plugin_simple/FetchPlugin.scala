@@ -118,7 +118,7 @@ with ICacheAccessService
         .elsewhen(execute.output(REDIRECT_VALID)){
           pc_next := execute.output(REDIRECT_PC_NEXT)
         }
-        .elsewhen(input(BPU_BRANCH_TAKEN)) {
+        .elsewhen(input(BPU_BRANCH_TAKEN) && icache_access.cmd.fire) {
           pc_next := input(BPU_PC_NEXT)
         }
         .elsewhen(icache_access.cmd.fire){
