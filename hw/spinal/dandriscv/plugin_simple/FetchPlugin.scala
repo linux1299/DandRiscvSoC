@@ -39,6 +39,7 @@ with ICacheAccessService
       val fetch_valid = RegInit(False).setName("fetch_valid")
       val rsp_flush = RegInit(False).setName("rsp_flush")
       val fetch_flush = (output(INT_EN) || arbitration.flushIt)
+      val bpu_predict_taken = input(BPU_BRANCH_TAKEN) && icache_access.cmd.fire
       
       val pc_in_stream =  Stream(UInt(pipeline.config.addressWidth bits))
       val pc_out_stream = Stream(UInt(pipeline.config.addressWidth bits))
@@ -96,7 +97,7 @@ with ICacheAccessService
           .elsewhen(execute.output(REDIRECT_VALID)){
             rsp_flush := True
           }
-          .elsewhen(input(BPU_BRANCH_TAKEN)){
+          .elsewhen(bpu_predict_taken){
             rsp_flush := True
           }
         }
@@ -118,7 +119,7 @@ with ICacheAccessService
         .elsewhen(execute.output(REDIRECT_VALID)){
           pc_next := execute.output(REDIRECT_PC_NEXT)
         }
-        .elsewhen(input(BPU_BRANCH_TAKEN) && icache_access.cmd.fire) {
+        .elsewhen(bpu_predict_taken) {
           pc_next := input(BPU_PC_NEXT)
         }
         .elsewhen(icache_access.cmd.fire){

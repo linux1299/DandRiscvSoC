@@ -6112,3 +6112,219 @@ WARNING: String index out of range: -1
 2023.09.20 20:29:03 WARN  1 deprecation (since 2.13.0); re-run with -deprecation for details[0m
 2023.09.20 20:29:03 INFO  time: compiled projectname in 1.16s[0m
 2023.09.20 20:29:08 WARN  Using indexes to guess the definition of input[0m
+2023.09.21 19:06:32 INFO  compiling projectname (1 scala source)[0m
+2023.09.21 19:06:34 INFO  time: compiled projectname in 1.4s[0m
+2023.09.21 19:19:00 WARN  Using indexes to guess the definition of OHToUInt[0m
+2023.09.21 19:19:25 INFO  compiling projectname (1 scala source)[0m
+2023.09.21 19:19:26 INFO  time: compiled projectname in 1.43s[0m
+2023.09.21 19:19:33 WARN  Using indexes to guess the definition of B[0m
+2023.09.21 19:19:33 INFO  compiling projectname (1 scala source)[0m
+2023.09.21 19:19:33 INFO  time: compiled projectname in 0.37s[0m
+2023.09.21 19:20:10 INFO  compiling projectname (1 scala source)[0m
+2023.09.21 19:20:10 INFO  time: compiled projectname in 0.51s[0m
+2023.09.21 19:24:29 INFO  compiling projectname (1 scala source)[0m
+2023.09.21 19:24:29 INFO  time: compiled projectname in 0.32s[0m
+Sep 21, 2023 7:24:41 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 2421
+2023.09.21 19:24:51 WARN  Using indexes to guess the definition of cpu_addr_d1[0m
+2023.09.21 19:24:56 WARN  Using indexes to guess the definition of cpu_addr_d1[0m
+2023.09.21 19:24:56 WARN  Using indexes to guess the definition of next_level[0m
+2023.09.21 19:25:01 WARN  Using indexes to guess the definition of cpu_bank_addr[0m
+2023.09.21 19:25:01 WARN  Using indexes to guess the definition of cpu_addr_d1[0m
+2023.09.21 19:25:01 WARN  Using indexes to guess the definition of next_level_done[0m
+2023.09.21 19:25:03 INFO  compiling projectname (1 scala source)[0m
+2023.09.21 19:25:03 INFO  time: compiled projectname in 0.29s[0m
+2023.09.21 19:25:44 INFO  compiling projectname (1 scala source)[0m
+2023.09.21 19:25:44 INFO  time: compiled projectname in 0.24s[0m
+2023.09.21 19:25:48 WARN  Using indexes to guess the definition of B[0m
+2023.09.21 19:25:52 INFO  compiling projectname (1 scala source)[0m
+2023.09.21 19:25:53 INFO  time: compiled projectname in 1.3s[0m
+2023.09.21 19:28:00 INFO  compiling projectname (1 scala source)[0m
+2023.09.21 19:28:00 INFO  time: compiled projectname in 0.97s[0m
+2023.09.21 19:28:03 WARN  Using indexes to guess the definition of is_diff[0m
+2023.09.21 19:28:12 INFO  compiling projectname (1 scala source)[0m
+2023.09.21 19:28:14 INFO  time: compiled projectname in 1.44s[0m
+2023.09.21 19:28:59 WARN  Using indexes to guess the definition of cache_invld_gnt[0m
+2023.09.21 19:29:32 INFO  compiling projectname (1 scala source)[0m
+2023.09.21 19:29:33 INFO  time: compiled projectname in 1s[0m
+2023.09.21 19:32:43 INFO  compiling projectname (1 scala source)[0m
+2023.09.21 19:32:43 INFO  time: compiled projectname in 0.44s[0m
+2023.09.21 19:32:48 INFO  compiling projectname (1 scala source)[0m
+2023.09.21 19:32:48 INFO  time: compiled projectname in 0.19s[0m
+2023.09.21 19:32:51 INFO  compiling projectname (1 scala source)[0m
+2023.09.21 19:32:52 INFO  time: compiled projectname in 1.14s[0m
+2023.09.21 19:33:01 INFO  compiling projectname (1 scala source)[0m
+2023.09.21 19:33:03 INFO  time: compiled projectname in 1.75s[0m
+2023.09.21 19:33:06 WARN  Using indexes to guess the definition of wayCount[0m
+2023.09.21 19:33:09 INFO  compiling projectname (1 scala source)[0m
+2023.09.21 19:33:11 INFO  time: compiled projectname in 1.45s[0m
+Sep 21, 2023 7:48:11 PM scala.meta.internal.pc.CompilerAccess handleError
+SEVERE: A severe compiler error occurred, full details of the error can be found in the error report /home/lin/SpinalProjects/DandRiscvSoC/.metals/.reports/metals-full/2023-09-21/r_compiler-error_19-48-11-845
+Sep 21, 2023 7:48:11 PM scala.meta.internal.pc.CompilerAccess handleError
+SEVERE: A severe compiler error occurred, full details of the error can be found in the error report /home/lin/SpinalProjects/DandRiscvSoC/.metals/.reports/metals-full/2023-09-21/r_compiler-error_19-48-11-846
+2023.09.21 19:48:11 WARN  Could not find semantic tokens for: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.09.21 19:48:18 INFO  compiling projectname (1 scala source)[0m
+2023.09.21 19:48:19 INFO  time: compiled projectname in 1.05s[0m
+2023.09.21 19:48:26 INFO  compiling projectname (1 scala source)[0m
+2023.09.21 19:48:27 INFO  time: compiled projectname in 1.44s[0m
+2023.09.21 19:48:51 INFO  compiling projectname (1 scala source)[0m
+2023.09.21 19:48:51 INFO  time: compiled projectname in 0.94s[0m
+2023.09.21 19:49:06 INFO  compiling projectname (1 scala source)[0m
+2023.09.21 19:49:08 INFO  time: compiled projectname in 1.4s[0m
+2023.09.21 19:49:16 INFO  compiling projectname (1 scala source)[0m
+2023.09.21 19:49:17 INFO  time: compiled projectname in 1.35s[0m
+2023.09.21 20:08:18 WARN  Using indexes to guess the definition of cpu_bank_addr_d1[0m
+2023.09.21 20:08:20 INFO  compiling projectname (1 scala source)[0m
+2023.09.21 20:08:22 INFO  time: compiled projectname in 2.18s[0m
+2023.09.21 20:08:43 INFO  compiling projectname (1 scala source)[0m
+2023.09.21 20:08:44 INFO  time: compiled projectname in 1.47s[0m
+2023.09.21 20:08:47 INFO  compiling projectname (1 scala source)[0m
+2023.09.21 20:08:49 INFO  time: compiled projectname in 1.7s[0m
+2023.09.21 20:10:21 INFO  Shutting down server[0m
+2023.09.21 20:10:21 INFO  shutting down Metals[0m
+2023.09.21 20:10:21 INFO  Shut down connection with build server.[0m
+2023.09.21 20:10:21 INFO  Shut down connection with build server.[0m
+2023.09.21 20:10:21 INFO  Shut down connection with build server.[0m
+Sep 21, 2023 8:10:21 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint notify
+INFO: Failed to send notification message.
+org.eclipse.lsp4j.jsonrpc.JsonRpcException: java.nio.channels.ClosedChannelException
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageConsumer.consume(StreamMessageConsumer.java:72)
+	at scala.meta.internal.metals.RequestMonitorImpl$$anon$1.consume(ServerLivenessMonitor.scala:44)
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.notify(RemoteEndpoint.java:126)
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.sendCancelNotification(RemoteEndpoint.java:180)
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint$1.cancel(RemoteEndpoint.java:150)
+	at scala.meta.internal.metals.BuildServerConnection.$anonfun$register$2(BuildServerConnection.scala:349)
+	at scala.meta.internal.metals.BuildServerConnection$$Lambda$7386/608775895.apply$mcZ$sp(Unknown Source)
+	at scala.runtime.java8.JFunction0$mcZ$sp.apply(JFunction0$mcZ$sp.scala:17)
+	at scala.util.Try$.apply(Try.scala:210)
+	at scala.meta.internal.metals.BuildServerConnection.$anonfun$register$1(BuildServerConnection.scala:349)
+	at scala.meta.internal.metals.BuildServerConnection$$Lambda$2596/978819210.apply$mcV$sp(Unknown Source)
+	at scala.meta.internal.metals.Cancelable$$anon$1.cancel(Cancelable.scala:18)
+	at scala.meta.internal.metals.Cancelable$.$anonfun$cancelAll$1(Cancelable.scala:29)
+	at scala.meta.internal.metals.Cancelable$$$Lambda$2579/1017752794.apply(Unknown Source)
+	at scala.collection.immutable.List.foreach(List.scala:333)
+	at scala.meta.internal.metals.Cancelable$.cancelAll(Cancelable.scala:28)
+	at scala.meta.internal.metals.MutableCancelable.cancel(MutableCancelable.scala:25)
+	at scala.meta.internal.metals.BuildServerConnection.cancel(BuildServerConnection.scala:285)
+	at scala.meta.internal.metals.BuildServerConnection.$anonfun$shutdown$1(BuildServerConnection.scala:122)
+	at scala.meta.internal.metals.BuildServerConnection.$anonfun$shutdown$1$adapted(BuildServerConnection.scala:114)
+	at scala.meta.internal.metals.BuildServerConnection$$Lambda$7382/476998623.apply(Unknown Source)
+	at scala.concurrent.impl.Promise$Transformation.run(Promise.scala:467)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.nio.channels.ClosedChannelException
+	at sun.nio.ch.SinkChannelImpl.ensureOpen(SinkChannelImpl.java:154)
+	at sun.nio.ch.SinkChannelImpl.write(SinkChannelImpl.java:158)
+	at java.nio.channels.Channels.writeFullyImpl(Channels.java:78)
+	at java.nio.channels.Channels.writeFully(Channels.java:98)
+	at java.nio.channels.Channels.access$000(Channels.java:61)
+	at java.nio.channels.Channels$1.write(Channels.java:174)
+	at java.io.OutputStream.write(OutputStream.java:75)
+	at java.nio.channels.Channels$1.write(Channels.java:155)
+	at scala.meta.internal.metals.ClosableOutputStream.write(ClosableOutputStream.scala:26)
+	at java.io.FilterOutputStream.write(FilterOutputStream.java:125)
+	at java.io.FilterOutputStream.write(FilterOutputStream.java:97)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageConsumer.consume(StreamMessageConsumer.java:67)
+	... 24 more
+
+Sep 21, 2023 8:10:21 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint notify
+INFO: Failed to send notification message.
+org.eclipse.lsp4j.jsonrpc.JsonRpcException: java.nio.channels.ClosedChannelException
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageConsumer.consume(StreamMessageConsumer.java:72)
+	at scala.meta.internal.metals.RequestMonitorImpl$$anon$1.consume(ServerLivenessMonitor.scala:44)
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.notify(RemoteEndpoint.java:126)
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.sendCancelNotification(RemoteEndpoint.java:180)
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint$1.cancel(RemoteEndpoint.java:150)
+	at scala.meta.internal.metals.BuildServerConnection.$anonfun$register$2(BuildServerConnection.scala:349)
+	at scala.meta.internal.metals.BuildServerConnection$$Lambda$7386/608775895.apply$mcZ$sp(Unknown Source)
+	at scala.runtime.java8.JFunction0$mcZ$sp.apply(JFunction0$mcZ$sp.scala:17)
+	at scala.util.Try$.apply(Try.scala:210)
+	at scala.meta.internal.metals.BuildServerConnection.$anonfun$register$1(BuildServerConnection.scala:349)
+	at scala.meta.internal.metals.BuildServerConnection$$Lambda$2596/978819210.apply$mcV$sp(Unknown Source)
+	at scala.meta.internal.metals.Cancelable$$anon$1.cancel(Cancelable.scala:18)
+	at scala.meta.internal.metals.Cancelable$.$anonfun$cancelAll$1(Cancelable.scala:29)
+	at scala.meta.internal.metals.Cancelable$$$Lambda$2579/1017752794.apply(Unknown Source)
+	at scala.collection.immutable.List.foreach(List.scala:333)
+	at scala.meta.internal.metals.Cancelable$.cancelAll(Cancelable.scala:28)
+	at scala.meta.internal.metals.MutableCancelable.cancel(MutableCancelable.scala:25)
+	at scala.meta.internal.metals.BuildServerConnection.cancel(BuildServerConnection.scala:285)
+	at scala.meta.internal.metals.BuildServerConnection.$anonfun$shutdown$1(BuildServerConnection.scala:122)
+	at scala.meta.internal.metals.BuildServerConnection.$anonfun$shutdown$1$adapted(BuildServerConnection.scala:114)
+	at scala.meta.internal.metals.BuildServerConnection$$Lambda$7382/476998623.apply(Unknown Source)
+	at scala.concurrent.impl.Promise$Transformation.run(Promise.scala:467)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.nio.channels.ClosedChannelException
+	at sun.nio.ch.SinkChannelImpl.ensureOpen(SinkChannelImpl.java:154)
+	at sun.nio.ch.SinkChannelImpl.write(SinkChannelImpl.java:158)
+	at java.nio.channels.Channels.writeFullyImpl(Channels.java:78)
+	at java.nio.channels.Channels.writeFully(Channels.java:98)
+	at java.nio.channels.Channels.access$000(Channels.java:61)
+	at java.nio.channels.Channels$1.write(Channels.java:174)
+	at java.io.OutputStream.write(OutputStream.java:75)
+	at java.nio.channels.Channels$1.write(Channels.java:155)
+	at scala.meta.internal.metals.ClosableOutputStream.write(ClosableOutputStream.scala:26)
+	at java.io.FilterOutputStream.write(FilterOutputStream.java:125)
+	at java.io.FilterOutputStream.write(FilterOutputStream.java:97)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageConsumer.consume(StreamMessageConsumer.java:67)
+	... 24 more
+
+2023.09.21 20:10:21 INFO  Failed to run request with params WorkspaceBuildTargetsResult[0m
+2023.09.21 20:10:21 INFO  Failed to run request with params WorkspaceBuildTargetsResult[0m
+2023.09.21 20:10:21 INFO  Cancelling compilation on Bloop server[0m
+2023.09.21 20:10:21 INFO  Exiting server[0m
+2023.09.21 20:11:13 INFO  Started: Metals version 1.0.1 in folders '/home/lin/SpinalProjects/DandRiscvSoC' for client Visual Studio Code 1.81.1.[0m
+Sep 21, 2023 8:11:13 PM org.flywaydb.core.internal.license.VersionPrinter printVersionOnly
+INFO: Flyway Community Edition 9.21.2 by Redgate
+Sep 21, 2023 8:11:13 PM org.flywaydb.core.internal.license.VersionPrinter printVersion
+INFO: See release notes here: https://rd.gt/416ObMi
+Sep 21, 2023 8:11:13 PM org.flywaydb.core.internal.license.VersionPrinter printVersion
+INFO: 
+Sep 21, 2023 8:11:13 PM org.flywaydb.core.FlywayExecutor execute
+INFO: Database: jdbc:h2:file:/home/lin/SpinalProjects/DandRiscvSoC/.metals/metals (H2 2.1)
+Sep 21, 2023 8:11:13 PM org.flywaydb.core.internal.command.DbValidate validate
+INFO: Successfully validated 4 migrations (execution time 00:00.032s)
+Sep 21, 2023 8:11:13 PM org.flywaydb.core.internal.command.DbMigrate migrateGroup
+INFO: Current version of schema "PUBLIC": 4
+Sep 21, 2023 8:11:13 PM org.flywaydb.core.internal.command.DbMigrate logSummary
+INFO: Schema "PUBLIC" is up to date. No migration necessary.
+2023.09.21 20:11:14 INFO  time: initialize in 0.9s[0m
+2023.09.21 20:11:15 INFO  Attempting to connect to the build server...[0m
+2023.09.21 20:11:15 INFO  Bloop uses /usr/lib/jvm/java-11-openjdk-amd64 defined at /home/lin/.bloop/bloop.json[0m
+2023.09.21 20:11:15 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/lin/SpinalProjects/DandRiscvSoC/.metals/bsp.trace.json or /home/lin/.cache/metals/bsp.trace.json[0m
+2023.09.21 20:11:15 INFO  Attempting to connect to the build server...[0m
+2023.09.21 20:11:15 INFO  Bloop uses /usr/lib/jvm/java-11-openjdk-amd64 defined at /home/lin/.bloop/bloop.json[0m
+2023.09.21 20:11:15 INFO  Attempting to connect to the build server...[0m
+2023.09.21 20:11:15 INFO  Bloop uses /usr/lib/jvm/java-11-openjdk-amd64 defined at /home/lin/.bloop/bloop.json[0m
+2023.09.21 20:11:15 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/lin/SpinalProjects/DandRiscvSoC/project/project/.metals/bsp.trace.json or /home/lin/.cache/metals/bsp.trace.json[0m
+2023.09.21 20:11:15 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/lin/SpinalProjects/DandRiscvSoC/project/.metals/bsp.trace.json or /home/lin/.cache/metals/bsp.trace.json[0m
+2023.09.21 20:11:15 INFO  time: Connected to build server in 0.47s[0m
+2023.09.21 20:11:15 INFO  Connected to Build server: Bloop v1.5.8[0m
+2023.09.21 20:11:17 INFO  no build target found for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/FetchPlugin.scala. Using presentation compiler with project's scala-library version: 3.3.0[0m
+2023.09.21 20:11:17 INFO  time: code lens generation in 2.75s[0m
+2023.09.21 20:11:18 INFO  no build target found for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/FetchPlugin.scala. Using presentation compiler with project's scala-library version: 3.3.0[0m
+Sep 21, 2023 8:11:18 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 8
+2023.09.21 20:11:21 INFO  time: code lens generation in 5.85s[0m
+2023.09.21 20:11:21 INFO  time: code lens generation in 2.88s[0m
+2023.09.21 20:11:21 INFO  time: code lens generation in 2.88s[0m
+2023.09.21 20:11:22 WARN  Could not find java sources in /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/lib/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/lib/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/lib/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/lib/src.zip. Java symbols will not be available.[0m
+2023.09.21 20:11:22 WARN  Could not find java sources in /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/lib/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/lib/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/lib/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/lib/src.zip. Java symbols will not be available.[0m
+2023.09.21 20:11:22 WARN  Could not find java sources in /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/lib/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/lib/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/lib/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/lib/src.zip. Java symbols will not be available.[0m
+2023.09.21 20:11:22 INFO  time: indexed workspace in 5.02s[0m
+2023.09.21 20:27:21 INFO  compiling projectname (1 scala source)[0m
+2023.09.21 20:27:22 WARN  1 deprecation (since 2.13.0); re-run with -deprecation for details[0m
+2023.09.21 20:27:22 INFO  time: compiled projectname in 1.87s[0m
+2023.09.21 20:28:02 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/FetchPlugin.scala[0m
+2023.09.21 20:28:02 INFO  compiling projectname (1 scala source)[0m
+2023.09.21 20:28:02 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/FetchPlugin.scala[0m
+2023.09.21 20:28:02 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/FetchPlugin.scala[0m
+2023.09.21 20:28:03 WARN  1 deprecation (since 2.13.0); re-run with -deprecation for details[0m
+2023.09.21 20:28:03 INFO  time: compiled projectname in 1.65s[0m
+Sep 21, 2023 8:28:04 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 177
+2023.09.21 20:28:11 INFO  compiling projectname (1 scala source)[0m
+2023.09.21 20:28:12 WARN  1 deprecation (since 2.13.0); re-run with -deprecation for details[0m
+2023.09.21 20:28:12 INFO  time: compiled projectname in 1.63s[0m

@@ -1,14 +1,14 @@
 [0m[[0m[0mdebug[0m] [0m[0mCreated transactional ClassFileManager with tempDir = /home/lin/SpinalProjects/DandRiscvSoC/target/scala-2.13/classes.bak[0m
 [0m[[0m[0mdebug[0m] [0m[0mAbout to delete class files:[0m
 [0m[[0m[0mdebug[0m] [0m[0m	FetchPlugin$$anon$1$$anon$2.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	FetchPlugin.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	FetchPlugin$$anon$1.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	FetchPlugin$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	FetchPlugin$$anon$1.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	FetchPlugin.class[0m
 [0m[[0m[0mdebug[0m] [0m[0mWe backup class files:[0m
 [0m[[0m[0mdebug[0m] [0m[0m	FetchPlugin$$anon$1$$anon$2.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	FetchPlugin.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	FetchPlugin$$anon$1.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	FetchPlugin$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	FetchPlugin$$anon$1.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	FetchPlugin.class[0m
 [0m[[0m[0mdebug[0m] [0m[0mRegistering generated classes:[0m
 [0m[[0m[0mdebug[0m] [0m[0m	FetchPlugin$$anon$1$$anon$2.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	FetchPlugin.class[0m
