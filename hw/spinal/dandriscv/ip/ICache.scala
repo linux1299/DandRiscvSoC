@@ -76,7 +76,6 @@ case class ICache(p : ICacheConfig) extends Component{
   val hit_id = UInt(log2Up(wayCount) bits)
   val hit_id_d1 = RegNext(hit_id)
   val evict_id  = UInt(log2Up(wayCount) bits)
-  // val evict_id_d1 = RegNext(evict_id)
   val invld_id  = UInt(log2Up(wayCount) bits)
   val victim_id  = UInt(log2Up(wayCount) bits)
   val mru_full = cache_mru.asBits.andR

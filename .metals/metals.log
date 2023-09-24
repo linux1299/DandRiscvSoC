@@ -6328,3 +6328,87 @@ WARNING: Unmatched cancel notification for request id 177
 2023.09.21 20:28:11 INFO  compiling projectname (1 scala source)[0m
 2023.09.21 20:28:12 WARN  1 deprecation (since 2.13.0); re-run with -deprecation for details[0m
 2023.09.21 20:28:12 INFO  time: compiled projectname in 1.63s[0m
+2023.09.22 19:11:15 INFO  compiling projectname (1 scala source)[0m
+2023.09.22 19:11:16 INFO  time: compiled projectname in 1.37s[0m
+2023.09.22 20:22:38 INFO  compiling projectname (1 scala source)[0m
+2023.09.22 20:22:39 INFO  time: compiled projectname in 1.53s[0m
+2023.09.22 20:23:50 INFO  compiling projectname (1 scala source)[0m
+2023.09.22 20:23:50 INFO  Deduplicating compilation of projectname from bsp client 'Metals 1.0.1' (since 24h 12m 34.951s)[0m
+2023.09.22 20:23:50 INFO  compiling projectname (1 scala source)[0m
+2023.09.22 20:23:52 INFO  time: compiled projectname in 1.84s[0m
+2023.09.22 20:24:06 INFO  compiling projectname (1 scala source)[0m
+2023.09.22 20:24:07 INFO  time: compiled projectname in 1.3s[0m
+2023.09.22 20:24:49 INFO  compiling projectname (1 scala source)[0m
+2023.09.22 20:24:51 INFO  time: compiled projectname in 1.59s[0m
+2023.09.22 20:25:02 INFO  compiling projectname (1 scala source)[0m
+2023.09.22 20:25:03 INFO  time: compiled projectname in 1.66s[0m
+2023.09.22 20:25:19 INFO  compiling projectname (1 scala source)[0m
+2023.09.22 20:25:19 INFO  time: compiled projectname in 0.26s[0m
+2023.09.22 20:25:24 INFO  compiling projectname (1 scala source)[0m
+2023.09.22 20:25:25 INFO  time: compiled projectname in 1.28s[0m
+2023.09.22 20:25:40 INFO  compiling projectname (1 scala source)[0m
+2023.09.22 20:25:41 INFO  time: compiled projectname in 1.07s[0m
+2023.09.22 20:26:16 INFO  compiling projectname (1 scala source)[0m
+2023.09.22 20:26:17 INFO  time: compiled projectname in 1.35s[0m
+2023.09.22 20:27:21 INFO  compiling projectname (1 scala source)[0m
+2023.09.22 20:27:21 WARN  Could not load snapshot text for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.09.22 20:27:22 INFO  time: compiled projectname in 1.24s[0m
+2023.09.22 20:27:27 INFO  compiling projectname (1 scala source)[0m
+2023.09.22 20:27:28 INFO  time: compiled projectname in 1.42s[0m
+2023.09.22 20:27:42 INFO  compiling projectname (1 scala source)[0m
+2023.09.22 20:27:43 INFO  time: compiled projectname in 1.52s[0m
+2023.09.22 20:29:15 INFO  Shutting down server[0m
+2023.09.22 20:29:15 INFO  shutting down Metals[0m
+2023.09.22 20:29:15 INFO  Shut down connection with build server.[0m
+2023.09.22 20:29:15 INFO  Shut down connection with build server.[0m
+2023.09.22 20:29:15 INFO  Shut down connection with build server.[0m
+2023.09.22 20:29:15 INFO  Exiting server[0m
+2023.09.22 20:29:38 INFO  Started: Metals version 1.0.1 in folders '/home/lin/SpinalProjects/DandRiscvSoC' for client Visual Studio Code 1.81.1.[0m
+Sep 22, 2023 8:29:38 PM org.flywaydb.core.internal.license.VersionPrinter printVersionOnly
+INFO: Flyway Community Edition 9.21.2 by Redgate
+Sep 22, 2023 8:29:38 PM org.flywaydb.core.internal.license.VersionPrinter printVersion
+INFO: See release notes here: https://rd.gt/416ObMi
+Sep 22, 2023 8:29:38 PM org.flywaydb.core.internal.license.VersionPrinter printVersion
+INFO: 
+Sep 22, 2023 8:29:39 PM org.flywaydb.core.FlywayExecutor execute
+INFO: Database: jdbc:h2:file:/home/lin/SpinalProjects/DandRiscvSoC/.metals/metals (H2 2.1)
+Sep 22, 2023 8:29:39 PM org.flywaydb.core.internal.command.DbValidate validate
+INFO: Successfully validated 4 migrations (execution time 00:00.025s)
+Sep 22, 2023 8:29:39 PM org.flywaydb.core.internal.command.DbMigrate migrateGroup
+INFO: Current version of schema "PUBLIC": 4
+Sep 22, 2023 8:29:39 PM org.flywaydb.core.internal.command.DbMigrate logSummary
+INFO: Schema "PUBLIC" is up to date. No migration necessary.
+2023.09.22 20:29:39 INFO  time: initialize in 0.83s[0m
+2023.09.22 20:29:39 INFO  Attempting to connect to the build server...[0m
+2023.09.22 20:29:39 INFO  Bloop uses /usr/lib/jvm/java-11-openjdk-amd64 defined at /home/lin/.bloop/bloop.json[0m
+2023.09.22 20:29:40 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/lin/SpinalProjects/DandRiscvSoC/.metals/bsp.trace.json or /home/lin/.cache/metals/bsp.trace.json[0m
+2023.09.22 20:29:40 INFO  Attempting to connect to the build server...[0m
+2023.09.22 20:29:40 INFO  Bloop uses /usr/lib/jvm/java-11-openjdk-amd64 defined at /home/lin/.bloop/bloop.json[0m
+2023.09.22 20:29:40 INFO  Attempting to connect to the build server...[0m
+2023.09.22 20:29:40 INFO  Bloop uses /usr/lib/jvm/java-11-openjdk-amd64 defined at /home/lin/.bloop/bloop.json[0m
+2023.09.22 20:29:40 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/lin/SpinalProjects/DandRiscvSoC/project/project/.metals/bsp.trace.json or /home/lin/.cache/metals/bsp.trace.json[0m
+2023.09.22 20:29:40 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/lin/SpinalProjects/DandRiscvSoC/project/.metals/bsp.trace.json or /home/lin/.cache/metals/bsp.trace.json[0m
+2023.09.22 20:29:40 INFO  time: Connected to build server in 0.72s[0m
+2023.09.22 20:29:40 INFO  Connected to Build server: Bloop v1.5.8[0m
+2023.09.22 20:29:40 INFO  time: Imported build in 0.11s[0m
+2023.09.22 20:29:44 WARN  Could not find java sources in /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/lib/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/lib/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/lib/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/lib/src.zip. Java symbols will not be available.[0m
+2023.09.22 20:29:44 WARN  Could not find java sources in /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/lib/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/lib/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/lib/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/lib/src.zip. Java symbols will not be available.[0m
+2023.09.22 20:29:44 WARN  Could not find java sources in /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/lib/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/lib/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/lib/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/lib/src.zip. Java symbols will not be available.[0m
+2023.09.22 20:29:44 INFO  time: indexed workspace in 4.4s[0m
+Exception in thread "pool-6-thread-1" java.lang.Error: java.lang.InterruptedException
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1148)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.lang.InterruptedException
+	at scala.meta.internal.metals.FutureCancelToken.checkCanceled(FutureCancelToken.scala:29)
+	at scala.meta.internal.pc.CompilerAccess.$anonfun$onCompilerJobQueue$1(CompilerAccess.scala:229)
+	at scala.meta.internal.pc.CompilerAccess$$Lambda$2569/1745074239.apply$mcV$sp(Unknown Source)
+	at scala.meta.internal.pc.CompilerJobQueue$Job.run(CompilerJobQueue.scala:152)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	... 2 more
+2023.09.24 19:57:30 INFO  Shutting down server[0m
+2023.09.24 19:57:30 INFO  shutting down Metals[0m
+2023.09.24 19:57:30 INFO  Shut down connection with build server.[0m
+2023.09.24 19:57:30 INFO  Shut down connection with build server.[0m
+2023.09.24 19:57:30 INFO  Shut down connection with build server.[0m
+2023.09.24 19:57:30 INFO  Exiting server[0m

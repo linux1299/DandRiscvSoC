@@ -12239,3 +12239,195 @@ wvScrollUp -win $_nWave2 1
 wvZoomOut -win $_nWave2
 wvZoomOut -win $_nWave2
 wvZoomOut -win $_nWave2
+srcDeselectAll -win $_nTrace1
+wvZoom -win $_nWave2 0.000000 5314.905800
+wvZoom -win $_nWave2 0.000000 669.517133
+wvScrollDown -win $_nWave2 1
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 16724.510528 28790.783155
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+srcDeselectAll -win $_nTrace1
+debReload
+wvSelectSignal -win $_nWave2 {( "G1" 8 )} 
+wvSelectAll -win $_nWave2
+wvCut -win $_nWave2
+wvSetPosition -win $_nWave2 {("G1" 0)}
+wvSetPosition -win $_nWave2 {("G1" 0)}
+wvSetPosition -win $_nWave2 {("G1" 0)}
+wvSetPosition -win $_nWave2 {("G1" 0)}
+wvSelectGroup -win $_nWave2 {G7}
+wvCut -win $_nWave2
+wvSetPosition -win $_nWave2 {("G1" 0)}
+wvSetPosition -win $_nWave2 {("G1" 0)}
+wvSetPosition -win $_nWave2 {("G1" 0)}
+wvSetPosition -win $_nWave2 {("G1" 0)}
+wvSelectGroup -win $_nWave2 {G6}
+wvCut -win $_nWave2
+wvSetPosition -win $_nWave2 {("G1" 0)}
+wvSetPosition -win $_nWave2 {("G1" 0)}
+wvSetPosition -win $_nWave2 {("G1" 0)}
+wvSetPosition -win $_nWave2 {("G1" 0)}
+wvCut -win $_nWave2
+wvSetPosition -win $_nWave2 {("G1" 0)}
+wvSetPosition -win $_nWave2 {("G1" 0)}
+wvSetPosition -win $_nWave2 {("G1" 0)}
+wvSetPosition -win $_nWave2 {("G1" 0)}
+wvCut -win $_nWave2
+wvSetPosition -win $_nWave2 {("G1" 0)}
+wvSetPosition -win $_nWave2 {("G1" 0)}
+wvSetPosition -win $_nWave2 {("G1" 0)}
+wvSetPosition -win $_nWave2 {("G1" 0)}
+wvCut -win $_nWave2
+wvSetPosition -win $_nWave2 {("G1" 0)}
+wvSetPosition -win $_nWave2 {("G1" 0)}
+wvSetPosition -win $_nWave2 {("G1" 0)}
+wvSetPosition -win $_nWave2 {("G1" 0)}
+wvCut -win $_nWave2
+wvSetPosition -win $_nWave2 {("G1" 0)}
+wvSetPosition -win $_nWave2 {("G1" 0)}
+wvSetPosition -win $_nWave2 {("G1" 0)}
+wvSetPosition -win $_nWave2 {("G1" 0)}
+wvCut -win $_nWave2
+wvSetPosition -win $_nWave2 {("G1" 0)}
+wvSetPosition -win $_nWave2 {("G1" 0)}
+srcHBSelect "tb_DandRiscvSimple.u_DandRiscvSimple.dCache_1" -win $_nTrace1
+srcSetScope -win $_nTrace1 "tb_DandRiscvSimple.u_DandRiscvSimple.dCache_1" -delim \
+           "."
+srcHBSelect "tb_DandRiscvSimple.u_DandRiscvSimple.dCache_1" -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "cpu_cmd_valid" -line 5238 -pos 1 -win $_nTrace1
+srcSelect -signal "cpu_cmd_ready" -line 5239 -pos 1 -win $_nTrace1
+srcSelect -signal "cpu_cmd_payload_addr" -line 5240 -pos 1 -win $_nTrace1
+srcSelect -signal "cpu_cmd_payload_wen" -line 5241 -pos 1 -win $_nTrace1
+srcSelect -signal "cpu_cmd_payload_wdata" -line 5242 -pos 1 -win $_nTrace1
+srcSelect -signal "cpu_cmd_payload_wstrb" -line 5243 -pos 1 -win $_nTrace1
+srcSelect -signal "cpu_rsp_valid" -line 5244 -pos 1 -win $_nTrace1
+srcSelect -signal "cpu_rsp_payload_data" -line 5245 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvZoom -win $_nWave2 0.000000 4309.383081
+srcDeselectAll -win $_nTrace1
+srcSearchString "is_hit" -win $_nTrace1 -next -case
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "is_hit" -line 6917 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+srcDeselectAll -win $_nTrace1
+wvZoom -win $_nWave2 0.000000 6033.136313
+wvZoom -win $_nWave2 2168.541423 3291.814678
+wvZoom -win $_nWave2 2359.833987 2800.927253
+wvZoom -win $_nWave2 2419.309067 2611.747614
+srcDeselectAll -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+debReload
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvSelectSignal -win $_nWave2 {( "G1" 9 )} 
+wvZoom -win $_nWave2 1897.229384 3758.061082
+wvZoom -win $_nWave2 2287.680956 2627.951251
+wvZoom -win $_nWave2 2388.115372 2489.932491
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 2702.010741 3058.276624
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 2788.543736 3702.437453
+wvZoom -win $_nWave2 3201.433287 3401.969995
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 33962.042852 39605.282601
+wvZoom -win $_nWave2 36184.316059 37401.771550
+wvZoom -win $_nWave2 36544.110811 36898.958385
+wvSetCursor -win $_nWave2 36588.810856 -snap {("G1" 1)}
+wvSelectSignal -win $_nWave2 {( "G1" 2 )} 
+wvZoomOut -win $_nWave2
+wvZoomIn -win $_nWave2
+wvZoomIn -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 33346.416697 40036.220909
+wvZoom -win $_nWave2 36059.902115 37522.910645
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+srcDeselectAll -win $_nTrace1
+srcSearchString "hit_id" -win $_nTrace1 -next -case
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "hit_id" -line 6911 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomIn -win $_nWave2
+wvZoomIn -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "hit_id" -line 6911 -pos 1 -win $_nTrace1
+srcAction -pos 6910 9 4 -win $_nTrace1 -name "hit_id" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "_zz_hit_id_1" -line 10132 -pos 1 -win $_nTrace1
+srcAction -pos 10131 8 7 -win $_nTrace1 -name "_zz_hit_id_1" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "cache_hit_gnt_2" -line 10131 -pos 1 -win $_nTrace1
+srcAction -pos 10130 8 3 -win $_nTrace1 -name "cache_hit_gnt_2" -ctrlKey off

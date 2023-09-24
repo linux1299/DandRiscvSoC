@@ -22,8 +22,8 @@ object GenSimple extends App{
         new ExcepPlugin,
         new LSUPlugin(AW=64, DW=64),
         new ICachePlugin(config = ICacheConfig(
-          // cacheSize = 32*1024, // 32KB
-          cacheSize = 1*1024, // 1KB
+          cacheSize = 32*1024, // 32KB
+          // cacheSize = 1*1024, // 1KB
           bytePerLine =64,
           wayCount = 4,
           addressWidth = 64,
