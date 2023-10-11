@@ -26,3 +26,9 @@
 1694695114838:runMain dandriscv.gencpu.GenSimple
 1694851854636:runMain dandriscv.gencpu.GenSmallest
 1695124743768:runMain dandriscv.gencpu.GenSimple
+1696856959442:compile
+1696857079720:;set _root_.scala.collection.Seq(historyPath := None,shellPrompt := { _ => "" },SettingKey[_root_.scala.Option[_root_.sbt.File]]("sbtStructureOutputFile") in _root_.sbt.Global := _root_.scala.Some(_root_.sbt.file("/tmp/sbt-structure.xml")),SettingKey[_root_.java.lang.String]("sbtStructureOptions") in _root_.sbt.Global := "download, resolveClassifiers");apply -cp "/home/lin/.local/share/JetBrains/IntelliJIdea2023.2/Scala/repo/org/jetbrains/scala/sbt-structure-extractor_2.12_1.0/2023.1.0/sbt-structure-extractor-2023.1.0.jar" org.jetbrains.sbt.CreateTasks;preferScala2;*/*:dumpStructure
+1696859334035:compile
+1696859348052:runMain dandriscv.gencpu.GenSimpleForYsyx3rd
+1696859455260:runMain dandriscv.gencpu.GenSimple
+1696859461941:runMain dandriscv.gencpu.GenSimpleForYsyx3rd

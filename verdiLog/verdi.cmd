@@ -12431,3 +12431,41 @@ srcAction -pos 10131 8 7 -win $_nTrace1 -name "_zz_hit_id_1" -ctrlKey off
 srcDeselectAll -win $_nTrace1
 srcSelect -signal "cache_hit_gnt_2" -line 10131 -pos 1 -win $_nTrace1
 srcAction -pos 10130 8 3 -win $_nTrace1 -name "cache_hit_gnt_2" -ctrlKey off
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 0.000000 9419.080163
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 0.000000 8721.370521
+wvZoom -win $_nWave2 0.000000 1040.636379
+wvZoom -win $_nWave2 202.207143 514.359614
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 34125.287680 39055.151904
+wvSetCursor -win $_nWave2 38851.182641 -snap {("G1" 3)}
+wvSetCursor -win $_nWave2 38426.853729 -snap {("G1" 6)}
+wvZoom -win $_nWave2 38508.805665 38980.484584
+wvZoom -win $_nWave2 38934.309884 38975.083016
+wvZoom -win $_nWave2 38972.130842 38974.284724
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+srcDeselectAll -win $_nTrace1
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomIn -win $_nWave2
+wvZoomIn -win $_nWave2
+debExit

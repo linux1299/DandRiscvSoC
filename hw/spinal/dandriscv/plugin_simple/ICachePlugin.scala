@@ -57,6 +57,7 @@ class ICachePlugin(val config : ICacheConfig) extends Plugin[DandRiscvSimple]{
   import config._
 
   var icache_access : ICacheAccess = null
+  var icacheReader : Axi4ReadOnly = null
 
   override def setup(pipeline: DandRiscvSimple): Unit = {
     import Riscv._
@@ -89,7 +90,7 @@ class ICachePlugin(val config : ICacheConfig) extends Plugin[DandRiscvSimple]{
                                  useId=true, useLast=true, useRegion=false, useBurst=true, 
                                  useLock=false, useCache=false, useSize=true, useQos=false,
                                  useLen=true, useResp=true, useProt=false, useStrb=false)
-      val icacheReader = master(Axi4ReadOnly(axiConfig)).setName("icache")
+      icacheReader = master(Axi4ReadOnly(axiConfig)).setName("icache")
       // ar channel
       icacheReader.ar.valid := icache.next_level.cmd.valid
       icacheReader.ar.payload.id := U(0)
@@ -101,7 +102,7 @@ class ICachePlugin(val config : ICacheConfig) extends Plugin[DandRiscvSimple]{
 
       // r channel
       icacheReader.r.ready := True
-      icache.next_level.rsp.valid := icacheReader.r.valid
+      icache.next_level.rsp.valid := icacheReader.r.valid && (icacheReader.r.id===U(0))
       icache.next_level.rsp.payload.data := icacheReader.r.payload.data
     }
     else {
@@ -110,9 +111,6 @@ class ICachePlugin(val config : ICacheConfig) extends Plugin[DandRiscvSimple]{
       icache_access.cmd <> icacheMaster.cmd
       icache_access.rsp <> icacheMaster.rsp
     }
-    
-
-    
-   }
+  }
   
 }

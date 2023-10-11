@@ -67,6 +67,8 @@ class DCachePlugin(val config : DCacheConfig) extends Plugin[DandRiscvSimple]{
   import config._
 
   var dcache_access : DCacheAccess = null
+  var dcacheReader : Axi4ReadOnly = null
+  var dcacheWriter : Axi4WriteOnly = null
 
   override def setup(pipeline: DandRiscvSimple): Unit = {
     import Riscv._
@@ -100,8 +102,8 @@ class DCachePlugin(val config : DCacheConfig) extends Plugin[DandRiscvSimple]{
                                  useId=true, useLast=true, useRegion=false, useBurst=true, 
                                  useLock=false, useCache=false, useSize=true, useQos=false,
                                  useLen=true, useResp=true, useProt=false, useStrb=true)
-      val dcacheReader = master(Axi4ReadOnly(axiConfig)).setName("dcache")
-      val dcacheWriter = master(Axi4WriteOnly(axiConfig)).setName("dcache")
+      dcacheReader = master(Axi4ReadOnly(axiConfig)).setName("dcache")
+      dcacheWriter = master(Axi4WriteOnly(axiConfig)).setName("dcache")
       val handshake_cnt = RegInit(False)
       
 
@@ -186,7 +188,7 @@ class DCachePlugin(val config : DCacheConfig) extends Plugin[DandRiscvSimple]{
       dcache.next_level.rsp.valid := dcache.next_level.cmd.wen ? dcacheWriter.b.valid | dcacheReader.r.valid
       dcache.next_level.rsp.payload.bresp := dcacheWriter.b.payload.resp
       dcache.next_level.rsp.payload.data := dcacheReader.r.payload.data
-      dcache.next_level.rsp.payload.rvalid := dcacheReader.r.valid
+      dcache.next_level.rsp.payload.rvalid := dcacheReader.r.valid && (dcacheReader.r.id===U(1))
     }
     else {
       val dcacheMaster = master(DCacheAccess(dcache_config.addressWidth, dcache_config.cpuDataWidth)).setName("dcache")

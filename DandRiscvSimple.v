@@ -1,6 +1,6 @@
 // Generator : SpinalHDL v1.8.1    git head : 2a7592004363e5b40ec43e1f122ed8641cd8965b
 // Component : DandRiscvSimple
-// Git hash  : 1f06b3302c336a341f84168eed623a26e8c60118
+// Git hash  : 2642408e20774ae356a7923571e5e25dc672b2ab
 
 `timescale 1ns/1ps
 
@@ -722,24 +722,24 @@ module DandRiscvSimple (
   reg        [7:0]    _zz_memaccess_LSUPlugin_dcache_wstrb_1;
   reg        [7:0]    _zz_memaccess_LSUPlugin_dcache_wstrb_2;
   wire       [7:0]    _zz_memaccess_LSUPlugin_dcache_wstrb_3;
-  reg                 _zz_when_DCachePlugin_l172;
-  wire                when_DCachePlugin_l116;
+  reg                 _zz_when_DCachePlugin_l174;
+  wire                when_DCachePlugin_l118;
   wire                dcache_ar_fire;
-  wire                when_DCachePlugin_l139;
+  wire                when_DCachePlugin_l141;
   wire                dcache_aw_fire;
-  wire                when_DCachePlugin_l157;
+  wire                when_DCachePlugin_l159;
   wire                dcache_w_fire;
-  wire                when_DCachePlugin_l172;
+  wire                when_DCachePlugin_l174;
   wire                dcache_aw_fire_1;
   wire                dcache_w_fire_1;
-  wire                when_DCachePlugin_l173;
+  wire                when_DCachePlugin_l175;
   wire                dcache_aw_fire_2;
   wire                dcache_w_fire_2;
-  wire                when_DCachePlugin_l175;
+  wire                when_DCachePlugin_l177;
   wire                dcache_aw_fire_3;
   wire                dcache_w_fire_3;
-  wire                when_DCachePlugin_l180;
-  wire                when_DCachePlugin_l179;
+  wire                when_DCachePlugin_l182;
+  wire                when_DCachePlugin_l181;
   wire                dcache_aw_fire_4;
   wire                dcache_w_fire_4;
   wire                dcache_aw_fire_5;
@@ -3125,30 +3125,30 @@ module DandRiscvSimple (
   assign DCachePlugin_dcache_access_rsp_valid = dCache_1_cpu_rsp_valid;
   assign DCachePlugin_dcache_access_rsp_payload_data = dCache_1_cpu_rsp_payload_data;
   assign DCachePlugin_dcache_access_stall = dCache_1_stall;
-  assign when_DCachePlugin_l116 = (dCache_1_next_level_cmd_valid && (! dCache_1_next_level_cmd_payload_wen));
+  assign when_DCachePlugin_l118 = (dCache_1_next_level_cmd_valid && (! dCache_1_next_level_cmd_payload_wen));
   assign dcache_ar_fire = (dcache_ar_valid && dcache_ar_ready);
   assign dcache_r_ready = 1'b1;
-  assign when_DCachePlugin_l139 = (dCache_1_next_level_cmd_valid && dCache_1_next_level_cmd_payload_wen);
+  assign when_DCachePlugin_l141 = (dCache_1_next_level_cmd_valid && dCache_1_next_level_cmd_payload_wen);
   assign dcache_aw_fire = (dcache_aw_valid && dcache_aw_ready);
-  assign when_DCachePlugin_l157 = (dCache_1_next_level_cmd_valid && dCache_1_next_level_cmd_payload_wen);
+  assign when_DCachePlugin_l159 = (dCache_1_next_level_cmd_valid && dCache_1_next_level_cmd_payload_wen);
   assign dcache_w_fire = (dcache_w_valid && dcache_w_ready);
   assign dcache_b_ready = 1'b1;
-  assign when_DCachePlugin_l172 = (_zz_when_DCachePlugin_l172 == 1'b0);
+  assign when_DCachePlugin_l174 = (_zz_when_DCachePlugin_l174 == 1'b0);
   assign dcache_aw_fire_1 = (dcache_aw_valid && dcache_aw_ready);
   assign dcache_w_fire_1 = (dcache_w_valid && dcache_w_ready);
-  assign when_DCachePlugin_l173 = (dcache_aw_fire_1 && dcache_w_fire_1);
+  assign when_DCachePlugin_l175 = (dcache_aw_fire_1 && dcache_w_fire_1);
   assign dcache_aw_fire_2 = (dcache_aw_valid && dcache_aw_ready);
   assign dcache_w_fire_2 = (dcache_w_valid && dcache_w_ready);
-  assign when_DCachePlugin_l175 = (dcache_aw_fire_2 || dcache_w_fire_2);
+  assign when_DCachePlugin_l177 = (dcache_aw_fire_2 || dcache_w_fire_2);
   assign dcache_aw_fire_3 = (dcache_aw_valid && dcache_aw_ready);
   assign dcache_w_fire_3 = (dcache_w_valid && dcache_w_ready);
-  assign when_DCachePlugin_l180 = (dcache_aw_fire_3 || dcache_w_fire_3);
-  assign when_DCachePlugin_l179 = (_zz_when_DCachePlugin_l172 == 1'b1);
+  assign when_DCachePlugin_l182 = (dcache_aw_fire_3 || dcache_w_fire_3);
+  assign when_DCachePlugin_l181 = (_zz_when_DCachePlugin_l174 == 1'b1);
   assign dcache_aw_fire_4 = (dcache_aw_valid && dcache_aw_ready);
   assign dcache_w_fire_4 = (dcache_w_valid && dcache_w_ready);
   assign dcache_aw_fire_5 = (dcache_aw_valid && dcache_aw_ready);
   assign dcache_w_fire_5 = (dcache_w_valid && dcache_w_ready);
-  assign dCache_1_next_level_cmd_ready = (dCache_1_next_level_cmd_payload_wen ? ((dcache_aw_fire_4 && dcache_w_fire_4) || (_zz_when_DCachePlugin_l172 && (dcache_aw_fire_5 || dcache_w_fire_5))) : dcache_ar_ready);
+  assign dCache_1_next_level_cmd_ready = (dCache_1_next_level_cmd_payload_wen ? ((dcache_aw_fire_4 && dcache_w_fire_4) || (_zz_when_DCachePlugin_l174 && (dcache_aw_fire_5 || dcache_w_fire_5))) : dcache_ar_ready);
   assign dCache_1_next_level_rsp_valid = (dCache_1_next_level_cmd_payload_wen ? dcache_b_valid : dcache_r_valid);
   assign when_Pipeline_l127 = (! decode_arbitration_isStuck);
   assign when_Pipeline_l127_1 = (! execute_arbitration_isStuck);
@@ -3231,7 +3231,7 @@ module DandRiscvSimple (
       rsp_flush <= 1'b0;
       fetch_state <= IDLE;
       execute_ALUPlugin_branch_history <= 7'h0;
-      _zz_when_DCachePlugin_l172 <= 1'b0;
+      _zz_when_DCachePlugin_l174 <= 1'b0;
       dcache_ar_valid <= 1'b0;
       dcache_ar_payload_id <= 4'b0000;
       dcache_ar_payload_len <= 8'h0;
@@ -3294,7 +3294,7 @@ module DandRiscvSimple (
       if(execute_arbitration_isFiring) begin
         execute_ALUPlugin_branch_history <= {execute_ALUPlugin_branch_history[5 : 0],execute_ALUPlugin_branch_taken};
       end
-      if(when_DCachePlugin_l116) begin
+      if(when_DCachePlugin_l118) begin
         dcache_ar_valid <= 1'b1;
       end else begin
         if(dcache_ar_fire) begin
@@ -3306,7 +3306,7 @@ module DandRiscvSimple (
       dcache_ar_payload_size <= dCache_1_next_level_cmd_payload_size;
       dcache_ar_payload_burst <= 2'b01;
       dcache_ar_payload_addr <= dCache_1_next_level_cmd_payload_addr;
-      if(when_DCachePlugin_l139) begin
+      if(when_DCachePlugin_l141) begin
         dcache_aw_valid <= 1'b1;
       end else begin
         if(dcache_aw_fire) begin
@@ -3318,7 +3318,7 @@ module DandRiscvSimple (
       dcache_aw_payload_size <= dCache_1_next_level_cmd_payload_size;
       dcache_aw_payload_burst <= 2'b01;
       dcache_aw_payload_addr <= dCache_1_next_level_cmd_payload_addr;
-      if(when_DCachePlugin_l157) begin
+      if(when_DCachePlugin_l159) begin
         dcache_w_valid <= 1'b1;
       end else begin
         if(dcache_w_fire) begin
@@ -3328,18 +3328,18 @@ module DandRiscvSimple (
       dcache_w_payload_data <= dCache_1_next_level_cmd_payload_wdata;
       dcache_w_payload_strb <= dCache_1_next_level_cmd_payload_wstrb;
       dcache_w_payload_last <= 1'b1;
-      if(when_DCachePlugin_l172) begin
-        if(when_DCachePlugin_l173) begin
-          _zz_when_DCachePlugin_l172 <= 1'b0;
+      if(when_DCachePlugin_l174) begin
+        if(when_DCachePlugin_l175) begin
+          _zz_when_DCachePlugin_l174 <= 1'b0;
         end else begin
-          if(when_DCachePlugin_l175) begin
-            _zz_when_DCachePlugin_l172 <= 1'b1;
+          if(when_DCachePlugin_l177) begin
+            _zz_when_DCachePlugin_l174 <= 1'b1;
           end
         end
       end else begin
-        if(when_DCachePlugin_l179) begin
-          if(when_DCachePlugin_l180) begin
-            _zz_when_DCachePlugin_l172 <= 1'b0;
+        if(when_DCachePlugin_l181) begin
+          if(when_DCachePlugin_l182) begin
+            _zz_when_DCachePlugin_l174 <= 1'b0;
           end
         end
       end
