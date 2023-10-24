@@ -30,7 +30,8 @@ object GenSmallest extends App{
           cpuDataWidth = 32,
           bankWidth = 32,
           busDataWidth = 256,
-          directOutput = true
+          directOutput = true,
+            noBurst=true
         )),
         new DCachePlugin(config = DCacheConfig(
           cacheSize = 32*1024, // 32KB
@@ -40,7 +41,8 @@ object GenSmallest extends App{
           cpuDataWidth = 64,
           bankWidth = 64,
           busDataWidth = 256,
-          directOutput = true
+          directOutput = true,
+          noBurst=false
         ))
       )
     )

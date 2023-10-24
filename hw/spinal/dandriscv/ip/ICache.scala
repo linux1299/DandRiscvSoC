@@ -14,7 +14,8 @@ case class ICacheConfig(cacheSize : Int,
                         cpuDataWidth : Int,
                         bankWidth : Int,
                         busDataWidth : Int,
-                        directOutput : Boolean){
+                        directOutput : Boolean,
+                        noBurst : Boolean){
 
   def lineCount = cacheSize/bytePerLine
   def wayLineCount = lineCount/wayCount
@@ -40,7 +41,7 @@ case class ICacheConfig(cacheSize : Int,
 
   assert(wayCount>=2)
   assert(bankWidth==cpuDataWidth)
-  assert(busDataWidth/bankWidth>=2 && busDataWidth%bankWidth==0)
+  // assert(busDataWidth/bankWidth>=2 && busDataWidth%bankWidth==0)
   assert(bytePerLine*8/busDataWidth>=2 && (bytePerLine*8)%busDataWidth==0)
   
 }
@@ -51,7 +52,7 @@ case class ICache(p : ICacheConfig) extends Component{
 
   val flush = in Bool()
   val cpu = slave(ICacheAccess(addressWidth, cpuDataWidth))
-  val sram = for(i<-0 until bankNum) yield new Area{
+  val sram = for(i<-0 until wayCount) yield new Area{
     val ports = master(SramPorts(bankNum, bankDepthBits, bankWidth))
   }
   val next_level = master(ICacheNextLevelPorts(p))
@@ -117,7 +118,8 @@ case class ICache(p : ICacheConfig) extends Component{
   when(is_miss){
     next_level_cmd_valid := True
   }
-  .elsewhen(next_level.cmd.fire){
+  // .elsewhen(next_level.cmd.fire){
+  .otherwise{
     next_level_cmd_valid := False
   }
 
@@ -236,7 +238,9 @@ case class ICache(p : ICacheConfig) extends Component{
   }
 
   // resp to cpu ports
-  cpu.rsp.payload.data := is_hit_d1 ? sram_banks_data(hit_id_d1).subdivideIn(cpuDataWidth bits)(cpu_bank_index_d1) | sram_banks_data(evict_id_miss).subdivideIn(cpuDataWidth bits)(cpu_bank_index_d1)
+  val hit_data = sram_banks_data(hit_id_d1).subdivideIn(cpuDataWidth bits)(cpu_bank_index_d1)
+  val miss_data= sram_banks_data(evict_id_miss).subdivideIn(cpuDataWidth bits)(cpu_bank_index_d1)
+  cpu.rsp.payload.data := is_hit_d1 ? hit_data | miss_data
   cpu.rsp.valid        := is_hit_d1 ? sram_banks_valid(hit_id_d1) | sram_banks_valid(evict_id_miss)
   cpu.cmd.ready        := cpu_cmd_ready
 

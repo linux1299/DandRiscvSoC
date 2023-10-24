@@ -14,7 +14,8 @@ case class DCacheConfig(cacheSize : Int,
                         cpuDataWidth : Int,
                         bankWidth : Int,
                         busDataWidth : Int,
-                        directOutput : Boolean){
+                        directOutput : Boolean,
+                        noBurst : Boolean){
 
   def lineCount = cacheSize/bytePerLine
   def wayLineCount = lineCount/wayCount
@@ -56,6 +57,7 @@ case class DCache(p : DCacheConfig) extends Component{
     val ports = master(SramPorts(bankNum, bankDepthBits, bankWidth))
   }
   val next_level = master(DCacheNextLevelPorts(p))
+  val cpu_bypass = master(DCacheAccess(addressWidth, cpuDataWidth))
 
   case class LineMeta() extends Bundle{
     val vld = Reg(Bool()) init(False)
@@ -67,6 +69,34 @@ case class DCache(p : DCacheConfig) extends Component{
   val ways = Seq.fill(wayCount)(new Area{
     val metas = Vec(LineMeta(), wayLineCount)
   })
+
+  // cpu related
+  val cpu_cmd_ready   = RegInit(True)
+  val cpu_tag = cpu.cmd.payload.addr(tagRange)
+  val cpu_set = cpu.cmd.payload.addr(setRange)
+  val cpu_bank_addr   = cpu.cmd.payload.addr(bankAddrRange)
+  val cpu_bank_index  = cpu.cmd.payload.addr(bankIndexRange)
+  val cpu_addr = cpu.cmd.payload.addr
+  val cpu_wstrb = cpu.cmd.payload.wstrb
+  val cpu_wdata = cpu.cmd.payload.wdata
+  val cpu_wen = cpu.cmd.payload.wen
+  val bypass_cond_0 = (cpu_addr >= U"32'h1000_0000") && (cpu_addr <= U"32'h1000_0fff")
+  val bypass_cond_1 = (cpu_addr >= U"32'h1000_1000") && (cpu_addr <= U"32'h1000_1fff")
+  val bypass_cond_2 = (cpu_addr >= U"32'h3000_0000") && (cpu_addr <= U"32'h3fff_ffff")
+  val bypass = (bypass_cond_0 || bypass_cond_1 || bypass_cond_2) && cpu.cmd.fire
+  val bypass_reg = RegInit(False)
+  cpu_bypass.cmd.valid := bypass
+  cpu_bypass.cmd.addr  := cpu.cmd.addr
+  cpu_bypass.cmd.wen   := cpu.cmd.wen
+  cpu_bypass.cmd.wdata := cpu.cmd.wdata
+  cpu_bypass.cmd.wstrb := cpu.cmd.wstrb
+  cpu_bypass.cmd.size  := cpu.cmd.size
+  when(bypass){
+    bypass_reg := True
+  }
+  .elsewhen(cpu_bypass.rsp.valid){
+    bypass_reg := False
+  }
 
   // cache related
   val cache_tag = Vec(UInt(tagWidth bits), wayCount)
@@ -80,29 +110,18 @@ case class DCache(p : DCacheConfig) extends Component{
   val invld_id  = UInt(log2Up(wayCount) bits)
   val victim_id  = UInt(log2Up(wayCount) bits)
   val mru_full = cache_mru.asBits.andR
-  val is_hit = cache_hit.asBits.orR & cpu.cmd.fire
-  val is_miss= !cache_hit.asBits.orR & cpu.cmd.fire
+  val is_hit = cache_hit.asBits.orR & cpu.cmd.fire & !bypass
+  val is_miss= !cache_hit.asBits.orR & cpu.cmd.fire & !bypass
   val is_diff = !cache_victim.asBits.orR
-  val is_write = cpu.cmd.fire & cpu.cmd.payload.wen
+  val is_write = cpu.cmd.fire & cpu.cmd.payload.wen & !bypass
   val flush_busy = RegInit(False)
   val flush_cnt  = Counter(0 to wayLineCount-1)
   val flush_done = flush_busy && flush_cnt===(wayLineCount-1) // TODO:when cache is wb, need flush all dirty cache line to next level
-
   val cache_hit_gnt = Vec(Bool(), wayCount)
   val cache_victim_gnt = Vec(Bool(), wayCount)
   val cache_invld_gnt = Vec(Bool(), wayCount)
   val evict_id_miss = RegNextWhen(evict_id, is_miss)
 
-  // cpu related
-  val cpu_cmd_ready   = RegInit(True)
-  val cpu_tag = cpu.cmd.payload.addr(tagRange)
-  val cpu_set = cpu.cmd.payload.addr(setRange)
-  val cpu_bank_addr   = cpu.cmd.payload.addr(bankAddrRange)
-  val cpu_bank_index  = cpu.cmd.payload.addr(bankIndexRange)
-  val cpu_addr = cpu.cmd.payload.addr
-  val cpu_wstrb = cpu.cmd.payload.wstrb
-  val cpu_wdata = cpu.cmd.payload.wdata
-  val cpu_wen = cpu.cmd.payload.wen
 
   // sram related
   val sram_banks_data = Vec(Bits(bankNum*bankWidth bits), wayCount)
@@ -120,10 +139,9 @@ case class DCache(p : DCacheConfig) extends Component{
   val next_level_wstrb = next_level_wstrb_tmp |<< (cpu_addr(cpuDataOnBusRange)*cpuDataWidth/8)
   val next_level_wdata = next_level_wdata_tmp |<< (cpu_addr(cpuDataOnBusRange)*cpuDataWidth)
 
-  when(is_miss || is_write){ // cache miss or write
+  when((is_miss || is_write)){ // cache miss or write
     next_level_cmd_valid := True
   }
-  // .elsewhen(next_level.cmd.fire){
   .otherwise{
     next_level_cmd_valid := False
   }
@@ -153,7 +171,6 @@ case class DCache(p : DCacheConfig) extends Component{
     flush_cnt.increment()
   }
   
-
   // read metas to decide cache hit, acccess sram, update mru
   cache_hit_gnt    := OHMasking.roundRobin(cache_hit, B(1, wayCount bits).asBools)
   cache_invld_gnt  := OHMasking.roundRobin(cache_invld, B(1, wayCount bits).asBools)
@@ -232,27 +249,29 @@ case class DCache(p : DCacheConfig) extends Component{
     when(next_level_rdone && U(wayId)===evict_id_miss){
       ways(wayId).metas(cpu_set).tag := cpu_tag
     }
-
-    // to cpu ready
-    when(flush || is_miss || is_write){
-      cpu_cmd_ready := False
-    }
-    .elsewhen(flush_done || next_level_rdone || next_level_wdone){
-      cpu_cmd_ready := True
-    }
   }
 
   // resp to cpu ports
-  cpu.rsp.payload.data := is_hit ? sram_banks_data(hit_id).subdivideIn(cpuDataWidth bits)(cpu_bank_index) | sram_banks_data(evict_id_miss).subdivideIn(cpuDataWidth bits)(cpu_bank_index)
-  cpu.rsp.valid        := is_hit ? sram_banks_valid(hit_id) | sram_banks_valid(evict_id_miss)
+  when((flush || is_miss || is_write || bypass)){
+    cpu_cmd_ready := False
+  }
+  .elsewhen((flush_done || next_level_rdone || next_level_wdone || cpu_bypass.rsp.valid)){
+    cpu_cmd_ready := True
+  }
+  val hit_data = sram_banks_data(hit_id).subdivideIn(cpuDataWidth bits)(cpu_bank_index)
+  val refill_data = sram_banks_data(evict_id_miss).subdivideIn(cpuDataWidth bits)(cpu_bank_index)
+  cpu.rsp.payload.data := bypass_reg ? cpu_bypass.rsp.data | (is_hit ? hit_data | refill_data)
+  cpu.rsp.valid        := bypass_reg ? cpu_bypass.rsp.valid | (is_hit ? sram_banks_valid(hit_id) | sram_banks_valid(evict_id_miss))
   cpu.cmd.ready        := cpu_cmd_ready
   stall                := (is_miss || is_write || !cpu_cmd_ready) && !next_level_wdone
 
   // cmd to next level cache
-  next_level.cmd.payload.addr := cpu_wen ? (cpu_addr(addressWidth-1 downto busDataSize) ## U(0, busDataSize bits)).asUInt | (cpu_addr(addressWidth-1 downto offsetWidth) ## U(0, offsetWidth bits)).asUInt
-  next_level.cmd.payload.len  := cpu_wen ? U(0, 4 bits) | (busBurstLen-1)
+  val waddr = (cpu_addr(addressWidth-1 downto busDataSize) ## U(0, busDataSize bits)).asUInt
+  val raddr = (cpu_addr(addressWidth-1 downto offsetWidth) ## U(0, offsetWidth bits)).asUInt
+  next_level.cmd.payload.addr := (cpu_wen ? waddr | raddr)
+  next_level.cmd.payload.len  := (cpu_wen ? U(0, 4 bits) | (busBurstLen-1))
   next_level.cmd.payload.size := busDataSize
-  next_level.cmd.payload.wen  := cpu_wen // Delay(is_write, 1)
+  next_level.cmd.payload.wen  := cpu_wen
   next_level.cmd.payload.wdata:= next_level_wdata
   next_level.cmd.payload.wstrb:= next_level_wstrb
   next_level.cmd.valid        := next_level_cmd_valid

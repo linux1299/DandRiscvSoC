@@ -64,31 +64,40 @@ with DCacheAccessService
       val lsu_wdata = Bits(XLEN bits)
       val lsu_wen   = Bool()
       val lsu_wstrb = Bits(XLEN/8 bits)
+      val lsu_size  = UInt(3 bits)
       
       switch(input(MEM_CTRL)){
         is(MemCtrlEnum.LB.asBits){
           dcache_data_load := dcache_lb
+          lsu_size := U(0)
         }
         is(MemCtrlEnum.LBU.asBits){
           dcache_data_load := dcache_lbu
+          lsu_size := U(0)
         }
         is(MemCtrlEnum.LH.asBits){
           dcache_data_load := dcache_lh
+          lsu_size := U(1)
         }
         is(MemCtrlEnum.LHU.asBits){
           dcache_data_load := dcache_lhu
+          lsu_size := U(1)
         }
         is(MemCtrlEnum.LW.asBits){
           dcache_data_load := dcache_lw
+          lsu_size := U(2)
         }
         is(MemCtrlEnum.LWU.asBits){
           dcache_data_load := dcache_lwu
+          lsu_size := U(2)
         }
         is(MemCtrlEnum.LD.asBits){
           dcache_data_load := dcache_rdata
+          lsu_size := U(3)
         }
         default{
           dcache_data_load := B(0, XLEN bits)
+          lsu_size := U(0)
         }
       }
 
@@ -144,6 +153,7 @@ with DCacheAccessService
       dcache_access.cmd.payload.wen  := lsu_wen
       dcache_access.cmd.payload.wdata:= lsu_wdata
       dcache_access.cmd.payload.wstrb:= lsu_wstrb
+      dcache_access.cmd.payload.size := lsu_size
     }
 
     writebackStage plug new Area{

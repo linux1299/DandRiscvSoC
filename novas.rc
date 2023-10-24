@@ -232,8 +232,8 @@ pace/tb_DandRiscvSimple/DandRiscv_debug_total.rc\""
 [Form]
 version = Verdi_O-2018.09-SP2
 wave/sigCPL.fm = 100,100,239,333
-wave/unknownSave.fm = 258,184,520,275
 openfile.fm = 100,100,723,524
+wave/unknownSave.fm = 258,184,520,275
 [General]
 autoSaveSession = FALSE
 TclAutoSource = 
@@ -404,11 +404,11 @@ restoreSigDlg = 1038,451,551,438
 ActiveFileDialog = 975,534,678,272
 SetWindowTimeUnitDialog = 1097,627,433,86
 monoFontDlg = 1657,750,366,432
-QwWarnMsgDlg = 676,783,600,250
 saveSigDlg = 1104,820,551,386
 openFileDlg = 995,768,602,483
 QwInfoMsgDlg = 1474,1046,750,250
-QwUserAskDlg = 1218,917,349,188
+QwWarnMsgDlg = 676,857,600,250
+QwUserAskDlg = 1781,921,349,188
 [Relationship]
 hideRecursiceNode = FALSE
 [Session Cache]
@@ -607,7 +607,7 @@ pdmlMacro = ID_BLACK
 font = FIXED20
 annotFont = Helvetica_M_R_14
 [Text.1]
-viewport = 71 33 2641 1879 45
+viewport = 71 33 3766 1887 45
 [TextPrinter]
 Orientation = Landscape
 Indicator = FALSE
@@ -701,28 +701,28 @@ DefaultLogTimeUnit = "1.000000ns"
 [VIA.oneSearch.preference.vgifColumnSettingRC.setting0]
 parRuleSets = ""
 [VIA.oneSearch.preference.vgifColumnSettingRC.setting0.column0]
-name = Code
-width = 60
-visualIndex = 2
-isHidden = TRUE
-isUserChangeColumnVisible = FALSE
-[VIA.oneSearch.preference.vgifColumnSettingRC.setting0.column1]
 name = Time
 width = 60
 visualIndex = 0
 isHidden = TRUE
 isUserChangeColumnVisible = FALSE
-[VIA.oneSearch.preference.vgifColumnSettingRC.setting0.column2]
+[VIA.oneSearch.preference.vgifColumnSettingRC.setting0.column1]
 name = Type
 width = 60
 visualIndex = 3
 isHidden = FALSE
 isUserChangeColumnVisible = FALSE
-[VIA.oneSearch.preference.vgifColumnSettingRC.setting0.column3]
+[VIA.oneSearch.preference.vgifColumnSettingRC.setting0.column2]
 name = Message
 width = 60
 visualIndex = 4
 isHidden = FALSE
+isUserChangeColumnVisible = FALSE
+[VIA.oneSearch.preference.vgifColumnSettingRC.setting0.column3]
+name = Code
+width = 60
+visualIndex = 2
+isHidden = TRUE
 isUserChangeColumnVisible = FALSE
 [VIA.oneSearch.preference.vgifColumnSettingRC.setting0.column4]
 name = Severity
@@ -749,7 +749,7 @@ scope_to_save_with_macro
 open_file_dir
 open_rc_file_dir
 getSignalForm = 0 0 800 479 100 30 100 30
-viewPort = 0 28 2641 753 624 409
+viewPort = 0 28 3766 835 624 409
 signalSpacing = 5
 digitalSignalHeight = 15
 analogSignalHeight = 98
@@ -1020,10 +1020,10 @@ curveWindow_Drag&Drop_Mode = TRUE
 hspiceIncOpenMode = TRUE
 pcSelectMode = TRUE
 hierarchyDelimiter = /
-RecentFile1 = "\"/home/lin/SpinalProjects/DandRiscvSoC/simWorkspace/tb_DandRiscvSimple/DandRiscv_debug_total.rc\""
-RecentFile2 = "\"/home/lin/SpinalProjects/DandRiscvSoC/simWorkspace/tb_DandRiscvSimple/DandRiscvSimple_debug_total.rc\""
-RecentFile3 = "\"/home/lin/SpinalProjects/DandRiscvSoC/simWorkspace/tb_DandRiscvSimple/tb_DandRiscvSimple.fsdb\""
-RecentFile4 = "\"/home/lin/SpinalProjects/DandRiscvSoC/simWorkspace/tb_DandRiscvSmallest/tb_DandRiscvSmallest.fsdb\""
+RecentFile1 = "\"/home/lin/SpinalProjects/DandRiscvSoC/simWorkspace/tb_DandRiscvSmallest/tb_DandRiscvSmallest.fsdb\""
+RecentFile2 = "\"/home/lin/SpinalProjects/DandRiscvSoC/simWorkspace/tb_DandRiscvSimple/DandRiscv_debug_total.rc\""
+RecentFile3 = "\"/home/lin/SpinalProjects/DandRiscvSoC/simWorkspace/tb_DandRiscvSimple/DandRiscvSimple_debug_total.rc\""
+RecentFile4 = "\"/home/lin/SpinalProjects/DandRiscvSoC/simWorkspace/tb_DandRiscvSimple/tb_DandRiscvSimple.fsdb\""
 open_file_time_range = FALSE
 value_window_aligment = Right
 signal_window_alignment = Auto
@@ -1629,7 +1629,7 @@ AddImportArgument = FALSE
 LineBreakWithScope = TRUE
 StopAfterCompileOption = -s
 [wave.0]
-viewPort = 0 28 2641 753 624 409
+viewPort = 0 28 3766 835 624 409
 [wave.1]
 viewPort = 127 219 960 332 100 65
 [wave.2]

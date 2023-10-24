@@ -30,7 +30,8 @@ object GenSimple extends App{
           cpuDataWidth = 32,
           bankWidth = 32,
           busDataWidth = 64,
-          directOutput = false
+          directOutput = false,
+          noBurst=true
         )),
         new DCachePlugin(config = DCacheConfig(
           cacheSize = 32*1024, // 32KB
@@ -40,7 +41,9 @@ object GenSimple extends App{
           cpuDataWidth = 64,
           bankWidth = 64,
           busDataWidth = 64,
-          directOutput = false
+          directOutput = false,
+          // noBurst=false
+          noBurst=true
         ))
       )
     )

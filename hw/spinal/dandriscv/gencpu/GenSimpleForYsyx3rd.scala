@@ -83,6 +83,7 @@ case class ysyx_210238() extends Component{
   val core = new ClockingArea(coreClockDomain){
     val config = DandRiscvSimpleConfig(
         plugins = List(
+          // new FetchPlugin(resetVector=0x80000000l),
           new FetchPlugin(resetVector=0x30000000l),
           new BPUPlugin(p = PredictorConfig(
             predictorType = "GSHARE",
@@ -103,8 +104,10 @@ case class ysyx_210238() extends Component{
             addressWidth = 64,
             cpuDataWidth = 32,
             bankWidth = 32,
-            busDataWidth = 64,
-            directOutput = false
+            // busDataWidth = 64,
+            busDataWidth = 32,
+            directOutput = false,
+            noBurst=true
           )),
           new DCachePlugin(config = DCacheConfig(
             cacheSize = 32*1024, // 32KB
@@ -114,7 +117,8 @@ case class ysyx_210238() extends Component{
             cpuDataWidth = 64,
             bankWidth = 64,
             busDataWidth = 64,
-            directOutput = false
+            directOutput = false,
+            noBurst=true
           ))
         )
       )
@@ -128,11 +132,77 @@ case class ysyx_210238() extends Component{
                                      dcache_read = plugin.dcacheReader}
       case _ =>
     }
-    val flag_arbit = Reg(Bool()) init(False) // False is icache
-    when(dcache_read.ar.valid){
-      flag_arbit := True
+    
+    val word_sel = Reg(UInt(1 bits)) init(0)
+
+    val icache_rsp_cnt = Reg(UInt(4 bits)) init(0)
+    val dcache_rsp_cnt = Reg(UInt(4 bits)) init(0)
+    val icache_finish = Bool()
+    val dcache_finish = Bool()
+    val state_next = UInt(2 bits)
+    val state = RegNext(state_next) init(0)
+    val icache_valid = Reg(Bool()) init(False)
+    val dcache_valid = Reg(Bool()) init(False)
+    
+    when(icache_finish){
+      icache_rsp_cnt := U(0)
+    }.elsewhen(icache_read.r.valid){
+      icache_rsp_cnt := icache_rsp_cnt + 1
+    }
+    // icache_finish := icache_rsp_cnt===U(15) && icache_read.r.valid
+    icache_finish := icache_rsp_cnt===U(0) && icache_read.r.valid
+
+    when(dcache_finish){
+      dcache_rsp_cnt := U(0)
     }.elsewhen(dcache_read.r.valid){
-      flag_arbit := False
+      dcache_rsp_cnt := dcache_rsp_cnt + 1
+    }
+    // dcache_finish := dcache_rsp_cnt===U(7) && dcache_read.r.valid
+    dcache_finish := dcache_rsp_cnt===U(0) && dcache_read.r.valid
+
+    switch(state){
+      is(U(0)){ // IDLE
+        when(dcache_read.ar.valid){
+          state_next := U(2)
+        }
+        .elsewhen(icache_read.ar.valid){
+          state_next := U(1)
+        }
+        .otherwise{
+          state_next := U(0)
+        }
+      }
+      is(U(1)){ // ICACHE
+        when(icache_finish){
+          state_next := U(0)
+        }.otherwise{
+          state_next := U(1)
+        }
+      }
+      is(U(2)){ // DCACHE
+        when(dcache_finish){
+          state_next := U(0)
+        }.otherwise{
+          state_next := U(2)
+        }
+      }
+      default{
+        state_next := U(0)
+      }
+    }
+
+    when(state_next===U(1)){
+      icache_valid := True
+    }
+    .otherwise{
+      icache_valid := False
+    }
+
+    when(state_next===U(2)){
+      dcache_valid := True
+    }
+    .otherwise{
+      dcache_valid := False
     }
   }
 
@@ -160,7 +230,7 @@ case class ysyx_210238() extends Component{
   io_master_wdata   := core.dcache_write.w.payload.data
   io_master_wstrb   := core.dcache_write.w.payload.strb
   io_master_wlast   := core.dcache_write.w.payload.last
-  io_master_bready  := core.dcache_write.w.ready
+  io_master_bready  := True
   core.dcache_write.aw.ready := io_master_awready
   core.dcache_write.w.ready  := io_master_wready
   core.dcache_write.b.valid  := io_master_bvalid
@@ -169,23 +239,27 @@ case class ysyx_210238() extends Component{
   
   // master read
   
-  io_master_arvalid := core.flag_arbit ? core.dcache_read.ar.valid | core.icache_read.ar.valid
-  io_master_araddr  := core.flag_arbit ? core.dcache_read.ar.payload.addr(31 downto 0) | core.icache_read.ar.payload.addr(31 downto 0)
-  io_master_arid    := core.flag_arbit ? core.dcache_read.ar.payload.id | core.icache_read.ar.payload.id
-  io_master_arlen   := core.flag_arbit ? core.dcache_read.ar.payload.len | core.icache_read.ar.payload.len
-  io_master_arsize  := core.flag_arbit ? core.dcache_read.ar.payload.size | core.icache_read.ar.payload.size
-  io_master_arburst := core.flag_arbit ? core.dcache_read.ar.payload.burst | core.icache_read.ar.payload.burst
+  io_master_arvalid := (core.dcache_read.ar.valid & core.dcache_valid) | (core.icache_read.ar.valid & core.icache_valid)
+  io_master_araddr  := (core.dcache_read.ar.payload.addr(31 downto 0) & U(32 bits, default -> core.dcache_valid)) | (core.icache_read.ar.payload.addr(31 downto 0) & U(32 bits, default -> core.icache_valid))
+  io_master_arid    := (core.dcache_read.ar.payload.id & U(4 bits, default -> core.dcache_valid)) | (core.icache_read.ar.payload.id & U(4 bits, default -> core.icache_valid))
+  io_master_arlen   := (core.dcache_read.ar.payload.len & U(8 bits, default -> core.dcache_valid)) | (core.icache_read.ar.payload.len & U(8 bits, default -> core.icache_valid))
+  io_master_arsize  := (core.dcache_read.ar.payload.size & U(3 bits, default -> core.dcache_valid)) | (core.icache_read.ar.payload.size & U(3 bits, default -> core.icache_valid))
+  io_master_arburst := (core.dcache_read.ar.payload.burst & B(2 bits, default -> core.dcache_valid)) | (core.icache_read.ar.payload.burst & B(2 bits, default -> core.icache_valid))
   io_master_rready  := True
 
-  core.icache_read.ar.ready  := core.flag_arbit ? False | io_master_arready
-  core.icache_read.r.valid   := io_master_rvalid
+  
+  when(core.icache_read.ar.fire){
+    core.word_sel := core.icache_read.ar.addr(2 downto 2)
+  }
+  core.icache_read.ar.ready  := core.icache_valid ? io_master_arready | False
+  core.icache_read.r.valid   := io_master_rvalid && (io_master_rid===U(0))
   core.icache_read.r.payload.resp := io_master_rresp
-  core.icache_read.r.payload.data := io_master_rdata
+  core.icache_read.r.payload.data := io_master_rdata.subdivideIn(32 bits)(core.word_sel)
   core.icache_read.r.payload.last := io_master_rlast
   core.icache_read.r.payload.id   := io_master_rid
   
-  core.dcache_read.ar.ready  := core.flag_arbit ? io_master_arready | False
-  core.dcache_read.r.valid   := io_master_rvalid
+  core.dcache_read.ar.ready  := core.dcache_valid ? io_master_arready | False
+  core.dcache_read.r.valid   := io_master_rvalid && (io_master_rid===U(1))
   core.dcache_read.r.payload.resp := io_master_rresp
   core.dcache_read.r.payload.data := io_master_rdata
   core.dcache_read.r.payload.last := io_master_rlast
