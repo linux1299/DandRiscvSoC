@@ -83,8 +83,11 @@ case class DCache(p : DCacheConfig) extends Component{
   val bypass_cond_0 = (cpu_addr >= U"32'h1000_0000") && (cpu_addr <= U"32'h1000_0fff")
   val bypass_cond_1 = (cpu_addr >= U"32'h1000_1000") && (cpu_addr <= U"32'h1000_1fff")
   val bypass_cond_2 = (cpu_addr >= U"32'h3000_0000") && (cpu_addr <= U"32'h3fff_ffff")
+  // val bypass_cond_2 = (cpu_addr >= U"32'h8000_0000")
   val bypass = (bypass_cond_0 || bypass_cond_1 || bypass_cond_2) && cpu.cmd.fire
   val bypass_reg = RegInit(False)
+  val bypass_rsp_valid_d1 = Delay(cpu_bypass.rsp.valid, 1)
+  val bypass_rsp_data_d1 = Delay(cpu_bypass.rsp.data, 1)
   cpu_bypass.cmd.valid := bypass
   cpu_bypass.cmd.addr  := cpu.cmd.addr
   cpu_bypass.cmd.wen   := cpu.cmd.wen
@@ -94,7 +97,7 @@ case class DCache(p : DCacheConfig) extends Component{
   when(bypass){
     bypass_reg := True
   }
-  .elsewhen(cpu_bypass.rsp.valid){
+  .elsewhen(bypass_rsp_valid_d1){
     bypass_reg := False
   }
 
@@ -255,15 +258,17 @@ case class DCache(p : DCacheConfig) extends Component{
   when((flush || is_miss || is_write || bypass)){
     cpu_cmd_ready := False
   }
-  .elsewhen((flush_done || next_level_rdone || next_level_wdone || cpu_bypass.rsp.valid)){
-    cpu_cmd_ready := True
+  .elsewhen((flush_done || next_level_rdone || next_level_wdone || bypass_rsp_valid_d1)){
+    cpu_cmd_ready := True 
   }
   val hit_data = sram_banks_data(hit_id).subdivideIn(cpuDataWidth bits)(cpu_bank_index)
   val refill_data = sram_banks_data(evict_id_miss).subdivideIn(cpuDataWidth bits)(cpu_bank_index)
-  cpu.rsp.payload.data := bypass_reg ? cpu_bypass.rsp.data | (is_hit ? hit_data | refill_data)
-  cpu.rsp.valid        := bypass_reg ? cpu_bypass.rsp.valid | (is_hit ? sram_banks_valid(hit_id) | sram_banks_valid(evict_id_miss))
+  cpu.rsp.payload.data := (bypass_reg ? bypass_rsp_data_d1 | (is_hit ? hit_data | refill_data))
+  cpu.rsp.valid        := (bypass_reg ? bypass_rsp_valid_d1 | (is_hit ? sram_banks_valid(hit_id) | sram_banks_valid(evict_id_miss)))
   cpu.cmd.ready        := cpu_cmd_ready
-  stall                := (is_miss || is_write || !cpu_cmd_ready) && !next_level_wdone
+  val bypass_stall      = (!cpu.cmd.ready && !bypass_rsp_valid_d1) || bypass
+  val dcache_stall      = (is_miss || is_write || bypass_stall) && !next_level_wdone
+  stall                := dcache_stall
 
   // cmd to next level cache
   val waddr = (cpu_addr(addressWidth-1 downto busDataSize) ## U(0, busDataSize bits)).asUInt

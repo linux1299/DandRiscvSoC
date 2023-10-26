@@ -10372,3 +10372,356 @@ java.lang.RuntimeException: The server did not start, got FailedToOpenBspConnect
 2023.10.24 21:57:03 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gencpu/GenSimpleForYsyx3rd.scala[0m
 2023.10.24 21:57:16 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gencpu/GenSimpleForYsyx3rd.scala[0m
 2023.10.24 21:58:29 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gencpu/GenSimpleForYsyx3rd.scala[0m
+Oct 25, 2023 7:36:30 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+2023.10.25 19:37:09 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.25 19:37:15 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gencpu/GenSimpleForYsyx3rd.scala[0m
+2023.10.25 19:54:52 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.25 19:54:52 WARN  Using indexes to guess the definition of cpuDataWidth[0m
+2023.10.25 19:55:02 WARN  Using indexes to guess the definition of cpu_cmd_ready[0m
+2023.10.25 19:55:02 WARN  Using indexes to guess the definition of cpu_bypass[0m
+2023.10.25 19:55:02 WARN  Using indexes to guess the definition of cpu_bypass[0m
+2023.10.25 20:05:34 WARN  Using indexes to guess the definition of cpuDataWidth[0m
+2023.10.25 20:05:34 WARN  Using indexes to guess the definition of is_hit[0m
+2023.10.25 20:05:35 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.25 20:05:36 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.25 20:05:36 WARN  Using indexes to guess the definition of evict_id_miss[0m
+Oct 25, 2023 8:14:41 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 417
+2023.10.25 20:15:04 WARN  Using indexes to guess the definition of next_level_wdone[0m
+Exception in thread "pool-3-thread-1" java.lang.Error: java.lang.InterruptedException
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1148)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.lang.InterruptedException
+	at scala.meta.internal.metals.FutureCancelToken.checkCanceled(FutureCancelToken.scala:29)
+	at scala.meta.internal.pc.CompilerAccess.onCompilerJobQueue$$anonfun$1(CompilerAccess.scala:230)
+	at scala.meta.internal.pc.CompilerAccess$$Lambda$2750/1455742480.apply$mcV$sp(Unknown Source)
+	at scala.meta.internal.pc.CompilerJobQueue$Job.run(CompilerJobQueue.scala:152)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	... 2 more
+2023.10.25 20:15:05 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.25 20:21:04 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.25 20:21:05 WARN  Using indexes to guess the definition of bypass[0m
+2023.10.25 20:21:05 WARN  Using indexes to guess the definition of bypass[0m
+2023.10.25 20:21:13 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.25 20:34:00 WARN  Using indexes to guess the definition of sram_banks_valid[0m
+2023.10.25 20:34:00 WARN  Using indexes to guess the definition of sram_banks_valid[0m
+2023.10.25 20:34:00 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.25 20:34:09 WARN  Using indexes to guess the definition of bypass_reg[0m
+2023.10.25 20:34:32 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.25 20:34:33 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.25 20:35:56 WARN  Using indexes to guess the definition of cpu[0m
+Oct 25, 2023 8:40:08 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 678
+2023.10.25 20:40:09 WARN  Using indexes to guess the definition of cpu_cmd_ready[0m
+2023.10.25 20:40:09 WARN  Using indexes to guess the definition of cpu_bypass[0m
+2023.10.25 20:40:10 WARN  Using indexes to guess the definition of cpu_cmd_ready[0m
+2023.10.25 20:40:12 WARN  Using indexes to guess the definition of cpu_cmd_ready[0m
+2023.10.25 20:40:12 WARN  Using indexes to guess the definition of cpu_cmd_ready[0m
+2023.10.25 20:40:14 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.25 20:42:16 WARN  Using indexes to guess the definition of cpu_bypass[0m
+2023.10.25 20:42:16 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.25 20:42:30 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.25 20:50:03 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.25 20:50:10 WARN  Using indexes to guess the definition of is_miss[0m
+2023.10.25 20:50:14 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.25 20:50:15 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.25 20:50:19 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.25 20:50:19 WARN  Using indexes to guess the definition of is_write[0m
+Exception in thread "pool-3-thread-2" java.lang.Error: java.lang.InterruptedException
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1148)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.lang.InterruptedException
+	at scala.meta.internal.metals.FutureCancelToken.checkCanceled(FutureCancelToken.scala:29)
+	at scala.meta.internal.pc.CompilerAccess.onCompilerJobQueue$$anonfun$1(CompilerAccess.scala:230)
+	at scala.meta.internal.pc.CompilerAccess$$Lambda$2750/1455742480.apply$mcV$sp(Unknown Source)
+	at scala.meta.internal.pc.CompilerJobQueue$Job.run(CompilerJobQueue.scala:152)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	... 2 more
+2023.10.25 20:50:19 WARN  Using indexes to guess the definition of cpu_cmd_ready[0m
+2023.10.25 20:50:20 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.25 20:50:20 WARN  Using indexes to guess the definition of cpu_cmd_ready[0m
+2023.10.25 20:52:06 WARN  Using indexes to guess the definition of is_write[0m
+2023.10.25 20:52:06 WARN  Using indexes to guess the definition of dcache_stall[0m
+2023.10.25 20:52:29 WARN  Using indexes to guess the definition of cpu_cmd_ready[0m
+2023.10.25 20:52:29 WARN  Using indexes to guess the definition of cpu_cmd_ready[0m
+2023.10.25 20:52:31 WARN  Using indexes to guess the definition of cpu_bypass[0m
+2023.10.25 20:52:31 WARN  Using indexes to guess the definition of cpu_bypass[0m
+Exception in thread "pool-3-thread-3" java.lang.Error: java.lang.InterruptedException
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1148)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.lang.InterruptedException
+	at scala.meta.internal.metals.FutureCancelToken.checkCanceled(FutureCancelToken.scala:29)
+	at scala.meta.internal.pc.CompilerAccess.onCompilerJobQueue$$anonfun$1(CompilerAccess.scala:230)
+	at scala.meta.internal.pc.CompilerAccess$$Lambda$2750/1455742480.apply$mcV$sp(Unknown Source)
+	at scala.meta.internal.pc.CompilerJobQueue$Job.run(CompilerJobQueue.scala:152)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	... 2 more
+2023.10.25 20:52:31 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.25 20:52:31 WARN  Using indexes to guess the definition of is_hit[0m
+2023.10.25 20:54:16 WARN  Using indexes to guess the definition of cpu_bypass[0m
+2023.10.25 20:54:16 WARN  Using indexes to guess the definition of cpu_cmd_ready[0m
+2023.10.25 20:54:16 WARN  Using indexes to guess the definition of cpu_cmd_ready[0m
+2023.10.25 20:54:22 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.25 21:04:45 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ControlPlugin.scala[0m
+Oct 25, 2023 9:05:05 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 1064
+2023.10.25 21:35:38 WARN  Using indexes to guess the definition of cpu_bypass[0m
+2023.10.25 21:35:38 WARN  Using indexes to guess the definition of cpu_bypass[0m
+2023.10.25 21:35:38 WARN  Using indexes to guess the definition of cpu_bypass[0m
+2023.10.25 21:35:39 WARN  Using indexes to guess the definition of cpu_bypass[0m
+2023.10.25 21:35:40 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.25 21:35:44 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.25 21:38:48 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.25 21:41:57 WARN  Using indexes to guess the definition of cpu_bypass[0m
+2023.10.25 21:41:58 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.25 21:57:25 WARN  Using indexes to guess the definition of cpu_bypass[0m
+2023.10.25 21:57:26 WARN  Using indexes to guess the definition of evict_id_miss[0m
+2023.10.25 21:57:25 WARN  Using indexes to guess the definition of cpuDataWidth[0m
+2023.10.25 21:57:30 WARN  Using indexes to guess the definition of cpu_bypass[0m
+2023.10.25 21:57:30 WARN  Using indexes to guess the definition of cpu_bypass[0m
+2023.10.25 21:57:30 WARN  Using indexes to guess the definition of cpuDataWidth[0m
+2023.10.25 21:58:28 WARN  Using indexes to guess the definition of cpu[0m
+2023.10.25 21:58:28 WARN  Using indexes to guess the definition of cpu[0m
+Exception in thread "pool-3-thread-4" java.lang.Error: java.lang.InterruptedException
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1148)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.lang.InterruptedException
+	at scala.meta.internal.metals.FutureCancelToken.checkCanceled(FutureCancelToken.scala:29)
+	at scala.meta.internal.pc.CompilerAccess.onCompilerJobQueue$$anonfun$1(CompilerAccess.scala:230)
+	at scala.meta.internal.pc.CompilerAccess$$Lambda$2750/1455742480.apply$mcV$sp(Unknown Source)
+	at scala.meta.internal.pc.CompilerJobQueue$Job.run(CompilerJobQueue.scala:152)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	... 2 more
+2023.10.25 21:58:29 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.25 21:58:34 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.25 21:58:34 WARN  Using indexes to guess the definition of cpu[0m
+2023.10.25 21:59:09 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.25 21:59:10 WARN  Using indexes to guess the definition of cpu_bypass[0m
+2023.10.25 21:59:10 WARN  Using indexes to guess the definition of cpu_bypass[0m
+2023.10.25 21:59:16 WARN  Using indexes to guess the definition of bypass[0m
+2023.10.25 21:59:16 WARN  Using indexes to guess the definition of cpu[0m
+2023.10.25 21:59:19 WARN  Using indexes to guess the definition of cpu_bypass[0m
+2023.10.25 21:59:19 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.25 21:59:28 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.25 21:59:28 WARN  Using indexes to guess the definition of cpu_bypass[0m
+2023.10.25 21:59:33 WARN  Using indexes to guess the definition of is_hit[0m
+2023.10.25 21:59:33 WARN  Using indexes to guess the definition of is_hit[0m
+2023.10.25 21:59:33 WARN  Using indexes to guess the definition of is_hit[0m
+2023.10.25 21:59:33 WARN  Using indexes to guess the definition of is_hit[0m
+2023.10.25 21:59:33 WARN  Using indexes to guess the definition of is_hit[0m
+2023.10.25 21:59:38 WARN  Using indexes to guess the definition of cpu_bypass[0m
+2023.10.25 21:59:38 WARN  Using indexes to guess the definition of cpu_bypass[0m
+2023.10.25 21:59:38 WARN  Using indexes to guess the definition of cpu_bypass[0m
+2023.10.25 21:59:41 WARN  Using indexes to guess the definition of cpu_bypass[0m
+2023.10.25 21:59:41 WARN  Using indexes to guess the definition of cpu_bypass[0m
+2023.10.25 21:59:41 WARN  Using indexes to guess the definition of bypass_rsp_valid_d1[0m
+2023.10.25 21:59:43 WARN  Using indexes to guess the definition of cpuDataWidth[0m
+2023.10.25 21:59:43 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.25 21:59:43 WARN  Using indexes to guess the definition of bypass_rsp_data_d1[0m
+2023.10.25 21:59:45 WARN  Using indexes to guess the definition of bypass_rsp_data_d1[0m
+2023.10.25 21:59:45 WARN  Using indexes to guess the definition of is_hit[0m
+2023.10.25 21:59:45 WARN  Using indexes to guess the definition of is_hit[0m
+2023.10.25 21:59:45 WARN  Using indexes to guess the definition of is_hit[0m
+2023.10.25 21:59:45 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.25 21:59:53 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.25 22:01:13 WARN  Using indexes to guess the definition of cpu_cmd_ready[0m
+2023.10.25 22:01:13 WARN  Using indexes to guess the definition of cpu_cmd_ready[0m
+2023.10.25 22:01:16 WARN  Using indexes to guess the definition of cpu_cmd_ready[0m
+2023.10.25 22:01:17 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.25 22:03:27 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.25 22:03:31 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.25 22:03:55 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.25 22:03:56 WARN  Using indexes to guess the definition of bypass_rsp_data_d1[0m
+2023.10.25 22:03:56 WARN  Using indexes to guess the definition of cpuDataWidth[0m
+2023.10.25 22:04:01 WARN  Using indexes to guess the definition of cpu_bypass[0m
+2023.10.25 22:04:01 WARN  Using indexes to guess the definition of bypass_cond_2[0m
+2023.10.25 22:04:10 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.25 22:04:42 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.25 22:05:13 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.25 22:06:33 WARN  Using indexes to guess the definition of cpu_cmd_ready[0m
+2023.10.25 22:06:35 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.25 22:06:49 WARN  Using indexes to guess the definition of cpu_cmd_ready[0m
+2023.10.25 22:06:49 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.25 22:07:02 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.25 22:07:02 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.25 22:07:13 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.25 22:33:14 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.25 22:33:17 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.25 22:33:17 WARN  Using indexes to guess the definition of is_write[0m
+2023.10.25 22:33:53 WARN  Using indexes to guess the definition of cpu[0m
+2023.10.25 22:33:53 WARN  Using indexes to guess the definition of cpu_bypass[0m
+2023.10.25 22:33:53 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.25 22:33:53 WARN  Using indexes to guess the definition of cpu_bypass[0m
+2023.10.25 22:34:00 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.25 22:34:00 WARN  Using indexes to guess the definition of cpu_bypass[0m
+2023.10.25 22:34:00 WARN  Using indexes to guess the definition of cpu_bypass[0m
+Oct 25, 2023 10:34:00 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 1963
+2023.10.25 22:34:05 WARN  Using indexes to guess the definition of next_level_wdone[0m
+2023.10.25 22:34:05 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.25 22:34:06 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.25 22:34:10 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.25 22:57:22 WARN  Using indexes to guess the definition of bypass[0m
+2023.10.25 22:57:22 WARN  Using indexes to guess the definition of bypass[0m
+2023.10.25 22:57:22 WARN  Using indexes to guess the definition of next_level_wdone[0m
+2023.10.25 22:57:23 WARN  Using indexes to guess the definition of cpu_bypass[0m
+2023.10.25 22:57:23 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+Oct 25, 2023 11:11:30 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 2052
+2023.10.25 23:11:44 WARN  Using indexes to guess the definition of cpu_bypass[0m
+2023.10.25 23:11:44 WARN  Using indexes to guess the definition of cpu_bypass[0m
+2023.10.25 23:11:58 WARN  Using indexes to guess the definition of cpu_bypass[0m
+Oct 25, 2023 11:11:58 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 2116
+2023.10.25 23:12:01 WARN  Using indexes to guess the definition of bypass_rsp_data_d1[0m
+2023.10.25 23:12:01 WARN  Using indexes to guess the definition of bypass_rsp_data_d1[0m
+2023.10.25 23:12:01 WARN  Using indexes to guess the definition of bypass_reg[0m
+2023.10.25 23:12:04 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.25 23:12:29 WARN  Using indexes to guess the definition of cpu_bypass[0m
+2023.10.25 23:12:29 WARN  Using indexes to guess the definition of cpu_bypass[0m
+2023.10.25 23:12:30 WARN  Using indexes to guess the definition of cpu_cmd_ready[0m
+2023.10.25 23:12:30 WARN  Using indexes to guess the definition of bypass_stall[0m
+2023.10.25 23:12:30 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.25 23:12:30 WARN  Using indexes to guess the definition of bypass_stall[0m
+2023.10.25 23:12:43 WARN  Using indexes to guess the definition of bypass_reg[0m
+2023.10.25 23:12:44 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.25 23:14:28 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.26 19:26:49 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/LsuPlugin.scala[0m
+2023.10.26 19:27:14 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/LsuPlugin.scala[0m
+2023.10.26 19:28:47 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/LsuPlugin.scala[0m
+2023.10.26 19:35:37 WARN  Using indexes to guess the definition of dcache_access[0m
+2023.10.26 19:37:26 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.26 19:37:26 WARN  Using indexes to guess the definition of bypass_cond_2[0m
+2023.10.26 19:37:32 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.26 19:38:56 WARN  Using indexes to guess the definition of cpuDataWidth[0m
+2023.10.26 19:38:58 WARN  Using indexes to guess the definition of cpu_bypass[0m
+2023.10.26 19:38:58 WARN  Using indexes to guess the definition of bypass_rsp_valid_d1[0m
+2023.10.26 19:38:59 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.26 19:39:18 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.26 19:39:19 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.26 19:39:54 WARN  Using indexes to guess the definition of hit_id[0m
+2023.10.26 19:39:54 WARN  Using indexes to guess the definition of refill_data[0m
+Oct 26, 2023 7:39:54 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 2424
+2023.10.26 19:39:54 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.26 19:44:43 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.26 19:48:00 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gencpu/GenSimpleForYsyx3rd.scala[0m
+2023.10.26 19:48:02 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gencpu/GenSimpleForYsyx3rd.scala[0m
+2023.10.26 19:52:33 INFO  Shutting down server[0m
+2023.10.26 19:52:33 INFO  shutting down Metals[0m
+2023.10.26 19:52:33 INFO  Exiting server[0m
+2023.10.26 19:55:45 INFO  Started: Metals version 1.1.0 in folders '/home/lin/SpinalProjects/DandRiscvSoC' for client Visual Studio Code 1.83.1.[0m
+2023.10.26 19:55:46 INFO  Attempting to connect to the build server...[0m
+2023.10.26 19:55:46 INFO  skipping build import with status 'Installed'[0m
+2023.10.26 19:55:46 INFO  Bloop uses /usr/lib/jvm/java-11-openjdk-amd64 defined at /home/lin/.bloop/bloop.json[0m
+2023.10.26 19:55:50 INFO  no build target found for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gencpu/GenSimpleForYsyx3rd.scala. Using presentation compiler with project's scala-library version: 3.3.1[0m
+2023.10.26 19:56:25 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/lin/SpinalProjects/DandRiscvSoC/.metals/bsp.trace.json or /home/lin/.cache/metals/bsp.trace.json[0m
+2023.10.26 19:56:25 INFO  Attempting to connect to the build server...[0m
+2023.10.26 19:56:25 INFO  Bloop uses /usr/lib/jvm/java-11-openjdk-amd64 defined at /home/lin/.bloop/bloop.json[0m
+2023.10.26 19:56:25 INFO  Attempting to connect to the build server...[0m
+2023.10.26 19:56:25 INFO  Bloop uses /usr/lib/jvm/java-11-openjdk-amd64 defined at /home/lin/.bloop/bloop.json[0m
+2023.10.26 19:56:25 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/lin/SpinalProjects/DandRiscvSoC/project/.metals/bsp.trace.json or /home/lin/.cache/metals/bsp.trace.json[0m
+2023.10.26 19:56:26 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/lin/SpinalProjects/DandRiscvSoC/project/project/.metals/bsp.trace.json or /home/lin/.cache/metals/bsp.trace.json[0m
+2023.10.26 19:56:46 ERROR Timeout waiting for 'build/initialize' response[0m
+2023.10.26 19:56:46 ERROR Timeout waiting for 'build/initialize' response[0m
+2023.10.26 19:56:46 WARN  Retrying connection to the build server Bloop[0m
+2023.10.26 19:56:46 WARN  Retrying connection to the build server Bloop[0m
+2023.10.26 19:56:46 INFO  Bloop uses /usr/lib/jvm/java-11-openjdk-amd64 defined at /home/lin/.bloop/bloop.json[0m
+2023.10.26 19:56:46 INFO  Bloop uses /usr/lib/jvm/java-11-openjdk-amd64 defined at /home/lin/.bloop/bloop.json[0m
+2023.10.26 19:56:46 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/lin/SpinalProjects/DandRiscvSoC/project/project/.metals/bsp.trace.json or /home/lin/.cache/metals/bsp.trace.json[0m
+2023.10.26 19:56:46 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/lin/SpinalProjects/DandRiscvSoC/project/.metals/bsp.trace.json or /home/lin/.cache/metals/bsp.trace.json[0m
+2023.10.26 19:57:06 ERROR Timeout waiting for 'build/initialize' response[0m
+2023.10.26 19:57:06 WARN  Retrying connection to the build server Bloop[0m
+2023.10.26 19:57:06 INFO  Bloop uses /usr/lib/jvm/java-11-openjdk-amd64 defined at /home/lin/.bloop/bloop.json[0m
+2023.10.26 19:57:06 ERROR Timeout waiting for 'build/initialize' response[0m
+2023.10.26 19:57:06 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/lin/SpinalProjects/DandRiscvSoC/project/project/.metals/bsp.trace.json or /home/lin/.cache/metals/bsp.trace.json[0m
+2023.10.26 19:57:06 WARN  Retrying connection to the build server Bloop[0m
+2023.10.26 19:57:06 INFO  Bloop uses /usr/lib/jvm/java-11-openjdk-amd64 defined at /home/lin/.bloop/bloop.json[0m
+2023.10.26 19:57:06 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/lin/SpinalProjects/DandRiscvSoC/project/.metals/bsp.trace.json or /home/lin/.cache/metals/bsp.trace.json[0m
+2023.10.26 19:57:26 ERROR Timeout waiting for 'build/initialize' response[0m
+2023.10.26 19:57:26 WARN  Retrying connection to the build server Bloop[0m
+2023.10.26 19:57:26 INFO  Bloop uses /usr/lib/jvm/java-11-openjdk-amd64 defined at /home/lin/.bloop/bloop.json[0m
+2023.10.26 19:57:26 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/lin/SpinalProjects/DandRiscvSoC/project/project/.metals/bsp.trace.json or /home/lin/.cache/metals/bsp.trace.json[0m
+2023.10.26 19:57:26 ERROR Timeout waiting for 'build/initialize' response[0m
+2023.10.26 19:57:26 WARN  Retrying connection to the build server Bloop[0m
+2023.10.26 19:57:26 INFO  Bloop uses /usr/lib/jvm/java-11-openjdk-amd64 defined at /home/lin/.bloop/bloop.json[0m
+2023.10.26 19:57:26 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/lin/SpinalProjects/DandRiscvSoC/project/.metals/bsp.trace.json or /home/lin/.cache/metals/bsp.trace.json[0m
+2023.10.26 19:57:46 ERROR Timeout waiting for 'build/initialize' response[0m
+2023.10.26 19:57:46 WARN  Retrying connection to the build server Bloop[0m
+2023.10.26 19:57:46 INFO  Bloop uses /usr/lib/jvm/java-11-openjdk-amd64 defined at /home/lin/.bloop/bloop.json[0m
+2023.10.26 19:57:46 ERROR Timeout waiting for 'build/initialize' response[0m
+2023.10.26 19:57:46 WARN  Retrying connection to the build server Bloop[0m
+2023.10.26 19:57:46 INFO  Bloop uses /usr/lib/jvm/java-11-openjdk-amd64 defined at /home/lin/.bloop/bloop.json[0m
+2023.10.26 19:57:46 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/lin/SpinalProjects/DandRiscvSoC/project/project/.metals/bsp.trace.json or /home/lin/.cache/metals/bsp.trace.json[0m
+2023.10.26 19:57:46 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/lin/SpinalProjects/DandRiscvSoC/project/.metals/bsp.trace.json or /home/lin/.cache/metals/bsp.trace.json[0m
+2023.10.26 19:58:06 ERROR Timeout waiting for 'build/initialize' response[0m
+2023.10.26 19:58:06 WARN  Retrying connection to the build server Bloop[0m
+2023.10.26 19:58:06 INFO  Bloop uses /usr/lib/jvm/java-11-openjdk-amd64 defined at /home/lin/.bloop/bloop.json[0m
+2023.10.26 19:58:06 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/lin/SpinalProjects/DandRiscvSoC/project/project/.metals/bsp.trace.json or /home/lin/.cache/metals/bsp.trace.json[0m
+2023.10.26 19:58:06 ERROR Timeout waiting for 'build/initialize' response[0m
+2023.10.26 19:58:06 WARN  Retrying connection to the build server Bloop[0m
+2023.10.26 19:58:06 INFO  Bloop uses /usr/lib/jvm/java-11-openjdk-amd64 defined at /home/lin/.bloop/bloop.json[0m
+2023.10.26 19:58:06 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/lin/SpinalProjects/DandRiscvSoC/project/.metals/bsp.trace.json or /home/lin/.cache/metals/bsp.trace.json[0m
+2023.10.26 19:58:26 ERROR Timeout waiting for 'build/initialize' response[0m
+2023.10.26 19:58:26 ERROR Failed to connect with build server, no functionality will work.
+java.util.concurrent.TimeoutException
+	at java.util.concurrent.CompletableFuture.timedAwaitDone(CompletableFuture.java:365)
+	at java.util.concurrent.CompletableFuture.get(CompletableFuture.java:2260)
+	at scala.meta.internal.metals.BuildServerConnection$.initialize(BuildServerConnection.scala:586)
+	at scala.meta.internal.metals.BuildServerConnection$.$anonfun$fromSockets$1(BuildServerConnection.scala:481)
+	at scala.meta.internal.metals.BuildServerConnection$$$Lambda$1893/873107890.apply(null)
+	at scala.concurrent.impl.Promise$Transformation.run(Promise.scala:467)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+[0m
+2023.10.26 19:58:26 ERROR Timeout waiting for 'build/initialize' response[0m
+2023.10.26 19:58:26 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gencpu/GenSimple.scala[0m
+2023.10.26 19:58:26 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/FIFO.scala[0m
+2023.10.26 19:58:26 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/LsuPlugin.scala[0m
+2023.10.26 19:58:26 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.26 19:58:26 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/FetchPlugin.scala[0m
+2023.10.26 19:58:26 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gencpu/GenSmallest.scala[0m
+2023.10.26 19:58:26 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gencpu/GenSimpleForYsyx3rd.scala[0m
+2023.10.26 19:58:26 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/ICache.scala[0m
+2023.10.26 19:58:26 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.10.26 19:58:26 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/DCachePlugin.scala[0m
+2023.10.26 19:58:26 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ControlPlugin.scala[0m
+2023.10.26 19:58:27 INFO  time: code lens generation in 1.23s[0m
+2023.10.26 19:58:27 INFO  time: code lens generation in 1.28s[0m
+2023.10.26 19:58:27 INFO  time: code lens generation in 1.28s[0m
+2023.10.26 19:58:27 INFO  time: code lens generation in 1.28s[0m
+2023.10.26 20:05:28 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m
+2023.10.26 20:17:19 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/LsuPlugin.scala[0m
+Oct 26, 2023 8:24:29 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 157
+2023.10.26 20:24:38 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/DCachePlugin.scala[0m
+Exception in thread "pool-3-thread-1" java.lang.Error: java.lang.InterruptedException
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1148)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.lang.InterruptedException
+	at scala.meta.internal.metals.FutureCancelToken.checkCanceled(FutureCancelToken.scala:29)
+	at scala.meta.internal.pc.CompilerAccess.onCompilerJobQueue$$anonfun$1(CompilerAccess.scala:230)
+	at scala.meta.internal.pc.CompilerAccess$$Lambda$2688/548546649.apply$mcV$sp(Unknown Source)
+	at scala.meta.internal.pc.CompilerJobQueue$Job.run(CompilerJobQueue.scala:152)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	... 2 more
+Exception in thread "pool-3-thread-2" java.lang.Error: java.lang.InterruptedException
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1148)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.lang.InterruptedException
+	at scala.meta.internal.metals.FutureCancelToken.checkCanceled(FutureCancelToken.scala:29)
+	at scala.meta.internal.pc.CompilerAccess.onCompilerJobQueue$$anonfun$1(CompilerAccess.scala:230)
+	at scala.meta.internal.pc.CompilerAccess$$Lambda$2688/548546649.apply$mcV$sp(Unknown Source)
+	at scala.meta.internal.pc.CompilerJobQueue$Job.run(CompilerJobQueue.scala:152)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	... 2 more
+2023.10.26 20:25:06 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/DCachePlugin.scala[0m
+2023.10.26 20:25:08 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/DCachePlugin.scala[0m

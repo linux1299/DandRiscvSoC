@@ -272,7 +272,13 @@ class DCachePlugin(val config : DCacheConfig) extends Plugin[DandRiscvSimple]{
 
       dcacheReader.ar.payload.id   := U(1)
       dcacheReader.ar.payload.len  := U(0)
-      dcacheReader.ar.payload.size := bypass_read ? dcache.cpu_bypass.cmd.size | dcache.next_level.cmd.payload.size
+      when(bypass_read){
+        dcacheReader.ar.payload.size := dcache.cpu_bypass.cmd.size
+      }
+      .elsewhen(dcache.next_level.cmd.valid){
+        dcacheReader.ar.payload.size := dcache.next_level.cmd.payload.size
+      }
+      // dcacheReader.ar.payload.size := bypass_read ? dcache.cpu_bypass.cmd.size | dcache.next_level.cmd.payload.size
       dcacheReader.ar.payload.burst := B(1) // INCR
       // ar addr unburst
       when(nextlevel_read){
