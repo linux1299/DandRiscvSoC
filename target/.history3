@@ -38,3 +38,7 @@
 1697461115765:runMain dandriscv.gencpu.GenSimpleForYsyx3rd
 1697632027820:runMain dandriscv.gencpu.GenSimple
 1697633700658:runMain dandriscv.gencpu.GenSimpleForYsyx3rd
+1699170072466:runMain dandriscv.gencpu.GenSimple
+1699273309929:compile
+1699273586399:runMain dandriscv.gensoc.DandSocSimpleWithMemoryInit
+1699278207773:runMain dandriscv.gencpu.GenSimple

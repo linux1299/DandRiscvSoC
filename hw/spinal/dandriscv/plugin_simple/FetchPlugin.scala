@@ -161,7 +161,7 @@ with ICacheAccessService
 
       // send cmd to icache
       icache_access.cmd.valid := fetch_valid && !fetch_flush
-      icache_access.cmd.addr  := pc_next
+      icache_access.cmd.addr  := pc_next.resized
     }
 
   }

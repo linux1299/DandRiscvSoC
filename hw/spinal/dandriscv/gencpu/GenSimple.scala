@@ -9,7 +9,7 @@ object GenSimple extends App{
   def cpu() = new DandRiscvSimple(
     config = DandRiscvSimpleConfig(
       plugins = List(
-        new FetchPlugin,
+        new FetchPlugin(addressWidth=32),
         new BPUPlugin(p = PredictorConfig(
           addressWidth =64, 
           RAS_ENTRIES = 4, 
@@ -20,13 +20,14 @@ object GenSimple extends App{
         new ALUPlugin,
         new ControlPlugin,
         new ExcepPlugin,
-        new LSUPlugin(AW=64, DW=64),
+        new LSUPlugin(AW=32, DW=64),
         new ICachePlugin(config = ICacheConfig(
           cacheSize = 32*1024, // 32KB
           // cacheSize = 1*1024, // 1KB
           bytePerLine =64,
           wayCount = 4,
-          addressWidth = 64,
+          // addressWidth = 64,
+          addressWidth = 32,
           cpuDataWidth = 32,
           bankWidth = 32,
           busDataWidth = 64,
@@ -34,10 +35,13 @@ object GenSimple extends App{
           noBurst=true
         )),
         new DCachePlugin(config = DCacheConfig(
-          cacheSize = 32*1024, // 32KB
+          // cacheSize = 32*1024, // 32KB
+          // cacheSize = 1*1024, // 1KB
+          cacheSize = 512, // 512B
           bytePerLine =64,
-          wayCount = 4,
-          addressWidth = 64,
+          wayCount = 2,
+          // addressWidth = 64,
+          addressWidth = 32,
           cpuDataWidth = 64,
           bankWidth = 64,
           busDataWidth = 64,

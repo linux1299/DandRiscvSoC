@@ -86,7 +86,7 @@ class ICachePlugin(val config : ICacheConfig) extends Plugin[DandRiscvSimple]{
       }
 
       // next level AXI ports
-      val axiConfig = Axi4Config(addressWidth=icache_config.addressWidth, dataWidth=icache_config.busDataWidth, idWidth=4,
+      val axiConfig = Axi4Config(addressWidth=icache_config.addressWidth, dataWidth=icache_config.busDataWidth, idWidth=2,
                                  useId=true, useLast=true, useRegion=false, useBurst=true, 
                                  useLock=false, useCache=false, useSize=true, useQos=false,
                                  useLen=true, useResp=true, useProt=false, useStrb=false)
@@ -97,7 +97,7 @@ class ICachePlugin(val config : ICacheConfig) extends Plugin[DandRiscvSimple]{
       icacheReader.ar.payload.len := icache.next_level.cmd.payload.len.resized
       icacheReader.ar.payload.size := icache.next_level.cmd.payload.size
       icacheReader.ar.payload.burst := B(1) // INCR
-      icacheReader.ar.payload.addr := icache.next_level.cmd.payload.addr
+      icacheReader.ar.payload.addr := icache.next_level.cmd.payload.addr.resize(icache_config.addressWidth)
       icache.next_level.cmd.ready := icacheReader.ar.ready
 
       // r channel
@@ -122,7 +122,7 @@ class ICachePlugin(val config : ICacheConfig) extends Plugin[DandRiscvSimple]{
       }
 
       // next level AXI ports
-      val axiConfig = Axi4Config(addressWidth=icache_config.addressWidth, dataWidth=icache_config.busDataWidth, idWidth=4,
+      val axiConfig = Axi4Config(addressWidth=icache_config.addressWidth, dataWidth=icache_config.busDataWidth, idWidth=2,
                                  useId=true, useLast=true, useRegion=false, useBurst=true, 
                                  useLock=false, useCache=false, useSize=true, useQos=false,
                                  useLen=true, useResp=true, useProt=false, useStrb=false)
@@ -159,7 +159,7 @@ class ICachePlugin(val config : ICacheConfig) extends Plugin[DandRiscvSimple]{
       icache.next_level.cmd.ready := icacheReader.ar.ready
       // ar addr unburst
       when(icache.next_level.cmd.valid){
-        icacheReader.ar.payload.addr := icache.next_level.cmd.payload.addr
+        icacheReader.ar.payload.addr := icache.next_level.cmd.payload.addr.resize(icache_config.addressWidth)
       }.elsewhen(icacheReader.ar.fire){
         icacheReader.ar.payload.addr := icacheReader.ar.payload.addr + U(icache_config.busDataWidth/8)
       }

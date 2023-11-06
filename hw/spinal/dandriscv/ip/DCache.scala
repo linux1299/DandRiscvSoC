@@ -82,8 +82,8 @@ case class DCache(p : DCacheConfig) extends Component{
   val cpu_wen = cpu.cmd.payload.wen
   val bypass_cond_0 = (cpu_addr >= U"32'h1000_0000") && (cpu_addr <= U"32'h1000_0fff")
   val bypass_cond_1 = (cpu_addr >= U"32'h1000_1000") && (cpu_addr <= U"32'h1000_1fff")
-  val bypass_cond_2 = (cpu_addr >= U"32'h3000_0000") && (cpu_addr <= U"32'h3fff_ffff")
-  // val bypass_cond_2 = (cpu_addr >= U"32'h8000_0000")
+  // val bypass_cond_2 = (cpu_addr >= U"32'h3000_0000") && (cpu_addr <= U"32'h3fff_ffff")
+  val bypass_cond_2 = (cpu_addr >= U"32'h8000_0000")
   val bypass = (bypass_cond_0 || bypass_cond_1 || bypass_cond_2) && cpu.cmd.fire
   val bypass_reg = RegInit(False)
   val bypass_rsp_valid_d1 = Delay(cpu_bypass.rsp.valid, 1)

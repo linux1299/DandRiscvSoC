@@ -10725,3 +10725,325 @@ Caused by: java.lang.InterruptedException
 	... 2 more
 2023.10.26 20:25:06 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/DCachePlugin.scala[0m
 2023.10.26 20:25:08 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/DCachePlugin.scala[0m
+2023.10.26 21:05:32 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ControlPlugin.scala[0m
+2023.10.26 21:05:39 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gencpu/GenSimpleForYsyx3rd.scala[0m
+2023.11.01 21:43:33 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/DecodePlugin.scala[0m
+2023.11.01 21:44:16 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/Riscv.scala[0m
+2023.11.01 21:45:09 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/DecodePlugin.scala[0m
+2023.11.05 15:40:17 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/DandRiscvSimple.scala[0m
+2023.11.05 15:40:23 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gencpu/GenSimple.scala[0m
+2023.11.05 15:40:43 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gencpu/GenSimple.scala[0m
+2023.11.05 15:40:52 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gencpu/GenSimple.scala[0m
+2023.11.05 15:47:31 WARN  no build target for: /home/lin/SpinalProjects/VexRiscv/src/main/scala/vexriscv/demo/Linux.scala[0m
+2023.11.05 21:51:45 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.05 21:51:45 WARN  Could not find semantic tokens for: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.05 21:52:06 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.05 21:52:09 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.05 21:52:33 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+Nov 05, 2023 9:54:05 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 995
+Nov 05, 2023 9:54:08 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 1002
+2023.11.05 21:55:16 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.05 21:56:14 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.05 22:00:44 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+Nov 05, 2023 10:00:48 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 1218
+2023.11.05 22:05:17 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.05 22:06:08 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.05 22:06:09 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.05 22:06:12 WARN  Using indexes to guess the definition of io[0m
+2023.11.05 22:06:28 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.05 22:12:19 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.11.05 22:13:53 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.11.05 22:14:07 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.11.05 22:14:11 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.11.05 22:14:15 WARN  Using indexes to guess the definition of addr[0m
+2023.11.05 22:14:15 WARN  Using indexes to guess the definition of addr[0m
+Nov 05, 2023 10:14:15 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 1681
+2023.11.05 22:14:15 WARN  Using indexes to guess the definition of addr[0m
+2023.11.05 22:14:29 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.11.05 22:15:08 WARN  Using indexes to guess the definition of cmd[0m
+2023.11.05 22:15:24 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/DCachePlugin.scala[0m
+Nov 05, 2023 10:15:26 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 1749
+2023.11.05 22:15:26 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/DCachePlugin.scala[0m
+2023.11.05 22:15:39 WARN  Using indexes to guess the definition of addr[0m
+2023.11.05 22:15:39 WARN  Using indexes to guess the definition of addr[0m
+2023.11.05 22:15:46 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/DCachePlugin.scala[0m
+2023.11.05 22:16:08 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/DCachePlugin.scala[0m
+2023.11.05 22:16:17 WARN  Using indexes to guess the definition of addr[0m
+2023.11.05 22:16:17 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/DCachePlugin.scala[0m
+2023.11.05 22:16:44 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/DCachePlugin.scala[0m
+2023.11.05 22:16:52 WARN  Using indexes to guess the definition of addr[0m
+2023.11.05 22:17:00 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/DCachePlugin.scala[0m
+2023.11.05 22:17:15 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gencpu/GenSimple.scala[0m
+2023.11.05 22:17:55 WARN  Could not find semantic tokens for: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.05 22:17:59 WARN  Could not find semantic tokens for: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.05 22:18:00 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.05 22:18:00 WARN  Could not find semantic tokens for: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.05 22:19:18 WARN  Using indexes to guess the definition of newICacheAccess[0m
+2023.11.05 22:19:19 WARN  Using indexes to guess the definition of newICacheAccess[0m
+2023.11.05 22:19:20 WARN  Using indexes to guess the definition of newICacheAccess[0m
+2023.11.05 22:19:20 WARN  Using indexes to guess the definition of newICacheAccess[0m
+2023.11.05 22:19:23 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.11.05 22:19:23 WARN  Could not find semantic tokens for: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.05 22:19:26 WARN  Using indexes to guess the definition of icache_access[0m
+2023.11.05 22:19:26 WARN  Using indexes to guess the definition of icache_access[0m
+2023.11.05 22:19:42 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/FetchPlugin.scala[0m
+2023.11.05 22:19:42 WARN  Could not find semantic tokens for: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.05 22:20:18 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gencpu/GenSimple.scala[0m
+2023.11.05 22:20:18 WARN  Could not find semantic tokens for: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.05 22:21:04 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gencpu/GenSimple.scala[0m
+2023.11.05 22:21:04 WARN  Could not find semantic tokens for: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.05 22:21:09 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gencpu/GenSimple.scala[0m
+2023.11.05 22:21:09 WARN  Could not find semantic tokens for: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.05 22:22:32 WARN  Using indexes to guess the definition of config[0m
+2023.11.05 22:22:33 WARN  Using indexes to guess the definition of config[0m
+2023.11.05 22:22:33 WARN  Using indexes to guess the definition of config[0m
+2023.11.05 22:23:34 WARN  Using indexes to guess the definition of config[0m
+2023.11.05 22:23:34 WARN  Using indexes to guess the definition of config[0m
+2023.11.05 22:23:35 WARN  Using indexes to guess the definition of config[0m
+2023.11.05 22:23:42 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.11.05 22:23:42 WARN  Could not find semantic tokens for: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.05 22:23:42 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.11.05 22:23:42 WARN  Could not find semantic tokens for: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.05 22:23:42 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.11.05 22:23:43 WARN  Could not find semantic tokens for: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.05 22:24:45 WARN  Using indexes to guess the definition of icache_access[0m
+2023.11.05 22:25:30 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/DandRiscvSimple.scala[0m
+2023.11.05 22:25:30 WARN  Could not find semantic tokens for: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.05 22:26:11 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/AluPlugin.scala[0m
+2023.11.05 22:26:11 WARN  Could not find semantic tokens for: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+Nov 05, 2023 10:26:18 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 2440
+2023.11.05 22:28:47 WARN  Using indexes to guess the definition of cpu[0m
+2023.11.05 22:28:47 WARN  Using indexes to guess the definition of cmd[0m
+2023.11.05 22:28:47 WARN  Using indexes to guess the definition of cmd[0m
+2023.11.05 22:29:22 WARN  Using indexes to guess the definition of ICachePlugin[0m
+2023.11.05 22:29:24 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.11.05 22:29:24 WARN  Could not find semantic tokens for: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.05 22:29:24 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.11.05 22:29:24 WARN  Could not find semantic tokens for: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.05 22:29:26 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.11.05 22:29:26 WARN  Could not find semantic tokens for: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.05 22:29:28 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.11.05 22:29:28 WARN  Could not find semantic tokens for: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.05 22:29:28 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.11.05 22:29:28 WARN  Could not find semantic tokens for: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.05 22:29:46 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/DandRiscvSimple.scala[0m
+2023.11.05 22:29:46 WARN  Could not find semantic tokens for: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.05 22:29:48 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/DandRiscvSimple.scala[0m
+2023.11.05 22:29:48 WARN  Could not find semantic tokens for: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.05 22:29:53 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gencpu/GenSimple.scala[0m
+2023.11.05 22:29:53 WARN  Could not find semantic tokens for: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+Nov 05, 2023 10:30:01 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 2591
+2023.11.05 22:30:04 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gencpu/GenSimple.scala[0m
+2023.11.05 22:30:04 WARN  Could not find semantic tokens for: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.05 22:30:08 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gencpu/GenSimple.scala[0m
+2023.11.05 22:30:08 WARN  Could not find semantic tokens for: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.05 22:30:15 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gencpu/GenSimple.scala[0m
+2023.11.05 22:30:15 WARN  Could not find semantic tokens for: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.05 22:30:18 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gencpu/GenSimple.scala[0m
+2023.11.05 22:30:18 WARN  Could not find semantic tokens for: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.05 22:30:28 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gencpu/GenSimple.scala[0m
+2023.11.05 22:30:28 WARN  Could not find semantic tokens for: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+Nov 05, 2023 10:30:50 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 2674
+Nov 05, 2023 10:30:50 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 2675
+2023.11.05 22:31:11 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gencpu/GenSimple.scala[0m
+2023.11.05 22:31:11 WARN  Could not find semantic tokens for: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.05 22:33:19 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.11.05 22:33:19 WARN  Could not find semantic tokens for: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.05 22:33:57 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.11.05 22:33:57 WARN  Could not find semantic tokens for: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.05 22:34:31 WARN  Using indexes to guess the definition of ICacheAccessService[0m
+2023.11.05 22:34:39 WARN  Using indexes to guess the definition of ICacheAccessCmd[0m
+2023.11.05 22:34:39 WARN  Using indexes to guess the definition of ICacheAccessRsp[0m
+2023.11.05 22:34:48 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.11.05 22:34:48 WARN  Could not find semantic tokens for: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.05 22:35:21 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/FetchPlugin.scala[0m
+2023.11.05 22:35:21 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/FetchPlugin.scala[0m
+2023.11.05 22:35:21 WARN  Could not find semantic tokens for: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+Nov 05, 2023 10:35:51 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 2931
+2023.11.05 22:36:07 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gencpu/GenSimple.scala[0m
+2023.11.05 22:36:07 WARN  Could not find semantic tokens for: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.05 22:36:59 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/FetchPlugin.scala[0m
+2023.11.05 22:36:59 WARN  Could not find semantic tokens for: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.05 22:37:20 WARN  Using indexes to guess the definition of dcache_access[0m
+2023.11.05 22:37:39 WARN  Using indexes to guess the definition of DCacheAccess[0m
+2023.11.05 22:37:53 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/LsuPlugin.scala[0m
+2023.11.05 22:37:53 WARN  Could not find semantic tokens for: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+Nov 05, 2023 10:38:16 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 3108
+2023.11.05 22:38:45 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gencpu/GenSimple.scala[0m
+2023.11.05 22:38:45 WARN  Could not find semantic tokens for: file:///home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+Nov 05, 2023 10:39:00 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 3139
+2023.11.06 20:06:38 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:06:49 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+Nov 06, 2023 8:07:00 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 3230
+2023.11.06 20:07:07 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:07:09 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:08:05 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:08:14 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:10:04 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:10:11 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:10:11 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:11:41 WARN  Using indexes to guess the definition of uartCtrlConfig[0m
+2023.11.06 20:12:21 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:13:31 WARN  Using indexes to guess the definition of resetCtrl[0m
+2023.11.06 20:13:52 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:14:03 WARN  Using indexes to guess the definition of coreClockDomain[0m
+2023.11.06 20:14:03 WARN  Using indexes to guess the definition of coreClockDomain[0m
+2023.11.06 20:14:03 WARN  Using indexes to guess the definition of axiClockDomain[0m
+2023.11.06 20:14:03 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:14:11 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:14:23 WARN  Using indexes to guess the definition of p[0m
+2023.11.06 20:14:23 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:14:49 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:15:06 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:15:06 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:15:11 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:15:11 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:15:12 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:15:12 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:15:21 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:15:56 WARN  Using indexes to guess the definition of axi[0m
+2023.11.06 20:15:56 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:15:56 WARN  Using indexes to guess the definition of axi[0m
+2023.11.06 20:16:04 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:16:25 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:16:25 WARN  Using indexes to guess the definition of axi[0m
+2023.11.06 20:16:26 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:16:32 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:16:35 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:16:39 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:16:53 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:17:57 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:18:39 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:18:52 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:18:56 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:18:57 WARN  Using indexes to guess the definition of DandConfig[0m
+2023.11.06 20:18:57 WARN  Using indexes to guess the definition of DandConfig[0m
+2023.11.06 20:19:00 WARN  Using indexes to guess the definition of DandConfig[0m
+2023.11.06 20:19:00 WARN  Using indexes to guess the definition of DandSocSimple[0m
+2023.11.06 20:19:00 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:19:15 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:20:27 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:21:13 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:22:06 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:22:43 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+Nov 06, 2023 8:22:52 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 4287
+2023.11.06 20:23:37 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+Nov 06, 2023 8:23:50 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 4373
+2023.11.06 20:24:57 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:25:13 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:25:19 WARN  Using indexes to guess the definition of axiFrequency[0m
+2023.11.06 20:25:19 WARN  Using indexes to guess the definition of coreClockDomain[0m
+2023.11.06 20:25:20 WARN  Using indexes to guess the definition of coreClockDomain[0m
+2023.11.06 20:25:20 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:25:30 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:25:58 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:26:02 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:27:26 WARN  Using indexes to guess the definition of onChipRamSize[0m
+2023.11.06 20:28:36 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/DCachePlugin.scala[0m
+2023.11.06 20:28:36 WARN  Using indexes to guess the definition of addressWidth[0m
+Nov 06, 2023 8:28:36 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 4611
+2023.11.06 20:28:36 WARN  Using indexes to guess the definition of addressWidth[0m
+2023.11.06 20:28:49 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/DCachePlugin.scala[0m
+2023.11.06 20:28:58 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/ICachePlugin.scala[0m
+2023.11.06 20:29:40 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:30:09 WARN  Using indexes to guess the definition of onChipRamSize[0m
+2023.11.06 20:30:09 WARN  Using indexes to guess the definition of onChipRamSize[0m
+2023.11.06 20:30:32 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:31:21 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:32:04 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:32:14 WARN  Using indexes to guess the definition of onChipRamSize[0m
+2023.11.06 20:32:14 WARN  Using indexes to guess the definition of onChipRamSize[0m
+2023.11.06 20:32:19 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:40:58 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:41:13 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:41:43 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:42:01 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:42:01 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:42:04 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:42:16 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:42:31 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:42:40 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:42:40 WARN  Using indexes to guess the definition of addressWidth[0m
+2023.11.06 20:42:42 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:42:42 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:42:43 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:42:44 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:42:45 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:43:26 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:43:31 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:43:33 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:43:33 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:43:35 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:43:36 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+Nov 06, 2023 8:43:36 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 5124
+2023.11.06 20:45:05 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:55:26 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 20:55:49 WARN  Using indexes to guess the definition of axi[0m
+2023.11.06 20:58:03 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 21:01:01 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 21:01:08 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 21:01:12 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 21:01:23 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 21:01:23 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 21:01:24 WARN  Using indexes to guess the definition of io[0m
+2023.11.06 21:01:24 WARN  Using indexes to guess the definition of io[0m
+2023.11.06 21:01:24 WARN  Using indexes to guess the definition of axi[0m
+2023.11.06 21:01:24 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 21:01:25 WARN  Using indexes to guess the definition of axi[0m
+2023.11.06 21:01:46 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 21:02:18 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 21:04:24 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 21:04:28 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 21:04:36 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+Nov 06, 2023 9:04:45 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 5633
+2023.11.06 21:04:48 WARN  Using indexes to guess the definition of build[0m
+2023.11.06 21:04:51 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 21:06:05 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 21:07:21 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 21:09:14 WARN  Using indexes to guess the definition of axi[0m
+2023.11.06 21:09:25 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 21:09:43 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 21:09:48 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 21:12:52 WARN  Using indexes to guess the definition of io[0m
+2023.11.06 21:12:52 WARN  Using indexes to guess the definition of axi[0m
+2023.11.06 21:12:56 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 21:13:36 WARN  Using indexes to guess the definition of io[0m
+2023.11.06 21:13:37 WARN  Using indexes to guess the definition of axi[0m
+2023.11.06 21:13:37 WARN  Using indexes to guess the definition of axi[0m
+Nov 06, 2023 9:13:37 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 5945
+2023.11.06 21:13:37 WARN  Using indexes to guess the definition of io[0m
+2023.11.06 21:13:37 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 21:16:07 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 21:16:34 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 21:18:55 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 21:21:10 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 21:21:15 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 21:22:07 WARN  Using indexes to guess the definition of default[0m
+2023.11.06 21:22:07 WARN  Using indexes to guess the definition of default[0m
+2023.11.06 21:22:08 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 21:22:18 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+2023.11.06 21:24:28 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gensoc/GenDandSocSimple.scala[0m
+Nov 06, 2023 9:40:45 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 6214
+2023.11.06 21:41:51 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gencpu/GenSimple.scala[0m
+2023.11.06 21:42:21 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/gencpu/GenSimple.scala[0m
+2023.11.06 21:43:19 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/ip/DCache.scala[0m

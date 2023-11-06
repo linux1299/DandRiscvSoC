@@ -149,7 +149,7 @@ with DCacheAccessService
          
       // connect to dcache
       dcache_access.cmd.valid        := !is_timer && is_mem && arbitration.isValid
-      dcache_access.cmd.payload.addr := lsu_addr
+      dcache_access.cmd.payload.addr := lsu_addr.resized
       dcache_access.cmd.payload.wen  := lsu_wen
       dcache_access.cmd.payload.wdata:= lsu_wdata
       dcache_access.cmd.payload.wstrb:= lsu_wstrb

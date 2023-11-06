@@ -99,7 +99,7 @@ class DCachePlugin(val config : DCacheConfig) extends Plugin[DandRiscvSimple]{
       }
 
       // next level AXI ports
-      val axiConfig = Axi4Config(addressWidth=dcache_config.addressWidth, dataWidth=dcache_config.busDataWidth, idWidth=4,
+      val axiConfig = Axi4Config(addressWidth=dcache_config.addressWidth, dataWidth=dcache_config.busDataWidth, idWidth=2,
                                  useId=true, useLast=true, useRegion=false, useBurst=true, 
                                  useLock=false, useCache=false, useSize=true, useQos=false,
                                  useLen=true, useResp=true, useProt=false, useStrb=true)
@@ -129,7 +129,7 @@ class DCachePlugin(val config : DCacheConfig) extends Plugin[DandRiscvSimple]{
       dcacheReader.ar.payload.len  := bypass_read ? U(0, 8 bits) | dcache.next_level.cmd.payload.len.resized
       dcacheReader.ar.payload.size := bypass_read ? dcache.cpu_bypass.cmd.size | dcache.next_level.cmd.payload.size
       dcacheReader.ar.payload.burst := B(1) // INCR
-      dcacheReader.ar.payload.addr := bypass_read ? dcache.cpu_bypass.cmd.addr | dcache.next_level.cmd.payload.addr
+      dcacheReader.ar.payload.addr := bypass_read ? dcache.cpu_bypass.cmd.addr.resize(dcache_config.addressWidth) | dcache.next_level.cmd.payload.addr.resize(dcache_config.addressWidth)
 
       // r channel
       dcacheReader.r.ready := True
@@ -152,7 +152,7 @@ class DCachePlugin(val config : DCacheConfig) extends Plugin[DandRiscvSimple]{
       dcacheWriter.aw.payload.len := bypass_write ? U(0, 8 bits) | dcache.next_level.cmd.payload.len.resized
       dcacheWriter.aw.payload.size := bypass_write ? dcache.cpu_bypass.cmd.size | dcache.next_level.cmd.payload.size
       dcacheWriter.aw.payload.burst := B(1) // INCR
-      dcacheWriter.aw.payload.addr := bypass_write ? dcache.cpu_bypass.cmd.addr | dcache.next_level.cmd.payload.addr
+      dcacheWriter.aw.payload.addr := bypass_write ? dcache.cpu_bypass.cmd.addr.resize(dcache_config.addressWidth) | dcache.next_level.cmd.payload.addr.resize(dcache_config.addressWidth)
 
       // w channel
       dcacheWriter.w.valid.setAsReg() init(False)
@@ -216,7 +216,7 @@ class DCachePlugin(val config : DCacheConfig) extends Plugin[DandRiscvSimple]{
       }
 
       // next level AXI ports
-      val axiConfig = Axi4Config(addressWidth=dcache_config.addressWidth, dataWidth=dcache_config.busDataWidth, idWidth=4,
+      val axiConfig = Axi4Config(addressWidth=dcache_config.addressWidth, dataWidth=dcache_config.busDataWidth, idWidth=2,
                                  useId=true, useLast=true, useRegion=false, useBurst=true, 
                                  useLock=false, useCache=false, useSize=true, useQos=false,
                                  useLen=true, useResp=true, useProt=false, useStrb=true)
@@ -282,9 +282,9 @@ class DCachePlugin(val config : DCacheConfig) extends Plugin[DandRiscvSimple]{
       dcacheReader.ar.payload.burst := B(1) // INCR
       // ar addr unburst
       when(nextlevel_read){
-        dcacheReader.ar.payload.addr := dcache.next_level.cmd.payload.addr
+        dcacheReader.ar.payload.addr := dcache.next_level.cmd.payload.addr.resize(dcache_config.addressWidth)
       }.elsewhen(bypass_read){
-        dcacheReader.ar.payload.addr := dcache.cpu_bypass.cmd.addr
+        dcacheReader.ar.payload.addr := dcache.cpu_bypass.cmd.addr.resize(dcache_config.addressWidth)
       }.elsewhen(dcacheReader.ar.fire){
         dcacheReader.ar.payload.addr := dcacheReader.ar.payload.addr + U(dcache_config.busDataWidth/8)
       }
@@ -310,7 +310,7 @@ class DCachePlugin(val config : DCacheConfig) extends Plugin[DandRiscvSimple]{
       dcacheWriter.aw.payload.len := bypass_write ? U(0, 8 bits) | dcache.next_level.cmd.payload.len.resized
       dcacheWriter.aw.payload.size := bypass_write ? dcache.cpu_bypass.cmd.size | dcache.next_level.cmd.payload.size
       dcacheWriter.aw.payload.burst := B(1) // INCR
-      dcacheWriter.aw.payload.addr := bypass_write ? dcache.cpu_bypass.cmd.addr | dcache.next_level.cmd.payload.addr
+      dcacheWriter.aw.payload.addr := bypass_write ? dcache.cpu_bypass.cmd.addr.resize(dcache_config.addressWidth) | dcache.next_level.cmd.payload.addr.resize(dcache_config.addressWidth)
 
       // w channel
       dcacheWriter.w.valid.setAsReg() init(False)
