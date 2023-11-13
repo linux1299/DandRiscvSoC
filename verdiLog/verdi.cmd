@@ -4319,3 +4319,53 @@ wvZoomOut -win $_nWave2
 wvScrollDown -win $_nWave2 1
 wvScrollDown -win $_nWave2 1
 srcDeselectAll -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+debReload
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple" -win $_nTrace1
+srcSetScope -win $_nTrace1 "tb_DandSocSimple.u_DandSocSimple" -delim "."
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple" -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_asyncResetn" -line 8 -pos 1 -win $_nTrace1
+srcSelect -signal "io_axiClk" -line 9 -pos 1 -win $_nTrace1
+srcSelect -signal "io_uart_txd" -line 10 -pos 1 -win $_nTrace1
+srcSelect -signal "io_uart_rxd" -line 11 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 0.000000 190275.286288
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.core_cpu" -win $_nTrace1
+srcSetScope -win $_nTrace1 "tb_DandSocSimple.u_DandSocSimple.core_cpu" -delim "."
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.core_cpu" -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_axiClk" -line 5103 -pos 1 -win $_nTrace1
+srcSelect -signal "resetCtrl_axiReset" -line 5104 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 0.000000 26341.497660
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 0.000000 238664.055381
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvSetCursor -win $_nWave2 185237.050347 -snap {("G2" 19)}
+srcActiveTrace "tb_DandSocSimple.u_DandSocSimple.core_cpu.resetCtrl_axiReset" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 181000 -TraceValue 0
+wvZoom -win $_nWave2 0.000000 64674.795567
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2

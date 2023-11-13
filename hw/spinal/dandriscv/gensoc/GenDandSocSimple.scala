@@ -66,15 +66,18 @@ class DandSocSimple(val config: DandConfig) extends Component{
 
   val io = new Bundle{
     //Clocks / reset
-    val asyncReset = in Bool()
+    val asyncResetn = in Bool()
     val axiClk     = in Bool()
     val uart       = master(Uart())
   }
 
   val resetCtrlClockDomain = ClockDomain(
     clock = io.axiClk,
+    reset = io.asyncResetn,
     config = ClockDomainConfig(
-      resetKind = BOOT
+      clockEdge        = RISING,
+      resetKind        = ASYNC,
+      resetActiveLevel = LOW
     )
   )
 
@@ -87,7 +90,7 @@ class DandSocSimple(val config: DandConfig) extends Component{
       systemResetCounter := systemResetCounter + 1
       systemResetUnbuffered := True
     }
-    when(BufferCC(io.asyncReset)){
+    when(BufferCC(!io.asyncResetn)){
       systemResetCounter := 0
     }
 
@@ -98,7 +101,7 @@ class DandSocSimple(val config: DandConfig) extends Component{
   val axiClockDomain = ClockDomain(
     clock = io.axiClk,
     reset = resetCtrl.axiReset,
-    frequency = FixedFrequency(axiFrequency) //The frequency information is used by the SDRAM controller
+    frequency = FixedFrequency(axiFrequency)
   )
 
   val core = new ClockingArea(axiClockDomain){

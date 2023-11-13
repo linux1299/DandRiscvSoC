@@ -8,7 +8,7 @@ logic          rst_n;
 
 
 DandSocSimple u_DandSocSimple(
-    .io_asyncReset ( ! rst_n ),
+    .io_asyncResetn  (      rst_n ),
     .io_axiClk     ( clk_axi_in    ),
     .io_uart_txd   ( io_uart_txd   ),
     .io_uart_rxd   ( io_uart_rxd   )

@@ -1,16 +1,17 @@
 // Generator : SpinalHDL v1.8.1    git head : 2a7592004363e5b40ec43e1f122ed8641cd8965b
 // Component : DandSocSimple
-// Git hash  : 38b6831a37fa06dcbcb618d126b7aa6e621965bd
+// Git hash  : d227ec09adadd6d0813407917db35b2c8b2eaa40
 
 `timescale 1ns/1ps
 
 module DandSocSimple (
-  input               io_asyncReset,
+  input               io_asyncResetn,
   input               io_axiClk,
   output              io_uart_txd,
   input               io_uart_rxd
 );
 
+  wire                bufferCC_1_io_dataIn;
   wire       [31:0]   axi_downsizer_io_input_aw_payload_addr;
   wire       [3:0]    axi_downsizer_io_input_aw_payload_id;
   wire       [15:0]   axi_uartCtrl_io_apb_PADDR;
@@ -35,7 +36,7 @@ module DandSocSimple (
   wire       [16:0]   axi_bootram_io_axi_arbiter_io_writeInputs_0_aw_payload_addr;
   wire       [19:0]   axi_apbBridge_io_axi_arbiter_io_readInputs_0_ar_payload_addr;
   wire       [19:0]   axi_apbBridge_io_axi_arbiter_io_writeInputs_0_aw_payload_addr;
-  wire                io_asyncReset_buffercc_io_dataOut;
+  wire                bufferCC_1_io_dataOut;
   wire                core_cpu_icache_ar_valid;
   wire       [63:0]   core_cpu_icache_ar_payload_addr;
   wire       [1:0]    core_cpu_icache_ar_payload_id;
@@ -393,9 +394,9 @@ module DandSocSimple (
   wire       [31:0]   apb3Router_1_io_outputs_0_PWDATA;
   reg                 resetCtrl_systemResetUnbuffered;
   reg        [5:0]    resetCtrl_systemResetCounter;
-  wire       [5:0]    _zz_when_GenDandSocSimple_l86;
-  wire                when_GenDandSocSimple_l86;
-  wire                when_GenDandSocSimple_l90;
+  wire       [5:0]    _zz_when_GenDandSocSimple_l89;
+  wire                when_GenDandSocSimple_l89;
+  wire                when_GenDandSocSimple_l93;
   reg                 resetCtrl_axiReset;
   wire                toplevel_axi_downsizer_io_output_readOnly_ar_valid;
   wire                toplevel_axi_downsizer_io_output_readOnly_ar_ready;
@@ -560,10 +561,11 @@ module DandSocSimple (
   wire                toplevel_toplevel_axi_downsizer_io_output_writeOnly_decoder_io_outputs_1_aw_validPipe_fire;
   wire                toplevel_toplevel_axi_downsizer_io_output_writeOnly_decoder_io_outputs_1_aw_validPipe_fire_1;
 
-  BufferCC io_asyncReset_buffercc (
-    .io_dataIn  (io_asyncReset                    ), //i
-    .io_dataOut (io_asyncReset_buffercc_io_dataOut), //o
-    .io_axiClk  (io_axiClk                        )  //i
+  BufferCC bufferCC_1 (
+    .io_dataIn      (bufferCC_1_io_dataIn ), //i
+    .io_dataOut     (bufferCC_1_io_dataOut), //o
+    .io_axiClk      (io_axiClk            ), //i
+    .io_asyncResetn (io_asyncResetn       )  //i
   );
   DandRiscvSimple core_cpu (
     .icache_ar_valid         (core_cpu_icache_ar_valid                              ), //o
@@ -1336,20 +1338,17 @@ module DandSocSimple (
     .io_axiClk              (io_axiClk                             ), //i
     .resetCtrl_axiReset     (resetCtrl_axiReset                    )  //i
   );
-  initial begin
-    resetCtrl_systemResetCounter = 6'h0;
-  end
-
   always @(*) begin
     resetCtrl_systemResetUnbuffered = 1'b0;
-    if(when_GenDandSocSimple_l86) begin
+    if(when_GenDandSocSimple_l89) begin
       resetCtrl_systemResetUnbuffered = 1'b1;
     end
   end
 
-  assign _zz_when_GenDandSocSimple_l86[5 : 0] = 6'h3f;
-  assign when_GenDandSocSimple_l86 = (resetCtrl_systemResetCounter != _zz_when_GenDandSocSimple_l86);
-  assign when_GenDandSocSimple_l90 = io_asyncReset_buffercc_io_dataOut;
+  assign _zz_when_GenDandSocSimple_l89[5 : 0] = 6'h3f;
+  assign when_GenDandSocSimple_l89 = (resetCtrl_systemResetCounter != _zz_when_GenDandSocSimple_l89);
+  assign bufferCC_1_io_dataIn = (! io_asyncResetn);
+  assign when_GenDandSocSimple_l93 = bufferCC_1_io_dataOut;
   assign axi_uartCtrl_io_resetn = (! resetCtrl_axiReset);
   assign axi_downsizer_io_input_aw_payload_addr = toplevel_core_cpu_dcache_decoder_1_io_outputs_1_aw_validPipe_payload_addr[31:0];
   assign axi_downsizer_io_input_aw_payload_id = {2'd0, toplevel_core_cpu_dcache_decoder_1_io_outputs_1_aw_validPipe_payload_id};
@@ -1527,12 +1526,16 @@ module DandSocSimple (
   assign axi_apbBridge_io_axi_arbiter_io_writeInputs_0_aw_payload_addr = toplevel_toplevel_axi_downsizer_io_output_writeOnly_decoder_io_outputs_1_aw_validPipe_payload_addr[19:0];
   assign axi_uartCtrl_io_apb_PADDR = apb3Router_1_io_outputs_0_PADDR[15:0];
   assign io_uart_txd = axi_uartCtrl_io_uart_txd;
-  always @(posedge io_axiClk) begin
-    if(when_GenDandSocSimple_l86) begin
-      resetCtrl_systemResetCounter <= (resetCtrl_systemResetCounter + 6'h01);
-    end
-    if(when_GenDandSocSimple_l90) begin
+  always @(posedge io_axiClk or negedge io_asyncResetn) begin
+    if(!io_asyncResetn) begin
       resetCtrl_systemResetCounter <= 6'h0;
+    end else begin
+      if(when_GenDandSocSimple_l89) begin
+        resetCtrl_systemResetCounter <= (resetCtrl_systemResetCounter + 6'h01);
+      end
+      if(when_GenDandSocSimple_l93) begin
+        resetCtrl_systemResetCounter <= 6'h0;
+      end
     end
   end
 
@@ -8559,7 +8562,8 @@ endmodule
 module BufferCC (
   input               io_dataIn,
   output              io_dataOut,
-  input               io_axiClk
+  input               io_axiClk,
+  input               io_asyncResetn
 );
 
   (* async_reg = "true" *) reg                 buffers_0;
