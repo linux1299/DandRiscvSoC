@@ -307,11 +307,25 @@ class DCachePlugin(val config : DCacheConfig) extends Plugin[DandRiscvSimple]{
         dcacheWriter.aw.valid := False
       }
       dcacheWriter.aw.payload.id := U(2)
-      dcacheWriter.aw.payload.len := bypass_write ? U(0, 8 bits) | dcache.next_level.cmd.payload.len.resized
-      dcacheWriter.aw.payload.size := bypass_write ? dcache.cpu_bypass.cmd.size | dcache.next_level.cmd.payload.size
+      // dcacheWriter.aw.payload.len := bypass_write ? U(0, 8 bits) | dcache.next_level.cmd.payload.len.resized
+      when(bypass_write){
+        dcacheWriter.aw.payload.len := U(0, 8 bits)
+      }.elsewhen(nextlevel_write){
+        dcacheWriter.aw.payload.len := dcache.next_level.cmd.payload.len.resized
+      }
+      // dcacheWriter.aw.payload.size := bypass_write ? dcache.cpu_bypass.cmd.size | dcache.next_level.cmd.payload.size
+      when(bypass_write){
+        dcacheWriter.aw.payload.size := dcache.cpu_bypass.cmd.size
+      }.elsewhen(nextlevel_write){
+        dcacheWriter.aw.payload.size := dcache.next_level.cmd.payload.size
+      }
       dcacheWriter.aw.payload.burst := B(1) // INCR
-      dcacheWriter.aw.payload.addr := bypass_write ? dcache.cpu_bypass.cmd.addr.resize(dcache_config.addressWidth) | dcache.next_level.cmd.payload.addr.resize(dcache_config.addressWidth)
-
+      // dcacheWriter.aw.payload.addr := bypass_write ? dcache.cpu_bypass.cmd.addr.resize(dcache_config.addressWidth) | dcache.next_level.cmd.payload.addr.resize(dcache_config.addressWidth)
+      when(bypass_write){
+        dcacheWriter.aw.payload.addr := dcache.cpu_bypass.cmd.addr.resize(dcache_config.addressWidth)
+      }.elsewhen(nextlevel_write){
+        dcacheWriter.aw.payload.addr := dcache.next_level.cmd.payload.addr.resize(dcache_config.addressWidth)
+      }
       // w channel
       dcacheWriter.w.valid.setAsReg() init(False)
       dcacheWriter.w.payload.data.setAsReg() init(0)

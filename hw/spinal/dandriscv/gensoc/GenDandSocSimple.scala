@@ -3,6 +3,7 @@ package dandriscv.gensoc
 import dandriscv.plugin_simple._
 import dandriscv.ip._
 import dandriscv.{plugin_simple, DandRiscvSimple, DandRiscvSimpleConfig}
+import spinal.lib.misc._
 
 import spinal.core._
 import spinal.lib._
@@ -178,8 +179,11 @@ class DandSocSimple(val config: DandConfig) extends Component{
       dataWidth    = 32,
       idWidth      = 4
     )
-    val uartCtrl = Apb3UartCtrl(uartCtrlConfig)
+    // val uartCtrl = Apb3UartCtrl(uartCtrlConfig)
+    val uartCtrl = Apb3Uart()
     uartCtrl.io.apb.addAttribute(Verilator.public)
+    uartCtrl.io.clock := axiClockDomain.clock
+    uartCtrl.io.resetn := ~axiClockDomain.reset
     
     val axiCrossbar = Axi4CrossbarFactory()
 
@@ -229,11 +233,10 @@ class DandSocSimple(val config: DandConfig) extends Component{
     axiCrossbar.build()
     axiCrossbar32.build()
 
-
     val apbDecoder = Apb3Decoder(
       master = apbBridge.io.apb,
       slaves = List(
-        uartCtrl.io.apb  -> (0x10000, 4 kB),
+        uartCtrl.io.apb  -> (0x0, 4 kB),
       )
     )
   }
@@ -247,7 +250,7 @@ object DandSocSimpleWithMemoryInit{
     val config = SpinalConfig()
     config.generateVerilog({
       val toplevel = new DandSocSimple(DandConfig.default)
-      HexTools.initRam(toplevel.axi.ram.ram, "/home/lin/oscpu/libraries/ysyxSoC/ysyx/program/bin/flash/hello-flash.bin", 0x30000000l)
+      BinTools.initRam(toplevel.axi.bootram.ram, "/home/lin/oscpu/libraries/ysyxSoC/ysyx/program/bin/flash/hello-flash.bin", false)
       toplevel
     })
   }

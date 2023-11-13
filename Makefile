@@ -66,5 +66,27 @@ sim3:
 ver3:
 	verdi  ./simWorkspace/tb_DandRiscvYsyx3rd/tb_DandRiscvYsyx3rd.fsdb -f ./hw/verilog/tb/tb_DandRiscvYsyx3rd.f -ssf -sv -v2k &
 
+soc: clean com_soc sim_soc
+re_soc: com_soc sim_soc 
+com_soc:
+	vcs -sverilog +v2k -timescale=1ns/1ns  -full64 -cpp g++ -cc gcc -LDFLAGS -Wl,--no-as-needed \
+	-f ./hw/verilog/tb/tb_DandSocSimple.f                       \
+	-debug_all                                 \
+	-o ./simWorkspace/tb_DandSocSimple/tb_DandSocSimple.simv  \
+	-l compile.log                             \
+	-fsdb                                      \
+	-top tb_DandSocSimple
+
+
+sim_soc:
+	./simWorkspace/tb_DandSocSimple/tb_DandSocSimple.simv -l sim.log  +nospecify +notimingcheck +fsdb+autoflush \
+	-lca -cm line+tgl+cond+fsm \
+  urg -dir ./simWorkspace/tb_DandSocSimple/tb_DandSocSimple.simv.vdb/ -report both  
+
+
+ver_soc:
+	verdi  ./simWorkspace/tb_DandSocSimple/tb_DandSocSimple.fsdb -f ./hw/verilog/tb/tb_DandSocSimple.f -ssf -sv -v2k &
+
+
 push:
 	git push https://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@github.com/linux1299/DandRiscvSoC.git main

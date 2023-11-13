@@ -44,4 +44,4 @@ include filelist.hsopt
 
 
 rmapats.so: $(HSOPT_OBJS)
-	@$(VCS_CC) $(LDFLAGS) $(LIBS) -shared -o ./../simWorkspace/tb_DandRiscvYsyx3rd/tb_DandRiscvYsyx3rd.simv.daidir/rmapats.so $(HSOPT_OBJS)
+	@$(VCS_CC) $(LDFLAGS) $(LIBS) -shared -o ./../simWorkspace/tb_DandSocSimple/tb_DandSocSimple.simv.daidir/rmapats.so $(HSOPT_OBJS)

@@ -83,8 +83,8 @@ case class ysyx_210238() extends Component{
   val core = new ClockingArea(coreClockDomain){
     val config = DandRiscvSimpleConfig(
         plugins = List(
-          new FetchPlugin(resetVector=0x80000000l),
-          // new FetchPlugin(resetVector=0x30000000l),
+          // new FetchPlugin(resetVector=0x80000000l),
+          new FetchPlugin(resetVector=0x30000000l),
           new BPUPlugin(p = PredictorConfig(
             predictorType = "GSHARE",
             addressWidth =64, 

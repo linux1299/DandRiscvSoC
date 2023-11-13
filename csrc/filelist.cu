@@ -1,20 +1,20 @@
 PIC_LD=ld
 
 ARCHIVE_OBJS=
-ARCHIVE_OBJS += _377904_archive_1.so
-_377904_archive_1.so : archive.40/_377904_archive_1.a
+ARCHIVE_OBJS += _448870_archive_1.so
+_448870_archive_1.so : archive.6/_448870_archive_1.a
 	@$(AR) -s $<
-	@$(PIC_LD) -shared  -Bsymbolic  -o .//../simWorkspace/tb_DandRiscvYsyx3rd/tb_DandRiscvYsyx3rd.simv.daidir//_377904_archive_1.so --whole-archive $< --no-whole-archive
+	@$(PIC_LD) -shared  -Bsymbolic  -o .//../simWorkspace/tb_DandSocSimple/tb_DandSocSimple.simv.daidir//_448870_archive_1.so --whole-archive $< --no-whole-archive
 	@rm -f $@
-	@ln -sf .//../simWorkspace/tb_DandRiscvYsyx3rd/tb_DandRiscvYsyx3rd.simv.daidir//_377904_archive_1.so $@
+	@ln -sf .//../simWorkspace/tb_DandSocSimple/tb_DandSocSimple.simv.daidir//_448870_archive_1.so $@
 
 
 ARCHIVE_OBJS += _prev_archive_1.so
-_prev_archive_1.so : archive.40/_prev_archive_1.a
+_prev_archive_1.so : archive.6/_prev_archive_1.a
 	@$(AR) -s $<
-	@$(PIC_LD) -shared  -Bsymbolic  -o .//../simWorkspace/tb_DandRiscvYsyx3rd/tb_DandRiscvYsyx3rd.simv.daidir//_prev_archive_1.so --whole-archive $< --no-whole-archive
+	@$(PIC_LD) -shared  -Bsymbolic  -o .//../simWorkspace/tb_DandSocSimple/tb_DandSocSimple.simv.daidir//_prev_archive_1.so --whole-archive $< --no-whole-archive
 	@rm -f $@
-	@ln -sf .//../simWorkspace/tb_DandRiscvYsyx3rd/tb_DandRiscvYsyx3rd.simv.daidir//_prev_archive_1.so $@
+	@ln -sf .//../simWorkspace/tb_DandSocSimple/tb_DandSocSimple.simv.daidir//_prev_archive_1.so $@
 
 
 
@@ -33,9 +33,9 @@ $(O0_OBJS) : %.o: %.c
 	$(CC_CG) $(CFLAGS_CG) -c -o $@ $<
 
 $(VCS_ARC0) : $(VCS_OBJS0)
-	$(PIC_LD) -shared  -Bsymbolic  -o .//../simWorkspace/tb_DandRiscvYsyx3rd/tb_DandRiscvYsyx3rd.simv.daidir//$(VCS_ARC0) $(VCS_OBJS0)
+	$(PIC_LD) -shared  -Bsymbolic  -o .//../simWorkspace/tb_DandSocSimple/tb_DandSocSimple.simv.daidir//$(VCS_ARC0) $(VCS_OBJS0)
 	rm -f $(VCS_ARC0)
-	@ln -sf .//../simWorkspace/tb_DandRiscvYsyx3rd/tb_DandRiscvYsyx3rd.simv.daidir//$(VCS_ARC0) $(VCS_ARC0)
+	@ln -sf .//../simWorkspace/tb_DandSocSimple/tb_DandSocSimple.simv.daidir//$(VCS_ARC0) $(VCS_ARC0)
 
 CU_UDP_OBJS = \
 

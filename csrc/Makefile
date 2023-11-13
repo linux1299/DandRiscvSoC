@@ -8,7 +8,7 @@ VSRC=..
 TARGET_ARCH=
 
 # Choose name of executable 
-PRODUCTBASE=$(VSRC)/./simWorkspace/tb_DandRiscvYsyx3rd/tb_DandRiscvYsyx3rd.simv
+PRODUCTBASE=$(VSRC)/./simWorkspace/tb_DandSocSimple/tb_DandSocSimple.simv
 
 PRODUCT=$(PRODUCTBASE)
 
@@ -42,7 +42,7 @@ PRE_LDFLAGS=  -no-pie
 # Loader Flags
 LDFLAGS= -Wl,--no-as-needed -rdynamic  -Wl,-rpath=/home/lin/vcs_verdi/vcs2018/vcs/O-2018.09-SP2/linux64/lib -L/home/lin/vcs_verdi/vcs2018/vcs/O-2018.09-SP2/linux64/lib 
 # Picarchive Flags
-PICLDFLAGS=-Wl,-rpath-link=./ -Wl,-rpath='$$ORIGIN'/tb_DandRiscvYsyx3rd.simv.daidir/ -Wl,-rpath=./tb_DandRiscvYsyx3rd.simv.daidir/ -Wl,-rpath='$$ORIGIN'/tb_DandRiscvYsyx3rd.simv.daidir//scsim.db.dir 
+PICLDFLAGS=-Wl,-rpath-link=./ -Wl,-rpath='$$ORIGIN'/tb_DandSocSimple.simv.daidir/ -Wl,-rpath=./tb_DandSocSimple.simv.daidir/ -Wl,-rpath='$$ORIGIN'/tb_DandSocSimple.simv.daidir//scsim.db.dir 
 
 # C run time startup
 CRT0=

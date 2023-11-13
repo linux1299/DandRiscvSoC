@@ -42,3 +42,18 @@
 1699273309929:compile
 1699273586399:runMain dandriscv.gensoc.DandSocSimpleWithMemoryInit
 1699278207773:runMain dandriscv.gencpu.GenSimple
+1699750807052:runMain dandriscv.gensoc.DandSocSimpleWithMemoryInit
+1699791013286:compile
+1699791174300:runMain dandriscv.ip.Uart
+1699793282957:compile
+1699793294196:runMain dandriscv.ip.Apb4Uart
+1699793907367:runMain dandriscv.ip.Apb3Uart
+1699794013515:compile
+1699794017283:runMain dandriscv.ip.Apb3Uart
+1699794052159:compile
+1699794053937:runMain dandriscv.ip.Apb3Uart
+1699794071892:compile
+1699794073850:runMain dandriscv.ip.Apb3Uart
+1699794178388:runMain dandriscv.gensoc.DandSocSimpleWithMemoryInit
+1699797273300:runMain dandriscv.gencpu.GenSimpleForYsyx3rd
+1699798962548:runMain dandriscv.gensoc.DandSocSimpleWithMemoryInit

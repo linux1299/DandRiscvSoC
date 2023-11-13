@@ -1,2152 +1,412 @@
-debImport "./simWorkspace/tb_DandRiscvSimple/tb_DandRiscvSimple.fsdb" "-f" \
-          "./hw/verilog/tb/tb_DandRiscvSimple.f" "-sv" "-v2k"
+debImport "./simWorkspace/tb_DandSocSimple/tb_DandSocSimple.fsdb" "-f" \
+          "./hw/verilog/tb/tb_DandSocSimple.f" "-sv" "-v2k"
 wvCreateWindow
 wvSetPosition -win $_nWave2 {("G1" 0)}
 wvOpenFile -win $_nWave2 \
-           {/home/lin/SpinalProjects/DandRiscvSoC/simWorkspace/tb_DandRiscvSimple/tb_DandRiscvSimple.fsdb}
-srcHBSelect "tb_DandRiscvSimple.u_DandRiscvSimple" -win $_nTrace1
-srcSetScope -win $_nTrace1 "tb_DandRiscvSimple.u_DandRiscvSimple" -delim "."
-srcHBSelect "tb_DandRiscvSimple.u_DandRiscvSimple" -win $_nTrace1
+           {/home/lin/SpinalProjects/DandRiscvSoC/simWorkspace/tb_DandSocSimple/tb_DandSocSimple.fsdb}
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple" -win $_nTrace1
+srcSetScope -win $_nTrace1 "tb_DandSocSimple.u_DandSocSimple" -delim "."
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple" -win $_nTrace1
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_ram" -win $_nTrace1
+srcSetScope -win $_nTrace1 "tb_DandSocSimple.u_DandSocSimple.axi_ram" -delim "."
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_ram" -win $_nTrace1
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.core_cpu" -win $_nTrace1
+srcSetScope -win $_nTrace1 "tb_DandSocSimple.u_DandSocSimple.core_cpu" -delim "."
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.core_cpu" -win $_nTrace1
 srcDeselectAll -win $_nTrace1
-srcSelect -win $_nTrace1 -range {8 50 5 1 10 1}
+srcDeselectAll -win $_nTrace1
+srcSelect -win $_nTrace1 -range {5069 5098 6 1 1 1}
 srcAddSelectedToWave -clipboard -win $_nTrace1
 wvDrop -win $_nWave2
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
 wvZoomOut -win $_nWave2
 wvZoomOut -win $_nWave2
 wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvZoom -win $_nWave2 0.000000 5848448.466938
-wvZoom -win $_nWave2 0.000000 600616.429187
-wvZoom -win $_nWave2 39937.553474 207453.402767
-wvZoom -win $_nWave2 50766.985918 95508.012530
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 0.000000 2462504.617658
+wvZoom -win $_nWave2 0.000000 2683416.789396
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.core_cpu" -win $_nTrace1
+srcSetScope -win $_nTrace1 "tb_DandSocSimple.u_DandSocSimple.core_cpu" -delim "."
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.core_cpu" -win $_nTrace1
 wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollUp -win $_nWave2 8
-srcHBSelect "tb_DandRiscvSimple.u_DandRiscvSimple" -win $_nTrace1
-srcSetScope -win $_nTrace1 "tb_DandRiscvSimple.u_DandRiscvSimple" -delim "."
-srcHBSelect "tb_DandRiscvSimple.u_DandRiscvSimple" -win $_nTrace1
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "icache_r_payload_data" -line 17 -pos 1 -win $_nTrace1
-srcHBSelect "tb_DandRiscvSimple" -win $_nTrace1
-srcSetScope -win $_nTrace1 "tb_DandRiscvSimple" -delim "."
-srcHBSelect "tb_DandRiscvSimple" -win $_nTrace1
-srcSearchString "instrCnt" -win $_nTrace1 -next -case
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "instrCnt" -line 424 -pos 1 -win $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvSelectSignal -win $_nWave2 {( "G1" 43 )} 
-wvSetRadix -win $_nWave2 -format UDec
-wvSetCursor -win $_nWave2 2335149.373302 -snap {("G1" 43)}
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 37717362.393794 41123827.114887
-wvZoom -win $_nWave2 39302935.186024 39592365.140162
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 33981427.488596 34953108.103005
-wvZoom -win $_nWave2 34363710.404861 34422937.335551
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvSetSearchMode -win $_nWave2 -value 
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvSetSearchMode -win $_nWave2 -value 2008
-wvSearchNext -win $_nWave2
-wvZoom -win $_nWave2 14455904.827864 14651942.248987
-wvZoom -win $_nWave2 14475747.551683 14499066.373109
-srcSearchString "fetch_PC" -win $_nTrace1 -next -case
-srcSearchString "fetch_PC" -win $_nTrace1 -next -case
-srcHBSelect "tb_DandRiscvSimple.u_DandRiscvSimple" -win $_nTrace1
-srcSetScope -win $_nTrace1 "tb_DandRiscvSimple.u_DandRiscvSimple" -delim "."
-srcHBSelect "tb_DandRiscvSimple.u_DandRiscvSimple" -win $_nTrace1
-srcSearchString "fetch_PC" -win $_nTrace1 -next -case
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "fetch_PC" -line 307 -pos 1 -win $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-srcSearchString "fetch_arb" -win $_nTrace1 -next -case
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "fetch_arbitration_isValid" -line 372 -pos 1 -win $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 0
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSetMarker -win $_nWave2 14485000.000000
-wvZoom -win $_nWave2 14480562.927069 14490822.519355
-wvZoomOut -win $_nWave2
 wvSelectSignal -win $_nWave2 {( "G1" 14 )} 
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 14474913.897767 14506507.529573
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-srcHBSelect "tb_DandRiscvSimple.u_DandRiscvSimple.dCache_1" -win $_nTrace1
-srcSetScope -win $_nTrace1 "tb_DandRiscvSimple.u_DandRiscvSimple.dCache_1" -delim \
-           "."
-srcHBSelect "tb_DandRiscvSimple.u_DandRiscvSimple.dCache_1" -win $_nTrace1
 srcDeselectAll -win $_nTrace1
-srcSelect -win $_nTrace1 -range {5217 5228 4 1 1 1}
-wvSetPosition -win $_nWave2 {("G1" 5)}
-wvSetPosition -win $_nWave2 {("G1" 13)}
-wvSetPosition -win $_nWave2 {("G1" 15)}
-wvSetPosition -win $_nWave2 {("G1" 18)}
-wvSetPosition -win $_nWave2 {("G1" 21)}
-wvSetPosition -win $_nWave2 {("G1" 0)}
-wvSetPosition -win $_nWave2 {("G1" 38)}
-wvSetPosition -win $_nWave2 {("G1" 39)}
-wvSetPosition -win $_nWave2 {("G1" 40)}
-wvSetPosition -win $_nWave2 {("G1" 41)}
-wvSetPosition -win $_nWave2 {("G1" 42)}
-wvSetPosition -win $_nWave2 {("G1" 43)}
-wvSetPosition -win $_nWave2 {("G1" 44)}
-wvSetPosition -win $_nWave2 {("G1" 45)}
-wvSetPosition -win $_nWave2 {("G2" 0)}
-wvSetPosition -win $_nWave2 {("G1" 45)}
-wvSetPosition -win $_nWave2 {("G2" 0)}
-wvAddSignal -win $_nWave2 "/tb_DandRiscvSimple/u_DandRiscvSimple/dCache_1/stall" \
-           "/tb_DandRiscvSimple/u_DandRiscvSimple/dCache_1/flush" \
-           "/tb_DandRiscvSimple/u_DandRiscvSimple/dCache_1/cpu_cmd_valid" \
-           "/tb_DandRiscvSimple/u_DandRiscvSimple/dCache_1/cpu_cmd_ready" \
-           "/tb_DandRiscvSimple/u_DandRiscvSimple/dCache_1/cpu_cmd_payload_addr\[63:0\]" \
-           "/tb_DandRiscvSimple/u_DandRiscvSimple/dCache_1/cpu_cmd_payload_wen" \
-           "/tb_DandRiscvSimple/u_DandRiscvSimple/dCache_1/cpu_cmd_payload_wdata\[63:0\]" \
-           "/tb_DandRiscvSimple/u_DandRiscvSimple/dCache_1/cpu_cmd_payload_wstrb\[7:0\]" \
-           "/tb_DandRiscvSimple/u_DandRiscvSimple/dCache_1/cpu_cmd_payload_size\[2:0\]" \
-           "/tb_DandRiscvSimple/u_DandRiscvSimple/dCache_1/cpu_rsp_valid" \
-           "/tb_DandRiscvSimple/u_DandRiscvSimple/dCache_1/cpu_rsp_payload_data\[63:0\]"
-wvSetPosition -win $_nWave2 {("G2" 0)}
-wvSetPosition -win $_nWave2 {("G2" 11)}
-wvSetPosition -win $_nWave2 {("G2" 11)}
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvZoom -win $_nWave2 14473554.216154 14520845.459625
-wvSetCursor -win $_nWave2 14491041.668945 -snap {("G2" 11)}
-srcActiveTrace \
-           "tb_DandRiscvSimple.u_DandRiscvSimple.dCache_1.cpu_rsp_payload_data\[63:0\]" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 14491000 -TraceValue \
-           0000000000000000000000000000000010000000000000000100000110101000
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "is_hit" -line 11605 -pos 1 -win $_nTrace1
-srcSelect -signal "hit_data" -line 11605 -pos 1 -win $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvSetCursor -win $_nWave2 14491094.078893 -snap {("G2" 13)}
-srcActiveTrace "tb_DandRiscvSimple.u_DandRiscvSimple.dCache_1.hit_data\[63:0\]" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 14491000 -TraceValue \
-           0000000000000000000000000000000010000000000000000100000110101000
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "_zz_hit_data_1" -line 11602 -pos 1 -win $_nTrace1
-srcAction -pos 11601 7 6 -win $_nTrace1 -name "_zz_hit_data_1" -ctrlKey off
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "_zz_hit_data\[63 : 0\]" -line 9990 -pos 1 -win $_nTrace1
-srcAction -pos 9989 5 5 -win $_nTrace1 -name "_zz_hit_data\[63 : 0\]" -ctrlKey \
-          off
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "_zz__zz_hit_data" -line 11601 -pos 1 -win $_nTrace1
-srcAction -pos 11600 7 6 -win $_nTrace1 -name "_zz__zz_hit_data" -ctrlKey off
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "hit_id" -line 9967 -pos 1 -win $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-srcHBSelect "tb_DandRiscvSimple.u_DandRiscvSimple.dCache_1" -win $_nTrace1
-srcSetScope -win $_nTrace1 "tb_DandRiscvSimple.u_DandRiscvSimple.dCache_1" -delim \
-           "."
-srcHBSelect "tb_DandRiscvSimple.u_DandRiscvSimple.dCache_1" -win $_nTrace1
-srcDeselectAll -win $_nTrace1
-srcSelect -win $_nTrace1 -range {5228 5235 5 1 10 1}
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 14469562.325075 14513726.441623
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 13972964.814335 14178661.593590
-wvSelectSignal -win $_nWave2 {( "G2" 16 )} 
-wvSetSearchMode -win $_nWave2 -value 38
-wvSearchNext -win $_nWave2
-wvSearchPrev -win $_nWave2
-wvSearchPrev -win $_nWave2
-wvSearchPrev -win $_nWave2
-wvZoom -win $_nWave2 11456009.911975 11476222.451052
-wvZoom -win $_nWave2 11458421.677807 11464977.499496
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvSearchPrev -win $_nWave2
-wvZoom -win $_nWave2 11451475.687640 11462961.794273
-wvZoom -win $_nWave2 11452932.565126 11456437.516783
-wvZoom -win $_nWave2 11454709.201920 11455234.300376
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvSearchPrev -win $_nWave2
-wvSearchPrev -win $_nWave2
-wvSearchPrev -win $_nWave2
-wvSearchPrev -win $_nWave2
-wvSearchPrev -win $_nWave2
-wvZoom -win $_nWave2 11422106.765427 11425906.007196
-wvSetCursor -win $_nWave2 11423011.180510 -snap {("G2" 15)}
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 11414368.603875 11431521.063039
-wvSelectSignal -win $_nWave2 {( "G2" 18 )} 
-wvSetCursor -win $_nWave2 11416985.615103 -snap {("G2" 18)}
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvZoomOut -win $_nWave2
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvZoom -win $_nWave2 11408910.110535 11435664.250437
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvSelectSignal -win $_nWave2 {( "G1" 17 )} {( "G2" 18 )} 
-wvSelectSignal -win $_nWave2 {( "G2" 18 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 21 )} {( "G2" 18 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 21 22 )} {( "G2" 18 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 21 22 23 )} {( "G2" 18 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 23 )} 
-wvSetSearchMode -win $_nWave2 -value 800041a8
-wvSearchNext -win $_nWave2
-wvSearchPrev -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoom -win $_nWave2 11410289.922428 11436781.766841
-wvSelectSignal -win $_nWave2 {( "G1" 8 23 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 8 9 23 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 8 9 10 23 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 8 9 23 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 8 9 10 23 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 9 10 23 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 9 10 14 23 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 10 14 23 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 14 23 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 14 15 23 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 14 15 16 23 )} 
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollUp -win $_nWave2 16
-srcHBSelect "tb_DandRiscvSimple.u_axi_slave_mem_d" -win $_nTrace1
-srcSetScope -win $_nTrace1 "tb_DandRiscvSimple.u_axi_slave_mem_d" -delim "."
-srcHBSelect "tb_DandRiscvSimple.u_axi_slave_mem_d" -win $_nTrace1
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "axi_mem_rden" -line 76 -pos 1 -win $_nTrace1
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "axi_mem_rdaddr" -line 75 -pos 1 -win $_nTrace1
-srcSelect -signal "axi_mem_rden" -line 76 -pos 1 -win $_nTrace1
-srcSelect -signal "axi_mem_rdata" -line 80 -pos 1 -win $_nTrace1
-wvSetPosition -win $_nWave2 {("G1" 9)}
-wvSetPosition -win $_nWave2 {("G1" 10)}
-wvSetPosition -win $_nWave2 {("G1" 11)}
-wvSetPosition -win $_nWave2 {("G1" 12)}
-wvSetPosition -win $_nWave2 {("G1" 13)}
-wvSetPosition -win $_nWave2 {("G1" 14)}
-wvSetPosition -win $_nWave2 {("G1" 15)}
-wvSetPosition -win $_nWave2 {("G1" 16)}
-wvSetPosition -win $_nWave2 {("G1" 17)}
-wvSetPosition -win $_nWave2 {("G1" 18)}
-wvSetPosition -win $_nWave2 {("G1" 0)}
-wvSetPosition -win $_nWave2 {("G1" 28)}
-wvSetPosition -win $_nWave2 {("G1" 29)}
-wvSetPosition -win $_nWave2 {("G1" 30)}
-wvSetPosition -win $_nWave2 {("G1" 31)}
-wvSetPosition -win $_nWave2 {("G1" 32)}
-wvSetPosition -win $_nWave2 {("G1" 33)}
-wvSetPosition -win $_nWave2 {("G1" 34)}
-wvSetPosition -win $_nWave2 {("G1" 35)}
-wvSetPosition -win $_nWave2 {("G1" 36)}
-wvSetPosition -win $_nWave2 {("G1" 37)}
-wvSetPosition -win $_nWave2 {("G1" 38)}
-wvSetPosition -win $_nWave2 {("G1" 39)}
-wvSetPosition -win $_nWave2 {("G1" 40)}
-wvSetPosition -win $_nWave2 {("G1" 41)}
-wvSetPosition -win $_nWave2 {("G1" 42)}
-wvSetPosition -win $_nWave2 {("G1" 43)}
-wvSetPosition -win $_nWave2 {("G1" 44)}
-wvSetPosition -win $_nWave2 {("G1" 45)}
-wvAddSignal -win $_nWave2 \
-           "/tb_DandRiscvSimple/u_axi_slave_mem_d/axi_mem_rdaddr\[17:0\]" \
-           "/tb_DandRiscvSimple/u_axi_slave_mem_d/axi_mem_rden" \
-           "/tb_DandRiscvSimple/u_axi_slave_mem_d/axi_mem_rdata\[63:0\]"
-wvSetPosition -win $_nWave2 {("G1" 45)}
-wvSetPosition -win $_nWave2 {("G1" 48)}
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G1" 46 )} 
-wvSetSearchMode -win $_nWave2 -value 590
-wvSearchPrev -win $_nWave2
-wvSearchNext -win $_nWave2
-wvSearchPrev -win $_nWave2
-wvZoom -win $_nWave2 11164702.361963 12071806.860865
-wvZoom -win $_nWave2 11378773.941883 11496608.594927
-wvZoom -win $_nWave2 11408851.484621 11446520.615654
-wvSetMarker -win $_nWave2 11415000.000000
-wvSetCursor -win $_nWave2 11415037.346824 -snap {("G1" 46)}
-srcActiveTrace "tb_DandRiscvSimple.u_axi_slave_mem_d.axi_mem_rdaddr\[17:0\]" -win \
-           $_nTrace1 -TraceByDConWave -TraceTime 11415000 -TraceValue \
-           000001100111000000
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvSelectSignal -win $_nWave2 {( "G1" 21 )} 
-wvZoom -win $_nWave2 11220031.008479 11682612.158189
-wvZoom -win $_nWave2 11395118.621508 11517404.604712
-wvZoom -win $_nWave2 11432540.872663 11465552.950061
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoom -win $_nWave2 11391160.187405 11548360.555970
-wvZoom -win $_nWave2 11412296.371409 11461063.712637
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 12720483.193277 15638025.210084
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvScrollUp -win $_nWave2 8
-wvScrollDown -win $_nWave2 29
-wvZoom -win $_nWave2 0.000000 3987307.422969
-wvZoom -win $_nWave2 168930.041379 1213224.842633
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 128708.602956 718866.799463
-wvZoom -win $_nWave2 167763.189489 333693.522751
-wvSelectSignal -win $_nWave2 {( "G2" 6 )} 
-wvSelectSignal -win $_nWave2 {( "G2" 4 6 )} 
-wvSelectSignal -win $_nWave2 {( "G2" 4 )} 
-wvSelectSignal -win $_nWave2 {( "G2" 1 4 )} 
-wvZoom -win $_nWave2 183275.584090 239166.683739
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G2" 4 )} 
-wvSelectSignal -win $_nWave2 {( "G2" 4 6 )} 
-wvZoom -win $_nWave2 245795.592294 550143.765173
-wvSelectSignal -win $_nWave2 {( "G2" 6 )} 
-wvSelectSignal -win $_nWave2 {( "G2" 3 6 )} 
-wvZoom -win $_nWave2 294388.998048 454022.598528
-wvSelectSignal -win $_nWave2 {( "G2" 4 )} 
-wvSelectSignal -win $_nWave2 {( "G2" 1 4 )} 
-wvSelectSignal -win $_nWave2 {( "G2" 1 4 10 )} 
-wvSelectSignal -win $_nWave2 {( "G2" 1 3 4 10 )} 
-wvSelectSignal -win $_nWave2 {( "G2" 1 3 4 10 11 )} 
-wvSetCursor -win $_nWave2 363194.657078 -snap {("G2" 10)}
-wvZoom -win $_nWave2 352071.727633 403047.163081
-wvSetCursor -win $_nWave2 365101.163164 -snap {("G2" 4)}
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 301738.839691 351357.785960
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvScrollUp -win $_nWave2 2
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvZoom -win $_nWave2 354276.547505 400281.789004
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 355049.744841 387878.415070
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 298634.088859 431328.125668
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 286089.484539 445731.189887
-wvZoom -win $_nWave2 359761.672091 386592.210805
-wvZoomOut -win $_nWave2
-wvSetCursor -win $_nWave2 367032.973549 -snap {("G2" 5)}
-wvSetMarker -win $_nWave2 367000.000000
-wvZoom -win $_nWave2 360982.950114 388771.722353
-wvZoomOut -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G2" 2 )} 
-wvCut -win $_nWave2
-wvSetPosition -win $_nWave2 {("G1" 48)}
-wvSelectSignal -win $_nWave2 {( "G2" 1 )} 
-wvSetCursor -win $_nWave2 364913.854870 -snap {("G2" 1)}
-srcActiveTrace "tb_DandRiscvSimple.u_DandRiscvSimple.dCache_1.stall" -win \
-           $_nTrace1 -TraceByDConWave -TraceTime 311000 -TraceValue 1
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "is_miss" -line 11608 -pos 1 -win $_nTrace1
-srcSelect -signal "is_write" -line 11608 -pos 1 -win $_nTrace1
-srcDeselectAll -win $_nTrace1
-srcDeselectAll -win $_nTrace1
-srcSelect -win $_nTrace1 -range {11608 11609 9 1 1 1}
-wvSetPosition -win $_nWave2 {("G1" 27)}
-wvSetPosition -win $_nWave2 {("G1" 26)}
-wvSetPosition -win $_nWave2 {("G1" 29)}
-wvSetPosition -win $_nWave2 {("G1" 30)}
-wvSetPosition -win $_nWave2 {("G1" 31)}
-wvSetPosition -win $_nWave2 {("G1" 32)}
-wvSetPosition -win $_nWave2 {("G1" 33)}
-wvSetPosition -win $_nWave2 {("G1" 0)}
-wvSetPosition -win $_nWave2 {("G1" 43)}
-wvSetPosition -win $_nWave2 {("G1" 44)}
-wvSetPosition -win $_nWave2 {("G1" 45)}
-wvSetPosition -win $_nWave2 {("G1" 46)}
-wvSetPosition -win $_nWave2 {("G1" 47)}
-wvSetPosition -win $_nWave2 {("G1" 48)}
-wvSetPosition -win $_nWave2 {("G2" 0)}
-wvAddSignal -win $_nWave2 \
-           "/tb_DandRiscvSimple/u_DandRiscvSimple/dCache_1/is_miss" \
-           "/tb_DandRiscvSimple/u_DandRiscvSimple/dCache_1/is_write" \
-           "/tb_DandRiscvSimple/u_DandRiscvSimple/dCache_1/cpu_cmd_ready_1" \
-           "/tb_DandRiscvSimple/u_DandRiscvSimple/dCache_1/next_level_wdone"
-wvSetPosition -win $_nWave2 {("G2" 0)}
-wvSetPosition -win $_nWave2 {("G2" 4)}
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvSelectSignal -win $_nWave2 {( "G2" 1 2 3 4 5 )} 
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 293612.691365 451315.919816
-wvZoom -win $_nWave2 302392.387907 366997.702083
-wvSelectSignal -win $_nWave2 {( "G2" 5 )} 
-wvSelectSignal -win $_nWave2 {( "G2" 5 7 )} 
-wvSelectSignal -win $_nWave2 {( "G2" 5 6 7 )} 
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 295425.148143 422102.234763
-wvZoom -win $_nWave2 356856.438398 382848.305611
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G2" 5 6 7 8 )} 
-wvZoom -win $_nWave2 291512.738613 414628.277707
-wvZoom -win $_nWave2 357165.737927 380357.670711
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G2" 5 6 7 8 13 )} 
-wvSelectSignal -win $_nWave2 {( "G2" 5 6 7 8 13 14 )} 
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 298796.125582 421447.019412
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 368367.010738 443263.074757
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 529173.265839 629454.270324
-wvZoom -win $_nWave2 544025.809570 593218.277107
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 2555252.431364 2848478.120209
-wvZoom -win $_nWave2 2595807.104715 2700633.235076
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-srcHBSelect "tb_DandRiscvSimple.u_DandRiscvSimple" -win $_nTrace1
-srcSetScope -win $_nTrace1 "tb_DandRiscvSimple.u_DandRiscvSimple" -delim "."
-srcHBSelect "tb_DandRiscvSimple.u_DandRiscvSimple" -win $_nTrace1
-srcDeselectAll -win $_nTrace1
-srcSearchString "writeback" -win $_nTrace1 -next -case
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "writeback_RD" -line 251 -pos 1 -win $_nTrace1
-wvSetPosition -win $_nWave2 {("G1" 29)}
-wvSetPosition -win $_nWave2 {("G1" 28)}
-wvSetPosition -win $_nWave2 {("G1" 31)}
-wvSetPosition -win $_nWave2 {("G1" 32)}
-wvSetPosition -win $_nWave2 {("G1" 33)}
-wvSetPosition -win $_nWave2 {("G1" 34)}
-wvSetPosition -win $_nWave2 {("G1" 36)}
-wvSetPosition -win $_nWave2 {("G1" 0)}
-wvSetPosition -win $_nWave2 {("G1" 45)}
-wvSetPosition -win $_nWave2 {("G1" 46)}
-wvSetPosition -win $_nWave2 {("G1" 47)}
-wvSetPosition -win $_nWave2 {("G1" 48)}
-wvSetPosition -win $_nWave2 {("G2" 0)}
-wvAddSignal -win $_nWave2 \
-           "/tb_DandRiscvSimple/u_DandRiscvSimple/writeback_RD\[63:0\]"
-wvSetPosition -win $_nWave2 {("G2" 0)}
-wvSetPosition -win $_nWave2 {("G2" 1)}
-srcSearchString "writeback_arb" -win $_nTrace1 -next -case
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "writeback_arbitration_isFiring" -line 421 -pos 1 -win \
-          $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvZoom -win $_nWave2 2630015.071625 2640328.847057
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvSetMarker -win $_nWave2 2633000.000000
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvSetCursor -win $_nWave2 2632973.998886 -snap {("G2" 1)}
-srcActiveTrace "tb_DandRiscvSimple.u_DandRiscvSimple.writeback_RD\[63:0\]" -win \
-           $_nTrace1 -TraceByDConWave -TraceTime 2577000 -TraceValue \
-           0000000000000000000000000000000010000000000000000011101000011000
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "writeback_IS_LOAD" -line 1283 -pos 1 -win $_nTrace1
-srcSelect -signal "writeback_LSU_RDATA" -line 1283 -pos 1 -win $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSetCursor -win $_nWave2 2633075.114332 -snap {("G2" 4)}
-srcActiveTrace "tb_DandRiscvSimple.u_DandRiscvSimple.writeback_LSU_RDATA\[63:0\]" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 2633000 -TraceValue \
-           0000000000000000000000000000000000000111111111110010110111000000
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "memaccess_to_writeback_LSU_RDATA" -line 1343 -pos 1 -win \
-          $_nTrace1
-srcAction -pos 1342 7 5 -win $_nTrace1 -name "memaccess_to_writeback_LSU_RDATA" \
-          -ctrlKey off
-srcSelect -signal "when_Pipeline_l127_40" -line 3479 -pos 1 -win $_nTrace1
-srcSelect -signal "_zz_execute_MEM_WDATA" -line 3480 -pos 1 -win $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G2" 6 )} 
-wvSetCursor -win $_nWave2 2631038.360360 -snap {("G2" 6)}
-srcActiveTrace "tb_DandRiscvSimple.u_DandRiscvSimple.when_Pipeline_l127_40" -win \
-           $_nTrace1 -TraceByDConWave -TraceTime 2631000 -TraceValue 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvSelectSignal -win $_nWave2 {( "G2" 12 )} 
-wvSelectSignal -win $_nWave2 {( "G2" 13 )} 
-wvSelectSignal -win $_nWave2 {( "G2" 14 )} 
-wvSelectSignal -win $_nWave2 {( "G2" 20 )} 
-wvSelectSignal -win $_nWave2 {( "G2" 3 )} 
-wvSelectSignal -win $_nWave2 {( "G2" 4 )} 
-wvSelectSignal -win $_nWave2 {( "G2" 5 )} 
-wvSelectSignal -win $_nWave2 {( "G2" 4 )} 
-wvSelectSignal -win $_nWave2 {( "G2" 3 )} 
-wvSelectSignal -win $_nWave2 {( "G2" 2 )} 
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSetCursor -win $_nWave2 2632973.998886 -snap {("G2" 2)}
-srcActiveTrace \
-           "tb_DandRiscvSimple.u_DandRiscvSimple.writeback_arbitration_isFiring" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 2571000 -TraceValue 0
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "writeback_arbitration_isValid" -line 3121 -pos 1 -win \
-          $_nTrace1
-srcSelect -signal "writeback_arbitration_isStuck" -line 3121 -pos 1 -win \
-          $_nTrace1
-srcSelect -signal "writeback_arbitration_removeIt" -line 3121 -pos 1 -win \
-          $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 2545104.676830 2715787.548671
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvSelectSignal -win $_nWave2 {( "G2" 8 9 10 16 )} 
-wvSelectSignal -win $_nWave2 {( "G2" 8 9 10 16 17 )} 
-wvZoom -win $_nWave2 2570085.573338 2676583.079508
-wvSelectSignal -win $_nWave2 {( "G2" 8 9 10 15 16 17 )} 
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvSelectSignal -win $_nWave2 {( "G2" 8 9 10 15 16 17 23 )} 
-wvSelectSignal -win $_nWave2 {( "G2" 8 9 10 15 16 17 23 24 )} 
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvSetCursor -win $_nWave2 2576946.757208 -snap {("G2" 16)}
-wvZoom -win $_nWave2 2626354.738887 2650145.148178
-wvSelectSignal -win $_nWave2 {( "G2" 18 )} 
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G2" 17 )} 
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-srcDeselectAll -win $_nTrace1
-debReload
-srcDeselectAll -win $_nTrace1
-wvZoom -win $_nWave2 2623189.348295 2659308.120944
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G2" 23 )} 
-wvSelectSignal -win $_nWave2 {( "G2" 8 )} 
-wvSelectSignal -win $_nWave2 {( "G2" 9 )} 
-wvSelectSignal -win $_nWave2 {( "G2" 2 )} 
-wvZoom -win $_nWave2 2625845.140400 2654957.680540
-wvZoomOut -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G2" 2 15 )} 
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvSelectSignal -win $_nWave2 {( "G2" 2 8 15 )} 
-wvSelectSignal -win $_nWave2 {( "G2" 2 )} 
-wvSetCursor -win $_nWave2 2632899.019173 -snap {("G2" 2)}
-srcActiveTrace \
-           "tb_DandRiscvSimple.u_DandRiscvSimple.writeback_arbitration_isFiring" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 2571000 -TraceValue 0
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "writeback_arbitration_isValid" -line 3121 -pos 1 -win \
-          $_nTrace1
-srcSelect -signal "writeback_arbitration_isStuck" -line 3121 -pos 1 -win \
-          $_nTrace1
-srcSelect -signal "writeback_arbitration_removeIt" -line 3121 -pos 1 -win \
-          $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G2" 11 )} 
-wvSetCursor -win $_nWave2 2632899.019173 -snap {("G2" 11)}
-srcActiveTrace \
-           "tb_DandRiscvSimple.u_DandRiscvSimple.writeback_arbitration_isValid" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 2571000 -TraceValue 0
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "when_Pipeline_l163_3" -line 3348 -pos 1 -win $_nTrace1
-srcSelect -signal "memaccess_arbitration_isValid" -line 3349 -pos 1 -win \
-          $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "when_Pipeline_l163_3" -line 3348 -pos 1 -win $_nTrace1
-srcAction -pos 3347 3 11 -win $_nTrace1 -name "when_Pipeline_l163_3" -ctrlKey off
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "memaccess_arbitration_isStuck" -line 3128 -pos 1 -win \
-          $_nTrace1
-srcSelect -signal "memaccess_arbitration_removeIt" -line 3128 -pos 1 -win \
-          $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvScrollUp -win $_nWave2 3
-srcDeselectAll -win $_nTrace1
-srcBackwardHistory -win $_nTrace1
-srcHBSelect "tb_DandRiscvSimple.u_DandRiscvSimple" -win $_nTrace1
-srcHBSelect "tb_DandRiscvSimple.u_DandRiscvSimple" -win $_nTrace1
-srcSelect -signal "writeback_arbitration_isValid" -line 3349 -pos 1 -win \
-          $_nTrace1
-srcSelect -signal "memaccess_arbitration_isValid" -line 3349 -pos 1 -win \
-          $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvSetPosition -win $_nWave2 {("G2" 18)}
-wvSetPosition -win $_nWave2 {("G2" 17)}
-wvSetPosition -win $_nWave2 {("G2" 16)}
-wvSetPosition -win $_nWave2 {("G2" 15)}
-wvSetPosition -win $_nWave2 {("G2" 14)}
-wvSetPosition -win $_nWave2 {("G2" 13)}
-wvSetPosition -win $_nWave2 {("G2" 12)}
-wvSetPosition -win $_nWave2 {("G2" 11)}
-wvSetPosition -win $_nWave2 {("G2" 10)}
-wvSetPosition -win $_nWave2 {("G2" 9)}
-wvSetPosition -win $_nWave2 {("G2" 8)}
-wvSetPosition -win $_nWave2 {("G2" 7)}
-wvSetPosition -win $_nWave2 {("G2" 6)}
-wvSetPosition -win $_nWave2 {("G2" 5)}
-wvSetPosition -win $_nWave2 {("G2" 4)}
-wvSetPosition -win $_nWave2 {("G2" 3)}
-wvSetPosition -win $_nWave2 {("G2" 2)}
-wvSetPosition -win $_nWave2 {("G2" 1)}
-wvSetPosition -win $_nWave2 {("G2" 0)}
-wvMoveSelected -win $_nWave2
-wvSetPosition -win $_nWave2 {("G2" 0)}
-wvSetPosition -win $_nWave2 {("G2" 3)}
-wvScrollDown -win $_nWave2 2
-wvSelectSignal -win $_nWave2 {( "G2" 25 )} 
-wvSetPosition -win $_nWave2 {("G2" 25)}
-wvSetPosition -win $_nWave2 {("G2" 24)}
-wvSetPosition -win $_nWave2 {("G2" 23)}
-wvSetPosition -win $_nWave2 {("G2" 22)}
-wvSetPosition -win $_nWave2 {("G2" 21)}
-wvSetPosition -win $_nWave2 {("G2" 20)}
-wvSetPosition -win $_nWave2 {("G2" 19)}
-wvSetPosition -win $_nWave2 {("G2" 18)}
-wvSetPosition -win $_nWave2 {("G2" 17)}
-wvSetPosition -win $_nWave2 {("G2" 15)}
-wvSetPosition -win $_nWave2 {("G2" 14)}
-wvSetPosition -win $_nWave2 {("G2" 13)}
-wvSetPosition -win $_nWave2 {("G2" 12)}
-wvSetPosition -win $_nWave2 {("G2" 11)}
-wvSetPosition -win $_nWave2 {("G2" 10)}
-wvSetPosition -win $_nWave2 {("G2" 9)}
-wvSetPosition -win $_nWave2 {("G2" 8)}
-wvSetPosition -win $_nWave2 {("G2" 7)}
-wvSetPosition -win $_nWave2 {("G2" 6)}
-wvSetPosition -win $_nWave2 {("G2" 5)}
-wvSetPosition -win $_nWave2 {("G2" 4)}
-wvSetPosition -win $_nWave2 {("G2" 3)}
-wvSetPosition -win $_nWave2 {("G2" 2)}
-wvSetPosition -win $_nWave2 {("G2" 1)}
-wvSetPosition -win $_nWave2 {("G2" 0)}
-wvMoveSelected -win $_nWave2
-wvSetPosition -win $_nWave2 {("G2" 0)}
-wvSetPosition -win $_nWave2 {("G2" 1)}
-wvSelectSignal -win $_nWave2 {( "G2" 2 )} 
-wvSelectSignal -win $_nWave2 {( "G2" 3 )} 
-wvSelectSignal -win $_nWave2 {( "G2" 1 )} 
-wvSetMarker -win $_nWave2 2631000.000000
-wvSelectSignal -win $_nWave2 {( "G2" 2 )} 
-wvSelectSignal -win $_nWave2 {( "G2" 3 )} 
-wvSelectSignal -win $_nWave2 {( "G2" 2 )} 
-wvSelectSignal -win $_nWave2 {( "G2" 3 )} 
-wvSelectSignal -win $_nWave2 {( "G2" 4 )} 
-wvSelectSignal -win $_nWave2 {( "G2" 3 )} 
-wvSelectSignal -win $_nWave2 {( "G2" 4 )} 
-wvSelectSignal -win $_nWave2 {( "G2" 3 )} 
-wvSelectSignal -win $_nWave2 {( "G2" 4 )} 
-wvSelectSignal -win $_nWave2 {( "G2" 3 )} 
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "when_Pipeline_l163_3" -line 3348 -pos 1 -win $_nTrace1
-srcAction -pos 3347 3 7 -win $_nTrace1 -name "when_Pipeline_l163_3" -ctrlKey off
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "memaccess_arbitration_isStuck" -line 3128 -pos 1 -win \
-          $_nTrace1
-srcSelect -signal "memaccess_arbitration_removeIt" -line 3128 -pos 1 -win \
-          $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G2" 5 )} 
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoom -win $_nWave2 2627027.582506 2666496.684545
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvScrollUp -win $_nWave2 13
-wvSelectSignal -win $_nWave2 {( "G2" 1 )} 
-wvScrollDown -win $_nWave2 4
-wvSetPosition -win $_nWave2 {("G2" 1)}
-wvSetPosition -win $_nWave2 {("G2" 2)}
-wvSetPosition -win $_nWave2 {("G2" 3)}
-wvSetPosition -win $_nWave2 {("G2" 4)}
-wvSetPosition -win $_nWave2 {("G2" 5)}
-wvSetPosition -win $_nWave2 {("G2" 6)}
-wvSetPosition -win $_nWave2 {("G2" 7)}
-wvSetPosition -win $_nWave2 {("G2" 8)}
-wvSetPosition -win $_nWave2 {("G2" 9)}
-wvSetPosition -win $_nWave2 {("G2" 10)}
-wvSetPosition -win $_nWave2 {("G2" 11)}
-wvSetPosition -win $_nWave2 {("G2" 12)}
-wvSetPosition -win $_nWave2 {("G2" 13)}
-wvSetPosition -win $_nWave2 {("G2" 14)}
-wvSetPosition -win $_nWave2 {("G2" 15)}
-wvSetPosition -win $_nWave2 {("G2" 16)}
-wvSetPosition -win $_nWave2 {("G2" 17)}
-wvSetPosition -win $_nWave2 {("G2" 18)}
-wvSetPosition -win $_nWave2 {("G2" 19)}
-wvSetPosition -win $_nWave2 {("G2" 20)}
-wvSetPosition -win $_nWave2 {("G2" 21)}
-wvSetPosition -win $_nWave2 {("G2" 22)}
-wvSetPosition -win $_nWave2 {("G2" 23)}
-wvSetPosition -win $_nWave2 {("G2" 24)}
-wvSetPosition -win $_nWave2 {("G2" 25)}
-wvSetPosition -win $_nWave2 {("G2" 26)}
-wvSetPosition -win $_nWave2 {("G2" 27)}
-wvMoveSelected -win $_nWave2
-wvSetPosition -win $_nWave2 {("G2" 27)}
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvSelectSignal -win $_nWave2 {( "G2" 27 28 )} 
-wvSelectSignal -win $_nWave2 {( "G2" 27 28 29 )} 
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvSelectSignal -win $_nWave2 {( "G2" 27 28 29 35 )} 
-wvSelectSignal -win $_nWave2 {( "G2" 27 28 29 35 36 )} 
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSetCursor -win $_nWave2 2577110.776986 -snap {("G2" 28)}
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 2642560.940591 2722383.606338
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 2335008.904918 2810814.598783
-wvZoom -win $_nWave2 2384988.494609 2591737.397300
-wvZoom -win $_nWave2 2409456.677069 2549967.748541
-wvSelectSignal -win $_nWave2 {( "G2" 27 28 29 31 35 36 )} 
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 3019715.546305 3880887.043170
-wvZoom -win $_nWave2 3297425.262206 3600463.551543
-wvZoom -win $_nWave2 3309945.751750 3429208.719963
-wvSetCursor -win $_nWave2 3317712.877831 -snap {("G2" 28)}
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvSetCursor -win $_nWave2 3371741.715211 -snap {("G2" 29)}
-wvZoom -win $_nWave2 3347688.679606 3518732.488359
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 3353078.715595 3460879.435397
-wvSetCursor -win $_nWave2 3379009.771093 -snap {("G2" 30)}
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 3366893.513720 3479450.147632
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoom -win $_nWave2 3373948.008633 3461163.635679
-wvZoomOut -win $_nWave2
-wvSetCursor -win $_nWave2 3432763.589057 -snap {("G2" 27)}
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvScrollDown -win $_nWave2 0
-wvScrollUp -win $_nWave2 9
-wvSelectSignal -win $_nWave2 {( "G2" 17 )} 
-wvSelectAll -win $_nWave2
-wvCut -win $_nWave2
-wvSetPosition -win $_nWave2 {("G2" 0)}
-wvSelectGroup -win $_nWave2 {G3}
-wvCut -win $_nWave2
-wvSetPosition -win $_nWave2 {("G2" 0)}
-wvSelectGroup -win $_nWave2 {G2}
-wvCut -win $_nWave2
-wvSetPosition -win $_nWave2 {("G1" 0)}
-srcHBSelect "tb_DandRiscvSimple.u_DandRiscvSimple.dCache_1" -win $_nTrace1
-srcHBSelect "tb_DandRiscvSimple.u_DandRiscvSimple.dCache_1" -win $_nTrace1
-srcSetScope -win $_nTrace1 "tb_DandRiscvSimple.u_DandRiscvSimple.dCache_1" -delim \
-           "."
-srcHBSelect "tb_DandRiscvSimple.u_DandRiscvSimple.dCache_1" -win $_nTrace1
-srcDeselectAll -win $_nTrace1
-srcSelect -win $_nTrace1 -range {5217 5227 3 12 14 1}
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoom -win $_nWave2 3427572.182685 3473134.408019
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvSetMarker -win $_nWave2 3435000.000000
-srcHBSelect "tb_DandRiscvSimple.u_DandRiscvSimple" -win $_nTrace1
-srcSetScope -win $_nTrace1 "tb_DandRiscvSimple.u_DandRiscvSimple" -delim "."
-srcHBSelect "tb_DandRiscvSimple.u_DandRiscvSimple" -win $_nTrace1
-srcSearchString "writeback_arb" -win $_nTrace1 -next -case
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "memaccess_arbitration_isFiring" -line 410 -pos 1 -win \
-          $_nTrace1
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "writeback_arbitration_isValid" -line 416 -pos 1 -win $_nTrace1
-wvSetPosition -win $_nWave2 {("G1" 0)}
-wvSetPosition -win $_nWave2 {("G1" 3)}
-wvSetPosition -win $_nWave2 {("G1" 4)}
-wvSetPosition -win $_nWave2 {("G1" 5)}
-wvSetPosition -win $_nWave2 {("G1" 6)}
-wvSetPosition -win $_nWave2 {("G1" 9)}
-wvSetPosition -win $_nWave2 {("G1" 10)}
-wvSetPosition -win $_nWave2 {("G1" 11)}
-wvSetPosition -win $_nWave2 {("G2" 0)}
-wvAddSignal -win $_nWave2 \
-           "/tb_DandRiscvSimple/u_DandRiscvSimple/writeback_arbitration_isValid"
-wvSetPosition -win $_nWave2 {("G2" 0)}
-wvSetPosition -win $_nWave2 {("G2" 1)}
-wvSetPosition -win $_nWave2 {("G2" 1)}
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "writeback_arbitration_isFiring" -line 421 -pos 1 -win \
-          $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
 srcSearchString "writeback_PC" -win $_nTrace1 -next -case
-srcSearchString "writeback_PC" -win $_nTrace1 -next -case
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "writeback_PC" -line 1341 -pos 1 -win $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvZoom -win $_nWave2 3429486.561901 3468093.209418
-wvZoomOut -win $_nWave2
-srcSearchString "writeback_RD" -win $_nTrace1 -next -case
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "writeback_RD" -line 1388 -pos 1 -win $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "writeback_RD_ADDR" -line 1389 -pos 1 -win $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "writeback_RD_WEN" -line 1390 -pos 1 -win $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvZoom -win $_nWave2 3428675.497877 3458495.618473
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-srcSearchString "writeback_arb" -win $_nTrace1 -next -case
-srcSearchString "writeback_arb" -win $_nTrace1 -prev -case
-srcSelect -win $_nTrace1 -range {421 421 4 4 1 14}
-srcSearchString "writeback_arb" -win $_nTrace1 -prev -case
-srcSelect -win $_nTrace1 -range {420 420 4 4 1 14}
-srcSearchString "writeback_arb" -win $_nTrace1 -prev -case
-srcSelect -win $_nTrace1 -range {419 419 4 4 1 14}
-srcSearchString "writeback_arb" -win $_nTrace1 -prev -case
-srcSelect -win $_nTrace1 -range {418 418 4 4 1 14}
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "writeback_arbitration_isStuck" -line 417 -pos 1 -win $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvZoom -win $_nWave2 3425939.898578 3450560.292263
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 3364526.843740 3500732.102924
-wvSetCursor -win $_nWave2 3379024.882532 -snap {("G1" 5)}
-wvSelectSignal -win $_nWave2 {( "G1" 3 )} {( "G2" 7 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 3 4 )} {( "G2" 7 )} 
-wvSetCursor -win $_nWave2 3432867.927916 -snap {("G1" 1)}
-wvSelectSignal -win $_nWave2 {( "G1" 10 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 10 11 )} 
-wvZoom -win $_nWave2 3428337.290794 3454710.367940
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 3442779.690182 3488803.295398
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G2" 3 )} 
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 3365106.799027 3428921.041553
-wvZoom -win $_nWave2 3375452.035123 3389551.050191
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G2" 3 )} 
-wvSetSearchMode -win $_nWave2 -value 590
-wvSetSearchMode -win $_nWave2 -value 80003ac0
-wvSearchNext -win $_nWave2
-wvSearchPrev -win $_nWave2
-wvZoom -win $_nWave2 3368086.583273 3403590.825699
-wvSetMarker -win $_nWave2 3373000.000000
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 3301304.793948 3472660.003190
-wvSelectSignal -win $_nWave2 {( "G1" 4 )} 
-wvSetCursor -win $_nWave2 3316964.356137 -snap {("G1" 1)}
-wvSelectSignal -win $_nWave2 {( "G1" 3 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 3 4 )} 
-wvZoom -win $_nWave2 3360283.145028 3411461.714175
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 3364942.258465 3396265.836500
-wvSelectSignal -win $_nWave2 {( "G1" 3 4 10 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 3 4 10 )} {( "G2" 2 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 3 4 10 )} {( "G2" 2 4 )} 
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSetCursor -win $_nWave2 3370985.427757 -snap {("G2" 2)}
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G1" 3 4 10 11 )} {( "G2" 2 4 )} 
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G1" 3 4 10 11 )} {( "G2" 2 4 6 )} 
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G2" 3 )} 
-wvSearchNext -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G1" 1 )} 
-wvSetCursor -win $_nWave2 3370985.427757 -snap {("G1" 4)}
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 3328398.084090 3410436.026563
-wvZoom -win $_nWave2 3362523.110580 3393746.935324
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 3310527.133520 3436996.742987
-wvSetCursor -win $_nWave2 3317125.162865 -snap {("G1" 4)}
-srcSearchString "memaccess" -win $_nTrace1 -next -case
-srcSearchString "memaccess_arb" -win $_nTrace1 -next -case
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "memaccess_arbitration_isFiring" -line 1285 -pos 1 -win \
-          $_nTrace1
-wvSetPosition -win $_nWave2 {("G1" 0)}
-wvAddSignal -win $_nWave2 \
-           "/tb_DandRiscvSimple/u_DandRiscvSimple/memaccess_arbitration_isFiring"
-wvSetPosition -win $_nWave2 {("G1" 0)}
-wvSetPosition -win $_nWave2 {("G1" 1)}
-srcSearchString "memaccess_PC" -win $_nTrace1 -next -case
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "memaccess_PC" -line 1338 -pos 1 -win $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-srcSearchString "memaccess_arb" -win $_nTrace1 -next -case
-srcSearchString "memaccess_arb" -win $_nTrace1 -prev -case
-srcSelect -win $_nTrace1 -range {1285 1285 19 19 1 14}
-srcSearchString "memaccess_arb" -win $_nTrace1 -prev -case
-srcSelect -win $_nTrace1 -range {410 410 4 4 1 14}
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "memaccess_arbitration_isValid" -line 405 -pos 1 -win $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvSetPosition -win $_nWave2 {("G1" 2)}
-wvSetPosition -win $_nWave2 {("G1" 1)}
-wvSetPosition -win $_nWave2 {("G1" 0)}
-wvMoveSelected -win $_nWave2
-wvSetPosition -win $_nWave2 {("G1" 0)}
-wvSetPosition -win $_nWave2 {("G1" 1)}
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 3305301.848534 3421675.144640
-wvSelectSignal -win $_nWave2 {( "G2" 6 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 4 )} 
-wvSetCursor -win $_nWave2 3373104.777358 -snap {("G2" 6)}
-srcActiveTrace "tb_DandRiscvSimple.u_DandRiscvSimple.writeback_RD_WEN" -win \
-           $_nTrace1 -TraceByDConWave -TraceTime 3373000 -TraceValue 1
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "memaccess_to_writeback_RD_WEN" -line 1312 -pos 1 -win \
-          $_nTrace1
-srcAction -pos 1311 7 8 -win $_nTrace1 -name "memaccess_to_writeback_RD_WEN" \
-          -ctrlKey off
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "_zz_DecodePlugin_hazard_rs1_from_mem_3" -line 3432 -pos 1 -win \
-          $_nTrace1
-srcAction -pos 3431 5 5 -win $_nTrace1 -name \
-          "_zz_DecodePlugin_hazard_rs1_from_mem_3" -ctrlKey off
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "memaccess_RD_WEN" -line 1359 -pos 1 -win $_nTrace1
-wvSetPosition -win $_nWave2 {("G1" 0)}
-wvSetPosition -win $_nWave2 {("G1" 1)}
-wvSetPosition -win $_nWave2 {("G1" 2)}
-wvSetPosition -win $_nWave2 {("G1" 3)}
-wvAddSignal -win $_nWave2 \
-           "/tb_DandRiscvSimple/u_DandRiscvSimple/memaccess_RD_WEN"
-wvSetPosition -win $_nWave2 {("G1" 3)}
-wvSetPosition -win $_nWave2 {("G1" 4)}
-wvSelectSignal -win $_nWave2 {( "G1" 1 4 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 1 2 4 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 1 2 3 4 )} 
-wvSetPosition -win $_nWave2 {("G1" 1)}
-wvSetPosition -win $_nWave2 {("G1" 2)}
-wvSetPosition -win $_nWave2 {("G1" 3)}
-wvSetPosition -win $_nWave2 {("G1" 4)}
-wvSetPosition -win $_nWave2 {("G1" 5)}
 wvSetPosition -win $_nWave2 {("G1" 6)}
-wvSetPosition -win $_nWave2 {("G1" 7)}
 wvSetPosition -win $_nWave2 {("G1" 8)}
 wvSetPosition -win $_nWave2 {("G1" 9)}
+wvSetPosition -win $_nWave2 {("G1" 0)}
+wvSetPosition -win $_nWave2 {("G1" 24)}
+wvSetPosition -win $_nWave2 {("G1" 25)}
+wvSetPosition -win $_nWave2 {("G1" 26)}
+wvSetPosition -win $_nWave2 {("G1" 27)}
+wvSetPosition -win $_nWave2 {("G1" 28)}
+wvSetPosition -win $_nWave2 {("G1" 29)}
+wvSetPosition -win $_nWave2 {("G2" 0)}
+wvSetPosition -win $_nWave2 {("G1" 0)}
+wvSetPosition -win $_nWave2 {("G2" 0)}
+wvAddSignal -win $_nWave2 \
+           "/tb_DandSocSimple/u_DandSocSimple/core_cpu/writeback_PC\[63:0\]"
+wvSetPosition -win $_nWave2 {("G2" 0)}
+wvSetPosition -win $_nWave2 {("G2" 1)}
+wvSetPosition -win $_nWave2 {("G2" 1)}
+wvSelectSignal -win $_nWave2 {( "G2" 1 )} 
+srcDeselectAll -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "writeback_INSTRUCTION" -line 5358 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+srcSearchString "writeback_PC" -win $_nTrace1 -prev -case
+srcSelect -win $_nTrace1 -range {8427 8427 2 3 14 1}
+nsMsgSwitchTab -tab general
+srcSearchString "writeback_arb" -win $_nTrace1 -next -case
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "writeback_arbitration_isFiring" -line 5471 -pos 1 -win \
+          $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvZoom -win $_nWave2 243048.796094 422865.385074
+wvZoom -win $_nWave2 264301.051272 316537.902783
+srcHBSelect "tb_DandSocSimple" -win $_nTrace1
+srcSetScope -win $_nTrace1 "tb_DandSocSimple" -delim "."
+srcHBSelect "tb_DandSocSimple" -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "instrCnt" -line 48 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvZoomOut -win $_nWave2
+wvSelectSignal -win $_nWave2 {( "G2" 4 )} 
+wvSetRadix -win $_nWave2 -format UDec
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 584683.463163 801324.072672
+wvZoom -win $_nWave2 671387.565717 707919.745082
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomIn -win $_nWave2
+wvSetMarker -win $_nWave2 675000.000000
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomIn -win $_nWave2
+wvZoom -win $_nWave2 650794.068489 709762.063458
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 0
+wvZoom -win $_nWave2 674763.386031 686074.993313
+wvSetMarker -win $_nWave2 677000.000000
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvSelectSignal -win $_nWave2 {( "G1" 1 )} {( "G2" 4 )} 
+wvZoom -win $_nWave2 659373.717106 703087.498415
+wvZoomOut -win $_nWave2
+wvSelectSignal -win $_nWave2 {( "G1" 6 )} 
+wvSelectSignal -win $_nWave2 {( "G1" 9 )} 
+wvSelectSignal -win $_nWave2 {( "G1" 9 10 )} 
+wvZoom -win $_nWave2 669577.891388 698387.784077
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 0
+wvSetCursor -win $_nWave2 672866.207564 -snap {("G1" 10)}
+srcActiveTrace \
+           "tb_DandSocSimple.u_DandSocSimple.core_cpu.dcache_r_payload_data\[63:0\]" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 557000 -TraceValue \
+           0000000000000000100000000110011100000000000000000000000000000000
+wvScrollUp -win $_nWave2 2
+wvSelectGroup -win $_nWave2 {G1}
+wvSetPosition -win $_nWave2 {("G1" 0)}
+wvSetPosition -win $_nWave2 {("G2" 0)}
+wvSetPosition -win $_nWave2 {("G2" 1)}
+wvSetPosition -win $_nWave2 {("G2" 2)}
+wvSetPosition -win $_nWave2 {("G2" 3)}
+wvSetPosition -win $_nWave2 {("G2" 4)}
+wvSetPosition -win $_nWave2 {("G3" 0)}
+wvMoveSelected -win $_nWave2
+wvSetPosition -win $_nWave2 {("G1" 29)}
+wvSetPosition -win $_nWave2 {("G1" 29)}
+wvSelectGroup -win $_nWave2 {G1}
+wvSelectGroup -win $_nWave2 {G3}
+wvCut -win $_nWave2
+wvSetPosition -win $_nWave2 {("G4" 0)}
+wvSetPosition -win $_nWave2 {("G1" 29)}
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvZoom -win $_nWave2 672738.917905 707658.714198
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 655896.159016 709278.704748
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 660888.488403 721425.395934
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomIn -win $_nWave2
+wvZoomIn -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomIn -win $_nWave2
+wvZoomIn -win $_nWave2
+wvZoomIn -win $_nWave2
+wvZoomOut -win $_nWave2
+wvSelectSignal -win $_nWave2 {( "G1" 14 )} 
+wvSelectSignal -win $_nWave2 {( "G1" 13 )} 
+wvSelectSignal -win $_nWave2 {( "G1" 14 )} 
+wvSelectSignal -win $_nWave2 {( "G1" 15 )} 
+wvSelectSignal -win $_nWave2 {( "G1" 8 )} 
+wvSetCursor -win $_nWave2 673058.279092 -snap {("G1" 8)}
+srcActiveTrace "tb_DandSocSimple.u_DandSocSimple.core_cpu.dcache_r_valid" -win \
+           $_nTrace1 -TraceByDConWave -TraceTime 559000 -TraceValue 0
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_outputs_1_r_valid" -line 3717 -pos 1 -win $_nTrace1
+srcAction -pos 3716 8 8 -win $_nTrace1 -name "io_outputs_1_r_valid" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcBackwardHistory -win $_nTrace1
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi4ReadOnlyArbiter_1" -win \
+           $_nTrace1
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.core_cpu_dcache_decoder" -win \
+           $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "errorSlave_io_axi_r_valid" -line 3718 -pos 1 -win $_nTrace1
+wvSetPosition -win $_nWave2 {("G2" 0)}
+wvSetPosition -win $_nWave2 {("G2" 2)}
+wvSetPosition -win $_nWave2 {("G1" 2)}
+wvSetPosition -win $_nWave2 {("G1" 4)}
+wvSetPosition -win $_nWave2 {("G1" 7)}
 wvSetPosition -win $_nWave2 {("G1" 10)}
 wvSetPosition -win $_nWave2 {("G1" 11)}
 wvSetPosition -win $_nWave2 {("G1" 12)}
-wvSetPosition -win $_nWave2 {("G1" 13)}
-wvSetPosition -win $_nWave2 {("G1" 14)}
-wvSetPosition -win $_nWave2 {("G1" 15)}
-wvMoveSelected -win $_nWave2
-wvSetPosition -win $_nWave2 {("G1" 15)}
-wvSelectSignal -win $_nWave2 {( "G1" 13 )} 
-wvSetCursor -win $_nWave2 3317444.440355 -snap {("G1" 4)}
-wvSelectSignal -win $_nWave2 {( "G1" 3 )} 
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvSetCursor -win $_nWave2 3248908.066387 -snap {("G1" 3)}
-srcActiveTrace "tb_DandRiscvSimple.u_DandRiscvSimple.dCache_1.cpu_cmd_valid" -win \
-           $_nTrace1 -TraceByDConWave -TraceTime 3247000 -TraceValue 1
-wvZoom -win $_nWave2 3231468.370752 3458999.353055
-wvZoom -win $_nWave2 3356387.341428 3402514.946033
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvSetCursor -win $_nWave2 3316655.581158 -snap {("G1" 4)}
-wvSetMarker -win $_nWave2 3317000.000000
-wvSelectSignal -win $_nWave2 {( "G1" 13 )} 
-wvZoom -win $_nWave2 3311422.617610 3400512.206897
-wvSelectSignal -win $_nWave2 {( "G1" 12 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 10 )} 
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 3294515.559699 3434451.098053
-wvSelectSignal -win $_nWave2 {( "G1" 13 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 4 )} 
-wvSetCursor -win $_nWave2 3316858.208679 -snap {("G1" 13)}
-srcActiveTrace \
-           "tb_DandRiscvSimple.u_DandRiscvSimple.memaccess_arbitration_isFiring" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 3315000 -TraceValue 1
-wvSelectSignal -win $_nWave2 {( "G1" 1 )} 
-wvSetCursor -win $_nWave2 3371342.914089 -snap {("G1" 2)}
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 3066822.554868 3894676.496059
-wvZoom -win $_nWave2 3263350.906452 3462488.041466
-wvSetCursor -win $_nWave2 3371635.209910 -snap {("G1" 4)}
-wvZoom -win $_nWave2 3364453.443486 3393947.493945
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoom -win $_nWave2 3283530.691597 3459338.364920
-wvSelectSignal -win $_nWave2 {( "G1" 14 )} 
-debExit
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 14603574.218750 22523789.062500
-wvZoom -win $_nWave2 16283526.039124 17678845.138550
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvSelectSignal -win $_nWave2 {( "G3" 20 )} 
-wvZoom -win $_nWave2 16305872.946572 16408341.692936
-wvSetSearchMode -win $_nWave2 -value 800041a8
-wvSearchPrev -win $_nWave2
-wvSearchNext -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 16906720.900497 16993018.797826
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 16908608.666998 16953308.281005
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 16902078.332760 16932914.082110
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 16888491.330698 17001523.624409
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvZoom -win $_nWave2 16872242.938476 16966730.871500
-wvZoom -win $_nWave2 16903062.244749 16921295.463075
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G3" 20 )} 
-wvSearchPrev -win $_nWave2
-wvSearchNext -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G3" 13 )} 
-wvZoom -win $_nWave2 16284956.143503 16645062.205437
-wvZoom -win $_nWave2 16326734.073342 16376811.322579
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G3" 13 )} 
-wvSetSearchMode -win $_nWave2 -value 8000ce00
-wvSearchPrev -win $_nWave2
-wvSearchPrev -win $_nWave2
-wvZoom -win $_nWave2 12970339.646132 13012357.588070
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 12966728.729244 12994467.136227
-wvZoomOut -win $_nWave2
-wvSetMarker -win $_nWave2 12973000.000000
-wvZoom -win $_nWave2 12969177.510483 12987705.899522
-wvZoomOut -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G3" 18 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 18 19 )} 
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvZoom -win $_nWave2 12970422.386618 12988096.732725
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollUp -win $_nWave2 2
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 32
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvZoom -win $_nWave2 12963904.971488 13011625.705977
-wvSelectSignal -win $_nWave2 {( "G4" 1 )} 
-wvSelectSignal -win $_nWave2 {( "G4" 2 )} 
-wvSelectSignal -win $_nWave2 {( "G4" 3 )} 
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvSelectSignal -win $_nWave2 {( "G4" 21 )} 
-wvSelectSignal -win $_nWave2 {( "G4" 21 22 )} 
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 0
-wvSelectSignal -win $_nWave2 {( "G4" 21 22 23 )} 
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvSetCursor -win $_nWave2 12975089.518626 -snap {("G4" 21)}
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G4" 22 )} 
-wvSetCursor -win $_nWave2 12972945.813756 -snap {("G4" 22)}
-srcActiveTrace "tb_DandRiscvYsyx3rd.u_ysyx_210238.io_master_arvalid" -win \
-           $_nTrace1 -TraceByDConWave -TraceTime 12801000 -TraceValue 0
-wvScrollUp -win $_nWave2 10
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvSetCursor -win $_nWave2 12973039.018316 -snap {("G4" 22)}
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 30
-wvSelectSignal -win $_nWave2 {( "G2" 1 )} {( "G4" 22 )} 
-wvSelectSignal -win $_nWave2 {( "G4" 22 )} 
-wvSelectSignal -win $_nWave2 {( "G2" 1 )} {( "G4" 22 )} 
-wvSelectSignal -win $_nWave2 {( "G4" 22 )} 
-wvSelectSignal -win $_nWave2 {( "G2" 1 )} {( "G4" 22 )} 
-wvSelectSignal -win $_nWave2 {( "G4" 22 )} 
-wvSelectSignal -win $_nWave2 {( "G2" 1 )} {( "G4" 22 )} 
-wvSelectSignal -win $_nWave2 {( "G4" 22 )} 
-wvSelectSignal -win $_nWave2 {( "G2" 1 )} {( "G4" 22 )} 
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvSetCursor -win $_nWave2 12974977.673154 -snap {("G4" 3)}
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollUp -win $_nWave2 33
-wvSelectSignal -win $_nWave2 {( "G3" 11 )} 
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 10
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollDown -win $_nWave2 44
-wvScrollDown -win $_nWave2 7
-wvSelectSignal -win $_nWave2 {( "G4" 5 )} 
-wvSelectSignal -win $_nWave2 {( "G4" 7 )} 
-wvSelectSignal -win $_nWave2 {( "G4" 6 7 )} 
-wvScrollDown -win $_nWave2 4
-wvScrollDown -win $_nWave2 2
-wvSelectSignal -win $_nWave2 {( "G4" 25 )} 
-wvSelectSignal -win $_nWave2 {( "G4" 23 )} 
-wvSelectSignal -win $_nWave2 {( "G4" 22 23 )} 
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSetCursor -win $_nWave2 12976953.704906 -snap {("G4" 29)}
-wvSetMarker -win $_nWave2 12975000.000000
-wvZoom -win $_nWave2 12968173.771415 12992817.236542
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G4" 29 )} 
-wvSelectSignal -win $_nWave2 {( "G4" 30 )} 
-wvSelectSignal -win $_nWave2 {( "G4" 29 )} 
-wvSelectSignal -win $_nWave2 {( "G4" 30 )} 
-wvSelectSignal -win $_nWave2 {( "G4" 29 )} 
-wvSelectSignal -win $_nWave2 {( "G4" 30 )} 
-wvSelectSignal -win $_nWave2 {( "G4" 31 )} 
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSetCursor -win $_nWave2 12979006.487406 -snap {("G4" 31)}
-srcActiveTrace "tb_DandRiscvYsyx3rd.u_ysyx_210238.io_master_rdata\[63:0\]" -win \
-           $_nTrace1 -TraceByDConWave -TraceTime 12803000 -TraceValue \
-           0000000000001000000010101001001100000000000001111000110010010011
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 12769084.064384 12943332.734503
-wvZoom -win $_nWave2 12797091.965600 12832050.732816
-wvSetCursor -win $_nWave2 12803039.194272 -snap {("G4" 31)}
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 12947789.271673 13026101.285210
-wvZoom -win $_nWave2 12969197.209668 12992289.606308
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "axi_mem_rdata" -line 114 -pos 1 -win $_nTrace1
-srcAction -pos 113 7 6 -win $_nTrace1 -name "axi_mem_rdata" -ctrlKey off
-srcHBSelect "tb_DandRiscvYsyx3rd.u_axi_slave_mem" -win $_nTrace1
-srcSetScope -win $_nTrace1 "tb_DandRiscvYsyx3rd.u_axi_slave_mem" -delim "."
-srcHBSelect "tb_DandRiscvYsyx3rd.u_axi_slave_mem" -win $_nTrace1
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "axi_mem_rdaddr" -line 75 -pos 1 -win $_nTrace1
-srcSelect -signal "axi_mem_rden" -line 76 -pos 1 -win $_nTrace1
-srcSelect -signal "axi_mem_rdata" -line 80 -pos 1 -win $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvSetPosition -win $_nWave2 {("G3" 51)}
-wvSetPosition -win $_nWave2 {("G3" 52)}
-wvSetPosition -win $_nWave2 {("G3" 53)}
+wvSetPosition -win $_nWave2 {("G1" 29)}
+wvSetPosition -win $_nWave2 {("G1" 28)}
+wvSetPosition -win $_nWave2 {("G1" 29)}
+wvSetPosition -win $_nWave2 {("G4" 0)}
+wvAddSignal -win $_nWave2 \
+           "/tb_DandSocSimple/u_DandSocSimple/core_cpu_dcache_decoder/errorSlave_io_axi_r_valid"
 wvSetPosition -win $_nWave2 {("G4" 0)}
 wvSetPosition -win $_nWave2 {("G4" 1)}
-wvSetPosition -win $_nWave2 {("G4" 2)}
+wvSetPosition -win $_nWave2 {("G4" 1)}
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_outputs_1_r_valid" -line 3717 -pos 1 -win $_nTrace1
+srcSelect -signal "io_outputs_0_r_valid" -line 3717 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvSetCursor -win $_nWave2 673236.591044 -snap {("G4" 2)}
+srcActiveTrace \
+           "tb_DandSocSimple.u_DandSocSimple.core_cpu_dcache_decoder.io_outputs_1_r_valid" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 673000 -TraceValue 1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_output_r_valid" -line 2947 -pos 1 -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_output_r_valid" -line 2947 -pos 1 -win $_nTrace1
+srcAction -pos 2946 8 10 -win $_nTrace1 -name "io_output_r_valid" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "readOnly_io_input_r_valid" -line 5014 -pos 1 -win $_nTrace1
+srcAction -pos 5013 7 14 -win $_nTrace1 -name "readOnly_io_input_r_valid" \
+          -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "dataOut_valid" -line 10296 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvSetCursor -win $_nWave2 673236.591044 -snap {("G4" 4)}
+srcActiveTrace \
+           "tb_DandSocSimple.u_DandSocSimple.axi_downsizer.readOnly.dataOut_valid" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 673000 -TraceValue 1
+srcDeselectAll -win $_nTrace1
+srcBackwardHistory -win $_nTrace1
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_downsizer.readOnly" -win \
+           $_nTrace1
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_downsizer.readOnly" -win \
+           $_nTrace1
+srcBackwardHistory -win $_nTrace1
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_downsizer.readOnly" -win \
+           $_nTrace1
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_downsizer" -win $_nTrace1
+srcBackwardHistory -win $_nTrace1
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_downsizer" -win $_nTrace1
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi4ReadOnlyArbiter_1" -win \
+           $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "readRspSels_1" -line 2947 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "readRspSels_1" -line 2947 -pos 1 -win $_nTrace1
+srcAction -pos 2946 12 3 -win $_nTrace1 -name "readRspSels_1" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+wvSelectSignal -win $_nWave2 {( "G1" 10 )} 
+wvSetPosition -win $_nWave2 {("G1" 10)}
+wvExpandBus -win $_nWave2 {("G1" 10)}
+wvSetPosition -win $_nWave2 {("G4" 5)}
+wvScrollUp -win $_nWave2 34
+wvSelectSignal -win $_nWave2 {( "G1" 10 )} 
+wvSetPosition -win $_nWave2 {("G1" 10)}
+wvCollapseBus -win $_nWave2 {("G1" 10)}
+wvSetPosition -win $_nWave2 {("G1" 10)}
+wvSetPosition -win $_nWave2 {("G4" 5)}
+wvSetCursor -win $_nWave2 673102.857080 -snap {("G1" 10)}
+srcActiveTrace \
+           "tb_DandSocSimple.u_DandSocSimple.core_cpu.dcache_r_payload_data\[63:0\]" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 673000 -TraceValue \
+           0000000000000000000000000000000000000000000000000000000000000000
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "_zz_io_input_r_payload_data" -line 3723 -pos 1 -win $_nTrace1
+srcSelect -signal "io_outputs_0_r_payload_data" -line 3723 -pos 1 -win $_nTrace1
+srcSelect -signal "io_outputs_1_r_payload_data" -line 3723 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvSelectSignal -win $_nWave2 {( "G4" 8 )} 
+wvSetCursor -win $_nWave2 672790.811165 -snap {("G4" 8)}
+srcActiveTrace \
+           "tb_DandSocSimple.u_DandSocSimple.core_cpu_dcache_decoder.io_outputs_1_r_payload_data\[63:0\]" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 557000 -TraceValue \
+           0000000000000000100000000110011100000000000000000000000000000000
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_output_r_payload_data" -line 2948 -pos 1 -win $_nTrace1
+srcAction -pos 2947 7 5 -win $_nTrace1 -name "io_output_r_payload_data" -ctrlKey \
+          off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "readOnly_io_input_r_payload_data" -line 5015 -pos 1 -win \
+          $_nTrace1
+srcAction -pos 5014 7 13 -win $_nTrace1 -name "readOnly_io_input_r_payload_data" \
+          -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "dataOut_payload_data" -line 10298 -pos 1 -win $_nTrace1
+srcAction -pos 10297 7 8 -win $_nTrace1 -name "dataOut_payload_data" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "dataReg_aheadValue" -line 10292 -pos 1 -win $_nTrace1
+srcAction -pos 10291 7 4 -win $_nTrace1 -name "dataReg_aheadValue" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "dataReg" -line 10190 -pos 1 -win $_nTrace1
+srcAction -pos 10189 5 3 -win $_nTrace1 -name "dataReg" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "dataReg_aheadValue" -line 10322 -pos 1 -win $_nTrace1
+srcAction -pos 10321 5 4 -win $_nTrace1 -name "dataReg_aheadValue" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "dataReg" -line 10190 -pos 1 -win $_nTrace1
+srcAction -pos 10189 5 1 -win $_nTrace1 -name "dataReg" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "dataReg_aheadValue" -line 10322 -pos 1 -win $_nTrace1
+srcAction -pos 10321 5 9 -win $_nTrace1 -name "dataReg_aheadValue" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_output_r_payload_data" -line 10192 -pos 1 -win $_nTrace1
+srcAction -pos 10191 5 5 -win $_nTrace1 -name "io_output_r_payload_data" -ctrlKey \
+          off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal \
+          "toplevel_axi_downsizer_io_output_readOnly_decoder_io_input_r_payload_data" \
+          -line 1487 -pos 1 -win $_nTrace1
+srcAction -pos 1486 7 5 -win $_nTrace1 -name \
+          "toplevel_axi_downsizer_io_output_readOnly_decoder_io_input_r_payload_data" \
+          -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_input_r_payload_data" -line 2755 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "_zz_io_input_r_payload_data" -line 2755 -pos 1 -win $_nTrace1
+srcSelect -signal "io_outputs_0_r_payload_data" -line 2755 -pos 1 -win $_nTrace1
+srcSelect -signal "io_outputs_1_r_payload_data" -line 2755 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvSetCursor -win $_nWave2 673192.013056 -snap {("G4" 12)}
+srcActiveTrace \
+           "tb_DandSocSimple.u_DandSocSimple.toplevel_axi_downsizer_io_output_readOnly_decoder.io_outputs_1_r_payload_data\[31:0\]" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 673000 -TraceValue \
+           00000000000000000000000000000000
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_output_r_payload_data" -line 1968 -pos 1 -win $_nTrace1
+srcAction -pos 1967 7 5 -win $_nTrace1 -name "io_output_r_payload_data" -ctrlKey \
+          off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "readedData" -line 3983 -pos 1 -win $_nTrace1
+srcAction -pos 3982 7 4 -win $_nTrace1 -name "readedData" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_apb_PRDATA" -line 4026 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_apbBridge" -win $_nTrace1
+srcSetScope -win $_nTrace1 "tb_DandSocSimple.u_DandSocSimple.axi_apbBridge" \
+           -delim "."
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_apbBridge" -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_apb_PADDR" -line 3835 -pos 1 -win $_nTrace1
+srcSelect -signal "io_apb_PSEL" -line 3836 -pos 1 -win $_nTrace1
+srcSelect -signal "io_apb_PENABLE" -line 3837 -pos 1 -win $_nTrace1
+srcSelect -signal "io_apb_PREADY" -line 3838 -pos 1 -win $_nTrace1
+srcSelect -signal "io_apb_PWRITE" -line 3839 -pos 1 -win $_nTrace1
+srcSelect -signal "io_apb_PWDATA" -line 3840 -pos 1 -win $_nTrace1
+srcSelect -signal "io_apb_PRDATA" -line 3841 -pos 1 -win $_nTrace1
+srcSelect -signal "io_apb_PSLVERROR" -line 3842 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvZoomIn -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomIn -win $_nWave2
+wvZoomOut -win $_nWave2
+wvSelectSignal -win $_nWave2 {( "G4" 17 )} 
+wvSelectSignal -win $_nWave2 {( "G4" 18 )} 
+wvSelectSignal -win $_nWave2 {( "G4" 19 )} 
+srcDeselectAll -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_apb_PRDATA" -line 3841 -pos 1 -win $_nTrace1
+srcAction -pos 3840 9 8 -win $_nTrace1 -name "io_apb_PRDATA" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_output_PRDATA" -line 1688 -pos 1 -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_output_PRDATA" -line 1688 -pos 1 -win $_nTrace1
+srcAction -pos 1687 7 5 -win $_nTrace1 -name "io_output_PRDATA" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_outputs_0_PRDATA" -line 1650 -pos 1 -win $_nTrace1
+srcAction -pos 1649 7 7 -win $_nTrace1 -name "io_outputs_0_PRDATA" -ctrlKey off
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl" -win $_nTrace1
+srcSetScope -win $_nTrace1 "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl" -delim \
+           "."
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl" -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_apb_PADDR" -line 3767 -pos 1 -win $_nTrace1
+srcSelect -signal "io_apb_PSEL" -line 3768 -pos 1 -win $_nTrace1
+srcSelect -signal "io_apb_PENABLE" -line 3769 -pos 1 -win $_nTrace1
+srcSelect -signal "io_apb_PREADY" -line 3770 -pos 1 -win $_nTrace1
+srcSelect -signal "io_apb_PWRITE" -line 3771 -pos 1 -win $_nTrace1
+srcSelect -signal "io_apb_PWDATA" -line 3772 -pos 1 -win $_nTrace1
+srcSelect -signal "io_apb_PRDATA" -line 3773 -pos 1 -win $_nTrace1
+srcSelect -signal "io_apb_PSLVERROR" -line 3774 -pos 1 -win $_nTrace1
+srcSelect -signal "io_uart_txd" -line 3775 -pos 1 -win $_nTrace1
+srcSelect -signal "io_uart_rxd" -line 3776 -pos 1 -win $_nTrace1
+srcSelect -signal "io_resetn" -line 3778 -pos 1 -win $_nTrace1
+srcSelect -signal "io_clock" -line 3777 -pos 1 -win $_nTrace1
+wvSetPosition -win $_nWave2 {("G1" 12)}
+wvSetPosition -win $_nWave2 {("G1" 29)}
+wvSetPosition -win $_nWave2 {("G4" 1)}
 wvSetPosition -win $_nWave2 {("G4" 3)}
 wvSetPosition -win $_nWave2 {("G4" 4)}
 wvSetPosition -win $_nWave2 {("G4" 5)}
@@ -2166,771 +426,3743 @@ wvSetPosition -win $_nWave2 {("G4" 18)}
 wvSetPosition -win $_nWave2 {("G4" 19)}
 wvSetPosition -win $_nWave2 {("G4" 20)}
 wvSetPosition -win $_nWave2 {("G4" 21)}
+wvSetPosition -win $_nWave2 {("G5" 0)}
+wvSetPosition -win $_nWave2 {("G1" 29)}
+wvSetPosition -win $_nWave2 {("G5" 0)}
+wvAddSignal -win $_nWave2 \
+           "/tb_DandSocSimple/u_DandSocSimple/axi_uartCtrl/io_apb_PADDR\[15:0\]" \
+           "/tb_DandSocSimple/u_DandSocSimple/axi_uartCtrl/io_apb_PSEL\[0:0\]" \
+           "/tb_DandSocSimple/u_DandSocSimple/axi_uartCtrl/io_apb_PENABLE" \
+           "/tb_DandSocSimple/u_DandSocSimple/axi_uartCtrl/io_apb_PREADY" \
+           "/tb_DandSocSimple/u_DandSocSimple/axi_uartCtrl/io_apb_PWRITE" \
+           "/tb_DandSocSimple/u_DandSocSimple/axi_uartCtrl/io_apb_PWDATA\[31:0\]" \
+           "/tb_DandSocSimple/u_DandSocSimple/axi_uartCtrl/io_apb_PRDATA\[31:0\]" \
+           "/tb_DandSocSimple/u_DandSocSimple/axi_uartCtrl/io_apb_PSLVERROR" \
+           "/tb_DandSocSimple/u_DandSocSimple/axi_uartCtrl/io_uart_txd" \
+           "/tb_DandSocSimple/u_DandSocSimple/axi_uartCtrl/io_uart_rxd" \
+           "/tb_DandSocSimple/u_DandSocSimple/axi_uartCtrl/io_resetn" \
+           "/tb_DandSocSimple/u_DandSocSimple/axi_uartCtrl/io_clock"
+wvSetPosition -win $_nWave2 {("G5" 0)}
+wvSetPosition -win $_nWave2 {("G5" 12)}
+wvSetPosition -win $_nWave2 {("G5" 12)}
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvSelectSignal -win $_nWave2 {( "G5" 11 )} 
+wvSelectSignal -win $_nWave2 {( "G5" 11 )} 
+wvSelectSignal -win $_nWave2 {( "G5" 10 )} 
+wvZoomOut -win $_nWave2
+wvZoomIn -win $_nWave2
+wvZoom -win $_nWave2 662002.938100 710459.210918
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomIn -win $_nWave2
+wvSelectSignal -win $_nWave2 {( "G5" 2 )} 
+wvSelectSignal -win $_nWave2 {( "G5" 1 )} 
+wvSelectSignal -win $_nWave2 {( "G5" 2 )} 
+wvSelectSignal -win $_nWave2 {( "G5" 6 )} 
+wvSelectSignal -win $_nWave2 {( "G5" 7 )} 
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_apb_PRDATA" -line 3773 -pos 1 -win $_nTrace1
+srcAction -pos 3772 9 8 -win $_nTrace1 -name "io_apb_PRDATA" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "uartCtrl_in_prdata" -line 3807 -pos 1 -win $_nTrace1
+srcAction -pos 3806 7 3 -win $_nTrace1 -name "uartCtrl_in_prdata" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "in_psel" -line 45 -pos 1 -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "in_prdata" -line 45 -pos 1 -win $_nTrace1
+srcSelect -signal "in_psel" -line 45 -pos 1 -win $_nTrace1
+srcSelect -signal "reg_dat8_r" -line 45 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvSetCursor -win $_nWave2 669210.719476 -snap {("G5" 14)}
+wvSetCursor -win $_nWave2 669032.309046 -snap {("G5" 15)}
+srcActiveTrace \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.reg_dat8_r\[7:0\]" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 581000 -TraceValue \
+           xxxxxxxx
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "lsr" -line 417 -pos 1 -win $_nTrace1
+srcAction -pos 416 13 1 -win $_nTrace1 -name "lsr" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "lsr7r" -line 342 -pos 1 -win $_nTrace1
+srcSelect -signal "lsr6r" -line 342 -pos 1 -win $_nTrace1
+srcSelect -signal "lsr5r" -line 342 -pos 1 -win $_nTrace1
+srcSelect -signal "lsr4r" -line 342 -pos 1 -win $_nTrace1
+srcSelect -signal "lsr3r" -line 342 -pos 1 -win $_nTrace1
+srcSelect -signal "lsr2r" -line 342 -pos 1 -win $_nTrace1
+srcSelect -signal "lsr1r" -line 342 -pos 1 -win $_nTrace1
+srcSelect -signal "lsr0r" -line 342 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "lsr7r" -line 342 -pos 1 -win $_nTrace1
+srcAction -pos 341 8 2 -win $_nTrace1 -name "lsr7r" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "wb_rst_i" -line 692 -pos 1 -win $_nTrace1
+srcAction -pos 691 12 1 -win $_nTrace1 -name "wb_rst_i" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "resetn" -line 83 -pos 1 -win $_nTrace1
+srcAction -pos 82 6 2 -win $_nTrace1 -name "resetn" -ctrlKey off
+srcBackwardHistory -win $_nTrace1
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple" -win $_nTrace1
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl" -win \
+           $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "resetn" -line 83 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 356249.946844 1790384.348241
+wvZoom -win $_nWave2 592280.166809 844151.341134
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 575705.541314 890266.301001
+wvZoom -win $_nWave2 658630.984589 712949.466288
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "resetn" -line 83 -pos 1 -win $_nTrace1
+srcAction -pos 82 6 2 -win $_nTrace1 -name "resetn" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "resetCtrl_axiReset" -line 1353 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 634862.254432 819817.084605
+srcDeselectAll -win $_nTrace1
+srcBackwardHistory -win $_nTrace1
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple" -win $_nTrace1
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl" -win \
+           $_nTrace1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvSelectSignal -win $_nWave2 {( "G5" 24 )} 
+wvSelectSignal -win $_nWave2 {( "G5" 24 25 )} 
+wvCut -win $_nWave2
+wvSetPosition -win $_nWave2 {("G5" 23)}
+srcDeselectAll -win $_nTrace1
+srcBackwardHistory -win $_nTrace1
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl" -win \
+           $_nTrace1
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs" -win \
+           $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "wb_rst_i" -line 692 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "lsr_mask" -line 694 -pos 1 -win $_nTrace1
+srcSelect -signal "lsr7r" -line 694 -pos 2 -win $_nTrace1
+srcSelect -signal "lsr7" -line 694 -pos 1 -win $_nTrace1
+srcSelect -signal "lsr7_d" -line 694 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvZoom -win $_nWave2 658969.032739 723798.560841
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "lsr7_d" -line 694 -pos 1 -win $_nTrace1
+srcAction -pos 693 25 4 -win $_nTrace1 -name "lsr7_d" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "lsr7" -line 690 -pos 1 -win $_nTrace1
+srcAction -pos 689 7 1 -win $_nTrace1 -name "lsr7" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "rf_error_bit" -line 605 -pos 1 -win $_nTrace1
+srcSelect -signal "rf_overrun" -line 605 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvSelectSignal -win $_nWave2 {( "G5" 29 )} 
+wvSelectSignal -win $_nWave2 {( "G5" 29 30 )} 
+wvCut -win $_nWave2
+wvSetPosition -win $_nWave2 {("G5" 28)}
+wvSelectSignal -win $_nWave2 {( "G5" 1 )} 
+wvSelectSignal -win $_nWave2 {( "G5" 2 )} 
+wvSelectSignal -win $_nWave2 {( "G5" 1 2 )} 
+wvSelectSignal -win $_nWave2 {( "G5" 1 2 3 )} 
+wvSelectSignal -win $_nWave2 {( "G5" 1 2 3 5 )} 
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 479613.703521 705514.533401
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 340681.074812 905599.497693
+wvZoom -win $_nWave2 382072.373101 539317.707305
+wvZoom -win $_nWave2 417562.575555 439505.131396
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 381934.198804 467636.198936
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 338769.025558 881506.287070
+wvZoom -win $_nWave2 367744.321184 710851.787316
+wvSetCursor -win $_nWave2 603725.450320 -snap {("G5" 4)}
+wvSetCursor -win $_nWave2 395410.203026 -snap {("G5" 3)}
+wvSetCursor -win $_nWave2 423455.069550 -snap {("G5" 4)}
+wvZoom -win $_nWave2 645034.780742 703777.406571
+wvSetCursor -win $_nWave2 702566.218410 -snap {("G5" 2)}
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 743962.899498 814903.920382
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 657402.316580 742656.916051
+wvSelectSignal -win $_nWave2 {( "G5" 16 )} 
+srcDeselectAll -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -win $_nTrace1 -range {622 625 1 1 1 1} -backward
+srcDeselectAll -win $_nTrace1
+wvSelectSignal -win $_nWave2 {( "G5" 15 )} 
+wvSetCursor -win $_nWave2 668922.360028 -snap {("G5" 15)}
+srcActiveTrace \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.reg_dat8_r\[7:0\]" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 581000 -TraceValue \
+           xxxxxxxx
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 327458.019765 731255.945979
+wvZoom -win $_nWave2 382764.657671 448627.132381
+wvSetCursor -win $_nWave2 395180.558647 -snap {("G5" 4)}
+wvSelectSignal -win $_nWave2 {( "G5" 1 )} 
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 349973.208769 752713.996687
+wvSetCursor -win $_nWave2 393568.861069 -snap {("G5" 2)}
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 361814.257187 519588.998845
+wvSelectSignal -win $_nWave2 {( "G5" 5 )} 
+wvSetCursor -win $_nWave2 394751.767688 -snap {("G5" 4)}
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 382005.412793 441955.167356
+wvSelectSignal -win $_nWave2 {( "G5" 1 )} 
+wvZoomOut -win $_nWave2
+wvZoomIn -win $_nWave2
+wvSetMarker -win $_nWave2 423000.000000
+wvSelectSignal -win $_nWave2 {( "G5" 15 )} 
+wvZoomOut -win $_nWave2
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 0
+wvZoomIn -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 400855.593352 499476.912713
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 432518.991909 470064.810841
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 346814.987249 547649.176293
+wvZoom -win $_nWave2 382234.566244 483243.219497
+wvZoomOut -win $_nWave2
+wvZoomIn -win $_nWave2
+wvSelectSignal -win $_nWave2 {( "G4" 19 )} 
+wvSelectSignal -win $_nWave2 {( "G5" 6 )} 
+wvSelectSignal -win $_nWave2 {( "G5" 1 )} 
+wvZoomOut -win $_nWave2
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvSelectSignal -win $_nWave2 {( "G4" 14 )} 
+wvZoom -win $_nWave2 369292.367669 505482.974521
+wvZoomOut -win $_nWave2
+wvZoomIn -win $_nWave2
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvSelectSignal -win $_nWave2 {( "G5" 1 )} 
+wvSetCursor -win $_nWave2 420739.923865 -snap {("G5" 1)}
+srcActiveTrace \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.io_apb_PADDR\[15:0\]" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 401000 -TraceValue \
+           0000000000001000
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "apb3Router_1_io_outputs_0_PADDR\[15:0\]" -line 1528 -pos 1 \
+          -win $_nTrace1
+srcAction -pos 1527 7 19 -win $_nTrace1 -name \
+          "apb3Router_1_io_outputs_0_PADDR\[15:0\]" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_input_PADDR" -line 1644 -pos 1 -win $_nTrace1
+srcAction -pos 1643 7 6 -win $_nTrace1 -name "io_input_PADDR" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_input_PADDR" -line 1676 -pos 1 -win $_nTrace1
+srcAction -pos 1675 7 8 -win $_nTrace1 -name "io_input_PADDR" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_axi_arw_payload_addr" -line 3976 -pos 1 -win $_nTrace1
+srcAction -pos 3975 7 11 -win $_nTrace1 -name "io_axi_arw_payload_addr" -ctrlKey \
+          off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "cmdOutputFork_payload_addr" -line 1919 -pos 1 -win $_nTrace1
+srcAction -pos 1918 7 10 -win $_nTrace1 -name "cmdOutputFork_payload_addr" \
+          -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "cmdArbiter_io_output_payload_addr" -line 1902 -pos 1 -win \
+          $_nTrace1
+srcAction -pos 1901 7 1 -win $_nTrace1 -name "cmdArbiter_io_output_payload_addr" \
+          -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_inputs_0_payload_addr" -line 8626 -pos 1 -win $_nTrace1
+srcAction -pos 8625 12 11 -win $_nTrace1 -name "io_inputs_0_payload_addr" \
+          -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_readInputs_0_ar_payload_addr" -line 1873 -pos 1 -win \
+          $_nTrace1
+srcAction -pos 1872 7 7 -win $_nTrace1 -name "io_readInputs_0_ar_payload_addr" \
+          -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal \
+          "toplevel_toplevel_axi_downsizer_io_output_readOnly_decoder_io_outputs_1_ar_validPipe_payload_addr\[19:0\]" \
+          -line 1526 -pos 1 -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal \
+          "toplevel_toplevel_axi_downsizer_io_output_readOnly_decoder_io_outputs_1_ar_validPipe_payload_addr\[19:0\]" \
+          -line 1526 -pos 1 -win $_nTrace1
+srcAction -pos 1525 7 79 -win $_nTrace1 -name \
+          "toplevel_toplevel_axi_downsizer_io_output_readOnly_decoder_io_outputs_1_ar_validPipe_payload_addr\[19:0\]" \
+          -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal \
+          "toplevel_axi_downsizer_io_output_readOnly_decoder_io_outputs_1_ar_payload_addr" \
+          -line 1474 -pos 1 -win $_nTrace1
+srcAction -pos 1473 7 8 -win $_nTrace1 -name \
+          "toplevel_axi_downsizer_io_output_readOnly_decoder_io_outputs_1_ar_payload_addr" \
+          -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_input_ar_payload_addr" -line 2735 -pos 1 -win $_nTrace1
+srcAction -pos 2734 7 10 -win $_nTrace1 -name "io_input_ar_payload_addr" -ctrlKey \
+          off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "axi_downsizer_io_output_ar_payload_addr" -line 1357 -pos 1 \
+          -win $_nTrace1
+srcAction -pos 1356 7 16 -win $_nTrace1 -name \
+          "axi_downsizer_io_output_ar_payload_addr" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "readOnly_io_output_ar_payload_addr" -line 5025 -pos 1 -win \
+          $_nTrace1
+srcAction -pos 5024 7 9 -win $_nTrace1 -name "readOnly_io_output_ar_payload_addr" \
+          -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "cmdStream_payload_addr" -line 10233 -pos 1 -win $_nTrace1
+srcAction -pos 10232 7 8 -win $_nTrace1 -name "cmdStream_payload_addr" -ctrlKey \
+          off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "generator_io_output_payload_addr" -line 10221 -pos 1 -win \
+          $_nTrace1
+srcAction -pos 10220 7 7 -win $_nTrace1 -name "generator_io_output_payload_addr" \
+          -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "cmdStream_payload_addr" -line 65482 -pos 1 -win $_nTrace1
+srcAction -pos 65481 7 7 -win $_nTrace1 -name "cmdStream_payload_addr" -ctrlKey \
+          off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "address" -line 65448 -pos 1 -win $_nTrace1
+srcAction -pos 65447 7 1 -win $_nTrace1 -name "address" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "cmdStreamWithSize_payload_addr" -line 65502 -pos 1 -win \
+          $_nTrace1
+srcAction -pos 65501 5 20 -win $_nTrace1 -name "cmdStreamWithSize_payload_addr" \
+          -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "startAddress" -line 65421 -pos 1 -win $_nTrace1
+srcAction -pos 65420 7 3 -win $_nTrace1 -name "startAddress" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvSelectSignal -win $_nWave2 {( "G5" 6 )} 
+wvSetCursor -win $_nWave2 442201.477523 -snap {("G5" 3)}
+wvZoom -win $_nWave2 435632.637501 469931.008299
+wvSetCursor -win $_nWave2 460977.567616 -snap {("G5" 7)}
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvSetCursor -win $_nWave2 443739.984354 -snap {("G5" 3)}
+wvSetCursor -win $_nWave2 439395.860807 -snap {("G5" 1)}
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 18
+wvScrollUp -win $_nWave2 7
+wvSelectSignal -win $_nWave2 {( "G1" 21 )} 
+wvSelectSignal -win $_nWave2 {( "G1" 21 22 )} 
+wvSelectSignal -win $_nWave2 {( "G1" 21 22 24 )} 
+srcDeselectAll -win $_nTrace1
+wvZoom -win $_nWave2 431717.875002 463238.027253
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvSetCursor -win $_nWave2 437149.182533 -snap {("G1" 22)}
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvSetCursor -win $_nWave2 439098.882672 -snap {("G1" 22)}
+wvSetCursor -win $_nWave2 437369.684334 -snap {("G1" 22)}
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvSelectSignal -win $_nWave2 {( "G1" 16 )} 
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvSelectSignal -win $_nWave2 {( "G1" 14 )} 
+wvSelectSignal -win $_nWave2 {( "G1" 15 )} 
+wvSelectSignal -win $_nWave2 {( "G1" 16 )} 
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvSetCursor -win $_nWave2 437009.918237 -snap {("G1" 16)}
+srcActiveTrace \
+           "tb_DandSocSimple.u_DandSocSimple.core_cpu.dcache_aw_payload_addr\[63:0\]" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 435000 -TraceValue \
+           0000000000000000000000000000000000010000000000000000000000000011
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvSelectSignal -win $_nWave2 {( "G1" 14 )} 
+wvSelectSignal -win $_nWave2 {( "G1" 15 )} 
+wvSelectSignal -win $_nWave2 {( "G1" 16 )} 
+wvSelectSignal -win $_nWave2 {( "G1" 14 )} 
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomIn -win $_nWave2
+wvZoom -win $_nWave2 432367.775049 454719.694502
+wvZoom -win $_nWave2 434235.921483 445214.367930
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomIn -win $_nWave2
+wvZoomIn -win $_nWave2
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvSelectSignal -win $_nWave2 {( "G1" 16 )} 
+wvSetCursor -win $_nWave2 435044.349056 -snap {("G1" 16)}
+srcActiveTrace \
+           "tb_DandSocSimple.u_DandSocSimple.core_cpu.dcache_aw_payload_addr\[63:0\]" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 435000 -TraceValue \
+           0000000000000000000000000000000000010000000000000000000000000011
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "when_DCachePlugin_l233" -line 8359 -pos 1 -win $_nTrace1
+srcAction -pos 8358 6 16 -win $_nTrace1 -name "when_DCachePlugin_l233" -ctrlKey \
+          off
+srcDeselectAll -win $_nTrace1
+srcBackwardHistory -win $_nTrace1
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.core_cpu" -win $_nTrace1
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.core_cpu" -win $_nTrace1
+wvSelectSignal -win $_nWave2 {( "G1" 21 )} 
+wvSelectSignal -win $_nWave2 {( "G1" 21 23 )} 
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomIn -win $_nWave2
+wvZoomIn -win $_nWave2
+wvZoomOut -win $_nWave2
+wvSetCursor -win $_nWave2 437033.080887 -snap {("G1" 16)}
+srcActiveTrace \
+           "tb_DandSocSimple.u_DandSocSimple.core_cpu.dcache_aw_payload_addr\[63:0\]" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 437000 -TraceValue \
+           0000000000000000000000000000000000010000000000000000000000000000
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "when_DCachePlugin_l233" -line 8359 -pos 1 -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "dcache_aw_payload_addr" -line 8359 -pos 1 -win $_nTrace1
+srcSelect -signal "when_DCachePlugin_l233" -line 8359 -pos 1 -win $_nTrace1
+srcSelect -signal "_zz_dcache_aw_payload_addr" -line 8359 -pos 1 -win $_nTrace1
+srcSelect -signal "_zz_dcache_aw_payload_addr_1" -line 8359 -pos 1 -win $_nTrace1
+wvSetPosition -win $_nWave2 {("G1" 11)}
+wvSetPosition -win $_nWave2 {("G1" 12)}
+wvSetPosition -win $_nWave2 {("G1" 13)}
+wvSetPosition -win $_nWave2 {("G1" 14)}
+wvSetPosition -win $_nWave2 {("G1" 15)}
+wvSetPosition -win $_nWave2 {("G1" 16)}
+wvSetPosition -win $_nWave2 {("G1" 17)}
+wvSetPosition -win $_nWave2 {("G1" 18)}
+wvSetPosition -win $_nWave2 {("G1" 19)}
+wvSetPosition -win $_nWave2 {("G1" 20)}
+wvSetPosition -win $_nWave2 {("G1" 21)}
+wvSetPosition -win $_nWave2 {("G1" 22)}
+wvSetPosition -win $_nWave2 {("G1" 23)}
+wvSetPosition -win $_nWave2 {("G1" 24)}
+wvSetPosition -win $_nWave2 {("G1" 25)}
+wvSetPosition -win $_nWave2 {("G1" 26)}
+wvSetPosition -win $_nWave2 {("G1" 27)}
+wvSetPosition -win $_nWave2 {("G1" 28)}
+wvSetPosition -win $_nWave2 {("G1" 29)}
+wvAddSignal -win $_nWave2 \
+           "/tb_DandSocSimple/u_DandSocSimple/core_cpu/dcache_aw_payload_addr\[63:0\]" \
+           "/tb_DandSocSimple/u_DandSocSimple/core_cpu/when_DCachePlugin_l233" \
+           "/tb_DandSocSimple/u_DandSocSimple/core_cpu/_zz_dcache_aw_payload_addr\[63:0\]" \
+           "/tb_DandSocSimple/u_DandSocSimple/core_cpu/_zz_dcache_aw_payload_addr_1\[63:0\]"
+wvSetPosition -win $_nWave2 {("G1" 29)}
+wvSetPosition -win $_nWave2 {("G1" 33)}
+wvSetCursor -win $_nWave2 435262.624501 -snap {("G1" 30)}
+wvSetCursor -win $_nWave2 437243.272056 -snap {("G1" 30)}
+wvSetCursor -win $_nWave2 437016.912335 -snap {("G1" 30)}
+srcActiveTrace \
+           "tb_DandSocSimple.u_DandSocSimple.core_cpu.dcache_aw_payload_addr\[63:0\]" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 437000 -TraceValue \
+           0000000000000000000000000000000000010000000000000000000000000000
+wvSelectSignal -win $_nWave2 {( "G1" 31 )} 
+wvSetCursor -win $_nWave2 433023.280123 -snap {("G1" 31)}
+srcActiveTrace "tb_DandSocSimple.u_DandSocSimple.core_cpu.when_DCachePlugin_l233" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 433000 -TraceValue 1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "dCache_1_cpu_bypass_cmd_valid" -line 8076 -pos 1 -win \
+          $_nTrace1
+srcAction -pos 8075 8 10 -win $_nTrace1 -name "dCache_1_cpu_bypass_cmd_valid" \
+          -ctrlKey off
+srcBackwardHistory -win $_nTrace1
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.core_cpu.dCache_1" -win $_nTrace1
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.core_cpu" -win $_nTrace1
+wvSelectSignal -win $_nWave2 {( "G1" 32 )} 
+wvSelectSignal -win $_nWave2 {( "G1" 31 )} 
+wvSelectSignal -win $_nWave2 {( "G1" 30 )} 
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvSelectSignal -win $_nWave2 {( "G1" 32 )} 
+wvSelectSignal -win $_nWave2 {( "G1" 31 )} 
+wvSelectSignal -win $_nWave2 {( "G1" 30 )} 
+wvSetCursor -win $_nWave2 435003.927678 -snap {("G1" 30)}
+srcActiveTrace \
+           "tb_DandSocSimple.u_DandSocSimple.core_cpu.dcache_aw_payload_addr\[63:0\]" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 433000 -TraceValue \
+           0000000000000000000000000000000000000000000000000000000010000000
+wvSelectSignal -win $_nWave2 {( "G1" 21 )} 
+wvSelectSignal -win $_nWave2 {( "G1" 22 )} 
+wvSelectSignal -win $_nWave2 {( "G1" 23 )} 
+wvSetCursor -win $_nWave2 435117.107538 -snap {("G1" 23)}
+srcActiveTrace "tb_DandSocSimple.u_DandSocSimple.core_cpu.dcache_w_ready" -win \
+           $_nTrace1 -TraceByDConWave -TraceTime 391000 -TraceValue 0
+wvSelectSignal -win $_nWave2 {( "G1" 24 )} 
+wvSelectSignal -win $_nWave2 {( "G1" 23 )} 
+wvSetCursor -win $_nWave2 435044.349056 -snap {("G1" 23)}
+wvSetCursor -win $_nWave2 435044.349056 -snap {("G1" 23)}
+srcActiveTrace \
+           "tb_DandSocSimple.u_DandSocSimple.core_cpu.dcache_w_payload_data\[63:0\]" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 435000 -TraceValue \
+           1111111111111111111111111111111110000011000000000000000000000000
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "when_DCachePlugin_l233" -line 8367 -pos 1 -win $_nTrace1
+srcAction -pos 8366 6 9 -win $_nTrace1 -name "when_DCachePlugin_l233" -ctrlKey \
+          off
+srcDeselectAll -win $_nTrace1
+debReload
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 342067.093833 512160.255288
+wvZoom -win $_nWave2 413711.636066 471202.623627
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvSelectSignal -win $_nWave2 {( "G1" 29 )} 
+wvSelectSignal -win $_nWave2 {( "G1" 28 )} 
+wvSelectSignal -win $_nWave2 {( "G1" 31 )} 
+wvCut -win $_nWave2
+wvSetPosition -win $_nWave2 {("G4" 2)}
+wvSetPosition -win $_nWave2 {("G4" 1)}
+wvSelectSignal -win $_nWave2 {( "G1" 30 )} 
+wvZoom -win $_nWave2 346271.913544 519760.917244
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvZoom -win $_nWave2 377571.476067 493954.747327
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 365573.200680 500468.096823
+wvSetCursor -win $_nWave2 443102.999236 -snap {("G5" 4)}
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvSelectSignal -win $_nWave2 {( "G1" 16 )} 
+wvSetCursor -win $_nWave2 435106.652300 -snap {("G1" 16)}
+wvZoom -win $_nWave2 425222.968820 491826.082122
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomIn -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomIn -win $_nWave2
+wvSetMarker -win $_nWave2 437000.000000
+wvZoom -win $_nWave2 424830.608800 475788.366327
+wvSetCursor -win $_nWave2 457157.639808 -snap {("G1" 17)}
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 361432.342043 631005.633699
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvSelectSignal -win $_nWave2 {( "G4" 1 )} 
+wvSelectGroup -win $_nWave2 {G4}
+wvSetPosition -win $_nWave2 {("G4" 0)}
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvSelectSignal -win $_nWave2 {( "G1" 30 )} 
+wvSelectGroup -win $_nWave2 {G4}
+wvSelectSignal -win $_nWave2 {( "G1" 30 )} 
+wvSetCursor -win $_nWave2 438850.297673 -snap {("G5" 1)}
+srcActiveTrace \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.io_apb_PADDR\[15:0\]" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 425000 -TraceValue \
+           0000000000001000
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "apb3Router_1_io_outputs_0_PADDR\[15:0\]" -line 1528 -pos 1 \
+          -win $_nTrace1
+srcAction -pos 1527 7 17 -win $_nTrace1 -name \
+          "apb3Router_1_io_outputs_0_PADDR\[15:0\]" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_input_PADDR" -line 1644 -pos 1 -win $_nTrace1
+srcAction -pos 1643 7 6 -win $_nTrace1 -name "io_input_PADDR" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_input_PADDR" -line 1676 -pos 1 -win $_nTrace1
+srcAction -pos 1675 7 9 -win $_nTrace1 -name "io_input_PADDR" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_axi_arw_payload_addr" -line 3976 -pos 1 -win $_nTrace1
+srcAction -pos 3975 7 7 -win $_nTrace1 -name "io_axi_arw_payload_addr" -ctrlKey \
+          off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "cmdOutputFork_payload_addr" -line 1919 -pos 1 -win $_nTrace1
+srcAction -pos 1918 7 5 -win $_nTrace1 -name "cmdOutputFork_payload_addr" \
+          -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "cmdArbiter_io_output_payload_addr" -line 1902 -pos 1 -win \
+          $_nTrace1
+srcAction -pos 1901 7 6 -win $_nTrace1 -name "cmdArbiter_io_output_payload_addr" \
+          -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "maskRouted_0" -line 8628 -pos 1 -win $_nTrace1
+srcSelect -signal "io_inputs_0_payload_addr" -line 8628 -pos 1 -win $_nTrace1
+srcSelect -signal "io_inputs_1_payload_addr" -line 8628 -pos 1 -win $_nTrace1
+wvSetPosition -win $_nWave2 {("G1" 21)}
+wvSetPosition -win $_nWave2 {("G1" 22)}
+wvSetPosition -win $_nWave2 {("G1" 23)}
+wvSetPosition -win $_nWave2 {("G1" 24)}
+wvSetPosition -win $_nWave2 {("G1" 25)}
+wvSetPosition -win $_nWave2 {("G1" 26)}
+wvSetPosition -win $_nWave2 {("G1" 27)}
+wvSetPosition -win $_nWave2 {("G1" 28)}
+wvSetPosition -win $_nWave2 {("G1" 29)}
+wvSetPosition -win $_nWave2 {("G1" 30)}
+wvSetPosition -win $_nWave2 {("G4" 0)}
+wvAddSignal -win $_nWave2 \
+           "/tb_DandSocSimple/u_DandSocSimple/axi_apbBridge_io_axi_arbiter/cmdArbiter/maskRouted_0" \
+           "/tb_DandSocSimple/u_DandSocSimple/axi_apbBridge_io_axi_arbiter/cmdArbiter/io_inputs_0_payload_addr\[19:0\]" \
+           "/tb_DandSocSimple/u_DandSocSimple/axi_apbBridge_io_axi_arbiter/cmdArbiter/io_inputs_1_payload_addr\[19:0\]"
+wvSetPosition -win $_nWave2 {("G4" 0)}
+wvSetPosition -win $_nWave2 {("G4" 3)}
+wvScrollDown -win $_nWave2 10
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_apbBridge" -win $_nTrace1
+srcSetScope -win $_nTrace1 "tb_DandSocSimple.u_DandSocSimple.axi_apbBridge" \
+           -delim "."
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_apbBridge" -win $_nTrace1
+wvSelectGroup -win $_nWave2 {G4}
+wvSelectGroup -win $_nWave2 {G4}
+wvSetPosition -win $_nWave2 {("G4" 0)}
+wvCut -win $_nWave2
+wvSetPosition -win $_nWave2 {("G5" 0)}
+wvSetPosition -win $_nWave2 {("G1" 30)}
+wvScrollDown -win $_nWave2 2
+wvScrollUp -win $_nWave2 4
+wvScrollDown -win $_nWave2 4
+srcDeselectAll -win $_nTrace1
+srcSelect -win $_nTrace1 -range {3812 3816 4 1 1 1}
+srcDeselectAll -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_axi_arw_payload_addr" -line 3814 -pos 1 -win $_nTrace1
+srcAction -pos 3813 9 5 -win $_nTrace1 -name "io_axi_arw_payload_addr" -ctrlKey \
+          off
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_apbBridge" -win $_nTrace1
+srcSetScope -win $_nTrace1 "tb_DandSocSimple.u_DandSocSimple.axi_apbBridge" \
+           -delim "."
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_apbBridge" -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_axi_arw_payload_addr" -line 3814 -pos 1 -win $_nTrace1
+srcAction -pos 3813 9 12 -win $_nTrace1 -name "io_axi_arw_payload_addr" -ctrlKey \
+          off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "cmdOutputFork_payload_addr" -line 1919 -pos 1 -win $_nTrace1
+srcAction -pos 1918 7 4 -win $_nTrace1 -name "cmdOutputFork_payload_addr" \
+          -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "cmdArbiter_io_output_payload_addr" -line 1902 -pos 1 -win \
+          $_nTrace1
+srcAction -pos 1901 7 3 -win $_nTrace1 -name "cmdArbiter_io_output_payload_addr" \
+          -ctrlKey off
+wvScrollDown -win $_nWave2 2
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvSelectSignal -win $_nWave2 {( "G5" 1 )} 
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvSetCursor -win $_nWave2 420190.585290 -snap {("G5" 1)}
+srcActiveTrace \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.io_apb_PADDR\[15:0\]" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 401000 -TraceValue \
+           0000000000001000
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "apb3Router_1_io_outputs_0_PADDR\[15:0\]" -line 1528 -pos 1 \
+          -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "apb3Router_1_io_outputs_0_PADDR\[15:0\]" -line 1528 -pos 1 \
+          -win $_nTrace1
+srcAction -pos 1527 7 14 -win $_nTrace1 -name \
+          "apb3Router_1_io_outputs_0_PADDR\[15:0\]" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_input_PADDR" -line 1644 -pos 1 -win $_nTrace1
+srcAction -pos 1643 7 6 -win $_nTrace1 -name "io_input_PADDR" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_input_PADDR" -line 1676 -pos 1 -win $_nTrace1
+srcAction -pos 1675 7 4 -win $_nTrace1 -name "io_input_PADDR" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_axi_arw_payload_addr" -line 3976 -pos 1 -win $_nTrace1
+srcAction -pos 3975 7 8 -win $_nTrace1 -name "io_axi_arw_payload_addr" -ctrlKey \
+          off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "cmdOutputFork_payload_addr" -line 1919 -pos 1 -win $_nTrace1
+srcAction -pos 1918 7 5 -win $_nTrace1 -name "cmdOutputFork_payload_addr" \
+          -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "cmdArbiter_io_output_payload_addr" -line 1902 -pos 1 -win \
+          $_nTrace1
+srcAction -pos 1901 7 4 -win $_nTrace1 -name "cmdArbiter_io_output_payload_addr" \
+          -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "maskRouted_0" -line 8628 -pos 1 -win $_nTrace1
+srcSelect -signal "io_inputs_0_payload_addr" -line 8628 -pos 1 -win $_nTrace1
+srcSelect -signal "io_inputs_1_payload_addr" -line 8628 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvSetCursor -win $_nWave2 421282.376972 -snap {("G1" 31)}
+srcActiveTrace \
+           "tb_DandSocSimple.u_DandSocSimple.axi_apbBridge_io_axi_arbiter.cmdArbiter.maskRouted_0" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 421000 -TraceValue 1
+srcSelect -signal "locked" -line 8618 -pos 1 -win $_nTrace1
+srcSelect -signal "maskLocked_0" -line 8618 -pos 1 -win $_nTrace1
+srcSelect -signal "maskProposal_0" -line 8618 -pos 1 -win $_nTrace1
+srcSelect -signal "maskRouted_1" -line 8619 -pos 1 -win $_nTrace1
+srcSelect -signal "locked" -line 8619 -pos 1 -win $_nTrace1
+srcSelect -signal "maskLocked_1" -line 8619 -pos 1 -win $_nTrace1
+srcSelect -signal "maskProposal_1" -line 8619 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvSetCursor -win $_nWave2 421183.123183 -snap {("G1" 34)}
+srcActiveTrace \
+           "tb_DandSocSimple.u_DandSocSimple.axi_apbBridge_io_axi_arbiter.cmdArbiter.maskRouted_0" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 1000 -TraceValue 0
+wvSelectSignal -win $_nWave2 {( "G1" 35 )} 
+wvSelectSignal -win $_nWave2 {( "G1" 36 )} 
+wvSelectSignal -win $_nWave2 {( "G1" 38 )} 
+wvSetCursor -win $_nWave2 393888.331134 -snap {("G1" 38)}
+srcActiveTrace \
+           "tb_DandSocSimple.u_DandSocSimple.axi_apbBridge_io_axi_arbiter.cmdArbiter.maskRouted_1" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 393000 -TraceValue 1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "maskLocked_1" -line 8619 -pos 1 -win $_nTrace1
+srcAction -pos 8618 12 5 -win $_nTrace1 -name "maskLocked_1" -ctrlKey off
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_apbBridge_io_axi_arbiter" -win \
+           $_nTrace1
+srcSetScope -win $_nTrace1 \
+           "tb_DandSocSimple.u_DandSocSimple.axi_apbBridge_io_axi_arbiter" \
+           -delim "."
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_apbBridge_io_axi_arbiter" -win \
+           $_nTrace1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvSelectSignal -win $_nWave2 {( "G1" 39 )} 
+wvSelectSignal -win $_nWave2 {( "G1" 38 )} 
+wvSelectSignal -win $_nWave2 {( "G1" 39 )} 
+wvSelectSignal -win $_nWave2 {( "G1" 38 )} 
+wvSelectSignal -win $_nWave2 {( "G1" 34 )} 
+wvSetCursor -win $_nWave2 422771.183811 -snap {("G1" 35)}
+wvSelectSignal -win $_nWave2 {( "G1" 36 )} 
+wvSetCursor -win $_nWave2 422771.183811 -snap {("G1" 36)}
+srcActiveTrace \
+           "tb_DandSocSimple.u_DandSocSimple.axi_apbBridge_io_axi_arbiter.cmdArbiter.maskLocked_0" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 1000 -TraceValue 0
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "maskRouted_0" -line 8646 -pos 1 -win $_nTrace1
+srcAction -pos 8645 5 5 -win $_nTrace1 -name "maskRouted_0" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "maskLocked_0" -line 8618 -pos 1 -win $_nTrace1
+srcAction -pos 8617 12 6 -win $_nTrace1 -name "maskLocked_0" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_output_valid" -line 8645 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_output_valid" -line 8645 -pos 1 -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_output_valid" -line 8645 -pos 1 -win $_nTrace1
+srcAction -pos 8644 3 7 -win $_nTrace1 -name "io_output_valid" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_inputs_0_valid" -line 8627 -pos 1 -win $_nTrace1
+srcAction -pos 8626 9 10 -win $_nTrace1 -name "io_inputs_0_valid" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_readInputs_0_ar_valid" -line 1871 -pos 1 -win $_nTrace1
+srcAction -pos 1870 7 7 -win $_nTrace1 -name "io_readInputs_0_ar_valid" -ctrlKey \
+          off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal \
+          "toplevel_toplevel_axi_downsizer_io_output_readOnly_decoder_io_outputs_1_ar_rValid" \
+          -line 1473 -pos 1 -win $_nTrace1
+srcAction -pos 1472 7 31 -win $_nTrace1 -name \
+          "toplevel_toplevel_axi_downsizer_io_output_readOnly_decoder_io_outputs_1_ar_rValid" \
+          -ctrlKey off
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal \
+          "toplevel_axi_downsizer_io_output_readOnly_decoder_io_outputs_1_ar_valid" \
+          -line 1598 -pos 1 -win $_nTrace1
+srcAction -pos 1597 3 61 -win $_nTrace1 -name \
+          "toplevel_axi_downsizer_io_output_readOnly_decoder_io_outputs_1_ar_valid" \
+          -ctrlKey off
+srcHBSelect \
+           "tb_DandSocSimple.u_DandSocSimple.toplevel_axi_downsizer_io_output_readOnly_decoder" \
+           -win $_nTrace1
+srcSetScope -win $_nTrace1 \
+           "tb_DandSocSimple.u_DandSocSimple.toplevel_axi_downsizer_io_output_readOnly_decoder" \
+           -delim "."
+srcHBSelect \
+           "tb_DandSocSimple.u_DandSocSimple.toplevel_axi_downsizer_io_output_readOnly_decoder" \
+           -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_input_ar_valid" -line 2576 -pos 1 -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -win $_nTrace1 -range {2576 2588 3 1 15 1}
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvZoom -win $_nWave2 386940.565885 523513.779920
+wvZoom -win $_nWave2 391415.903164 491381.863952
+wvScrollDown -win $_nWave2 1
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 398114.653113 514790.682458
+srcHBSelect \
+           "tb_DandSocSimple.u_DandSocSimple.toplevel_axi_downsizer_io_output_writeOnly_decoder" \
+           -win $_nTrace1
+srcSetScope -win $_nTrace1 \
+           "tb_DandSocSimple.u_DandSocSimple.toplevel_axi_downsizer_io_output_writeOnly_decoder" \
+           -delim "."
+srcHBSelect \
+           "tb_DandSocSimple.u_DandSocSimple.toplevel_axi_downsizer_io_output_writeOnly_decoder" \
+           -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -win $_nTrace1 -range {2289 2301 3 1 15 1}
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 371909.801162 538761.678177
+wvZoom -win $_nWave2 386039.378376 470878.274605
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvSelectSignal -win $_nWave2 {( "G5" 5 )} 
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvSetCursor -win $_nWave2 439735.277720 -snap {("G5" 2)}
+wvSelectSignal -win $_nWave2 {( "G1" 56 )} 
+wvSetCursor -win $_nWave2 439048.070166 -snap {("G1" 56)}
+srcActiveTrace \
+           "tb_DandSocSimple.u_DandSocSimple.toplevel_axi_downsizer_io_output_writeOnly_decoder.io_input_aw_payload_addr\[31:0\]" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 439000 -TraceValue \
+           00010000000000000000000000000000
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "axi_downsizer_io_output_aw_payload_addr" -line 1369 -pos 1 \
+          -win $_nTrace1
+srcAction -pos 1368 7 6 -win $_nTrace1 -name \
+          "axi_downsizer_io_output_aw_payload_addr" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "writeOnly_io_output_aw_payload_addr" -line 5037 -pos 1 -win \
+          $_nTrace1
+srcAction -pos 5036 7 10 -win $_nTrace1 -name \
+          "writeOnly_io_output_aw_payload_addr" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "writeStream_aw_payload_addr" -line 9889 -pos 1 -win $_nTrace1
+srcAction -pos 9888 7 7 -win $_nTrace1 -name "writeStream_aw_payload_addr" \
+          -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "outCmdStream_payload_addr" -line 9817 -pos 1 -win $_nTrace1
+srcAction -pos 9816 7 4 -win $_nTrace1 -name "outCmdStream_payload_addr" -ctrlKey \
+          off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "cmdStream_payload_addr" -line 9804 -pos 1 -win $_nTrace1
+srcAction -pos 9803 7 5 -win $_nTrace1 -name "cmdStream_payload_addr" -ctrlKey \
+          off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "generator_io_output_payload_addr" -line 9744 -pos 1 -win \
+          $_nTrace1
+srcAction -pos 9743 7 6 -win $_nTrace1 -name "generator_io_output_payload_addr" \
+          -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "cmdStream_payload_addr" -line 65484 -pos 1 -win $_nTrace1
+srcAction -pos 65483 7 5 -win $_nTrace1 -name "cmdStream_payload_addr" -ctrlKey \
+          off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "address" -line 65450 -pos 1 -win $_nTrace1
+srcAction -pos 65449 7 3 -win $_nTrace1 -name "address" -ctrlKey off
+srcSelect -signal "cmdStreamWithSize_fire" -line 65503 -pos 1 -win $_nTrace1
+srcSelect -signal "cmdStreamWithSize_payload_addr" -line 65504 -pos 1 -win \
+          $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvZoom -win $_nWave2 430395.502325 456884.229866
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomIn -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 383250.248667 461429.055726
+wvZoom -win $_nWave2 433335.345972 444446.177903
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomIn -win $_nWave2
+wvZoomOut -win $_nWave2
+wvSetCursor -win $_nWave2 439283.486483 -snap {("G1" 66)}
+srcActiveTrace \
+           "tb_DandSocSimple.u_DandSocSimple.axi_downsizer.writeOnly.generator.address\[31:0\]" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 439000 -TraceValue \
+           00010000000000000000000000000000
+wvZoom -win $_nWave2 431887.174211 453388.843073
+wvZoomOut -win $_nWave2
+wvZoomIn -win $_nWave2
+wvZoomOut -win $_nWave2
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 10
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvZoomOut -win $_nWave2
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvSetCursor -win $_nWave2 435323.007895 -snap {("G1" 30)}
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvSelectSignal -win $_nWave2 {( "G1" 30 66 67 68 )} 
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvSelectSignal -win $_nWave2 {( "G1" 14 )} 
+wvSelectSignal -win $_nWave2 {( "G1" 14 15 )} 
+wvSelectSignal -win $_nWave2 {( "G1" 14 15 16 )} 
+wvZoom -win $_nWave2 428134.673828 469459.678047
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvZoom -win $_nWave2 426095.811322 495051.967111
+wvZoom -win $_nWave2 434194.859075 459609.112368
+wvSetCursor -win $_nWave2 435083.796506 -snap {("G1" 68)}
+srcActiveTrace \
+           "tb_DandSocSimple.u_DandSocSimple.axi_downsizer.writeOnly.generator.cmdStreamWithSize_payload_addr\[31:0\]" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 435000 -TraceValue \
+           00010000000000000000000000000011
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "startAddress" -line 65423 -pos 1 -win $_nTrace1
+srcAction -pos 65422 7 2 -win $_nTrace1 -name "startAddress" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_input_payload_addr" -line 65401 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 432547.985518 456820.656005
+wvSetCursor -win $_nWave2 437096.877005 -snap {("G1" 68)}
+srcActiveTrace \
+           "tb_DandSocSimple.u_DandSocSimple.axi_downsizer.writeOnly.generator.cmdStreamWithSize_payload_addr\[31:0\]" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 437000 -TraceValue \
+           00010000000000000000000000000000
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "startAddress" -line 65423 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvSetCursor -win $_nWave2 437061.129331 -snap {("G1" 70)}
+srcActiveTrace \
+           "tb_DandSocSimple.u_DandSocSimple.axi_downsizer.writeOnly.generator.startAddress\[31:0\]" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 437000 -TraceValue \
+           00010000000000000000000000000000
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "when_Axi4Downsizer_l45" -line 65398 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "_zz_startAddress" -line 65399 -pos 1 -win $_nTrace1
+wvSetCursor -win $_nWave2 437159.435434 -snap {("G1" 71)}
+srcActiveTrace \
+           "tb_DandSocSimple.u_DandSocSimple.axi_downsizer.writeOnly.generator.when_Axi4Downsizer_l45" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 437000 -TraceValue 1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "when_Axi4Downsizer_l45" -line 65398 -pos 1 -win $_nTrace1
+srcAction -pos 65397 3 9 -win $_nTrace1 -name "when_Axi4Downsizer_l45" -ctrlKey \
+          off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_input_payload_size" -line 65396 -pos 1 -win $_nTrace1
+srcAction -pos 65395 12 4 -win $_nTrace1 -name "io_input_payload_size" -ctrlKey \
+          off
+srcBackwardHistory -win $_nTrace1
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_downsizer.writeOnly" -win \
+           $_nTrace1
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_downsizer.writeOnly.generator" \
+           -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_input_payload_size" -line 65396 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollUp -win $_nWave2 8
+wvSelectSignal -win $_nWave2 {( "G1" 48 )} 
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 10
+wvSelectSignal -win $_nWave2 {( "G1" 23 )} 
+wvSelectSignal -win $_nWave2 {( "G1" 24 )} 
+wvSelectSignal -win $_nWave2 {( "G1" 26 )} 
+wvScrollUp -win $_nWave2 3
+wvSelectSignal -win $_nWave2 {( "G1" 20 )} 
+wvSelectSignal -win $_nWave2 {( "G1" 19 )} 
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomIn -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomIn -win $_nWave2
+wvZoomIn -win $_nWave2
+srcDeselectAll -win $_nTrace1
+debReload
+wvScrollDown -win $_nWave2 50
+wvScrollUp -win $_nWave2 68
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+srcDeselectAll -win $_nTrace1
+debReload
+wvScrollDown -win $_nWave2 68
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple" -win $_nTrace1
+srcSetScope -win $_nTrace1 "tb_DandSocSimple.u_DandSocSimple" -delim "."
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple" -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_uart_txd" -line 10 -pos 1 -win $_nTrace1
+wvSetPosition -win $_nWave2 {("G1" 62)}
+wvSetPosition -win $_nWave2 {("G1" 63)}
+wvSetPosition -win $_nWave2 {("G1" 65)}
+wvSetPosition -win $_nWave2 {("G1" 70)}
+wvSetPosition -win $_nWave2 {("G1" 72)}
+wvSetPosition -win $_nWave2 {("G5" 0)}
+wvSetPosition -win $_nWave2 {("G1" 31)}
+wvSetPosition -win $_nWave2 {("G5" 22)}
+wvSetPosition -win $_nWave2 {("G5" 23)}
+wvSetPosition -win $_nWave2 {("G5" 24)}
+wvSetPosition -win $_nWave2 {("G5" 25)}
+wvSetPosition -win $_nWave2 {("G5" 26)}
+wvSetPosition -win $_nWave2 {("G5" 27)}
+wvSetPosition -win $_nWave2 {("G5" 28)}
+wvSetPosition -win $_nWave2 {("G6" 0)}
+wvSetPosition -win $_nWave2 {("G1" 31)}
+wvSetPosition -win $_nWave2 {("G6" 0)}
+wvAddSignal -win $_nWave2 "/tb_DandSocSimple/u_DandSocSimple/io_uart_txd"
+wvSetPosition -win $_nWave2 {("G6" 0)}
+wvSetPosition -win $_nWave2 {("G6" 1)}
+wvSetPosition -win $_nWave2 {("G6" 1)}
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvSetCursor -win $_nWave2 2178034.267205 -snap {("G5" 28)}
+wvZoom -win $_nWave2 2178034.267205 2361062.356886
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 332092.203957 1134288.956374
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 290633.874955 940425.058798
+wvZoom -win $_nWave2 375805.326151 584188.286801
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 373196.702932 612269.348509
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 381470.940297 712792.530118
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 391230.044563 678147.709974
+wvZoom -win $_nWave2 436338.234228 482925.380932
+wvZoomOut -win $_nWave2
+wvSelectSignal -win $_nWave2 {( "G5" 6 )} 
+wvSelectSignal -win $_nWave2 {( "G5" 7 )} 
+wvSelectSignal -win $_nWave2 {( "G5" 8 )} 
+wvSelectSignal -win $_nWave2 {( "G5" 6 )} 
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 397332.648218 531124.895746
+wvSetCursor -win $_nWave2 441371.775350 -snap {("G5" 7)}
+wvZoomOut -win $_nWave2
+wvSetCursor -win $_nWave2 527184.034258 -snap {("G5" 6)}
+wvSetCursor -win $_nWave2 527282.555795 -snap {("G5" 4)}
+wvZoom -win $_nWave2 484918.294796 568661.601422
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomIn -win $_nWave2
+wvSetCursor -win $_nWave2 422696.647972 -snap {("G5" 4)}
+wvSetCursor -win $_nWave2 440209.975720 -snap {("G5" 6)}
+wvZoom -win $_nWave2 422326.648090 510386.620007
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+srcDeselectAll -win $_nTrace1
+wvZoom -win $_nWave2 400992.531183 541577.228616
+wvZoomOut -win $_nWave2
+wvSelectSignal -win $_nWave2 {( "G5" 7 )} 
+wvSelectSignal -win $_nWave2 {( "G5" 5 )} 
+wvSelectSignal -win $_nWave2 {( "G5" 4 )} 
+wvSelectSignal -win $_nWave2 {( "G5" 1 )} 
+wvSetCursor -win $_nWave2 395712.840778 -snap {("G5" 4)}
+wvSetCursor -win $_nWave2 422525.386165 -snap {("G5" 4)}
+wvZoom -win $_nWave2 375215.219208 523460.643895
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 476519.898229 559266.608032
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 599091.053598 788226.390292
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvSelectSignal -win $_nWave2 {( "G5" 7 )} 
+wvZoom -win $_nWave2 818379.409728 1127012.624833
+wvZoom -win $_nWave2 955764.371827 996900.315814
+wvSetCursor -win $_nWave2 967396.332424 -snap {("G5" 7)}
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 3629171.706307 8809271.492232
+wvScrollUp -win $_nWave2 70
+wvSelectSignal -win $_nWave2 {( "G2" 2 )} 
+wvZoom -win $_nWave2 4746822.101944 5011930.301592
+wvZoom -win $_nWave2 4811537.395156 4861513.609523
+wvZoom -win $_nWave2 4820314.513806 4829091.632456
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 330818.324430 1244155.725492
+wvZoomOut -win $_nWave2
+wvScrollDown -win $_nWave2 68
+wvScrollDown -win $_nWave2 2
+wvSelectSignal -win $_nWave2 {( "G6" 1 )} 
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 607994.853137 2162955.141247
+wvZoom -win $_nWave2 830132.037152 1310475.071661
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 577260.553989 1935520.681023
+wvSetCursor -win $_nWave2 973336.408412 -snap {("G6" 1)}
+srcActiveTrace "tb_DandSocSimple.u_DandSocSimple.io_uart_txd" -win $_nTrace1 \
+           -TraceByDConWave -TraceTime 685000 -TraceValue 0
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "axi_uartCtrl_io_uart_txd" -line 1529 -pos 1 -win $_nTrace1
+srcAction -pos 1528 7 11 -win $_nTrace1 -name "axi_uartCtrl_io_uart_txd" -ctrlKey \
+          off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "uartCtrl_uart_tx" -line 3803 -pos 1 -win $_nTrace1
+srcAction -pos 3802 7 9 -win $_nTrace1 -name "uartCtrl_uart_tx" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "srx_pad_i" -line 393 -pos 1 -win $_nTrace1
+srcAction -pos 392 5 4 -win $_nTrace1 -name "srx_pad_i" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "srx_pad_i" -line 393 -pos 1 -win $_nTrace1
+srcAction -pos 392 5 5 -win $_nTrace1 -name "srx_pad_i" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "srx_pad" -line 394 -pos 1 -win $_nTrace1
+srcAction -pos 393 5 3 -win $_nTrace1 -name "srx_pad" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcBackwardHistory -win $_nTrace1
+srcHBSelect \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.i_uart_sync_flops" \
+           -win $_nTrace1
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs" -win \
+           $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "srx_pad_i" -line 393 -pos 1 -win $_nTrace1
+srcAction -pos 392 5 2 -win $_nTrace1 -name "srx_pad_i" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "wb_rst_i" -line 389 -pos 1 -win $_nTrace1
+srcAction -pos 388 5 3 -win $_nTrace1 -name "wb_rst_i" -ctrlKey off
+srcBackwardHistory -win $_nTrace1
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl" -win \
+           $_nTrace1
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs" -win \
+           $_nTrace1
+wvSelectSignal -win $_nWave2 {( "G5" 1 )} 
+wvZoom -win $_nWave2 833309.591192 1006342.729613
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 1024437.726739 1413825.997002
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 631895.354139 950746.426696
+wvSetCursor -win $_nWave2 673688.793694 -snap {("G5" 2)}
+wvSetCursor -win $_nWave2 675332.355924 -snap {("G5" 4)}
+wvSelectSignal -win $_nWave2 {( "G5" 6 )} 
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 527411.755253 1057577.971625
+wvZoom -win $_nWave2 638285.986070 803035.723411
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 563885.698941 933662.723547
+wvZoom -win $_nWave2 653334.706734 749318.801854
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 654783.989100 732815.241687
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvSetCursor -win $_nWave2 684491.027087 -snap {("G6" 1)}
+srcActiveTrace "tb_DandSocSimple.u_DandSocSimple.io_uart_txd" -win $_nTrace1 \
+           -TraceByDConWave -TraceTime 1000 -TraceValue 1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "axi_uartCtrl_io_uart_txd" -line 1529 -pos 1 -win $_nTrace1
+srcAction -pos 1528 7 6 -win $_nTrace1 -name "axi_uartCtrl_io_uart_txd" -ctrlKey \
+          off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "uartCtrl_uart_tx" -line 3803 -pos 1 -win $_nTrace1
+srcAction -pos 3802 7 9 -win $_nTrace1 -name "uartCtrl_uart_tx" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "serial_out" -line 401 -pos 1 -win $_nTrace1
+srcAction -pos 400 14 3 -win $_nTrace1 -name "serial_out" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "stx_o_tmp" -line 349 -pos 1 -win $_nTrace1
+srcAction -pos 348 21 4 -win $_nTrace1 -name "stx_o_tmp" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "tf_data_out\[7:0\]" -line 255 -pos 1 -win $_nTrace1
+srcAction -pos 254 6 6 -win $_nTrace1 -name "tf_data_out\[7:0\]" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "ram\[dpra\]" -line 118 -pos 1 -win $_nTrace1
+srcAction -pos 117 7 1 -win $_nTrace1 -name "ram\[dpra\]" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "dpra" -win $_nTrace1
+srcAction -pos 117 7 5 -win $_nTrace1 -name "ram\[dpra\]" -ctrlKey off
+srcBackwardHistory -win $_nTrace1
+srcHBSelect \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter.fifo_tx" \
+           -win $_nTrace1
+srcHBSelect \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter.fifo_tx.tfifo" \
+           -win $_nTrace1
+srcHBSelect \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter.fifo_tx" \
+           -win $_nTrace1
+srcSetScope -win $_nTrace1 \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter.fifo_tx" \
+           -delim "."
+srcHBSelect \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter.fifo_tx" \
+           -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "data_in" -line 170 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "push" -line 168 -pos 1 -win $_nTrace1
+srcSelect -signal "pop" -line 169 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvZoom -win $_nWave2 634960.143634 788954.073629
+wvZoom -win $_nWave2 665634.192281 723126.771447
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 922996.039667 1087937.931001
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 609509.278598 823277.856468
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "data_out" -line 178 -pos 1 -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "data_out" -line 178 -pos 1 -win $_nTrace1
+srcAction -pos 177 10 5 -win $_nTrace1 -name "data_out" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "we" -line 114 -pos 1 -win $_nTrace1
+srcAction -pos 113 4 1 -win $_nTrace1 -name "we" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "tf_push" -line 561 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+srcBackwardHistory -win $_nTrace1
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs" -win \
+           $_nTrace1
+srcHBSelect \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter.fifo_tx.tfifo" \
+           -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "di" -line 115 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "we" -line 114 -pos 1 -win $_nTrace1
+srcSelect -signal "di" -line 115 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvSelectSignal -win $_nWave2 {( "G5" 6 )} 
+wvSetCursor -win $_nWave2 670349.893728 -snap {("G5" 6)}
+wvSelectSignal -win $_nWave2 {( "G5" 2 )} 
+wvSelectSignal -win $_nWave2 {( "G5" 3 )} 
+wvSelectSignal -win $_nWave2 {( "G5" 4 )} 
+wvSelectSignal -win $_nWave2 {( "G5" 4 )} 
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvSelectSignal -win $_nWave2 {( "G6" 2 )} 
+wvSetCursor -win $_nWave2 671136.965076 -snap {("G6" 2)}
+srcActiveTrace \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter.fifo_tx.data_in\[7:0\]" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 657000 -TraceValue \
+           00000000
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "wb_dat_i" -line 190 -pos 1 -win $_nTrace1
+srcAction -pos 189 6 3 -win $_nTrace1 -name "wb_dat_i" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "in_pwrite" -line 85 -pos 1 -win $_nTrace1
+srcSelect -signal "reg_dat8_w" -line 85 -pos 1 -win $_nTrace1
+srcSelect -signal "reg_dat8_w_reg" -line 85 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "reg_we" -line 87 -pos 1 -win $_nTrace1
+srcAction -pos 86 5 1 -win $_nTrace1 -name "reg_we" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "resetn" -line 42 -pos 1 -win $_nTrace1
+srcSelect -signal "in_psel" -line 42 -pos 1 -win $_nTrace1
+srcSelect -signal "in_penable" -line 42 -pos 1 -win $_nTrace1
+srcSelect -signal "in_pwrite" -line 42 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 0
+wvSetCursor -win $_nWave2 673025.936309 -snap {("G6" 13)}
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "reg_we" -line 42 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvSelectSignal -win $_nWave2 {( "G6" 7 )} 
+wvSetCursor -win $_nWave2 676410.343101 -snap {("G6" 7)}
+srcActiveTrace \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter.fifo_tx.tfifo.we" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 1000 -TraceValue 0
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 0
+wvSelectSignal -win $_nWave2 {( "G6" 11 )} 
+wvSelectGroup -win $_nWave2 {G6}
+wvSetPosition -win $_nWave2 {("G6" 0)}
+wvCut -win $_nWave2
+wvSetPosition -win $_nWave2 {("G7" 0)}
+wvSetPosition -win $_nWave2 {("G5" 28)}
+wvSelectGroup -win $_nWave2 {G7}
+wvCut -win $_nWave2
+wvSetPosition -win $_nWave2 {("G5" 28)}
+wvSetPosition -win $_nWave2 {("G5" 28)}
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 0
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl" -win \
+           $_nTrace1
+srcSetScope -win $_nTrace1 \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl" -delim "."
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl" -win \
+           $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "uart_tx" -line 19 -pos 1 -win $_nTrace1
+srcSelect -win $_nTrace1 -range {19 21 8 2 3 39}
+srcDeselectAll -win $_nTrace1
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl" -win \
+           $_nTrace1
+srcSetScope -win $_nTrace1 \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl" -delim "."
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl" -win \
+           $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "uart_tx" -line 19 -pos 1 -win $_nTrace1
+wvSetPosition -win $_nWave2 {("G1" 63)}
+wvSetPosition -win $_nWave2 {("G1" 62)}
+wvSetPosition -win $_nWave2 {("G1" 61)}
+wvSetPosition -win $_nWave2 {("G1" 62)}
+wvSetPosition -win $_nWave2 {("G1" 63)}
+wvSetPosition -win $_nWave2 {("G1" 64)}
+wvSetPosition -win $_nWave2 {("G1" 65)}
+wvSetPosition -win $_nWave2 {("G1" 66)}
+wvSetPosition -win $_nWave2 {("G1" 67)}
+wvSetPosition -win $_nWave2 {("G1" 68)}
+wvSetPosition -win $_nWave2 {("G1" 70)}
+wvSetPosition -win $_nWave2 {("G1" 71)}
+wvSetPosition -win $_nWave2 {("G1" 72)}
+wvSetPosition -win $_nWave2 {("G5" 0)}
+wvSetPosition -win $_nWave2 {("G5" 1)}
+wvSetPosition -win $_nWave2 {("G5" 2)}
+wvSetPosition -win $_nWave2 {("G5" 3)}
+wvSetPosition -win $_nWave2 {("G5" 4)}
+wvSetPosition -win $_nWave2 {("G5" 5)}
+wvSetPosition -win $_nWave2 {("G1" 31)}
+wvSetPosition -win $_nWave2 {("G5" 25)}
+wvSetPosition -win $_nWave2 {("G5" 26)}
+wvSetPosition -win $_nWave2 {("G5" 27)}
+wvSetPosition -win $_nWave2 {("G5" 28)}
+wvSetPosition -win $_nWave2 {("G4" 0)}
+wvSetPosition -win $_nWave2 {("G1" 31)}
+wvSetPosition -win $_nWave2 {("G4" 0)}
+wvAddSignal -win $_nWave2 \
+           "/tb_DandSocSimple/u_DandSocSimple/axi_uartCtrl/uartCtrl/uart_tx"
+wvSetPosition -win $_nWave2 {("G4" 0)}
+wvSetPosition -win $_nWave2 {("G4" 1)}
+wvSetPosition -win $_nWave2 {("G4" 1)}
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvSetCursor -win $_nWave2 682548.272196 -snap {("G4" 1)}
+srcActiveTrace "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.uart_tx" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 1000 -TraceValue 1
+wvZoomIn -win $_nWave2
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "serial_out" -line 401 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvSetCursor -win $_nWave2 686641.043201 -snap {("G4" 2)}
+srcActiveTrace \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.serial_out" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 685000 -TraceValue 0
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "lcr" -line 349 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvSelectSignal -win $_nWave2 {( "G4" 3 )} 
+wvCut -win $_nWave2
+wvSetPosition -win $_nWave2 {("G6" 0)}
+wvSetPosition -win $_nWave2 {("G4" 2)}
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "stx_o_tmp" -line 349 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "stx_o_tmp" -line 349 -pos 1 -win $_nTrace1
+srcAction -pos 348 21 3 -win $_nTrace1 -name "stx_o_tmp" -ctrlKey off
+wvSetCursor -win $_nWave2 685066.900507 -snap {("G4" 3)}
+srcActiveTrace \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter.stx_o_tmp" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 1000 -TraceValue 1
+srcHBSelect \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter.fifo_tx" \
+           -win $_nTrace1
+srcSetScope -win $_nTrace1 \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter.fifo_tx" \
+           -delim "."
+srcHBSelect \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter.fifo_tx" \
+           -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "wb_rst_i" -line 167 -pos 1 -win $_nTrace1
+srcSelect -signal "push" -line 168 -pos 1 -win $_nTrace1
+srcSelect -signal "pop" -line 169 -pos 1 -win $_nTrace1
+srcSelect -signal "data_in" -line 170 -pos 1 -win $_nTrace1
+srcSelect -signal "fifo_reset" -line 171 -pos 1 -win $_nTrace1
+srcSelect -signal "reset_status" -line 172 -pos 1 -win $_nTrace1
+srcSelect -toggle -signal "fifo_reset" -line 171 -pos 1 -win $_nTrace1
+srcSelect -signal "fifo_reset" -line 171 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvZoom -win $_nWave2 663343.731327 789275.146861
+wvZoomOut -win $_nWave2
+wvSetCursor -win $_nWave2 671226.036423 -snap {("G4" 7)}
+srcActiveTrace \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter.fifo_tx.data_in\[7:0\]" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 671000 -TraceValue \
+           01001000
+srcDeselectAll -win $_nTrace1
+srcBackwardHistory -win $_nTrace1
+srcHBSelect \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter" \
+           -win $_nTrace1
+srcHBSelect \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter.fifo_tx" \
+           -win $_nTrace1
+srcHBSelect \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter" \
+           -win $_nTrace1
+srcSetScope -win $_nTrace1 \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter" \
+           -delim "."
+srcHBSelect \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter" \
+           -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "tf_data_in" -line 195 -pos 1 -win $_nTrace1
+srcSelect -signal "tf_push" -line 197 -pos 1 -win $_nTrace1
+srcSelect -signal "tf_pop" -line 198 -pos 1 -win $_nTrace1
+wvSetPosition -win $_nWave2 {("G5" 0)}
+wvSetPosition -win $_nWave2 {("G5" 3)}
+wvSetPosition -win $_nWave2 {("G5" 5)}
+wvSetPosition -win $_nWave2 {("G5" 7)}
+wvSetPosition -win $_nWave2 {("G1" 31)}
+wvSetPosition -win $_nWave2 {("G5" 23)}
+wvSetPosition -win $_nWave2 {("G5" 25)}
+wvSetPosition -win $_nWave2 {("G5" 26)}
+wvSetPosition -win $_nWave2 {("G5" 27)}
+wvSetPosition -win $_nWave2 {("G5" 28)}
+wvSetPosition -win $_nWave2 {("G4" 0)}
+wvSetPosition -win $_nWave2 {("G4" 1)}
+wvSetPosition -win $_nWave2 {("G4" 2)}
+wvSetPosition -win $_nWave2 {("G4" 3)}
+wvSetPosition -win $_nWave2 {("G4" 4)}
+wvSetPosition -win $_nWave2 {("G4" 5)}
+wvSetPosition -win $_nWave2 {("G4" 6)}
+wvSetPosition -win $_nWave2 {("G4" 7)}
+wvSetPosition -win $_nWave2 {("G4" 8)}
+wvSetPosition -win $_nWave2 {("G4" 9)}
+wvSetPosition -win $_nWave2 {("G6" 0)}
+wvSetPosition -win $_nWave2 {("G1" 31)}
+wvSetPosition -win $_nWave2 {("G6" 0)}
+wvAddSignal -win $_nWave2 \
+           "/tb_DandSocSimple/u_DandSocSimple/axi_uartCtrl/uartCtrl/Uregs/transmitter/tf_data_in\[7:0\]" \
+           "/tb_DandSocSimple/u_DandSocSimple/axi_uartCtrl/uartCtrl/Uregs/transmitter/tf_push" \
+           "/tb_DandSocSimple/u_DandSocSimple/axi_uartCtrl/uartCtrl/Uregs/transmitter/tf_pop"
+wvSetPosition -win $_nWave2 {("G6" 0)}
+wvSetPosition -win $_nWave2 {("G6" 3)}
+wvSetPosition -win $_nWave2 {("G6" 3)}
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvSetCursor -win $_nWave2 671411.502425 -snap {("G6" 1)}
+srcActiveTrace \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter.tf_data_in\[7:0\]" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 671000 -TraceValue \
+           01001000
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvZoomOut -win $_nWave2
+wvZoomIn -win $_nWave2
+wvSelectSignal -win $_nWave2 {( "G5" 1 )} {( "G6" 1 2 3 )} 
+wvZoom -win $_nWave2 667702.182380 696078.480726
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomIn -win $_nWave2
+wvZoom -win $_nWave2 621710.847580 775670.027411
+wvSelectSignal -win $_nWave2 {( "G5" 1 6 )} {( "G6" 1 2 3 )} 
+wvSelectSignal -win $_nWave2 {( "G5" 1 6 7 )} {( "G6" 1 2 3 )} 
+wvSelectSignal -win $_nWave2 {( "G5" 1 6 )} {( "G6" 1 2 3 )} 
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 0
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvSetMarker -win $_nWave2 671000.000000
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 0
+wvScrollUp -win $_nWave2 1
+wvSelectSignal -win $_nWave2 {( "G4" 5 )} 
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl" -win \
+           $_nTrace1
+srcSetScope -win $_nTrace1 \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl" -delim "."
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl" -win \
+           $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -win $_nTrace1 -range {8 19 8 9 1 5}
+wvSetPosition -win $_nWave2 {("G5" 0)}
+wvSetPosition -win $_nWave2 {("G5" 4)}
+wvSetPosition -win $_nWave2 {("G5" 6)}
+wvSetPosition -win $_nWave2 {("G5" 7)}
+wvSetPosition -win $_nWave2 {("G1" 31)}
+wvSetPosition -win $_nWave2 {("G5" 23)}
+wvSetPosition -win $_nWave2 {("G5" 24)}
+wvSetPosition -win $_nWave2 {("G5" 25)}
+wvSetPosition -win $_nWave2 {("G5" 26)}
+wvSetPosition -win $_nWave2 {("G5" 27)}
+wvSetPosition -win $_nWave2 {("G5" 28)}
+wvSetPosition -win $_nWave2 {("G4" 0)}
+wvAddSignal -win $_nWave2 \
+           "/tb_DandSocSimple/u_DandSocSimple/axi_uartCtrl/uartCtrl/in_psel" \
+           "/tb_DandSocSimple/u_DandSocSimple/axi_uartCtrl/uartCtrl/in_penable" \
+           "/tb_DandSocSimple/u_DandSocSimple/axi_uartCtrl/uartCtrl/in_pprot\[2:0\]" \
+           "/tb_DandSocSimple/u_DandSocSimple/axi_uartCtrl/uartCtrl/in_pready" \
+           "/tb_DandSocSimple/u_DandSocSimple/axi_uartCtrl/uartCtrl/in_pslverr" \
+           "/tb_DandSocSimple/u_DandSocSimple/axi_uartCtrl/uartCtrl/in_paddr\[31:0\]" \
+           "/tb_DandSocSimple/u_DandSocSimple/axi_uartCtrl/uartCtrl/in_pwrite" \
+           "/tb_DandSocSimple/u_DandSocSimple/axi_uartCtrl/uartCtrl/in_prdata\[31:0\]" \
+           "/tb_DandSocSimple/u_DandSocSimple/axi_uartCtrl/uartCtrl/in_pwdata\[31:0\]" \
+           "/tb_DandSocSimple/u_DandSocSimple/axi_uartCtrl/uartCtrl/in_pstrb\[3:0\]" \
+           "/tb_DandSocSimple/u_DandSocSimple/axi_uartCtrl/uartCtrl/uart_rx" \
+           "/tb_DandSocSimple/u_DandSocSimple/axi_uartCtrl/uartCtrl/uart_tx"
+wvSetPosition -win $_nWave2 {("G4" 0)}
+wvSetPosition -win $_nWave2 {("G4" 12)}
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvSelectSignal -win $_nWave2 {( "G4" 9 )} 
+wvSetMarker -win $_nWave2 673000.000000
+wvZoom -win $_nWave2 665415.754667 712521.821840
+wvZoomOut -win $_nWave2
+wvSetCursor -win $_nWave2 674365.213673 -snap {("G4" 2)}
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvSelectSignal -win $_nWave2 {( "G4" 17 )} 
+wvSetCursor -win $_nWave2 676793.361466 -snap {("G4" 3)}
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 417363.917686 2477543.256051
+wvZoom -win $_nWave2 604721.906116 986264.692271
+wvZoom -win $_nWave2 646444.368372 783693.006838
+wvSelectSignal -win $_nWave2 {( "G4" 19 )} 
+wvSetCursor -win $_nWave2 677168.658574 -snap {("G4" 19)}
+srcActiveTrace \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter.fifo_tx.data_in\[7:0\]" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 671000 -TraceValue \
+           01001000
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "wb_dat_i" -line 190 -pos 1 -win $_nTrace1
+srcAction -pos 189 6 3 -win $_nTrace1 -name "wb_dat_i" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "in_pwrite" -line 85 -pos 1 -win $_nTrace1
+srcSelect -signal "reg_dat8_w" -line 85 -pos 1 -win $_nTrace1
+srcSelect -signal "reg_dat8_w_reg" -line 85 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvSetPosition -win $_nWave2 {("G4" 13)}
+wvSetPosition -win $_nWave2 {("G4" 14)}
+wvSetPosition -win $_nWave2 {("G4" 15)}
+wvSetPosition -win $_nWave2 {("G4" 16)}
+wvSetPosition -win $_nWave2 {("G4" 17)}
+wvSetPosition -win $_nWave2 {("G4" 18)}
+wvSetPosition -win $_nWave2 {("G4" 19)}
+wvSetPosition -win $_nWave2 {("G4" 20)}
+wvSetPosition -win $_nWave2 {("G4" 21)}
 wvSetPosition -win $_nWave2 {("G4" 22)}
 wvSetPosition -win $_nWave2 {("G4" 23)}
 wvSetPosition -win $_nWave2 {("G4" 24)}
-wvSetPosition -win $_nWave2 {("G4" 25)}
-wvSetPosition -win $_nWave2 {("G4" 26)}
-wvSetPosition -win $_nWave2 {("G4" 27)}
-wvSetPosition -win $_nWave2 {("G4" 28)}
-wvSetPosition -win $_nWave2 {("G4" 29)}
-wvSetPosition -win $_nWave2 {("G4" 30)}
-wvSetPosition -win $_nWave2 {("G4" 31)}
-wvSetPosition -win $_nWave2 {("G4" 32)}
-wvSetPosition -win $_nWave2 {("G4" 33)}
-wvSetPosition -win $_nWave2 {("G5" 0)}
-wvSetPosition -win $_nWave2 {("G4" 33)}
+wvSetPosition -win $_nWave2 {("G6" 0)}
+wvSetPosition -win $_nWave2 {("G6" 1)}
+wvSetPosition -win $_nWave2 {("G6" 2)}
+wvSetPosition -win $_nWave2 {("G6" 3)}
 wvMoveSelected -win $_nWave2
-wvSetPosition -win $_nWave2 {("G4" 36)}
+wvSetPosition -win $_nWave2 {("G6" 6)}
 wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvSetCursor -win $_nWave2 677017.058458 -snap {("G6" 5)}
+srcActiveTrace \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.reg_dat8_w\[7:0\]" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 671000 -TraceValue \
+           01001000
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "in_pwdata\[15:8\]" -line 55 -pos 1 -win $_nTrace1
+srcAction -pos 54 8 4 -win $_nTrace1 -name "in_pwdata\[15:8\]" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_input_PWDATA" -line 1648 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvScrollDown -win $_nWave2 1
 wvScrollDown -win $_nWave2 0
 srcDeselectAll -win $_nTrace1
-srcSelect -signal "axi_mem_rdata" -line 80 -pos 1 -win $_nTrace1
-srcAction -pos 79 11 8 -win $_nTrace1 -name "axi_mem_rdata" -ctrlKey off
-wvSelectSignal -win $_nWave2 {( "G4" 30 )} 
-wvSelectSignal -win $_nWave2 {( "G4" 29 )} 
-wvSetCursor -win $_nWave2 12977018.099566 -snap {("G4" 29)}
-srcActiveTrace "tb_DandRiscvYsyx3rd.u_ysyx_210238.io_master_rvalid" -win \
-           $_nTrace1 -TraceByDConWave -TraceTime 12977000 -TraceValue 1
+srcBackwardHistory -win $_nTrace1
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.apb3Router_1" -win $_nTrace1
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl" -win \
+           $_nTrace1
 srcDeselectAll -win $_nTrace1
-srcSelect -signal "sig_r_valid" -line 118 -pos 1 -win $_nTrace1
-srcAction -pos 117 7 5 -win $_nTrace1 -name "sig_r_valid" -ctrlKey off
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvSelectSignal -win $_nWave2 {( "G4" 34 )} 
-wvSelectSignal -win $_nWave2 {( "G4" 34 )} 
-wvSetCursor -win $_nWave2 12979050.085973 -snap {("G4" 34)}
-srcActiveTrace "tb_DandRiscvYsyx3rd.u_axi_slave_mem.axi_mem_rdaddr\[17:0\]" -win \
-           $_nTrace1 -TraceByDConWave -TraceTime 12979000 -TraceValue \
-           000000010110010001
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "sig_ar_addr\[AXI_RD_ADDR_BITS+ADDR_LSB-1:ADDR_LSB\]" -line 346 \
-          -pos 1 -win $_nTrace1
-srcAction -pos 345 7 5 -win $_nTrace1 -name \
-          "sig_ar_addr\[AXI_RD_ADDR_BITS+ADDR_LSB-1:ADDR_LSB\]" -ctrlKey off
-wvSelectSignal -win $_nWave2 {( "G4" 22 )} 
-wvSelectSignal -win $_nWave2 {( "G4" 23 )} 
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "sig_ar_burst" -line 293 -pos 1 -win $_nTrace1
-srcAction -pos 292 4 6 -win $_nTrace1 -name "sig_ar_burst" -ctrlKey off
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvSetCursor -win $_nWave2 12975094.485767 -snap {("G4" 23)}
-wvSetCursor -win $_nWave2 12972972.188852 -snap {("G4" 22)}
-wvSelectSignal -win $_nWave2 {( "G4" 22 )} 
-wvSetCursor -win $_nWave2 12972908.971498 -snap {("G4" 22)}
-srcActiveTrace "tb_DandRiscvYsyx3rd.u_ysyx_210238.io_master_arvalid" -win \
-           $_nTrace1 -TraceByDConWave -TraceTime 12801000 -TraceValue 0
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvSelectSignal -win $_nWave2 {( "G3" 41 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 39 )} 
-wvScrollDown -win $_nWave2 10
-wvSelectSignal -win $_nWave2 {( "G4" 9 )} 
-wvSelectSignal -win $_nWave2 {( "G4" 8 )} 
-wvSelectSignal -win $_nWave2 {( "G4" 9 )} 
-wvSelectSignal -win $_nWave2 {( "G4" 11 )} 
-srcDeselectAll -win $_nTrace1
-debReload
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvZoom -win $_nWave2 0.000000 2476613.218616
-wvZoom -win $_nWave2 80390.651993 570483.060526
-wvScrollDown -win $_nWave2 47
-wvSelectSignal -win $_nWave2 {( "G4" 1 )} 
-wvSelectSignal -win $_nWave2 {( "G4" 1 2 )} 
+srcSelect -signal "in_pwdata\[15:8\]" -line 55 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvSelectSignal -win $_nWave2 {( "G6" 8 )} 
 wvCut -win $_nWave2
-wvSetPosition -win $_nWave2 {("G5" 0)}
-wvSelectSignal -win $_nWave2 {( "G4" 1 )} 
-wvScrollUp -win $_nWave2 4
-wvZoomOut -win $_nWave2
+wvSetPosition -win $_nWave2 {("G7" 0)}
+wvSetPosition -win $_nWave2 {("G6" 7)}
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "in_paddr\[1:0\]" -line 47 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvSetCursor -win $_nWave2 677067.591830 -snap {("G6" 8)}
+srcActiveTrace \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.in_paddr\[1:0\]" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 671000 -TraceValue 00
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_apb_PADDR" -line 3806 -pos 1 -win $_nTrace1
+srcAction -pos 3805 11 3 -win $_nTrace1 -name "io_apb_PADDR" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "axi_uartCtrl_io_apb_PADDR" -line 1528 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvSelectSignal -win $_nWave2 {( "G5" 1 )} 
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
 wvZoomOut -win $_nWave2
 wvZoomIn -win $_nWave2
+wvSetCursor -win $_nWave2 677320.258690 -snap {("G5" 1)}
+srcActiveTrace \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.io_apb_PADDR\[15:0\]" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 677000 -TraceValue \
+           0000000000000001
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 52
+wvSelectSignal -win $_nWave2 {( "G1" 14 )} 
+wvSelectSignal -win $_nWave2 {( "G1" 14 15 )} 
+wvSelectSignal -win $_nWave2 {( "G1" 14 15 16 )} 
+wvZoomOut -win $_nWave2
 wvZoomIn -win $_nWave2
 wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 510993.458088 1752901.609392
+wvZoom -win $_nWave2 638567.969949 795864.142279
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 87
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvSelectSignal -win $_nWave2 {( "G6" 6 )} 
+wvScrollDown -win $_nWave2 0
+wvSetCursor -win $_nWave2 676849.549445 -snap {("G6" 9)}
+srcActiveTrace \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl_io_apb_PADDR\[15:0\]" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 671000 -TraceValue \
+           0000000000000000
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvSelectSignal -win $_nWave2 {( "G6" 9 )} 
 srcDeselectAll -win $_nTrace1
-wvSelectSignal -win $_nWave2 {( "G3" 22 )} 
-wvUndo -win $_nWave2
-wvSetPosition -win $_nWave2 {("G4" 34)}
-wvSetPosition -win $_nWave2 {("G5" 0)}
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvSetCursor -win $_nWave2 134933.537586 -snap {("G4" 2)}
-wvZoom -win $_nWave2 113466.838425 604134.247828
-wvZoom -win $_nWave2 141099.261950 216128.967494
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 129578.091390 313616.540030
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvSelectSignal -win $_nWave2 {( "G3" 1 )} 
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvSelectSignal -win $_nWave2 {( "G4" 3 )} 
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvSelectSignal -win $_nWave2 {( "G3" 2 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 3 )} 
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvSelectSignal -win $_nWave2 {( "G4" 12 )} 
-wvSelectSignal -win $_nWave2 {( "G4" 13 )} 
-wvSelectSignal -win $_nWave2 {( "G4" 12 )} 
-wvScrollDown -win $_nWave2 4
-wvSelectSignal -win $_nWave2 {( "G4" 22 )} 
-wvSetCursor -win $_nWave2 146251.907563 -snap {("G4" 22)}
-srcActiveTrace "tb_DandRiscvYsyx3rd.u_ysyx_210238.io_master_araddr\[31:0\]" -win \
-           $_nTrace1 -TraceByDConWave -TraceTime 57000 -TraceValue \
-           10000000000000000000000000000000
+srcSelect -signal "apb3Router_1_io_outputs_0_PADDR\[15:0\]" -line 1528 -pos 1 \
+          -win $_nTrace1
+srcAction -pos 1527 7 5 -win $_nTrace1 -name \
+          "apb3Router_1_io_outputs_0_PADDR\[15:0\]" -ctrlKey off
 srcDeselectAll -win $_nTrace1
-srcSelect -signal "core_dcache_valid" -line 228 -pos 1 -win $_nTrace1
+srcSelect -signal "io_input_PADDR" -line 1644 -pos 1 -win $_nTrace1
+srcAction -pos 1643 7 3 -win $_nTrace1 -name "io_input_PADDR" -ctrlKey off
 srcDeselectAll -win $_nTrace1
-srcSelect -signal "core_dcache_valid" -line 228 -pos 1 -win $_nTrace1
-srcAction -pos 227 14 7 -win $_nTrace1 -name "core_dcache_valid" -ctrlKey off
+srcSelect -signal "io_input_PADDR" -line 1676 -pos 1 -win $_nTrace1
+srcAction -pos 1675 7 8 -win $_nTrace1 -name "io_input_PADDR" -ctrlKey off
 srcDeselectAll -win $_nTrace1
-srcSelect -signal "when_GenSimpleForYsyx3rd_l199" -line 269 -pos 1 -win $_nTrace1
-srcAction -pos 268 3 14 -win $_nTrace1 -name "when_GenSimpleForYsyx3rd_l199" \
+srcSelect -signal "io_axi_arw_payload_addr" -line 3976 -pos 1 -win $_nTrace1
+srcAction -pos 3975 7 10 -win $_nTrace1 -name "io_axi_arw_payload_addr" -ctrlKey \
+          off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "cmdOutputFork_payload_addr" -line 1919 -pos 1 -win $_nTrace1
+srcAction -pos 1918 7 1 -win $_nTrace1 -name "cmdOutputFork_payload_addr" \
           -ctrlKey off
 srcDeselectAll -win $_nTrace1
-srcSelect -signal "core_state_next" -line 204 -pos 1 -win $_nTrace1
-wvSetPosition -win $_nWave2 {("G3" 26)}
-wvSetPosition -win $_nWave2 {("G3" 25)}
-wvSetPosition -win $_nWave2 {("G3" 24)}
-wvSetPosition -win $_nWave2 {("G3" 26)}
-wvSetPosition -win $_nWave2 {("G3" 27)}
-wvSetPosition -win $_nWave2 {("G3" 28)}
-wvSetPosition -win $_nWave2 {("G3" 29)}
-wvSetPosition -win $_nWave2 {("G3" 30)}
-wvSetPosition -win $_nWave2 {("G4" 2)}
-wvSetPosition -win $_nWave2 {("G3" 46)}
-wvSetPosition -win $_nWave2 {("G3" 47)}
-wvSetPosition -win $_nWave2 {("G3" 48)}
-wvSetPosition -win $_nWave2 {("G3" 49)}
-wvSetPosition -win $_nWave2 {("G3" 50)}
-wvSetPosition -win $_nWave2 {("G4" 0)}
-wvAddSignal -win $_nWave2 \
-           "/tb_DandRiscvYsyx3rd/u_ysyx_210238/core_state_next\[1:0\]"
-wvSetPosition -win $_nWave2 {("G4" 0)}
-wvSetPosition -win $_nWave2 {("G4" 1)}
-wvZoom -win $_nWave2 134160.214418 217650.476609
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
+srcSelect -signal "cmdArbiter_io_output_payload_addr" -line 1902 -pos 1 -win \
+          $_nTrace1
+srcAction -pos 1901 7 5 -win $_nTrace1 -name "cmdArbiter_io_output_payload_addr" \
+          -ctrlKey off
 srcDeselectAll -win $_nTrace1
-debReload
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvSetCursor -win $_nWave2 2194192.412984 -snap {("G3" 1)}
-wvZoom -win $_nWave2 0.000000 3519397.731717
-wvZoomOut -win $_nWave2
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvZoom -win $_nWave2 1907659.466625 2846349.045440
-wvZoom -win $_nWave2 2122416.370655 2257144.206175
-wvZoom -win $_nWave2 2162144.484843 2197815.483923
-wvZoom -win $_nWave2 2170891.343045 2180000.909881
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
+srcSelect -signal "maskRouted_0" -line 8638 -pos 1 -win $_nTrace1
+srcSelect -signal "io_inputs_0_payload_addr" -line 8638 -pos 1 -win $_nTrace1
+srcSelect -signal "io_inputs_1_payload_addr" -line 8638 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
 wvScrollDown -win $_nWave2 1
 wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvSelectSignal -win $_nWave2 {( "G6" 12 )} 
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
 wvScrollDown -win $_nWave2 1
 wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 1
 wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 2
-wvScrollDown -win $_nWave2 4
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 613431.906230 863623.167079
+wvZoom -win $_nWave2 664004.440179 696245.582041
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 24
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvSelectSignal -win $_nWave2 {( "G1" 14 )} 
+wvSelectSignal -win $_nWave2 {( "G1" 15 )} 
+wvSelectSignal -win $_nWave2 {( "G1" 16 )} 
+wvScrollDown -win $_nWave2 0
 wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 2
-wvScrollDown -win $_nWave2 4
-wvScrollDown -win $_nWave2 2
 wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 4
-wvScrollDown -win $_nWave2 4
-wvScrollDown -win $_nWave2 4
-wvScrollDown -win $_nWave2 6
 wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 18
+wvScrollDown -win $_nWave2 14
+wvScrollDown -win $_nWave2 8
+wvScrollDown -win $_nWave2 12
 wvScrollDown -win $_nWave2 8
 wvScrollDown -win $_nWave2 2
+wvScrollDown -win $_nWave2 2
+wvScrollDown -win $_nWave2 3
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 3
+wvScrollDown -win $_nWave2 2
+wvScrollDown -win $_nWave2 3
+wvScrollDown -win $_nWave2 3
 wvScrollDown -win $_nWave2 4
-wvScrollDown -win $_nWave2 3
-wvScrollDown -win $_nWave2 3
 wvScrollDown -win $_nWave2 2
+wvSetCursor -win $_nWave2 676991.115141 -snap {("G6" 12)}
+srcActiveTrace \
+           "tb_DandSocSimple.u_DandSocSimple.axi_apbBridge_io_axi_arbiter.cmdArbiter.io_inputs_1_payload_addr\[19:0\]" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 671000 -TraceValue \
+           00000000000000000000
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_writeInputs_0_aw_payload_addr" -line 1881 -pos 1 -win \
+          $_nTrace1
+srcAction -pos 1880 7 6 -win $_nTrace1 -name "io_writeInputs_0_aw_payload_addr" \
+          -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal \
+          "toplevel_toplevel_axi_downsizer_io_output_writeOnly_decoder_io_outputs_1_aw_validPipe_payload_addr\[19:0\]" \
+          -line 1527 -pos 1 -win $_nTrace1
+srcAction -pos 1526 7 4 -win $_nTrace1 -name \
+          "toplevel_toplevel_axi_downsizer_io_output_writeOnly_decoder_io_outputs_1_aw_validPipe_payload_addr\[19:0\]" \
+          -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal \
+          "toplevel_axi_downsizer_io_output_writeOnly_decoder_io_outputs_1_aw_payload_addr" \
+          -line 1508 -pos 1 -win $_nTrace1
+srcAction -pos 1507 7 8 -win $_nTrace1 -name \
+          "toplevel_axi_downsizer_io_output_writeOnly_decoder_io_outputs_1_aw_payload_addr" \
+          -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_input_aw_payload_addr" -line 2507 -pos 1 -win $_nTrace1
+srcAction -pos 2506 7 9 -win $_nTrace1 -name "io_input_aw_payload_addr" -ctrlKey \
+          off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "axi_downsizer_io_output_aw_payload_addr" -line 1369 -pos 1 \
+          -win $_nTrace1
+srcAction -pos 1368 7 9 -win $_nTrace1 -name \
+          "axi_downsizer_io_output_aw_payload_addr" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "writeOnly_io_output_aw_payload_addr" -line 5037 -pos 1 -win \
+          $_nTrace1
+srcAction -pos 5036 7 1 -win $_nTrace1 -name \
+          "writeOnly_io_output_aw_payload_addr" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "writeStream_aw_payload_addr" -line 9899 -pos 1 -win $_nTrace1
+srcAction -pos 9898 7 4 -win $_nTrace1 -name "writeStream_aw_payload_addr" \
+          -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "outCmdStream_payload_addr" -line 9827 -pos 1 -win $_nTrace1
+srcAction -pos 9826 7 4 -win $_nTrace1 -name "outCmdStream_payload_addr" -ctrlKey \
+          off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "cmdStream_payload_addr" -line 9814 -pos 1 -win $_nTrace1
+srcAction -pos 9813 7 4 -win $_nTrace1 -name "cmdStream_payload_addr" -ctrlKey \
+          off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "generator_io_output_payload_addr" -line 9754 -pos 1 -win \
+          $_nTrace1
+srcAction -pos 9753 7 14 -win $_nTrace1 -name "generator_io_output_payload_addr" \
+          -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "cmdStream_payload_addr" -line 65494 -pos 1 -win $_nTrace1
+srcAction -pos 65493 7 7 -win $_nTrace1 -name "cmdStream_payload_addr" -ctrlKey \
+          off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "address" -line 65460 -pos 1 -win $_nTrace1
+srcAction -pos 65459 7 2 -win $_nTrace1 -name "address" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "address" -line 65517 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomIn -win $_nWave2
+wvZoomIn -win $_nWave2
+wvZoomOut -win $_nWave2
+wvSetCursor -win $_nWave2 677014.856777 -snap {("G6" 13)}
+srcActiveTrace \
+           "tb_DandSocSimple.u_DandSocSimple.axi_downsizer.writeOnly.generator.address\[31:0\]" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 671000 -TraceValue \
+           00010000000000000000000000000000
+wvSetCursor -win $_nWave2 676872.406960 -snap {("G6" 13)}
+srcActiveTrace \
+           "tb_DandSocSimple.u_DandSocSimple.axi_downsizer.writeOnly.generator.address\[31:0\]" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 671000 -TraceValue \
+           00010000000000000000000000000000
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "cmdExtendedStream_fire" -line 65516 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvSetCursor -win $_nWave2 675068.042615 -snap {("G6" 14)}
+srcActiveTrace \
+           "tb_DandSocSimple.u_DandSocSimple.axi_downsizer.writeOnly.generator.cmdExtendedStream_fire" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 675000 -TraceValue 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
 wvScrollDown -win $_nWave2 1
 wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 2
+wvScrollDown -win $_nWave2 1
 wvScrollDown -win $_nWave2 1
 wvScrollDown -win $_nWave2 1
 wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 1984567.408402 2677706.760602
-wvSelectSignal -win $_nWave2 {( "G4" 3 )} 
-wvSelectSignal -win $_nWave2 {( "G4" 2 )} 
-wvZoom -win $_nWave2 2091371.047341 2336694.126629
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvSelectSignal -win $_nWave2 {( "G6" 1 )} 
+wvSetCursor -win $_nWave2 671055.706109 -snap {("G6" 1)}
+srcActiveTrace \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter.tf_data_in\[7:0\]" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 671000 -TraceValue \
+           01001000
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "wb_dat_i" -line 190 -pos 1 -win $_nTrace1
+srcAction -pos 189 6 2 -win $_nTrace1 -name "wb_dat_i" -ctrlKey off
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvSelectSignal -win $_nWave2 {( "G6" 4 )} 
+wvSelectSignal -win $_nWave2 {( "G6" 4 5 )} 
+wvSelectSignal -win $_nWave2 {( "G6" 4 5 6 )} 
+wvSetCursor -win $_nWave2 657071.882429 -snap {("G6" 4)}
+srcActiveTrace "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.in_pwrite" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 657000 -TraceValue 1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_input_PWDATA" -line 1648 -pos 1 -win $_nTrace1
+srcAction -pos 1647 7 7 -win $_nTrace1 -name "io_input_PWDATA" -ctrlKey off
+srcBackwardHistory -win $_nTrace1
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.io_apb_decoder" -win $_nTrace1
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.apb3Router_1" -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_input_PWRITE" -line 1647 -pos 1 -win $_nTrace1
+srcAction -pos 1646 7 4 -win $_nTrace1 -name "io_input_PWRITE" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_input_PWRITE" -line 1678 -pos 1 -win $_nTrace1
+srcAction -pos 1677 7 8 -win $_nTrace1 -name "io_input_PWRITE" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_axi_arw_payload_write" -line 3978 -pos 1 -win $_nTrace1
+srcAction -pos 3977 7 13 -win $_nTrace1 -name "io_axi_arw_payload_write" -ctrlKey \
+          off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "cmdOutputFork_payload_write" -line 1923 -pos 1 -win $_nTrace1
+srcAction -pos 1922 7 4 -win $_nTrace1 -name "cmdOutputFork_payload_write" \
+          -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "cmdArbiter_io_output_payload_write" -line 1907 -pos 1 -win \
+          $_nTrace1
+srcAction -pos 1906 7 10 -win $_nTrace1 -name \
+          "cmdArbiter_io_output_payload_write" -ctrlKey off
+wvSelectSignal -win $_nWave2 {( "G6" 4 )} 
+wvSetCursor -win $_nWave2 657048.140793 -snap {("G6" 4)}
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvSelectSignal -win $_nWave2 {( "G4" 2 )} {( "G6" 4 )} 
+wvSelectSignal -win $_nWave2 {( "G6" 4 )} 
+wvSetCursor -win $_nWave2 657119.365702 -snap {("G6" 4)}
+srcActiveTrace "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.in_pwrite" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 657000 -TraceValue 1
+srcDeselectAll -win $_nTrace1
+srcBackwardHistory -win $_nTrace1
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.apb3Router_1" -win $_nTrace1
+srcHBSelect \
+           "tb_DandSocSimple.u_DandSocSimple.axi_apbBridge_io_axi_arbiter.cmdArbiter" \
+           -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcBackwardHistory -win $_nTrace1
+srcHBSelect \
+           "tb_DandSocSimple.u_DandSocSimple.axi_apbBridge_io_axi_arbiter.cmdArbiter" \
+           -win $_nTrace1
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_apbBridge_io_axi_arbiter" -win \
+           $_nTrace1
+wvSelectSignal -win $_nWave2 {( "G6" 5 )} 
+wvSetCursor -win $_nWave2 656739.499524 -snap {("G6" 5)}
+wvSetCursor -win $_nWave2 657000.657521 -snap {("G6" 5)}
+srcActiveTrace \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.reg_dat8_w\[7:0\]" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 653000 -TraceValue \
+           00000001
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl" -win $_nTrace1
+srcSetScope -win $_nTrace1 "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl" -delim \
+           "."
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl" -win $_nTrace1
+srcHBSelect \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter.fifo_tx" \
+           -win $_nTrace1
+srcSetScope -win $_nTrace1 \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter.fifo_tx" \
+           -delim "."
+srcHBSelect \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter.fifo_tx" \
+           -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "data_in" -line 148 -pos 1 -win $_nTrace1
+srcAction -pos 147 4 0 -win $_nTrace1 -name "data_in" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "wb_rst_i" -line 194 -pos 2 -win $_nTrace1
+srcAction -pos 193 6 2 -win $_nTrace1 -name "wb_rst_i" -ctrlKey off
+srcBackwardHistory -win $_nTrace1
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl" -win \
+           $_nTrace1
+srcHBSelect \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter" \
+           -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "tf_data_in" -line 195 -pos 1 -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "tf_data_in" -line 195 -pos 1 -win $_nTrace1
+srcAction -pos 194 6 3 -win $_nTrace1 -name "tf_data_in" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "wb_dat_i" -line 190 -pos 1 -win $_nTrace1
+srcSearchString "wb_dat_i" -win $_nTrace1 -prev -case
+srcSelect -win $_nTrace1 -range {164 164 9 10 1 1}
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs" -win \
+           $_nTrace1
+srcSetScope -win $_nTrace1 \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs" \
+           -delim "."
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs" -win \
+           $_nTrace1
+srcSearchString "wb_dat_i" -win $_nTrace1 -prev -case
+srcSelect -win $_nTrace1 -range {899 899 13 14 1 1}
+nsMsgSwitchTab -tab general
+srcSearchString "wb_dat_i" -win $_nTrace1 -prev -case
+srcSelect -win $_nTrace1 -range {549 549 10 11 1 1}
+srcSearchString "wb_dat_i" -win $_nTrace1 -prev -case
+srcSelect -win $_nTrace1 -range {535 535 6 7 1 1}
+srcSearchString "wb_dat_i" -win $_nTrace1 -prev -case
+srcSelect -win $_nTrace1 -range {526 526 6 6 1 9}
+srcSearchString "wb_dat_i" -win $_nTrace1 -prev -case
+srcSelect -win $_nTrace1 -range {514 514 6 6 1 9}
+srcSearchString "wb_dat_i" -win $_nTrace1 -prev -case
+srcSelect -win $_nTrace1 -range {513 513 6 6 1 9}
+srcSearchString "wb_dat_i" -win $_nTrace1 -prev -case
+srcSelect -win $_nTrace1 -range {512 512 6 6 1 9}
+srcSearchString "wb_dat_i" -win $_nTrace1 -prev -case
+srcSelect -win $_nTrace1 -range {501 501 6 6 1 9}
+srcSearchString "wb_dat_i" -win $_nTrace1 -prev -case
+srcSelect -win $_nTrace1 -range {498 498 10 11 1 1}
+srcSearchString "wb_dat_i" -win $_nTrace1 -prev -case
+srcSelect -win $_nTrace1 -range {485 485 6 7 1 1}
+srcSearchString "wb_dat_i" -win $_nTrace1 -prev -case
+srcSelect -win $_nTrace1 -range {384 384 17 18 1 1}
+srcSearchString "wb_dat_i" -win $_nTrace1 -prev -case
+srcSelect -win $_nTrace1 -range {303 303 9 10 1 1}
+srcSearchString "wb_dat_i" -win $_nTrace1 -next -case
+srcSearchString "wb_dat_i" -win $_nTrace1 -next -case
+srcSearchString "wb_dat_i" -win $_nTrace1 -prev -case
+srcSelect -win $_nTrace1 -range {384 384 17 18 1 1}
+srcSearchString "wb_dat_i" -win $_nTrace1 -prev -case
+srcSelect -win $_nTrace1 -range {303 303 9 10 1 1}
+srcSearchString "wb_dat_i" -win $_nTrace1 -prev -case
+srcSelect -win $_nTrace1 -range {257 257 9 10 1 1}
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "wb_dat_i" -line 257 -pos 1 -win $_nTrace1
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl" -win \
+           $_nTrace1
+srcSetScope -win $_nTrace1 \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl" -delim "."
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl" -win \
+           $_nTrace1
+srcSearchString "wb_dat_i" -win $_nTrace1 -next -case
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "in_pwrite" -line 85 -pos 1 -win $_nTrace1
+wvSelectGroup -win $_nWave2 {G6}
+wvSetPosition -win $_nWave2 {("G6" 0)}
+wvCut -win $_nWave2
+wvSetPosition -win $_nWave2 {("G7" 0)}
+wvSetPosition -win $_nWave2 {("G4" 21)}
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "in_pwrite" -line 85 -pos 1 -win $_nTrace1
+srcSelect -signal "reg_dat8_w" -line 85 -pos 1 -win $_nTrace1
+srcSelect -signal "reg_dat8_w_reg" -line 85 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "in_pwrite" -line 85 -pos 1 -win $_nTrace1
+srcSearchString "in_pwrite" -win $_nTrace1 -prev -case
+srcSelect -win $_nTrace1 -range {43 43 21 22 1 1}
+srcSearchString "in_pwrite" -win $_nTrace1 -prev -case
+srcSelect -win $_nTrace1 -range {42 42 20 21 1 1}
+srcSearchString "in_pwrite" -win $_nTrace1 -prev -case
+srcSelect -win $_nTrace1 -range {41 41 2 2 54 63}
+srcSearchString "in_pwrite" -win $_nTrace1 -prev -case
+srcSelect -win $_nTrace1 -range {14 14 8 9 1 1}
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl" -win $_nTrace1
+srcSetScope -win $_nTrace1 "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl" -delim \
+           "."
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl" -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSearchString "in_pwrite" -win $_nTrace1 -next -case
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_apb_PWRITE" -line 3796 -pos 1 -win $_nTrace1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 0
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_apb_PWRITE" -line 3796 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvSelectSignal -win $_nWave2 {( "G4" 1 )} 
+wvSelectSignal -win $_nWave2 {( "G4" 1 2 )} 
+wvSelectSignal -win $_nWave2 {( "G4" 1 2 7 )} 
 wvSelectSignal -win $_nWave2 {( "G4" 4 )} 
 wvScrollDown -win $_nWave2 0
 wvScrollDown -win $_nWave2 0
 wvScrollDown -win $_nWave2 0
-wvScrollUp -win $_nWave2 1
-wvScrollDown -win $_nWave2 0
-wvScrollUp -win $_nWave2 1
-wvScrollDown -win $_nWave2 0
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 2
+wvSelectSignal -win $_nWave2 {( "G4" 22 )} 
+wvSetCursor -win $_nWave2 671150.672653 -snap {("G4" 23)}
 wvScrollUp -win $_nWave2 1
 wvScrollUp -win $_nWave2 1
 wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 3
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 4
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 3
-wvScrollUp -win $_nWave2 2
-wvScrollUp -win $_nWave2 2
-wvScrollUp -win $_nWave2 2
-wvScrollUp -win $_nWave2 2
-wvScrollUp -win $_nWave2 2
-wvScrollUp -win $_nWave2 3
-wvScrollUp -win $_nWave2 2
-wvScrollUp -win $_nWave2 2
-wvScrollUp -win $_nWave2 3
-wvScrollUp -win $_nWave2 2
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 5
-wvScrollUp -win $_nWave2 2
-wvScrollUp -win $_nWave2 3
-wvScrollUp -win $_nWave2 3
-wvScrollUp -win $_nWave2 2
-wvScrollUp -win $_nWave2 2
-wvScrollUp -win $_nWave2 3
-wvScrollUp -win $_nWave2 2
-wvScrollUp -win $_nWave2 2
-wvScrollUp -win $_nWave2 1
-wvZoom -win $_nWave2 2156899.269144 2212641.431470
 wvScrollDown -win $_nWave2 1
 wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvSelectSignal -win $_nWave2 {( "G3" 1 )} 
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvSelectSignal -win $_nWave2 {( "G3" 2 )} 
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvSelectSignal -win $_nWave2 {( "G4" 1 )} 
+srcDeselectAll -win $_nTrace1
+debReload
+wvZoomOut -win $_nWave2
 wvZoomOut -win $_nWave2
 wvZoomOut -win $_nWave2
 wvZoomOut -win $_nWave2
 wvZoomOut -win $_nWave2
 wvZoomIn -win $_nWave2
 wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 636275.848234 864955.287420
+wvZoom -win $_nWave2 663976.708135 708937.982261
+wvZoomOut -win $_nWave2
 wvZoomOut -win $_nWave2
 wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvZoomOut -win $_nWave2
 wvZoomIn -win $_nWave2
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvSelectSignal -win $_nWave2 {( "G3" 25 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 26 )} 
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvSetCursor -win $_nWave2 2175222.025278 -snap {("G3" 33)}
-wvSetCursor -win $_nWave2 2172257.248557 -snap {("G3" 7)}
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvSelectSignal -win $_nWave2 {( "G3" 2 )} 
-wvZoom -win $_nWave2 2154555.787545 2210799.345934
-wvSetCursor -win $_nWave2 2172966.369621 -snap {("G3" 2)}
+wvZoomOut -win $_nWave2
+wvSelectSignal -win $_nWave2 {( "G4" 23 )} 
+wvSelectSignal -win $_nWave2 {( "G4" 22 )} 
+wvSetCursor -win $_nWave2 674935.604848 -snap {("G4" 22)}
+wvZoom -win $_nWave2 669274.060020 695429.734953
+wvSetCursor -win $_nWave2 679039.102134 -snap {("G4" 24)}
 srcActiveTrace \
-           "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.dCache_1.cpu_cmd_valid" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 2171000 -TraceValue 1
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.reg_dat8_w_reg\[7:0\]" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 679000 -TraceValue \
+           00000000
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 661820.270477 713784.932458
+wvSelectSignal -win $_nWave2 {( "G4" 24 )} 
+wvSelectSignal -win $_nWave2 {( "G4" 23 )} 
+wvSelectSignal -win $_nWave2 {( "G4" 7 )} 
+wvSetCursor -win $_nWave2 675194.091804 -snap {("G4" 6)}
+wvSetCursor -win $_nWave2 674639.240848 -snap {("G4" 7)}
+wvSelectSignal -win $_nWave2 {( "G4" 17 )} 
+wvSelectSignal -win $_nWave2 {( "G4" 20 )} 
+wvSelectSignal -win $_nWave2 {( "G4" 22 )} 
+wvSelectSignal -win $_nWave2 {( "G4" 23 )} 
+wvSelectSignal -win $_nWave2 {( "G4" 19 )} 
+wvSelectSignal -win $_nWave2 {( "G4" 18 )} 
+wvSelectSignal -win $_nWave2 {( "G4" 17 )} 
+wvSelectSignal -win $_nWave2 {( "G4" 18 )} 
+wvSelectSignal -win $_nWave2 {( "G4" 19 )} 
+wvSelectSignal -win $_nWave2 {( "G4" 17 )} 
+wvSelectSignal -win $_nWave2 {( "G4" 18 )} 
+wvSelectSignal -win $_nWave2 {( "G4" 19 )} 
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs" -win \
+           $_nTrace1
+srcSetScope -win $_nTrace1 \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs" \
+           -delim "."
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs" -win \
+           $_nTrace1
+srcHBSelect \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter" \
+           -win $_nTrace1
+srcSetScope -win $_nTrace1 \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter" \
+           -delim "."
+srcHBSelect \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter" \
+           -win $_nTrace1
+srcHBSelect \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter.fifo_tx" \
+           -win $_nTrace1
+srcSetScope -win $_nTrace1 \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter.fifo_tx" \
+           -delim "."
+srcHBSelect \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter.fifo_tx" \
+           -win $_nTrace1
 srcDeselectAll -win $_nTrace1
-srcSelect -signal "memaccess_arbitration_isValid" -line 3277 -pos 1 -win \
-          $_nTrace1
-srcAction -pos 3276 22 10 -win $_nTrace1 -name "memaccess_arbitration_isValid" \
-          -ctrlKey off
+srcSelect -signal "push" -line 168 -pos 1 -win $_nTrace1
+srcSelect -signal "pop" -line 169 -pos 1 -win $_nTrace1
+srcSelect -signal "data_in" -line 170 -pos 1 -win $_nTrace1
+srcSelect -signal "fifo_reset" -line 171 -pos 1 -win $_nTrace1
+srcSelect -signal "reset_status" -line 172 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 0
+wvSetCursor -win $_nWave2 677049.972589 -snap {("G4" 26)}
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl" -win \
+           $_nTrace1
+srcSetScope -win $_nTrace1 \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl" -delim "."
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl" -win \
+           $_nTrace1
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl" -win $_nTrace1
+srcSetScope -win $_nTrace1 "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl" -delim \
+           "."
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl" -win $_nTrace1
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl" -win \
+           $_nTrace1
+srcSetScope -win $_nTrace1 \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl" -delim "."
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl" -win \
+           $_nTrace1
 srcDeselectAll -win $_nTrace1
-srcSelect -signal "execute_arbitration_isValid" -line 3618 -pos 1 -win $_nTrace1
-srcAction -pos 3617 5 8 -win $_nTrace1 -name "execute_arbitration_isValid" \
-          -ctrlKey off
+srcSelect -signal "uart_rx" -line 18 -pos 1 -win $_nTrace1
 srcDeselectAll -win $_nTrace1
-srcSelect -signal "decode_arbitration_isValid" -line 3611 -pos 1 -win $_nTrace1
-srcAction -pos 3610 5 8 -win $_nTrace1 -name "decode_arbitration_isValid" \
-          -ctrlKey off
+srcSelect -signal "uart_tx" -line 19 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 465309.491668 1780421.054962
+wvZoom -win $_nWave2 603793.257170 1183391.394601
+wvSetCursor -win $_nWave2 923681.919912 -snap {("G4" 31)}
+wvSelectSignal -win $_nWave2 {( "G4" 28 )} 
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 958893.146965 1042973.289141
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 662136.061954 757732.335532
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 506843.276701 1140960.531773
+wvZoom -win $_nWave2 651130.634445 780709.086789
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvZoom -win $_nWave2 1146448.562365 1193012.836845
+wvSetCursor -win $_nWave2 1161072.761972 -snap {("G4" 25)}
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 612879.582114 1210877.333902
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomIn -win $_nWave2
+wvZoomOut -win $_nWave2
+wvSelectSignal -win $_nWave2 {( "G4" 31 )} 
+wvSetCursor -win $_nWave2 723057.664534 -snap {("G4" 31)}
+wvZoom -win $_nWave2 604162.677065 1658364.899289
+wvSetCursor -win $_nWave2 808715.170110 -snap {("G4" 31)}
+srcActiveTrace "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.uart_tx" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 685000 -TraceValue 0
 srcDeselectAll -win $_nTrace1
-srcSelect -signal "fetch_arbitration_isValid" -line 3604 -pos 1 -win $_nTrace1
-wvScrollUp -win $_nWave2 16
-wvSetCursor -win $_nWave2 2172966.369621 -snap {("G1" 1)}
+srcSelect -signal "serial_out" -line 401 -pos 1 -win $_nTrace1
+srcAction -pos 400 14 3 -win $_nTrace1 -name "serial_out" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "lcr" -line 349 -pos 1 -win $_nTrace1
+srcSelect -win $_nTrace1 -range {349 351 7 1 2 1}
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "lcr" -line 349 -pos 1 -win $_nTrace1
+srcAction -pos 348 6 1 -win $_nTrace1 -name "lcr" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "lcr" -line 482 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 0
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 527877.401409 1804098.648344
+srcDeselectAll -win $_nTrace1
+srcBackwardHistory -win $_nTrace1
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs" -win \
+           $_nTrace1
+srcHBSelect \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter" \
+           -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "stx_pad_o" -line 349 -pos 1 -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "stx_pad_o" -line 349 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomIn -win $_nWave2
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "lcr" -line 349 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvSelectSignal -win $_nWave2 {( "G4" 34 )} 
+wvCut -win $_nWave2
+wvSetPosition -win $_nWave2 {("G7" 0)}
+wvSetPosition -win $_nWave2 {("G4" 33)}
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "stx_o_tmp" -line 349 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "stx_o_tmp" -line 349 -pos 1 -win $_nTrace1
+srcAction -pos 348 21 4 -win $_nTrace1 -name "stx_o_tmp" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "tstate" -line 290 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvSelectSignal -win $_nWave2 {( "G4" 35 )} 
+wvSelectSignal -win $_nWave2 {( "G4" 35 )} 
+wvSetRadix -win $_nWave2 -format Bin
+wvZoomOut -win $_nWave2
+wvZoomIn -win $_nWave2
+wvZoom -win $_nWave2 677581.383682 792704.434307
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 546622.555548 1304162.747293
+wvSelectSignal -win $_nWave2 {( "G4" 13 )} 
+wvSelectAll -win $_nWave2
+wvCut -win $_nWave2
+wvSetPosition -win $_nWave2 {("G4" 0)}
+wvSelectGroup -win $_nWave2 {G7}
+wvCut -win $_nWave2
+wvSetPosition -win $_nWave2 {("G4" 0)}
+wvSelectGroup -win $_nWave2 {G4}
+wvCut -win $_nWave2
+wvSetPosition -win $_nWave2 {("G5" 0)}
+wvSelectGroup -win $_nWave2 {G5}
+wvCut -win $_nWave2
+wvSetPosition -win $_nWave2 {("G1" 0)}
+wvCut -win $_nWave2
+wvSetPosition -win $_nWave2 {("G2" 0)}
+wvCut -win $_nWave2
+wvSetPosition -win $_nWave2 {("G1" 0)}
+wvCut -win $_nWave2
+wvSetPosition -win $_nWave2 {("G1" 0)}
+srcHBSelect \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter" \
+           -win $_nTrace1
+srcSetScope -win $_nTrace1 \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter" \
+           -delim "."
+srcHBSelect \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter" \
+           -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -win $_nTrace1 -range {160 189 2 1 28 1}
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvSelectSignal -win $_nWave2 {( "G1" 3 )} 
+wvZoom -win $_nWave2 629238.097414 910387.034557
+wvZoom -win $_nWave2 665986.209596 724886.704896
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 606527.633484 1147128.350286
+wvSelectSignal -win $_nWave2 {( "G1" 4 )} 
+wvSetCursor -win $_nWave2 675595.545388 -snap {("G1" 4)}
+wvSetCursor -win $_nWave2 683358.221365 -snap {("G1" 17)}
+wvSelectSignal -win $_nWave2 {( "G1" 6 )} 
+wvSelectSignal -win $_nWave2 {( "G1" 12 )} 
+wvSelectSignal -win $_nWave2 {( "G1" 9 )} 
+wvSelectSignal -win $_nWave2 {( "G1" 8 )} 
+wvSelectSignal -win $_nWave2 {( "G1" 7 )} 
+wvSelectSignal -win $_nWave2 {( "G1" 8 )} 
+wvSetCursor -win $_nWave2 844981.116079 -snap {("G1" 8)}
 srcActiveTrace \
-           "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.fetch_arbitration_isValid" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 2155000 -TraceValue 1
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter.lsr_mask" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 657000 -TraceValue 0
 srcDeselectAll -win $_nTrace1
-srcSelect -signal "fetch_FetchPlugin_fifo_all_valid" -line 1779 -pos 1 -win \
-          $_nTrace1
-srcSelect -signal "fetch_arbitration_isStuck" -line 1779 -pos 1 -win $_nTrace1
-srcSelect -signal "fetch_FetchPlugin_fetch_flush" -line 1779 -pos 1 -win \
-          $_nTrace1
+srcSelect -signal "lsr_mask_condition" -line 460 -pos 1 -win $_nTrace1
+srcSelect -signal "lsr_mask_d" -line 460 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomIn -win $_nWave2
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "lsr_mask_condition" -line 460 -pos 1 -win $_nTrace1
+srcAction -pos 459 6 9 -win $_nTrace1 -name "lsr_mask_condition" -ctrlKey off
+wvZoomOut -win $_nWave2
+wvZoomIn -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 460187.355392 1275467.376017
+wvSetCursor -win $_nWave2 842012.166230 -snap {("G1" 22)}
+srcActiveTrace \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.lsr_mask_condition" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 657000 -TraceValue 0
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "wb_re_i" -line 444 -pos 1 -win $_nTrace1
+srcSelect -signal "wb_addr_i" -line 444 -pos 1 -win $_nTrace1
+srcSelect -signal "dlab" -line 444 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvZoom -win $_nWave2 825502.445635 909251.755560
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomIn -win $_nWave2
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl" -win $_nTrace1
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl" -win \
+           $_nTrace1
+srcSetScope -win $_nTrace1 \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl" -delim "."
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl" -win \
+           $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -win $_nTrace1 -range {8 19 7 10 8 2}
 wvSetPosition -win $_nWave2 {("G1" 0)}
 wvSetPosition -win $_nWave2 {("G1" 1)}
 wvSetPosition -win $_nWave2 {("G1" 2)}
+wvSetPosition -win $_nWave2 {("G1" 3)}
+wvSetPosition -win $_nWave2 {("G1" 4)}
+wvSetPosition -win $_nWave2 {("G1" 5)}
+wvSetPosition -win $_nWave2 {("G1" 6)}
+wvSetPosition -win $_nWave2 {("G1" 7)}
 wvSetPosition -win $_nWave2 {("G1" 8)}
+wvSetPosition -win $_nWave2 {("G1" 9)}
 wvSetPosition -win $_nWave2 {("G1" 10)}
 wvSetPosition -win $_nWave2 {("G1" 11)}
-wvSetPosition -win $_nWave2 {("G4" 2)}
-wvSetPosition -win $_nWave2 {("G2" 4)}
-wvSetPosition -win $_nWave2 {("G2" 3)}
-wvSetPosition -win $_nWave2 {("G2" 2)}
-wvSetPosition -win $_nWave2 {("G2" 1)}
-wvSetPosition -win $_nWave2 {("G2" 0)}
+wvSetPosition -win $_nWave2 {("G1" 12)}
+wvSetPosition -win $_nWave2 {("G1" 13)}
+wvSetPosition -win $_nWave2 {("G1" 14)}
 wvSetPosition -win $_nWave2 {("G1" 15)}
+wvSetPosition -win $_nWave2 {("G1" 16)}
+wvSetPosition -win $_nWave2 {("G1" 17)}
+wvSetPosition -win $_nWave2 {("G1" 18)}
+wvSetPosition -win $_nWave2 {("G1" 19)}
+wvSetPosition -win $_nWave2 {("G1" 20)}
+wvSetPosition -win $_nWave2 {("G1" 21)}
+wvSetPosition -win $_nWave2 {("G1" 22)}
+wvSetPosition -win $_nWave2 {("G1" 23)}
+wvSetPosition -win $_nWave2 {("G1" 24)}
+wvSetPosition -win $_nWave2 {("G1" 25)}
+wvSetPosition -win $_nWave2 {("G1" 26)}
 wvSetPosition -win $_nWave2 {("G2" 0)}
-wvSetPosition -win $_nWave2 {("G2" 1)}
-wvSetPosition -win $_nWave2 {("G2" 2)}
-wvSetPosition -win $_nWave2 {("G2" 3)}
-wvSetPosition -win $_nWave2 {("G2" 4)}
-wvSetPosition -win $_nWave2 {("G2" 5)}
-wvSetPosition -win $_nWave2 {("G2" 6)}
+wvAddSignal -win $_nWave2 \
+           "/tb_DandSocSimple/u_DandSocSimple/axi_uartCtrl/uartCtrl/in_psel" \
+           "/tb_DandSocSimple/u_DandSocSimple/axi_uartCtrl/uartCtrl/in_penable" \
+           "/tb_DandSocSimple/u_DandSocSimple/axi_uartCtrl/uartCtrl/in_pprot\[2:0\]" \
+           "/tb_DandSocSimple/u_DandSocSimple/axi_uartCtrl/uartCtrl/in_pready" \
+           "/tb_DandSocSimple/u_DandSocSimple/axi_uartCtrl/uartCtrl/in_pslverr" \
+           "/tb_DandSocSimple/u_DandSocSimple/axi_uartCtrl/uartCtrl/in_paddr\[31:0\]" \
+           "/tb_DandSocSimple/u_DandSocSimple/axi_uartCtrl/uartCtrl/in_pwrite" \
+           "/tb_DandSocSimple/u_DandSocSimple/axi_uartCtrl/uartCtrl/in_prdata\[31:0\]" \
+           "/tb_DandSocSimple/u_DandSocSimple/axi_uartCtrl/uartCtrl/in_pwdata\[31:0\]" \
+           "/tb_DandSocSimple/u_DandSocSimple/axi_uartCtrl/uartCtrl/in_pstrb\[3:0\]" \
+           "/tb_DandSocSimple/u_DandSocSimple/axi_uartCtrl/uartCtrl/uart_rx" \
+           "/tb_DandSocSimple/u_DandSocSimple/axi_uartCtrl/uartCtrl/uart_tx"
+wvSetPosition -win $_nWave2 {("G2" 0)}
+wvSetPosition -win $_nWave2 {("G2" 12)}
+wvSetPosition -win $_nWave2 {("G2" 12)}
+wvSetCursor -win $_nWave2 844188.779146 -snap {("G2" 2)}
+wvZoom -win $_nWave2 835308.145398 858249.782579
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvSelectSignal -win $_nWave2 {( "G2" 4 )} 
+wvSelectSignal -win $_nWave2 {( "G1" 12 )} 
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 575196.511590 1773162.178587
+wvZoom -win $_nWave2 859691.303642 1164916.723952
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvSelectSignal -win $_nWave2 {( "G1" 10 )} 
+wvZoom -win $_nWave2 636503.643578 1280219.110270
+wvZoomOut -win $_nWave2
+wvSelectSignal -win $_nWave2 {( "G2" 4 )} 
+wvSelectSignal -win $_nWave2 {( "G1" 12 )} 
+wvZoom -win $_nWave2 620861.073327 1130903.666965
+wvZoom -win $_nWave2 711001.148785 924896.036176
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 672569.372259 917493.193977
+wvZoomOut -win $_nWave2
+wvSelectSignal -win $_nWave2 {( "G1" 9 )} 
+wvSelectSignal -win $_nWave2 {( "G1" 12 )} 
+wvZoom -win $_nWave2 663551.558499 929035.995589
+wvSetCursor -win $_nWave2 715064.923133 -snap {("G1" 12)}
+wvSetCursor -win $_nWave2 747321.868729 -snap {("G1" 12)}
+wvSetCursor -win $_nWave2 779285.569366 -snap {("G1" 12)}
+wvSetCursor -win $_nWave2 810956.025042 -snap {("G1" 12)}
+wvSetCursor -win $_nWave2 845167.937038 -snap {("G1" 9)}
+wvSelectSignal -win $_nWave2 {( "G2" 4 )} 
+wvSetCursor -win $_nWave2 844776.943758 -snap {("G2" 4)}
+srcActiveTrace "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.in_pready" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 677000 -TraceValue 0
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "in_penable" -line 39 -pos 1 -win $_nTrace1
+srcAction -pos 38 11 3 -win $_nTrace1 -name "in_penable" -ctrlKey off
+srcBackwardHistory -win $_nTrace1
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.apb3Router_1" -win $_nTrace1
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl" -win \
+           $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "in_psel" -line 39 -pos 1 -win $_nTrace1
+srcSelect -signal "in_penable" -line 39 -pos 1 -win $_nTrace1
+wvSetPosition -win $_nWave2 {("G1" 2)}
+wvSetPosition -win $_nWave2 {("G1" 3)}
+wvSetPosition -win $_nWave2 {("G1" 5)}
+wvSetPosition -win $_nWave2 {("G1" 6)}
+wvSetPosition -win $_nWave2 {("G1" 9)}
+wvSetPosition -win $_nWave2 {("G1" 11)}
+wvSetPosition -win $_nWave2 {("G1" 13)}
+wvSetPosition -win $_nWave2 {("G1" 18)}
+wvSetPosition -win $_nWave2 {("G1" 26)}
+wvSetPosition -win $_nWave2 {("G2" 12)}
+wvSetPosition -win $_nWave2 {("G2" 11)}
+wvSetPosition -win $_nWave2 {("G2" 12)}
+wvAddSignal -win $_nWave2 \
+           "/tb_DandSocSimple/u_DandSocSimple/axi_uartCtrl/uartCtrl/in_psel" \
+           "/tb_DandSocSimple/u_DandSocSimple/axi_uartCtrl/uartCtrl/in_penable"
+wvSetPosition -win $_nWave2 {("G2" 12)}
+wvSetPosition -win $_nWave2 {("G2" 14)}
+wvSelectSignal -win $_nWave2 {( "G2" 13 )} 
+wvSelectSignal -win $_nWave2 {( "G2" 13 14 )} 
+wvSetCursor -win $_nWave2 843506.215599 -snap {("G2" 13)}
+srcActiveTrace "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.in_psel" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 843000 -TraceValue 1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_input_PSEL\[0\]" -line 1646 -pos 1 -win $_nTrace1
+srcAction -pos 1645 7 8 -win $_nTrace1 -name "io_input_PSEL\[0\]" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcBackwardHistory -win $_nTrace1
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.io_apb_decoder" -win $_nTrace1
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.apb3Router_1" -win $_nTrace1
+srcBackwardHistory -win $_nTrace1
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.apb3Router_1" -win $_nTrace1
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl" -win \
+           $_nTrace1
+srcHBSelect "tb_DandSocSimple" -win $_nTrace1
+srcSetScope -win $_nTrace1 "tb_DandSocSimple" -delim "."
+srcHBSelect "tb_DandSocSimple" -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -win $_nTrace1 -signal \
+          "tb_DandSocSimple.u_DandSocSimple.core_cpu.writeback_PC\[63:0\]" \
+          -line 53 -pos 1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+srcDeselectAll -win $_nTrace1
+srcSelect -win $_nTrace1 -signal \
+          "tb_DandSocSimple.u_DandSocSimple.core_cpu.writeback_PC\[63:0\]" \
+          -line 53 -pos 1
+srcDeselectAll -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -win $_nTrace1 -signal \
+          "tb_DandSocSimple.u_DandSocSimple.core_cpu.writeback_PC\[63:0\]" \
+          -line 53 -pos 1
+srcAction -pos 52 6 4 -win $_nTrace1 -name \
+          "tb_DandSocSimple.u_DandSocSimple.core_cpu.writeback_PC\[63:0\]" \
+          -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "memaccess_to_writeback_PC" -line 6389 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+srcDeselectAll -win $_nTrace1
+debReload
+srcDeselectAll -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcHBSelect "tb_DandSocSimple" -win $_nTrace1
+srcSetScope -win $_nTrace1 "tb_DandSocSimple" -delim "."
+srcHBSelect "tb_DandSocSimple" -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -win $_nTrace1 -signal \
+          "tb_DandSocSimple.u_DandSocSimple.core_cpu.writeback_arbitration_isFiring" \
+          -line 52 -pos 1
+srcDeselectAll -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -win $_nTrace1 -signal \
+          "tb_DandSocSimple.u_DandSocSimple.core_cpu.writeback_PC\[63:0\]" \
+          -line 53 -pos 1
+srcSelect -signal "instrCnt" -line 53 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvZoom -win $_nWave2 672055.662338 698154.463775
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 657660.962576 752062.518290
+wvZoom -win $_nWave2 673753.716735 704479.407181
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 631918.811261 1006238.268355
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 4352910.800027 4926242.516343
+wvZoom -win $_nWave2 4548595.078755 4667652.180376
+wvZoom -win $_nWave2 4593088.067762 4643849.527142
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvZoomOut -win $_nWave2
+wvZoomIn -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 4624486.908615 4641793.650657
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomIn -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomIn -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomIn -win $_nWave2
+wvZoomIn -win $_nWave2
+wvSetCursor -win $_nWave2 4632936.371040 -snap {("G2" 15)}
+srcActiveTrace "tb_DandSocSimple.u_DandSocSimple.core_cpu.writeback_PC\[63:0\]" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 4631000 -TraceValue \
+           0000000000000000000000000000000000110000000000000000000001000100
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "memaccess_to_writeback_PC" -line 6389 -pos 1 -win $_nTrace1
+srcAction -pos 6388 7 2 -win $_nTrace1 -name "memaccess_to_writeback_PC" -ctrlKey \
+          off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "decode_PC_NEXT" -line 8447 -pos 1 -win $_nTrace1
+srcAction -pos 8446 5 7 -win $_nTrace1 -name "decode_PC_NEXT" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "fetch_to_decode_PC_NEXT" -line 6384 -pos 1 -win $_nTrace1
+srcAction -pos 6383 7 3 -win $_nTrace1 -name "fetch_to_decode_PC_NEXT" -ctrlKey \
+          off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "fetch_PC_NEXT" -line 8444 -pos 1 -win $_nTrace1
+srcAction -pos 8443 5 4 -win $_nTrace1 -name "fetch_PC_NEXT" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "fetch_FetchPlugin_pc_stream_fifo_next_payload" -line 6385 -pos \
+          1 -win $_nTrace1
+srcAction -pos 6384 7 6 -win $_nTrace1 -name \
+          "fetch_FetchPlugin_pc_stream_fifo_next_payload" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "_zz_next_payload" -line 64714 -pos 1 -win $_nTrace1
+srcAction -pos 64713 7 5 -win $_nTrace1 -name "_zz_next_payload" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "fifo_ram_1" -line 64697 -pos 1 -win $_nTrace1
+srcAction -pos 64696 9 1 -win $_nTrace1 -name "fifo_ram_1" -ctrlKey off
+srcHBSelect \
+           "tb_DandSocSimple.u_DandSocSimple.core_cpu.fetch_FetchPlugin_pc_stream_fifo" \
+           -win $_nTrace1
+srcSetScope -win $_nTrace1 \
+           "tb_DandSocSimple.u_DandSocSimple.core_cpu.fetch_FetchPlugin_pc_stream_fifo" \
+           -delim "."
+srcHBSelect \
+           "tb_DandSocSimple.u_DandSocSimple.core_cpu.fetch_FetchPlugin_pc_stream_fifo" \
+           -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "ports_s_ports_payload" -line 64650 -pos 1 -win $_nTrace1
+srcAction -pos 64649 9 10 -win $_nTrace1 -name "ports_s_ports_payload" -ctrlKey \
+          off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "pc_next" -line 6532 -pos 1 -win $_nTrace1
+srcAction -pos 6531 7 2 -win $_nTrace1 -name "pc_next" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "pc_next" -line 8250 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvZoom -win $_nWave2 4627902.377588 4639474.190382
+wvZoomOut -win $_nWave2
+wvSetCursor -win $_nWave2 4629044.220677 -snap {("G2" 17)}
+srcActiveTrace "tb_DandSocSimple.u_DandSocSimple.core_cpu.pc_next\[63:0\]" -win \
+           $_nTrace1 -TraceByDConWave -TraceTime 4629000 -TraceValue \
+           0010000000100000001000000010000000000000000000000000000000000000
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "when_FetchPlugin_l97" -line 8243 -pos 1 -win $_nTrace1
+srcSelect -signal "_zz_pc_next" -line 8244 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 0
+wvSetCursor -win $_nWave2 4627024.692229 -snap {("G2" 18)}
+srcActiveTrace "tb_DandSocSimple.u_DandSocSimple.core_cpu.when_FetchPlugin_l97" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 4627000 -TraceValue 1
+wvZoomOut -win $_nWave2
+wvZoomIn -win $_nWave2
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "execute_REDIRECT_VALID" -line 6444 -pos 1 -win $_nTrace1
+srcAction -pos 6443 7 7 -win $_nTrace1 -name "execute_REDIRECT_VALID" -ctrlKey \
+          off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "execute_ALUPlugin_redirect_valid" -line 6337 -pos 1 -win \
+          $_nTrace1
+srcAction -pos 6336 7 4 -win $_nTrace1 -name "execute_ALUPlugin_redirect_valid" \
+          -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "execute_ALUPlugin_branch_or_jump" -line 7434 -pos 1 -win \
+          $_nTrace1
+srcSelect -signal "execute_ALUPlugin_branch_taken" -line 7435 -pos 1 -win \
+          $_nTrace1
+srcSelect -signal "when_AluPlugin_l234" -line 7436 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "when_AluPlugin_l234" -line 7436 -pos 1 -win $_nTrace1
+srcAction -pos 7435 3 10 -win $_nTrace1 -name "when_AluPlugin_l234" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "execute_PREDICT_TAKEN" -line 7600 -pos 1 -win $_nTrace1
+srcSelect -signal "execute_PC_NEXT" -line 7600 -pos 1 -win $_nTrace1
+srcSelect -signal "execute_ALUPlugin_pc_next" -line 7600 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvSetCursor -win $_nWave2 4627024.692229 -snap {("G2" 25)}
+srcActiveTrace \
+           "tb_DandSocSimple.u_DandSocSimple.core_cpu.execute_ALUPlugin_pc_next\[63:0\]" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 4627000 -TraceValue \
+           0010000000100000001000000010000000000000000000000000000000000000
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "when_AluPlugin_l226" -line 7593 -pos 1 -win $_nTrace1
+srcSelect -signal "_zz_execute_ALUPlugin_pc_next" -line 7594 -pos 1 -win \
+          $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 0
+wvSetCursor -win $_nWave2 4627101.383182 -snap {("G2" 27)}
+srcActiveTrace \
+           "tb_DandSocSimple.u_DandSocSimple.core_cpu._zz_execute_ALUPlugin_pc_next\[63:0\]" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 4627000 -TraceValue \
+           0010000000100000001000000010000000000000000000000000000000000000
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "_zz_execute_ALUPlugin_pc_next_1" -line 6022 -pos 1 -win \
+          $_nTrace1
+srcSelect -signal "_zz_execute_ALUPlugin_pc_next_4" -line 6022 -pos 1 -win \
+          $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvSetCursor -win $_nWave2 4627016.171012 -snap {("G2" 28)}
+srcActiveTrace \
+           "tb_DandSocSimple.u_DandSocSimple.core_cpu._zz_execute_ALUPlugin_pc_next_1\[63:0\]" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 4619000 -TraceValue \
+           0000000000000000000000000000000010000000000011111111111111110000
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "_zz_execute_ALUPlugin_pc_next_2" -line 6023 -pos 1 -win \
+          $_nTrace1
+srcSelect -signal "_zz_execute_ALUPlugin_pc_next_3" -line 6023 -pos 1 -win \
+          $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvSetCursor -win $_nWave2 4627007.649795 -snap {("G2" 30)}
+srcActiveTrace \
+           "tb_DandSocSimple.u_DandSocSimple.core_cpu._zz_execute_ALUPlugin_pc_next_2\[63:0\]" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 4609000 -TraceValue \
+           0000000000000000000000000000000010000000000011111111111111100000
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "execute_ALUPlugin_branch_src1" -line 6024 -pos 1 -win \
+          $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvSetCursor -win $_nWave2 4627050.255880 -snap {("G2" 32)}
+srcActiveTrace \
+           "tb_DandSocSimple.u_DandSocSimple.core_cpu.execute_ALUPlugin_branch_src1\[63:0\]" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 4627000 -TraceValue \
+           0010000000100000001000000010000000000000000000000000000000000000
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 0
+srcSearchString "excute_INS" -win $_nTrace1 -next -case
+srcSearchString "excute_INS" -win $_nTrace1 -next -case
+srcSearchString "excute_INS" -win $_nTrace1 -prev -case
+srcDeselectAll -win $_nTrace1
+srcSearchString "execute_INS" -win $_nTrace1 -next -case
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "execute_INSTRUCTION" -line 8456 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+srcSearchString "execute_PC" -win $_nTrace1 -next -case
+srcSearchString "execute_PC" -win $_nTrace1 -next -case
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "execute_PC" -line 5401 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+srcSearchString "execute_PC" -win $_nTrace1 -prev -case
+srcSelect -win $_nTrace1 -range {5377 5377 10 10 1 11}
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "execute_PC_NEXT" -line 5377 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 0
+wvSelectSignal -win $_nWave2 {( "G2" 34 )} 
+wvSelectSignal -win $_nWave2 {( "G2" 33 )} 
+wvSelectSignal -win $_nWave2 {( "G2" 32 )} 
+wvSetCursor -win $_nWave2 4627075.819531 -snap {("G2" 32)}
+srcActiveTrace \
+           "tb_DandSocSimple.u_DandSocSimple.core_cpu.execute_ALUPlugin_branch_src1\[63:0\]" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 4627000 -TraceValue \
+           0010000000100000001000000010000000000000000000000000000000000000
+wvSelectSignal -win $_nWave2 {( "G2" 32 33 )} 
+wvSelectSignal -win $_nWave2 {( "G2" 32 33 34 )} 
+wvSelectSignal -win $_nWave2 {( "G2" 32 33 34 35 )} 
+wvSetPosition -win $_nWave2 {("G2" 32)}
+wvSetPosition -win $_nWave2 {("G2" 33)}
+wvSetPosition -win $_nWave2 {("G2" 34)}
+wvSetPosition -win $_nWave2 {("G2" 35)}
+wvSetPosition -win $_nWave2 {("G3" 0)}
+wvMoveSelected -win $_nWave2
+wvSetPosition -win $_nWave2 {("G3" 4)}
+wvSetPosition -win $_nWave2 {("G3" 4)}
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvSelectSignal -win $_nWave2 {( "G2" 16 )} 
+wvSelectSignal -win $_nWave2 {( "G2" 17 )} 
+wvSelectSignal -win $_nWave2 {( "G2" 18 )} 
+wvSelectSignal -win $_nWave2 {( "G2" 18 19 )} 
+wvSelectSignal -win $_nWave2 {( "G2" 18 19 20 )} 
+wvSelectSignal -win $_nWave2 {( "G2" 18 19 )} 
+wvSelectSignal -win $_nWave2 {( "G2" 18 19 20 )} 
+wvSelectSignal -win $_nWave2 {( "G2" 18 19 20 21 )} 
+wvSelectSignal -win $_nWave2 {( "G2" 18 19 20 21 22 )} 
+wvSelectSignal -win $_nWave2 {( "G2" 18 19 20 21 22 23 )} 
+wvSelectSignal -win $_nWave2 {( "G2" 18 19 20 21 22 23 24 )} 
+wvSelectSignal -win $_nWave2 {( "G2" 18 19 20 21 22 23 24 25 )} 
+wvSelectSignal -win $_nWave2 {( "G2" 18 19 20 21 22 23 24 25 26 )} 
+wvSelectSignal -win $_nWave2 {( "G2" 18 19 20 21 22 23 24 25 26 27 )} 
+wvSelectSignal -win $_nWave2 {( "G2" 18 19 20 21 22 23 24 25 26 27 28 )} 
+wvSelectSignal -win $_nWave2 {( "G2" 18 19 20 21 22 23 24 25 26 27 28 29 )} 
+wvSelectSignal -win $_nWave2 {( "G2" 18 19 20 21 22 23 24 25 26 27 28 29 30 )} \
+           
+wvSelectSignal -win $_nWave2 {( "G2" 18 19 20 21 22 23 24 25 26 27 28 29 30 31 \
+           )} 
+wvCut -win $_nWave2
+wvSetPosition -win $_nWave2 {("G3" 4)}
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvSetCursor -win $_nWave2 4627058.777097 -snap {("G3" 4)}
+srcActiveTrace \
+           "tb_DandSocSimple.u_DandSocSimple.core_cpu.execute_PC_NEXT\[63:0\]" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 4627000 -TraceValue \
+           0000000000000000000000000000000000110000000000000000000001001000
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvZoomOut -win $_nWave2
+wvZoomIn -win $_nWave2
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvSelectSignal -win $_nWave2 {( "G3" 2 )} 
+wvSelectSignal -win $_nWave2 {( "G3" 3 )} 
+wvSelectSignal -win $_nWave2 {( "G3" 4 )} 
+wvSelectSignal -win $_nWave2 {( "G3" 1 )} 
+wvSetCursor -win $_nWave2 4627084.340748 -snap {("G3" 1)}
+srcActiveTrace \
+           "tb_DandSocSimple.u_DandSocSimple.core_cpu.execute_ALUPlugin_branch_src1\[63:0\]" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 4627000 -TraceValue \
+           0010000000100000001000000010000000000000000000000000000000000000
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "execute_RS1" -line 7503 -pos 1 -win $_nTrace1
+srcAction -pos 7502 5 6 -win $_nTrace1 -name "execute_RS1" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "execute_RS1" -line 6426 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvSetCursor -win $_nWave2 4627024.692229 -snap {("G3" 5)}
+srcActiveTrace "tb_DandSocSimple.u_DandSocSimple.core_cpu.execute_RS1\[63:0\]" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 4627000 -TraceValue \
+           0010000000100000001000000010000000000000000000000000000000000000
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "decode_to_execute_RS1" -line 6426 -pos 1 -win $_nTrace1
+srcAction -pos 6425 7 10 -win $_nTrace1 -name "decode_to_execute_RS1" -ctrlKey \
+          off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "decode_RS1" -line 8471 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvZoomOut -win $_nWave2
+wvZoomIn -win $_nWave2
+wvSetCursor -win $_nWave2 4625005.163781 -snap {("G3" 6)}
+srcActiveTrace "tb_DandSocSimple.u_DandSocSimple.core_cpu.decode_RS1\[63:0\]" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 4619000 -TraceValue \
+           0000000000000000000000000000000000110000000000000000000000110000
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "decode_DecodePlugin_rs1" -line 6373 -pos 1 -win $_nTrace1
+srcAction -pos 6372 7 4 -win $_nTrace1 -name "decode_DecodePlugin_rs1" -ctrlKey \
+          off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "regFileModule_1_read_ports_rs1_value" -line 7127 -pos 1 -win \
+          $_nTrace1
+srcAction -pos 7126 7 8 -win $_nTrace1 -name \
+          "regFileModule_1_read_ports_rs1_value" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "write_ports_rd_wen" -line 55335 -pos 1 -win $_nTrace1
+srcSelect -signal "write_ports_rd_addr" -line 55335 -pos 1 -win $_nTrace1
+srcSelect -signal "read_ports_rs1_addr" -line 55335 -pos 1 -win $_nTrace1
+srcSelect -signal "write_ports_rd_addr" -line 55335 -pos 2 -win $_nTrace1
+srcSelect -signal "read_ports_rs1_req" -line 55335 -pos 1 -win $_nTrace1
+srcSelect -signal "write_ports_rd_value" -line 55335 -pos 1 -win $_nTrace1
+srcSelect -signal "read_value_1" -line 55335 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomIn -win $_nWave2
+wvZoomIn -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 4622525.489611 4649640.002358
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvSetCursor -win $_nWave2 4627079.849226 -snap {("G3" 1)}
+wvSetCursor -win $_nWave2 4625073.215550 -snap {("G3" 6)}
+wvSelectSignal -win $_nWave2 {( "G2" 15 )} {( "G3" 7 8 9 10 11 12 )} 
+wvSelectSignal -win $_nWave2 {( "G2" 15 16 )} {( "G3" 7 8 9 10 11 12 )} 
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.core_cpu" -win $_nTrace1
+srcSetScope -win $_nTrace1 "tb_DandSocSimple.u_DandSocSimple.core_cpu" -delim "."
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.core_cpu" -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -win $_nTrace1 -range {5071 5084 5 1 9 1}
+wvSetPosition -win $_nWave2 {("G1" 16)}
+wvSetPosition -win $_nWave2 {("G1" 17)}
+wvSetPosition -win $_nWave2 {("G2" 11)}
+wvSetPosition -win $_nWave2 {("G2" 12)}
+wvSetPosition -win $_nWave2 {("G2" 13)}
+wvSetPosition -win $_nWave2 {("G2" 14)}
+wvSetPosition -win $_nWave2 {("G2" 15)}
+wvSetPosition -win $_nWave2 {("G2" 16)}
+wvSetPosition -win $_nWave2 {("G2" 17)}
+wvAddSignal -win $_nWave2 \
+           "/tb_DandSocSimple/u_DandSocSimple/core_cpu/dcache_ar_valid" \
+           "/tb_DandSocSimple/u_DandSocSimple/core_cpu/dcache_ar_ready" \
+           "/tb_DandSocSimple/u_DandSocSimple/core_cpu/dcache_ar_payload_addr\[63:0\]" \
+           "/tb_DandSocSimple/u_DandSocSimple/core_cpu/dcache_ar_payload_id\[1:0\]" \
+           "/tb_DandSocSimple/u_DandSocSimple/core_cpu/dcache_ar_payload_len\[7:0\]" \
+           "/tb_DandSocSimple/u_DandSocSimple/core_cpu/dcache_ar_payload_size\[2:0\]" \
+           "/tb_DandSocSimple/u_DandSocSimple/core_cpu/dcache_ar_payload_burst\[1:0\]" \
+           "/tb_DandSocSimple/u_DandSocSimple/core_cpu/dcache_r_valid" \
+           "/tb_DandSocSimple/u_DandSocSimple/core_cpu/dcache_r_ready" \
+           "/tb_DandSocSimple/u_DandSocSimple/core_cpu/dcache_r_payload_data\[63:0\]" \
+           "/tb_DandSocSimple/u_DandSocSimple/core_cpu/dcache_r_payload_id\[1:0\]" \
+           "/tb_DandSocSimple/u_DandSocSimple/core_cpu/dcache_r_payload_resp\[1:0\]" \
+           "/tb_DandSocSimple/u_DandSocSimple/core_cpu/dcache_r_payload_last"
+wvSetPosition -win $_nWave2 {("G2" 17)}
+wvSetPosition -win $_nWave2 {("G2" 30)}
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 4599426.240864 4732003.828964
+wvZoom -win $_nWave2 4612459.457367 4662835.035761
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 4605893.568283 4651558.028521
+wvZoom -win $_nWave2 4611509.153599 4647506.064266
+wvZoomOut -win $_nWave2
+wvZoomIn -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 4609653.642740 4645411.987725
+srcDeselectAll -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+wvSetCursor -win $_nWave2 4614933.133292 -snap {("G2" 30)}
+srcActiveTrace "tb_DandSocSimple.u_DandSocSimple.core_cpu.dcache_r_payload_last" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 4561000 -TraceValue x
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomIn -win $_nWave2
+wvZoomIn -win $_nWave2
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "errorSlave_io_axi_r_payload_last" -line 3741 -pos 1 -win \
+          $_nTrace1
+srcAction -pos 3740 5 6 -win $_nTrace1 -name "errorSlave_io_axi_r_payload_last" \
+          -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcAction -pos 9386 7 4 -win $_nTrace1 -name "2'b11" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "remainingZero" -line 9388 -pos 1 -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "remainingZero" -line 9388 -pos 1 -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "remainingZero" -line 9388 -pos 1 -win $_nTrace1
+srcAction -pos 9387 7 3 -win $_nTrace1 -name "remainingZero" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "remaining" -line 9382 -pos 1 -win $_nTrace1
+srcAction -pos 9381 8 4 -win $_nTrace1 -name "remaining" -ctrlKey off
+wvZoomOut -win $_nWave2
+wvZoomIn -win $_nWave2
+wvZoom -win $_nWave2 4608837.362405 4643147.468086
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvCut -win $_nWave2
+wvSetPosition -win $_nWave2 {("G3" 12)}
+wvSetPosition -win $_nWave2 {("G2" 17)}
+wvScrollUp -win $_nWave2 8
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 582109.598593 2276695.318943
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvSelectSignal -win $_nWave2 {( "G2" 13 )} 
+wvSetCursor -win $_nWave2 839167.520826 -snap {("G2" 13)}
+wvZoom -win $_nWave2 616425.583357 1076259.779196
+wvZoomOut -win $_nWave2
+wvZoomIn -win $_nWave2
+wvZoom -win $_nWave2 672127.148317 910340.223997
+wvZoom -win $_nWave2 678968.319121 709841.295056
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 655120.195589 888463.512965
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 624362.865832 900147.861699
+wvZoom -win $_nWave2 808557.999301 864507.017241
+wvSelectSignal -win $_nWave2 {( "G2" 15 )} 
+wvSelectSignal -win $_nWave2 {( "G2" 15 16 )} 
+wvSelectSignal -win $_nWave2 {( "G2" 15 )} 
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 587687.097113 1040882.382334
+wvSelectSignal -win $_nWave2 {( "G2" 12 )} 
+wvSelectSignal -win $_nWave2 {( "G2" 11 )} 
+wvSelectSignal -win $_nWave2 {( "G2" 12 )} 
+wvSelectSignal -win $_nWave2 {( "G2" 13 )} 
+wvSelectSignal -win $_nWave2 {( "G2" 13 )} 
+wvSelectSignal -win $_nWave2 {( "G2" 14 )} 
+wvZoom -win $_nWave2 649092.054757 932756.261265
+wvScrollUp -win $_nWave2 8
+wvSelectSignal -win $_nWave2 {( "G1" 11 )} 
+wvSelectSignal -win $_nWave2 {( "G1" 17 )} 
+wvSelectSignal -win $_nWave2 {( "G1" 14 )} 
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 634052.420833 953226.874106
+wvZoomOut -win $_nWave2
+wvSelectSignal -win $_nWave2 {( "G1" 15 )} 
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvSelectSignal -win $_nWave2 {( "G1" 9 )} 
+wvSetMarker -win $_nWave2 1007000.000000
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 865559.664187 1270286.032769
+wvZoomOut -win $_nWave2
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvSelectSignal -win $_nWave2 {( "G2" 12 )} 
+wvSelectSignal -win $_nWave2 {( "G2" 6 )} 
+wvSelectSignal -win $_nWave2 {( "G2" 7 )} 
+wvSetCursor -win $_nWave2 996991.423056 -snap {("G2" 7)}
+wvZoom -win $_nWave2 986560.331082 1061962.224493
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomIn -win $_nWave2
+wvZoomIn -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomIn -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomIn -win $_nWave2
+wvZoomIn -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 789726.964263 1266124.788610
+wvZoomOut -win $_nWave2
+wvZoomIn -win $_nWave2
+wvSelectSignal -win $_nWave2 {( "G2" 9 )} 
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvScrollDown -win $_nWave2 1
+wvSelectSignal -win $_nWave2 {( "G2" 9 12 )} 
+wvSetCursor -win $_nWave2 994248.268824 -snap {("G2" 10)}
+wvZoom -win $_nWave2 593567.834163 1574428.155866
+wvZoomOut -win $_nWave2
+wvSetCursor -win $_nWave2 688909.190912 -snap {("G2" 12)}
+wvZoom -win $_nWave2 545174.872783 1298516.047699
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple" -win $_nTrace1
+srcSetScope -win $_nTrace1 "tb_DandSocSimple.u_DandSocSimple" -delim "."
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple" -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_axiClk" -line 9 -pos 1 -win $_nTrace1
+wvSetPosition -win $_nWave2 {("G1" 5)}
+wvSetPosition -win $_nWave2 {("G1" 8)}
+wvSetPosition -win $_nWave2 {("G1" 11)}
+wvSetPosition -win $_nWave2 {("G1" 17)}
 wvSetPosition -win $_nWave2 {("G2" 7)}
 wvSetPosition -win $_nWave2 {("G2" 8)}
 wvSetPosition -win $_nWave2 {("G2" 9)}
@@ -2938,339 +4170,47 @@ wvSetPosition -win $_nWave2 {("G2" 10)}
 wvSetPosition -win $_nWave2 {("G2" 11)}
 wvSetPosition -win $_nWave2 {("G2" 12)}
 wvSetPosition -win $_nWave2 {("G2" 13)}
-wvAddSignal -win $_nWave2 \
-           "/tb_DandRiscvYsyx3rd/u_ysyx_210238/core_cpu/fetch_FetchPlugin_fifo_all_valid" \
-           "/tb_DandRiscvYsyx3rd/u_ysyx_210238/core_cpu/fetch_arbitration_isStuck" \
-           "/tb_DandRiscvYsyx3rd/u_ysyx_210238/core_cpu/fetch_FetchPlugin_fetch_flush"
-wvSetPosition -win $_nWave2 {("G2" 13)}
+wvSetPosition -win $_nWave2 {("G2" 14)}
+wvSetPosition -win $_nWave2 {("G2" 15)}
 wvSetPosition -win $_nWave2 {("G2" 16)}
-wvSetCursor -win $_nWave2 2172944.373705 -snap {("G2" 15)}
-srcActiveTrace \
-           "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.fetch_arbitration_isStuck" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 1533000 -TraceValue 0
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "fetch_arbitration_haltItself" -line 3379 -pos 1 -win $_nTrace1
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "fetch_arbitration_isStuckByOthers" -line 3379 -pos 1 -win \
-          $_nTrace1
-srcAction -pos 3378 12 9 -win $_nTrace1 -name "fetch_arbitration_isStuckByOthers" \
-          -ctrlKey off
-wvSetCursor -win $_nWave2 2172988.365538 -snap {("G2" 15)}
-srcActiveTrace \
-           "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.fetch_arbitration_isStuck" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 1533000 -TraceValue 0
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "fetch_arbitration_haltByOther" -line 3378 -pos 1 -win \
-          $_nTrace1
-srcSelect -signal "decode_arbitration_isStuck" -line 3378 -pos 1 -win $_nTrace1
-srcSelect -signal "execute_arbitration_isStuck" -line 3378 -pos 1 -win $_nTrace1
-srcSelect -signal "memaccess_arbitration_isStuck" -line 3378 -pos 1 -win \
-          $_nTrace1
-srcDeselectAll -win $_nTrace1
-srcDeselectAll -win $_nTrace1
-srcSelect -win $_nTrace1 -range {3378 3378 9 40 1 51}
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G2" 21 )} 
-wvSelectSignal -win $_nWave2 {( "G2" 19 )} 
-wvSelectSignal -win $_nWave2 {( "G2" 20 )} 
-wvSetCursor -win $_nWave2 2173010.361454 -snap {("G2" 20)}
-srcActiveTrace \
-           "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.memaccess_arbitration_isStuck" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 1533000 -TraceValue 0
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "memaccess_arbitration_haltItself" -line 3391 -pos 1 -win \
-          $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvSetCursor -win $_nWave2 2173340.300201 -snap {("G2" 22)}
-srcActiveTrace \
-           "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.memaccess_arbitration_haltItself" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 2173000 -TraceValue x
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "_zz_memaccess_arbitration_haltItself" -line 2850 -pos 1 -win \
-          $_nTrace1
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "_zz_memaccess_arbitration_haltItself" -line 2850 -pos 1 -win \
-          $_nTrace1
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "_zz_memaccess_arbitration_haltItself" -line 2850 -pos 1 -win \
-          $_nTrace1
-srcAction -pos 2849 7 9 -win $_nTrace1 -name \
-          "_zz_memaccess_arbitration_haltItself" -ctrlKey off
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "memaccess_LSU_HOLD" -line 1629 -pos 1 -win $_nTrace1
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "memaccess_LSU_HOLD" -line 1629 -pos 1 -win $_nTrace1
-srcAction -pos 1628 7 5 -win $_nTrace1 -name "memaccess_LSU_HOLD" -ctrlKey off
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "DCachePlugin_dcache_access_stall" -line 1560 -pos 1 -win \
-          $_nTrace1
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "DCachePlugin_dcache_access_stall" -line 1560 -pos 1 -win \
-          $_nTrace1
-srcAction -pos 1559 7 6 -win $_nTrace1 -name "DCachePlugin_dcache_access_stall" \
-          -ctrlKey off
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "dCache_1_stall" -line 3296 -pos 1 -win $_nTrace1
-srcAction -pos 3295 7 3 -win $_nTrace1 -name "dCache_1_stall" -ctrlKey off
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "is_miss" -line 11884 -pos 1 -win $_nTrace1
-srcSelect -signal "is_write" -line 11884 -pos 1 -win $_nTrace1
-srcSelect -signal "cpu_cmd_ready_1" -line 11884 -pos 1 -win $_nTrace1
-srcSelect -signal "next_level_wdone" -line 11884 -pos 1 -win $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G2" 23 )} 
-wvSetCursor -win $_nWave2 2172966.369621 -snap {("G2" 23)}
-srcActiveTrace "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.dCache_1.is_miss" -win \
-           $_nTrace1 -TraceByDConWave -TraceTime 1415000 -TraceValue 0
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "cache_hit_3" -line 10340 -pos 1 -win $_nTrace1
-srcSelect -signal "cache_hit_2" -line 10340 -pos 1 -win $_nTrace1
-srcSelect -signal "cache_hit_1" -line 10340 -pos 1 -win $_nTrace1
-srcSelect -signal "cache_hit_0" -line 10340 -pos 1 -win $_nTrace1
-srcSelect -signal "cpu_cmd_fire_2" -line 10340 -pos 1 -win $_nTrace1
-srcSelect -signal "bypass" -line 10340 -pos 1 -win $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvSetCursor -win $_nWave2 2173010.361454 -snap {("G2" 31)}
-srcActiveTrace \
-           "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.dCache_1.cpu_cmd_fire_2" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 2171000 -TraceValue 1
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "cpu_cmd_valid" -line 10339 -pos 1 -win $_nTrace1
-srcSelect -signal "cpu_cmd_ready" -line 10339 -pos 1 -win $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvSetCursor -win $_nWave2 2172878.385955 -snap {("G2" 33)}
-srcActiveTrace \
-           "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.dCache_1.cpu_cmd_valid" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 2171000 -TraceValue 1
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "memaccess_LSUPlugin_is_timer" -line 3277 -pos 1 -win $_nTrace1
-srcSelect -signal "memaccess_LSUPlugin_is_mem" -line 3277 -pos 1 -win $_nTrace1
-srcSelect -signal "memaccess_arbitration_isValid" -line 3277 -pos 1 -win \
-          $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvSetCursor -win $_nWave2 2172922.377788 -snap {("G2" 35)}
-srcActiveTrace \
-           "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.memaccess_LSUPlugin_is_timer" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 2169000 -TraceValue 0
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "memaccess_LSUPlugin_cpu_addr" -line 2883 -pos 1 -win $_nTrace1
-srcSelect -signal "memaccess_LSUPlugin_cpu_addr" -line 2883 -pos 2 -win $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvSetCursor -win $_nWave2 2173032.357371 -snap {("G2" 38)}
-srcActiveTrace \
-           "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.memaccess_LSUPlugin_cpu_addr\[63:0\]" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 2171000 -TraceValue \
-           0000000000000000000000000000000000000000000000000000000001100000
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "memaccess_ALU_RESULT" -line 2880 -pos 1 -win $_nTrace1
-srcAction -pos 2879 7 6 -win $_nTrace1 -name "memaccess_ALU_RESULT" -ctrlKey off
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "execute_to_memaccess_ALU_RESULT" -line 1658 -pos 1 -win \
-          $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvSetCursor -win $_nWave2 2172988.365538 -snap {("G2" 39)}
-srcActiveTrace \
-           "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.execute_to_memaccess_ALU_RESULT\[63:0\]" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 2171000 -TraceValue \
-           0000000000000000000000000000000000000000000000000000000001100000
-srcDeselectAll -win $_nTrace1
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "when_Pipeline_l127_37" -line 3746 -pos 1 -win $_nTrace1
-srcSelect -signal "execute_ALU_RESULT" -line 3747 -pos 1 -win $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvZoom -win $_nWave2 2170458.835145 2177079.605999
+wvSetPosition -win $_nWave2 {("G2" 17)}
+wvSetPosition -win $_nWave2 {("G3" 0)}
+wvSetPosition -win $_nWave2 {("G3" 1)}
+wvSetPosition -win $_nWave2 {("G3" 2)}
+wvSetPosition -win $_nWave2 {("G3" 3)}
+wvSetPosition -win $_nWave2 {("G3" 4)}
+wvSetPosition -win $_nWave2 {("G3" 6)}
+wvSetPosition -win $_nWave2 {("G3" 7)}
+wvSetPosition -win $_nWave2 {("G3" 8)}
+wvSetPosition -win $_nWave2 {("G3" 9)}
+wvSetPosition -win $_nWave2 {("G3" 10)}
+wvSetPosition -win $_nWave2 {("G3" 11)}
+wvSetPosition -win $_nWave2 {("G3" 10)}
+wvSetPosition -win $_nWave2 {("G3" 9)}
+wvSetPosition -win $_nWave2 {("G3" 8)}
+wvSetPosition -win $_nWave2 {("G3" 7)}
+wvSetPosition -win $_nWave2 {("G3" 6)}
+wvSetPosition -win $_nWave2 {("G3" 5)}
+wvSetPosition -win $_nWave2 {("G3" 4)}
+wvSetPosition -win $_nWave2 {("G3" 3)}
+wvSetPosition -win $_nWave2 {("G3" 2)}
+wvSetPosition -win $_nWave2 {("G3" 1)}
+wvSetPosition -win $_nWave2 {("G3" 0)}
+wvSetPosition -win $_nWave2 {("G2" 17)}
+wvSetPosition -win $_nWave2 {("G2" 16)}
+wvSetPosition -win $_nWave2 {("G2" 15)}
+wvSetPosition -win $_nWave2 {("G2" 14)}
+wvSetPosition -win $_nWave2 {("G2" 13)}
+wvSetPosition -win $_nWave2 {("G2" 12)}
+wvAddSignal -win $_nWave2 "/tb_DandSocSimple/u_DandSocSimple/io_axiClk"
+wvSetPosition -win $_nWave2 {("G2" 12)}
+wvSetPosition -win $_nWave2 {("G2" 13)}
+wvZoom -win $_nWave2 636984.861332 1183406.847556
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 954859.212670 1419197.189181
 wvZoomOut -win $_nWave2
 wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "execute_ALU_RESULT" -line 3747 -pos 1 -win $_nTrace1
-srcAction -pos 3746 5 6 -win $_nTrace1 -name "execute_ALU_RESULT" -ctrlKey off
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "execute_ALUPlugin_alu_result" -line 1574 -pos 1 -win $_nTrace1
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "execute_ALUPlugin_alu_result" -line 1574 -pos 1 -win $_nTrace1
-srcAction -pos 1573 7 11 -win $_nTrace1 -name "execute_ALUPlugin_alu_result" \
-          -ctrlKey off
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "execute_ALUPlugin_add_result" -line 2802 -pos 1 -win $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvSetCursor -win $_nWave2 2171045.305460 -snap {("G2" 42)}
-srcActiveTrace \
-           "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.execute_ALUPlugin_add_result\[63:0\]" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 2171000 -TraceValue \
-           xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvZoom -win $_nWave2 2167399.609190 2187761.651427
-wvZoomOut -win $_nWave2
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvSetCursor -win $_nWave2 2170995.018681 -snap {("G2" 42)}
-srcActiveTrace \
-           "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.execute_ALUPlugin_add_result\[63:0\]" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 2169000 -TraceValue \
-           0000000000000000000000000000000000000000000000000000000001100000
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "_zz_execute_ALUPlugin_add_result" -line 2366 -pos 1 -win \
-          $_nTrace1
-srcSelect -signal "_zz_execute_ALUPlugin_add_result_1" -line 2366 -pos 1 -win \
-          $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvSetCursor -win $_nWave2 2170979.092172 -snap {("G2" 43)}
-srcActiveTrace \
-           "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu._zz_execute_ALUPlugin_add_result\[63:0\]" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 2169000 -TraceValue \
-           0000000000000000000000000000000000000000000000000000000000000000
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "execute_ALUPlugin_src1" -line 1235 -pos 1 -win $_nTrace1
-srcAction -pos 1234 7 8 -win $_nTrace1 -name "execute_ALUPlugin_src1" -ctrlKey \
-          off
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "execute_RS1" -line 2689 -pos 1 -win $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvSetCursor -win $_nWave2 2170931.312644 -snap {("G2" 45)}
-srcActiveTrace "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.execute_RS1\[63:0\]" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 2169000 -TraceValue \
-           0000000000000000000000000000000000000000000000000000000000000000
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "decode_to_execute_RS1" -line 1654 -pos 1 -win $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvSetCursor -win $_nWave2 2170979.092172 -snap {("G2" 46)}
-srcActiveTrace \
-           "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.decode_to_execute_RS1\[63:0\]" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 2169000 -TraceValue \
-           0000000000000000000000000000000000000000000000000000000000000000
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "decode_RS1" -line 3675 -pos 1 -win $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvSetCursor -win $_nWave2 2168972.351990 -snap {("G2" 47)}
-srcActiveTrace "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.decode_RS1\[63:0\]" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 2167000 -TraceValue \
-           0000000000000000000000000000000000000000000000000000000000000000
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "decode_DecodePlugin_rs1" -line 1601 -pos 1 -win $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvSetCursor -win $_nWave2 2168844.939915 -snap {("G2" 48)}
-srcActiveTrace \
-           "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.decode_DecodePlugin_rs1\[63:0\]" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 2167000 -TraceValue \
-           0000000000000000000000000000000000000000000000000000000000000000
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "regFileModule_1_read_ports_rs1_value" -line 2355 -pos 1 -win \
-          $_nTrace1
-srcAction -pos 2354 7 7 -win $_nTrace1 -name \
-          "regFileModule_1_read_ports_rs1_value" -ctrlKey off
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "write_ports_rd_wen" -line 48747 -pos 1 -win $_nTrace1
-srcSelect -signal "write_ports_rd_addr" -line 48747 -pos 1 -win $_nTrace1
-srcSelect -signal "read_ports_rs1_addr" -line 48747 -pos 1 -win $_nTrace1
-srcSelect -signal "write_ports_rd_addr" -line 48747 -pos 2 -win $_nTrace1
-srcSelect -signal "read_ports_rs1_req" -line 48747 -pos 1 -win $_nTrace1
-srcSelect -signal "write_ports_rd_value" -line 48747 -pos 1 -win $_nTrace1
-srcSelect -signal "read_value_1" -line 48747 -pos 1 -win $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvSetCursor -win $_nWave2 2168940.498972 -snap {("G2" 49)}
-srcActiveTrace \
-           "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.regFileModule_1.write_ports_rd_wen" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 2163000 -TraceValue 1
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "writeback_arbitration_isFiring" -line 2362 -pos 1 -win \
-          $_nTrace1
-srcSelect -signal "_zz_DecodePlugin_hazard_rs1_from_wb_1" -line 2362 -pos 1 -win \
-          $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvSetCursor -win $_nWave2 2168972.351990 -snap {("G2" 56)}
-srcActiveTrace \
-           "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu._zz_DecodePlugin_hazard_rs1_from_wb_1" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 2163000 -TraceValue 1
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "writeback_RD_WEN" -line 1666 -pos 1 -win $_nTrace1
-srcAction -pos 1665 7 5 -win $_nTrace1 -name "writeback_RD_WEN" -ctrlKey off
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "memaccess_to_writeback_RD_WEN" -line 1588 -pos 1 -win \
-          $_nTrace1
-srcAction -pos 1587 7 7 -win $_nTrace1 -name "memaccess_to_writeback_RD_WEN" \
-          -ctrlKey off
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "_zz_DecodePlugin_hazard_rs1_from_mem_3" -line 3708 -pos 1 -win \
-          $_nTrace1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvScrollDown -win $_nWave2 33
+wvZoom -win $_nWave2 563351.861340 1412016.705008
 wvScrollUp -win $_nWave2 1
 wvScrollUp -win $_nWave2 1
 wvScrollUp -win $_nWave2 1
@@ -3282,308 +4222,51 @@ wvScrollUp -win $_nWave2 1
 wvScrollUp -win $_nWave2 1
 wvScrollUp -win $_nWave2 1
 wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
 wvScrollUp -win $_nWave2 1
 wvScrollUp -win $_nWave2 1
 wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G2" 53 )} 
-wvSetCursor -win $_nWave2 2098058.145461 -snap {("G2" 52)}
-wvSelectSignal -win $_nWave2 {( "G2" 53 )} 
-wvSelectSignal -win $_nWave2 {( "G2" 52 )} 
-wvSetCursor -win $_nWave2 2098949.982675 -snap {("G2" 52)}
-srcActiveTrace \
-           "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.regFileModule_1.read_ports_rs1_req" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 159000 -TraceValue 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "decode_INSTRUCTION\[6 : 0\]" -line 1782 -pos 1 -win $_nTrace1
-srcSelect -signal "decode_INSTRUCTION\[6 : 0\]" -line 1782 -pos 2 -win $_nTrace1
-srcSelect -signal "decode_INSTRUCTION\[6 : 0\]" -line 1782 -pos 3 -win $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvZoom -win $_nWave2 2094235.985971 2113219.378103
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSetCursor -win $_nWave2 2098965.272301 -snap {("G2" 57)}
-srcActiveTrace \
-           "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.decode_INSTRUCTION\[6:0\]" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 2085000 -TraceValue \
-           1100011
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "fetch_to_decode_INSTRUCTION" -line 1667 -pos 1 -win $_nTrace1
-srcAction -pos 1666 7 6 -win $_nTrace1 -name "fetch_to_decode_INSTRUCTION" \
-          -ctrlKey off
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "fetch_INSTRUCTION" -line 3654 -pos 1 -win $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvSetCursor -win $_nWave2 2097080.918526 -snap {("G2" 58)}
-srcActiveTrace \
-           "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.fetch_INSTRUCTION\[31:0\]" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 2097000 -TraceValue \
-           xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollUp -win $_nWave2 1
-wvScrollDown -win $_nWave2 0
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 2
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 2
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 3
-wvScrollUp -win $_nWave2 2
-wvScrollUp -win $_nWave2 2
-wvScrollUp -win $_nWave2 2
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 2
-wvScrollUp -win $_nWave2 3
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 2
-wvScrollUp -win $_nWave2 2
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 2
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 2
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollDown -win $_nWave2 0
-wvScrollUp -win $_nWave2 1
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollUp -win $_nWave2 1
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollUp -win $_nWave2 1
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollUp -win $_nWave2 1
-wvScrollDown -win $_nWave2 0
-wvScrollUp -win $_nWave2 1
-wvScrollDown -win $_nWave2 0
-wvScrollUp -win $_nWave2 1
-wvScrollDown -win $_nWave2 0
-wvScrollUp -win $_nWave2 1
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollUp -win $_nWave2 1
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollUp -win $_nWave2 1
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollUp -win $_nWave2 1
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollUp -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 35
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollUp -win $_nWave2 80
-wvSelectSignal -win $_nWave2 {( "G2" 7 )} 
-wvSelectSignal -win $_nWave2 {( "G2" 8 )} 
+wvZoom -win $_nWave2 503357.881228 1731984.598939
 wvSelectSignal -win $_nWave2 {( "G2" 9 )} 
-wvSelectSignal -win $_nWave2 {( "G2" 8 )} 
-srcHBSelect "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.iCache_1" -win $_nTrace1
-srcSetScope -win $_nTrace1 "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.iCache_1" \
-           -delim "."
-srcHBSelect "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.iCache_1" -win $_nTrace1
+wvSetCursor -win $_nWave2 1006389.144149 -snap {("G2" 8)}
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomIn -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 490365.008100 2270878.543045
 srcDeselectAll -win $_nTrace1
-srcSelect -win $_nTrace1 -range {27146 27151 3 1 14 1}
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
+wvSetCursor -win $_nWave2 674578.669116 -snap {("G2" 9)}
 wvScrollDown -win $_nWave2 1
 wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 2089020.848850 2112486.717897
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-srcDeselectAll -win $_nTrace1
-debReload
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvZoom -win $_nWave2 12279926.442122 18323112.659698
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvZoom -win $_nWave2 12862486.785975 13325727.541329
-wvZoom -win $_nWave2 13040932.218249 13100653.151866
 wvZoomOut -win $_nWave2
 wvZoomIn -win $_nWave2
 wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 13078353.174911 13091948.184190
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvSetCursor -win $_nWave2 13083655.912748 -snap {("G3" 18)}
-wvSetCursor -win $_nWave2 13088961.282223 -snap {("G3" 18)}
-wvSelectSignal -win $_nWave2 {( "G3" 18 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 19 )} 
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvZoom -win $_nWave2 13053002.666895 13124414.624268
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvSelectSignal -win $_nWave2 {( "G3" 18 19 )} 
-wvZoom -win $_nWave2 11247638.404955 34280565.234224
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
+wvZoom -win $_nWave2 523140.574700 2276120.395188
 wvZoomOut -win $_nWave2
 wvZoomOut -win $_nWave2
 wvZoomIn -win $_nWave2
 wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-srcDeselectAll -win $_nTrace1
-debReload
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 0.000000 4150658.149439
+wvSetCursor -win $_nWave2 983630.797652 -snap {("G2" 8)}
+wvSetCursor -win $_nWave2 586047.745583 -snap {("G2" 8)}
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 0
 wvScrollUp -win $_nWave2 1
 wvScrollUp -win $_nWave2 1
 wvScrollUp -win $_nWave2 1
@@ -3600,2717 +4283,39 @@ wvScrollUp -win $_nWave2 1
 wvScrollUp -win $_nWave2 1
 wvScrollUp -win $_nWave2 1
 wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 47
-wvZoom -win $_nWave2 57848.894069 486894.858413
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 54149.819735 178063.210908
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 38378.131219 320073.614366
-wvZoom -win $_nWave2 48520.477302 113518.738222
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollUp -win $_nWave2 1
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 0
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvZoom -win $_nWave2 314968.391899 2382916.604285
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollDown -win $_nWave2 1
+wvScrollUp -win $_nWave2 4
+wvScrollUp -win $_nWave2 2
+wvScrollDown -win $_nWave2 2
+wvScrollDown -win $_nWave2 1
 wvScrollDown -win $_nWave2 3
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 53146.080938 955018.969581
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 11173.028431 544685.135998
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvZoom -win $_nWave2 487452.022400 736961.362679
-wvZoom -win $_nWave2 517300.410377 569366.045070
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G3" 2 )} 
-wvZoom -win $_nWave2 488062.623648 548453.115920
-wvSetCursor -win $_nWave2 496759.976774 -snap {("G3" 2)}
-wvSetMarker -win $_nWave2 507000.000000
-wvSelectSignal -win $_nWave2 {( "G3" 4 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 5 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 7 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 9 )} 
-wvSetMarker -win $_nWave2 505000.000000
-wvSelectSignal -win $_nWave2 {( "G3" 11 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 10 )} 
-wvZoom -win $_nWave2 497484.756202 524909.474527
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 11
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvSelectSignal -win $_nWave2 {( "G3" 3 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 4 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 2 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 3 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 9 )} 
-wvScrollUp -win $_nWave2 40
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 5
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-srcDeselectAll -win $_nTrace1
-debReload
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvSelectSignal -win $_nWave2 {( "G3" 9 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 10 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 9 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 2 9 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 2 3 9 )} 
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
+wvSelectSignal -win $_nWave2 {( "G2" 12 )} 
 wvScrollUp -win $_nWave2 1
 wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 42
-wvSelectSignal -win $_nWave2 {( "G1" 6 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 6 7 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 6 7 8 )} 
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoom -win $_nWave2 496289.238090 508265.653991
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 563888.988621 585625.511169
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G1" 8 )} 
-srcHBSelect "tb_DandRiscvYsyx3rd.u_ysyx_210238" -win $_nTrace1
-srcSetScope -win $_nTrace1 "tb_DandRiscvYsyx3rd.u_ysyx_210238" -delim "."
-srcHBSelect "tb_DandRiscvYsyx3rd.u_ysyx_210238" -win $_nTrace1
-srcHBSelect "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu" -win $_nTrace1
-srcSetScope -win $_nTrace1 "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu" -delim \
-           "."
-srcHBSelect "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu" -win $_nTrace1
-wvSelectSignal -win $_nWave2 {( "G1" 6 8 )} 
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 488114.107752 541029.033723
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 562549.409152 581724.155845
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 560541.368509 581594.245637
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 475673.740519 601387.862402
-wvZoom -win $_nWave2 489349.957417 537825.089201
-wvSetCursor -win $_nWave2 492990.753223 -snap {("G1" 3)}
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 488270.855568 515745.727008
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 493605.214076 516027.602383
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 535719.893468 621555.191795
-wvSetCursor -win $_nWave2 564896.584111 -snap {("G1" 5)}
-wvSelectSignal -win $_nWave2 {( "G1" 2 6 8 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 6 8 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 1 6 8 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 6 8 )} 
-srcSearchString "memaccess_arb" -win $_nTrace1 -next -case
-srcSearchString "memaccess_arb" -win $_nTrace1 -prev -case
-srcSelect -win $_nTrace1 -range {3625 3625 6 6 1 14}
-nsMsgSwitchTab -tab general
-srcSearchString "memaccess_arb" -win $_nTrace1 -prev -case
-srcSelect -win $_nTrace1 -range {3621 3621 2 2 1 14}
-srcSearchString "writeback_arb" -win $_nTrace1 -next -case
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "writeback_arbitration_isValid" -line 3625 -pos 1 -win \
-          $_nTrace1
-wvSetPosition -win $_nWave2 {("G3" 3)}
-wvSetPosition -win $_nWave2 {("G1" 6)}
-wvSetPosition -win $_nWave2 {("G1" 7)}
-wvSetPosition -win $_nWave2 {("G1" 8)}
-wvAddSignal -win $_nWave2 \
-           "/tb_DandRiscvYsyx3rd/u_ysyx_210238/core_cpu/writeback_arbitration_isValid"
-wvSetPosition -win $_nWave2 {("G1" 8)}
-wvSetPosition -win $_nWave2 {("G1" 9)}
-wvSelectSignal -win $_nWave2 {( "G1" 6 9 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 6 7 9 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 6 7 8 9 )} 
-wvZoomOut -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G1" 9 )} 
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "writeback_arbitration_isValid" -line 3625 -pos 1 -win \
-          $_nTrace1
-srcSearchString "writeback_arb" -win $_nTrace1 -prev -case
-srcSelect -win $_nTrace1 -range {3625 3625 2 2 1 14}
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "writeback_arbitration_isValid" -line 3625 -pos 1 -win \
-          $_nTrace1
-srcSearchString "writeback_arbitration_isFir" -win $_nTrace1 -next -case
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "writeback_arbitration_isFiring" -line 697 -pos 1 -win \
-          $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvZoom -win $_nWave2 559995.033007 592029.577175
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoom -win $_nWave2 561216.636801 579819.740267
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
+wvSetCursor -win $_nWave2 717746.228553 -snap {("G1" 10)}
+wvZoom -win $_nWave2 624094.671070 1173060.304771
+wvZoom -win $_nWave2 665327.730450 837132.144531
+wvSetCursor -win $_nWave2 682470.218011 -snap {("G1" 13)}
+wvSetCursor -win $_nWave2 684747.448831 -snap {("G1" 12)}
+wvSetCursor -win $_nWave2 714857.500783 -snap {("G1" 12)}
+wvSelectSignal -win $_nWave2 {( "G1" 13 )} 
+wvSetCursor -win $_nWave2 684114.884714 -snap {("G1" 13)}
 wvZoomOut -win $_nWave2
 wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
 wvScrollDown -win $_nWave2 1
 wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 0
-wvScrollUp -win $_nWave2 19
-wvSelectGroup -win $_nWave2 {G2}
-wvZoom -win $_nWave2 479079.937816 621278.805347
-wvZoom -win $_nWave2 492017.117015 515414.143225
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 485345.839507 588390.582118
-wvSelectGroup -win $_nWave2 {G2}
-wvSelectGroup -win $_nWave2 {G2}
-wvSelectSignal -win $_nWave2 {( "G3" 9 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 9 10 )} 
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 550791.019628 595870.601181
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G3" 2 9 10 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 2 3 9 10 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 2 3 4 9 10 )} 
-wvZoom -win $_nWave2 490920.518460 608340.349930
-wvZoom -win $_nWave2 502012.442145 531742.434318
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 439715.275040 723318.452403
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvZoom -win $_nWave2 465736.937074 639763.664182
-wvSetCursor -win $_nWave2 499154.380607 -snap {("G3" 1)}
-srcActiveTrace "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.dCache_1.stall" -win \
-           $_nTrace1 -TraceByDConWave -TraceTime 499000 -TraceValue 1
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "is_miss" -line 11880 -pos 1 -win $_nTrace1
-srcSelect -signal "is_write" -line 11880 -pos 1 -win $_nTrace1
-srcSelect -signal "cpu_cmd_ready_1" -line 11880 -pos 1 -win $_nTrace1
-srcSelect -signal "next_level_wdone" -line 11880 -pos 1 -win $_nTrace1
-wvSetPosition -win $_nWave2 {("G1" 0)}
-wvSetPosition -win $_nWave2 {("G1" 1)}
-wvSetPosition -win $_nWave2 {("G1" 2)}
-wvSetPosition -win $_nWave2 {("G1" 4)}
-wvSetPosition -win $_nWave2 {("G1" 5)}
-wvSetPosition -win $_nWave2 {("G3" 1)}
-wvSetPosition -win $_nWave2 {("G1" 17)}
-wvSetPosition -win $_nWave2 {("G2" 0)}
-wvSetPosition -win $_nWave2 {("G3" 0)}
-wvAddSignal -win $_nWave2 \
-           "/tb_DandRiscvYsyx3rd/u_ysyx_210238/core_cpu/dCache_1/is_miss" \
-           "/tb_DandRiscvYsyx3rd/u_ysyx_210238/core_cpu/dCache_1/is_write" \
-           "/tb_DandRiscvYsyx3rd/u_ysyx_210238/core_cpu/dCache_1/cpu_cmd_ready_1" \
-           "/tb_DandRiscvYsyx3rd/u_ysyx_210238/core_cpu/dCache_1/next_level_wdone"
-wvSetPosition -win $_nWave2 {("G3" 0)}
-wvSetPosition -win $_nWave2 {("G3" 4)}
-wvSetCursor -win $_nWave2 498952.258973 -snap {("G3" 3)}
-srcActiveTrace \
-           "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.dCache_1.cpu_cmd_ready_1" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 357000 -TraceValue 1
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "when_DCache_l256" -line 24272 -pos 1 -win $_nTrace1
-srcSelect -signal "when_DCache_l259" -line 24275 -pos 1 -win $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvSetCursor -win $_nWave2 498952.258973 -snap {("G3" 5)}
-srcActiveTrace \
-           "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.dCache_1.when_DCache_l256" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 497000 -TraceValue 1
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "bypass" -line 11871 -pos 1 -win $_nTrace1
-srcAction -pos 11870 24 2 -win $_nTrace1 -name "bypass" -ctrlKey off
-wvSetCursor -win $_nWave2 504813.786367 -snap {("G3" 5)}
-srcActiveTrace \
-           "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.dCache_1.when_DCache_l256" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 499000 -TraceValue 0
 srcDeselectAll -win $_nTrace1
-srcSelect -signal "flush" -line 11871 -pos 1 -win $_nTrace1
-srcSelect -signal "is_miss" -line 11871 -pos 1 -win $_nTrace1
-srcSelect -signal "is_write" -line 11871 -pos 1 -win $_nTrace1
-srcSelect -signal "bypass" -line 11871 -pos 1 -win $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G3" 11 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 10 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 3 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 3 )} 
-wvSetCursor -win $_nWave2 499154.380607 -snap {("G3" 3)}
-srcActiveTrace \
-           "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.dCache_1.cpu_cmd_ready_1" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 499000 -TraceValue 0
-wvSetCursor -win $_nWave2 504476.916976 -snap {("G3" 5)}
-srcActiveTrace \
-           "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.dCache_1.when_DCache_l256" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 499000 -TraceValue 0
-wvSelectSignal -win $_nWave2 {( "G3" 5 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 10 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 11 )} 
-wvSetCursor -win $_nWave2 498952.258973 -snap {("G3" 11)}
-srcActiveTrace "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.dCache_1.stall" -win \
-           $_nTrace1 -TraceByDConWave -TraceTime 357000 -TraceValue 0
-wvSelectSignal -win $_nWave2 {( "G3" 12 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 13 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 12 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 13 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 12 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 13 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 12 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 11 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 12 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 13 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 11 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 12 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 13 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 11 )} 
-srcDeselectAll -win $_nTrace1
-debReload
-wvZoom -win $_nWave2 486420.717648 577038.583680
-wvSelectSignal -win $_nWave2 {( "G3" 7 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 11 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 13 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 12 13 )} 
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvSelectSignal -win $_nWave2 {( "G1" 6 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 6 7 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 6 7 8 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 6 7 8 9 )} 
-wvZoom -win $_nWave2 499050.385387 522345.105885
-wvZoomOut -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G1" 6 7 8 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 9 )} 
-wvCut -win $_nWave2
-wvSetPosition -win $_nWave2 {("G3" 11)}
-wvSetPosition -win $_nWave2 {("G3" 10)}
-wvSelectSignal -win $_nWave2 {( "G1" 6 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 6 7 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 6 7 8 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 6 7 8 9 )} 
-wvZoom -win $_nWave2 493697.920573 521601.081711
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoom -win $_nWave2 499169.446363 516215.976861
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 491154.343270 525392.593453
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G1" 6 7 8 9 )} {( "G3" 12 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 6 7 8 9 )} {( "G3" 12 13 )} 
-wvZoom -win $_nWave2 494945.338064 522436.677932
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G1" 6 7 8 9 )} {( "G3" 12 13 14 )} 
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvSelectSignal -win $_nWave2 {( "G1" 6 7 8 9 )} {( "G3" 12 13 14 19 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 6 7 8 9 )} {( "G3" 12 13 14 19 20 )} 
-wvZoom -win $_nWave2 488884.045747 527987.097499
-wvSelectSignal -win $_nWave2 {( "G1" 6 7 8 9 )} {( "G3" 11 12 13 14 19 20 )} 
-srcDeselectAll -win $_nTrace1
-debReload
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 143392.995043 941743.183658
-wvZoom -win $_nWave2 327294.800008 452162.580186
-wvZoom -win $_nWave2 342957.657452 377570.638717
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 590899.737462 776145.518727
-wvZoom -win $_nWave2 623387.673549 702276.701575
-wvSetCursor -win $_nWave2 638933.362773 -snap {("G3" 10)}
-wvSetCursor -win $_nWave2 637192.489913 -snap {("G3" 9)}
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 402660.838366 1104385.309110
-wvZoom -win $_nWave2 605055.236625 736543.677910
-wvSetMarker -win $_nWave2 647000.000000
-wvZoom -win $_nWave2 631568.052274 675397.532703
-wvSelectSignal -win $_nWave2 {( "G3" 11 )} 
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvSelectSignal -win $_nWave2 {( "G1" 6 )} {( "G3" 11 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 11 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 6 )} {( "G3" 11 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 6 7 )} {( "G3" 11 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 6 7 8 )} {( "G3" 11 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 6 7 8 9 )} {( "G3" 11 )} 
-wvSetCursor -win $_nWave2 652999.191949 -snap {("G1" 5)}
-wvSetCursor -win $_nWave2 652965.255070 -snap {("G1" 5)}
-wvSetCursor -win $_nWave2 645125.835806 -snap {("G1" 5)}
-wvSetCursor -win $_nWave2 652965.255070 -snap {("G1" 5)}
-wvSetCursor -win $_nWave2 660906.484973 -snap {("G1" 9)}
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoom -win $_nWave2 647433.543641 672563.803229
-wvZoomOut -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G1" 6 7 8 9 )} {( "G3" 11 12 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 6 7 8 9 )} {( "G3" 11 12 13 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 6 7 8 9 )} {( "G3" 11 12 13 14 )} 
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvSetCursor -win $_nWave2 652983.993929 -snap {("G3" 13)}
-wvSelectSignal -win $_nWave2 {( "G3" 19 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 19 20 )} 
-wvZoom -win $_nWave2 647224.368039 678474.230135
-wvZoomOut -win $_nWave2
-wvSetMarker -win $_nWave2 661000.000000
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvSelectSignal -win $_nWave2 {( "G3" 12 19 20 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 11 12 19 20 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 11 19 20 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 11 12 19 20 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 11 12 13 19 20 )} 
-wvSetCursor -win $_nWave2 663030.773315 -snap {("G1" 6)}
-wvSelectSignal -win $_nWave2 {( "G1" 6 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 5 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 7 )} 
-wvSetCursor -win $_nWave2 661022.458523 -snap {("G1" 5)}
-wvSelectSignal -win $_nWave2 {( "G3" 11 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 13 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 12 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 11 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 13 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 12 13 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 13 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 11 13 )} 
-srcDeselectAll -win $_nTrace1
-debReload
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 833136.083397 1418499.353887
-wvZoom -win $_nWave2 922651.566108 1018059.207175
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 457673.211646 716525.998560
-wvZoom -win $_nWave2 487035.916472 580234.945443
-wvZoom -win $_nWave2 494107.929511 538163.684204
-wvSetCursor -win $_nWave2 505057.908029 -snap {("G3" 11)}
-wvSelectSignal -win $_nWave2 {( "G3" 9 )} 
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvSelectSignal -win $_nWave2 {( "G1" 6 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 6 7 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 6 7 8 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 6 7 8 9 )} 
-wvSetCursor -win $_nWave2 498951.845241 -snap {("G1" 6)}
-srcActiveTrace "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.writeback_RD\[63:0\]" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 497000 -TraceValue \
-           0000000000000000000000000000000010000000000000000100001110101000
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "writeback_IS_LOAD" -line 1559 -pos 1 -win $_nTrace1
-srcSelect -signal "writeback_LSU_RDATA" -line 1559 -pos 1 -win $_nTrace1
-srcSelect -signal "writeback_ALU_RESULT" -line 1559 -pos 1 -win $_nTrace1
-wvSetPosition -win $_nWave2 {("G1" 0)}
-wvSetPosition -win $_nWave2 {("G1" 1)}
-wvSetPosition -win $_nWave2 {("G1" 2)}
-wvSetPosition -win $_nWave2 {("G1" 3)}
-wvSetPosition -win $_nWave2 {("G1" 4)}
-wvSetPosition -win $_nWave2 {("G3" 2)}
-wvSetPosition -win $_nWave2 {("G2" 0)}
-wvSetPosition -win $_nWave2 {("G1" 16)}
-wvAddSignal -win $_nWave2 \
-           "/tb_DandRiscvYsyx3rd/u_ysyx_210238/core_cpu/writeback_IS_LOAD" \
-           "/tb_DandRiscvYsyx3rd/u_ysyx_210238/core_cpu/writeback_LSU_RDATA\[63:0\]" \
-           "/tb_DandRiscvYsyx3rd/u_ysyx_210238/core_cpu/writeback_ALU_RESULT\[63:0\]"
-wvSetPosition -win $_nWave2 {("G1" 16)}
-wvSetPosition -win $_nWave2 {("G1" 19)}
-wvSetCursor -win $_nWave2 498866.565035 -snap {("G1" 18)}
-srcActiveTrace \
-           "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.writeback_LSU_RDATA\[63:0\]" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 209000 -TraceValue \
-           0000000000000000000000000000000000000000000000000000000000000000
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "memaccess_to_writeback_LSU_RDATA" -line 1619 -pos 1 -win \
-          $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvSetCursor -win $_nWave2 499054.181489 -snap {("G1" 20)}
-srcActiveTrace \
-           "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.memaccess_to_writeback_LSU_RDATA\[63:0\]" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 499000 -TraceValue \
-           xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "when_Pipeline_l127_40" -line 3755 -pos 1 -win $_nTrace1
-srcSelect -signal "_zz_execute_MEM_WDATA" -line 3756 -pos 1 -win $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSetCursor -win $_nWave2 504938.515740 -snap {("G1" 21)}
-srcActiveTrace "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.when_Pipeline_l127_40" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 499000 -TraceValue 0
-wvSelectSignal -win $_nWave2 {( "G1" 21 22 )} {( "G3" 9 )} 
-srcDeselectAll -win $_nTrace1
-debReload
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 447775.193304 732406.410616
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 457086.590076 684967.874397
-wvZoom -win $_nWave2 480730.486397 617918.019157
-wvZoom -win $_nWave2 498629.130818 543136.739201
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 492606.905061 549710.356157
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 471328.518813 621393.646974
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 484458.491312 566259.381923
-wvSelectSignal -win $_nWave2 {( "G3" 9 )} 
-wvSetCursor -win $_nWave2 499057.875970 -snap {("G3" 9)}
-srcActiveTrace "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.dCache_1.stall" -win \
-           $_nTrace1 -TraceByDConWave -TraceTime 357000 -TraceValue 0
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "bypass_stall" -line 11884 -pos 1 -win $_nTrace1
-srcSelect -signal "dcache_stall" -line 11884 -pos 1 -win $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvSetPosition -win $_nWave2 {("G1" 23)}
-wvSetPosition -win $_nWave2 {("G1" 24)}
-wvSetPosition -win $_nWave2 {("G2" 0)}
-wvSetPosition -win $_nWave2 {("G3" 0)}
-wvMoveSelected -win $_nWave2
-wvSetPosition -win $_nWave2 {("G3" 2)}
-wvSetCursor -win $_nWave2 499089.544917 -snap {("G3" 2)}
-srcActiveTrace "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.dCache_1.dcache_stall" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 499000 -TraceValue 1
-wvSelectSignal -win $_nWave2 {( "G3" 3 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 4 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 5 )} 
-srcDeselectAll -win $_nTrace1
-debReload
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G3" 2 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 1 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 2 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 1 )} 
-wvZoom -win $_nWave2 491488.997590 538707.397861
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G3" 10 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 8 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 10 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 4 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 6 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 7 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 6 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 4 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 3 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 4 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 5 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 6 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 5 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 3 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 2 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 1 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 3 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 2 )} 
-wvSetCursor -win $_nWave2 499020.542658 -snap {("G3" 2)}
-srcActiveTrace "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.dCache_1.dcache_stall" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 357000 -TraceValue 0
-wvSelectSignal -win $_nWave2 {( "G3" 3 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 4 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 5 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 13 )} 
-srcDeselectAll -win $_nTrace1
-debReload
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G3" 19 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 20 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 11 )} 
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvSetCursor -win $_nWave2 504998.249545 -snap {("G3" 19)}
-wvSelectSignal -win $_nWave2 {( "G1" 5 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 13 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 5 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 17 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 18 )} 
-wvSetCursor -win $_nWave2 499002.262209 -snap {("G1" 18)}
-srcActiveTrace \
-           "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.writeback_LSU_RDATA\[63:0\]" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 209000 -TraceValue \
-           0000000000000000000000000000000000000000000000000000000000000000
-wvSelectSignal -win $_nWave2 {( "G1" 19 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 20 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 21 )} 
-wvSetCursor -win $_nWave2 498874.299065 -snap {("G1" 21)}
-srcActiveTrace "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.when_Pipeline_l127_40" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 355000 -TraceValue 1
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "writeback_arbitration_isStuck" -line 3372 -pos 1 -win \
-          $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvSetPosition -win $_nWave2 {("G3" 2)}
-wvSetPosition -win $_nWave2 {("G3" 1)}
-wvSetPosition -win $_nWave2 {("G3" 0)}
-wvSetPosition -win $_nWave2 {("G2" 0)}
-wvSetPosition -win $_nWave2 {("G1" 22)}
-wvMoveSelected -win $_nWave2
-wvSetPosition -win $_nWave2 {("G1" 22)}
-wvSetPosition -win $_nWave2 {("G1" 23)}
-wvSelectSignal -win $_nWave2 {( "G1" 22 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 21 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 20 )} 
-wvSetCursor -win $_nWave2 507027.379406 -snap {("G1" 20)}
-srcActiveTrace \
-           "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.memaccess_to_writeback_LSU_RDATA\[63:0\]" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 499000 -TraceValue \
-           xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "when_Pipeline_l127_40" -line 3755 -pos 1 -win $_nTrace1
-srcAction -pos 3754 3 11 -win $_nTrace1 -name "when_Pipeline_l127_40" -ctrlKey \
-          off
-srcBackwardHistory -win $_nTrace1
-srcHBSelect "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu" -win $_nTrace1
-srcHBSelect "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu" -win $_nTrace1
-srcBackwardHistory -win $_nTrace1
-srcHBSelect "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu" -win $_nTrace1
-srcHBSelect "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu" -win $_nTrace1
-srcBackwardHistory -win $_nTrace1
-srcHBSelect "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu" -win $_nTrace1
-srcHBSelect "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu" -win $_nTrace1
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "memaccess_to_writeback_LSU_RDATA" -line 1619 -pos 1 -win \
-          $_nTrace1
-srcAction -pos 1618 7 7 -win $_nTrace1 -name "memaccess_to_writeback_LSU_RDATA" \
-          -ctrlKey off
-srcBackwardHistory -win $_nTrace1
-srcHBSelect "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu" -win $_nTrace1
-srcHBSelect "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu" -win $_nTrace1
-srcBackwardHistory -win $_nTrace1
-srcHBSelect "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.dCache_1" -win $_nTrace1
-wvSelectSignal -win $_nWave2 {( "G1" 22 )} 
-wvScrollDown -win $_nWave2 0
-wvSelectSignal -win $_nWave2 {( "G1" 8 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 7 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 6 )} 
-wvSetCursor -win $_nWave2 506990.818507 -snap {("G1" 6)}
-srcActiveTrace "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.writeback_RD\[63:0\]" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 499000 -TraceValue \
-           xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-wvSetPosition -win $_nWave2 {("G1" 6)}
-wvSetPosition -win $_nWave2 {("G1" 7)}
-wvSetPosition -win $_nWave2 {("G1" 8)}
-wvSetPosition -win $_nWave2 {("G1" 9)}
-wvSetPosition -win $_nWave2 {("G1" 10)}
-wvSetPosition -win $_nWave2 {("G1" 11)}
-wvSetPosition -win $_nWave2 {("G1" 12)}
-wvSetPosition -win $_nWave2 {("G1" 13)}
-wvSetPosition -win $_nWave2 {("G1" 14)}
-wvSetPosition -win $_nWave2 {("G1" 15)}
-wvSetPosition -win $_nWave2 {("G1" 16)}
-wvSetPosition -win $_nWave2 {("G1" 17)}
-wvSetPosition -win $_nWave2 {("G1" 18)}
-wvSetPosition -win $_nWave2 {("G1" 19)}
-wvSetPosition -win $_nWave2 {("G1" 20)}
-wvSetPosition -win $_nWave2 {("G1" 21)}
-wvSetPosition -win $_nWave2 {("G1" 22)}
-wvSetPosition -win $_nWave2 {("G1" 23)}
-wvSetPosition -win $_nWave2 {("G2" 0)}
-wvSetPosition -win $_nWave2 {("G1" 23)}
-wvSetPosition -win $_nWave2 {("G2" 0)}
-wvSetPosition -win $_nWave2 {("G3" 0)}
-wvMoveSelected -win $_nWave2
-wvSetPosition -win $_nWave2 {("G3" 1)}
-wvSelectSignal -win $_nWave2 {( "G1" 8 )} 
-wvSetPosition -win $_nWave2 {("G1" 8)}
-wvSetPosition -win $_nWave2 {("G1" 9)}
-wvSetPosition -win $_nWave2 {("G1" 10)}
-wvSetPosition -win $_nWave2 {("G1" 11)}
-wvSetPosition -win $_nWave2 {("G1" 12)}
-wvSetPosition -win $_nWave2 {("G1" 13)}
-wvSetPosition -win $_nWave2 {("G1" 15)}
-wvSetPosition -win $_nWave2 {("G1" 16)}
-wvSetPosition -win $_nWave2 {("G1" 17)}
-wvSetPosition -win $_nWave2 {("G1" 18)}
-wvSetPosition -win $_nWave2 {("G1" 19)}
-wvSetPosition -win $_nWave2 {("G1" 20)}
-wvSetPosition -win $_nWave2 {("G1" 21)}
-wvSetPosition -win $_nWave2 {("G1" 22)}
-wvSetPosition -win $_nWave2 {("G2" 0)}
-wvSetPosition -win $_nWave2 {("G3" 0)}
-wvSetPosition -win $_nWave2 {("G3" 1)}
-wvMoveSelected -win $_nWave2
-wvSetPosition -win $_nWave2 {("G3" 2)}
-wvSetCursor -win $_nWave2 506935.977160 -snap {("G3" 1)}
-srcActiveTrace "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.writeback_RD\[63:0\]" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 499000 -TraceValue \
-           xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "writeback_IS_LOAD" -line 1559 -pos 1 -win $_nTrace1
-srcSelect -signal "writeback_LSU_RDATA" -line 1559 -pos 1 -win $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvZoom -win $_nWave2 496881.730102 526660.581841
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvSetCursor -win $_nWave2 498992.650642 -snap {("G3" 3)}
-srcActiveTrace "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.writeback_IS_LOAD" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 209000 -TraceValue 0
-wvSelectSignal -win $_nWave2 {( "G3" 2 )} 
-wvSetCursor -win $_nWave2 505102.906709 -snap {("G3" 2)}
-wvSelectSignal -win $_nWave2 {( "G3" 23 )} 
-wvScrollDown -win $_nWave2 0
-wvSelectSignal -win $_nWave2 {( "G1" 5 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 6 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 7 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 9 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 5 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 2 )} 
-wvSetCursor -win $_nWave2 505033.733999 -snap {("G3" 2)}
-srcActiveTrace \
-           "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.writeback_arbitration_isFiring" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 499000 -TraceValue 0
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "writeback_arbitration_isValid" -line 3397 -pos 1 -win \
-          $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSetCursor -win $_nWave2 495626.245412 -snap {("G3" 5)}
-wvSetCursor -win $_nWave2 495072.863731 -snap {("G3" 5)}
-srcActiveTrace \
-           "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.writeback_arbitration_isValid" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 495000 -TraceValue 1
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G3" 2 5 )} 
-wvSetCursor -win $_nWave2 499084.880922 -snap {("G3" 4)}
-wvZoom -win $_nWave2 494680.885040 517899.858095
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G3" 3 )} 
-wvSetCursor -win $_nWave2 499193.438069 -snap {("G3" 2)}
-wvSetCursor -win $_nWave2 499103.546574 -snap {("G3" 2)}
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G3" 5 )} 
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvSelectSignal -win $_nWave2 {( "G1" 5 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 6 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 3 6 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 6 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 5 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 3 5 )} 
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvSelectSignal -win $_nWave2 {( "G3" 24 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 25 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 24 )} 
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollDown -win $_nWave2 0
-wvSelectSignal -win $_nWave2 {( "G3" 3 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 5 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 5 )} 
-wvSetCursor -win $_nWave2 492977.441217 -snap {("G1" 5)}
-srcActiveTrace \
-           "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.memaccess_arbitration_isFiring" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 357000 -TraceValue 0
-srcSearchString "memaccess_PC" -win $_nTrace1 -next -case
-srcSearchString "memaccess_PC" -win $_nTrace1 -prev -case
-srcSelect -win $_nTrace1 -range {1669 1669 4 5 16 1}
-srcSearchString "memaccess_PC" -win $_nTrace1 -prev -case
-srcSelect -win $_nTrace1 -range {1614 1614 8 9 12 1}
-srcSearchString "memaccess_PC" -win $_nTrace1 -prev -case
-srcSelect -win $_nTrace1 -range {1614 1614 4 5 1 1}
-wvSetPosition -win $_nWave2 {("G1" 5)}
-wvSetPosition -win $_nWave2 {("G1" 6)}
-wvSetPosition -win $_nWave2 {("G1" 7)}
-wvSetPosition -win $_nWave2 {("G1" 8)}
-wvSetPosition -win $_nWave2 {("G1" 9)}
-wvSetPosition -win $_nWave2 {("G1" 10)}
-wvSetPosition -win $_nWave2 {("G1" 11)}
-wvSetPosition -win $_nWave2 {("G1" 12)}
-wvSetPosition -win $_nWave2 {("G1" 13)}
-wvSetPosition -win $_nWave2 {("G1" 14)}
-wvSetPosition -win $_nWave2 {("G1" 15)}
-wvSetPosition -win $_nWave2 {("G1" 16)}
-wvSetPosition -win $_nWave2 {("G1" 17)}
-wvSetPosition -win $_nWave2 {("G1" 18)}
-wvSetPosition -win $_nWave2 {("G1" 19)}
-wvSetPosition -win $_nWave2 {("G1" 20)}
-wvSetPosition -win $_nWave2 {("G1" 21)}
-wvAddSignal -win $_nWave2 \
-           "/tb_DandRiscvYsyx3rd/u_ysyx_210238/core_cpu/memaccess_PC\[63:0\]"
-wvSetPosition -win $_nWave2 {("G1" 21)}
-wvSetPosition -win $_nWave2 {("G1" 22)}
-wvSelectSignal -win $_nWave2 {( "G1" 5 )} 
-wvSetPosition -win $_nWave2 {("G1" 5)}
-wvSetPosition -win $_nWave2 {("G1" 6)}
-wvSetPosition -win $_nWave2 {("G1" 7)}
-wvSetPosition -win $_nWave2 {("G1" 8)}
-wvSetPosition -win $_nWave2 {("G1" 9)}
-wvSetPosition -win $_nWave2 {("G1" 10)}
-wvSetPosition -win $_nWave2 {("G1" 11)}
-wvSetPosition -win $_nWave2 {("G1" 12)}
-wvSetPosition -win $_nWave2 {("G1" 13)}
-wvSetPosition -win $_nWave2 {("G1" 14)}
-wvSetPosition -win $_nWave2 {("G1" 15)}
-wvSetPosition -win $_nWave2 {("G1" 16)}
-wvSetPosition -win $_nWave2 {("G1" 17)}
-wvSetPosition -win $_nWave2 {("G1" 18)}
-wvSetPosition -win $_nWave2 {("G1" 19)}
-wvSetPosition -win $_nWave2 {("G1" 20)}
-wvSetPosition -win $_nWave2 {("G1" 21)}
-wvSetPosition -win $_nWave2 {("G1" 22)}
-wvMoveSelected -win $_nWave2
-wvSetPosition -win $_nWave2 {("G1" 22)}
-wvSelectSignal -win $_nWave2 {( "G1" 21 22 )} 
-wvSetCursor -win $_nWave2 498892.301562 -snap {("G1" 21)}
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvSelectSignal -win $_nWave2 {( "G1" 21 22 )} {( "G3" 16 )} 
-wvZoom -win $_nWave2 490694.197254 525032.748192
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 448381.976779 700224.605103
-wvZoom -win $_nWave2 483871.994862 544907.025962
-wvSetMarker -win $_nWave2 499000.000000
-wvZoom -win $_nWave2 495001.495307 525625.343663
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G1" 21 22 )} {( "G3" 7 16 )} 
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G1" 21 22 )} {( "G3" 7 16 18 )} 
-wvSetCursor -win $_nWave2 504984.182228 -snap {("G3" 16)}
-wvSetCursor -win $_nWave2 499044.364950 -snap {("G3" 16)}
-wvSetCursor -win $_nWave2 505233.156604 -snap {("G3" 16)}
-wvSelectSignal -win $_nWave2 {( "G1" 21 22 )} {( "G3" 7 16 18 24 )} 
-srcDeselectAll -win $_nTrace1
-debReload
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 427951.386085 1115405.208414
-wvZoom -win $_nWave2 595623.050068 759036.386076
-wvZoom -win $_nWave2 623459.622984 708108.110626
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 611186.739275 743320.963887
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvZoom -win $_nWave2 627914.533099 694518.776399
-wvSetCursor -win $_nWave2 645061.967011 -snap {("G3" 15)}
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvSelectSignal -win $_nWave2 {( "G3" 1 2 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 1 2 3 )} 
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvZoom -win $_nWave2 633149.012925 686757.306313
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G3" 1 2 3 18 )} 
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvSetCursor -win $_nWave2 647075.131726 -snap {("G3" 16)}
-wvSetCursor -win $_nWave2 644771.407155 -snap {("G3" 16)}
-wvSetCursor -win $_nWave2 647303.428755 -snap {("G3" 16)}
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 625521.816711 696335.404415
-srcDeselectAll -win $_nTrace1
-debReload
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 378988.399698 784295.438264
-wvZoom -win $_nWave2 474862.422371 600706.884210
-wvZoom -win $_nWave2 487724.574103 558076.646459
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G3" 6 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 7 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 16 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 16 17 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 16 17 18 )} 
-wvZoom -win $_nWave2 493607.674231 528034.704605
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G3" 15 16 17 18 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 7 15 16 17 18 )} 
-wvSetCursor -win $_nWave2 498925.670793 -snap {("G3" 7)}
-srcActiveTrace "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.dCache_1.dcache_stall" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 357000 -TraceValue 0
-wvSelectSignal -win $_nWave2 {( "G3" 6 )} 
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "bypass_stall" -line 11884 -pos 1 -win $_nTrace1
-srcDeselectAll -win $_nTrace1
-debReload
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G3" 6 )} 
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "bypass_stall" -line 11884 -pos 1 -win $_nTrace1
-wvSelectSignal -win $_nWave2 {( "G3" 10 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 6 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 24 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 18 24 )} 
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "cpu_bypass_rsp_valid" -line 11884 -pos 1 -win $_nTrace1
-wvSetPosition -win $_nWave2 {("G1" 5)}
-wvSetPosition -win $_nWave2 {("G1" 22)}
-wvSetPosition -win $_nWave2 {("G1" 16)}
-wvSetPosition -win $_nWave2 {("G1" 17)}
-wvSetPosition -win $_nWave2 {("G1" 18)}
-wvSetPosition -win $_nWave2 {("G1" 19)}
-wvSetPosition -win $_nWave2 {("G1" 20)}
-wvSetPosition -win $_nWave2 {("G1" 21)}
-wvSetPosition -win $_nWave2 {("G1" 22)}
-wvSetPosition -win $_nWave2 {("G2" 0)}
-wvSetPosition -win $_nWave2 {("G3" 0)}
-wvAddSignal -win $_nWave2 \
-           "/tb_DandRiscvYsyx3rd/u_ysyx_210238/core_cpu/dCache_1/cpu_bypass_rsp_valid"
-wvSetPosition -win $_nWave2 {("G3" 0)}
-wvSetPosition -win $_nWave2 {("G3" 1)}
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "cpu_cmd_ready" -line 11884 -pos 1 -win $_nTrace1
-srcSelect -win $_nTrace1 -range {11884 11893 13 4 4 26}
-srcDeselectAll -win $_nTrace1
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "cpu_cmd_ready" -line 11884 -pos 1 -win $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "bypass" -line 11884 -pos 1 -win $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "bypass_stall" -line 11884 -pos 1 -win $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "bypass_stall" -line 11884 -pos 1 -win $_nTrace1
-srcAction -pos 11883 3 3 -win $_nTrace1 -name "bypass_stall" -ctrlKey off
-wvSelectSignal -win $_nWave2 {( "G3" 20 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 21 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 20 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 21 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 20 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 20 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 21 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 22 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 21 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 20 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 21 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 21 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 20 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 21 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 20 )} 
-wvSetCursor -win $_nWave2 499045.625603 -snap {("G3" 20)}
-srcActiveTrace "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.dCache_1.stall" -win \
-           $_nTrace1 -TraceByDConWave -TraceTime 499000 -TraceValue 1
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "dcache_stall" -line 11886 -pos 1 -win $_nTrace1
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "dcache_stall" -line 11886 -pos 1 -win $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvSetCursor -win $_nWave2 499085.610539 -snap {("G3" 5)}
-srcActiveTrace "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.dCache_1.dcache_stall" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 499000 -TraceValue 1
-wvScrollDown -win $_nWave2 0
-wvSelectSignal -win $_nWave2 {( "G3" 4 )} 
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "bypass_stall" -line 11884 -pos 1 -win $_nTrace1
-wvSelectSignal -win $_nWave2 {( "G3" 2 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 3 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 4 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 3 )} 
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "bypass" -line 11884 -pos 1 -win $_nTrace1
-srcDeselectAll -win $_nTrace1
-debReload
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "cpu_bypass_rsp_valid" -line 11884 -pos 1 -win $_nTrace1
-srcAction -pos 11883 20 13 -win $_nTrace1 -name "cpu_bypass_rsp_valid" -ctrlKey \
-          off
-srcBackwardHistory -win $_nTrace1
-srcHBSelect "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.dCache_1" -win $_nTrace1
-wvSelectSignal -win $_nWave2 {( "G3" 5 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 4 )} 
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 0.000000 3742044.134727
-wvZoom -win $_nWave2 201372.100165 1170565.877220
-wvZoom -win $_nWave2 297803.691611 674899.992787
-wvZoom -win $_nWave2 340141.255428 448759.005361
-wvSelectSignal -win $_nWave2 {( "G3" 12 )} 
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvScrollDown -win $_nWave2 3
-wvSelectSignal -win $_nWave2 {( "G3" 21 )} 
-wvSetCursor -win $_nWave2 346953.518490 -snap {("G3" 21)}
-srcSearchString "bypass_reg" -win $_nTrace1 -next -case
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "bypass_reg" -line 13435 -pos 1 -win $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvSetPosition -win $_nWave2 {("G3" 7)}
-wvSetPosition -win $_nWave2 {("G3" 8)}
-wvSetPosition -win $_nWave2 {("G3" 9)}
-wvSetPosition -win $_nWave2 {("G3" 10)}
-wvSetPosition -win $_nWave2 {("G3" 11)}
-wvSetPosition -win $_nWave2 {("G3" 12)}
-wvSetPosition -win $_nWave2 {("G3" 13)}
-wvSetPosition -win $_nWave2 {("G3" 14)}
-wvSetPosition -win $_nWave2 {("G3" 15)}
-wvSetPosition -win $_nWave2 {("G3" 16)}
-wvSetPosition -win $_nWave2 {("G3" 17)}
-wvSetPosition -win $_nWave2 {("G3" 18)}
-wvSetPosition -win $_nWave2 {("G3" 19)}
-wvSetPosition -win $_nWave2 {("G3" 20)}
-wvSetPosition -win $_nWave2 {("G3" 21)}
-wvSetPosition -win $_nWave2 {("G3" 20)}
-wvSetPosition -win $_nWave2 {("G3" 19)}
-wvSetPosition -win $_nWave2 {("G3" 18)}
-wvSetPosition -win $_nWave2 {("G3" 17)}
-wvSetPosition -win $_nWave2 {("G3" 16)}
-wvSetPosition -win $_nWave2 {("G3" 15)}
-wvSetPosition -win $_nWave2 {("G3" 14)}
-wvSetPosition -win $_nWave2 {("G3" 13)}
-wvSetPosition -win $_nWave2 {("G3" 12)}
-wvSetPosition -win $_nWave2 {("G3" 11)}
-wvSetPosition -win $_nWave2 {("G3" 10)}
-wvSetPosition -win $_nWave2 {("G3" 9)}
-wvSetPosition -win $_nWave2 {("G3" 8)}
-wvSetPosition -win $_nWave2 {("G3" 7)}
-wvSetPosition -win $_nWave2 {("G3" 6)}
-wvMoveSelected -win $_nWave2
-wvSetPosition -win $_nWave2 {("G3" 6)}
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSetCursor -win $_nWave2 349350.425864 -snap {("G3" 6)}
-wvSelectSignal -win $_nWave2 {( "G3" 6 30 )} 
-wvSetCursor -win $_nWave2 357550.372142 -snap {("G3" 30)}
-srcDeselectAll -win $_nTrace1
-debReload
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 596115.068932 791231.739349
-wvZoom -win $_nWave2 625650.732165 674146.629342
-wvSelectSignal -win $_nWave2 {( "G3" 6 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 4 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 5 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 8 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 8 9 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 7 8 9 )} 
-wvZoom -win $_nWave2 638624.276474 664364.839784
-wvZoomOut -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G3" 7 8 )} 
-wvZoom -win $_nWave2 650209.024770 662645.812618
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvScrollDown -win $_nWave2 1
-wvSelectSignal -win $_nWave2 {( "G3" 7 8 23 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 7 8 23 24 )} 
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSetCursor -win $_nWave2 642955.435574 -snap {("G3" 22)}
-wvSetCursor -win $_nWave2 640856.155860 -snap {("G3" 22)}
-wvSetCursor -win $_nWave2 643070.992255 -snap {("G3" 24)}
-wvSelectSignal -win $_nWave2 {( "G3" 30 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 31 )} 
-wvSetCursor -win $_nWave2 641029.490882 -snap {("G3" 31)}
-srcActiveTrace \
-           "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.dCache_1.cpu_rsp_payload_data\[63:0\]" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 635000 -TraceValue \
-           0000010010100111101101000010001100000000000000000010011110010111
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "bypass_rsp_data_d1" -line 11881 -pos 1 -win $_nTrace1
-srcAction -pos 11880 12 6 -win $_nTrace1 -name "bypass_rsp_data_d1" -ctrlKey off
-wvSelectSignal -win $_nWave2 {( "G3" 23 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 22 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 23 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 22 )} 
-srcDeselectAll -win $_nTrace1
-srcDeselectAll -win $_nTrace1
-srcDeselectAll -win $_nTrace1
-debReload
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 348827.102591 1297932.646745
-wvZoom -win $_nWave2 541367.290410 892642.900248
-wvZoom -win $_nWave2 616300.647368 758687.625107
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 611918.237484 737712.694782
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 543891.792142 1209341.062185
-wvZoom -win $_nWave2 609071.298654 902250.264705
-wvZoom -win $_nWave2 621670.162468 751404.408769
-wvZoom -win $_nWave2 637240.281072 703388.172043
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G3" 6 )} 
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 482677.293467 1593080.914260
-wvZoom -win $_nWave2 977049.792077 1351913.112763
-wvZoom -win $_nWave2 1052951.269708 1167021.176815
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvScrollUp -win $_nWave2 11
-wvSelectSignal -win $_nWave2 {( "G1" 2 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 2 )} 
-wvSetSearchMode -win $_nWave2 -value 401
-wvSearchNext -win $_nWave2
-wvZoom -win $_nWave2 3037726.380416 3899764.547951
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 3894591.651475 4214977.497713
-wvZoom -win $_nWave2 3936764.004444 3974595.085784
-wvZoomOut -win $_nWave2
-wvSetMarker -win $_nWave2 3939000.000000
-wvScrollDown -win $_nWave2 1
-wvZoom -win $_nWave2 3935951.141488 3946965.068382
-wvZoomOut -win $_nWave2
-wvScrollDown -win $_nWave2 126
-wvScrollUp -win $_nWave2 127
-wvSelectSignal -win $_nWave2 {( "G1" 5 )} 
-wvScrollDown -win $_nWave2 6
-wvSelectSignal -win $_nWave2 {( "G3" 8 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 9 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 9 10 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 9 10 11 )} 
-wvCut -win $_nWave2
-wvSetPosition -win $_nWave2 {("G3" 6)}
-wvSelectSignal -win $_nWave2 {( "G3" 7 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 7 8 )} 
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvScrollDown -win $_nWave2 0
-wvSelectSignal -win $_nWave2 {( "G1" 6 )} 
-wvSetPosition -win $_nWave2 {("G1" 6)}
-wvSetPosition -win $_nWave2 {("G1" 7)}
-wvSetPosition -win $_nWave2 {("G1" 8)}
-wvSetPosition -win $_nWave2 {("G1" 9)}
-wvSetPosition -win $_nWave2 {("G1" 10)}
-wvSetPosition -win $_nWave2 {("G1" 11)}
-wvSetPosition -win $_nWave2 {("G1" 12)}
-wvSetPosition -win $_nWave2 {("G1" 13)}
-wvSetPosition -win $_nWave2 {("G1" 14)}
-wvSetPosition -win $_nWave2 {("G1" 15)}
-wvSetPosition -win $_nWave2 {("G1" 16)}
-wvSetPosition -win $_nWave2 {("G1" 17)}
-wvSetPosition -win $_nWave2 {("G1" 18)}
-wvSetPosition -win $_nWave2 {("G1" 19)}
-wvSetPosition -win $_nWave2 {("G1" 20)}
-wvSetPosition -win $_nWave2 {("G1" 21)}
-wvSetPosition -win $_nWave2 {("G1" 22)}
-wvSetPosition -win $_nWave2 {("G2" 0)}
-wvSetPosition -win $_nWave2 {("G3" 0)}
-wvSetPosition -win $_nWave2 {("G3" 1)}
-wvSetPosition -win $_nWave2 {("G3" 2)}
-wvSetPosition -win $_nWave2 {("G3" 3)}
-wvSetPosition -win $_nWave2 {("G3" 4)}
-wvSetPosition -win $_nWave2 {("G3" 5)}
-wvSetPosition -win $_nWave2 {("G3" 6)}
-wvSetPosition -win $_nWave2 {("G3" 7)}
-wvSetPosition -win $_nWave2 {("G3" 8)}
-wvMoveSelected -win $_nWave2
-wvSetPosition -win $_nWave2 {("G3" 9)}
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 3932887.453344 3955998.364598
-wvZoomOut -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G3" 6 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 3 )} 
-wvZoom -win $_nWave2 3932551.929080 3961093.859742
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G3" 14 )} 
-wvScrollDown -win $_nWave2 3
-wvSelectSignal -win $_nWave2 {( "G3" 21 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 21 22 )} 
-wvScrollDown -win $_nWave2 1
-wvSelectSignal -win $_nWave2 {( "G3" 21 22 23 )} 
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 3933109.949791 3972381.347999
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 3933339.527071 3965601.976547
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G3" 21 22 23 28 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 21 22 23 28 29 )} 
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvSelectSignal -win $_nWave2 {( "G3" 7 21 22 23 28 29 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 7 8 21 22 23 28 29 )} 
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvSetCursor -win $_nWave2 3947003.917208 -snap {("G3" 28)}
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvScrollUp -win $_nWave2 1
-wvSetMarker -win $_nWave2 3947000.000000
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollUp -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvSelectSignal -win $_nWave2 {( "G3" 8 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 8 20 )} 
-wvSetCursor -win $_nWave2 3944992.978623 -snap {("G3" 8)}
-srcActiveTrace \
-           "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.writeback_arbitration_isFiring" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 3939000 -TraceValue 0
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "writeback_arbitration_isValid" -line 3397 -pos 1 -win \
-          $_nTrace1
-srcSelect -signal "writeback_arbitration_isStuck" -line 3397 -pos 1 -win \
-          $_nTrace1
-srcSelect -signal "writeback_arbitration_removeIt" -line 3397 -pos 1 -win \
-          $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "writeback_arbitration_isValid" -line 3397 -pos 1 -win \
-          $_nTrace1
-srcAction -pos 3396 9 20 -win $_nTrace1 -name "writeback_arbitration_isValid" \
-          -ctrlKey off
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "when_Pipeline_l163_3" -line 3624 -pos 1 -win $_nTrace1
-srcSelect -signal "memaccess_arbitration_isValid" -line 3625 -pos 1 -win \
-          $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G3" 16 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 25 )} 
-wvSetPosition -win $_nWave2 {("G3" 25)}
-wvSetPosition -win $_nWave2 {("G3" 24)}
-wvSetPosition -win $_nWave2 {("G3" 23)}
-wvSetPosition -win $_nWave2 {("G3" 22)}
-wvSetPosition -win $_nWave2 {("G3" 21)}
-wvSetPosition -win $_nWave2 {("G3" 20)}
-wvSetPosition -win $_nWave2 {("G3" 19)}
-wvSetPosition -win $_nWave2 {("G3" 18)}
-wvSetPosition -win $_nWave2 {("G3" 17)}
-wvSetPosition -win $_nWave2 {("G3" 16)}
-wvSetPosition -win $_nWave2 {("G3" 15)}
-wvSetPosition -win $_nWave2 {("G3" 14)}
-wvSetPosition -win $_nWave2 {("G3" 13)}
-wvSetPosition -win $_nWave2 {("G3" 12)}
-wvSetPosition -win $_nWave2 {("G3" 11)}
-wvSetPosition -win $_nWave2 {("G3" 10)}
-wvSetPosition -win $_nWave2 {("G3" 9)}
-wvSetPosition -win $_nWave2 {("G3" 8)}
-wvSetPosition -win $_nWave2 {("G3" 7)}
-wvSetPosition -win $_nWave2 {("G3" 6)}
-wvSetPosition -win $_nWave2 {("G3" 5)}
-wvSetPosition -win $_nWave2 {("G3" 4)}
-wvSetPosition -win $_nWave2 {("G3" 3)}
-wvSetPosition -win $_nWave2 {("G3" 4)}
-wvSetPosition -win $_nWave2 {("G3" 5)}
-wvSetPosition -win $_nWave2 {("G3" 6)}
-wvSetPosition -win $_nWave2 {("G3" 7)}
-wvSetPosition -win $_nWave2 {("G3" 8)}
-wvSetPosition -win $_nWave2 {("G3" 9)}
-wvSetPosition -win $_nWave2 {("G3" 8)}
-wvSetPosition -win $_nWave2 {("G3" 7)}
-wvSetPosition -win $_nWave2 {("G3" 6)}
-wvSetPosition -win $_nWave2 {("G3" 5)}
-wvSetPosition -win $_nWave2 {("G3" 4)}
-wvSetPosition -win $_nWave2 {("G3" 3)}
-wvSetPosition -win $_nWave2 {("G3" 2)}
-wvSetPosition -win $_nWave2 {("G3" 1)}
-wvSetPosition -win $_nWave2 {("G3" 0)}
-wvSetPosition -win $_nWave2 {("G2" 0)}
-wvSetPosition -win $_nWave2 {("G3" 0)}
-wvSetPosition -win $_nWave2 {("G3" 1)}
-wvSetPosition -win $_nWave2 {("G3" 0)}
-wvMoveSelected -win $_nWave2
-wvSetPosition -win $_nWave2 {("G3" 0)}
-wvSetPosition -win $_nWave2 {("G3" 1)}
-wvSetMarker -win $_nWave2 3945000.000000
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "when_Pipeline_l163_3" -line 3624 -pos 1 -win $_nTrace1
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "writeback_arbitration_isValid" -line 3625 -pos 1 -win \
-          $_nTrace1
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "writeback_arbitration_isValid" -line 3625 -pos 1 -win \
-          $_nTrace1
-srcDeselectAll -win $_nTrace1
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "when_Pipeline_l163_3" -line 3624 -pos 1 -win $_nTrace1
-srcSelect -signal "writeback_arbitration_isValid" -line 3625 -pos 1 -win \
-          $_nTrace1
-srcSelect -signal "memaccess_arbitration_isValid" -line 3625 -pos 1 -win \
-          $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G3" 3 )} 
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSetCursor -win $_nWave2 3907653.221477 -snap {("G3" 3)}
-srcActiveTrace \
-           "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.writeback_arbitration_isValid" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 3907000 -TraceValue 1
-wvZoomIn -win $_nWave2
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "when_Pipeline_l163_3" -line 3624 -pos 1 -win $_nTrace1
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "when_Pipeline_l163_3" -line 3624 -pos 1 -win $_nTrace1
-srcAction -pos 3623 3 6 -win $_nTrace1 -name "when_Pipeline_l163_3" -ctrlKey off
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "memaccess_arbitration_isStuck" -line 3404 -pos 1 -win \
-          $_nTrace1
-srcSelect -signal "memaccess_arbitration_removeIt" -line 3404 -pos 1 -win \
-          $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvZoom -win $_nWave2 3938354.383231 3960137.469521
-wvZoom -win $_nWave2 3943827.562868 3950582.596595
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G3" 3 )} 
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G3" 3 14 )} 
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 3905131.915732 3932497.255618
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 3939727.934856 3953119.258748
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvSelectSignal -win $_nWave2 {( "G3" 31 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 32 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 31 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 32 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 31 )} 
-wvZoom -win $_nWave2 3937568.629241 3963988.368520
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvZoom -win $_nWave2 3937379.405401 3967655.219674
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvScrollDown -win $_nWave2 64
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvZoom -win $_nWave2 3937396.987175 3964777.669382
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvScrollUp -win $_nWave2 69
-wvSelectSignal -win $_nWave2 {( "G3" 1 )} 
-wvSetCursor -win $_nWave2 3937190.280514 -snap {("G3" 38)}
-wvSetPosition -win $_nWave2 {("G3" 1)}
-wvSetPosition -win $_nWave2 {("G3" 2)}
-wvSetPosition -win $_nWave2 {("G3" 3)}
-wvSetPosition -win $_nWave2 {("G3" 4)}
-wvSetPosition -win $_nWave2 {("G3" 5)}
-wvSetPosition -win $_nWave2 {("G3" 6)}
-wvSetPosition -win $_nWave2 {("G3" 7)}
-wvSetPosition -win $_nWave2 {("G3" 8)}
-wvSetPosition -win $_nWave2 {("G3" 9)}
-wvSetPosition -win $_nWave2 {("G3" 10)}
-wvSetPosition -win $_nWave2 {("G3" 11)}
-wvSetPosition -win $_nWave2 {("G3" 12)}
-wvSetPosition -win $_nWave2 {("G3" 13)}
-wvSetPosition -win $_nWave2 {("G3" 14)}
-wvSetPosition -win $_nWave2 {("G3" 15)}
-wvSetPosition -win $_nWave2 {("G3" 16)}
-wvSetPosition -win $_nWave2 {("G3" 17)}
-wvSetPosition -win $_nWave2 {("G3" 18)}
-wvSetPosition -win $_nWave2 {("G3" 19)}
-wvSetPosition -win $_nWave2 {("G3" 20)}
-wvSetPosition -win $_nWave2 {("G3" 21)}
-wvSetPosition -win $_nWave2 {("G3" 22)}
-wvSetPosition -win $_nWave2 {("G3" 23)}
-wvSetPosition -win $_nWave2 {("G3" 24)}
-wvSetPosition -win $_nWave2 {("G3" 25)}
-wvSetPosition -win $_nWave2 {("G3" 26)}
-wvSetPosition -win $_nWave2 {("G3" 27)}
-wvSetPosition -win $_nWave2 {("G3" 28)}
-wvSetPosition -win $_nWave2 {("G3" 29)}
-wvSetPosition -win $_nWave2 {("G3" 30)}
-wvSetPosition -win $_nWave2 {("G3" 31)}
-wvSetPosition -win $_nWave2 {("G3" 32)}
-wvSetPosition -win $_nWave2 {("G3" 33)}
-wvSetPosition -win $_nWave2 {("G3" 34)}
-wvSetPosition -win $_nWave2 {("G3" 35)}
-wvSetPosition -win $_nWave2 {("G3" 36)}
-wvSetPosition -win $_nWave2 {("G3" 37)}
-wvMoveSelected -win $_nWave2
-wvSetPosition -win $_nWave2 {("G3" 37)}
-wvSelectSignal -win $_nWave2 {( "G3" 30 37 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 30 31 37 )} 
-srcDeselectAll -win $_nTrace1
-debReload
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G3" 12 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 12 13 )} 
-wvZoom -win $_nWave2 3935642.630649 3950377.105395
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoom -win $_nWave2 3937202.785059 3960613.657825
-wvZoomOut -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G3" 12 13 14 )} 
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-wvSelectSignal -win $_nWave2 {( "G3" 12 13 14 37 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 12 13 14 37 38 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 12 13 14 37 38 39 )} 
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 64
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSetCursor -win $_nWave2 3947158.976980 -snap {("G3" 37)}
-wvSetCursor -win $_nWave2 3939128.766654 -snap {("G3" 37)}
-wvScrollUp -win $_nWave2 66
-wvSelectSignal -win $_nWave2 {( "G3" 12 13 14 30 37 38 39 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 12 13 14 30 31 37 38 39 )} 
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 3896739.044654 3968884.049385
-wvSetCursor -win $_nWave2 3907268.919521 -snap {("G3" 33)}
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 3774500.324868 4084866.291795
-wvZoom -win $_nWave2 3800814.744827 3984655.213042
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 3800850.331444 3957004.410911
-wvZoom -win $_nWave2 3811429.876123 3881073.507384
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 3899205.656831 3976209.997087
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 3802540.316808 3947903.523577
-srcDeselectAll -win $_nTrace1
-debReload
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 3929810.503454 4000944.492365
-wvSelectSignal -win $_nWave2 {( "G3" 38 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 38 39 )} 
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G3" 14 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 13 14 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 12 13 14 )} 
-wvSetCursor -win $_nWave2 3946995.021100 -snap {("G3" 13)}
-wvSetCursor -win $_nWave2 3945397.742216 -snap {("G3" 14)}
-wvSetCursor -win $_nWave2 3945012.192141 -snap {("G3" 13)}
-wvSetCursor -win $_nWave2 3947463.189049 -snap {("G3" 13)}
-wvSetCursor -win $_nWave2 3945204.967179 -snap {("G3" 13)}
-wvSetCursor -win $_nWave2 3947022.560391 -snap {("G3" 13)}
-wvSelectSignal -win $_nWave2 {( "G3" 38 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 38 39 )} 
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 3791219.020995 3986197.201981
-wvZoom -win $_nWave2 3801786.944083 3912448.195854
-wvSelectSignal -win $_nWave2 {( "G3" 37 38 39 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 38 39 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 37 38 39 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 38 39 )} 
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 1207074.058714 2092706.810018
-wvZoom -win $_nWave2 1298277.431476 1496456.188833
-wvSelectSignal -win $_nWave2 {( "G3" 31 38 39 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 30 31 38 39 )} 
-wvZoom -win $_nWave2 1310169.691403 1391881.025737
-srcDeselectAll -win $_nTrace1
-debReload
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G3" 37 )} 
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 308865.777347 677341.821606
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 589447.547379 952360.074130
-wvZoom -win $_nWave2 619655.132842 774767.571686
-wvSelectSignal -win $_nWave2 {( "G3" 31 )} 
-wvSetCursor -win $_nWave2 653163.743324 -snap {("G3" 38)}
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 2880539.475973 3393617.554749
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 3792181.691436 4063121.877053
-wvZoom -win $_nWave2 3923403.593180 4006374.435930
-wvSelectSignal -win $_nWave2 {( "G3" 37 )} 
-wvSetCursor -win $_nWave2 3946916.816909 -snap {("G3" 37)}
-wvSetCursor -win $_nWave2 3946981.060690 -snap {("G3" 37)}
-srcActiveTrace "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.dCache_1.stall" -win \
-           $_nTrace1 -TraceByDConWave -TraceTime 3945000 -TraceValue 0
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "dcache_stall" -line 11886 -pos 1 -win $_nTrace1
-srcAction -pos 11885 7 3 -win $_nTrace1 -name "dcache_stall" -ctrlKey off
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "cpu_bypass_rsp_valid" -line 11885 -pos 1 -win $_nTrace1
-wvSetPosition -win $_nWave2 {("G1" 19)}
-wvSetPosition -win $_nWave2 {("G1" 20)}
-wvSetPosition -win $_nWave2 {("G2" 0)}
-wvSetPosition -win $_nWave2 {("G3" 1)}
-wvSetPosition -win $_nWave2 {("G3" 3)}
-wvSetPosition -win $_nWave2 {("G3" 10)}
-wvSetPosition -win $_nWave2 {("G3" 14)}
-wvSetPosition -win $_nWave2 {("G3" 18)}
-wvSetPosition -win $_nWave2 {("G3" 19)}
-wvSetPosition -win $_nWave2 {("G3" 6)}
-wvSetPosition -win $_nWave2 {("G3" 34)}
-wvSetPosition -win $_nWave2 {("G3" 35)}
-wvSetPosition -win $_nWave2 {("G3" 36)}
-wvSetPosition -win $_nWave2 {("G3" 37)}
-wvAddSignal -win $_nWave2 \
-           "/tb_DandRiscvYsyx3rd/u_ysyx_210238/core_cpu/dCache_1/cpu_bypass_rsp_valid"
-wvSetPosition -win $_nWave2 {("G3" 37)}
-wvSetPosition -win $_nWave2 {("G3" 38)}
-wvScrollDown -win $_nWave2 1
-wvScrollDown -win $_nWave2 1
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "bypass_stall" -line 11885 -pos 1 -win $_nTrace1
-srcAction -pos 11884 20 4 -win $_nTrace1 -name "bypass_stall" -ctrlKey off
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "bypass" -line 11884 -pos 1 -win $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G3" 39 )} 
-wvSelectAll -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G1" 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 \
-           18 19 20 21 )} {( "G3" 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 \
-           19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 39 40 41 \
-           42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 \
-           64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 )} {( "G4" 1 \
-           2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 \
-           27 28 29 30 31 32 33 34 35 36 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 \
-           18 19 20 21 )} {( "G3" 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 \
-           19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 40 41 42 \
-           43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 \
-           65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 )} {( "G4" 1 2 \
-           3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 \
-           28 29 30 31 32 33 34 35 36 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 \
-           18 19 20 21 )} {( "G3" 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 \
-           19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 41 42 43 \
-           44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 \
-           66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 )} {( "G4" 1 2 3 4 \
-           5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 \
-           29 30 31 32 33 34 35 36 )} 
-wvSelectSignal -win $_nWave2 {( "G1" 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 \
-           18 19 20 21 )} {( "G3" 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 \
-           19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 42 43 44 \
-           45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 \
-           67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 )} {( "G4" 1 2 3 4 5 \
-           6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 \
-           30 31 32 33 34 35 36 )} 
-wvCut -win $_nWave2
-wvSetPosition -win $_nWave2 {("G3" 2)}
-wvSelectGroup -win $_nWave2 {G5}
-wvSelectSignal -win $_nWave2 {( "G3" 1 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 1 2 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 1 2 3 )} 
-wvSelectSignal -win $_nWave2 {( "G3" 1 2 3 4 )} 
-wvSetPosition -win $_nWave2 {("G3" 1)}
-wvSetPosition -win $_nWave2 {("G3" 2)}
-wvSetPosition -win $_nWave2 {("G3" 3)}
-wvSetPosition -win $_nWave2 {("G3" 4)}
-wvSetPosition -win $_nWave2 {("G4" 0)}
-wvSetPosition -win $_nWave2 {("G5" 0)}
-wvMoveSelected -win $_nWave2
-wvSetPosition -win $_nWave2 {("G5" 4)}
-wvSetPosition -win $_nWave2 {("G5" 4)}
-wvSelectSignal -win $_nWave2 {( "G5" 1 )} 
-srcHBSelect "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.dCache_1" -win $_nTrace1
-srcSetScope -win $_nTrace1 "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.dCache_1" \
-           -delim "."
-srcHBSelect "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.dCache_1" -win $_nTrace1
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "stall" -line 5493 -pos 1 -win $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvSetPosition -win $_nWave2 {("G6" 0)}
-wvMoveSelected -win $_nWave2
-wvSetPosition -win $_nWave2 {("G6" 1)}
-wvSetPosition -win $_nWave2 {("G6" 1)}
-wvSelectSignal -win $_nWave2 {( "G5" 3 )} 
-wvSetPosition -win $_nWave2 {("G5" 3)}
-wvSetPosition -win $_nWave2 {("G5" 4)}
-wvSetPosition -win $_nWave2 {("G6" 0)}
-wvSetPosition -win $_nWave2 {("G6" 1)}
-wvMoveSelected -win $_nWave2
-wvSetPosition -win $_nWave2 {("G6" 2)}
-wvSelectSignal -win $_nWave2 {( "G5" 3 )} 
-wvCut -win $_nWave2
-wvSetPosition -win $_nWave2 {("G7" 0)}
-wvSetPosition -win $_nWave2 {("G6" 2)}
-wvSelectSignal -win $_nWave2 {( "G5" 2 )} 
-wvCut -win $_nWave2
-wvSetPosition -win $_nWave2 {("G7" 0)}
-wvSetPosition -win $_nWave2 {("G6" 2)}
-wvSelectSignal -win $_nWave2 {( "G5" 1 )} 
-wvCut -win $_nWave2
-wvSetPosition -win $_nWave2 {("G7" 0)}
-wvSetPosition -win $_nWave2 {("G6" 2)}
-wvSetCursor -win $_nWave2 3948330.180084 -snap {("G6" 1)}
-wvSelectSignal -win $_nWave2 {( "G6" 1 )} 
-wvSelectSignal -win $_nWave2 {( "G6" 2 )} 
-wvSelectSignal -win $_nWave2 {( "G6" 1 )} 
-wvSetCursor -win $_nWave2 3947334.401484 -snap {("G6" 1)}
-srcActiveTrace "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.dCache_1.stall" -win \
-           $_nTrace1 -TraceByDConWave -TraceTime 3947000 -TraceValue 1
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "is_miss" -line 11885 -pos 1 -win $_nTrace1
-srcSelect -signal "is_write" -line 11885 -pos 1 -win $_nTrace1
-srcSelect -signal "bypass_stall" -line 11885 -pos 1 -win $_nTrace1
-srcSelect -signal "next_level_wdone" -line 11885 -pos 1 -win $_nTrace1
-srcSelect -signal "cpu_bypass_rsp_valid" -line 11885 -pos 1 -win $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 1889557.923421 2496019.213054
-wvZoom -win $_nWave2 1957646.879671 2076919.947860
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 3815260.544363 4125564.461604
-wvZoom -win $_nWave2 3916652.919954 4011558.105637
-srcHBSelect "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.dCache_1" -win $_nTrace1
-srcSetScope -win $_nTrace1 "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.dCache_1" \
-           -delim "."
-srcHBSelect "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.dCache_1" -win $_nTrace1
-srcDeselectAll -win $_nTrace1
-srcSelect -win $_nTrace1 -range {5495 5499 3 1 14 1}
-wvSetPosition -win $_nWave2 {("G2" 0)}
-wvSetPosition -win $_nWave2 {("G3" 0)}
-wvSetPosition -win $_nWave2 {("G4" 0)}
-wvSetPosition -win $_nWave2 {("G5" 0)}
-wvAddSignal -win $_nWave2 \
-           "/tb_DandRiscvYsyx3rd/u_ysyx_210238/core_cpu/dCache_1/cpu_cmd_valid" \
-           "/tb_DandRiscvYsyx3rd/u_ysyx_210238/core_cpu/dCache_1/cpu_cmd_ready" \
-           "/tb_DandRiscvYsyx3rd/u_ysyx_210238/core_cpu/dCache_1/cpu_cmd_payload_addr\[63:0\]" \
-           "/tb_DandRiscvYsyx3rd/u_ysyx_210238/core_cpu/dCache_1/cpu_cmd_payload_wen"
-wvSetPosition -win $_nWave2 {("G5" 0)}
-wvSetPosition -win $_nWave2 {("G5" 4)}
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 2780123.823495 4543750.967438
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 234877.172867 906735.132465
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 601368.796976 855233.825458
-wvZoom -win $_nWave2 622008.230186 728547.018755
-wvSelectSignal -win $_nWave2 {( "G6" 2 )} 
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 3642859.390792 4228884.597136
-wvZoom -win $_nWave2 3901500.016123 4043071.726831
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 1164582.156069 2574708.742635
-wvZoom -win $_nWave2 1276496.964527 1588220.650523
-wvZoom -win $_nWave2 1302926.498879 1407679.173848
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 1282175.985993 1884331.509779
-wvZoom -win $_nWave2 1300825.789285 1398504.134026
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 2834071.184004 3397981.163400
-wvZoom -win $_nWave2 2919869.334178 3092993.845855
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 3735122.914426 4114750.182772
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 225748.154928 1900046.970645
-wvZoom -win $_nWave2 591980.764638 907653.828228
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSetCursor -win $_nWave2 642209.811922 -snap {("G6" 1)}
-wvZoom -win $_nWave2 624366.890016 734479.716301
-wvSelectGroup -win $_nWave2 {G4}
-wvSelectAll -win $_nWave2
-wvSelectGroup -win $_nWave2 {G4}
-wvSelectGroup -win $_nWave2 {G2}
-wvCut -win $_nWave2
-wvSetPosition -win $_nWave2 {("G5" 4)}
-wvSelectGroup -win $_nWave2 {G3}
-wvCut -win $_nWave2
-wvSetPosition -win $_nWave2 {("G6" 0)}
-wvSetPosition -win $_nWave2 {("G5" 4)}
-wvSelectGroup -win $_nWave2 {G1}
-wvCut -win $_nWave2
-wvSetPosition -win $_nWave2 {("G6" 0)}
-wvSetPosition -win $_nWave2 {("G5" 4)}
-wvSelectGroup -win $_nWave2 {G4}
-wvCut -win $_nWave2
-wvSetPosition -win $_nWave2 {("G6" 0)}
-wvSetPosition -win $_nWave2 {("G5" 4)}
-wvSelectSignal -win $_nWave2 {( "G6" 3 )} 
-wvSelectAll -win $_nWave2
-wvCut -win $_nWave2
-wvSetPosition -win $_nWave2 {("G5" 0)}
-wvSelectGroup -win $_nWave2 {G7}
-wvCut -win $_nWave2
-wvSetPosition -win $_nWave2 {("G5" 0)}
-wvSelectGroup -win $_nWave2 {G6}
-wvCut -win $_nWave2
-wvSetPosition -win $_nWave2 {("G5" 0)}
-wvCut -win $_nWave2
-wvSetPosition -win $_nWave2 {("G1" 0)}
-wvCut -win $_nWave2
-wvSetPosition -win $_nWave2 {("G1" 0)}
-srcSearchString "memaccess_PC" -win $_nTrace1 -next -case
-srcHBSelect "tb_DandRiscvYsyx3rd.u_ysyx_210238" -win $_nTrace1
-srcSetScope -win $_nTrace1 "tb_DandRiscvYsyx3rd.u_ysyx_210238" -delim "."
-srcHBSelect "tb_DandRiscvYsyx3rd.u_ysyx_210238" -win $_nTrace1
-srcHBSelect "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu" -win $_nTrace1
-srcSetScope -win $_nTrace1 "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu" -delim \
-           "."
-srcHBSelect "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu" -win $_nTrace1
-srcSearchString "memaccess_arb" -win $_nTrace1 -next -case
-srcSearchString "memaccess_arb" -win $_nTrace1 -prev -case
-srcSelect -win $_nTrace1 -range {3625 3625 6 6 1 14}
-srcSearchString "memaccess_arb" -win $_nTrace1 -prev -case
-srcSelect -win $_nTrace1 -range {3621 3621 2 2 1 14}
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "memaccess_arbitration_isValid" -line 3625 -pos 1 -win \
-          $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-srcDeselectAll -win $_nTrace1
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "memaccess_arbitration_isValid" -line 3625 -pos 1 -win \
-          $_nTrace1
-srcSearchString "memaccess_arbitration_isF" -win $_nTrace1 -next -case
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "memaccess_arbitration_isFiring" -line 686 -pos 1 -win \
-          $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-srcSearchString "memaccess_PC" -win $_nTrace1 -next -case
-srcSearchString "memaccess_PC" -win $_nTrace1 -prev -case
-srcSelect -win $_nTrace1 -range {637 637 10 11 16 1}
-srcSearchString "memaccess_PC" -win $_nTrace1 -prev -case
-srcSelect -win $_nTrace1 -range {582 582 10 11 1 1}
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "memaccess_PC" -line 582 -pos 1 -win $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoom -win $_nWave2 628501.982602 684219.157962
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-srcHBSelect "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.dCache_1" -win $_nTrace1
-srcSetScope -win $_nTrace1 "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.dCache_1" \
-           -delim "."
-srcHBSelect "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.dCache_1" -win $_nTrace1
-srcDeselectAll -win $_nTrace1
-srcSelect -win $_nTrace1 -range {5493 5504 3 1 14 1}
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoom -win $_nWave2 621998.409868 695813.421127
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 3866386.280796 4473595.479104
-wvZoom -win $_nWave2 3926331.439745 4015426.401479
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 3902341.681369 4009476.389517
-srcDeselectAll -win $_nTrace1
-srcSearchString "writeback_arbitration_isFir" -win $_nTrace1 -next -case
-srcHBSelect "tb_DandRiscvYsyx3rd.u_ysyx_210238" -win $_nTrace1
-srcSetScope -win $_nTrace1 "tb_DandRiscvYsyx3rd.u_ysyx_210238" -delim "."
-srcHBSelect "tb_DandRiscvYsyx3rd.u_ysyx_210238" -win $_nTrace1
-srcHBSelect "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu" -win $_nTrace1
-srcSetScope -win $_nTrace1 "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu" -delim \
-           "."
-srcHBSelect "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu" -win $_nTrace1
-srcSearchString "writeback_arbitration_isFir" -win $_nTrace1 -next -case
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "writeback_arbitration_isFiring" -line 697 -pos 1 -win \
-          $_nTrace1
-wvSetPosition -win $_nWave2 {("G1" 0)}
-wvSetPosition -win $_nWave2 {("G1" 1)}
-wvSetPosition -win $_nWave2 {("G1" 6)}
-wvSetPosition -win $_nWave2 {("G2" 0)}
-wvAddSignal -win $_nWave2 \
-           "/tb_DandRiscvYsyx3rd/u_ysyx_210238/core_cpu/writeback_arbitration_isFiring"
-wvSetPosition -win $_nWave2 {("G2" 0)}
-wvSetPosition -win $_nWave2 {("G2" 1)}
-wvSetPosition -win $_nWave2 {("G2" 1)}
-srcSearchString "writeback_arbitration_isV" -win $_nTrace1 -next -case
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "writeback_arbitration_isValid" -line 2834 -pos 1 -win \
-          $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvSetPosition -win $_nWave2 {("G2" 1)}
-wvSetPosition -win $_nWave2 {("G2" 0)}
-wvMoveSelected -win $_nWave2
-wvSetPosition -win $_nWave2 {("G2" 0)}
-wvSetPosition -win $_nWave2 {("G2" 1)}
-wvSelectSignal -win $_nWave2 {( "G2" 2 )} 
-srcSearchString "writeback_PC" -win $_nTrace1 -prev -case
-srcSelect -win $_nTrace1 -range {1617 1617 8 9 14 1}
-srcSearchString "writeback_PC" -win $_nTrace1 -prev -case
-srcSelect -win $_nTrace1 -range {1617 1617 4 5 1 1}
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "writeback_PC" -line 1617 -pos 1 -win $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvSetPosition -win $_nWave2 {("G2" 3)}
-wvMoveSelected -win $_nWave2
-wvSetPosition -win $_nWave2 {("G2" 3)}
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-srcSearchString "writeback_RD" -win $_nTrace1 -next -case
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "writeback_RD" -line 1664 -pos 1 -win $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-srcSearchString "writeback_RDADD" -win $_nTrace1 -next -case
-srcSearchString "writeback_RD_ADDR" -win $_nTrace1 -next -case
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "writeback_RD_ADDR" -line 1665 -pos 1 -win $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-srcSearchString "writeback_RD_WEN" -win $_nTrace1 -next -case
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "writeback_RD_WEN" -line 1666 -pos 1 -win $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "G2" 4 )} 
-wvSelectSignal -win $_nWave2 {( "G2" 5 )} 
-wvSelectSignal -win $_nWave2 {( "G2" 6 )} 
-wvSelectSignal -win $_nWave2 {( "G2" 5 )} 
-wvZoom -win $_nWave2 3919948.604949 4013105.614046
-wvSelectGroup -win $_nWave2 {G1}
-wvRenameGroup -win $_nWave2 {G1} {LSU}
-wvSelectGroup -win $_nWave2 {G2}
-wvSelectGroup -win $_nWave2 {G2}
-wvSetPosition -win $_nWave2 {("G2" 0)}
-wvSelectGroup -win $_nWave2 {G2}
-wvSelectGroup -win $_nWave2 {G2}
-wvRenameGroup -win $_nWave2 {G2} {WB}
-wvSaveSignal -win $_nWave2 \
-           "/home/lin/SpinalProjects/DandRiscvSoC/simWorkspace/tb_DandRiscvYsyx3rd/signal_ysyx.rc"
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "LSU" 13 )} 
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 3901140.482515 4016333.470149
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "LSU" 2 )} 
-wvZoom -win $_nWave2 3931689.145514 3971335.512532
-wvSelectSignal -win $_nWave2 {( "WB" 1 )} 
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "WB" 1 4 )} 
-wvZoom -win $_nWave2 3936086.622924 3968902.702167
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "WB" 3 )} 
-wvSelectSignal -win $_nWave2 {( "WB" 4 )} 
-wvSelectSignal -win $_nWave2 {( "WB" 3 )} 
-wvSelectSignal -win $_nWave2 {( "LSU" 4 )} 
-wvSelectSignal -win $_nWave2 {( "WB" 1 )} 
-wvSelectSignal -win $_nWave2 {( "WB" 2 )} 
-wvSetCursor -win $_nWave2 3944929.050780 -snap {("WB" 2)}
-srcActiveTrace \
-           "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.writeback_arbitration_isFiring" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 3939000 -TraceValue 0
-wvSelectSignal -win $_nWave2 {( "WB" 4 )} 
-wvSetCursor -win $_nWave2 3939084.917427 -snap {("WB" 4)}
-srcActiveTrace "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.writeback_RD\[63:0\]" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 3939000 -TraceValue \
-           0000000000000000000000000000000000000000000000000000000000000000
-wvSelectSignal -win $_nWave2 {( "LSU" 13 )} 
-wvSelectSignal -win $_nWave2 {( "LSU" 14 )} 
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 3930884.073775 3970674.999129
-wvSelectSignal -win $_nWave2 {( "LSU" 6 )} 
-wvSelectSignal -win $_nWave2 {( "LSU" 7 )} 
-wvSelectSignal -win $_nWave2 {( "LSU" 13 )} 
-wvSelectSignal -win $_nWave2 {( "LSU" 14 )} 
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "WB" 4 )} 
-wvSetCursor -win $_nWave2 3938971.660229 -snap {("WB" 4)}
-srcActiveTrace "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.writeback_RD\[63:0\]" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 3937000 -TraceValue \
-           0000000000000000000000000000000010000000000000001101001000111000
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "writeback_LSU_RDATA" -line 1559 -pos 1 -win $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvSetPosition -win $_nWave2 {("WB" 2)}
-wvSetPosition -win $_nWave2 {("WB" 3)}
-wvSetPosition -win $_nWave2 {("WB" 4)}
-wvSetPosition -win $_nWave2 {("WB" 5)}
-wvSetPosition -win $_nWave2 {("WB" 6)}
-wvSetPosition -win $_nWave2 {("WB" 7)}
-wvMoveSelected -win $_nWave2
-wvSetPosition -win $_nWave2 {("WB" 7)}
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 3842020.754803 4019115.790755
-wvSetCursor -win $_nWave2 3863754.833935 -snap {("WB" 7)}
-srcActiveTrace \
-           "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.writeback_LSU_RDATA\[63:0\]" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 3863000 -TraceValue \
-           0000000000000000000000000000000000000000000000000000000000000000
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "memaccess_to_writeback_LSU_RDATA" -line 1619 -pos 1 -win \
-          $_nTrace1
-srcAction -pos 1618 7 14 -win $_nTrace1 -name "memaccess_to_writeback_LSU_RDATA" \
-          -ctrlKey off
-wvZoom -win $_nWave2 3936293.180058 3964540.626753
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 3934614.518397 3961516.848583
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "when_Pipeline_l127_40" -line 3755 -pos 1 -win $_nTrace1
-srcSelect -signal "_zz_execute_MEM_WDATA" -line 3756 -pos 1 -win $_nTrace1
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "_zz_execute_MEM_WDATA" -line 3756 -pos 1 -win $_nTrace1
-srcAction -pos 3755 5 8 -win $_nTrace1 -name "_zz_execute_MEM_WDATA" -ctrlKey off
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "memaccess_LSU_RDATA" -line 1644 -pos 1 -win $_nTrace1
-wvSetPosition -win $_nWave2 {("LSU" 8)}
-wvSetPosition -win $_nWave2 {("LSU" 9)}
-wvSetPosition -win $_nWave2 {("LSU" 10)}
-wvSetPosition -win $_nWave2 {("LSU" 11)}
-wvSetPosition -win $_nWave2 {("LSU" 12)}
-wvSetPosition -win $_nWave2 {("LSU" 13)}
-wvSetPosition -win $_nWave2 {("LSU" 14)}
-wvAddSignal -win $_nWave2 \
-           "/tb_DandRiscvYsyx3rd/u_ysyx_210238/core_cpu/memaccess_LSU_RDATA\[63:0\]"
-wvSetPosition -win $_nWave2 {("LSU" 14)}
-wvSetPosition -win $_nWave2 {("LSU" 15)}
-srcDeselectAll -win $_nTrace1
-srcBackwardHistory -win $_nTrace1
-srcHBSelect "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu" -win $_nTrace1
-srcHBSelect "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu" -win $_nTrace1
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "when_Pipeline_l127_40" -line 3755 -pos 1 -win $_nTrace1
-srcAction -pos 3754 3 9 -win $_nTrace1 -name "when_Pipeline_l127_40" -ctrlKey off
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "writeback_arbitration_isStuck" -line 3372 -pos 1 -win \
-          $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvSetPosition -win $_nWave2 {("WB" 0)}
-wvSetPosition -win $_nWave2 {("WB" 1)}
-wvSetPosition -win $_nWave2 {("WB" 2)}
-wvSetPosition -win $_nWave2 {("WB" 3)}
-wvSetPosition -win $_nWave2 {("WB" 4)}
-wvSetPosition -win $_nWave2 {("WB" 5)}
-wvSetPosition -win $_nWave2 {("WB" 6)}
-wvSetPosition -win $_nWave2 {("WB" 7)}
-wvMoveSelected -win $_nWave2
-wvSetPosition -win $_nWave2 {("WB" 8)}
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "WB" 3 )} 
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 3926256.361226 3978332.106842
-wvSelectSignal -win $_nWave2 {( "WB" 4 )} 
-wvZoom -win $_nWave2 3935107.020275 3959844.511514
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "WB" 6 )} 
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSetCursor -win $_nWave2 3939129.376573 -snap {("WB" 6)}
-wvSelectSignal -win $_nWave2 {( "LSU" 4 )} {( "WB" 6 )} 
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 3934479.724233 3961506.127747
-wvSetCursor -win $_nWave2 3938999.819593 -snap {("WB" 6)}
-srcActiveTrace "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.writeback_RD_WEN" -win \
-           $_nTrace1 -TraceByDConWave -TraceTime 3917000 -TraceValue 0
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "memaccess_to_writeback_RD_WEN" -line 1588 -pos 1 -win \
-          $_nTrace1
-srcAction -pos 1587 7 9 -win $_nTrace1 -name "memaccess_to_writeback_RD_WEN" \
-          -ctrlKey off
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "_zz_DecodePlugin_hazard_rs1_from_mem_3" -line 3708 -pos 1 -win \
-          $_nTrace1
-srcAction -pos 3707 5 8 -win $_nTrace1 -name \
-          "_zz_DecodePlugin_hazard_rs1_from_mem_3" -ctrlKey off
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "memaccess_RD_WEN" -line 1635 -pos 1 -win $_nTrace1
-wvSetPosition -win $_nWave2 {("LSU" 8)}
-wvSetPosition -win $_nWave2 {("LSU" 9)}
-wvSetPosition -win $_nWave2 {("LSU" 10)}
-wvSetPosition -win $_nWave2 {("LSU" 11)}
-wvSetPosition -win $_nWave2 {("LSU" 12)}
-wvSetPosition -win $_nWave2 {("LSU" 13)}
-wvSetPosition -win $_nWave2 {("LSU" 14)}
-wvSetPosition -win $_nWave2 {("LSU" 15)}
-wvAddSignal -win $_nWave2 \
-           "/tb_DandRiscvYsyx3rd/u_ysyx_210238/core_cpu/memaccess_RD_WEN"
-wvSetPosition -win $_nWave2 {("LSU" 15)}
-wvSetPosition -win $_nWave2 {("LSU" 16)}
-wvSelectSignal -win $_nWave2 {( "LSU" 16 )} 
-wvSetMarker -win $_nWave2 3939000.000000
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "LSU" 2 )} 
-wvSelectSignal -win $_nWave2 {( "WB" 2 )} 
-wvSelectSignal -win $_nWave2 {( "WB" 1 )} 
-wvSelectSignal -win $_nWave2 {( "WB" 2 )} 
-wvSelectSignal -win $_nWave2 {( "WB" 1 )} 
-wvSelectSignal -win $_nWave2 {( "WB" 2 )} 
-wvSelectSignal -win $_nWave2 {( "WB" 6 )} 
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSetCursor -win $_nWave2 3937095.520159 -snap {("LSU" 8)}
-wvSelectSignal -win $_nWave2 {( "LSU" 8 )} 
-wvSelectSignal -win $_nWave2 {( "LSU" 4 )} 
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "LSU" 6 )} 
-wvSelectSignal -win $_nWave2 {( "LSU" 7 )} 
-wvSelectSignal -win $_nWave2 {( "LSU" 7 )} 
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "LSU" 13 )} 
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 3829549.686430 3891826.555852
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 3799014.008875 3908378.267372
-wvZoom -win $_nWave2 3810869.213047 3865106.772139
-wvSelectSignal -win $_nWave2 {( "LSU" 3 )} 
-wvSelectSignal -win $_nWave2 {( "LSU" 2 )} 
-wvSelectSignal -win $_nWave2 {( "LSU" 3 )} 
-wvSelectSignal -win $_nWave2 {( "LSU" 2 )} 
-wvSelectSignal -win $_nWave2 {( "LSU" 3 )} 
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 3676808.161548 3973466.401908
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 3889108.880598 3981218.794949
-wvZoom -win $_nWave2 3929333.419268 3962176.327173
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "LSU" 1 )} 
-wvSelectSignal -win $_nWave2 {( "LSU" 4 )} 
-srcDeselectAll -win $_nTrace1
-debReload
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 3247406.116918 7226016.260163
-wvZoom -win $_nWave2 3786513.182398 4519698.791451
-wvZoom -win $_nWave2 3844134.815630 4010755.006305
-wvSetSearchMode -win $_nWave2 -value 401
-wvSelectSignal -win $_nWave2 {( "LSU" 8 )} 
-wvSetSearchMode -win $_nWave2 -value 8000cdf8
-wvSearchPrev -win $_nWave2
-wvSearchNext -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 13905883.510058 14003675.306056
-wvSetSearchMode -win $_nWave2 -value 8000cfd8
-wvSearchPrev -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvSearchPrev -win $_nWave2
-wvSearchPrev -win $_nWave2
-wvSearchPrev -win $_nWave2
-wvSearchPrev -win $_nWave2
-wvSearchPrev -win $_nWave2
-wvZoom -win $_nWave2 1100736.989458 1129661.856722
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "WB" 3 )} 
-wvSelectSignal -win $_nWave2 {( "WB" 3 )} 
-wvSetSearchMode -win $_nWave2 -value 80003ac0
-wvSearchNext -win $_nWave2
-wvSearchNext -win $_nWave2
-wvSearchPrev -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 4136489.530122 4294876.414590
-wvZoom -win $_nWave2 4172238.486237 4243429.803646
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSetCursor -win $_nWave2 4193047.407894 -snap {("WB" 2)}
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 4159684.229527 4240053.521655
-wvSelectSignal -win $_nWave2 {( "LSU" 3 )} 
-wvSelectSignal -win $_nWave2 {( "LSU" 2 )} 
-wvSelectSignal -win $_nWave2 {( "LSU" 3 )} 
-wvSelectSignal -win $_nWave2 {( "LSU" 7 )} 
-wvSelectSignal -win $_nWave2 {( "LSU" 6 )} 
-wvSelectSignal -win $_nWave2 {( "LSU" 7 )} 
-srcDeselectAll -win $_nTrace1
-debReload
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 3885983.695960 4068689.264437
-wvZoom -win $_nWave2 3920077.417990 3982889.088453
-wvZoom -win $_nWave2 3929342.321762 3960103.747677
-wvZoomOut -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "WB" 3 )} 
-wvSearchPrev -win $_nWave2
-wvSearchPrev -win $_nWave2
-wvSearchNext -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoom -win $_nWave2 4556254.074830 5230028.148590
-wvZoom -win $_nWave2 4605293.767383 4684070.294784
-wvZoom -win $_nWave2 4613772.232197 4641068.009210
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "LSU" 13 )} 
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-wvZoomIn -win $_nWave2
-wvSetCursor -win $_nWave2 4615267.529312 -snap {("LSU" 13)}
-srcActiveTrace \
-           "tb_DandRiscvYsyx3rd.u_ysyx_210238.core_cpu.dCache_1.cpu_rsp_valid" \
-           -win $_nTrace1 -TraceByDConWave -TraceTime 4615000 -TraceValue 1
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "bypass_reg" -line 11886 -pos 1 -win $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave2
-wvSelectSignal -win $_nWave2 {( "LSU" 17 )} 
-wvCut -win $_nWave2
-wvSetPosition -win $_nWave2 {("WB" 0)}
-wvSetPosition -win $_nWave2 {("LSU" 16)}
-srcDeselectAll -win $_nTrace1
-wvZoomOut -win $_nWave2
-wvZoomOut -win $_nWave2
-debExit

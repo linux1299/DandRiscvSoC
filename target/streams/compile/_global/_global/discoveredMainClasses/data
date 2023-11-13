@@ -1,1 +1,1 @@
-["dandriscv.gencpu.GenSimple","dandriscv.gencpu.GenSimpleForYsyx3rd","dandriscv.gencpu.GenSmallest","dandriscv.gensoc.DandSocSimpleWithMemoryInit","dandriscv.ip.FIFO","sim.SimICache"]
+["dandriscv.gencpu.GenSimple","dandriscv.gencpu.GenSimpleForYsyx3rd","dandriscv.gencpu.GenSmallest","dandriscv.gensoc.DandSocSimpleWithMemoryInit","dandriscv.ip.Apb3Uart","dandriscv.ip.Apb4Uart","dandriscv.ip.FIFO","sim.SimICache"]
