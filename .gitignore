@@ -31,7 +31,7 @@ bin/
 
 #User
 /*.vhd
-/*.v
+# /*.v
 *.cf
 *.json
 *.vcd
@@ -45,7 +45,7 @@ obj_dir
 *.debugTrace
 *.tcl
 *.o
-*.bin
+# *.bin
 explor
 
 simWorkspace/
