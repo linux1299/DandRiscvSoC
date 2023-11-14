@@ -121,7 +121,8 @@ class DandSocSimple(val config: DandConfig) extends Component{
           new ExcepPlugin,
           new LSUPlugin(AW=64, DW=64),
           new ICachePlugin(config = ICacheConfig(
-            cacheSize = 32*1024, // 32KB
+            // cacheSize = 32*1024, // 32KB
+            cacheSize = 4*1024, // 4KB
             bytePerLine =64,
             wayCount = 4,
             addressWidth = 64,
@@ -132,7 +133,8 @@ class DandSocSimple(val config: DandConfig) extends Component{
             noBurst=true
           )),
           new DCachePlugin(config = DCacheConfig(
-            cacheSize = 32*1024, // 32KB
+            // cacheSize = 32*1024, // 32KB
+            cacheSize = 1*1024, // 1 KB
             bytePerLine =64,
             wayCount = 4,
             addressWidth = 64,

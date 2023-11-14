@@ -4369,3 +4369,40 @@ wvZoomOut -win $_nWave2
 wvZoomOut -win $_nWave2
 wvZoomOut -win $_nWave2
 wvZoomOut -win $_nWave2
+srcDeselectAll -win $_nTrace1
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple" -win $_nTrace1
+srcSetScope -win $_nTrace1 "tb_DandSocSimple.u_DandSocSimple" -delim "."
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple" -win $_nTrace1
+wvSelectSignal -win $_nWave2 {( "G1" 25 )} 
+wvSelectAll -win $_nWave2
+wvCut -win $_nWave2
+wvSetPosition -win $_nWave2 {("G2" 0)}
+wvSelectGroup -win $_nWave2 {G4}
+wvCut -win $_nWave2
+wvSetPosition -win $_nWave2 {("G2" 0)}
+wvCut -win $_nWave2
+wvSetPosition -win $_nWave2 {("G2" 0)}
+wvCut -win $_nWave2
+wvSetPosition -win $_nWave2 {("G1" 0)}
+wvCut -win $_nWave2
+wvSetPosition -win $_nWave2 {("G1" 0)}
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_uart_rxd" -line 11 -pos 1 -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_uart_txd" -line 10 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvZoomOut -win $_nWave2
+wvSetCursor -win $_nWave2 697992.491775 -snap {("G1" 1)}
+wvZoom -win $_nWave2 617220.434867 2328673.640682
+wvZoomOut -win $_nWave2
+wvZoomIn -win $_nWave2
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_uart_txd" -line 10 -pos 1 -win $_nTrace1
+srcAction -pos 9 3 5 -win $_nTrace1 -name "io_uart_txd" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "axi_uartCtrl_io_uart_txd" -line 1528 -pos 1 -win $_nTrace1
+srcAction -pos 1527 7 3 -win $_nTrace1 -name "axi_uartCtrl_io_uart_txd" -ctrlKey \
+          off
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 538137.348220 1932001.299348

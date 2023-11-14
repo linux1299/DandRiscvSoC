@@ -11648,3 +11648,27 @@ Caused by: java.lang.InterruptedException
 	at scala.meta.internal.pc.CompilerJobQueue$Job.run(CompilerJobQueue.scala:152)
 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
 	... 2 more
+Nov 14, 2023 7:14:34 PM scala.meta.internal.pc.CompilerAccess retryWithCleanCompiler
+INFO: compiler crashed due to an error in the Scala compiler, retrying with new compiler instance.
+2023.11.14 19:14:42 INFO  compiling projectname (1 scala source)[0m
+Nov 14, 2023 7:14:43 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 1581
+Nov 14, 2023 7:14:43 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 1582
+Nov 14, 2023 7:14:49 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 1602
+2023.11.14 19:14:55 WARN  1 deprecation[0m
+2023.11.14 19:14:55 WARN  2 deprecations (since 2.13.0)[0m
+2023.11.14 19:14:55 WARN  1 deprecation (since 2.13.2)[0m
+2023.11.14 19:14:55 WARN  4 deprecations (since SpinalHDL 1.3.1)[0m
+2023.11.14 19:14:55 WARN  8 deprecations in total; re-run with -deprecation for details[0m
+2023.11.14 19:14:55 INFO  time: compiled projectname in 12s[0m
+Nov 14, 2023 7:14:55 PM scala.meta.internal.pc.CompilerAccess retryWithCleanCompiler
+INFO: compiler crashed due to an error in the Scala compiler, retrying with new compiler instance.
+2023.11.14 19:14:59 INFO  compiling projectname (1 scala source)[0m
+2023.11.14 19:15:00 WARN  1 deprecation[0m
+2023.11.14 19:15:00 WARN  2 deprecations (since 2.13.0)[0m
+2023.11.14 19:15:00 WARN  1 deprecation (since 2.13.2)[0m
+2023.11.14 19:15:00 WARN  4 deprecations (since SpinalHDL 1.3.1)[0m
+2023.11.14 19:15:00 WARN  8 deprecations in total; re-run with -deprecation for details[0m
+2023.11.14 19:15:00 INFO  time: compiled projectname in 1.11s[0m
