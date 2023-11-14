@@ -111,9 +111,9 @@ class DandSocSimple(val config: DandConfig) extends Component{
           new BPUPlugin(p = PredictorConfig(
             predictorType = "GSHARE",
             addressWidth =64, 
-            RAS_ENTRIES = 64, 
-            BTB_ENTRIES = 64, 
-            PHT_ENTRIES = 128
+            RAS_ENTRIES = 32, 
+            BTB_ENTRIES = 16, 
+            PHT_ENTRIES = 32
           )),
           new DecodePlugin,
           new ALUPlugin,

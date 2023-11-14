@@ -1,6 +1,6 @@
 // Generator : SpinalHDL v1.8.1    git head : 2a7592004363e5b40ec43e1f122ed8641cd8965b
 // Component : DandSocSimple
-// Git hash  : e00c0b7b39f4aa8ed55c121925f2f11f764eb8fe
+// Git hash  : 9970f6a9d3fe15fd7e1d271c3af48e12272531e8
 
 `timescale 1ns/1ps
 
@@ -5169,7 +5169,7 @@ module DandRiscvSimple (
   wire       [31:0]   fetch_FetchPlugin_instruction_stream_fifo_ports_m_ports_payload;
   wire                fetch_FetchPlugin_instruction_stream_fifo_ports_s_ports_ready;
   wire                gshare_predictor_1_predict_taken;
-  wire       [6:0]    gshare_predictor_1_predict_history;
+  wire       [4:0]    gshare_predictor_1_predict_history;
   wire       [63:0]   gshare_predictor_1_predict_pc_next;
   wire       [63:0]   regFileModule_1_read_ports_rs1_value;
   wire       [63:0]   regFileModule_1_read_ports_rs2_value;
@@ -5310,7 +5310,7 @@ module DandRiscvSimple (
   wire                execute_IS_RET;
   wire                execute_IS_CALL;
   wire                execute_IS_JMP;
-  wire       [6:0]    execute_BRANCH_HISTORY;
+  wire       [4:0]    execute_BRANCH_HISTORY;
   wire                execute_BRANCH_TAKEN;
   wire                execute_BRANCH_OR_JUMP;
   wire                execute_BRANCH_OR_JALR;
@@ -5649,7 +5649,7 @@ module DandRiscvSimple (
   wire                execute_ALUPlugin_bltu_result;
   wire                execute_ALUPlugin_bgeu_result;
   wire                execute_ALUPlugin_branch_taken;
-  reg        [6:0]    execute_ALUPlugin_branch_history;
+  reg        [4:0]    execute_ALUPlugin_branch_history;
   wire                when_AluPlugin_l226;
   wire                when_AluPlugin_l234;
   wire                when_AluPlugin_l270;
@@ -6072,12 +6072,12 @@ module DandRiscvSimple (
     .predict_pc         (fetch_PREDICT_PC[63:0]                  ), //i
     .predict_valid      (fetch_PREDICT_VALID                     ), //i
     .predict_taken      (gshare_predictor_1_predict_taken        ), //o
-    .predict_history    (gshare_predictor_1_predict_history[6:0] ), //o
+    .predict_history    (gshare_predictor_1_predict_history[4:0] ), //o
     .predict_pc_next    (gshare_predictor_1_predict_pc_next[63:0]), //o
     .train_valid        (execute_BRANCH_OR_JUMP                  ), //i
     .train_taken        (execute_BRANCH_TAKEN                    ), //i
     .train_mispredicted (when_FetchPlugin_l97                    ), //i
-    .train_history      (execute_BRANCH_HISTORY[6:0]             ), //i
+    .train_history      (execute_BRANCH_HISTORY[4:0]             ), //i
     .train_pc           (_zz_execute_to_memaccess_PC[63:0]       ), //i
     .train_pc_next      (_zz_pc_next[63:0]                       ), //i
     .train_is_call      (execute_IS_CALL                         ), //i
@@ -8184,7 +8184,7 @@ module DandRiscvSimple (
       fetch_valid <= 1'b0;
       rsp_flush <= 1'b0;
       fetch_state <= IDLE;
-      execute_ALUPlugin_branch_history <= 7'h0;
+      execute_ALUPlugin_branch_history <= 5'h0;
       icache_ar_valid <= 1'b0;
       icache_ar_payload_id <= 2'b00;
       icache_ar_payload_len <= 8'h0;
@@ -8256,7 +8256,7 @@ module DandRiscvSimple (
         end
       end
       if(execute_arbitration_isFiring) begin
-        execute_ALUPlugin_branch_history <= {execute_ALUPlugin_branch_history[5 : 0],execute_ALUPlugin_branch_taken};
+        execute_ALUPlugin_branch_history <= {execute_ALUPlugin_branch_history[3 : 0],execute_ALUPlugin_branch_taken};
       end
       if(iCache_1_next_level_cmd_valid) begin
         ar_len_cnt <= iCache_1_next_level_cmd_payload_len;
@@ -20897,12 +20897,12 @@ module gshare_predictor (
   input      [63:0]   predict_pc,
   input               predict_valid,
   output              predict_taken,
-  output     [6:0]    predict_history,
+  output     [4:0]    predict_history,
   output     [63:0]   predict_pc_next,
   input               train_valid,
   input               train_taken,
   input               train_mispredicted,
-  input      [6:0]    train_history,
+  input      [4:0]    train_history,
   input      [63:0]   train_pc,
   input      [63:0]   train_pc_next,
   input               train_is_call,
@@ -20914,37 +20914,15 @@ module gshare_predictor (
 
   reg        [1:0]    _zz_GSHARE_pht_predict_taken;
   reg        [1:0]    _zz_switch_Predictor_l38;
-  wire       [5:0]    _zz_BTB_btb_alloc_index_valueNext;
+  wire       [3:0]    _zz_BTB_btb_alloc_index_valueNext;
   wire       [0:0]    _zz_BTB_btb_alloc_index_valueNext_1;
   wire       [0:0]    _zz_BTB_btb_is_hit;
-  wire       [52:0]   _zz_BTB_btb_is_hit_1;
-  wire       [0:0]    _zz_BTB_btb_is_hit_2;
-  wire       [41:0]   _zz_BTB_btb_is_hit_3;
-  wire       [0:0]    _zz_BTB_btb_is_hit_4;
-  wire       [30:0]   _zz_BTB_btb_is_hit_5;
-  wire       [0:0]    _zz_BTB_btb_is_hit_6;
-  wire       [19:0]   _zz_BTB_btb_is_hit_7;
-  wire       [0:0]    _zz_BTB_btb_is_hit_8;
-  wire       [8:0]    _zz_BTB_btb_is_hit_9;
+  wire       [4:0]    _zz_BTB_btb_is_hit_1;
   wire       [0:0]    _zz_BTB_btb_is_miss;
-  wire       [52:0]   _zz_BTB_btb_is_miss_1;
-  wire       [0:0]    _zz_BTB_btb_is_miss_2;
-  wire       [41:0]   _zz_BTB_btb_is_miss_3;
-  wire       [0:0]    _zz_BTB_btb_is_miss_4;
-  wire       [30:0]   _zz_BTB_btb_is_miss_5;
-  wire       [0:0]    _zz_BTB_btb_is_miss_6;
-  wire       [19:0]   _zz_BTB_btb_is_miss_7;
-  wire       [0:0]    _zz_BTB_btb_is_miss_8;
-  wire       [8:0]    _zz_BTB_btb_is_miss_9;
-  wire                _zz__zz_BTB_btb_write_index;
-  wire                _zz__zz_BTB_btb_write_index_1;
-  wire                _zz__zz_BTB_btb_write_index_2;
-  wire                _zz__zz_BTB_btb_write_index_3;
-  wire                _zz__zz_BTB_btb_write_index_4;
-  wire                _zz__zz_BTB_btb_write_index_5;
+  wire       [4:0]    _zz_BTB_btb_is_miss_1;
   reg        [63:0]   _zz_RAS_ras_predict_pc;
   wire       [63:0]   _zz_predict_pc_next;
-  reg        [6:0]    GSHARE_global_branch_history;
+  reg        [4:0]    GSHARE_global_branch_history;
   reg        [1:0]    GSHARE_PHT_0;
   reg        [1:0]    GSHARE_PHT_1;
   reg        [1:0]    GSHARE_PHT_2;
@@ -20977,107 +20955,11 @@ module gshare_predictor (
   reg        [1:0]    GSHARE_PHT_29;
   reg        [1:0]    GSHARE_PHT_30;
   reg        [1:0]    GSHARE_PHT_31;
-  reg        [1:0]    GSHARE_PHT_32;
-  reg        [1:0]    GSHARE_PHT_33;
-  reg        [1:0]    GSHARE_PHT_34;
-  reg        [1:0]    GSHARE_PHT_35;
-  reg        [1:0]    GSHARE_PHT_36;
-  reg        [1:0]    GSHARE_PHT_37;
-  reg        [1:0]    GSHARE_PHT_38;
-  reg        [1:0]    GSHARE_PHT_39;
-  reg        [1:0]    GSHARE_PHT_40;
-  reg        [1:0]    GSHARE_PHT_41;
-  reg        [1:0]    GSHARE_PHT_42;
-  reg        [1:0]    GSHARE_PHT_43;
-  reg        [1:0]    GSHARE_PHT_44;
-  reg        [1:0]    GSHARE_PHT_45;
-  reg        [1:0]    GSHARE_PHT_46;
-  reg        [1:0]    GSHARE_PHT_47;
-  reg        [1:0]    GSHARE_PHT_48;
-  reg        [1:0]    GSHARE_PHT_49;
-  reg        [1:0]    GSHARE_PHT_50;
-  reg        [1:0]    GSHARE_PHT_51;
-  reg        [1:0]    GSHARE_PHT_52;
-  reg        [1:0]    GSHARE_PHT_53;
-  reg        [1:0]    GSHARE_PHT_54;
-  reg        [1:0]    GSHARE_PHT_55;
-  reg        [1:0]    GSHARE_PHT_56;
-  reg        [1:0]    GSHARE_PHT_57;
-  reg        [1:0]    GSHARE_PHT_58;
-  reg        [1:0]    GSHARE_PHT_59;
-  reg        [1:0]    GSHARE_PHT_60;
-  reg        [1:0]    GSHARE_PHT_61;
-  reg        [1:0]    GSHARE_PHT_62;
-  reg        [1:0]    GSHARE_PHT_63;
-  reg        [1:0]    GSHARE_PHT_64;
-  reg        [1:0]    GSHARE_PHT_65;
-  reg        [1:0]    GSHARE_PHT_66;
-  reg        [1:0]    GSHARE_PHT_67;
-  reg        [1:0]    GSHARE_PHT_68;
-  reg        [1:0]    GSHARE_PHT_69;
-  reg        [1:0]    GSHARE_PHT_70;
-  reg        [1:0]    GSHARE_PHT_71;
-  reg        [1:0]    GSHARE_PHT_72;
-  reg        [1:0]    GSHARE_PHT_73;
-  reg        [1:0]    GSHARE_PHT_74;
-  reg        [1:0]    GSHARE_PHT_75;
-  reg        [1:0]    GSHARE_PHT_76;
-  reg        [1:0]    GSHARE_PHT_77;
-  reg        [1:0]    GSHARE_PHT_78;
-  reg        [1:0]    GSHARE_PHT_79;
-  reg        [1:0]    GSHARE_PHT_80;
-  reg        [1:0]    GSHARE_PHT_81;
-  reg        [1:0]    GSHARE_PHT_82;
-  reg        [1:0]    GSHARE_PHT_83;
-  reg        [1:0]    GSHARE_PHT_84;
-  reg        [1:0]    GSHARE_PHT_85;
-  reg        [1:0]    GSHARE_PHT_86;
-  reg        [1:0]    GSHARE_PHT_87;
-  reg        [1:0]    GSHARE_PHT_88;
-  reg        [1:0]    GSHARE_PHT_89;
-  reg        [1:0]    GSHARE_PHT_90;
-  reg        [1:0]    GSHARE_PHT_91;
-  reg        [1:0]    GSHARE_PHT_92;
-  reg        [1:0]    GSHARE_PHT_93;
-  reg        [1:0]    GSHARE_PHT_94;
-  reg        [1:0]    GSHARE_PHT_95;
-  reg        [1:0]    GSHARE_PHT_96;
-  reg        [1:0]    GSHARE_PHT_97;
-  reg        [1:0]    GSHARE_PHT_98;
-  reg        [1:0]    GSHARE_PHT_99;
-  reg        [1:0]    GSHARE_PHT_100;
-  reg        [1:0]    GSHARE_PHT_101;
-  reg        [1:0]    GSHARE_PHT_102;
-  reg        [1:0]    GSHARE_PHT_103;
-  reg        [1:0]    GSHARE_PHT_104;
-  reg        [1:0]    GSHARE_PHT_105;
-  reg        [1:0]    GSHARE_PHT_106;
-  reg        [1:0]    GSHARE_PHT_107;
-  reg        [1:0]    GSHARE_PHT_108;
-  reg        [1:0]    GSHARE_PHT_109;
-  reg        [1:0]    GSHARE_PHT_110;
-  reg        [1:0]    GSHARE_PHT_111;
-  reg        [1:0]    GSHARE_PHT_112;
-  reg        [1:0]    GSHARE_PHT_113;
-  reg        [1:0]    GSHARE_PHT_114;
-  reg        [1:0]    GSHARE_PHT_115;
-  reg        [1:0]    GSHARE_PHT_116;
-  reg        [1:0]    GSHARE_PHT_117;
-  reg        [1:0]    GSHARE_PHT_118;
-  reg        [1:0]    GSHARE_PHT_119;
-  reg        [1:0]    GSHARE_PHT_120;
-  reg        [1:0]    GSHARE_PHT_121;
-  reg        [1:0]    GSHARE_PHT_122;
-  reg        [1:0]    GSHARE_PHT_123;
-  reg        [1:0]    GSHARE_PHT_124;
-  reg        [1:0]    GSHARE_PHT_125;
-  reg        [1:0]    GSHARE_PHT_126;
-  reg        [1:0]    GSHARE_PHT_127;
-  wire       [6:0]    GSHARE_predict_index;
-  wire       [6:0]    GSHARE_train_index;
+  wire       [4:0]    GSHARE_predict_index;
+  wire       [4:0]    GSHARE_train_index;
   wire                GSHARE_pht_predict_taken;
   wire       [1:0]    switch_Predictor_l38;
-  wire       [127:0]  _zz_1;
+  wire       [31:0]   _zz_1;
   wire                _zz_2;
   wire                _zz_3;
   wire                _zz_4;
@@ -21110,105 +20992,9 @@ module gshare_predictor (
   wire                _zz_31;
   wire                _zz_32;
   wire                _zz_33;
-  wire                _zz_34;
-  wire                _zz_35;
-  wire                _zz_36;
-  wire                _zz_37;
-  wire                _zz_38;
-  wire                _zz_39;
-  wire                _zz_40;
-  wire                _zz_41;
-  wire                _zz_42;
-  wire                _zz_43;
-  wire                _zz_44;
-  wire                _zz_45;
-  wire                _zz_46;
-  wire                _zz_47;
-  wire                _zz_48;
-  wire                _zz_49;
-  wire                _zz_50;
-  wire                _zz_51;
-  wire                _zz_52;
-  wire                _zz_53;
-  wire                _zz_54;
-  wire                _zz_55;
-  wire                _zz_56;
-  wire                _zz_57;
-  wire                _zz_58;
-  wire                _zz_59;
-  wire                _zz_60;
-  wire                _zz_61;
-  wire                _zz_62;
-  wire                _zz_63;
-  wire                _zz_64;
-  wire                _zz_65;
-  wire                _zz_66;
-  wire                _zz_67;
-  wire                _zz_68;
-  wire                _zz_69;
-  wire                _zz_70;
-  wire                _zz_71;
-  wire                _zz_72;
-  wire                _zz_73;
-  wire                _zz_74;
-  wire                _zz_75;
-  wire                _zz_76;
-  wire                _zz_77;
-  wire                _zz_78;
-  wire                _zz_79;
-  wire                _zz_80;
-  wire                _zz_81;
-  wire                _zz_82;
-  wire                _zz_83;
-  wire                _zz_84;
-  wire                _zz_85;
-  wire                _zz_86;
-  wire                _zz_87;
-  wire                _zz_88;
-  wire                _zz_89;
-  wire                _zz_90;
-  wire                _zz_91;
-  wire                _zz_92;
-  wire                _zz_93;
-  wire                _zz_94;
-  wire                _zz_95;
-  wire                _zz_96;
-  wire                _zz_97;
-  wire                _zz_98;
-  wire                _zz_99;
-  wire                _zz_100;
-  wire                _zz_101;
-  wire                _zz_102;
-  wire                _zz_103;
-  wire                _zz_104;
-  wire                _zz_105;
-  wire                _zz_106;
-  wire                _zz_107;
-  wire                _zz_108;
-  wire                _zz_109;
-  wire                _zz_110;
-  wire                _zz_111;
-  wire                _zz_112;
-  wire                _zz_113;
-  wire                _zz_114;
-  wire                _zz_115;
-  wire                _zz_116;
-  wire                _zz_117;
-  wire                _zz_118;
-  wire                _zz_119;
-  wire                _zz_120;
-  wire                _zz_121;
-  wire                _zz_122;
-  wire                _zz_123;
-  wire                _zz_124;
-  wire                _zz_125;
-  wire                _zz_126;
-  wire                _zz_127;
-  wire                _zz_128;
-  wire                _zz_129;
   wire                when_Predictor_l61;
   wire                when_Predictor_l70;
-  reg        [63:0]   BTB_valid;
+  reg        [15:0]   BTB_valid;
   reg        [63:0]   BTB_source_pc_0;
   reg        [63:0]   BTB_source_pc_1;
   reg        [63:0]   BTB_source_pc_2;
@@ -21225,57 +21011,9 @@ module gshare_predictor (
   reg        [63:0]   BTB_source_pc_13;
   reg        [63:0]   BTB_source_pc_14;
   reg        [63:0]   BTB_source_pc_15;
-  reg        [63:0]   BTB_source_pc_16;
-  reg        [63:0]   BTB_source_pc_17;
-  reg        [63:0]   BTB_source_pc_18;
-  reg        [63:0]   BTB_source_pc_19;
-  reg        [63:0]   BTB_source_pc_20;
-  reg        [63:0]   BTB_source_pc_21;
-  reg        [63:0]   BTB_source_pc_22;
-  reg        [63:0]   BTB_source_pc_23;
-  reg        [63:0]   BTB_source_pc_24;
-  reg        [63:0]   BTB_source_pc_25;
-  reg        [63:0]   BTB_source_pc_26;
-  reg        [63:0]   BTB_source_pc_27;
-  reg        [63:0]   BTB_source_pc_28;
-  reg        [63:0]   BTB_source_pc_29;
-  reg        [63:0]   BTB_source_pc_30;
-  reg        [63:0]   BTB_source_pc_31;
-  reg        [63:0]   BTB_source_pc_32;
-  reg        [63:0]   BTB_source_pc_33;
-  reg        [63:0]   BTB_source_pc_34;
-  reg        [63:0]   BTB_source_pc_35;
-  reg        [63:0]   BTB_source_pc_36;
-  reg        [63:0]   BTB_source_pc_37;
-  reg        [63:0]   BTB_source_pc_38;
-  reg        [63:0]   BTB_source_pc_39;
-  reg        [63:0]   BTB_source_pc_40;
-  reg        [63:0]   BTB_source_pc_41;
-  reg        [63:0]   BTB_source_pc_42;
-  reg        [63:0]   BTB_source_pc_43;
-  reg        [63:0]   BTB_source_pc_44;
-  reg        [63:0]   BTB_source_pc_45;
-  reg        [63:0]   BTB_source_pc_46;
-  reg        [63:0]   BTB_source_pc_47;
-  reg        [63:0]   BTB_source_pc_48;
-  reg        [63:0]   BTB_source_pc_49;
-  reg        [63:0]   BTB_source_pc_50;
-  reg        [63:0]   BTB_source_pc_51;
-  reg        [63:0]   BTB_source_pc_52;
-  reg        [63:0]   BTB_source_pc_53;
-  reg        [63:0]   BTB_source_pc_54;
-  reg        [63:0]   BTB_source_pc_55;
-  reg        [63:0]   BTB_source_pc_56;
-  reg        [63:0]   BTB_source_pc_57;
-  reg        [63:0]   BTB_source_pc_58;
-  reg        [63:0]   BTB_source_pc_59;
-  reg        [63:0]   BTB_source_pc_60;
-  reg        [63:0]   BTB_source_pc_61;
-  reg        [63:0]   BTB_source_pc_62;
-  reg        [63:0]   BTB_source_pc_63;
-  reg        [63:0]   BTB_call;
-  reg        [63:0]   BTB_ret;
-  reg        [63:0]   BTB_jmp;
+  reg        [15:0]   BTB_call;
+  reg        [15:0]   BTB_ret;
+  reg        [15:0]   BTB_jmp;
   reg        [63:0]   BTB_target_pc_0;
   reg        [63:0]   BTB_target_pc_1;
   reg        [63:0]   BTB_target_pc_2;
@@ -21292,54 +21030,6 @@ module gshare_predictor (
   reg        [63:0]   BTB_target_pc_13;
   reg        [63:0]   BTB_target_pc_14;
   reg        [63:0]   BTB_target_pc_15;
-  reg        [63:0]   BTB_target_pc_16;
-  reg        [63:0]   BTB_target_pc_17;
-  reg        [63:0]   BTB_target_pc_18;
-  reg        [63:0]   BTB_target_pc_19;
-  reg        [63:0]   BTB_target_pc_20;
-  reg        [63:0]   BTB_target_pc_21;
-  reg        [63:0]   BTB_target_pc_22;
-  reg        [63:0]   BTB_target_pc_23;
-  reg        [63:0]   BTB_target_pc_24;
-  reg        [63:0]   BTB_target_pc_25;
-  reg        [63:0]   BTB_target_pc_26;
-  reg        [63:0]   BTB_target_pc_27;
-  reg        [63:0]   BTB_target_pc_28;
-  reg        [63:0]   BTB_target_pc_29;
-  reg        [63:0]   BTB_target_pc_30;
-  reg        [63:0]   BTB_target_pc_31;
-  reg        [63:0]   BTB_target_pc_32;
-  reg        [63:0]   BTB_target_pc_33;
-  reg        [63:0]   BTB_target_pc_34;
-  reg        [63:0]   BTB_target_pc_35;
-  reg        [63:0]   BTB_target_pc_36;
-  reg        [63:0]   BTB_target_pc_37;
-  reg        [63:0]   BTB_target_pc_38;
-  reg        [63:0]   BTB_target_pc_39;
-  reg        [63:0]   BTB_target_pc_40;
-  reg        [63:0]   BTB_target_pc_41;
-  reg        [63:0]   BTB_target_pc_42;
-  reg        [63:0]   BTB_target_pc_43;
-  reg        [63:0]   BTB_target_pc_44;
-  reg        [63:0]   BTB_target_pc_45;
-  reg        [63:0]   BTB_target_pc_46;
-  reg        [63:0]   BTB_target_pc_47;
-  reg        [63:0]   BTB_target_pc_48;
-  reg        [63:0]   BTB_target_pc_49;
-  reg        [63:0]   BTB_target_pc_50;
-  reg        [63:0]   BTB_target_pc_51;
-  reg        [63:0]   BTB_target_pc_52;
-  reg        [63:0]   BTB_target_pc_53;
-  reg        [63:0]   BTB_target_pc_54;
-  reg        [63:0]   BTB_target_pc_55;
-  reg        [63:0]   BTB_target_pc_56;
-  reg        [63:0]   BTB_target_pc_57;
-  reg        [63:0]   BTB_target_pc_58;
-  reg        [63:0]   BTB_target_pc_59;
-  reg        [63:0]   BTB_target_pc_60;
-  reg        [63:0]   BTB_target_pc_61;
-  reg        [63:0]   BTB_target_pc_62;
-  reg        [63:0]   BTB_target_pc_63;
   reg                 BTB_is_matched;
   reg                 BTB_is_call;
   reg                 BTB_is_ret;
@@ -21361,59 +21051,11 @@ module gshare_predictor (
   wire                when_Predictor_l95_13;
   wire                when_Predictor_l95_14;
   wire                when_Predictor_l95_15;
-  wire                when_Predictor_l95_16;
-  wire                when_Predictor_l95_17;
-  wire                when_Predictor_l95_18;
-  wire                when_Predictor_l95_19;
-  wire                when_Predictor_l95_20;
-  wire                when_Predictor_l95_21;
-  wire                when_Predictor_l95_22;
-  wire                when_Predictor_l95_23;
-  wire                when_Predictor_l95_24;
-  wire                when_Predictor_l95_25;
-  wire                when_Predictor_l95_26;
-  wire                when_Predictor_l95_27;
-  wire                when_Predictor_l95_28;
-  wire                when_Predictor_l95_29;
-  wire                when_Predictor_l95_30;
-  wire                when_Predictor_l95_31;
-  wire                when_Predictor_l95_32;
-  wire                when_Predictor_l95_33;
-  wire                when_Predictor_l95_34;
-  wire                when_Predictor_l95_35;
-  wire                when_Predictor_l95_36;
-  wire                when_Predictor_l95_37;
-  wire                when_Predictor_l95_38;
-  wire                when_Predictor_l95_39;
-  wire                when_Predictor_l95_40;
-  wire                when_Predictor_l95_41;
-  wire                when_Predictor_l95_42;
-  wire                when_Predictor_l95_43;
-  wire                when_Predictor_l95_44;
-  wire                when_Predictor_l95_45;
-  wire                when_Predictor_l95_46;
-  wire                when_Predictor_l95_47;
-  wire                when_Predictor_l95_48;
-  wire                when_Predictor_l95_49;
-  wire                when_Predictor_l95_50;
-  wire                when_Predictor_l95_51;
-  wire                when_Predictor_l95_52;
-  wire                when_Predictor_l95_53;
-  wire                when_Predictor_l95_54;
-  wire                when_Predictor_l95_55;
-  wire                when_Predictor_l95_56;
-  wire                when_Predictor_l95_57;
-  wire                when_Predictor_l95_58;
-  wire                when_Predictor_l95_59;
-  wire                when_Predictor_l95_60;
-  wire                when_Predictor_l95_61;
-  wire                when_Predictor_l95_62;
-  wire                when_Predictor_l95_63;
-  wire       [5:0]    BTB_btb_write_index;
+  wire       [3:0]    BTB_btb_write_index;
   reg                 BTB_btb_alloc_index_willIncrement;
   reg                 BTB_btb_alloc_index_willClear;
-  reg        [5:0]    BTB_btb_alloc_index_valueNext;
-  reg        [5:0]    BTB_btb_alloc_index_value;
+  reg        [3:0]    BTB_btb_alloc_index_valueNext;
+  reg        [3:0]    BTB_btb_alloc_index_value;
   wire                BTB_btb_alloc_index_willOverflowIfInc;
   wire                BTB_btb_alloc_index_willOverflow;
   reg                 BTB_btb_is_hit_vec_0;
@@ -21432,54 +21074,6 @@ module gshare_predictor (
   reg                 BTB_btb_is_hit_vec_13;
   reg                 BTB_btb_is_hit_vec_14;
   reg                 BTB_btb_is_hit_vec_15;
-  reg                 BTB_btb_is_hit_vec_16;
-  reg                 BTB_btb_is_hit_vec_17;
-  reg                 BTB_btb_is_hit_vec_18;
-  reg                 BTB_btb_is_hit_vec_19;
-  reg                 BTB_btb_is_hit_vec_20;
-  reg                 BTB_btb_is_hit_vec_21;
-  reg                 BTB_btb_is_hit_vec_22;
-  reg                 BTB_btb_is_hit_vec_23;
-  reg                 BTB_btb_is_hit_vec_24;
-  reg                 BTB_btb_is_hit_vec_25;
-  reg                 BTB_btb_is_hit_vec_26;
-  reg                 BTB_btb_is_hit_vec_27;
-  reg                 BTB_btb_is_hit_vec_28;
-  reg                 BTB_btb_is_hit_vec_29;
-  reg                 BTB_btb_is_hit_vec_30;
-  reg                 BTB_btb_is_hit_vec_31;
-  reg                 BTB_btb_is_hit_vec_32;
-  reg                 BTB_btb_is_hit_vec_33;
-  reg                 BTB_btb_is_hit_vec_34;
-  reg                 BTB_btb_is_hit_vec_35;
-  reg                 BTB_btb_is_hit_vec_36;
-  reg                 BTB_btb_is_hit_vec_37;
-  reg                 BTB_btb_is_hit_vec_38;
-  reg                 BTB_btb_is_hit_vec_39;
-  reg                 BTB_btb_is_hit_vec_40;
-  reg                 BTB_btb_is_hit_vec_41;
-  reg                 BTB_btb_is_hit_vec_42;
-  reg                 BTB_btb_is_hit_vec_43;
-  reg                 BTB_btb_is_hit_vec_44;
-  reg                 BTB_btb_is_hit_vec_45;
-  reg                 BTB_btb_is_hit_vec_46;
-  reg                 BTB_btb_is_hit_vec_47;
-  reg                 BTB_btb_is_hit_vec_48;
-  reg                 BTB_btb_is_hit_vec_49;
-  reg                 BTB_btb_is_hit_vec_50;
-  reg                 BTB_btb_is_hit_vec_51;
-  reg                 BTB_btb_is_hit_vec_52;
-  reg                 BTB_btb_is_hit_vec_53;
-  reg                 BTB_btb_is_hit_vec_54;
-  reg                 BTB_btb_is_hit_vec_55;
-  reg                 BTB_btb_is_hit_vec_56;
-  reg                 BTB_btb_is_hit_vec_57;
-  reg                 BTB_btb_is_hit_vec_58;
-  reg                 BTB_btb_is_hit_vec_59;
-  reg                 BTB_btb_is_hit_vec_60;
-  reg                 BTB_btb_is_hit_vec_61;
-  reg                 BTB_btb_is_hit_vec_62;
-  reg                 BTB_btb_is_hit_vec_63;
   reg                 BTB_btb_is_miss_vec_0;
   reg                 BTB_btb_is_miss_vec_1;
   reg                 BTB_btb_is_miss_vec_2;
@@ -21496,54 +21090,6 @@ module gshare_predictor (
   reg                 BTB_btb_is_miss_vec_13;
   reg                 BTB_btb_is_miss_vec_14;
   reg                 BTB_btb_is_miss_vec_15;
-  reg                 BTB_btb_is_miss_vec_16;
-  reg                 BTB_btb_is_miss_vec_17;
-  reg                 BTB_btb_is_miss_vec_18;
-  reg                 BTB_btb_is_miss_vec_19;
-  reg                 BTB_btb_is_miss_vec_20;
-  reg                 BTB_btb_is_miss_vec_21;
-  reg                 BTB_btb_is_miss_vec_22;
-  reg                 BTB_btb_is_miss_vec_23;
-  reg                 BTB_btb_is_miss_vec_24;
-  reg                 BTB_btb_is_miss_vec_25;
-  reg                 BTB_btb_is_miss_vec_26;
-  reg                 BTB_btb_is_miss_vec_27;
-  reg                 BTB_btb_is_miss_vec_28;
-  reg                 BTB_btb_is_miss_vec_29;
-  reg                 BTB_btb_is_miss_vec_30;
-  reg                 BTB_btb_is_miss_vec_31;
-  reg                 BTB_btb_is_miss_vec_32;
-  reg                 BTB_btb_is_miss_vec_33;
-  reg                 BTB_btb_is_miss_vec_34;
-  reg                 BTB_btb_is_miss_vec_35;
-  reg                 BTB_btb_is_miss_vec_36;
-  reg                 BTB_btb_is_miss_vec_37;
-  reg                 BTB_btb_is_miss_vec_38;
-  reg                 BTB_btb_is_miss_vec_39;
-  reg                 BTB_btb_is_miss_vec_40;
-  reg                 BTB_btb_is_miss_vec_41;
-  reg                 BTB_btb_is_miss_vec_42;
-  reg                 BTB_btb_is_miss_vec_43;
-  reg                 BTB_btb_is_miss_vec_44;
-  reg                 BTB_btb_is_miss_vec_45;
-  reg                 BTB_btb_is_miss_vec_46;
-  reg                 BTB_btb_is_miss_vec_47;
-  reg                 BTB_btb_is_miss_vec_48;
-  reg                 BTB_btb_is_miss_vec_49;
-  reg                 BTB_btb_is_miss_vec_50;
-  reg                 BTB_btb_is_miss_vec_51;
-  reg                 BTB_btb_is_miss_vec_52;
-  reg                 BTB_btb_is_miss_vec_53;
-  reg                 BTB_btb_is_miss_vec_54;
-  reg                 BTB_btb_is_miss_vec_55;
-  reg                 BTB_btb_is_miss_vec_56;
-  reg                 BTB_btb_is_miss_vec_57;
-  reg                 BTB_btb_is_miss_vec_58;
-  reg                 BTB_btb_is_miss_vec_59;
-  reg                 BTB_btb_is_miss_vec_60;
-  reg                 BTB_btb_is_miss_vec_61;
-  reg                 BTB_btb_is_miss_vec_62;
-  reg                 BTB_btb_is_miss_vec_63;
   wire                BTB_btb_is_hit;
   wire                BTB_btb_is_miss;
   wire                when_Predictor_l113;
@@ -21594,160 +21140,14 @@ module gshare_predictor (
   wire                when_Predictor_l113_15;
   wire                when_Predictor_l114_15;
   wire                when_Predictor_l119_15;
-  wire                when_Predictor_l113_16;
-  wire                when_Predictor_l114_16;
-  wire                when_Predictor_l119_16;
-  wire                when_Predictor_l113_17;
-  wire                when_Predictor_l114_17;
-  wire                when_Predictor_l119_17;
-  wire                when_Predictor_l113_18;
-  wire                when_Predictor_l114_18;
-  wire                when_Predictor_l119_18;
-  wire                when_Predictor_l113_19;
-  wire                when_Predictor_l114_19;
-  wire                when_Predictor_l119_19;
-  wire                when_Predictor_l113_20;
-  wire                when_Predictor_l114_20;
-  wire                when_Predictor_l119_20;
-  wire                when_Predictor_l113_21;
-  wire                when_Predictor_l114_21;
-  wire                when_Predictor_l119_21;
-  wire                when_Predictor_l113_22;
-  wire                when_Predictor_l114_22;
-  wire                when_Predictor_l119_22;
-  wire                when_Predictor_l113_23;
-  wire                when_Predictor_l114_23;
-  wire                when_Predictor_l119_23;
-  wire                when_Predictor_l113_24;
-  wire                when_Predictor_l114_24;
-  wire                when_Predictor_l119_24;
-  wire                when_Predictor_l113_25;
-  wire                when_Predictor_l114_25;
-  wire                when_Predictor_l119_25;
-  wire                when_Predictor_l113_26;
-  wire                when_Predictor_l114_26;
-  wire                when_Predictor_l119_26;
-  wire                when_Predictor_l113_27;
-  wire                when_Predictor_l114_27;
-  wire                when_Predictor_l119_27;
-  wire                when_Predictor_l113_28;
-  wire                when_Predictor_l114_28;
-  wire                when_Predictor_l119_28;
-  wire                when_Predictor_l113_29;
-  wire                when_Predictor_l114_29;
-  wire                when_Predictor_l119_29;
-  wire                when_Predictor_l113_30;
-  wire                when_Predictor_l114_30;
-  wire                when_Predictor_l119_30;
-  wire                when_Predictor_l113_31;
-  wire                when_Predictor_l114_31;
-  wire                when_Predictor_l119_31;
-  wire                when_Predictor_l113_32;
-  wire                when_Predictor_l114_32;
-  wire                when_Predictor_l119_32;
-  wire                when_Predictor_l113_33;
-  wire                when_Predictor_l114_33;
-  wire                when_Predictor_l119_33;
-  wire                when_Predictor_l113_34;
-  wire                when_Predictor_l114_34;
-  wire                when_Predictor_l119_34;
-  wire                when_Predictor_l113_35;
-  wire                when_Predictor_l114_35;
-  wire                when_Predictor_l119_35;
-  wire                when_Predictor_l113_36;
-  wire                when_Predictor_l114_36;
-  wire                when_Predictor_l119_36;
-  wire                when_Predictor_l113_37;
-  wire                when_Predictor_l114_37;
-  wire                when_Predictor_l119_37;
-  wire                when_Predictor_l113_38;
-  wire                when_Predictor_l114_38;
-  wire                when_Predictor_l119_38;
-  wire                when_Predictor_l113_39;
-  wire                when_Predictor_l114_39;
-  wire                when_Predictor_l119_39;
-  wire                when_Predictor_l113_40;
-  wire                when_Predictor_l114_40;
-  wire                when_Predictor_l119_40;
-  wire                when_Predictor_l113_41;
-  wire                when_Predictor_l114_41;
-  wire                when_Predictor_l119_41;
-  wire                when_Predictor_l113_42;
-  wire                when_Predictor_l114_42;
-  wire                when_Predictor_l119_42;
-  wire                when_Predictor_l113_43;
-  wire                when_Predictor_l114_43;
-  wire                when_Predictor_l119_43;
-  wire                when_Predictor_l113_44;
-  wire                when_Predictor_l114_44;
-  wire                when_Predictor_l119_44;
-  wire                when_Predictor_l113_45;
-  wire                when_Predictor_l114_45;
-  wire                when_Predictor_l119_45;
-  wire                when_Predictor_l113_46;
-  wire                when_Predictor_l114_46;
-  wire                when_Predictor_l119_46;
-  wire                when_Predictor_l113_47;
-  wire                when_Predictor_l114_47;
-  wire                when_Predictor_l119_47;
-  wire                when_Predictor_l113_48;
-  wire                when_Predictor_l114_48;
-  wire                when_Predictor_l119_48;
-  wire                when_Predictor_l113_49;
-  wire                when_Predictor_l114_49;
-  wire                when_Predictor_l119_49;
-  wire                when_Predictor_l113_50;
-  wire                when_Predictor_l114_50;
-  wire                when_Predictor_l119_50;
-  wire                when_Predictor_l113_51;
-  wire                when_Predictor_l114_51;
-  wire                when_Predictor_l119_51;
-  wire                when_Predictor_l113_52;
-  wire                when_Predictor_l114_52;
-  wire                when_Predictor_l119_52;
-  wire                when_Predictor_l113_53;
-  wire                when_Predictor_l114_53;
-  wire                when_Predictor_l119_53;
-  wire                when_Predictor_l113_54;
-  wire                when_Predictor_l114_54;
-  wire                when_Predictor_l119_54;
-  wire                when_Predictor_l113_55;
-  wire                when_Predictor_l114_55;
-  wire                when_Predictor_l119_55;
-  wire                when_Predictor_l113_56;
-  wire                when_Predictor_l114_56;
-  wire                when_Predictor_l119_56;
-  wire                when_Predictor_l113_57;
-  wire                when_Predictor_l114_57;
-  wire                when_Predictor_l119_57;
-  wire                when_Predictor_l113_58;
-  wire                when_Predictor_l114_58;
-  wire                when_Predictor_l119_58;
-  wire                when_Predictor_l113_59;
-  wire                when_Predictor_l114_59;
-  wire                when_Predictor_l119_59;
-  wire                when_Predictor_l113_60;
-  wire                when_Predictor_l114_60;
-  wire                when_Predictor_l119_60;
-  wire                when_Predictor_l113_61;
-  wire                when_Predictor_l114_61;
-  wire                when_Predictor_l119_61;
-  wire                when_Predictor_l113_62;
-  wire                when_Predictor_l114_62;
-  wire                when_Predictor_l119_62;
-  wire                when_Predictor_l113_63;
-  wire                when_Predictor_l114_63;
-  wire                when_Predictor_l119_63;
   wire                _zz_BTB_btb_write_index;
   wire                _zz_BTB_btb_write_index_1;
   wire                _zz_BTB_btb_write_index_2;
   wire                _zz_BTB_btb_write_index_3;
-  wire                _zz_BTB_btb_write_index_4;
-  wire                _zz_BTB_btb_write_index_5;
-  wire       [63:0]   _zz_130;
-  wire       [63:0]   _zz_131;
-  wire       [63:0]   _zz_132;
-  wire       [63:0]   _zz_133;
+  wire       [15:0]   _zz_34;
+  wire       [15:0]   _zz_35;
+  wire       [15:0]   _zz_36;
+  wire       [15:0]   _zz_37;
   reg        [63:0]   RAS_ras_regfile_0;
   reg        [63:0]   RAS_ras_regfile_1;
   reg        [63:0]   RAS_ras_regfile_2;
@@ -21780,42 +21180,10 @@ module gshare_predictor (
   reg        [63:0]   RAS_ras_regfile_29;
   reg        [63:0]   RAS_ras_regfile_30;
   reg        [63:0]   RAS_ras_regfile_31;
-  reg        [63:0]   RAS_ras_regfile_32;
-  reg        [63:0]   RAS_ras_regfile_33;
-  reg        [63:0]   RAS_ras_regfile_34;
-  reg        [63:0]   RAS_ras_regfile_35;
-  reg        [63:0]   RAS_ras_regfile_36;
-  reg        [63:0]   RAS_ras_regfile_37;
-  reg        [63:0]   RAS_ras_regfile_38;
-  reg        [63:0]   RAS_ras_regfile_39;
-  reg        [63:0]   RAS_ras_regfile_40;
-  reg        [63:0]   RAS_ras_regfile_41;
-  reg        [63:0]   RAS_ras_regfile_42;
-  reg        [63:0]   RAS_ras_regfile_43;
-  reg        [63:0]   RAS_ras_regfile_44;
-  reg        [63:0]   RAS_ras_regfile_45;
-  reg        [63:0]   RAS_ras_regfile_46;
-  reg        [63:0]   RAS_ras_regfile_47;
-  reg        [63:0]   RAS_ras_regfile_48;
-  reg        [63:0]   RAS_ras_regfile_49;
-  reg        [63:0]   RAS_ras_regfile_50;
-  reg        [63:0]   RAS_ras_regfile_51;
-  reg        [63:0]   RAS_ras_regfile_52;
-  reg        [63:0]   RAS_ras_regfile_53;
-  reg        [63:0]   RAS_ras_regfile_54;
-  reg        [63:0]   RAS_ras_regfile_55;
-  reg        [63:0]   RAS_ras_regfile_56;
-  reg        [63:0]   RAS_ras_regfile_57;
-  reg        [63:0]   RAS_ras_regfile_58;
-  reg        [63:0]   RAS_ras_regfile_59;
-  reg        [63:0]   RAS_ras_regfile_60;
-  reg        [63:0]   RAS_ras_regfile_61;
-  reg        [63:0]   RAS_ras_regfile_62;
-  reg        [63:0]   RAS_ras_regfile_63;
-  reg        [5:0]    RAS_ras_next_index;
-  reg        [5:0]    RAS_ras_curr_index;
-  reg        [5:0]    RAS_ras_next_index_proven;
-  reg        [5:0]    RAS_ras_curr_index_proven;
+  reg        [4:0]    RAS_ras_next_index;
+  reg        [4:0]    RAS_ras_curr_index;
+  reg        [4:0]    RAS_ras_next_index_proven;
+  reg        [4:0]    RAS_ras_curr_index_proven;
   wire       [63:0]   RAS_ras_predict_pc;
   wire                RAS_ras_call_matched;
   wire                RAS_ras_ret_matched;
@@ -21824,444 +21192,166 @@ module gshare_predictor (
   wire                when_Predictor_l180;
   wire                when_Predictor_l183;
   wire                when_Predictor_l197;
-  wire       [63:0]   _zz_134;
-  wire                _zz_135;
-  wire                _zz_136;
-  wire                _zz_137;
-  wire                _zz_138;
-  wire                _zz_139;
-  wire                _zz_140;
-  wire                _zz_141;
-  wire                _zz_142;
-  wire                _zz_143;
-  wire                _zz_144;
-  wire                _zz_145;
-  wire                _zz_146;
-  wire                _zz_147;
-  wire                _zz_148;
-  wire                _zz_149;
-  wire                _zz_150;
-  wire                _zz_151;
-  wire                _zz_152;
-  wire                _zz_153;
-  wire                _zz_154;
-  wire                _zz_155;
-  wire                _zz_156;
-  wire                _zz_157;
-  wire                _zz_158;
-  wire                _zz_159;
-  wire                _zz_160;
-  wire                _zz_161;
-  wire                _zz_162;
-  wire                _zz_163;
-  wire                _zz_164;
-  wire                _zz_165;
-  wire                _zz_166;
-  wire                _zz_167;
-  wire                _zz_168;
-  wire                _zz_169;
-  wire                _zz_170;
-  wire                _zz_171;
-  wire                _zz_172;
-  wire                _zz_173;
-  wire                _zz_174;
-  wire                _zz_175;
-  wire                _zz_176;
-  wire                _zz_177;
-  wire                _zz_178;
-  wire                _zz_179;
-  wire                _zz_180;
-  wire                _zz_181;
-  wire                _zz_182;
-  wire                _zz_183;
-  wire                _zz_184;
-  wire                _zz_185;
-  wire                _zz_186;
-  wire                _zz_187;
-  wire                _zz_188;
-  wire                _zz_189;
-  wire                _zz_190;
-  wire                _zz_191;
-  wire                _zz_192;
-  wire                _zz_193;
-  wire                _zz_194;
-  wire                _zz_195;
-  wire                _zz_196;
-  wire                _zz_197;
-  wire                _zz_198;
+  wire       [31:0]   _zz_38;
+  wire                _zz_39;
+  wire                _zz_40;
+  wire                _zz_41;
+  wire                _zz_42;
+  wire                _zz_43;
+  wire                _zz_44;
+  wire                _zz_45;
+  wire                _zz_46;
+  wire                _zz_47;
+  wire                _zz_48;
+  wire                _zz_49;
+  wire                _zz_50;
+  wire                _zz_51;
+  wire                _zz_52;
+  wire                _zz_53;
+  wire                _zz_54;
+  wire                _zz_55;
+  wire                _zz_56;
+  wire                _zz_57;
+  wire                _zz_58;
+  wire                _zz_59;
+  wire                _zz_60;
+  wire                _zz_61;
+  wire                _zz_62;
+  wire                _zz_63;
+  wire                _zz_64;
+  wire                _zz_65;
+  wire                _zz_66;
+  wire                _zz_67;
+  wire                _zz_68;
+  wire                _zz_69;
+  wire                _zz_70;
   wire       [63:0]   _zz_RAS_ras_regfile_0;
   wire       [63:0]   _zz_RAS_ras_regfile_0_1;
   wire                when_Predictor_l205;
 
   assign _zz_BTB_btb_alloc_index_valueNext_1 = BTB_btb_alloc_index_willIncrement;
-  assign _zz_BTB_btb_alloc_index_valueNext = {5'd0, _zz_BTB_btb_alloc_index_valueNext_1};
+  assign _zz_BTB_btb_alloc_index_valueNext = {3'd0, _zz_BTB_btb_alloc_index_valueNext_1};
   assign _zz_predict_pc_next = (predict_pc + 64'h0000000000000004);
-  assign _zz_BTB_btb_is_hit = BTB_btb_is_hit_vec_53;
-  assign _zz_BTB_btb_is_hit_1 = {BTB_btb_is_hit_vec_52,{BTB_btb_is_hit_vec_51,{BTB_btb_is_hit_vec_50,{BTB_btb_is_hit_vec_49,{BTB_btb_is_hit_vec_48,{BTB_btb_is_hit_vec_47,{BTB_btb_is_hit_vec_46,{BTB_btb_is_hit_vec_45,{BTB_btb_is_hit_vec_44,{BTB_btb_is_hit_vec_43,{_zz_BTB_btb_is_hit_2,_zz_BTB_btb_is_hit_3}}}}}}}}}}};
-  assign _zz_BTB_btb_is_hit_2 = BTB_btb_is_hit_vec_42;
-  assign _zz_BTB_btb_is_hit_3 = {BTB_btb_is_hit_vec_41,{BTB_btb_is_hit_vec_40,{BTB_btb_is_hit_vec_39,{BTB_btb_is_hit_vec_38,{BTB_btb_is_hit_vec_37,{BTB_btb_is_hit_vec_36,{BTB_btb_is_hit_vec_35,{BTB_btb_is_hit_vec_34,{BTB_btb_is_hit_vec_33,{BTB_btb_is_hit_vec_32,{_zz_BTB_btb_is_hit_4,_zz_BTB_btb_is_hit_5}}}}}}}}}}};
-  assign _zz_BTB_btb_is_hit_4 = BTB_btb_is_hit_vec_31;
-  assign _zz_BTB_btb_is_hit_5 = {BTB_btb_is_hit_vec_30,{BTB_btb_is_hit_vec_29,{BTB_btb_is_hit_vec_28,{BTB_btb_is_hit_vec_27,{BTB_btb_is_hit_vec_26,{BTB_btb_is_hit_vec_25,{BTB_btb_is_hit_vec_24,{BTB_btb_is_hit_vec_23,{BTB_btb_is_hit_vec_22,{BTB_btb_is_hit_vec_21,{_zz_BTB_btb_is_hit_6,_zz_BTB_btb_is_hit_7}}}}}}}}}}};
-  assign _zz_BTB_btb_is_hit_6 = BTB_btb_is_hit_vec_20;
-  assign _zz_BTB_btb_is_hit_7 = {BTB_btb_is_hit_vec_19,{BTB_btb_is_hit_vec_18,{BTB_btb_is_hit_vec_17,{BTB_btb_is_hit_vec_16,{BTB_btb_is_hit_vec_15,{BTB_btb_is_hit_vec_14,{BTB_btb_is_hit_vec_13,{BTB_btb_is_hit_vec_12,{BTB_btb_is_hit_vec_11,{BTB_btb_is_hit_vec_10,{_zz_BTB_btb_is_hit_8,_zz_BTB_btb_is_hit_9}}}}}}}}}}};
-  assign _zz_BTB_btb_is_hit_8 = BTB_btb_is_hit_vec_9;
-  assign _zz_BTB_btb_is_hit_9 = {BTB_btb_is_hit_vec_8,{BTB_btb_is_hit_vec_7,{BTB_btb_is_hit_vec_6,{BTB_btb_is_hit_vec_5,{BTB_btb_is_hit_vec_4,{BTB_btb_is_hit_vec_3,{BTB_btb_is_hit_vec_2,{BTB_btb_is_hit_vec_1,BTB_btb_is_hit_vec_0}}}}}}}};
-  assign _zz_BTB_btb_is_miss = BTB_btb_is_miss_vec_53;
-  assign _zz_BTB_btb_is_miss_1 = {BTB_btb_is_miss_vec_52,{BTB_btb_is_miss_vec_51,{BTB_btb_is_miss_vec_50,{BTB_btb_is_miss_vec_49,{BTB_btb_is_miss_vec_48,{BTB_btb_is_miss_vec_47,{BTB_btb_is_miss_vec_46,{BTB_btb_is_miss_vec_45,{BTB_btb_is_miss_vec_44,{BTB_btb_is_miss_vec_43,{_zz_BTB_btb_is_miss_2,_zz_BTB_btb_is_miss_3}}}}}}}}}}};
-  assign _zz_BTB_btb_is_miss_2 = BTB_btb_is_miss_vec_42;
-  assign _zz_BTB_btb_is_miss_3 = {BTB_btb_is_miss_vec_41,{BTB_btb_is_miss_vec_40,{BTB_btb_is_miss_vec_39,{BTB_btb_is_miss_vec_38,{BTB_btb_is_miss_vec_37,{BTB_btb_is_miss_vec_36,{BTB_btb_is_miss_vec_35,{BTB_btb_is_miss_vec_34,{BTB_btb_is_miss_vec_33,{BTB_btb_is_miss_vec_32,{_zz_BTB_btb_is_miss_4,_zz_BTB_btb_is_miss_5}}}}}}}}}}};
-  assign _zz_BTB_btb_is_miss_4 = BTB_btb_is_miss_vec_31;
-  assign _zz_BTB_btb_is_miss_5 = {BTB_btb_is_miss_vec_30,{BTB_btb_is_miss_vec_29,{BTB_btb_is_miss_vec_28,{BTB_btb_is_miss_vec_27,{BTB_btb_is_miss_vec_26,{BTB_btb_is_miss_vec_25,{BTB_btb_is_miss_vec_24,{BTB_btb_is_miss_vec_23,{BTB_btb_is_miss_vec_22,{BTB_btb_is_miss_vec_21,{_zz_BTB_btb_is_miss_6,_zz_BTB_btb_is_miss_7}}}}}}}}}}};
-  assign _zz_BTB_btb_is_miss_6 = BTB_btb_is_miss_vec_20;
-  assign _zz_BTB_btb_is_miss_7 = {BTB_btb_is_miss_vec_19,{BTB_btb_is_miss_vec_18,{BTB_btb_is_miss_vec_17,{BTB_btb_is_miss_vec_16,{BTB_btb_is_miss_vec_15,{BTB_btb_is_miss_vec_14,{BTB_btb_is_miss_vec_13,{BTB_btb_is_miss_vec_12,{BTB_btb_is_miss_vec_11,{BTB_btb_is_miss_vec_10,{_zz_BTB_btb_is_miss_8,_zz_BTB_btb_is_miss_9}}}}}}}}}}};
-  assign _zz_BTB_btb_is_miss_8 = BTB_btb_is_miss_vec_9;
-  assign _zz_BTB_btb_is_miss_9 = {BTB_btb_is_miss_vec_8,{BTB_btb_is_miss_vec_7,{BTB_btb_is_miss_vec_6,{BTB_btb_is_miss_vec_5,{BTB_btb_is_miss_vec_4,{BTB_btb_is_miss_vec_3,{BTB_btb_is_miss_vec_2,{BTB_btb_is_miss_vec_1,BTB_btb_is_miss_vec_0}}}}}}}};
-  assign _zz__zz_BTB_btb_write_index = (((((((((((((((BTB_btb_is_hit_vec_1 || BTB_btb_is_hit_vec_3) || BTB_btb_is_hit_vec_5) || BTB_btb_is_hit_vec_7) || BTB_btb_is_hit_vec_9) || BTB_btb_is_hit_vec_11) || BTB_btb_is_hit_vec_13) || BTB_btb_is_hit_vec_15) || BTB_btb_is_hit_vec_17) || BTB_btb_is_hit_vec_19) || BTB_btb_is_hit_vec_21) || BTB_btb_is_hit_vec_23) || BTB_btb_is_hit_vec_25) || BTB_btb_is_hit_vec_27) || BTB_btb_is_hit_vec_29) || BTB_btb_is_hit_vec_31);
-  assign _zz__zz_BTB_btb_write_index_1 = ((((((((((((((BTB_btb_is_hit_vec_2 || BTB_btb_is_hit_vec_3) || BTB_btb_is_hit_vec_6) || BTB_btb_is_hit_vec_7) || BTB_btb_is_hit_vec_10) || BTB_btb_is_hit_vec_11) || BTB_btb_is_hit_vec_14) || BTB_btb_is_hit_vec_15) || BTB_btb_is_hit_vec_18) || BTB_btb_is_hit_vec_19) || BTB_btb_is_hit_vec_22) || BTB_btb_is_hit_vec_23) || BTB_btb_is_hit_vec_26) || BTB_btb_is_hit_vec_27) || BTB_btb_is_hit_vec_30);
-  assign _zz__zz_BTB_btb_write_index_2 = (((((((((((((((BTB_btb_is_hit_vec_4 || BTB_btb_is_hit_vec_5) || BTB_btb_is_hit_vec_6) || BTB_btb_is_hit_vec_7) || BTB_btb_is_hit_vec_12) || BTB_btb_is_hit_vec_13) || BTB_btb_is_hit_vec_14) || BTB_btb_is_hit_vec_15) || BTB_btb_is_hit_vec_20) || BTB_btb_is_hit_vec_21) || BTB_btb_is_hit_vec_22) || BTB_btb_is_hit_vec_23) || BTB_btb_is_hit_vec_28) || BTB_btb_is_hit_vec_29) || BTB_btb_is_hit_vec_30) || BTB_btb_is_hit_vec_31);
-  assign _zz__zz_BTB_btb_write_index_3 = (((((((((((((((BTB_btb_is_hit_vec_8 || BTB_btb_is_hit_vec_9) || BTB_btb_is_hit_vec_10) || BTB_btb_is_hit_vec_11) || BTB_btb_is_hit_vec_12) || BTB_btb_is_hit_vec_13) || BTB_btb_is_hit_vec_14) || BTB_btb_is_hit_vec_15) || BTB_btb_is_hit_vec_24) || BTB_btb_is_hit_vec_25) || BTB_btb_is_hit_vec_26) || BTB_btb_is_hit_vec_27) || BTB_btb_is_hit_vec_28) || BTB_btb_is_hit_vec_29) || BTB_btb_is_hit_vec_30) || BTB_btb_is_hit_vec_31);
-  assign _zz__zz_BTB_btb_write_index_4 = (((((((((((((((BTB_btb_is_hit_vec_16 || BTB_btb_is_hit_vec_17) || BTB_btb_is_hit_vec_18) || BTB_btb_is_hit_vec_19) || BTB_btb_is_hit_vec_20) || BTB_btb_is_hit_vec_21) || BTB_btb_is_hit_vec_22) || BTB_btb_is_hit_vec_23) || BTB_btb_is_hit_vec_24) || BTB_btb_is_hit_vec_25) || BTB_btb_is_hit_vec_26) || BTB_btb_is_hit_vec_27) || BTB_btb_is_hit_vec_28) || BTB_btb_is_hit_vec_29) || BTB_btb_is_hit_vec_30) || BTB_btb_is_hit_vec_31);
-  assign _zz__zz_BTB_btb_write_index_5 = ((((((((((((((BTB_btb_is_hit_vec_32 || BTB_btb_is_hit_vec_33) || BTB_btb_is_hit_vec_34) || BTB_btb_is_hit_vec_35) || BTB_btb_is_hit_vec_36) || BTB_btb_is_hit_vec_37) || BTB_btb_is_hit_vec_38) || BTB_btb_is_hit_vec_39) || BTB_btb_is_hit_vec_40) || BTB_btb_is_hit_vec_41) || BTB_btb_is_hit_vec_42) || BTB_btb_is_hit_vec_43) || BTB_btb_is_hit_vec_44) || BTB_btb_is_hit_vec_45) || BTB_btb_is_hit_vec_46);
+  assign _zz_BTB_btb_is_hit = BTB_btb_is_hit_vec_5;
+  assign _zz_BTB_btb_is_hit_1 = {BTB_btb_is_hit_vec_4,{BTB_btb_is_hit_vec_3,{BTB_btb_is_hit_vec_2,{BTB_btb_is_hit_vec_1,BTB_btb_is_hit_vec_0}}}};
+  assign _zz_BTB_btb_is_miss = BTB_btb_is_miss_vec_5;
+  assign _zz_BTB_btb_is_miss_1 = {BTB_btb_is_miss_vec_4,{BTB_btb_is_miss_vec_3,{BTB_btb_is_miss_vec_2,{BTB_btb_is_miss_vec_1,BTB_btb_is_miss_vec_0}}}};
   always @(*) begin
     case(GSHARE_predict_index)
-      7'b0000000 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_0;
-      7'b0000001 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_1;
-      7'b0000010 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_2;
-      7'b0000011 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_3;
-      7'b0000100 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_4;
-      7'b0000101 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_5;
-      7'b0000110 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_6;
-      7'b0000111 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_7;
-      7'b0001000 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_8;
-      7'b0001001 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_9;
-      7'b0001010 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_10;
-      7'b0001011 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_11;
-      7'b0001100 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_12;
-      7'b0001101 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_13;
-      7'b0001110 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_14;
-      7'b0001111 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_15;
-      7'b0010000 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_16;
-      7'b0010001 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_17;
-      7'b0010010 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_18;
-      7'b0010011 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_19;
-      7'b0010100 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_20;
-      7'b0010101 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_21;
-      7'b0010110 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_22;
-      7'b0010111 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_23;
-      7'b0011000 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_24;
-      7'b0011001 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_25;
-      7'b0011010 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_26;
-      7'b0011011 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_27;
-      7'b0011100 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_28;
-      7'b0011101 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_29;
-      7'b0011110 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_30;
-      7'b0011111 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_31;
-      7'b0100000 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_32;
-      7'b0100001 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_33;
-      7'b0100010 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_34;
-      7'b0100011 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_35;
-      7'b0100100 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_36;
-      7'b0100101 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_37;
-      7'b0100110 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_38;
-      7'b0100111 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_39;
-      7'b0101000 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_40;
-      7'b0101001 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_41;
-      7'b0101010 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_42;
-      7'b0101011 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_43;
-      7'b0101100 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_44;
-      7'b0101101 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_45;
-      7'b0101110 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_46;
-      7'b0101111 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_47;
-      7'b0110000 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_48;
-      7'b0110001 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_49;
-      7'b0110010 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_50;
-      7'b0110011 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_51;
-      7'b0110100 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_52;
-      7'b0110101 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_53;
-      7'b0110110 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_54;
-      7'b0110111 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_55;
-      7'b0111000 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_56;
-      7'b0111001 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_57;
-      7'b0111010 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_58;
-      7'b0111011 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_59;
-      7'b0111100 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_60;
-      7'b0111101 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_61;
-      7'b0111110 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_62;
-      7'b0111111 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_63;
-      7'b1000000 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_64;
-      7'b1000001 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_65;
-      7'b1000010 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_66;
-      7'b1000011 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_67;
-      7'b1000100 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_68;
-      7'b1000101 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_69;
-      7'b1000110 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_70;
-      7'b1000111 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_71;
-      7'b1001000 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_72;
-      7'b1001001 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_73;
-      7'b1001010 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_74;
-      7'b1001011 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_75;
-      7'b1001100 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_76;
-      7'b1001101 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_77;
-      7'b1001110 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_78;
-      7'b1001111 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_79;
-      7'b1010000 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_80;
-      7'b1010001 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_81;
-      7'b1010010 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_82;
-      7'b1010011 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_83;
-      7'b1010100 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_84;
-      7'b1010101 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_85;
-      7'b1010110 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_86;
-      7'b1010111 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_87;
-      7'b1011000 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_88;
-      7'b1011001 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_89;
-      7'b1011010 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_90;
-      7'b1011011 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_91;
-      7'b1011100 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_92;
-      7'b1011101 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_93;
-      7'b1011110 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_94;
-      7'b1011111 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_95;
-      7'b1100000 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_96;
-      7'b1100001 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_97;
-      7'b1100010 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_98;
-      7'b1100011 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_99;
-      7'b1100100 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_100;
-      7'b1100101 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_101;
-      7'b1100110 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_102;
-      7'b1100111 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_103;
-      7'b1101000 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_104;
-      7'b1101001 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_105;
-      7'b1101010 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_106;
-      7'b1101011 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_107;
-      7'b1101100 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_108;
-      7'b1101101 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_109;
-      7'b1101110 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_110;
-      7'b1101111 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_111;
-      7'b1110000 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_112;
-      7'b1110001 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_113;
-      7'b1110010 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_114;
-      7'b1110011 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_115;
-      7'b1110100 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_116;
-      7'b1110101 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_117;
-      7'b1110110 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_118;
-      7'b1110111 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_119;
-      7'b1111000 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_120;
-      7'b1111001 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_121;
-      7'b1111010 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_122;
-      7'b1111011 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_123;
-      7'b1111100 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_124;
-      7'b1111101 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_125;
-      7'b1111110 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_126;
-      default : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_127;
+      5'b00000 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_0;
+      5'b00001 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_1;
+      5'b00010 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_2;
+      5'b00011 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_3;
+      5'b00100 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_4;
+      5'b00101 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_5;
+      5'b00110 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_6;
+      5'b00111 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_7;
+      5'b01000 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_8;
+      5'b01001 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_9;
+      5'b01010 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_10;
+      5'b01011 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_11;
+      5'b01100 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_12;
+      5'b01101 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_13;
+      5'b01110 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_14;
+      5'b01111 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_15;
+      5'b10000 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_16;
+      5'b10001 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_17;
+      5'b10010 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_18;
+      5'b10011 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_19;
+      5'b10100 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_20;
+      5'b10101 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_21;
+      5'b10110 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_22;
+      5'b10111 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_23;
+      5'b11000 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_24;
+      5'b11001 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_25;
+      5'b11010 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_26;
+      5'b11011 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_27;
+      5'b11100 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_28;
+      5'b11101 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_29;
+      5'b11110 : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_30;
+      default : _zz_GSHARE_pht_predict_taken = GSHARE_PHT_31;
     endcase
   end
 
   always @(*) begin
     case(GSHARE_train_index)
-      7'b0000000 : _zz_switch_Predictor_l38 = GSHARE_PHT_0;
-      7'b0000001 : _zz_switch_Predictor_l38 = GSHARE_PHT_1;
-      7'b0000010 : _zz_switch_Predictor_l38 = GSHARE_PHT_2;
-      7'b0000011 : _zz_switch_Predictor_l38 = GSHARE_PHT_3;
-      7'b0000100 : _zz_switch_Predictor_l38 = GSHARE_PHT_4;
-      7'b0000101 : _zz_switch_Predictor_l38 = GSHARE_PHT_5;
-      7'b0000110 : _zz_switch_Predictor_l38 = GSHARE_PHT_6;
-      7'b0000111 : _zz_switch_Predictor_l38 = GSHARE_PHT_7;
-      7'b0001000 : _zz_switch_Predictor_l38 = GSHARE_PHT_8;
-      7'b0001001 : _zz_switch_Predictor_l38 = GSHARE_PHT_9;
-      7'b0001010 : _zz_switch_Predictor_l38 = GSHARE_PHT_10;
-      7'b0001011 : _zz_switch_Predictor_l38 = GSHARE_PHT_11;
-      7'b0001100 : _zz_switch_Predictor_l38 = GSHARE_PHT_12;
-      7'b0001101 : _zz_switch_Predictor_l38 = GSHARE_PHT_13;
-      7'b0001110 : _zz_switch_Predictor_l38 = GSHARE_PHT_14;
-      7'b0001111 : _zz_switch_Predictor_l38 = GSHARE_PHT_15;
-      7'b0010000 : _zz_switch_Predictor_l38 = GSHARE_PHT_16;
-      7'b0010001 : _zz_switch_Predictor_l38 = GSHARE_PHT_17;
-      7'b0010010 : _zz_switch_Predictor_l38 = GSHARE_PHT_18;
-      7'b0010011 : _zz_switch_Predictor_l38 = GSHARE_PHT_19;
-      7'b0010100 : _zz_switch_Predictor_l38 = GSHARE_PHT_20;
-      7'b0010101 : _zz_switch_Predictor_l38 = GSHARE_PHT_21;
-      7'b0010110 : _zz_switch_Predictor_l38 = GSHARE_PHT_22;
-      7'b0010111 : _zz_switch_Predictor_l38 = GSHARE_PHT_23;
-      7'b0011000 : _zz_switch_Predictor_l38 = GSHARE_PHT_24;
-      7'b0011001 : _zz_switch_Predictor_l38 = GSHARE_PHT_25;
-      7'b0011010 : _zz_switch_Predictor_l38 = GSHARE_PHT_26;
-      7'b0011011 : _zz_switch_Predictor_l38 = GSHARE_PHT_27;
-      7'b0011100 : _zz_switch_Predictor_l38 = GSHARE_PHT_28;
-      7'b0011101 : _zz_switch_Predictor_l38 = GSHARE_PHT_29;
-      7'b0011110 : _zz_switch_Predictor_l38 = GSHARE_PHT_30;
-      7'b0011111 : _zz_switch_Predictor_l38 = GSHARE_PHT_31;
-      7'b0100000 : _zz_switch_Predictor_l38 = GSHARE_PHT_32;
-      7'b0100001 : _zz_switch_Predictor_l38 = GSHARE_PHT_33;
-      7'b0100010 : _zz_switch_Predictor_l38 = GSHARE_PHT_34;
-      7'b0100011 : _zz_switch_Predictor_l38 = GSHARE_PHT_35;
-      7'b0100100 : _zz_switch_Predictor_l38 = GSHARE_PHT_36;
-      7'b0100101 : _zz_switch_Predictor_l38 = GSHARE_PHT_37;
-      7'b0100110 : _zz_switch_Predictor_l38 = GSHARE_PHT_38;
-      7'b0100111 : _zz_switch_Predictor_l38 = GSHARE_PHT_39;
-      7'b0101000 : _zz_switch_Predictor_l38 = GSHARE_PHT_40;
-      7'b0101001 : _zz_switch_Predictor_l38 = GSHARE_PHT_41;
-      7'b0101010 : _zz_switch_Predictor_l38 = GSHARE_PHT_42;
-      7'b0101011 : _zz_switch_Predictor_l38 = GSHARE_PHT_43;
-      7'b0101100 : _zz_switch_Predictor_l38 = GSHARE_PHT_44;
-      7'b0101101 : _zz_switch_Predictor_l38 = GSHARE_PHT_45;
-      7'b0101110 : _zz_switch_Predictor_l38 = GSHARE_PHT_46;
-      7'b0101111 : _zz_switch_Predictor_l38 = GSHARE_PHT_47;
-      7'b0110000 : _zz_switch_Predictor_l38 = GSHARE_PHT_48;
-      7'b0110001 : _zz_switch_Predictor_l38 = GSHARE_PHT_49;
-      7'b0110010 : _zz_switch_Predictor_l38 = GSHARE_PHT_50;
-      7'b0110011 : _zz_switch_Predictor_l38 = GSHARE_PHT_51;
-      7'b0110100 : _zz_switch_Predictor_l38 = GSHARE_PHT_52;
-      7'b0110101 : _zz_switch_Predictor_l38 = GSHARE_PHT_53;
-      7'b0110110 : _zz_switch_Predictor_l38 = GSHARE_PHT_54;
-      7'b0110111 : _zz_switch_Predictor_l38 = GSHARE_PHT_55;
-      7'b0111000 : _zz_switch_Predictor_l38 = GSHARE_PHT_56;
-      7'b0111001 : _zz_switch_Predictor_l38 = GSHARE_PHT_57;
-      7'b0111010 : _zz_switch_Predictor_l38 = GSHARE_PHT_58;
-      7'b0111011 : _zz_switch_Predictor_l38 = GSHARE_PHT_59;
-      7'b0111100 : _zz_switch_Predictor_l38 = GSHARE_PHT_60;
-      7'b0111101 : _zz_switch_Predictor_l38 = GSHARE_PHT_61;
-      7'b0111110 : _zz_switch_Predictor_l38 = GSHARE_PHT_62;
-      7'b0111111 : _zz_switch_Predictor_l38 = GSHARE_PHT_63;
-      7'b1000000 : _zz_switch_Predictor_l38 = GSHARE_PHT_64;
-      7'b1000001 : _zz_switch_Predictor_l38 = GSHARE_PHT_65;
-      7'b1000010 : _zz_switch_Predictor_l38 = GSHARE_PHT_66;
-      7'b1000011 : _zz_switch_Predictor_l38 = GSHARE_PHT_67;
-      7'b1000100 : _zz_switch_Predictor_l38 = GSHARE_PHT_68;
-      7'b1000101 : _zz_switch_Predictor_l38 = GSHARE_PHT_69;
-      7'b1000110 : _zz_switch_Predictor_l38 = GSHARE_PHT_70;
-      7'b1000111 : _zz_switch_Predictor_l38 = GSHARE_PHT_71;
-      7'b1001000 : _zz_switch_Predictor_l38 = GSHARE_PHT_72;
-      7'b1001001 : _zz_switch_Predictor_l38 = GSHARE_PHT_73;
-      7'b1001010 : _zz_switch_Predictor_l38 = GSHARE_PHT_74;
-      7'b1001011 : _zz_switch_Predictor_l38 = GSHARE_PHT_75;
-      7'b1001100 : _zz_switch_Predictor_l38 = GSHARE_PHT_76;
-      7'b1001101 : _zz_switch_Predictor_l38 = GSHARE_PHT_77;
-      7'b1001110 : _zz_switch_Predictor_l38 = GSHARE_PHT_78;
-      7'b1001111 : _zz_switch_Predictor_l38 = GSHARE_PHT_79;
-      7'b1010000 : _zz_switch_Predictor_l38 = GSHARE_PHT_80;
-      7'b1010001 : _zz_switch_Predictor_l38 = GSHARE_PHT_81;
-      7'b1010010 : _zz_switch_Predictor_l38 = GSHARE_PHT_82;
-      7'b1010011 : _zz_switch_Predictor_l38 = GSHARE_PHT_83;
-      7'b1010100 : _zz_switch_Predictor_l38 = GSHARE_PHT_84;
-      7'b1010101 : _zz_switch_Predictor_l38 = GSHARE_PHT_85;
-      7'b1010110 : _zz_switch_Predictor_l38 = GSHARE_PHT_86;
-      7'b1010111 : _zz_switch_Predictor_l38 = GSHARE_PHT_87;
-      7'b1011000 : _zz_switch_Predictor_l38 = GSHARE_PHT_88;
-      7'b1011001 : _zz_switch_Predictor_l38 = GSHARE_PHT_89;
-      7'b1011010 : _zz_switch_Predictor_l38 = GSHARE_PHT_90;
-      7'b1011011 : _zz_switch_Predictor_l38 = GSHARE_PHT_91;
-      7'b1011100 : _zz_switch_Predictor_l38 = GSHARE_PHT_92;
-      7'b1011101 : _zz_switch_Predictor_l38 = GSHARE_PHT_93;
-      7'b1011110 : _zz_switch_Predictor_l38 = GSHARE_PHT_94;
-      7'b1011111 : _zz_switch_Predictor_l38 = GSHARE_PHT_95;
-      7'b1100000 : _zz_switch_Predictor_l38 = GSHARE_PHT_96;
-      7'b1100001 : _zz_switch_Predictor_l38 = GSHARE_PHT_97;
-      7'b1100010 : _zz_switch_Predictor_l38 = GSHARE_PHT_98;
-      7'b1100011 : _zz_switch_Predictor_l38 = GSHARE_PHT_99;
-      7'b1100100 : _zz_switch_Predictor_l38 = GSHARE_PHT_100;
-      7'b1100101 : _zz_switch_Predictor_l38 = GSHARE_PHT_101;
-      7'b1100110 : _zz_switch_Predictor_l38 = GSHARE_PHT_102;
-      7'b1100111 : _zz_switch_Predictor_l38 = GSHARE_PHT_103;
-      7'b1101000 : _zz_switch_Predictor_l38 = GSHARE_PHT_104;
-      7'b1101001 : _zz_switch_Predictor_l38 = GSHARE_PHT_105;
-      7'b1101010 : _zz_switch_Predictor_l38 = GSHARE_PHT_106;
-      7'b1101011 : _zz_switch_Predictor_l38 = GSHARE_PHT_107;
-      7'b1101100 : _zz_switch_Predictor_l38 = GSHARE_PHT_108;
-      7'b1101101 : _zz_switch_Predictor_l38 = GSHARE_PHT_109;
-      7'b1101110 : _zz_switch_Predictor_l38 = GSHARE_PHT_110;
-      7'b1101111 : _zz_switch_Predictor_l38 = GSHARE_PHT_111;
-      7'b1110000 : _zz_switch_Predictor_l38 = GSHARE_PHT_112;
-      7'b1110001 : _zz_switch_Predictor_l38 = GSHARE_PHT_113;
-      7'b1110010 : _zz_switch_Predictor_l38 = GSHARE_PHT_114;
-      7'b1110011 : _zz_switch_Predictor_l38 = GSHARE_PHT_115;
-      7'b1110100 : _zz_switch_Predictor_l38 = GSHARE_PHT_116;
-      7'b1110101 : _zz_switch_Predictor_l38 = GSHARE_PHT_117;
-      7'b1110110 : _zz_switch_Predictor_l38 = GSHARE_PHT_118;
-      7'b1110111 : _zz_switch_Predictor_l38 = GSHARE_PHT_119;
-      7'b1111000 : _zz_switch_Predictor_l38 = GSHARE_PHT_120;
-      7'b1111001 : _zz_switch_Predictor_l38 = GSHARE_PHT_121;
-      7'b1111010 : _zz_switch_Predictor_l38 = GSHARE_PHT_122;
-      7'b1111011 : _zz_switch_Predictor_l38 = GSHARE_PHT_123;
-      7'b1111100 : _zz_switch_Predictor_l38 = GSHARE_PHT_124;
-      7'b1111101 : _zz_switch_Predictor_l38 = GSHARE_PHT_125;
-      7'b1111110 : _zz_switch_Predictor_l38 = GSHARE_PHT_126;
-      default : _zz_switch_Predictor_l38 = GSHARE_PHT_127;
+      5'b00000 : _zz_switch_Predictor_l38 = GSHARE_PHT_0;
+      5'b00001 : _zz_switch_Predictor_l38 = GSHARE_PHT_1;
+      5'b00010 : _zz_switch_Predictor_l38 = GSHARE_PHT_2;
+      5'b00011 : _zz_switch_Predictor_l38 = GSHARE_PHT_3;
+      5'b00100 : _zz_switch_Predictor_l38 = GSHARE_PHT_4;
+      5'b00101 : _zz_switch_Predictor_l38 = GSHARE_PHT_5;
+      5'b00110 : _zz_switch_Predictor_l38 = GSHARE_PHT_6;
+      5'b00111 : _zz_switch_Predictor_l38 = GSHARE_PHT_7;
+      5'b01000 : _zz_switch_Predictor_l38 = GSHARE_PHT_8;
+      5'b01001 : _zz_switch_Predictor_l38 = GSHARE_PHT_9;
+      5'b01010 : _zz_switch_Predictor_l38 = GSHARE_PHT_10;
+      5'b01011 : _zz_switch_Predictor_l38 = GSHARE_PHT_11;
+      5'b01100 : _zz_switch_Predictor_l38 = GSHARE_PHT_12;
+      5'b01101 : _zz_switch_Predictor_l38 = GSHARE_PHT_13;
+      5'b01110 : _zz_switch_Predictor_l38 = GSHARE_PHT_14;
+      5'b01111 : _zz_switch_Predictor_l38 = GSHARE_PHT_15;
+      5'b10000 : _zz_switch_Predictor_l38 = GSHARE_PHT_16;
+      5'b10001 : _zz_switch_Predictor_l38 = GSHARE_PHT_17;
+      5'b10010 : _zz_switch_Predictor_l38 = GSHARE_PHT_18;
+      5'b10011 : _zz_switch_Predictor_l38 = GSHARE_PHT_19;
+      5'b10100 : _zz_switch_Predictor_l38 = GSHARE_PHT_20;
+      5'b10101 : _zz_switch_Predictor_l38 = GSHARE_PHT_21;
+      5'b10110 : _zz_switch_Predictor_l38 = GSHARE_PHT_22;
+      5'b10111 : _zz_switch_Predictor_l38 = GSHARE_PHT_23;
+      5'b11000 : _zz_switch_Predictor_l38 = GSHARE_PHT_24;
+      5'b11001 : _zz_switch_Predictor_l38 = GSHARE_PHT_25;
+      5'b11010 : _zz_switch_Predictor_l38 = GSHARE_PHT_26;
+      5'b11011 : _zz_switch_Predictor_l38 = GSHARE_PHT_27;
+      5'b11100 : _zz_switch_Predictor_l38 = GSHARE_PHT_28;
+      5'b11101 : _zz_switch_Predictor_l38 = GSHARE_PHT_29;
+      5'b11110 : _zz_switch_Predictor_l38 = GSHARE_PHT_30;
+      default : _zz_switch_Predictor_l38 = GSHARE_PHT_31;
     endcase
   end
 
   always @(*) begin
     case(RAS_ras_curr_index)
-      6'b000000 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_0;
-      6'b000001 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_1;
-      6'b000010 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_2;
-      6'b000011 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_3;
-      6'b000100 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_4;
-      6'b000101 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_5;
-      6'b000110 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_6;
-      6'b000111 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_7;
-      6'b001000 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_8;
-      6'b001001 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_9;
-      6'b001010 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_10;
-      6'b001011 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_11;
-      6'b001100 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_12;
-      6'b001101 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_13;
-      6'b001110 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_14;
-      6'b001111 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_15;
-      6'b010000 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_16;
-      6'b010001 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_17;
-      6'b010010 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_18;
-      6'b010011 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_19;
-      6'b010100 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_20;
-      6'b010101 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_21;
-      6'b010110 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_22;
-      6'b010111 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_23;
-      6'b011000 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_24;
-      6'b011001 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_25;
-      6'b011010 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_26;
-      6'b011011 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_27;
-      6'b011100 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_28;
-      6'b011101 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_29;
-      6'b011110 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_30;
-      6'b011111 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_31;
-      6'b100000 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_32;
-      6'b100001 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_33;
-      6'b100010 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_34;
-      6'b100011 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_35;
-      6'b100100 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_36;
-      6'b100101 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_37;
-      6'b100110 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_38;
-      6'b100111 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_39;
-      6'b101000 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_40;
-      6'b101001 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_41;
-      6'b101010 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_42;
-      6'b101011 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_43;
-      6'b101100 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_44;
-      6'b101101 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_45;
-      6'b101110 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_46;
-      6'b101111 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_47;
-      6'b110000 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_48;
-      6'b110001 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_49;
-      6'b110010 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_50;
-      6'b110011 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_51;
-      6'b110100 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_52;
-      6'b110101 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_53;
-      6'b110110 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_54;
-      6'b110111 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_55;
-      6'b111000 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_56;
-      6'b111001 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_57;
-      6'b111010 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_58;
-      6'b111011 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_59;
-      6'b111100 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_60;
-      6'b111101 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_61;
-      6'b111110 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_62;
-      default : _zz_RAS_ras_predict_pc = RAS_ras_regfile_63;
+      5'b00000 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_0;
+      5'b00001 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_1;
+      5'b00010 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_2;
+      5'b00011 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_3;
+      5'b00100 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_4;
+      5'b00101 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_5;
+      5'b00110 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_6;
+      5'b00111 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_7;
+      5'b01000 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_8;
+      5'b01001 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_9;
+      5'b01010 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_10;
+      5'b01011 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_11;
+      5'b01100 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_12;
+      5'b01101 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_13;
+      5'b01110 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_14;
+      5'b01111 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_15;
+      5'b10000 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_16;
+      5'b10001 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_17;
+      5'b10010 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_18;
+      5'b10011 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_19;
+      5'b10100 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_20;
+      5'b10101 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_21;
+      5'b10110 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_22;
+      5'b10111 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_23;
+      5'b11000 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_24;
+      5'b11001 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_25;
+      5'b11010 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_26;
+      5'b11011 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_27;
+      5'b11100 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_28;
+      5'b11101 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_29;
+      5'b11110 : _zz_RAS_ras_predict_pc = RAS_ras_regfile_30;
+      default : _zz_RAS_ras_predict_pc = RAS_ras_regfile_31;
     endcase
   end
 
-  assign GSHARE_predict_index = (predict_pc[8 : 2] ^ GSHARE_global_branch_history);
-  assign GSHARE_train_index = (train_pc[8 : 2] ^ train_history);
+  assign GSHARE_predict_index = (predict_pc[6 : 2] ^ GSHARE_global_branch_history);
+  assign GSHARE_train_index = (train_pc[6 : 2] ^ train_history);
   assign GSHARE_pht_predict_taken = _zz_GSHARE_pht_predict_taken[1];
   assign switch_Predictor_l38 = _zz_switch_Predictor_l38;
-  assign _zz_1 = ({127'd0,1'b1} <<< GSHARE_train_index);
+  assign _zz_1 = ({31'd0,1'b1} <<< GSHARE_train_index);
   assign _zz_2 = _zz_1[0];
   assign _zz_3 = _zz_1[1];
   assign _zz_4 = _zz_1[2];
@@ -22294,102 +21384,6 @@ module gshare_predictor (
   assign _zz_31 = _zz_1[29];
   assign _zz_32 = _zz_1[30];
   assign _zz_33 = _zz_1[31];
-  assign _zz_34 = _zz_1[32];
-  assign _zz_35 = _zz_1[33];
-  assign _zz_36 = _zz_1[34];
-  assign _zz_37 = _zz_1[35];
-  assign _zz_38 = _zz_1[36];
-  assign _zz_39 = _zz_1[37];
-  assign _zz_40 = _zz_1[38];
-  assign _zz_41 = _zz_1[39];
-  assign _zz_42 = _zz_1[40];
-  assign _zz_43 = _zz_1[41];
-  assign _zz_44 = _zz_1[42];
-  assign _zz_45 = _zz_1[43];
-  assign _zz_46 = _zz_1[44];
-  assign _zz_47 = _zz_1[45];
-  assign _zz_48 = _zz_1[46];
-  assign _zz_49 = _zz_1[47];
-  assign _zz_50 = _zz_1[48];
-  assign _zz_51 = _zz_1[49];
-  assign _zz_52 = _zz_1[50];
-  assign _zz_53 = _zz_1[51];
-  assign _zz_54 = _zz_1[52];
-  assign _zz_55 = _zz_1[53];
-  assign _zz_56 = _zz_1[54];
-  assign _zz_57 = _zz_1[55];
-  assign _zz_58 = _zz_1[56];
-  assign _zz_59 = _zz_1[57];
-  assign _zz_60 = _zz_1[58];
-  assign _zz_61 = _zz_1[59];
-  assign _zz_62 = _zz_1[60];
-  assign _zz_63 = _zz_1[61];
-  assign _zz_64 = _zz_1[62];
-  assign _zz_65 = _zz_1[63];
-  assign _zz_66 = _zz_1[64];
-  assign _zz_67 = _zz_1[65];
-  assign _zz_68 = _zz_1[66];
-  assign _zz_69 = _zz_1[67];
-  assign _zz_70 = _zz_1[68];
-  assign _zz_71 = _zz_1[69];
-  assign _zz_72 = _zz_1[70];
-  assign _zz_73 = _zz_1[71];
-  assign _zz_74 = _zz_1[72];
-  assign _zz_75 = _zz_1[73];
-  assign _zz_76 = _zz_1[74];
-  assign _zz_77 = _zz_1[75];
-  assign _zz_78 = _zz_1[76];
-  assign _zz_79 = _zz_1[77];
-  assign _zz_80 = _zz_1[78];
-  assign _zz_81 = _zz_1[79];
-  assign _zz_82 = _zz_1[80];
-  assign _zz_83 = _zz_1[81];
-  assign _zz_84 = _zz_1[82];
-  assign _zz_85 = _zz_1[83];
-  assign _zz_86 = _zz_1[84];
-  assign _zz_87 = _zz_1[85];
-  assign _zz_88 = _zz_1[86];
-  assign _zz_89 = _zz_1[87];
-  assign _zz_90 = _zz_1[88];
-  assign _zz_91 = _zz_1[89];
-  assign _zz_92 = _zz_1[90];
-  assign _zz_93 = _zz_1[91];
-  assign _zz_94 = _zz_1[92];
-  assign _zz_95 = _zz_1[93];
-  assign _zz_96 = _zz_1[94];
-  assign _zz_97 = _zz_1[95];
-  assign _zz_98 = _zz_1[96];
-  assign _zz_99 = _zz_1[97];
-  assign _zz_100 = _zz_1[98];
-  assign _zz_101 = _zz_1[99];
-  assign _zz_102 = _zz_1[100];
-  assign _zz_103 = _zz_1[101];
-  assign _zz_104 = _zz_1[102];
-  assign _zz_105 = _zz_1[103];
-  assign _zz_106 = _zz_1[104];
-  assign _zz_107 = _zz_1[105];
-  assign _zz_108 = _zz_1[106];
-  assign _zz_109 = _zz_1[107];
-  assign _zz_110 = _zz_1[108];
-  assign _zz_111 = _zz_1[109];
-  assign _zz_112 = _zz_1[110];
-  assign _zz_113 = _zz_1[111];
-  assign _zz_114 = _zz_1[112];
-  assign _zz_115 = _zz_1[113];
-  assign _zz_116 = _zz_1[114];
-  assign _zz_117 = _zz_1[115];
-  assign _zz_118 = _zz_1[116];
-  assign _zz_119 = _zz_1[117];
-  assign _zz_120 = _zz_1[118];
-  assign _zz_121 = _zz_1[119];
-  assign _zz_122 = _zz_1[120];
-  assign _zz_123 = _zz_1[121];
-  assign _zz_124 = _zz_1[122];
-  assign _zz_125 = _zz_1[123];
-  assign _zz_126 = _zz_1[124];
-  assign _zz_127 = _zz_1[125];
-  assign _zz_128 = _zz_1[126];
-  assign _zz_129 = _zz_1[127];
   assign when_Predictor_l61 = (! train_taken);
   assign when_Predictor_l70 = (train_valid && train_mispredicted);
   always @(*) begin
@@ -22440,150 +21434,6 @@ module gshare_predictor (
       BTB_is_matched = 1'b1;
     end
     if(when_Predictor_l95_15) begin
-      BTB_is_matched = 1'b1;
-    end
-    if(when_Predictor_l95_16) begin
-      BTB_is_matched = 1'b1;
-    end
-    if(when_Predictor_l95_17) begin
-      BTB_is_matched = 1'b1;
-    end
-    if(when_Predictor_l95_18) begin
-      BTB_is_matched = 1'b1;
-    end
-    if(when_Predictor_l95_19) begin
-      BTB_is_matched = 1'b1;
-    end
-    if(when_Predictor_l95_20) begin
-      BTB_is_matched = 1'b1;
-    end
-    if(when_Predictor_l95_21) begin
-      BTB_is_matched = 1'b1;
-    end
-    if(when_Predictor_l95_22) begin
-      BTB_is_matched = 1'b1;
-    end
-    if(when_Predictor_l95_23) begin
-      BTB_is_matched = 1'b1;
-    end
-    if(when_Predictor_l95_24) begin
-      BTB_is_matched = 1'b1;
-    end
-    if(when_Predictor_l95_25) begin
-      BTB_is_matched = 1'b1;
-    end
-    if(when_Predictor_l95_26) begin
-      BTB_is_matched = 1'b1;
-    end
-    if(when_Predictor_l95_27) begin
-      BTB_is_matched = 1'b1;
-    end
-    if(when_Predictor_l95_28) begin
-      BTB_is_matched = 1'b1;
-    end
-    if(when_Predictor_l95_29) begin
-      BTB_is_matched = 1'b1;
-    end
-    if(when_Predictor_l95_30) begin
-      BTB_is_matched = 1'b1;
-    end
-    if(when_Predictor_l95_31) begin
-      BTB_is_matched = 1'b1;
-    end
-    if(when_Predictor_l95_32) begin
-      BTB_is_matched = 1'b1;
-    end
-    if(when_Predictor_l95_33) begin
-      BTB_is_matched = 1'b1;
-    end
-    if(when_Predictor_l95_34) begin
-      BTB_is_matched = 1'b1;
-    end
-    if(when_Predictor_l95_35) begin
-      BTB_is_matched = 1'b1;
-    end
-    if(when_Predictor_l95_36) begin
-      BTB_is_matched = 1'b1;
-    end
-    if(when_Predictor_l95_37) begin
-      BTB_is_matched = 1'b1;
-    end
-    if(when_Predictor_l95_38) begin
-      BTB_is_matched = 1'b1;
-    end
-    if(when_Predictor_l95_39) begin
-      BTB_is_matched = 1'b1;
-    end
-    if(when_Predictor_l95_40) begin
-      BTB_is_matched = 1'b1;
-    end
-    if(when_Predictor_l95_41) begin
-      BTB_is_matched = 1'b1;
-    end
-    if(when_Predictor_l95_42) begin
-      BTB_is_matched = 1'b1;
-    end
-    if(when_Predictor_l95_43) begin
-      BTB_is_matched = 1'b1;
-    end
-    if(when_Predictor_l95_44) begin
-      BTB_is_matched = 1'b1;
-    end
-    if(when_Predictor_l95_45) begin
-      BTB_is_matched = 1'b1;
-    end
-    if(when_Predictor_l95_46) begin
-      BTB_is_matched = 1'b1;
-    end
-    if(when_Predictor_l95_47) begin
-      BTB_is_matched = 1'b1;
-    end
-    if(when_Predictor_l95_48) begin
-      BTB_is_matched = 1'b1;
-    end
-    if(when_Predictor_l95_49) begin
-      BTB_is_matched = 1'b1;
-    end
-    if(when_Predictor_l95_50) begin
-      BTB_is_matched = 1'b1;
-    end
-    if(when_Predictor_l95_51) begin
-      BTB_is_matched = 1'b1;
-    end
-    if(when_Predictor_l95_52) begin
-      BTB_is_matched = 1'b1;
-    end
-    if(when_Predictor_l95_53) begin
-      BTB_is_matched = 1'b1;
-    end
-    if(when_Predictor_l95_54) begin
-      BTB_is_matched = 1'b1;
-    end
-    if(when_Predictor_l95_55) begin
-      BTB_is_matched = 1'b1;
-    end
-    if(when_Predictor_l95_56) begin
-      BTB_is_matched = 1'b1;
-    end
-    if(when_Predictor_l95_57) begin
-      BTB_is_matched = 1'b1;
-    end
-    if(when_Predictor_l95_58) begin
-      BTB_is_matched = 1'b1;
-    end
-    if(when_Predictor_l95_59) begin
-      BTB_is_matched = 1'b1;
-    end
-    if(when_Predictor_l95_60) begin
-      BTB_is_matched = 1'b1;
-    end
-    if(when_Predictor_l95_61) begin
-      BTB_is_matched = 1'b1;
-    end
-    if(when_Predictor_l95_62) begin
-      BTB_is_matched = 1'b1;
-    end
-    if(when_Predictor_l95_63) begin
       BTB_is_matched = 1'b1;
     end
   end
@@ -22638,150 +21488,6 @@ module gshare_predictor (
     if(when_Predictor_l95_15) begin
       BTB_is_call = BTB_call[15];
     end
-    if(when_Predictor_l95_16) begin
-      BTB_is_call = BTB_call[16];
-    end
-    if(when_Predictor_l95_17) begin
-      BTB_is_call = BTB_call[17];
-    end
-    if(when_Predictor_l95_18) begin
-      BTB_is_call = BTB_call[18];
-    end
-    if(when_Predictor_l95_19) begin
-      BTB_is_call = BTB_call[19];
-    end
-    if(when_Predictor_l95_20) begin
-      BTB_is_call = BTB_call[20];
-    end
-    if(when_Predictor_l95_21) begin
-      BTB_is_call = BTB_call[21];
-    end
-    if(when_Predictor_l95_22) begin
-      BTB_is_call = BTB_call[22];
-    end
-    if(when_Predictor_l95_23) begin
-      BTB_is_call = BTB_call[23];
-    end
-    if(when_Predictor_l95_24) begin
-      BTB_is_call = BTB_call[24];
-    end
-    if(when_Predictor_l95_25) begin
-      BTB_is_call = BTB_call[25];
-    end
-    if(when_Predictor_l95_26) begin
-      BTB_is_call = BTB_call[26];
-    end
-    if(when_Predictor_l95_27) begin
-      BTB_is_call = BTB_call[27];
-    end
-    if(when_Predictor_l95_28) begin
-      BTB_is_call = BTB_call[28];
-    end
-    if(when_Predictor_l95_29) begin
-      BTB_is_call = BTB_call[29];
-    end
-    if(when_Predictor_l95_30) begin
-      BTB_is_call = BTB_call[30];
-    end
-    if(when_Predictor_l95_31) begin
-      BTB_is_call = BTB_call[31];
-    end
-    if(when_Predictor_l95_32) begin
-      BTB_is_call = BTB_call[32];
-    end
-    if(when_Predictor_l95_33) begin
-      BTB_is_call = BTB_call[33];
-    end
-    if(when_Predictor_l95_34) begin
-      BTB_is_call = BTB_call[34];
-    end
-    if(when_Predictor_l95_35) begin
-      BTB_is_call = BTB_call[35];
-    end
-    if(when_Predictor_l95_36) begin
-      BTB_is_call = BTB_call[36];
-    end
-    if(when_Predictor_l95_37) begin
-      BTB_is_call = BTB_call[37];
-    end
-    if(when_Predictor_l95_38) begin
-      BTB_is_call = BTB_call[38];
-    end
-    if(when_Predictor_l95_39) begin
-      BTB_is_call = BTB_call[39];
-    end
-    if(when_Predictor_l95_40) begin
-      BTB_is_call = BTB_call[40];
-    end
-    if(when_Predictor_l95_41) begin
-      BTB_is_call = BTB_call[41];
-    end
-    if(when_Predictor_l95_42) begin
-      BTB_is_call = BTB_call[42];
-    end
-    if(when_Predictor_l95_43) begin
-      BTB_is_call = BTB_call[43];
-    end
-    if(when_Predictor_l95_44) begin
-      BTB_is_call = BTB_call[44];
-    end
-    if(when_Predictor_l95_45) begin
-      BTB_is_call = BTB_call[45];
-    end
-    if(when_Predictor_l95_46) begin
-      BTB_is_call = BTB_call[46];
-    end
-    if(when_Predictor_l95_47) begin
-      BTB_is_call = BTB_call[47];
-    end
-    if(when_Predictor_l95_48) begin
-      BTB_is_call = BTB_call[48];
-    end
-    if(when_Predictor_l95_49) begin
-      BTB_is_call = BTB_call[49];
-    end
-    if(when_Predictor_l95_50) begin
-      BTB_is_call = BTB_call[50];
-    end
-    if(when_Predictor_l95_51) begin
-      BTB_is_call = BTB_call[51];
-    end
-    if(when_Predictor_l95_52) begin
-      BTB_is_call = BTB_call[52];
-    end
-    if(when_Predictor_l95_53) begin
-      BTB_is_call = BTB_call[53];
-    end
-    if(when_Predictor_l95_54) begin
-      BTB_is_call = BTB_call[54];
-    end
-    if(when_Predictor_l95_55) begin
-      BTB_is_call = BTB_call[55];
-    end
-    if(when_Predictor_l95_56) begin
-      BTB_is_call = BTB_call[56];
-    end
-    if(when_Predictor_l95_57) begin
-      BTB_is_call = BTB_call[57];
-    end
-    if(when_Predictor_l95_58) begin
-      BTB_is_call = BTB_call[58];
-    end
-    if(when_Predictor_l95_59) begin
-      BTB_is_call = BTB_call[59];
-    end
-    if(when_Predictor_l95_60) begin
-      BTB_is_call = BTB_call[60];
-    end
-    if(when_Predictor_l95_61) begin
-      BTB_is_call = BTB_call[61];
-    end
-    if(when_Predictor_l95_62) begin
-      BTB_is_call = BTB_call[62];
-    end
-    if(when_Predictor_l95_63) begin
-      BTB_is_call = BTB_call[63];
-    end
   end
 
   always @(*) begin
@@ -22833,150 +21539,6 @@ module gshare_predictor (
     end
     if(when_Predictor_l95_15) begin
       BTB_is_ret = BTB_ret[15];
-    end
-    if(when_Predictor_l95_16) begin
-      BTB_is_ret = BTB_ret[16];
-    end
-    if(when_Predictor_l95_17) begin
-      BTB_is_ret = BTB_ret[17];
-    end
-    if(when_Predictor_l95_18) begin
-      BTB_is_ret = BTB_ret[18];
-    end
-    if(when_Predictor_l95_19) begin
-      BTB_is_ret = BTB_ret[19];
-    end
-    if(when_Predictor_l95_20) begin
-      BTB_is_ret = BTB_ret[20];
-    end
-    if(when_Predictor_l95_21) begin
-      BTB_is_ret = BTB_ret[21];
-    end
-    if(when_Predictor_l95_22) begin
-      BTB_is_ret = BTB_ret[22];
-    end
-    if(when_Predictor_l95_23) begin
-      BTB_is_ret = BTB_ret[23];
-    end
-    if(when_Predictor_l95_24) begin
-      BTB_is_ret = BTB_ret[24];
-    end
-    if(when_Predictor_l95_25) begin
-      BTB_is_ret = BTB_ret[25];
-    end
-    if(when_Predictor_l95_26) begin
-      BTB_is_ret = BTB_ret[26];
-    end
-    if(when_Predictor_l95_27) begin
-      BTB_is_ret = BTB_ret[27];
-    end
-    if(when_Predictor_l95_28) begin
-      BTB_is_ret = BTB_ret[28];
-    end
-    if(when_Predictor_l95_29) begin
-      BTB_is_ret = BTB_ret[29];
-    end
-    if(when_Predictor_l95_30) begin
-      BTB_is_ret = BTB_ret[30];
-    end
-    if(when_Predictor_l95_31) begin
-      BTB_is_ret = BTB_ret[31];
-    end
-    if(when_Predictor_l95_32) begin
-      BTB_is_ret = BTB_ret[32];
-    end
-    if(when_Predictor_l95_33) begin
-      BTB_is_ret = BTB_ret[33];
-    end
-    if(when_Predictor_l95_34) begin
-      BTB_is_ret = BTB_ret[34];
-    end
-    if(when_Predictor_l95_35) begin
-      BTB_is_ret = BTB_ret[35];
-    end
-    if(when_Predictor_l95_36) begin
-      BTB_is_ret = BTB_ret[36];
-    end
-    if(when_Predictor_l95_37) begin
-      BTB_is_ret = BTB_ret[37];
-    end
-    if(when_Predictor_l95_38) begin
-      BTB_is_ret = BTB_ret[38];
-    end
-    if(when_Predictor_l95_39) begin
-      BTB_is_ret = BTB_ret[39];
-    end
-    if(when_Predictor_l95_40) begin
-      BTB_is_ret = BTB_ret[40];
-    end
-    if(when_Predictor_l95_41) begin
-      BTB_is_ret = BTB_ret[41];
-    end
-    if(when_Predictor_l95_42) begin
-      BTB_is_ret = BTB_ret[42];
-    end
-    if(when_Predictor_l95_43) begin
-      BTB_is_ret = BTB_ret[43];
-    end
-    if(when_Predictor_l95_44) begin
-      BTB_is_ret = BTB_ret[44];
-    end
-    if(when_Predictor_l95_45) begin
-      BTB_is_ret = BTB_ret[45];
-    end
-    if(when_Predictor_l95_46) begin
-      BTB_is_ret = BTB_ret[46];
-    end
-    if(when_Predictor_l95_47) begin
-      BTB_is_ret = BTB_ret[47];
-    end
-    if(when_Predictor_l95_48) begin
-      BTB_is_ret = BTB_ret[48];
-    end
-    if(when_Predictor_l95_49) begin
-      BTB_is_ret = BTB_ret[49];
-    end
-    if(when_Predictor_l95_50) begin
-      BTB_is_ret = BTB_ret[50];
-    end
-    if(when_Predictor_l95_51) begin
-      BTB_is_ret = BTB_ret[51];
-    end
-    if(when_Predictor_l95_52) begin
-      BTB_is_ret = BTB_ret[52];
-    end
-    if(when_Predictor_l95_53) begin
-      BTB_is_ret = BTB_ret[53];
-    end
-    if(when_Predictor_l95_54) begin
-      BTB_is_ret = BTB_ret[54];
-    end
-    if(when_Predictor_l95_55) begin
-      BTB_is_ret = BTB_ret[55];
-    end
-    if(when_Predictor_l95_56) begin
-      BTB_is_ret = BTB_ret[56];
-    end
-    if(when_Predictor_l95_57) begin
-      BTB_is_ret = BTB_ret[57];
-    end
-    if(when_Predictor_l95_58) begin
-      BTB_is_ret = BTB_ret[58];
-    end
-    if(when_Predictor_l95_59) begin
-      BTB_is_ret = BTB_ret[59];
-    end
-    if(when_Predictor_l95_60) begin
-      BTB_is_ret = BTB_ret[60];
-    end
-    if(when_Predictor_l95_61) begin
-      BTB_is_ret = BTB_ret[61];
-    end
-    if(when_Predictor_l95_62) begin
-      BTB_is_ret = BTB_ret[62];
-    end
-    if(when_Predictor_l95_63) begin
-      BTB_is_ret = BTB_ret[63];
     end
   end
 
@@ -23030,150 +21592,6 @@ module gshare_predictor (
     if(when_Predictor_l95_15) begin
       BTB_is_jmp = BTB_jmp[15];
     end
-    if(when_Predictor_l95_16) begin
-      BTB_is_jmp = BTB_jmp[16];
-    end
-    if(when_Predictor_l95_17) begin
-      BTB_is_jmp = BTB_jmp[17];
-    end
-    if(when_Predictor_l95_18) begin
-      BTB_is_jmp = BTB_jmp[18];
-    end
-    if(when_Predictor_l95_19) begin
-      BTB_is_jmp = BTB_jmp[19];
-    end
-    if(when_Predictor_l95_20) begin
-      BTB_is_jmp = BTB_jmp[20];
-    end
-    if(when_Predictor_l95_21) begin
-      BTB_is_jmp = BTB_jmp[21];
-    end
-    if(when_Predictor_l95_22) begin
-      BTB_is_jmp = BTB_jmp[22];
-    end
-    if(when_Predictor_l95_23) begin
-      BTB_is_jmp = BTB_jmp[23];
-    end
-    if(when_Predictor_l95_24) begin
-      BTB_is_jmp = BTB_jmp[24];
-    end
-    if(when_Predictor_l95_25) begin
-      BTB_is_jmp = BTB_jmp[25];
-    end
-    if(when_Predictor_l95_26) begin
-      BTB_is_jmp = BTB_jmp[26];
-    end
-    if(when_Predictor_l95_27) begin
-      BTB_is_jmp = BTB_jmp[27];
-    end
-    if(when_Predictor_l95_28) begin
-      BTB_is_jmp = BTB_jmp[28];
-    end
-    if(when_Predictor_l95_29) begin
-      BTB_is_jmp = BTB_jmp[29];
-    end
-    if(when_Predictor_l95_30) begin
-      BTB_is_jmp = BTB_jmp[30];
-    end
-    if(when_Predictor_l95_31) begin
-      BTB_is_jmp = BTB_jmp[31];
-    end
-    if(when_Predictor_l95_32) begin
-      BTB_is_jmp = BTB_jmp[32];
-    end
-    if(when_Predictor_l95_33) begin
-      BTB_is_jmp = BTB_jmp[33];
-    end
-    if(when_Predictor_l95_34) begin
-      BTB_is_jmp = BTB_jmp[34];
-    end
-    if(when_Predictor_l95_35) begin
-      BTB_is_jmp = BTB_jmp[35];
-    end
-    if(when_Predictor_l95_36) begin
-      BTB_is_jmp = BTB_jmp[36];
-    end
-    if(when_Predictor_l95_37) begin
-      BTB_is_jmp = BTB_jmp[37];
-    end
-    if(when_Predictor_l95_38) begin
-      BTB_is_jmp = BTB_jmp[38];
-    end
-    if(when_Predictor_l95_39) begin
-      BTB_is_jmp = BTB_jmp[39];
-    end
-    if(when_Predictor_l95_40) begin
-      BTB_is_jmp = BTB_jmp[40];
-    end
-    if(when_Predictor_l95_41) begin
-      BTB_is_jmp = BTB_jmp[41];
-    end
-    if(when_Predictor_l95_42) begin
-      BTB_is_jmp = BTB_jmp[42];
-    end
-    if(when_Predictor_l95_43) begin
-      BTB_is_jmp = BTB_jmp[43];
-    end
-    if(when_Predictor_l95_44) begin
-      BTB_is_jmp = BTB_jmp[44];
-    end
-    if(when_Predictor_l95_45) begin
-      BTB_is_jmp = BTB_jmp[45];
-    end
-    if(when_Predictor_l95_46) begin
-      BTB_is_jmp = BTB_jmp[46];
-    end
-    if(when_Predictor_l95_47) begin
-      BTB_is_jmp = BTB_jmp[47];
-    end
-    if(when_Predictor_l95_48) begin
-      BTB_is_jmp = BTB_jmp[48];
-    end
-    if(when_Predictor_l95_49) begin
-      BTB_is_jmp = BTB_jmp[49];
-    end
-    if(when_Predictor_l95_50) begin
-      BTB_is_jmp = BTB_jmp[50];
-    end
-    if(when_Predictor_l95_51) begin
-      BTB_is_jmp = BTB_jmp[51];
-    end
-    if(when_Predictor_l95_52) begin
-      BTB_is_jmp = BTB_jmp[52];
-    end
-    if(when_Predictor_l95_53) begin
-      BTB_is_jmp = BTB_jmp[53];
-    end
-    if(when_Predictor_l95_54) begin
-      BTB_is_jmp = BTB_jmp[54];
-    end
-    if(when_Predictor_l95_55) begin
-      BTB_is_jmp = BTB_jmp[55];
-    end
-    if(when_Predictor_l95_56) begin
-      BTB_is_jmp = BTB_jmp[56];
-    end
-    if(when_Predictor_l95_57) begin
-      BTB_is_jmp = BTB_jmp[57];
-    end
-    if(when_Predictor_l95_58) begin
-      BTB_is_jmp = BTB_jmp[58];
-    end
-    if(when_Predictor_l95_59) begin
-      BTB_is_jmp = BTB_jmp[59];
-    end
-    if(when_Predictor_l95_60) begin
-      BTB_is_jmp = BTB_jmp[60];
-    end
-    if(when_Predictor_l95_61) begin
-      BTB_is_jmp = BTB_jmp[61];
-    end
-    if(when_Predictor_l95_62) begin
-      BTB_is_jmp = BTB_jmp[62];
-    end
-    if(when_Predictor_l95_63) begin
-      BTB_is_jmp = BTB_jmp[63];
-    end
   end
 
   always @(*) begin
@@ -23226,150 +21644,6 @@ module gshare_predictor (
     if(when_Predictor_l95_15) begin
       BTB_target_pc_read = BTB_target_pc_15;
     end
-    if(when_Predictor_l95_16) begin
-      BTB_target_pc_read = BTB_target_pc_16;
-    end
-    if(when_Predictor_l95_17) begin
-      BTB_target_pc_read = BTB_target_pc_17;
-    end
-    if(when_Predictor_l95_18) begin
-      BTB_target_pc_read = BTB_target_pc_18;
-    end
-    if(when_Predictor_l95_19) begin
-      BTB_target_pc_read = BTB_target_pc_19;
-    end
-    if(when_Predictor_l95_20) begin
-      BTB_target_pc_read = BTB_target_pc_20;
-    end
-    if(when_Predictor_l95_21) begin
-      BTB_target_pc_read = BTB_target_pc_21;
-    end
-    if(when_Predictor_l95_22) begin
-      BTB_target_pc_read = BTB_target_pc_22;
-    end
-    if(when_Predictor_l95_23) begin
-      BTB_target_pc_read = BTB_target_pc_23;
-    end
-    if(when_Predictor_l95_24) begin
-      BTB_target_pc_read = BTB_target_pc_24;
-    end
-    if(when_Predictor_l95_25) begin
-      BTB_target_pc_read = BTB_target_pc_25;
-    end
-    if(when_Predictor_l95_26) begin
-      BTB_target_pc_read = BTB_target_pc_26;
-    end
-    if(when_Predictor_l95_27) begin
-      BTB_target_pc_read = BTB_target_pc_27;
-    end
-    if(when_Predictor_l95_28) begin
-      BTB_target_pc_read = BTB_target_pc_28;
-    end
-    if(when_Predictor_l95_29) begin
-      BTB_target_pc_read = BTB_target_pc_29;
-    end
-    if(when_Predictor_l95_30) begin
-      BTB_target_pc_read = BTB_target_pc_30;
-    end
-    if(when_Predictor_l95_31) begin
-      BTB_target_pc_read = BTB_target_pc_31;
-    end
-    if(when_Predictor_l95_32) begin
-      BTB_target_pc_read = BTB_target_pc_32;
-    end
-    if(when_Predictor_l95_33) begin
-      BTB_target_pc_read = BTB_target_pc_33;
-    end
-    if(when_Predictor_l95_34) begin
-      BTB_target_pc_read = BTB_target_pc_34;
-    end
-    if(when_Predictor_l95_35) begin
-      BTB_target_pc_read = BTB_target_pc_35;
-    end
-    if(when_Predictor_l95_36) begin
-      BTB_target_pc_read = BTB_target_pc_36;
-    end
-    if(when_Predictor_l95_37) begin
-      BTB_target_pc_read = BTB_target_pc_37;
-    end
-    if(when_Predictor_l95_38) begin
-      BTB_target_pc_read = BTB_target_pc_38;
-    end
-    if(when_Predictor_l95_39) begin
-      BTB_target_pc_read = BTB_target_pc_39;
-    end
-    if(when_Predictor_l95_40) begin
-      BTB_target_pc_read = BTB_target_pc_40;
-    end
-    if(when_Predictor_l95_41) begin
-      BTB_target_pc_read = BTB_target_pc_41;
-    end
-    if(when_Predictor_l95_42) begin
-      BTB_target_pc_read = BTB_target_pc_42;
-    end
-    if(when_Predictor_l95_43) begin
-      BTB_target_pc_read = BTB_target_pc_43;
-    end
-    if(when_Predictor_l95_44) begin
-      BTB_target_pc_read = BTB_target_pc_44;
-    end
-    if(when_Predictor_l95_45) begin
-      BTB_target_pc_read = BTB_target_pc_45;
-    end
-    if(when_Predictor_l95_46) begin
-      BTB_target_pc_read = BTB_target_pc_46;
-    end
-    if(when_Predictor_l95_47) begin
-      BTB_target_pc_read = BTB_target_pc_47;
-    end
-    if(when_Predictor_l95_48) begin
-      BTB_target_pc_read = BTB_target_pc_48;
-    end
-    if(when_Predictor_l95_49) begin
-      BTB_target_pc_read = BTB_target_pc_49;
-    end
-    if(when_Predictor_l95_50) begin
-      BTB_target_pc_read = BTB_target_pc_50;
-    end
-    if(when_Predictor_l95_51) begin
-      BTB_target_pc_read = BTB_target_pc_51;
-    end
-    if(when_Predictor_l95_52) begin
-      BTB_target_pc_read = BTB_target_pc_52;
-    end
-    if(when_Predictor_l95_53) begin
-      BTB_target_pc_read = BTB_target_pc_53;
-    end
-    if(when_Predictor_l95_54) begin
-      BTB_target_pc_read = BTB_target_pc_54;
-    end
-    if(when_Predictor_l95_55) begin
-      BTB_target_pc_read = BTB_target_pc_55;
-    end
-    if(when_Predictor_l95_56) begin
-      BTB_target_pc_read = BTB_target_pc_56;
-    end
-    if(when_Predictor_l95_57) begin
-      BTB_target_pc_read = BTB_target_pc_57;
-    end
-    if(when_Predictor_l95_58) begin
-      BTB_target_pc_read = BTB_target_pc_58;
-    end
-    if(when_Predictor_l95_59) begin
-      BTB_target_pc_read = BTB_target_pc_59;
-    end
-    if(when_Predictor_l95_60) begin
-      BTB_target_pc_read = BTB_target_pc_60;
-    end
-    if(when_Predictor_l95_61) begin
-      BTB_target_pc_read = BTB_target_pc_61;
-    end
-    if(when_Predictor_l95_62) begin
-      BTB_target_pc_read = BTB_target_pc_62;
-    end
-    if(when_Predictor_l95_63) begin
-      BTB_target_pc_read = BTB_target_pc_63;
-    end
   end
 
   assign when_Predictor_l95 = ((BTB_source_pc_0 == predict_pc) && BTB_valid[0]);
@@ -23388,54 +21662,6 @@ module gshare_predictor (
   assign when_Predictor_l95_13 = ((BTB_source_pc_13 == predict_pc) && BTB_valid[13]);
   assign when_Predictor_l95_14 = ((BTB_source_pc_14 == predict_pc) && BTB_valid[14]);
   assign when_Predictor_l95_15 = ((BTB_source_pc_15 == predict_pc) && BTB_valid[15]);
-  assign when_Predictor_l95_16 = ((BTB_source_pc_16 == predict_pc) && BTB_valid[16]);
-  assign when_Predictor_l95_17 = ((BTB_source_pc_17 == predict_pc) && BTB_valid[17]);
-  assign when_Predictor_l95_18 = ((BTB_source_pc_18 == predict_pc) && BTB_valid[18]);
-  assign when_Predictor_l95_19 = ((BTB_source_pc_19 == predict_pc) && BTB_valid[19]);
-  assign when_Predictor_l95_20 = ((BTB_source_pc_20 == predict_pc) && BTB_valid[20]);
-  assign when_Predictor_l95_21 = ((BTB_source_pc_21 == predict_pc) && BTB_valid[21]);
-  assign when_Predictor_l95_22 = ((BTB_source_pc_22 == predict_pc) && BTB_valid[22]);
-  assign when_Predictor_l95_23 = ((BTB_source_pc_23 == predict_pc) && BTB_valid[23]);
-  assign when_Predictor_l95_24 = ((BTB_source_pc_24 == predict_pc) && BTB_valid[24]);
-  assign when_Predictor_l95_25 = ((BTB_source_pc_25 == predict_pc) && BTB_valid[25]);
-  assign when_Predictor_l95_26 = ((BTB_source_pc_26 == predict_pc) && BTB_valid[26]);
-  assign when_Predictor_l95_27 = ((BTB_source_pc_27 == predict_pc) && BTB_valid[27]);
-  assign when_Predictor_l95_28 = ((BTB_source_pc_28 == predict_pc) && BTB_valid[28]);
-  assign when_Predictor_l95_29 = ((BTB_source_pc_29 == predict_pc) && BTB_valid[29]);
-  assign when_Predictor_l95_30 = ((BTB_source_pc_30 == predict_pc) && BTB_valid[30]);
-  assign when_Predictor_l95_31 = ((BTB_source_pc_31 == predict_pc) && BTB_valid[31]);
-  assign when_Predictor_l95_32 = ((BTB_source_pc_32 == predict_pc) && BTB_valid[32]);
-  assign when_Predictor_l95_33 = ((BTB_source_pc_33 == predict_pc) && BTB_valid[33]);
-  assign when_Predictor_l95_34 = ((BTB_source_pc_34 == predict_pc) && BTB_valid[34]);
-  assign when_Predictor_l95_35 = ((BTB_source_pc_35 == predict_pc) && BTB_valid[35]);
-  assign when_Predictor_l95_36 = ((BTB_source_pc_36 == predict_pc) && BTB_valid[36]);
-  assign when_Predictor_l95_37 = ((BTB_source_pc_37 == predict_pc) && BTB_valid[37]);
-  assign when_Predictor_l95_38 = ((BTB_source_pc_38 == predict_pc) && BTB_valid[38]);
-  assign when_Predictor_l95_39 = ((BTB_source_pc_39 == predict_pc) && BTB_valid[39]);
-  assign when_Predictor_l95_40 = ((BTB_source_pc_40 == predict_pc) && BTB_valid[40]);
-  assign when_Predictor_l95_41 = ((BTB_source_pc_41 == predict_pc) && BTB_valid[41]);
-  assign when_Predictor_l95_42 = ((BTB_source_pc_42 == predict_pc) && BTB_valid[42]);
-  assign when_Predictor_l95_43 = ((BTB_source_pc_43 == predict_pc) && BTB_valid[43]);
-  assign when_Predictor_l95_44 = ((BTB_source_pc_44 == predict_pc) && BTB_valid[44]);
-  assign when_Predictor_l95_45 = ((BTB_source_pc_45 == predict_pc) && BTB_valid[45]);
-  assign when_Predictor_l95_46 = ((BTB_source_pc_46 == predict_pc) && BTB_valid[46]);
-  assign when_Predictor_l95_47 = ((BTB_source_pc_47 == predict_pc) && BTB_valid[47]);
-  assign when_Predictor_l95_48 = ((BTB_source_pc_48 == predict_pc) && BTB_valid[48]);
-  assign when_Predictor_l95_49 = ((BTB_source_pc_49 == predict_pc) && BTB_valid[49]);
-  assign when_Predictor_l95_50 = ((BTB_source_pc_50 == predict_pc) && BTB_valid[50]);
-  assign when_Predictor_l95_51 = ((BTB_source_pc_51 == predict_pc) && BTB_valid[51]);
-  assign when_Predictor_l95_52 = ((BTB_source_pc_52 == predict_pc) && BTB_valid[52]);
-  assign when_Predictor_l95_53 = ((BTB_source_pc_53 == predict_pc) && BTB_valid[53]);
-  assign when_Predictor_l95_54 = ((BTB_source_pc_54 == predict_pc) && BTB_valid[54]);
-  assign when_Predictor_l95_55 = ((BTB_source_pc_55 == predict_pc) && BTB_valid[55]);
-  assign when_Predictor_l95_56 = ((BTB_source_pc_56 == predict_pc) && BTB_valid[56]);
-  assign when_Predictor_l95_57 = ((BTB_source_pc_57 == predict_pc) && BTB_valid[57]);
-  assign when_Predictor_l95_58 = ((BTB_source_pc_58 == predict_pc) && BTB_valid[58]);
-  assign when_Predictor_l95_59 = ((BTB_source_pc_59 == predict_pc) && BTB_valid[59]);
-  assign when_Predictor_l95_60 = ((BTB_source_pc_60 == predict_pc) && BTB_valid[60]);
-  assign when_Predictor_l95_61 = ((BTB_source_pc_61 == predict_pc) && BTB_valid[61]);
-  assign when_Predictor_l95_62 = ((BTB_source_pc_62 == predict_pc) && BTB_valid[62]);
-  assign when_Predictor_l95_63 = ((BTB_source_pc_63 == predict_pc) && BTB_valid[63]);
   always @(*) begin
     BTB_btb_alloc_index_willIncrement = 1'b0;
     if(BTB_btb_is_miss) begin
@@ -23454,17 +21680,17 @@ module gshare_predictor (
     end
   end
 
-  assign BTB_btb_alloc_index_willOverflowIfInc = (BTB_btb_alloc_index_value == 6'h3f);
+  assign BTB_btb_alloc_index_willOverflowIfInc = (BTB_btb_alloc_index_value == 4'b1111);
   assign BTB_btb_alloc_index_willOverflow = (BTB_btb_alloc_index_willOverflowIfInc && BTB_btb_alloc_index_willIncrement);
   always @(*) begin
     BTB_btb_alloc_index_valueNext = (BTB_btb_alloc_index_value + _zz_BTB_btb_alloc_index_valueNext);
     if(BTB_btb_alloc_index_willClear) begin
-      BTB_btb_alloc_index_valueNext = 6'h0;
+      BTB_btb_alloc_index_valueNext = 4'b0000;
     end
   end
 
-  assign BTB_btb_is_hit = (|{BTB_btb_is_hit_vec_63,{BTB_btb_is_hit_vec_62,{BTB_btb_is_hit_vec_61,{BTB_btb_is_hit_vec_60,{BTB_btb_is_hit_vec_59,{BTB_btb_is_hit_vec_58,{BTB_btb_is_hit_vec_57,{BTB_btb_is_hit_vec_56,{BTB_btb_is_hit_vec_55,{BTB_btb_is_hit_vec_54,{_zz_BTB_btb_is_hit,_zz_BTB_btb_is_hit_1}}}}}}}}}}});
-  assign BTB_btb_is_miss = (|{BTB_btb_is_miss_vec_63,{BTB_btb_is_miss_vec_62,{BTB_btb_is_miss_vec_61,{BTB_btb_is_miss_vec_60,{BTB_btb_is_miss_vec_59,{BTB_btb_is_miss_vec_58,{BTB_btb_is_miss_vec_57,{BTB_btb_is_miss_vec_56,{BTB_btb_is_miss_vec_55,{BTB_btb_is_miss_vec_54,{_zz_BTB_btb_is_miss,_zz_BTB_btb_is_miss_1}}}}}}}}}}});
+  assign BTB_btb_is_hit = (|{BTB_btb_is_hit_vec_15,{BTB_btb_is_hit_vec_14,{BTB_btb_is_hit_vec_13,{BTB_btb_is_hit_vec_12,{BTB_btb_is_hit_vec_11,{BTB_btb_is_hit_vec_10,{BTB_btb_is_hit_vec_9,{BTB_btb_is_hit_vec_8,{BTB_btb_is_hit_vec_7,{BTB_btb_is_hit_vec_6,{_zz_BTB_btb_is_hit,_zz_BTB_btb_is_hit_1}}}}}}}}}}});
+  assign BTB_btb_is_miss = (|{BTB_btb_is_miss_vec_15,{BTB_btb_is_miss_vec_14,{BTB_btb_is_miss_vec_13,{BTB_btb_is_miss_vec_12,{BTB_btb_is_miss_vec_11,{BTB_btb_is_miss_vec_10,{BTB_btb_is_miss_vec_9,{BTB_btb_is_miss_vec_8,{BTB_btb_is_miss_vec_7,{BTB_btb_is_miss_vec_6,{_zz_BTB_btb_is_miss,_zz_BTB_btb_is_miss_1}}}}}}}}}}});
   assign when_Predictor_l113 = (train_valid && train_taken);
   assign when_Predictor_l114 = ((BTB_source_pc_0 == train_pc) && BTB_valid[0]);
   always @(*) begin
@@ -23897,1322 +22123,24 @@ module gshare_predictor (
     end
   end
 
-  assign when_Predictor_l113_16 = (train_valid && train_taken);
-  assign when_Predictor_l114_16 = ((BTB_source_pc_16 == train_pc) && BTB_valid[16]);
-  always @(*) begin
-    if(when_Predictor_l113_16) begin
-      if(when_Predictor_l114_16) begin
-        BTB_btb_is_hit_vec_16 = 1'b1;
-      end else begin
-        BTB_btb_is_hit_vec_16 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_hit_vec_16 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l119_16 = ((BTB_source_pc_16 != train_pc) || (! BTB_valid[16]));
-  always @(*) begin
-    if(when_Predictor_l113_16) begin
-      if(when_Predictor_l119_16) begin
-        BTB_btb_is_miss_vec_16 = 1'b1;
-      end else begin
-        BTB_btb_is_miss_vec_16 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_miss_vec_16 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l113_17 = (train_valid && train_taken);
-  assign when_Predictor_l114_17 = ((BTB_source_pc_17 == train_pc) && BTB_valid[17]);
-  always @(*) begin
-    if(when_Predictor_l113_17) begin
-      if(when_Predictor_l114_17) begin
-        BTB_btb_is_hit_vec_17 = 1'b1;
-      end else begin
-        BTB_btb_is_hit_vec_17 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_hit_vec_17 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l119_17 = ((BTB_source_pc_17 != train_pc) || (! BTB_valid[17]));
-  always @(*) begin
-    if(when_Predictor_l113_17) begin
-      if(when_Predictor_l119_17) begin
-        BTB_btb_is_miss_vec_17 = 1'b1;
-      end else begin
-        BTB_btb_is_miss_vec_17 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_miss_vec_17 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l113_18 = (train_valid && train_taken);
-  assign when_Predictor_l114_18 = ((BTB_source_pc_18 == train_pc) && BTB_valid[18]);
-  always @(*) begin
-    if(when_Predictor_l113_18) begin
-      if(when_Predictor_l114_18) begin
-        BTB_btb_is_hit_vec_18 = 1'b1;
-      end else begin
-        BTB_btb_is_hit_vec_18 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_hit_vec_18 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l119_18 = ((BTB_source_pc_18 != train_pc) || (! BTB_valid[18]));
-  always @(*) begin
-    if(when_Predictor_l113_18) begin
-      if(when_Predictor_l119_18) begin
-        BTB_btb_is_miss_vec_18 = 1'b1;
-      end else begin
-        BTB_btb_is_miss_vec_18 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_miss_vec_18 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l113_19 = (train_valid && train_taken);
-  assign when_Predictor_l114_19 = ((BTB_source_pc_19 == train_pc) && BTB_valid[19]);
-  always @(*) begin
-    if(when_Predictor_l113_19) begin
-      if(when_Predictor_l114_19) begin
-        BTB_btb_is_hit_vec_19 = 1'b1;
-      end else begin
-        BTB_btb_is_hit_vec_19 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_hit_vec_19 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l119_19 = ((BTB_source_pc_19 != train_pc) || (! BTB_valid[19]));
-  always @(*) begin
-    if(when_Predictor_l113_19) begin
-      if(when_Predictor_l119_19) begin
-        BTB_btb_is_miss_vec_19 = 1'b1;
-      end else begin
-        BTB_btb_is_miss_vec_19 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_miss_vec_19 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l113_20 = (train_valid && train_taken);
-  assign when_Predictor_l114_20 = ((BTB_source_pc_20 == train_pc) && BTB_valid[20]);
-  always @(*) begin
-    if(when_Predictor_l113_20) begin
-      if(when_Predictor_l114_20) begin
-        BTB_btb_is_hit_vec_20 = 1'b1;
-      end else begin
-        BTB_btb_is_hit_vec_20 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_hit_vec_20 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l119_20 = ((BTB_source_pc_20 != train_pc) || (! BTB_valid[20]));
-  always @(*) begin
-    if(when_Predictor_l113_20) begin
-      if(when_Predictor_l119_20) begin
-        BTB_btb_is_miss_vec_20 = 1'b1;
-      end else begin
-        BTB_btb_is_miss_vec_20 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_miss_vec_20 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l113_21 = (train_valid && train_taken);
-  assign when_Predictor_l114_21 = ((BTB_source_pc_21 == train_pc) && BTB_valid[21]);
-  always @(*) begin
-    if(when_Predictor_l113_21) begin
-      if(when_Predictor_l114_21) begin
-        BTB_btb_is_hit_vec_21 = 1'b1;
-      end else begin
-        BTB_btb_is_hit_vec_21 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_hit_vec_21 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l119_21 = ((BTB_source_pc_21 != train_pc) || (! BTB_valid[21]));
-  always @(*) begin
-    if(when_Predictor_l113_21) begin
-      if(when_Predictor_l119_21) begin
-        BTB_btb_is_miss_vec_21 = 1'b1;
-      end else begin
-        BTB_btb_is_miss_vec_21 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_miss_vec_21 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l113_22 = (train_valid && train_taken);
-  assign when_Predictor_l114_22 = ((BTB_source_pc_22 == train_pc) && BTB_valid[22]);
-  always @(*) begin
-    if(when_Predictor_l113_22) begin
-      if(when_Predictor_l114_22) begin
-        BTB_btb_is_hit_vec_22 = 1'b1;
-      end else begin
-        BTB_btb_is_hit_vec_22 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_hit_vec_22 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l119_22 = ((BTB_source_pc_22 != train_pc) || (! BTB_valid[22]));
-  always @(*) begin
-    if(when_Predictor_l113_22) begin
-      if(when_Predictor_l119_22) begin
-        BTB_btb_is_miss_vec_22 = 1'b1;
-      end else begin
-        BTB_btb_is_miss_vec_22 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_miss_vec_22 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l113_23 = (train_valid && train_taken);
-  assign when_Predictor_l114_23 = ((BTB_source_pc_23 == train_pc) && BTB_valid[23]);
-  always @(*) begin
-    if(when_Predictor_l113_23) begin
-      if(when_Predictor_l114_23) begin
-        BTB_btb_is_hit_vec_23 = 1'b1;
-      end else begin
-        BTB_btb_is_hit_vec_23 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_hit_vec_23 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l119_23 = ((BTB_source_pc_23 != train_pc) || (! BTB_valid[23]));
-  always @(*) begin
-    if(when_Predictor_l113_23) begin
-      if(when_Predictor_l119_23) begin
-        BTB_btb_is_miss_vec_23 = 1'b1;
-      end else begin
-        BTB_btb_is_miss_vec_23 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_miss_vec_23 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l113_24 = (train_valid && train_taken);
-  assign when_Predictor_l114_24 = ((BTB_source_pc_24 == train_pc) && BTB_valid[24]);
-  always @(*) begin
-    if(when_Predictor_l113_24) begin
-      if(when_Predictor_l114_24) begin
-        BTB_btb_is_hit_vec_24 = 1'b1;
-      end else begin
-        BTB_btb_is_hit_vec_24 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_hit_vec_24 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l119_24 = ((BTB_source_pc_24 != train_pc) || (! BTB_valid[24]));
-  always @(*) begin
-    if(when_Predictor_l113_24) begin
-      if(when_Predictor_l119_24) begin
-        BTB_btb_is_miss_vec_24 = 1'b1;
-      end else begin
-        BTB_btb_is_miss_vec_24 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_miss_vec_24 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l113_25 = (train_valid && train_taken);
-  assign when_Predictor_l114_25 = ((BTB_source_pc_25 == train_pc) && BTB_valid[25]);
-  always @(*) begin
-    if(when_Predictor_l113_25) begin
-      if(when_Predictor_l114_25) begin
-        BTB_btb_is_hit_vec_25 = 1'b1;
-      end else begin
-        BTB_btb_is_hit_vec_25 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_hit_vec_25 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l119_25 = ((BTB_source_pc_25 != train_pc) || (! BTB_valid[25]));
-  always @(*) begin
-    if(when_Predictor_l113_25) begin
-      if(when_Predictor_l119_25) begin
-        BTB_btb_is_miss_vec_25 = 1'b1;
-      end else begin
-        BTB_btb_is_miss_vec_25 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_miss_vec_25 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l113_26 = (train_valid && train_taken);
-  assign when_Predictor_l114_26 = ((BTB_source_pc_26 == train_pc) && BTB_valid[26]);
-  always @(*) begin
-    if(when_Predictor_l113_26) begin
-      if(when_Predictor_l114_26) begin
-        BTB_btb_is_hit_vec_26 = 1'b1;
-      end else begin
-        BTB_btb_is_hit_vec_26 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_hit_vec_26 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l119_26 = ((BTB_source_pc_26 != train_pc) || (! BTB_valid[26]));
-  always @(*) begin
-    if(when_Predictor_l113_26) begin
-      if(when_Predictor_l119_26) begin
-        BTB_btb_is_miss_vec_26 = 1'b1;
-      end else begin
-        BTB_btb_is_miss_vec_26 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_miss_vec_26 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l113_27 = (train_valid && train_taken);
-  assign when_Predictor_l114_27 = ((BTB_source_pc_27 == train_pc) && BTB_valid[27]);
-  always @(*) begin
-    if(when_Predictor_l113_27) begin
-      if(when_Predictor_l114_27) begin
-        BTB_btb_is_hit_vec_27 = 1'b1;
-      end else begin
-        BTB_btb_is_hit_vec_27 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_hit_vec_27 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l119_27 = ((BTB_source_pc_27 != train_pc) || (! BTB_valid[27]));
-  always @(*) begin
-    if(when_Predictor_l113_27) begin
-      if(when_Predictor_l119_27) begin
-        BTB_btb_is_miss_vec_27 = 1'b1;
-      end else begin
-        BTB_btb_is_miss_vec_27 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_miss_vec_27 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l113_28 = (train_valid && train_taken);
-  assign when_Predictor_l114_28 = ((BTB_source_pc_28 == train_pc) && BTB_valid[28]);
-  always @(*) begin
-    if(when_Predictor_l113_28) begin
-      if(when_Predictor_l114_28) begin
-        BTB_btb_is_hit_vec_28 = 1'b1;
-      end else begin
-        BTB_btb_is_hit_vec_28 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_hit_vec_28 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l119_28 = ((BTB_source_pc_28 != train_pc) || (! BTB_valid[28]));
-  always @(*) begin
-    if(when_Predictor_l113_28) begin
-      if(when_Predictor_l119_28) begin
-        BTB_btb_is_miss_vec_28 = 1'b1;
-      end else begin
-        BTB_btb_is_miss_vec_28 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_miss_vec_28 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l113_29 = (train_valid && train_taken);
-  assign when_Predictor_l114_29 = ((BTB_source_pc_29 == train_pc) && BTB_valid[29]);
-  always @(*) begin
-    if(when_Predictor_l113_29) begin
-      if(when_Predictor_l114_29) begin
-        BTB_btb_is_hit_vec_29 = 1'b1;
-      end else begin
-        BTB_btb_is_hit_vec_29 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_hit_vec_29 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l119_29 = ((BTB_source_pc_29 != train_pc) || (! BTB_valid[29]));
-  always @(*) begin
-    if(when_Predictor_l113_29) begin
-      if(when_Predictor_l119_29) begin
-        BTB_btb_is_miss_vec_29 = 1'b1;
-      end else begin
-        BTB_btb_is_miss_vec_29 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_miss_vec_29 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l113_30 = (train_valid && train_taken);
-  assign when_Predictor_l114_30 = ((BTB_source_pc_30 == train_pc) && BTB_valid[30]);
-  always @(*) begin
-    if(when_Predictor_l113_30) begin
-      if(when_Predictor_l114_30) begin
-        BTB_btb_is_hit_vec_30 = 1'b1;
-      end else begin
-        BTB_btb_is_hit_vec_30 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_hit_vec_30 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l119_30 = ((BTB_source_pc_30 != train_pc) || (! BTB_valid[30]));
-  always @(*) begin
-    if(when_Predictor_l113_30) begin
-      if(when_Predictor_l119_30) begin
-        BTB_btb_is_miss_vec_30 = 1'b1;
-      end else begin
-        BTB_btb_is_miss_vec_30 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_miss_vec_30 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l113_31 = (train_valid && train_taken);
-  assign when_Predictor_l114_31 = ((BTB_source_pc_31 == train_pc) && BTB_valid[31]);
-  always @(*) begin
-    if(when_Predictor_l113_31) begin
-      if(when_Predictor_l114_31) begin
-        BTB_btb_is_hit_vec_31 = 1'b1;
-      end else begin
-        BTB_btb_is_hit_vec_31 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_hit_vec_31 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l119_31 = ((BTB_source_pc_31 != train_pc) || (! BTB_valid[31]));
-  always @(*) begin
-    if(when_Predictor_l113_31) begin
-      if(when_Predictor_l119_31) begin
-        BTB_btb_is_miss_vec_31 = 1'b1;
-      end else begin
-        BTB_btb_is_miss_vec_31 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_miss_vec_31 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l113_32 = (train_valid && train_taken);
-  assign when_Predictor_l114_32 = ((BTB_source_pc_32 == train_pc) && BTB_valid[32]);
-  always @(*) begin
-    if(when_Predictor_l113_32) begin
-      if(when_Predictor_l114_32) begin
-        BTB_btb_is_hit_vec_32 = 1'b1;
-      end else begin
-        BTB_btb_is_hit_vec_32 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_hit_vec_32 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l119_32 = ((BTB_source_pc_32 != train_pc) || (! BTB_valid[32]));
-  always @(*) begin
-    if(when_Predictor_l113_32) begin
-      if(when_Predictor_l119_32) begin
-        BTB_btb_is_miss_vec_32 = 1'b1;
-      end else begin
-        BTB_btb_is_miss_vec_32 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_miss_vec_32 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l113_33 = (train_valid && train_taken);
-  assign when_Predictor_l114_33 = ((BTB_source_pc_33 == train_pc) && BTB_valid[33]);
-  always @(*) begin
-    if(when_Predictor_l113_33) begin
-      if(when_Predictor_l114_33) begin
-        BTB_btb_is_hit_vec_33 = 1'b1;
-      end else begin
-        BTB_btb_is_hit_vec_33 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_hit_vec_33 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l119_33 = ((BTB_source_pc_33 != train_pc) || (! BTB_valid[33]));
-  always @(*) begin
-    if(when_Predictor_l113_33) begin
-      if(when_Predictor_l119_33) begin
-        BTB_btb_is_miss_vec_33 = 1'b1;
-      end else begin
-        BTB_btb_is_miss_vec_33 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_miss_vec_33 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l113_34 = (train_valid && train_taken);
-  assign when_Predictor_l114_34 = ((BTB_source_pc_34 == train_pc) && BTB_valid[34]);
-  always @(*) begin
-    if(when_Predictor_l113_34) begin
-      if(when_Predictor_l114_34) begin
-        BTB_btb_is_hit_vec_34 = 1'b1;
-      end else begin
-        BTB_btb_is_hit_vec_34 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_hit_vec_34 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l119_34 = ((BTB_source_pc_34 != train_pc) || (! BTB_valid[34]));
-  always @(*) begin
-    if(when_Predictor_l113_34) begin
-      if(when_Predictor_l119_34) begin
-        BTB_btb_is_miss_vec_34 = 1'b1;
-      end else begin
-        BTB_btb_is_miss_vec_34 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_miss_vec_34 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l113_35 = (train_valid && train_taken);
-  assign when_Predictor_l114_35 = ((BTB_source_pc_35 == train_pc) && BTB_valid[35]);
-  always @(*) begin
-    if(when_Predictor_l113_35) begin
-      if(when_Predictor_l114_35) begin
-        BTB_btb_is_hit_vec_35 = 1'b1;
-      end else begin
-        BTB_btb_is_hit_vec_35 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_hit_vec_35 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l119_35 = ((BTB_source_pc_35 != train_pc) || (! BTB_valid[35]));
-  always @(*) begin
-    if(when_Predictor_l113_35) begin
-      if(when_Predictor_l119_35) begin
-        BTB_btb_is_miss_vec_35 = 1'b1;
-      end else begin
-        BTB_btb_is_miss_vec_35 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_miss_vec_35 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l113_36 = (train_valid && train_taken);
-  assign when_Predictor_l114_36 = ((BTB_source_pc_36 == train_pc) && BTB_valid[36]);
-  always @(*) begin
-    if(when_Predictor_l113_36) begin
-      if(when_Predictor_l114_36) begin
-        BTB_btb_is_hit_vec_36 = 1'b1;
-      end else begin
-        BTB_btb_is_hit_vec_36 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_hit_vec_36 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l119_36 = ((BTB_source_pc_36 != train_pc) || (! BTB_valid[36]));
-  always @(*) begin
-    if(when_Predictor_l113_36) begin
-      if(when_Predictor_l119_36) begin
-        BTB_btb_is_miss_vec_36 = 1'b1;
-      end else begin
-        BTB_btb_is_miss_vec_36 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_miss_vec_36 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l113_37 = (train_valid && train_taken);
-  assign when_Predictor_l114_37 = ((BTB_source_pc_37 == train_pc) && BTB_valid[37]);
-  always @(*) begin
-    if(when_Predictor_l113_37) begin
-      if(when_Predictor_l114_37) begin
-        BTB_btb_is_hit_vec_37 = 1'b1;
-      end else begin
-        BTB_btb_is_hit_vec_37 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_hit_vec_37 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l119_37 = ((BTB_source_pc_37 != train_pc) || (! BTB_valid[37]));
-  always @(*) begin
-    if(when_Predictor_l113_37) begin
-      if(when_Predictor_l119_37) begin
-        BTB_btb_is_miss_vec_37 = 1'b1;
-      end else begin
-        BTB_btb_is_miss_vec_37 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_miss_vec_37 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l113_38 = (train_valid && train_taken);
-  assign when_Predictor_l114_38 = ((BTB_source_pc_38 == train_pc) && BTB_valid[38]);
-  always @(*) begin
-    if(when_Predictor_l113_38) begin
-      if(when_Predictor_l114_38) begin
-        BTB_btb_is_hit_vec_38 = 1'b1;
-      end else begin
-        BTB_btb_is_hit_vec_38 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_hit_vec_38 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l119_38 = ((BTB_source_pc_38 != train_pc) || (! BTB_valid[38]));
-  always @(*) begin
-    if(when_Predictor_l113_38) begin
-      if(when_Predictor_l119_38) begin
-        BTB_btb_is_miss_vec_38 = 1'b1;
-      end else begin
-        BTB_btb_is_miss_vec_38 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_miss_vec_38 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l113_39 = (train_valid && train_taken);
-  assign when_Predictor_l114_39 = ((BTB_source_pc_39 == train_pc) && BTB_valid[39]);
-  always @(*) begin
-    if(when_Predictor_l113_39) begin
-      if(when_Predictor_l114_39) begin
-        BTB_btb_is_hit_vec_39 = 1'b1;
-      end else begin
-        BTB_btb_is_hit_vec_39 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_hit_vec_39 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l119_39 = ((BTB_source_pc_39 != train_pc) || (! BTB_valid[39]));
-  always @(*) begin
-    if(when_Predictor_l113_39) begin
-      if(when_Predictor_l119_39) begin
-        BTB_btb_is_miss_vec_39 = 1'b1;
-      end else begin
-        BTB_btb_is_miss_vec_39 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_miss_vec_39 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l113_40 = (train_valid && train_taken);
-  assign when_Predictor_l114_40 = ((BTB_source_pc_40 == train_pc) && BTB_valid[40]);
-  always @(*) begin
-    if(when_Predictor_l113_40) begin
-      if(when_Predictor_l114_40) begin
-        BTB_btb_is_hit_vec_40 = 1'b1;
-      end else begin
-        BTB_btb_is_hit_vec_40 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_hit_vec_40 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l119_40 = ((BTB_source_pc_40 != train_pc) || (! BTB_valid[40]));
-  always @(*) begin
-    if(when_Predictor_l113_40) begin
-      if(when_Predictor_l119_40) begin
-        BTB_btb_is_miss_vec_40 = 1'b1;
-      end else begin
-        BTB_btb_is_miss_vec_40 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_miss_vec_40 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l113_41 = (train_valid && train_taken);
-  assign when_Predictor_l114_41 = ((BTB_source_pc_41 == train_pc) && BTB_valid[41]);
-  always @(*) begin
-    if(when_Predictor_l113_41) begin
-      if(when_Predictor_l114_41) begin
-        BTB_btb_is_hit_vec_41 = 1'b1;
-      end else begin
-        BTB_btb_is_hit_vec_41 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_hit_vec_41 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l119_41 = ((BTB_source_pc_41 != train_pc) || (! BTB_valid[41]));
-  always @(*) begin
-    if(when_Predictor_l113_41) begin
-      if(when_Predictor_l119_41) begin
-        BTB_btb_is_miss_vec_41 = 1'b1;
-      end else begin
-        BTB_btb_is_miss_vec_41 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_miss_vec_41 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l113_42 = (train_valid && train_taken);
-  assign when_Predictor_l114_42 = ((BTB_source_pc_42 == train_pc) && BTB_valid[42]);
-  always @(*) begin
-    if(when_Predictor_l113_42) begin
-      if(when_Predictor_l114_42) begin
-        BTB_btb_is_hit_vec_42 = 1'b1;
-      end else begin
-        BTB_btb_is_hit_vec_42 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_hit_vec_42 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l119_42 = ((BTB_source_pc_42 != train_pc) || (! BTB_valid[42]));
-  always @(*) begin
-    if(when_Predictor_l113_42) begin
-      if(when_Predictor_l119_42) begin
-        BTB_btb_is_miss_vec_42 = 1'b1;
-      end else begin
-        BTB_btb_is_miss_vec_42 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_miss_vec_42 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l113_43 = (train_valid && train_taken);
-  assign when_Predictor_l114_43 = ((BTB_source_pc_43 == train_pc) && BTB_valid[43]);
-  always @(*) begin
-    if(when_Predictor_l113_43) begin
-      if(when_Predictor_l114_43) begin
-        BTB_btb_is_hit_vec_43 = 1'b1;
-      end else begin
-        BTB_btb_is_hit_vec_43 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_hit_vec_43 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l119_43 = ((BTB_source_pc_43 != train_pc) || (! BTB_valid[43]));
-  always @(*) begin
-    if(when_Predictor_l113_43) begin
-      if(when_Predictor_l119_43) begin
-        BTB_btb_is_miss_vec_43 = 1'b1;
-      end else begin
-        BTB_btb_is_miss_vec_43 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_miss_vec_43 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l113_44 = (train_valid && train_taken);
-  assign when_Predictor_l114_44 = ((BTB_source_pc_44 == train_pc) && BTB_valid[44]);
-  always @(*) begin
-    if(when_Predictor_l113_44) begin
-      if(when_Predictor_l114_44) begin
-        BTB_btb_is_hit_vec_44 = 1'b1;
-      end else begin
-        BTB_btb_is_hit_vec_44 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_hit_vec_44 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l119_44 = ((BTB_source_pc_44 != train_pc) || (! BTB_valid[44]));
-  always @(*) begin
-    if(when_Predictor_l113_44) begin
-      if(when_Predictor_l119_44) begin
-        BTB_btb_is_miss_vec_44 = 1'b1;
-      end else begin
-        BTB_btb_is_miss_vec_44 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_miss_vec_44 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l113_45 = (train_valid && train_taken);
-  assign when_Predictor_l114_45 = ((BTB_source_pc_45 == train_pc) && BTB_valid[45]);
-  always @(*) begin
-    if(when_Predictor_l113_45) begin
-      if(when_Predictor_l114_45) begin
-        BTB_btb_is_hit_vec_45 = 1'b1;
-      end else begin
-        BTB_btb_is_hit_vec_45 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_hit_vec_45 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l119_45 = ((BTB_source_pc_45 != train_pc) || (! BTB_valid[45]));
-  always @(*) begin
-    if(when_Predictor_l113_45) begin
-      if(when_Predictor_l119_45) begin
-        BTB_btb_is_miss_vec_45 = 1'b1;
-      end else begin
-        BTB_btb_is_miss_vec_45 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_miss_vec_45 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l113_46 = (train_valid && train_taken);
-  assign when_Predictor_l114_46 = ((BTB_source_pc_46 == train_pc) && BTB_valid[46]);
-  always @(*) begin
-    if(when_Predictor_l113_46) begin
-      if(when_Predictor_l114_46) begin
-        BTB_btb_is_hit_vec_46 = 1'b1;
-      end else begin
-        BTB_btb_is_hit_vec_46 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_hit_vec_46 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l119_46 = ((BTB_source_pc_46 != train_pc) || (! BTB_valid[46]));
-  always @(*) begin
-    if(when_Predictor_l113_46) begin
-      if(when_Predictor_l119_46) begin
-        BTB_btb_is_miss_vec_46 = 1'b1;
-      end else begin
-        BTB_btb_is_miss_vec_46 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_miss_vec_46 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l113_47 = (train_valid && train_taken);
-  assign when_Predictor_l114_47 = ((BTB_source_pc_47 == train_pc) && BTB_valid[47]);
-  always @(*) begin
-    if(when_Predictor_l113_47) begin
-      if(when_Predictor_l114_47) begin
-        BTB_btb_is_hit_vec_47 = 1'b1;
-      end else begin
-        BTB_btb_is_hit_vec_47 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_hit_vec_47 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l119_47 = ((BTB_source_pc_47 != train_pc) || (! BTB_valid[47]));
-  always @(*) begin
-    if(when_Predictor_l113_47) begin
-      if(when_Predictor_l119_47) begin
-        BTB_btb_is_miss_vec_47 = 1'b1;
-      end else begin
-        BTB_btb_is_miss_vec_47 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_miss_vec_47 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l113_48 = (train_valid && train_taken);
-  assign when_Predictor_l114_48 = ((BTB_source_pc_48 == train_pc) && BTB_valid[48]);
-  always @(*) begin
-    if(when_Predictor_l113_48) begin
-      if(when_Predictor_l114_48) begin
-        BTB_btb_is_hit_vec_48 = 1'b1;
-      end else begin
-        BTB_btb_is_hit_vec_48 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_hit_vec_48 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l119_48 = ((BTB_source_pc_48 != train_pc) || (! BTB_valid[48]));
-  always @(*) begin
-    if(when_Predictor_l113_48) begin
-      if(when_Predictor_l119_48) begin
-        BTB_btb_is_miss_vec_48 = 1'b1;
-      end else begin
-        BTB_btb_is_miss_vec_48 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_miss_vec_48 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l113_49 = (train_valid && train_taken);
-  assign when_Predictor_l114_49 = ((BTB_source_pc_49 == train_pc) && BTB_valid[49]);
-  always @(*) begin
-    if(when_Predictor_l113_49) begin
-      if(when_Predictor_l114_49) begin
-        BTB_btb_is_hit_vec_49 = 1'b1;
-      end else begin
-        BTB_btb_is_hit_vec_49 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_hit_vec_49 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l119_49 = ((BTB_source_pc_49 != train_pc) || (! BTB_valid[49]));
-  always @(*) begin
-    if(when_Predictor_l113_49) begin
-      if(when_Predictor_l119_49) begin
-        BTB_btb_is_miss_vec_49 = 1'b1;
-      end else begin
-        BTB_btb_is_miss_vec_49 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_miss_vec_49 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l113_50 = (train_valid && train_taken);
-  assign when_Predictor_l114_50 = ((BTB_source_pc_50 == train_pc) && BTB_valid[50]);
-  always @(*) begin
-    if(when_Predictor_l113_50) begin
-      if(when_Predictor_l114_50) begin
-        BTB_btb_is_hit_vec_50 = 1'b1;
-      end else begin
-        BTB_btb_is_hit_vec_50 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_hit_vec_50 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l119_50 = ((BTB_source_pc_50 != train_pc) || (! BTB_valid[50]));
-  always @(*) begin
-    if(when_Predictor_l113_50) begin
-      if(when_Predictor_l119_50) begin
-        BTB_btb_is_miss_vec_50 = 1'b1;
-      end else begin
-        BTB_btb_is_miss_vec_50 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_miss_vec_50 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l113_51 = (train_valid && train_taken);
-  assign when_Predictor_l114_51 = ((BTB_source_pc_51 == train_pc) && BTB_valid[51]);
-  always @(*) begin
-    if(when_Predictor_l113_51) begin
-      if(when_Predictor_l114_51) begin
-        BTB_btb_is_hit_vec_51 = 1'b1;
-      end else begin
-        BTB_btb_is_hit_vec_51 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_hit_vec_51 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l119_51 = ((BTB_source_pc_51 != train_pc) || (! BTB_valid[51]));
-  always @(*) begin
-    if(when_Predictor_l113_51) begin
-      if(when_Predictor_l119_51) begin
-        BTB_btb_is_miss_vec_51 = 1'b1;
-      end else begin
-        BTB_btb_is_miss_vec_51 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_miss_vec_51 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l113_52 = (train_valid && train_taken);
-  assign when_Predictor_l114_52 = ((BTB_source_pc_52 == train_pc) && BTB_valid[52]);
-  always @(*) begin
-    if(when_Predictor_l113_52) begin
-      if(when_Predictor_l114_52) begin
-        BTB_btb_is_hit_vec_52 = 1'b1;
-      end else begin
-        BTB_btb_is_hit_vec_52 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_hit_vec_52 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l119_52 = ((BTB_source_pc_52 != train_pc) || (! BTB_valid[52]));
-  always @(*) begin
-    if(when_Predictor_l113_52) begin
-      if(when_Predictor_l119_52) begin
-        BTB_btb_is_miss_vec_52 = 1'b1;
-      end else begin
-        BTB_btb_is_miss_vec_52 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_miss_vec_52 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l113_53 = (train_valid && train_taken);
-  assign when_Predictor_l114_53 = ((BTB_source_pc_53 == train_pc) && BTB_valid[53]);
-  always @(*) begin
-    if(when_Predictor_l113_53) begin
-      if(when_Predictor_l114_53) begin
-        BTB_btb_is_hit_vec_53 = 1'b1;
-      end else begin
-        BTB_btb_is_hit_vec_53 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_hit_vec_53 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l119_53 = ((BTB_source_pc_53 != train_pc) || (! BTB_valid[53]));
-  always @(*) begin
-    if(when_Predictor_l113_53) begin
-      if(when_Predictor_l119_53) begin
-        BTB_btb_is_miss_vec_53 = 1'b1;
-      end else begin
-        BTB_btb_is_miss_vec_53 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_miss_vec_53 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l113_54 = (train_valid && train_taken);
-  assign when_Predictor_l114_54 = ((BTB_source_pc_54 == train_pc) && BTB_valid[54]);
-  always @(*) begin
-    if(when_Predictor_l113_54) begin
-      if(when_Predictor_l114_54) begin
-        BTB_btb_is_hit_vec_54 = 1'b1;
-      end else begin
-        BTB_btb_is_hit_vec_54 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_hit_vec_54 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l119_54 = ((BTB_source_pc_54 != train_pc) || (! BTB_valid[54]));
-  always @(*) begin
-    if(when_Predictor_l113_54) begin
-      if(when_Predictor_l119_54) begin
-        BTB_btb_is_miss_vec_54 = 1'b1;
-      end else begin
-        BTB_btb_is_miss_vec_54 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_miss_vec_54 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l113_55 = (train_valid && train_taken);
-  assign when_Predictor_l114_55 = ((BTB_source_pc_55 == train_pc) && BTB_valid[55]);
-  always @(*) begin
-    if(when_Predictor_l113_55) begin
-      if(when_Predictor_l114_55) begin
-        BTB_btb_is_hit_vec_55 = 1'b1;
-      end else begin
-        BTB_btb_is_hit_vec_55 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_hit_vec_55 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l119_55 = ((BTB_source_pc_55 != train_pc) || (! BTB_valid[55]));
-  always @(*) begin
-    if(when_Predictor_l113_55) begin
-      if(when_Predictor_l119_55) begin
-        BTB_btb_is_miss_vec_55 = 1'b1;
-      end else begin
-        BTB_btb_is_miss_vec_55 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_miss_vec_55 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l113_56 = (train_valid && train_taken);
-  assign when_Predictor_l114_56 = ((BTB_source_pc_56 == train_pc) && BTB_valid[56]);
-  always @(*) begin
-    if(when_Predictor_l113_56) begin
-      if(when_Predictor_l114_56) begin
-        BTB_btb_is_hit_vec_56 = 1'b1;
-      end else begin
-        BTB_btb_is_hit_vec_56 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_hit_vec_56 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l119_56 = ((BTB_source_pc_56 != train_pc) || (! BTB_valid[56]));
-  always @(*) begin
-    if(when_Predictor_l113_56) begin
-      if(when_Predictor_l119_56) begin
-        BTB_btb_is_miss_vec_56 = 1'b1;
-      end else begin
-        BTB_btb_is_miss_vec_56 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_miss_vec_56 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l113_57 = (train_valid && train_taken);
-  assign when_Predictor_l114_57 = ((BTB_source_pc_57 == train_pc) && BTB_valid[57]);
-  always @(*) begin
-    if(when_Predictor_l113_57) begin
-      if(when_Predictor_l114_57) begin
-        BTB_btb_is_hit_vec_57 = 1'b1;
-      end else begin
-        BTB_btb_is_hit_vec_57 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_hit_vec_57 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l119_57 = ((BTB_source_pc_57 != train_pc) || (! BTB_valid[57]));
-  always @(*) begin
-    if(when_Predictor_l113_57) begin
-      if(when_Predictor_l119_57) begin
-        BTB_btb_is_miss_vec_57 = 1'b1;
-      end else begin
-        BTB_btb_is_miss_vec_57 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_miss_vec_57 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l113_58 = (train_valid && train_taken);
-  assign when_Predictor_l114_58 = ((BTB_source_pc_58 == train_pc) && BTB_valid[58]);
-  always @(*) begin
-    if(when_Predictor_l113_58) begin
-      if(when_Predictor_l114_58) begin
-        BTB_btb_is_hit_vec_58 = 1'b1;
-      end else begin
-        BTB_btb_is_hit_vec_58 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_hit_vec_58 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l119_58 = ((BTB_source_pc_58 != train_pc) || (! BTB_valid[58]));
-  always @(*) begin
-    if(when_Predictor_l113_58) begin
-      if(when_Predictor_l119_58) begin
-        BTB_btb_is_miss_vec_58 = 1'b1;
-      end else begin
-        BTB_btb_is_miss_vec_58 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_miss_vec_58 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l113_59 = (train_valid && train_taken);
-  assign when_Predictor_l114_59 = ((BTB_source_pc_59 == train_pc) && BTB_valid[59]);
-  always @(*) begin
-    if(when_Predictor_l113_59) begin
-      if(when_Predictor_l114_59) begin
-        BTB_btb_is_hit_vec_59 = 1'b1;
-      end else begin
-        BTB_btb_is_hit_vec_59 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_hit_vec_59 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l119_59 = ((BTB_source_pc_59 != train_pc) || (! BTB_valid[59]));
-  always @(*) begin
-    if(when_Predictor_l113_59) begin
-      if(when_Predictor_l119_59) begin
-        BTB_btb_is_miss_vec_59 = 1'b1;
-      end else begin
-        BTB_btb_is_miss_vec_59 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_miss_vec_59 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l113_60 = (train_valid && train_taken);
-  assign when_Predictor_l114_60 = ((BTB_source_pc_60 == train_pc) && BTB_valid[60]);
-  always @(*) begin
-    if(when_Predictor_l113_60) begin
-      if(when_Predictor_l114_60) begin
-        BTB_btb_is_hit_vec_60 = 1'b1;
-      end else begin
-        BTB_btb_is_hit_vec_60 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_hit_vec_60 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l119_60 = ((BTB_source_pc_60 != train_pc) || (! BTB_valid[60]));
-  always @(*) begin
-    if(when_Predictor_l113_60) begin
-      if(when_Predictor_l119_60) begin
-        BTB_btb_is_miss_vec_60 = 1'b1;
-      end else begin
-        BTB_btb_is_miss_vec_60 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_miss_vec_60 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l113_61 = (train_valid && train_taken);
-  assign when_Predictor_l114_61 = ((BTB_source_pc_61 == train_pc) && BTB_valid[61]);
-  always @(*) begin
-    if(when_Predictor_l113_61) begin
-      if(when_Predictor_l114_61) begin
-        BTB_btb_is_hit_vec_61 = 1'b1;
-      end else begin
-        BTB_btb_is_hit_vec_61 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_hit_vec_61 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l119_61 = ((BTB_source_pc_61 != train_pc) || (! BTB_valid[61]));
-  always @(*) begin
-    if(when_Predictor_l113_61) begin
-      if(when_Predictor_l119_61) begin
-        BTB_btb_is_miss_vec_61 = 1'b1;
-      end else begin
-        BTB_btb_is_miss_vec_61 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_miss_vec_61 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l113_62 = (train_valid && train_taken);
-  assign when_Predictor_l114_62 = ((BTB_source_pc_62 == train_pc) && BTB_valid[62]);
-  always @(*) begin
-    if(when_Predictor_l113_62) begin
-      if(when_Predictor_l114_62) begin
-        BTB_btb_is_hit_vec_62 = 1'b1;
-      end else begin
-        BTB_btb_is_hit_vec_62 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_hit_vec_62 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l119_62 = ((BTB_source_pc_62 != train_pc) || (! BTB_valid[62]));
-  always @(*) begin
-    if(when_Predictor_l113_62) begin
-      if(when_Predictor_l119_62) begin
-        BTB_btb_is_miss_vec_62 = 1'b1;
-      end else begin
-        BTB_btb_is_miss_vec_62 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_miss_vec_62 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l113_63 = (train_valid && train_taken);
-  assign when_Predictor_l114_63 = ((BTB_source_pc_63 == train_pc) && BTB_valid[63]);
-  always @(*) begin
-    if(when_Predictor_l113_63) begin
-      if(when_Predictor_l114_63) begin
-        BTB_btb_is_hit_vec_63 = 1'b1;
-      end else begin
-        BTB_btb_is_hit_vec_63 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_hit_vec_63 = 1'b0;
-    end
-  end
-
-  assign when_Predictor_l119_63 = ((BTB_source_pc_63 != train_pc) || (! BTB_valid[63]));
-  always @(*) begin
-    if(when_Predictor_l113_63) begin
-      if(when_Predictor_l119_63) begin
-        BTB_btb_is_miss_vec_63 = 1'b1;
-      end else begin
-        BTB_btb_is_miss_vec_63 = 1'b0;
-      end
-    end else begin
-      BTB_btb_is_miss_vec_63 = 1'b0;
-    end
-  end
-
-  assign _zz_BTB_btb_write_index = ((((((((((((((((_zz__zz_BTB_btb_write_index || BTB_btb_is_hit_vec_33) || BTB_btb_is_hit_vec_35) || BTB_btb_is_hit_vec_37) || BTB_btb_is_hit_vec_39) || BTB_btb_is_hit_vec_41) || BTB_btb_is_hit_vec_43) || BTB_btb_is_hit_vec_45) || BTB_btb_is_hit_vec_47) || BTB_btb_is_hit_vec_49) || BTB_btb_is_hit_vec_51) || BTB_btb_is_hit_vec_53) || BTB_btb_is_hit_vec_55) || BTB_btb_is_hit_vec_57) || BTB_btb_is_hit_vec_59) || BTB_btb_is_hit_vec_61) || BTB_btb_is_hit_vec_63);
-  assign _zz_BTB_btb_write_index_1 = (((((((((((((((((_zz__zz_BTB_btb_write_index_1 || BTB_btb_is_hit_vec_31) || BTB_btb_is_hit_vec_34) || BTB_btb_is_hit_vec_35) || BTB_btb_is_hit_vec_38) || BTB_btb_is_hit_vec_39) || BTB_btb_is_hit_vec_42) || BTB_btb_is_hit_vec_43) || BTB_btb_is_hit_vec_46) || BTB_btb_is_hit_vec_47) || BTB_btb_is_hit_vec_50) || BTB_btb_is_hit_vec_51) || BTB_btb_is_hit_vec_54) || BTB_btb_is_hit_vec_55) || BTB_btb_is_hit_vec_58) || BTB_btb_is_hit_vec_59) || BTB_btb_is_hit_vec_62) || BTB_btb_is_hit_vec_63);
-  assign _zz_BTB_btb_write_index_2 = ((((((((((((((((_zz__zz_BTB_btb_write_index_2 || BTB_btb_is_hit_vec_36) || BTB_btb_is_hit_vec_37) || BTB_btb_is_hit_vec_38) || BTB_btb_is_hit_vec_39) || BTB_btb_is_hit_vec_44) || BTB_btb_is_hit_vec_45) || BTB_btb_is_hit_vec_46) || BTB_btb_is_hit_vec_47) || BTB_btb_is_hit_vec_52) || BTB_btb_is_hit_vec_53) || BTB_btb_is_hit_vec_54) || BTB_btb_is_hit_vec_55) || BTB_btb_is_hit_vec_60) || BTB_btb_is_hit_vec_61) || BTB_btb_is_hit_vec_62) || BTB_btb_is_hit_vec_63);
-  assign _zz_BTB_btb_write_index_3 = ((((((((((((((((_zz__zz_BTB_btb_write_index_3 || BTB_btb_is_hit_vec_40) || BTB_btb_is_hit_vec_41) || BTB_btb_is_hit_vec_42) || BTB_btb_is_hit_vec_43) || BTB_btb_is_hit_vec_44) || BTB_btb_is_hit_vec_45) || BTB_btb_is_hit_vec_46) || BTB_btb_is_hit_vec_47) || BTB_btb_is_hit_vec_56) || BTB_btb_is_hit_vec_57) || BTB_btb_is_hit_vec_58) || BTB_btb_is_hit_vec_59) || BTB_btb_is_hit_vec_60) || BTB_btb_is_hit_vec_61) || BTB_btb_is_hit_vec_62) || BTB_btb_is_hit_vec_63);
-  assign _zz_BTB_btb_write_index_4 = ((((((((((((((((_zz__zz_BTB_btb_write_index_4 || BTB_btb_is_hit_vec_48) || BTB_btb_is_hit_vec_49) || BTB_btb_is_hit_vec_50) || BTB_btb_is_hit_vec_51) || BTB_btb_is_hit_vec_52) || BTB_btb_is_hit_vec_53) || BTB_btb_is_hit_vec_54) || BTB_btb_is_hit_vec_55) || BTB_btb_is_hit_vec_56) || BTB_btb_is_hit_vec_57) || BTB_btb_is_hit_vec_58) || BTB_btb_is_hit_vec_59) || BTB_btb_is_hit_vec_60) || BTB_btb_is_hit_vec_61) || BTB_btb_is_hit_vec_62) || BTB_btb_is_hit_vec_63);
-  assign _zz_BTB_btb_write_index_5 = (((((((((((((((((_zz__zz_BTB_btb_write_index_5 || BTB_btb_is_hit_vec_47) || BTB_btb_is_hit_vec_48) || BTB_btb_is_hit_vec_49) || BTB_btb_is_hit_vec_50) || BTB_btb_is_hit_vec_51) || BTB_btb_is_hit_vec_52) || BTB_btb_is_hit_vec_53) || BTB_btb_is_hit_vec_54) || BTB_btb_is_hit_vec_55) || BTB_btb_is_hit_vec_56) || BTB_btb_is_hit_vec_57) || BTB_btb_is_hit_vec_58) || BTB_btb_is_hit_vec_59) || BTB_btb_is_hit_vec_60) || BTB_btb_is_hit_vec_61) || BTB_btb_is_hit_vec_62) || BTB_btb_is_hit_vec_63);
-  assign BTB_btb_write_index = {_zz_BTB_btb_write_index_5,{_zz_BTB_btb_write_index_4,{_zz_BTB_btb_write_index_3,{_zz_BTB_btb_write_index_2,{_zz_BTB_btb_write_index_1,_zz_BTB_btb_write_index}}}}};
-  assign _zz_130 = ({63'd0,1'b1} <<< BTB_btb_write_index);
-  assign _zz_131 = ({63'd0,1'b1} <<< BTB_btb_write_index);
-  assign _zz_132 = ({63'd0,1'b1} <<< BTB_btb_alloc_index_value);
-  assign _zz_133 = ({63'd0,1'b1} <<< BTB_btb_alloc_index_value);
+  assign _zz_BTB_btb_write_index = (((((((BTB_btb_is_hit_vec_1 || BTB_btb_is_hit_vec_3) || BTB_btb_is_hit_vec_5) || BTB_btb_is_hit_vec_7) || BTB_btb_is_hit_vec_9) || BTB_btb_is_hit_vec_11) || BTB_btb_is_hit_vec_13) || BTB_btb_is_hit_vec_15);
+  assign _zz_BTB_btb_write_index_1 = (((((((BTB_btb_is_hit_vec_2 || BTB_btb_is_hit_vec_3) || BTB_btb_is_hit_vec_6) || BTB_btb_is_hit_vec_7) || BTB_btb_is_hit_vec_10) || BTB_btb_is_hit_vec_11) || BTB_btb_is_hit_vec_14) || BTB_btb_is_hit_vec_15);
+  assign _zz_BTB_btb_write_index_2 = (((((((BTB_btb_is_hit_vec_4 || BTB_btb_is_hit_vec_5) || BTB_btb_is_hit_vec_6) || BTB_btb_is_hit_vec_7) || BTB_btb_is_hit_vec_12) || BTB_btb_is_hit_vec_13) || BTB_btb_is_hit_vec_14) || BTB_btb_is_hit_vec_15);
+  assign _zz_BTB_btb_write_index_3 = (((((((BTB_btb_is_hit_vec_8 || BTB_btb_is_hit_vec_9) || BTB_btb_is_hit_vec_10) || BTB_btb_is_hit_vec_11) || BTB_btb_is_hit_vec_12) || BTB_btb_is_hit_vec_13) || BTB_btb_is_hit_vec_14) || BTB_btb_is_hit_vec_15);
+  assign BTB_btb_write_index = {_zz_BTB_btb_write_index_3,{_zz_BTB_btb_write_index_2,{_zz_BTB_btb_write_index_1,_zz_BTB_btb_write_index}}};
+  assign _zz_34 = ({15'd0,1'b1} <<< BTB_btb_write_index);
+  assign _zz_35 = ({15'd0,1'b1} <<< BTB_btb_write_index);
+  assign _zz_36 = ({15'd0,1'b1} <<< BTB_btb_alloc_index_value);
+  assign _zz_37 = ({15'd0,1'b1} <<< BTB_btb_alloc_index_value);
   assign RAS_ras_call_matched = (BTB_is_matched && BTB_is_call);
   assign RAS_ras_ret_matched = (BTB_is_matched && BTB_is_ret);
   assign when_Predictor_l169 = (train_valid && train_is_call);
   always @(*) begin
     if(when_Predictor_l169) begin
-      RAS_ras_next_index_proven = (RAS_ras_curr_index_proven + 6'h01);
+      RAS_ras_next_index_proven = (RAS_ras_curr_index_proven + 5'h01);
     end else begin
       if(when_Predictor_l172) begin
-        RAS_ras_next_index_proven = (RAS_ras_curr_index_proven - 6'h01);
+        RAS_ras_next_index_proven = (RAS_ras_curr_index_proven - 5'h01);
       end else begin
         RAS_ras_next_index_proven = RAS_ras_curr_index_proven;
       end
@@ -25223,16 +22151,16 @@ module gshare_predictor (
   assign when_Predictor_l180 = ((train_mispredicted && train_valid) && train_is_call);
   always @(*) begin
     if(when_Predictor_l180) begin
-      RAS_ras_next_index = (RAS_ras_curr_index_proven + 6'h01);
+      RAS_ras_next_index = (RAS_ras_curr_index_proven + 5'h01);
     end else begin
       if(when_Predictor_l183) begin
-        RAS_ras_next_index = (RAS_ras_curr_index_proven - 6'h01);
+        RAS_ras_next_index = (RAS_ras_curr_index_proven - 5'h01);
       end else begin
         if(RAS_ras_call_matched) begin
-          RAS_ras_next_index = (RAS_ras_curr_index + 6'h01);
+          RAS_ras_next_index = (RAS_ras_curr_index + 5'h01);
         end else begin
           if(RAS_ras_ret_matched) begin
-            RAS_ras_next_index = (RAS_ras_curr_index - 6'h01);
+            RAS_ras_next_index = (RAS_ras_curr_index - 5'h01);
           end else begin
             RAS_ras_next_index = RAS_ras_curr_index;
           end
@@ -25243,71 +22171,39 @@ module gshare_predictor (
 
   assign when_Predictor_l183 = ((train_mispredicted && train_valid) && train_is_ret);
   assign when_Predictor_l197 = ((train_mispredicted && train_valid) && train_is_call);
-  assign _zz_134 = ({63'd0,1'b1} <<< RAS_ras_next_index);
-  assign _zz_135 = _zz_134[0];
-  assign _zz_136 = _zz_134[1];
-  assign _zz_137 = _zz_134[2];
-  assign _zz_138 = _zz_134[3];
-  assign _zz_139 = _zz_134[4];
-  assign _zz_140 = _zz_134[5];
-  assign _zz_141 = _zz_134[6];
-  assign _zz_142 = _zz_134[7];
-  assign _zz_143 = _zz_134[8];
-  assign _zz_144 = _zz_134[9];
-  assign _zz_145 = _zz_134[10];
-  assign _zz_146 = _zz_134[11];
-  assign _zz_147 = _zz_134[12];
-  assign _zz_148 = _zz_134[13];
-  assign _zz_149 = _zz_134[14];
-  assign _zz_150 = _zz_134[15];
-  assign _zz_151 = _zz_134[16];
-  assign _zz_152 = _zz_134[17];
-  assign _zz_153 = _zz_134[18];
-  assign _zz_154 = _zz_134[19];
-  assign _zz_155 = _zz_134[20];
-  assign _zz_156 = _zz_134[21];
-  assign _zz_157 = _zz_134[22];
-  assign _zz_158 = _zz_134[23];
-  assign _zz_159 = _zz_134[24];
-  assign _zz_160 = _zz_134[25];
-  assign _zz_161 = _zz_134[26];
-  assign _zz_162 = _zz_134[27];
-  assign _zz_163 = _zz_134[28];
-  assign _zz_164 = _zz_134[29];
-  assign _zz_165 = _zz_134[30];
-  assign _zz_166 = _zz_134[31];
-  assign _zz_167 = _zz_134[32];
-  assign _zz_168 = _zz_134[33];
-  assign _zz_169 = _zz_134[34];
-  assign _zz_170 = _zz_134[35];
-  assign _zz_171 = _zz_134[36];
-  assign _zz_172 = _zz_134[37];
-  assign _zz_173 = _zz_134[38];
-  assign _zz_174 = _zz_134[39];
-  assign _zz_175 = _zz_134[40];
-  assign _zz_176 = _zz_134[41];
-  assign _zz_177 = _zz_134[42];
-  assign _zz_178 = _zz_134[43];
-  assign _zz_179 = _zz_134[44];
-  assign _zz_180 = _zz_134[45];
-  assign _zz_181 = _zz_134[46];
-  assign _zz_182 = _zz_134[47];
-  assign _zz_183 = _zz_134[48];
-  assign _zz_184 = _zz_134[49];
-  assign _zz_185 = _zz_134[50];
-  assign _zz_186 = _zz_134[51];
-  assign _zz_187 = _zz_134[52];
-  assign _zz_188 = _zz_134[53];
-  assign _zz_189 = _zz_134[54];
-  assign _zz_190 = _zz_134[55];
-  assign _zz_191 = _zz_134[56];
-  assign _zz_192 = _zz_134[57];
-  assign _zz_193 = _zz_134[58];
-  assign _zz_194 = _zz_134[59];
-  assign _zz_195 = _zz_134[60];
-  assign _zz_196 = _zz_134[61];
-  assign _zz_197 = _zz_134[62];
-  assign _zz_198 = _zz_134[63];
+  assign _zz_38 = ({31'd0,1'b1} <<< RAS_ras_next_index);
+  assign _zz_39 = _zz_38[0];
+  assign _zz_40 = _zz_38[1];
+  assign _zz_41 = _zz_38[2];
+  assign _zz_42 = _zz_38[3];
+  assign _zz_43 = _zz_38[4];
+  assign _zz_44 = _zz_38[5];
+  assign _zz_45 = _zz_38[6];
+  assign _zz_46 = _zz_38[7];
+  assign _zz_47 = _zz_38[8];
+  assign _zz_48 = _zz_38[9];
+  assign _zz_49 = _zz_38[10];
+  assign _zz_50 = _zz_38[11];
+  assign _zz_51 = _zz_38[12];
+  assign _zz_52 = _zz_38[13];
+  assign _zz_53 = _zz_38[14];
+  assign _zz_54 = _zz_38[15];
+  assign _zz_55 = _zz_38[16];
+  assign _zz_56 = _zz_38[17];
+  assign _zz_57 = _zz_38[18];
+  assign _zz_58 = _zz_38[19];
+  assign _zz_59 = _zz_38[20];
+  assign _zz_60 = _zz_38[21];
+  assign _zz_61 = _zz_38[22];
+  assign _zz_62 = _zz_38[23];
+  assign _zz_63 = _zz_38[24];
+  assign _zz_64 = _zz_38[25];
+  assign _zz_65 = _zz_38[26];
+  assign _zz_66 = _zz_38[27];
+  assign _zz_67 = _zz_38[28];
+  assign _zz_68 = _zz_38[29];
+  assign _zz_69 = _zz_38[30];
+  assign _zz_70 = _zz_38[31];
   assign _zz_RAS_ras_regfile_0 = (train_pc + 64'h0000000000000004);
   assign _zz_RAS_ras_regfile_0_1 = (predict_pc + 64'h0000000000000004);
   assign when_Predictor_l205 = ((train_mispredicted && train_valid) && train_is_ret);
@@ -25317,7 +22213,7 @@ module gshare_predictor (
   assign predict_pc_next = (RAS_ras_ret_matched ? RAS_ras_predict_pc : ((BTB_is_matched && ((GSHARE_pht_predict_taken || BTB_is_jmp) || BTB_is_call)) ? BTB_target_pc_read : _zz_predict_pc_next));
   always @(posedge io_axiClk or posedge resetCtrl_axiReset) begin
     if(resetCtrl_axiReset) begin
-      GSHARE_global_branch_history <= 7'h0;
+      GSHARE_global_branch_history <= 5'h0;
       GSHARE_PHT_0 <= 2'b01;
       GSHARE_PHT_1 <= 2'b01;
       GSHARE_PHT_2 <= 2'b01;
@@ -25350,103 +22246,7 @@ module gshare_predictor (
       GSHARE_PHT_29 <= 2'b01;
       GSHARE_PHT_30 <= 2'b01;
       GSHARE_PHT_31 <= 2'b01;
-      GSHARE_PHT_32 <= 2'b01;
-      GSHARE_PHT_33 <= 2'b01;
-      GSHARE_PHT_34 <= 2'b01;
-      GSHARE_PHT_35 <= 2'b01;
-      GSHARE_PHT_36 <= 2'b01;
-      GSHARE_PHT_37 <= 2'b01;
-      GSHARE_PHT_38 <= 2'b01;
-      GSHARE_PHT_39 <= 2'b01;
-      GSHARE_PHT_40 <= 2'b01;
-      GSHARE_PHT_41 <= 2'b01;
-      GSHARE_PHT_42 <= 2'b01;
-      GSHARE_PHT_43 <= 2'b01;
-      GSHARE_PHT_44 <= 2'b01;
-      GSHARE_PHT_45 <= 2'b01;
-      GSHARE_PHT_46 <= 2'b01;
-      GSHARE_PHT_47 <= 2'b01;
-      GSHARE_PHT_48 <= 2'b01;
-      GSHARE_PHT_49 <= 2'b01;
-      GSHARE_PHT_50 <= 2'b01;
-      GSHARE_PHT_51 <= 2'b01;
-      GSHARE_PHT_52 <= 2'b01;
-      GSHARE_PHT_53 <= 2'b01;
-      GSHARE_PHT_54 <= 2'b01;
-      GSHARE_PHT_55 <= 2'b01;
-      GSHARE_PHT_56 <= 2'b01;
-      GSHARE_PHT_57 <= 2'b01;
-      GSHARE_PHT_58 <= 2'b01;
-      GSHARE_PHT_59 <= 2'b01;
-      GSHARE_PHT_60 <= 2'b01;
-      GSHARE_PHT_61 <= 2'b01;
-      GSHARE_PHT_62 <= 2'b01;
-      GSHARE_PHT_63 <= 2'b01;
-      GSHARE_PHT_64 <= 2'b01;
-      GSHARE_PHT_65 <= 2'b01;
-      GSHARE_PHT_66 <= 2'b01;
-      GSHARE_PHT_67 <= 2'b01;
-      GSHARE_PHT_68 <= 2'b01;
-      GSHARE_PHT_69 <= 2'b01;
-      GSHARE_PHT_70 <= 2'b01;
-      GSHARE_PHT_71 <= 2'b01;
-      GSHARE_PHT_72 <= 2'b01;
-      GSHARE_PHT_73 <= 2'b01;
-      GSHARE_PHT_74 <= 2'b01;
-      GSHARE_PHT_75 <= 2'b01;
-      GSHARE_PHT_76 <= 2'b01;
-      GSHARE_PHT_77 <= 2'b01;
-      GSHARE_PHT_78 <= 2'b01;
-      GSHARE_PHT_79 <= 2'b01;
-      GSHARE_PHT_80 <= 2'b01;
-      GSHARE_PHT_81 <= 2'b01;
-      GSHARE_PHT_82 <= 2'b01;
-      GSHARE_PHT_83 <= 2'b01;
-      GSHARE_PHT_84 <= 2'b01;
-      GSHARE_PHT_85 <= 2'b01;
-      GSHARE_PHT_86 <= 2'b01;
-      GSHARE_PHT_87 <= 2'b01;
-      GSHARE_PHT_88 <= 2'b01;
-      GSHARE_PHT_89 <= 2'b01;
-      GSHARE_PHT_90 <= 2'b01;
-      GSHARE_PHT_91 <= 2'b01;
-      GSHARE_PHT_92 <= 2'b01;
-      GSHARE_PHT_93 <= 2'b01;
-      GSHARE_PHT_94 <= 2'b01;
-      GSHARE_PHT_95 <= 2'b01;
-      GSHARE_PHT_96 <= 2'b01;
-      GSHARE_PHT_97 <= 2'b01;
-      GSHARE_PHT_98 <= 2'b01;
-      GSHARE_PHT_99 <= 2'b01;
-      GSHARE_PHT_100 <= 2'b01;
-      GSHARE_PHT_101 <= 2'b01;
-      GSHARE_PHT_102 <= 2'b01;
-      GSHARE_PHT_103 <= 2'b01;
-      GSHARE_PHT_104 <= 2'b01;
-      GSHARE_PHT_105 <= 2'b01;
-      GSHARE_PHT_106 <= 2'b01;
-      GSHARE_PHT_107 <= 2'b01;
-      GSHARE_PHT_108 <= 2'b01;
-      GSHARE_PHT_109 <= 2'b01;
-      GSHARE_PHT_110 <= 2'b01;
-      GSHARE_PHT_111 <= 2'b01;
-      GSHARE_PHT_112 <= 2'b01;
-      GSHARE_PHT_113 <= 2'b01;
-      GSHARE_PHT_114 <= 2'b01;
-      GSHARE_PHT_115 <= 2'b01;
-      GSHARE_PHT_116 <= 2'b01;
-      GSHARE_PHT_117 <= 2'b01;
-      GSHARE_PHT_118 <= 2'b01;
-      GSHARE_PHT_119 <= 2'b01;
-      GSHARE_PHT_120 <= 2'b01;
-      GSHARE_PHT_121 <= 2'b01;
-      GSHARE_PHT_122 <= 2'b01;
-      GSHARE_PHT_123 <= 2'b01;
-      GSHARE_PHT_124 <= 2'b01;
-      GSHARE_PHT_125 <= 2'b01;
-      GSHARE_PHT_126 <= 2'b01;
-      GSHARE_PHT_127 <= 2'b01;
-      BTB_valid <= 64'h0;
+      BTB_valid <= 16'h0;
       BTB_source_pc_0 <= 64'h0;
       BTB_source_pc_1 <= 64'h0;
       BTB_source_pc_2 <= 64'h0;
@@ -25463,57 +22263,9 @@ module gshare_predictor (
       BTB_source_pc_13 <= 64'h0;
       BTB_source_pc_14 <= 64'h0;
       BTB_source_pc_15 <= 64'h0;
-      BTB_source_pc_16 <= 64'h0;
-      BTB_source_pc_17 <= 64'h0;
-      BTB_source_pc_18 <= 64'h0;
-      BTB_source_pc_19 <= 64'h0;
-      BTB_source_pc_20 <= 64'h0;
-      BTB_source_pc_21 <= 64'h0;
-      BTB_source_pc_22 <= 64'h0;
-      BTB_source_pc_23 <= 64'h0;
-      BTB_source_pc_24 <= 64'h0;
-      BTB_source_pc_25 <= 64'h0;
-      BTB_source_pc_26 <= 64'h0;
-      BTB_source_pc_27 <= 64'h0;
-      BTB_source_pc_28 <= 64'h0;
-      BTB_source_pc_29 <= 64'h0;
-      BTB_source_pc_30 <= 64'h0;
-      BTB_source_pc_31 <= 64'h0;
-      BTB_source_pc_32 <= 64'h0;
-      BTB_source_pc_33 <= 64'h0;
-      BTB_source_pc_34 <= 64'h0;
-      BTB_source_pc_35 <= 64'h0;
-      BTB_source_pc_36 <= 64'h0;
-      BTB_source_pc_37 <= 64'h0;
-      BTB_source_pc_38 <= 64'h0;
-      BTB_source_pc_39 <= 64'h0;
-      BTB_source_pc_40 <= 64'h0;
-      BTB_source_pc_41 <= 64'h0;
-      BTB_source_pc_42 <= 64'h0;
-      BTB_source_pc_43 <= 64'h0;
-      BTB_source_pc_44 <= 64'h0;
-      BTB_source_pc_45 <= 64'h0;
-      BTB_source_pc_46 <= 64'h0;
-      BTB_source_pc_47 <= 64'h0;
-      BTB_source_pc_48 <= 64'h0;
-      BTB_source_pc_49 <= 64'h0;
-      BTB_source_pc_50 <= 64'h0;
-      BTB_source_pc_51 <= 64'h0;
-      BTB_source_pc_52 <= 64'h0;
-      BTB_source_pc_53 <= 64'h0;
-      BTB_source_pc_54 <= 64'h0;
-      BTB_source_pc_55 <= 64'h0;
-      BTB_source_pc_56 <= 64'h0;
-      BTB_source_pc_57 <= 64'h0;
-      BTB_source_pc_58 <= 64'h0;
-      BTB_source_pc_59 <= 64'h0;
-      BTB_source_pc_60 <= 64'h0;
-      BTB_source_pc_61 <= 64'h0;
-      BTB_source_pc_62 <= 64'h0;
-      BTB_source_pc_63 <= 64'h0;
-      BTB_call <= 64'h0;
-      BTB_ret <= 64'h0;
-      BTB_jmp <= 64'h0;
+      BTB_call <= 16'h0;
+      BTB_ret <= 16'h0;
+      BTB_jmp <= 16'h0;
       BTB_target_pc_0 <= 64'h0;
       BTB_target_pc_1 <= 64'h0;
       BTB_target_pc_2 <= 64'h0;
@@ -25530,57 +22282,9 @@ module gshare_predictor (
       BTB_target_pc_13 <= 64'h0;
       BTB_target_pc_14 <= 64'h0;
       BTB_target_pc_15 <= 64'h0;
-      BTB_target_pc_16 <= 64'h0;
-      BTB_target_pc_17 <= 64'h0;
-      BTB_target_pc_18 <= 64'h0;
-      BTB_target_pc_19 <= 64'h0;
-      BTB_target_pc_20 <= 64'h0;
-      BTB_target_pc_21 <= 64'h0;
-      BTB_target_pc_22 <= 64'h0;
-      BTB_target_pc_23 <= 64'h0;
-      BTB_target_pc_24 <= 64'h0;
-      BTB_target_pc_25 <= 64'h0;
-      BTB_target_pc_26 <= 64'h0;
-      BTB_target_pc_27 <= 64'h0;
-      BTB_target_pc_28 <= 64'h0;
-      BTB_target_pc_29 <= 64'h0;
-      BTB_target_pc_30 <= 64'h0;
-      BTB_target_pc_31 <= 64'h0;
-      BTB_target_pc_32 <= 64'h0;
-      BTB_target_pc_33 <= 64'h0;
-      BTB_target_pc_34 <= 64'h0;
-      BTB_target_pc_35 <= 64'h0;
-      BTB_target_pc_36 <= 64'h0;
-      BTB_target_pc_37 <= 64'h0;
-      BTB_target_pc_38 <= 64'h0;
-      BTB_target_pc_39 <= 64'h0;
-      BTB_target_pc_40 <= 64'h0;
-      BTB_target_pc_41 <= 64'h0;
-      BTB_target_pc_42 <= 64'h0;
-      BTB_target_pc_43 <= 64'h0;
-      BTB_target_pc_44 <= 64'h0;
-      BTB_target_pc_45 <= 64'h0;
-      BTB_target_pc_46 <= 64'h0;
-      BTB_target_pc_47 <= 64'h0;
-      BTB_target_pc_48 <= 64'h0;
-      BTB_target_pc_49 <= 64'h0;
-      BTB_target_pc_50 <= 64'h0;
-      BTB_target_pc_51 <= 64'h0;
-      BTB_target_pc_52 <= 64'h0;
-      BTB_target_pc_53 <= 64'h0;
-      BTB_target_pc_54 <= 64'h0;
-      BTB_target_pc_55 <= 64'h0;
-      BTB_target_pc_56 <= 64'h0;
-      BTB_target_pc_57 <= 64'h0;
-      BTB_target_pc_58 <= 64'h0;
-      BTB_target_pc_59 <= 64'h0;
-      BTB_target_pc_60 <= 64'h0;
-      BTB_target_pc_61 <= 64'h0;
-      BTB_target_pc_62 <= 64'h0;
-      BTB_target_pc_63 <= 64'h0;
-      BTB_btb_alloc_index_value <= 6'h0;
-      RAS_ras_curr_index <= 6'h0;
-      RAS_ras_curr_index_proven <= 6'h0;
+      BTB_btb_alloc_index_value <= 4'b0000;
+      RAS_ras_curr_index <= 5'h0;
+      RAS_ras_curr_index_proven <= 5'h0;
     end else begin
       if(train_valid) begin
         case(switch_Predictor_l38)
@@ -25682,294 +22386,6 @@ module gshare_predictor (
               if(_zz_33) begin
                 GSHARE_PHT_31 <= 2'b01;
               end
-              if(_zz_34) begin
-                GSHARE_PHT_32 <= 2'b01;
-              end
-              if(_zz_35) begin
-                GSHARE_PHT_33 <= 2'b01;
-              end
-              if(_zz_36) begin
-                GSHARE_PHT_34 <= 2'b01;
-              end
-              if(_zz_37) begin
-                GSHARE_PHT_35 <= 2'b01;
-              end
-              if(_zz_38) begin
-                GSHARE_PHT_36 <= 2'b01;
-              end
-              if(_zz_39) begin
-                GSHARE_PHT_37 <= 2'b01;
-              end
-              if(_zz_40) begin
-                GSHARE_PHT_38 <= 2'b01;
-              end
-              if(_zz_41) begin
-                GSHARE_PHT_39 <= 2'b01;
-              end
-              if(_zz_42) begin
-                GSHARE_PHT_40 <= 2'b01;
-              end
-              if(_zz_43) begin
-                GSHARE_PHT_41 <= 2'b01;
-              end
-              if(_zz_44) begin
-                GSHARE_PHT_42 <= 2'b01;
-              end
-              if(_zz_45) begin
-                GSHARE_PHT_43 <= 2'b01;
-              end
-              if(_zz_46) begin
-                GSHARE_PHT_44 <= 2'b01;
-              end
-              if(_zz_47) begin
-                GSHARE_PHT_45 <= 2'b01;
-              end
-              if(_zz_48) begin
-                GSHARE_PHT_46 <= 2'b01;
-              end
-              if(_zz_49) begin
-                GSHARE_PHT_47 <= 2'b01;
-              end
-              if(_zz_50) begin
-                GSHARE_PHT_48 <= 2'b01;
-              end
-              if(_zz_51) begin
-                GSHARE_PHT_49 <= 2'b01;
-              end
-              if(_zz_52) begin
-                GSHARE_PHT_50 <= 2'b01;
-              end
-              if(_zz_53) begin
-                GSHARE_PHT_51 <= 2'b01;
-              end
-              if(_zz_54) begin
-                GSHARE_PHT_52 <= 2'b01;
-              end
-              if(_zz_55) begin
-                GSHARE_PHT_53 <= 2'b01;
-              end
-              if(_zz_56) begin
-                GSHARE_PHT_54 <= 2'b01;
-              end
-              if(_zz_57) begin
-                GSHARE_PHT_55 <= 2'b01;
-              end
-              if(_zz_58) begin
-                GSHARE_PHT_56 <= 2'b01;
-              end
-              if(_zz_59) begin
-                GSHARE_PHT_57 <= 2'b01;
-              end
-              if(_zz_60) begin
-                GSHARE_PHT_58 <= 2'b01;
-              end
-              if(_zz_61) begin
-                GSHARE_PHT_59 <= 2'b01;
-              end
-              if(_zz_62) begin
-                GSHARE_PHT_60 <= 2'b01;
-              end
-              if(_zz_63) begin
-                GSHARE_PHT_61 <= 2'b01;
-              end
-              if(_zz_64) begin
-                GSHARE_PHT_62 <= 2'b01;
-              end
-              if(_zz_65) begin
-                GSHARE_PHT_63 <= 2'b01;
-              end
-              if(_zz_66) begin
-                GSHARE_PHT_64 <= 2'b01;
-              end
-              if(_zz_67) begin
-                GSHARE_PHT_65 <= 2'b01;
-              end
-              if(_zz_68) begin
-                GSHARE_PHT_66 <= 2'b01;
-              end
-              if(_zz_69) begin
-                GSHARE_PHT_67 <= 2'b01;
-              end
-              if(_zz_70) begin
-                GSHARE_PHT_68 <= 2'b01;
-              end
-              if(_zz_71) begin
-                GSHARE_PHT_69 <= 2'b01;
-              end
-              if(_zz_72) begin
-                GSHARE_PHT_70 <= 2'b01;
-              end
-              if(_zz_73) begin
-                GSHARE_PHT_71 <= 2'b01;
-              end
-              if(_zz_74) begin
-                GSHARE_PHT_72 <= 2'b01;
-              end
-              if(_zz_75) begin
-                GSHARE_PHT_73 <= 2'b01;
-              end
-              if(_zz_76) begin
-                GSHARE_PHT_74 <= 2'b01;
-              end
-              if(_zz_77) begin
-                GSHARE_PHT_75 <= 2'b01;
-              end
-              if(_zz_78) begin
-                GSHARE_PHT_76 <= 2'b01;
-              end
-              if(_zz_79) begin
-                GSHARE_PHT_77 <= 2'b01;
-              end
-              if(_zz_80) begin
-                GSHARE_PHT_78 <= 2'b01;
-              end
-              if(_zz_81) begin
-                GSHARE_PHT_79 <= 2'b01;
-              end
-              if(_zz_82) begin
-                GSHARE_PHT_80 <= 2'b01;
-              end
-              if(_zz_83) begin
-                GSHARE_PHT_81 <= 2'b01;
-              end
-              if(_zz_84) begin
-                GSHARE_PHT_82 <= 2'b01;
-              end
-              if(_zz_85) begin
-                GSHARE_PHT_83 <= 2'b01;
-              end
-              if(_zz_86) begin
-                GSHARE_PHT_84 <= 2'b01;
-              end
-              if(_zz_87) begin
-                GSHARE_PHT_85 <= 2'b01;
-              end
-              if(_zz_88) begin
-                GSHARE_PHT_86 <= 2'b01;
-              end
-              if(_zz_89) begin
-                GSHARE_PHT_87 <= 2'b01;
-              end
-              if(_zz_90) begin
-                GSHARE_PHT_88 <= 2'b01;
-              end
-              if(_zz_91) begin
-                GSHARE_PHT_89 <= 2'b01;
-              end
-              if(_zz_92) begin
-                GSHARE_PHT_90 <= 2'b01;
-              end
-              if(_zz_93) begin
-                GSHARE_PHT_91 <= 2'b01;
-              end
-              if(_zz_94) begin
-                GSHARE_PHT_92 <= 2'b01;
-              end
-              if(_zz_95) begin
-                GSHARE_PHT_93 <= 2'b01;
-              end
-              if(_zz_96) begin
-                GSHARE_PHT_94 <= 2'b01;
-              end
-              if(_zz_97) begin
-                GSHARE_PHT_95 <= 2'b01;
-              end
-              if(_zz_98) begin
-                GSHARE_PHT_96 <= 2'b01;
-              end
-              if(_zz_99) begin
-                GSHARE_PHT_97 <= 2'b01;
-              end
-              if(_zz_100) begin
-                GSHARE_PHT_98 <= 2'b01;
-              end
-              if(_zz_101) begin
-                GSHARE_PHT_99 <= 2'b01;
-              end
-              if(_zz_102) begin
-                GSHARE_PHT_100 <= 2'b01;
-              end
-              if(_zz_103) begin
-                GSHARE_PHT_101 <= 2'b01;
-              end
-              if(_zz_104) begin
-                GSHARE_PHT_102 <= 2'b01;
-              end
-              if(_zz_105) begin
-                GSHARE_PHT_103 <= 2'b01;
-              end
-              if(_zz_106) begin
-                GSHARE_PHT_104 <= 2'b01;
-              end
-              if(_zz_107) begin
-                GSHARE_PHT_105 <= 2'b01;
-              end
-              if(_zz_108) begin
-                GSHARE_PHT_106 <= 2'b01;
-              end
-              if(_zz_109) begin
-                GSHARE_PHT_107 <= 2'b01;
-              end
-              if(_zz_110) begin
-                GSHARE_PHT_108 <= 2'b01;
-              end
-              if(_zz_111) begin
-                GSHARE_PHT_109 <= 2'b01;
-              end
-              if(_zz_112) begin
-                GSHARE_PHT_110 <= 2'b01;
-              end
-              if(_zz_113) begin
-                GSHARE_PHT_111 <= 2'b01;
-              end
-              if(_zz_114) begin
-                GSHARE_PHT_112 <= 2'b01;
-              end
-              if(_zz_115) begin
-                GSHARE_PHT_113 <= 2'b01;
-              end
-              if(_zz_116) begin
-                GSHARE_PHT_114 <= 2'b01;
-              end
-              if(_zz_117) begin
-                GSHARE_PHT_115 <= 2'b01;
-              end
-              if(_zz_118) begin
-                GSHARE_PHT_116 <= 2'b01;
-              end
-              if(_zz_119) begin
-                GSHARE_PHT_117 <= 2'b01;
-              end
-              if(_zz_120) begin
-                GSHARE_PHT_118 <= 2'b01;
-              end
-              if(_zz_121) begin
-                GSHARE_PHT_119 <= 2'b01;
-              end
-              if(_zz_122) begin
-                GSHARE_PHT_120 <= 2'b01;
-              end
-              if(_zz_123) begin
-                GSHARE_PHT_121 <= 2'b01;
-              end
-              if(_zz_124) begin
-                GSHARE_PHT_122 <= 2'b01;
-              end
-              if(_zz_125) begin
-                GSHARE_PHT_123 <= 2'b01;
-              end
-              if(_zz_126) begin
-                GSHARE_PHT_124 <= 2'b01;
-              end
-              if(_zz_127) begin
-                GSHARE_PHT_125 <= 2'b01;
-              end
-              if(_zz_128) begin
-                GSHARE_PHT_126 <= 2'b01;
-              end
-              if(_zz_129) begin
-                GSHARE_PHT_127 <= 2'b01;
-              end
             end else begin
               if(_zz_2) begin
                 GSHARE_PHT_0 <= 2'b00;
@@ -26066,294 +22482,6 @@ module gshare_predictor (
               end
               if(_zz_33) begin
                 GSHARE_PHT_31 <= 2'b00;
-              end
-              if(_zz_34) begin
-                GSHARE_PHT_32 <= 2'b00;
-              end
-              if(_zz_35) begin
-                GSHARE_PHT_33 <= 2'b00;
-              end
-              if(_zz_36) begin
-                GSHARE_PHT_34 <= 2'b00;
-              end
-              if(_zz_37) begin
-                GSHARE_PHT_35 <= 2'b00;
-              end
-              if(_zz_38) begin
-                GSHARE_PHT_36 <= 2'b00;
-              end
-              if(_zz_39) begin
-                GSHARE_PHT_37 <= 2'b00;
-              end
-              if(_zz_40) begin
-                GSHARE_PHT_38 <= 2'b00;
-              end
-              if(_zz_41) begin
-                GSHARE_PHT_39 <= 2'b00;
-              end
-              if(_zz_42) begin
-                GSHARE_PHT_40 <= 2'b00;
-              end
-              if(_zz_43) begin
-                GSHARE_PHT_41 <= 2'b00;
-              end
-              if(_zz_44) begin
-                GSHARE_PHT_42 <= 2'b00;
-              end
-              if(_zz_45) begin
-                GSHARE_PHT_43 <= 2'b00;
-              end
-              if(_zz_46) begin
-                GSHARE_PHT_44 <= 2'b00;
-              end
-              if(_zz_47) begin
-                GSHARE_PHT_45 <= 2'b00;
-              end
-              if(_zz_48) begin
-                GSHARE_PHT_46 <= 2'b00;
-              end
-              if(_zz_49) begin
-                GSHARE_PHT_47 <= 2'b00;
-              end
-              if(_zz_50) begin
-                GSHARE_PHT_48 <= 2'b00;
-              end
-              if(_zz_51) begin
-                GSHARE_PHT_49 <= 2'b00;
-              end
-              if(_zz_52) begin
-                GSHARE_PHT_50 <= 2'b00;
-              end
-              if(_zz_53) begin
-                GSHARE_PHT_51 <= 2'b00;
-              end
-              if(_zz_54) begin
-                GSHARE_PHT_52 <= 2'b00;
-              end
-              if(_zz_55) begin
-                GSHARE_PHT_53 <= 2'b00;
-              end
-              if(_zz_56) begin
-                GSHARE_PHT_54 <= 2'b00;
-              end
-              if(_zz_57) begin
-                GSHARE_PHT_55 <= 2'b00;
-              end
-              if(_zz_58) begin
-                GSHARE_PHT_56 <= 2'b00;
-              end
-              if(_zz_59) begin
-                GSHARE_PHT_57 <= 2'b00;
-              end
-              if(_zz_60) begin
-                GSHARE_PHT_58 <= 2'b00;
-              end
-              if(_zz_61) begin
-                GSHARE_PHT_59 <= 2'b00;
-              end
-              if(_zz_62) begin
-                GSHARE_PHT_60 <= 2'b00;
-              end
-              if(_zz_63) begin
-                GSHARE_PHT_61 <= 2'b00;
-              end
-              if(_zz_64) begin
-                GSHARE_PHT_62 <= 2'b00;
-              end
-              if(_zz_65) begin
-                GSHARE_PHT_63 <= 2'b00;
-              end
-              if(_zz_66) begin
-                GSHARE_PHT_64 <= 2'b00;
-              end
-              if(_zz_67) begin
-                GSHARE_PHT_65 <= 2'b00;
-              end
-              if(_zz_68) begin
-                GSHARE_PHT_66 <= 2'b00;
-              end
-              if(_zz_69) begin
-                GSHARE_PHT_67 <= 2'b00;
-              end
-              if(_zz_70) begin
-                GSHARE_PHT_68 <= 2'b00;
-              end
-              if(_zz_71) begin
-                GSHARE_PHT_69 <= 2'b00;
-              end
-              if(_zz_72) begin
-                GSHARE_PHT_70 <= 2'b00;
-              end
-              if(_zz_73) begin
-                GSHARE_PHT_71 <= 2'b00;
-              end
-              if(_zz_74) begin
-                GSHARE_PHT_72 <= 2'b00;
-              end
-              if(_zz_75) begin
-                GSHARE_PHT_73 <= 2'b00;
-              end
-              if(_zz_76) begin
-                GSHARE_PHT_74 <= 2'b00;
-              end
-              if(_zz_77) begin
-                GSHARE_PHT_75 <= 2'b00;
-              end
-              if(_zz_78) begin
-                GSHARE_PHT_76 <= 2'b00;
-              end
-              if(_zz_79) begin
-                GSHARE_PHT_77 <= 2'b00;
-              end
-              if(_zz_80) begin
-                GSHARE_PHT_78 <= 2'b00;
-              end
-              if(_zz_81) begin
-                GSHARE_PHT_79 <= 2'b00;
-              end
-              if(_zz_82) begin
-                GSHARE_PHT_80 <= 2'b00;
-              end
-              if(_zz_83) begin
-                GSHARE_PHT_81 <= 2'b00;
-              end
-              if(_zz_84) begin
-                GSHARE_PHT_82 <= 2'b00;
-              end
-              if(_zz_85) begin
-                GSHARE_PHT_83 <= 2'b00;
-              end
-              if(_zz_86) begin
-                GSHARE_PHT_84 <= 2'b00;
-              end
-              if(_zz_87) begin
-                GSHARE_PHT_85 <= 2'b00;
-              end
-              if(_zz_88) begin
-                GSHARE_PHT_86 <= 2'b00;
-              end
-              if(_zz_89) begin
-                GSHARE_PHT_87 <= 2'b00;
-              end
-              if(_zz_90) begin
-                GSHARE_PHT_88 <= 2'b00;
-              end
-              if(_zz_91) begin
-                GSHARE_PHT_89 <= 2'b00;
-              end
-              if(_zz_92) begin
-                GSHARE_PHT_90 <= 2'b00;
-              end
-              if(_zz_93) begin
-                GSHARE_PHT_91 <= 2'b00;
-              end
-              if(_zz_94) begin
-                GSHARE_PHT_92 <= 2'b00;
-              end
-              if(_zz_95) begin
-                GSHARE_PHT_93 <= 2'b00;
-              end
-              if(_zz_96) begin
-                GSHARE_PHT_94 <= 2'b00;
-              end
-              if(_zz_97) begin
-                GSHARE_PHT_95 <= 2'b00;
-              end
-              if(_zz_98) begin
-                GSHARE_PHT_96 <= 2'b00;
-              end
-              if(_zz_99) begin
-                GSHARE_PHT_97 <= 2'b00;
-              end
-              if(_zz_100) begin
-                GSHARE_PHT_98 <= 2'b00;
-              end
-              if(_zz_101) begin
-                GSHARE_PHT_99 <= 2'b00;
-              end
-              if(_zz_102) begin
-                GSHARE_PHT_100 <= 2'b00;
-              end
-              if(_zz_103) begin
-                GSHARE_PHT_101 <= 2'b00;
-              end
-              if(_zz_104) begin
-                GSHARE_PHT_102 <= 2'b00;
-              end
-              if(_zz_105) begin
-                GSHARE_PHT_103 <= 2'b00;
-              end
-              if(_zz_106) begin
-                GSHARE_PHT_104 <= 2'b00;
-              end
-              if(_zz_107) begin
-                GSHARE_PHT_105 <= 2'b00;
-              end
-              if(_zz_108) begin
-                GSHARE_PHT_106 <= 2'b00;
-              end
-              if(_zz_109) begin
-                GSHARE_PHT_107 <= 2'b00;
-              end
-              if(_zz_110) begin
-                GSHARE_PHT_108 <= 2'b00;
-              end
-              if(_zz_111) begin
-                GSHARE_PHT_109 <= 2'b00;
-              end
-              if(_zz_112) begin
-                GSHARE_PHT_110 <= 2'b00;
-              end
-              if(_zz_113) begin
-                GSHARE_PHT_111 <= 2'b00;
-              end
-              if(_zz_114) begin
-                GSHARE_PHT_112 <= 2'b00;
-              end
-              if(_zz_115) begin
-                GSHARE_PHT_113 <= 2'b00;
-              end
-              if(_zz_116) begin
-                GSHARE_PHT_114 <= 2'b00;
-              end
-              if(_zz_117) begin
-                GSHARE_PHT_115 <= 2'b00;
-              end
-              if(_zz_118) begin
-                GSHARE_PHT_116 <= 2'b00;
-              end
-              if(_zz_119) begin
-                GSHARE_PHT_117 <= 2'b00;
-              end
-              if(_zz_120) begin
-                GSHARE_PHT_118 <= 2'b00;
-              end
-              if(_zz_121) begin
-                GSHARE_PHT_119 <= 2'b00;
-              end
-              if(_zz_122) begin
-                GSHARE_PHT_120 <= 2'b00;
-              end
-              if(_zz_123) begin
-                GSHARE_PHT_121 <= 2'b00;
-              end
-              if(_zz_124) begin
-                GSHARE_PHT_122 <= 2'b00;
-              end
-              if(_zz_125) begin
-                GSHARE_PHT_123 <= 2'b00;
-              end
-              if(_zz_126) begin
-                GSHARE_PHT_124 <= 2'b00;
-              end
-              if(_zz_127) begin
-                GSHARE_PHT_125 <= 2'b00;
-              end
-              if(_zz_128) begin
-                GSHARE_PHT_126 <= 2'b00;
-              end
-              if(_zz_129) begin
-                GSHARE_PHT_127 <= 2'b00;
               end
             end
           end
@@ -26455,294 +22583,6 @@ module gshare_predictor (
               if(_zz_33) begin
                 GSHARE_PHT_31 <= 2'b10;
               end
-              if(_zz_34) begin
-                GSHARE_PHT_32 <= 2'b10;
-              end
-              if(_zz_35) begin
-                GSHARE_PHT_33 <= 2'b10;
-              end
-              if(_zz_36) begin
-                GSHARE_PHT_34 <= 2'b10;
-              end
-              if(_zz_37) begin
-                GSHARE_PHT_35 <= 2'b10;
-              end
-              if(_zz_38) begin
-                GSHARE_PHT_36 <= 2'b10;
-              end
-              if(_zz_39) begin
-                GSHARE_PHT_37 <= 2'b10;
-              end
-              if(_zz_40) begin
-                GSHARE_PHT_38 <= 2'b10;
-              end
-              if(_zz_41) begin
-                GSHARE_PHT_39 <= 2'b10;
-              end
-              if(_zz_42) begin
-                GSHARE_PHT_40 <= 2'b10;
-              end
-              if(_zz_43) begin
-                GSHARE_PHT_41 <= 2'b10;
-              end
-              if(_zz_44) begin
-                GSHARE_PHT_42 <= 2'b10;
-              end
-              if(_zz_45) begin
-                GSHARE_PHT_43 <= 2'b10;
-              end
-              if(_zz_46) begin
-                GSHARE_PHT_44 <= 2'b10;
-              end
-              if(_zz_47) begin
-                GSHARE_PHT_45 <= 2'b10;
-              end
-              if(_zz_48) begin
-                GSHARE_PHT_46 <= 2'b10;
-              end
-              if(_zz_49) begin
-                GSHARE_PHT_47 <= 2'b10;
-              end
-              if(_zz_50) begin
-                GSHARE_PHT_48 <= 2'b10;
-              end
-              if(_zz_51) begin
-                GSHARE_PHT_49 <= 2'b10;
-              end
-              if(_zz_52) begin
-                GSHARE_PHT_50 <= 2'b10;
-              end
-              if(_zz_53) begin
-                GSHARE_PHT_51 <= 2'b10;
-              end
-              if(_zz_54) begin
-                GSHARE_PHT_52 <= 2'b10;
-              end
-              if(_zz_55) begin
-                GSHARE_PHT_53 <= 2'b10;
-              end
-              if(_zz_56) begin
-                GSHARE_PHT_54 <= 2'b10;
-              end
-              if(_zz_57) begin
-                GSHARE_PHT_55 <= 2'b10;
-              end
-              if(_zz_58) begin
-                GSHARE_PHT_56 <= 2'b10;
-              end
-              if(_zz_59) begin
-                GSHARE_PHT_57 <= 2'b10;
-              end
-              if(_zz_60) begin
-                GSHARE_PHT_58 <= 2'b10;
-              end
-              if(_zz_61) begin
-                GSHARE_PHT_59 <= 2'b10;
-              end
-              if(_zz_62) begin
-                GSHARE_PHT_60 <= 2'b10;
-              end
-              if(_zz_63) begin
-                GSHARE_PHT_61 <= 2'b10;
-              end
-              if(_zz_64) begin
-                GSHARE_PHT_62 <= 2'b10;
-              end
-              if(_zz_65) begin
-                GSHARE_PHT_63 <= 2'b10;
-              end
-              if(_zz_66) begin
-                GSHARE_PHT_64 <= 2'b10;
-              end
-              if(_zz_67) begin
-                GSHARE_PHT_65 <= 2'b10;
-              end
-              if(_zz_68) begin
-                GSHARE_PHT_66 <= 2'b10;
-              end
-              if(_zz_69) begin
-                GSHARE_PHT_67 <= 2'b10;
-              end
-              if(_zz_70) begin
-                GSHARE_PHT_68 <= 2'b10;
-              end
-              if(_zz_71) begin
-                GSHARE_PHT_69 <= 2'b10;
-              end
-              if(_zz_72) begin
-                GSHARE_PHT_70 <= 2'b10;
-              end
-              if(_zz_73) begin
-                GSHARE_PHT_71 <= 2'b10;
-              end
-              if(_zz_74) begin
-                GSHARE_PHT_72 <= 2'b10;
-              end
-              if(_zz_75) begin
-                GSHARE_PHT_73 <= 2'b10;
-              end
-              if(_zz_76) begin
-                GSHARE_PHT_74 <= 2'b10;
-              end
-              if(_zz_77) begin
-                GSHARE_PHT_75 <= 2'b10;
-              end
-              if(_zz_78) begin
-                GSHARE_PHT_76 <= 2'b10;
-              end
-              if(_zz_79) begin
-                GSHARE_PHT_77 <= 2'b10;
-              end
-              if(_zz_80) begin
-                GSHARE_PHT_78 <= 2'b10;
-              end
-              if(_zz_81) begin
-                GSHARE_PHT_79 <= 2'b10;
-              end
-              if(_zz_82) begin
-                GSHARE_PHT_80 <= 2'b10;
-              end
-              if(_zz_83) begin
-                GSHARE_PHT_81 <= 2'b10;
-              end
-              if(_zz_84) begin
-                GSHARE_PHT_82 <= 2'b10;
-              end
-              if(_zz_85) begin
-                GSHARE_PHT_83 <= 2'b10;
-              end
-              if(_zz_86) begin
-                GSHARE_PHT_84 <= 2'b10;
-              end
-              if(_zz_87) begin
-                GSHARE_PHT_85 <= 2'b10;
-              end
-              if(_zz_88) begin
-                GSHARE_PHT_86 <= 2'b10;
-              end
-              if(_zz_89) begin
-                GSHARE_PHT_87 <= 2'b10;
-              end
-              if(_zz_90) begin
-                GSHARE_PHT_88 <= 2'b10;
-              end
-              if(_zz_91) begin
-                GSHARE_PHT_89 <= 2'b10;
-              end
-              if(_zz_92) begin
-                GSHARE_PHT_90 <= 2'b10;
-              end
-              if(_zz_93) begin
-                GSHARE_PHT_91 <= 2'b10;
-              end
-              if(_zz_94) begin
-                GSHARE_PHT_92 <= 2'b10;
-              end
-              if(_zz_95) begin
-                GSHARE_PHT_93 <= 2'b10;
-              end
-              if(_zz_96) begin
-                GSHARE_PHT_94 <= 2'b10;
-              end
-              if(_zz_97) begin
-                GSHARE_PHT_95 <= 2'b10;
-              end
-              if(_zz_98) begin
-                GSHARE_PHT_96 <= 2'b10;
-              end
-              if(_zz_99) begin
-                GSHARE_PHT_97 <= 2'b10;
-              end
-              if(_zz_100) begin
-                GSHARE_PHT_98 <= 2'b10;
-              end
-              if(_zz_101) begin
-                GSHARE_PHT_99 <= 2'b10;
-              end
-              if(_zz_102) begin
-                GSHARE_PHT_100 <= 2'b10;
-              end
-              if(_zz_103) begin
-                GSHARE_PHT_101 <= 2'b10;
-              end
-              if(_zz_104) begin
-                GSHARE_PHT_102 <= 2'b10;
-              end
-              if(_zz_105) begin
-                GSHARE_PHT_103 <= 2'b10;
-              end
-              if(_zz_106) begin
-                GSHARE_PHT_104 <= 2'b10;
-              end
-              if(_zz_107) begin
-                GSHARE_PHT_105 <= 2'b10;
-              end
-              if(_zz_108) begin
-                GSHARE_PHT_106 <= 2'b10;
-              end
-              if(_zz_109) begin
-                GSHARE_PHT_107 <= 2'b10;
-              end
-              if(_zz_110) begin
-                GSHARE_PHT_108 <= 2'b10;
-              end
-              if(_zz_111) begin
-                GSHARE_PHT_109 <= 2'b10;
-              end
-              if(_zz_112) begin
-                GSHARE_PHT_110 <= 2'b10;
-              end
-              if(_zz_113) begin
-                GSHARE_PHT_111 <= 2'b10;
-              end
-              if(_zz_114) begin
-                GSHARE_PHT_112 <= 2'b10;
-              end
-              if(_zz_115) begin
-                GSHARE_PHT_113 <= 2'b10;
-              end
-              if(_zz_116) begin
-                GSHARE_PHT_114 <= 2'b10;
-              end
-              if(_zz_117) begin
-                GSHARE_PHT_115 <= 2'b10;
-              end
-              if(_zz_118) begin
-                GSHARE_PHT_116 <= 2'b10;
-              end
-              if(_zz_119) begin
-                GSHARE_PHT_117 <= 2'b10;
-              end
-              if(_zz_120) begin
-                GSHARE_PHT_118 <= 2'b10;
-              end
-              if(_zz_121) begin
-                GSHARE_PHT_119 <= 2'b10;
-              end
-              if(_zz_122) begin
-                GSHARE_PHT_120 <= 2'b10;
-              end
-              if(_zz_123) begin
-                GSHARE_PHT_121 <= 2'b10;
-              end
-              if(_zz_124) begin
-                GSHARE_PHT_122 <= 2'b10;
-              end
-              if(_zz_125) begin
-                GSHARE_PHT_123 <= 2'b10;
-              end
-              if(_zz_126) begin
-                GSHARE_PHT_124 <= 2'b10;
-              end
-              if(_zz_127) begin
-                GSHARE_PHT_125 <= 2'b10;
-              end
-              if(_zz_128) begin
-                GSHARE_PHT_126 <= 2'b10;
-              end
-              if(_zz_129) begin
-                GSHARE_PHT_127 <= 2'b10;
-              end
             end else begin
               if(_zz_2) begin
                 GSHARE_PHT_0 <= 2'b00;
@@ -26839,294 +22679,6 @@ module gshare_predictor (
               end
               if(_zz_33) begin
                 GSHARE_PHT_31 <= 2'b00;
-              end
-              if(_zz_34) begin
-                GSHARE_PHT_32 <= 2'b00;
-              end
-              if(_zz_35) begin
-                GSHARE_PHT_33 <= 2'b00;
-              end
-              if(_zz_36) begin
-                GSHARE_PHT_34 <= 2'b00;
-              end
-              if(_zz_37) begin
-                GSHARE_PHT_35 <= 2'b00;
-              end
-              if(_zz_38) begin
-                GSHARE_PHT_36 <= 2'b00;
-              end
-              if(_zz_39) begin
-                GSHARE_PHT_37 <= 2'b00;
-              end
-              if(_zz_40) begin
-                GSHARE_PHT_38 <= 2'b00;
-              end
-              if(_zz_41) begin
-                GSHARE_PHT_39 <= 2'b00;
-              end
-              if(_zz_42) begin
-                GSHARE_PHT_40 <= 2'b00;
-              end
-              if(_zz_43) begin
-                GSHARE_PHT_41 <= 2'b00;
-              end
-              if(_zz_44) begin
-                GSHARE_PHT_42 <= 2'b00;
-              end
-              if(_zz_45) begin
-                GSHARE_PHT_43 <= 2'b00;
-              end
-              if(_zz_46) begin
-                GSHARE_PHT_44 <= 2'b00;
-              end
-              if(_zz_47) begin
-                GSHARE_PHT_45 <= 2'b00;
-              end
-              if(_zz_48) begin
-                GSHARE_PHT_46 <= 2'b00;
-              end
-              if(_zz_49) begin
-                GSHARE_PHT_47 <= 2'b00;
-              end
-              if(_zz_50) begin
-                GSHARE_PHT_48 <= 2'b00;
-              end
-              if(_zz_51) begin
-                GSHARE_PHT_49 <= 2'b00;
-              end
-              if(_zz_52) begin
-                GSHARE_PHT_50 <= 2'b00;
-              end
-              if(_zz_53) begin
-                GSHARE_PHT_51 <= 2'b00;
-              end
-              if(_zz_54) begin
-                GSHARE_PHT_52 <= 2'b00;
-              end
-              if(_zz_55) begin
-                GSHARE_PHT_53 <= 2'b00;
-              end
-              if(_zz_56) begin
-                GSHARE_PHT_54 <= 2'b00;
-              end
-              if(_zz_57) begin
-                GSHARE_PHT_55 <= 2'b00;
-              end
-              if(_zz_58) begin
-                GSHARE_PHT_56 <= 2'b00;
-              end
-              if(_zz_59) begin
-                GSHARE_PHT_57 <= 2'b00;
-              end
-              if(_zz_60) begin
-                GSHARE_PHT_58 <= 2'b00;
-              end
-              if(_zz_61) begin
-                GSHARE_PHT_59 <= 2'b00;
-              end
-              if(_zz_62) begin
-                GSHARE_PHT_60 <= 2'b00;
-              end
-              if(_zz_63) begin
-                GSHARE_PHT_61 <= 2'b00;
-              end
-              if(_zz_64) begin
-                GSHARE_PHT_62 <= 2'b00;
-              end
-              if(_zz_65) begin
-                GSHARE_PHT_63 <= 2'b00;
-              end
-              if(_zz_66) begin
-                GSHARE_PHT_64 <= 2'b00;
-              end
-              if(_zz_67) begin
-                GSHARE_PHT_65 <= 2'b00;
-              end
-              if(_zz_68) begin
-                GSHARE_PHT_66 <= 2'b00;
-              end
-              if(_zz_69) begin
-                GSHARE_PHT_67 <= 2'b00;
-              end
-              if(_zz_70) begin
-                GSHARE_PHT_68 <= 2'b00;
-              end
-              if(_zz_71) begin
-                GSHARE_PHT_69 <= 2'b00;
-              end
-              if(_zz_72) begin
-                GSHARE_PHT_70 <= 2'b00;
-              end
-              if(_zz_73) begin
-                GSHARE_PHT_71 <= 2'b00;
-              end
-              if(_zz_74) begin
-                GSHARE_PHT_72 <= 2'b00;
-              end
-              if(_zz_75) begin
-                GSHARE_PHT_73 <= 2'b00;
-              end
-              if(_zz_76) begin
-                GSHARE_PHT_74 <= 2'b00;
-              end
-              if(_zz_77) begin
-                GSHARE_PHT_75 <= 2'b00;
-              end
-              if(_zz_78) begin
-                GSHARE_PHT_76 <= 2'b00;
-              end
-              if(_zz_79) begin
-                GSHARE_PHT_77 <= 2'b00;
-              end
-              if(_zz_80) begin
-                GSHARE_PHT_78 <= 2'b00;
-              end
-              if(_zz_81) begin
-                GSHARE_PHT_79 <= 2'b00;
-              end
-              if(_zz_82) begin
-                GSHARE_PHT_80 <= 2'b00;
-              end
-              if(_zz_83) begin
-                GSHARE_PHT_81 <= 2'b00;
-              end
-              if(_zz_84) begin
-                GSHARE_PHT_82 <= 2'b00;
-              end
-              if(_zz_85) begin
-                GSHARE_PHT_83 <= 2'b00;
-              end
-              if(_zz_86) begin
-                GSHARE_PHT_84 <= 2'b00;
-              end
-              if(_zz_87) begin
-                GSHARE_PHT_85 <= 2'b00;
-              end
-              if(_zz_88) begin
-                GSHARE_PHT_86 <= 2'b00;
-              end
-              if(_zz_89) begin
-                GSHARE_PHT_87 <= 2'b00;
-              end
-              if(_zz_90) begin
-                GSHARE_PHT_88 <= 2'b00;
-              end
-              if(_zz_91) begin
-                GSHARE_PHT_89 <= 2'b00;
-              end
-              if(_zz_92) begin
-                GSHARE_PHT_90 <= 2'b00;
-              end
-              if(_zz_93) begin
-                GSHARE_PHT_91 <= 2'b00;
-              end
-              if(_zz_94) begin
-                GSHARE_PHT_92 <= 2'b00;
-              end
-              if(_zz_95) begin
-                GSHARE_PHT_93 <= 2'b00;
-              end
-              if(_zz_96) begin
-                GSHARE_PHT_94 <= 2'b00;
-              end
-              if(_zz_97) begin
-                GSHARE_PHT_95 <= 2'b00;
-              end
-              if(_zz_98) begin
-                GSHARE_PHT_96 <= 2'b00;
-              end
-              if(_zz_99) begin
-                GSHARE_PHT_97 <= 2'b00;
-              end
-              if(_zz_100) begin
-                GSHARE_PHT_98 <= 2'b00;
-              end
-              if(_zz_101) begin
-                GSHARE_PHT_99 <= 2'b00;
-              end
-              if(_zz_102) begin
-                GSHARE_PHT_100 <= 2'b00;
-              end
-              if(_zz_103) begin
-                GSHARE_PHT_101 <= 2'b00;
-              end
-              if(_zz_104) begin
-                GSHARE_PHT_102 <= 2'b00;
-              end
-              if(_zz_105) begin
-                GSHARE_PHT_103 <= 2'b00;
-              end
-              if(_zz_106) begin
-                GSHARE_PHT_104 <= 2'b00;
-              end
-              if(_zz_107) begin
-                GSHARE_PHT_105 <= 2'b00;
-              end
-              if(_zz_108) begin
-                GSHARE_PHT_106 <= 2'b00;
-              end
-              if(_zz_109) begin
-                GSHARE_PHT_107 <= 2'b00;
-              end
-              if(_zz_110) begin
-                GSHARE_PHT_108 <= 2'b00;
-              end
-              if(_zz_111) begin
-                GSHARE_PHT_109 <= 2'b00;
-              end
-              if(_zz_112) begin
-                GSHARE_PHT_110 <= 2'b00;
-              end
-              if(_zz_113) begin
-                GSHARE_PHT_111 <= 2'b00;
-              end
-              if(_zz_114) begin
-                GSHARE_PHT_112 <= 2'b00;
-              end
-              if(_zz_115) begin
-                GSHARE_PHT_113 <= 2'b00;
-              end
-              if(_zz_116) begin
-                GSHARE_PHT_114 <= 2'b00;
-              end
-              if(_zz_117) begin
-                GSHARE_PHT_115 <= 2'b00;
-              end
-              if(_zz_118) begin
-                GSHARE_PHT_116 <= 2'b00;
-              end
-              if(_zz_119) begin
-                GSHARE_PHT_117 <= 2'b00;
-              end
-              if(_zz_120) begin
-                GSHARE_PHT_118 <= 2'b00;
-              end
-              if(_zz_121) begin
-                GSHARE_PHT_119 <= 2'b00;
-              end
-              if(_zz_122) begin
-                GSHARE_PHT_120 <= 2'b00;
-              end
-              if(_zz_123) begin
-                GSHARE_PHT_121 <= 2'b00;
-              end
-              if(_zz_124) begin
-                GSHARE_PHT_122 <= 2'b00;
-              end
-              if(_zz_125) begin
-                GSHARE_PHT_123 <= 2'b00;
-              end
-              if(_zz_126) begin
-                GSHARE_PHT_124 <= 2'b00;
-              end
-              if(_zz_127) begin
-                GSHARE_PHT_125 <= 2'b00;
-              end
-              if(_zz_128) begin
-                GSHARE_PHT_126 <= 2'b00;
-              end
-              if(_zz_129) begin
-                GSHARE_PHT_127 <= 2'b00;
               end
             end
           end
@@ -27228,294 +22780,6 @@ module gshare_predictor (
               if(_zz_33) begin
                 GSHARE_PHT_31 <= 2'b11;
               end
-              if(_zz_34) begin
-                GSHARE_PHT_32 <= 2'b11;
-              end
-              if(_zz_35) begin
-                GSHARE_PHT_33 <= 2'b11;
-              end
-              if(_zz_36) begin
-                GSHARE_PHT_34 <= 2'b11;
-              end
-              if(_zz_37) begin
-                GSHARE_PHT_35 <= 2'b11;
-              end
-              if(_zz_38) begin
-                GSHARE_PHT_36 <= 2'b11;
-              end
-              if(_zz_39) begin
-                GSHARE_PHT_37 <= 2'b11;
-              end
-              if(_zz_40) begin
-                GSHARE_PHT_38 <= 2'b11;
-              end
-              if(_zz_41) begin
-                GSHARE_PHT_39 <= 2'b11;
-              end
-              if(_zz_42) begin
-                GSHARE_PHT_40 <= 2'b11;
-              end
-              if(_zz_43) begin
-                GSHARE_PHT_41 <= 2'b11;
-              end
-              if(_zz_44) begin
-                GSHARE_PHT_42 <= 2'b11;
-              end
-              if(_zz_45) begin
-                GSHARE_PHT_43 <= 2'b11;
-              end
-              if(_zz_46) begin
-                GSHARE_PHT_44 <= 2'b11;
-              end
-              if(_zz_47) begin
-                GSHARE_PHT_45 <= 2'b11;
-              end
-              if(_zz_48) begin
-                GSHARE_PHT_46 <= 2'b11;
-              end
-              if(_zz_49) begin
-                GSHARE_PHT_47 <= 2'b11;
-              end
-              if(_zz_50) begin
-                GSHARE_PHT_48 <= 2'b11;
-              end
-              if(_zz_51) begin
-                GSHARE_PHT_49 <= 2'b11;
-              end
-              if(_zz_52) begin
-                GSHARE_PHT_50 <= 2'b11;
-              end
-              if(_zz_53) begin
-                GSHARE_PHT_51 <= 2'b11;
-              end
-              if(_zz_54) begin
-                GSHARE_PHT_52 <= 2'b11;
-              end
-              if(_zz_55) begin
-                GSHARE_PHT_53 <= 2'b11;
-              end
-              if(_zz_56) begin
-                GSHARE_PHT_54 <= 2'b11;
-              end
-              if(_zz_57) begin
-                GSHARE_PHT_55 <= 2'b11;
-              end
-              if(_zz_58) begin
-                GSHARE_PHT_56 <= 2'b11;
-              end
-              if(_zz_59) begin
-                GSHARE_PHT_57 <= 2'b11;
-              end
-              if(_zz_60) begin
-                GSHARE_PHT_58 <= 2'b11;
-              end
-              if(_zz_61) begin
-                GSHARE_PHT_59 <= 2'b11;
-              end
-              if(_zz_62) begin
-                GSHARE_PHT_60 <= 2'b11;
-              end
-              if(_zz_63) begin
-                GSHARE_PHT_61 <= 2'b11;
-              end
-              if(_zz_64) begin
-                GSHARE_PHT_62 <= 2'b11;
-              end
-              if(_zz_65) begin
-                GSHARE_PHT_63 <= 2'b11;
-              end
-              if(_zz_66) begin
-                GSHARE_PHT_64 <= 2'b11;
-              end
-              if(_zz_67) begin
-                GSHARE_PHT_65 <= 2'b11;
-              end
-              if(_zz_68) begin
-                GSHARE_PHT_66 <= 2'b11;
-              end
-              if(_zz_69) begin
-                GSHARE_PHT_67 <= 2'b11;
-              end
-              if(_zz_70) begin
-                GSHARE_PHT_68 <= 2'b11;
-              end
-              if(_zz_71) begin
-                GSHARE_PHT_69 <= 2'b11;
-              end
-              if(_zz_72) begin
-                GSHARE_PHT_70 <= 2'b11;
-              end
-              if(_zz_73) begin
-                GSHARE_PHT_71 <= 2'b11;
-              end
-              if(_zz_74) begin
-                GSHARE_PHT_72 <= 2'b11;
-              end
-              if(_zz_75) begin
-                GSHARE_PHT_73 <= 2'b11;
-              end
-              if(_zz_76) begin
-                GSHARE_PHT_74 <= 2'b11;
-              end
-              if(_zz_77) begin
-                GSHARE_PHT_75 <= 2'b11;
-              end
-              if(_zz_78) begin
-                GSHARE_PHT_76 <= 2'b11;
-              end
-              if(_zz_79) begin
-                GSHARE_PHT_77 <= 2'b11;
-              end
-              if(_zz_80) begin
-                GSHARE_PHT_78 <= 2'b11;
-              end
-              if(_zz_81) begin
-                GSHARE_PHT_79 <= 2'b11;
-              end
-              if(_zz_82) begin
-                GSHARE_PHT_80 <= 2'b11;
-              end
-              if(_zz_83) begin
-                GSHARE_PHT_81 <= 2'b11;
-              end
-              if(_zz_84) begin
-                GSHARE_PHT_82 <= 2'b11;
-              end
-              if(_zz_85) begin
-                GSHARE_PHT_83 <= 2'b11;
-              end
-              if(_zz_86) begin
-                GSHARE_PHT_84 <= 2'b11;
-              end
-              if(_zz_87) begin
-                GSHARE_PHT_85 <= 2'b11;
-              end
-              if(_zz_88) begin
-                GSHARE_PHT_86 <= 2'b11;
-              end
-              if(_zz_89) begin
-                GSHARE_PHT_87 <= 2'b11;
-              end
-              if(_zz_90) begin
-                GSHARE_PHT_88 <= 2'b11;
-              end
-              if(_zz_91) begin
-                GSHARE_PHT_89 <= 2'b11;
-              end
-              if(_zz_92) begin
-                GSHARE_PHT_90 <= 2'b11;
-              end
-              if(_zz_93) begin
-                GSHARE_PHT_91 <= 2'b11;
-              end
-              if(_zz_94) begin
-                GSHARE_PHT_92 <= 2'b11;
-              end
-              if(_zz_95) begin
-                GSHARE_PHT_93 <= 2'b11;
-              end
-              if(_zz_96) begin
-                GSHARE_PHT_94 <= 2'b11;
-              end
-              if(_zz_97) begin
-                GSHARE_PHT_95 <= 2'b11;
-              end
-              if(_zz_98) begin
-                GSHARE_PHT_96 <= 2'b11;
-              end
-              if(_zz_99) begin
-                GSHARE_PHT_97 <= 2'b11;
-              end
-              if(_zz_100) begin
-                GSHARE_PHT_98 <= 2'b11;
-              end
-              if(_zz_101) begin
-                GSHARE_PHT_99 <= 2'b11;
-              end
-              if(_zz_102) begin
-                GSHARE_PHT_100 <= 2'b11;
-              end
-              if(_zz_103) begin
-                GSHARE_PHT_101 <= 2'b11;
-              end
-              if(_zz_104) begin
-                GSHARE_PHT_102 <= 2'b11;
-              end
-              if(_zz_105) begin
-                GSHARE_PHT_103 <= 2'b11;
-              end
-              if(_zz_106) begin
-                GSHARE_PHT_104 <= 2'b11;
-              end
-              if(_zz_107) begin
-                GSHARE_PHT_105 <= 2'b11;
-              end
-              if(_zz_108) begin
-                GSHARE_PHT_106 <= 2'b11;
-              end
-              if(_zz_109) begin
-                GSHARE_PHT_107 <= 2'b11;
-              end
-              if(_zz_110) begin
-                GSHARE_PHT_108 <= 2'b11;
-              end
-              if(_zz_111) begin
-                GSHARE_PHT_109 <= 2'b11;
-              end
-              if(_zz_112) begin
-                GSHARE_PHT_110 <= 2'b11;
-              end
-              if(_zz_113) begin
-                GSHARE_PHT_111 <= 2'b11;
-              end
-              if(_zz_114) begin
-                GSHARE_PHT_112 <= 2'b11;
-              end
-              if(_zz_115) begin
-                GSHARE_PHT_113 <= 2'b11;
-              end
-              if(_zz_116) begin
-                GSHARE_PHT_114 <= 2'b11;
-              end
-              if(_zz_117) begin
-                GSHARE_PHT_115 <= 2'b11;
-              end
-              if(_zz_118) begin
-                GSHARE_PHT_116 <= 2'b11;
-              end
-              if(_zz_119) begin
-                GSHARE_PHT_117 <= 2'b11;
-              end
-              if(_zz_120) begin
-                GSHARE_PHT_118 <= 2'b11;
-              end
-              if(_zz_121) begin
-                GSHARE_PHT_119 <= 2'b11;
-              end
-              if(_zz_122) begin
-                GSHARE_PHT_120 <= 2'b11;
-              end
-              if(_zz_123) begin
-                GSHARE_PHT_121 <= 2'b11;
-              end
-              if(_zz_124) begin
-                GSHARE_PHT_122 <= 2'b11;
-              end
-              if(_zz_125) begin
-                GSHARE_PHT_123 <= 2'b11;
-              end
-              if(_zz_126) begin
-                GSHARE_PHT_124 <= 2'b11;
-              end
-              if(_zz_127) begin
-                GSHARE_PHT_125 <= 2'b11;
-              end
-              if(_zz_128) begin
-                GSHARE_PHT_126 <= 2'b11;
-              end
-              if(_zz_129) begin
-                GSHARE_PHT_127 <= 2'b11;
-              end
             end else begin
               if(_zz_2) begin
                 GSHARE_PHT_0 <= 2'b00;
@@ -27612,294 +22876,6 @@ module gshare_predictor (
               end
               if(_zz_33) begin
                 GSHARE_PHT_31 <= 2'b00;
-              end
-              if(_zz_34) begin
-                GSHARE_PHT_32 <= 2'b00;
-              end
-              if(_zz_35) begin
-                GSHARE_PHT_33 <= 2'b00;
-              end
-              if(_zz_36) begin
-                GSHARE_PHT_34 <= 2'b00;
-              end
-              if(_zz_37) begin
-                GSHARE_PHT_35 <= 2'b00;
-              end
-              if(_zz_38) begin
-                GSHARE_PHT_36 <= 2'b00;
-              end
-              if(_zz_39) begin
-                GSHARE_PHT_37 <= 2'b00;
-              end
-              if(_zz_40) begin
-                GSHARE_PHT_38 <= 2'b00;
-              end
-              if(_zz_41) begin
-                GSHARE_PHT_39 <= 2'b00;
-              end
-              if(_zz_42) begin
-                GSHARE_PHT_40 <= 2'b00;
-              end
-              if(_zz_43) begin
-                GSHARE_PHT_41 <= 2'b00;
-              end
-              if(_zz_44) begin
-                GSHARE_PHT_42 <= 2'b00;
-              end
-              if(_zz_45) begin
-                GSHARE_PHT_43 <= 2'b00;
-              end
-              if(_zz_46) begin
-                GSHARE_PHT_44 <= 2'b00;
-              end
-              if(_zz_47) begin
-                GSHARE_PHT_45 <= 2'b00;
-              end
-              if(_zz_48) begin
-                GSHARE_PHT_46 <= 2'b00;
-              end
-              if(_zz_49) begin
-                GSHARE_PHT_47 <= 2'b00;
-              end
-              if(_zz_50) begin
-                GSHARE_PHT_48 <= 2'b00;
-              end
-              if(_zz_51) begin
-                GSHARE_PHT_49 <= 2'b00;
-              end
-              if(_zz_52) begin
-                GSHARE_PHT_50 <= 2'b00;
-              end
-              if(_zz_53) begin
-                GSHARE_PHT_51 <= 2'b00;
-              end
-              if(_zz_54) begin
-                GSHARE_PHT_52 <= 2'b00;
-              end
-              if(_zz_55) begin
-                GSHARE_PHT_53 <= 2'b00;
-              end
-              if(_zz_56) begin
-                GSHARE_PHT_54 <= 2'b00;
-              end
-              if(_zz_57) begin
-                GSHARE_PHT_55 <= 2'b00;
-              end
-              if(_zz_58) begin
-                GSHARE_PHT_56 <= 2'b00;
-              end
-              if(_zz_59) begin
-                GSHARE_PHT_57 <= 2'b00;
-              end
-              if(_zz_60) begin
-                GSHARE_PHT_58 <= 2'b00;
-              end
-              if(_zz_61) begin
-                GSHARE_PHT_59 <= 2'b00;
-              end
-              if(_zz_62) begin
-                GSHARE_PHT_60 <= 2'b00;
-              end
-              if(_zz_63) begin
-                GSHARE_PHT_61 <= 2'b00;
-              end
-              if(_zz_64) begin
-                GSHARE_PHT_62 <= 2'b00;
-              end
-              if(_zz_65) begin
-                GSHARE_PHT_63 <= 2'b00;
-              end
-              if(_zz_66) begin
-                GSHARE_PHT_64 <= 2'b00;
-              end
-              if(_zz_67) begin
-                GSHARE_PHT_65 <= 2'b00;
-              end
-              if(_zz_68) begin
-                GSHARE_PHT_66 <= 2'b00;
-              end
-              if(_zz_69) begin
-                GSHARE_PHT_67 <= 2'b00;
-              end
-              if(_zz_70) begin
-                GSHARE_PHT_68 <= 2'b00;
-              end
-              if(_zz_71) begin
-                GSHARE_PHT_69 <= 2'b00;
-              end
-              if(_zz_72) begin
-                GSHARE_PHT_70 <= 2'b00;
-              end
-              if(_zz_73) begin
-                GSHARE_PHT_71 <= 2'b00;
-              end
-              if(_zz_74) begin
-                GSHARE_PHT_72 <= 2'b00;
-              end
-              if(_zz_75) begin
-                GSHARE_PHT_73 <= 2'b00;
-              end
-              if(_zz_76) begin
-                GSHARE_PHT_74 <= 2'b00;
-              end
-              if(_zz_77) begin
-                GSHARE_PHT_75 <= 2'b00;
-              end
-              if(_zz_78) begin
-                GSHARE_PHT_76 <= 2'b00;
-              end
-              if(_zz_79) begin
-                GSHARE_PHT_77 <= 2'b00;
-              end
-              if(_zz_80) begin
-                GSHARE_PHT_78 <= 2'b00;
-              end
-              if(_zz_81) begin
-                GSHARE_PHT_79 <= 2'b00;
-              end
-              if(_zz_82) begin
-                GSHARE_PHT_80 <= 2'b00;
-              end
-              if(_zz_83) begin
-                GSHARE_PHT_81 <= 2'b00;
-              end
-              if(_zz_84) begin
-                GSHARE_PHT_82 <= 2'b00;
-              end
-              if(_zz_85) begin
-                GSHARE_PHT_83 <= 2'b00;
-              end
-              if(_zz_86) begin
-                GSHARE_PHT_84 <= 2'b00;
-              end
-              if(_zz_87) begin
-                GSHARE_PHT_85 <= 2'b00;
-              end
-              if(_zz_88) begin
-                GSHARE_PHT_86 <= 2'b00;
-              end
-              if(_zz_89) begin
-                GSHARE_PHT_87 <= 2'b00;
-              end
-              if(_zz_90) begin
-                GSHARE_PHT_88 <= 2'b00;
-              end
-              if(_zz_91) begin
-                GSHARE_PHT_89 <= 2'b00;
-              end
-              if(_zz_92) begin
-                GSHARE_PHT_90 <= 2'b00;
-              end
-              if(_zz_93) begin
-                GSHARE_PHT_91 <= 2'b00;
-              end
-              if(_zz_94) begin
-                GSHARE_PHT_92 <= 2'b00;
-              end
-              if(_zz_95) begin
-                GSHARE_PHT_93 <= 2'b00;
-              end
-              if(_zz_96) begin
-                GSHARE_PHT_94 <= 2'b00;
-              end
-              if(_zz_97) begin
-                GSHARE_PHT_95 <= 2'b00;
-              end
-              if(_zz_98) begin
-                GSHARE_PHT_96 <= 2'b00;
-              end
-              if(_zz_99) begin
-                GSHARE_PHT_97 <= 2'b00;
-              end
-              if(_zz_100) begin
-                GSHARE_PHT_98 <= 2'b00;
-              end
-              if(_zz_101) begin
-                GSHARE_PHT_99 <= 2'b00;
-              end
-              if(_zz_102) begin
-                GSHARE_PHT_100 <= 2'b00;
-              end
-              if(_zz_103) begin
-                GSHARE_PHT_101 <= 2'b00;
-              end
-              if(_zz_104) begin
-                GSHARE_PHT_102 <= 2'b00;
-              end
-              if(_zz_105) begin
-                GSHARE_PHT_103 <= 2'b00;
-              end
-              if(_zz_106) begin
-                GSHARE_PHT_104 <= 2'b00;
-              end
-              if(_zz_107) begin
-                GSHARE_PHT_105 <= 2'b00;
-              end
-              if(_zz_108) begin
-                GSHARE_PHT_106 <= 2'b00;
-              end
-              if(_zz_109) begin
-                GSHARE_PHT_107 <= 2'b00;
-              end
-              if(_zz_110) begin
-                GSHARE_PHT_108 <= 2'b00;
-              end
-              if(_zz_111) begin
-                GSHARE_PHT_109 <= 2'b00;
-              end
-              if(_zz_112) begin
-                GSHARE_PHT_110 <= 2'b00;
-              end
-              if(_zz_113) begin
-                GSHARE_PHT_111 <= 2'b00;
-              end
-              if(_zz_114) begin
-                GSHARE_PHT_112 <= 2'b00;
-              end
-              if(_zz_115) begin
-                GSHARE_PHT_113 <= 2'b00;
-              end
-              if(_zz_116) begin
-                GSHARE_PHT_114 <= 2'b00;
-              end
-              if(_zz_117) begin
-                GSHARE_PHT_115 <= 2'b00;
-              end
-              if(_zz_118) begin
-                GSHARE_PHT_116 <= 2'b00;
-              end
-              if(_zz_119) begin
-                GSHARE_PHT_117 <= 2'b00;
-              end
-              if(_zz_120) begin
-                GSHARE_PHT_118 <= 2'b00;
-              end
-              if(_zz_121) begin
-                GSHARE_PHT_119 <= 2'b00;
-              end
-              if(_zz_122) begin
-                GSHARE_PHT_120 <= 2'b00;
-              end
-              if(_zz_123) begin
-                GSHARE_PHT_121 <= 2'b00;
-              end
-              if(_zz_124) begin
-                GSHARE_PHT_122 <= 2'b00;
-              end
-              if(_zz_125) begin
-                GSHARE_PHT_123 <= 2'b00;
-              end
-              if(_zz_126) begin
-                GSHARE_PHT_124 <= 2'b00;
-              end
-              if(_zz_127) begin
-                GSHARE_PHT_125 <= 2'b00;
-              end
-              if(_zz_128) begin
-                GSHARE_PHT_126 <= 2'b00;
-              end
-              if(_zz_129) begin
-                GSHARE_PHT_127 <= 2'b00;
               end
             end
           end
@@ -28001,294 +22977,6 @@ module gshare_predictor (
               if(_zz_33) begin
                 GSHARE_PHT_31 <= 2'b10;
               end
-              if(_zz_34) begin
-                GSHARE_PHT_32 <= 2'b10;
-              end
-              if(_zz_35) begin
-                GSHARE_PHT_33 <= 2'b10;
-              end
-              if(_zz_36) begin
-                GSHARE_PHT_34 <= 2'b10;
-              end
-              if(_zz_37) begin
-                GSHARE_PHT_35 <= 2'b10;
-              end
-              if(_zz_38) begin
-                GSHARE_PHT_36 <= 2'b10;
-              end
-              if(_zz_39) begin
-                GSHARE_PHT_37 <= 2'b10;
-              end
-              if(_zz_40) begin
-                GSHARE_PHT_38 <= 2'b10;
-              end
-              if(_zz_41) begin
-                GSHARE_PHT_39 <= 2'b10;
-              end
-              if(_zz_42) begin
-                GSHARE_PHT_40 <= 2'b10;
-              end
-              if(_zz_43) begin
-                GSHARE_PHT_41 <= 2'b10;
-              end
-              if(_zz_44) begin
-                GSHARE_PHT_42 <= 2'b10;
-              end
-              if(_zz_45) begin
-                GSHARE_PHT_43 <= 2'b10;
-              end
-              if(_zz_46) begin
-                GSHARE_PHT_44 <= 2'b10;
-              end
-              if(_zz_47) begin
-                GSHARE_PHT_45 <= 2'b10;
-              end
-              if(_zz_48) begin
-                GSHARE_PHT_46 <= 2'b10;
-              end
-              if(_zz_49) begin
-                GSHARE_PHT_47 <= 2'b10;
-              end
-              if(_zz_50) begin
-                GSHARE_PHT_48 <= 2'b10;
-              end
-              if(_zz_51) begin
-                GSHARE_PHT_49 <= 2'b10;
-              end
-              if(_zz_52) begin
-                GSHARE_PHT_50 <= 2'b10;
-              end
-              if(_zz_53) begin
-                GSHARE_PHT_51 <= 2'b10;
-              end
-              if(_zz_54) begin
-                GSHARE_PHT_52 <= 2'b10;
-              end
-              if(_zz_55) begin
-                GSHARE_PHT_53 <= 2'b10;
-              end
-              if(_zz_56) begin
-                GSHARE_PHT_54 <= 2'b10;
-              end
-              if(_zz_57) begin
-                GSHARE_PHT_55 <= 2'b10;
-              end
-              if(_zz_58) begin
-                GSHARE_PHT_56 <= 2'b10;
-              end
-              if(_zz_59) begin
-                GSHARE_PHT_57 <= 2'b10;
-              end
-              if(_zz_60) begin
-                GSHARE_PHT_58 <= 2'b10;
-              end
-              if(_zz_61) begin
-                GSHARE_PHT_59 <= 2'b10;
-              end
-              if(_zz_62) begin
-                GSHARE_PHT_60 <= 2'b10;
-              end
-              if(_zz_63) begin
-                GSHARE_PHT_61 <= 2'b10;
-              end
-              if(_zz_64) begin
-                GSHARE_PHT_62 <= 2'b10;
-              end
-              if(_zz_65) begin
-                GSHARE_PHT_63 <= 2'b10;
-              end
-              if(_zz_66) begin
-                GSHARE_PHT_64 <= 2'b10;
-              end
-              if(_zz_67) begin
-                GSHARE_PHT_65 <= 2'b10;
-              end
-              if(_zz_68) begin
-                GSHARE_PHT_66 <= 2'b10;
-              end
-              if(_zz_69) begin
-                GSHARE_PHT_67 <= 2'b10;
-              end
-              if(_zz_70) begin
-                GSHARE_PHT_68 <= 2'b10;
-              end
-              if(_zz_71) begin
-                GSHARE_PHT_69 <= 2'b10;
-              end
-              if(_zz_72) begin
-                GSHARE_PHT_70 <= 2'b10;
-              end
-              if(_zz_73) begin
-                GSHARE_PHT_71 <= 2'b10;
-              end
-              if(_zz_74) begin
-                GSHARE_PHT_72 <= 2'b10;
-              end
-              if(_zz_75) begin
-                GSHARE_PHT_73 <= 2'b10;
-              end
-              if(_zz_76) begin
-                GSHARE_PHT_74 <= 2'b10;
-              end
-              if(_zz_77) begin
-                GSHARE_PHT_75 <= 2'b10;
-              end
-              if(_zz_78) begin
-                GSHARE_PHT_76 <= 2'b10;
-              end
-              if(_zz_79) begin
-                GSHARE_PHT_77 <= 2'b10;
-              end
-              if(_zz_80) begin
-                GSHARE_PHT_78 <= 2'b10;
-              end
-              if(_zz_81) begin
-                GSHARE_PHT_79 <= 2'b10;
-              end
-              if(_zz_82) begin
-                GSHARE_PHT_80 <= 2'b10;
-              end
-              if(_zz_83) begin
-                GSHARE_PHT_81 <= 2'b10;
-              end
-              if(_zz_84) begin
-                GSHARE_PHT_82 <= 2'b10;
-              end
-              if(_zz_85) begin
-                GSHARE_PHT_83 <= 2'b10;
-              end
-              if(_zz_86) begin
-                GSHARE_PHT_84 <= 2'b10;
-              end
-              if(_zz_87) begin
-                GSHARE_PHT_85 <= 2'b10;
-              end
-              if(_zz_88) begin
-                GSHARE_PHT_86 <= 2'b10;
-              end
-              if(_zz_89) begin
-                GSHARE_PHT_87 <= 2'b10;
-              end
-              if(_zz_90) begin
-                GSHARE_PHT_88 <= 2'b10;
-              end
-              if(_zz_91) begin
-                GSHARE_PHT_89 <= 2'b10;
-              end
-              if(_zz_92) begin
-                GSHARE_PHT_90 <= 2'b10;
-              end
-              if(_zz_93) begin
-                GSHARE_PHT_91 <= 2'b10;
-              end
-              if(_zz_94) begin
-                GSHARE_PHT_92 <= 2'b10;
-              end
-              if(_zz_95) begin
-                GSHARE_PHT_93 <= 2'b10;
-              end
-              if(_zz_96) begin
-                GSHARE_PHT_94 <= 2'b10;
-              end
-              if(_zz_97) begin
-                GSHARE_PHT_95 <= 2'b10;
-              end
-              if(_zz_98) begin
-                GSHARE_PHT_96 <= 2'b10;
-              end
-              if(_zz_99) begin
-                GSHARE_PHT_97 <= 2'b10;
-              end
-              if(_zz_100) begin
-                GSHARE_PHT_98 <= 2'b10;
-              end
-              if(_zz_101) begin
-                GSHARE_PHT_99 <= 2'b10;
-              end
-              if(_zz_102) begin
-                GSHARE_PHT_100 <= 2'b10;
-              end
-              if(_zz_103) begin
-                GSHARE_PHT_101 <= 2'b10;
-              end
-              if(_zz_104) begin
-                GSHARE_PHT_102 <= 2'b10;
-              end
-              if(_zz_105) begin
-                GSHARE_PHT_103 <= 2'b10;
-              end
-              if(_zz_106) begin
-                GSHARE_PHT_104 <= 2'b10;
-              end
-              if(_zz_107) begin
-                GSHARE_PHT_105 <= 2'b10;
-              end
-              if(_zz_108) begin
-                GSHARE_PHT_106 <= 2'b10;
-              end
-              if(_zz_109) begin
-                GSHARE_PHT_107 <= 2'b10;
-              end
-              if(_zz_110) begin
-                GSHARE_PHT_108 <= 2'b10;
-              end
-              if(_zz_111) begin
-                GSHARE_PHT_109 <= 2'b10;
-              end
-              if(_zz_112) begin
-                GSHARE_PHT_110 <= 2'b10;
-              end
-              if(_zz_113) begin
-                GSHARE_PHT_111 <= 2'b10;
-              end
-              if(_zz_114) begin
-                GSHARE_PHT_112 <= 2'b10;
-              end
-              if(_zz_115) begin
-                GSHARE_PHT_113 <= 2'b10;
-              end
-              if(_zz_116) begin
-                GSHARE_PHT_114 <= 2'b10;
-              end
-              if(_zz_117) begin
-                GSHARE_PHT_115 <= 2'b10;
-              end
-              if(_zz_118) begin
-                GSHARE_PHT_116 <= 2'b10;
-              end
-              if(_zz_119) begin
-                GSHARE_PHT_117 <= 2'b10;
-              end
-              if(_zz_120) begin
-                GSHARE_PHT_118 <= 2'b10;
-              end
-              if(_zz_121) begin
-                GSHARE_PHT_119 <= 2'b10;
-              end
-              if(_zz_122) begin
-                GSHARE_PHT_120 <= 2'b10;
-              end
-              if(_zz_123) begin
-                GSHARE_PHT_121 <= 2'b10;
-              end
-              if(_zz_124) begin
-                GSHARE_PHT_122 <= 2'b10;
-              end
-              if(_zz_125) begin
-                GSHARE_PHT_123 <= 2'b10;
-              end
-              if(_zz_126) begin
-                GSHARE_PHT_124 <= 2'b10;
-              end
-              if(_zz_127) begin
-                GSHARE_PHT_125 <= 2'b10;
-              end
-              if(_zz_128) begin
-                GSHARE_PHT_126 <= 2'b10;
-              end
-              if(_zz_129) begin
-                GSHARE_PHT_127 <= 2'b10;
-              end
             end else begin
               if(_zz_2) begin
                 GSHARE_PHT_0 <= 2'b11;
@@ -28386,1083 +23074,219 @@ module gshare_predictor (
               if(_zz_33) begin
                 GSHARE_PHT_31 <= 2'b11;
               end
-              if(_zz_34) begin
-                GSHARE_PHT_32 <= 2'b11;
-              end
-              if(_zz_35) begin
-                GSHARE_PHT_33 <= 2'b11;
-              end
-              if(_zz_36) begin
-                GSHARE_PHT_34 <= 2'b11;
-              end
-              if(_zz_37) begin
-                GSHARE_PHT_35 <= 2'b11;
-              end
-              if(_zz_38) begin
-                GSHARE_PHT_36 <= 2'b11;
-              end
-              if(_zz_39) begin
-                GSHARE_PHT_37 <= 2'b11;
-              end
-              if(_zz_40) begin
-                GSHARE_PHT_38 <= 2'b11;
-              end
-              if(_zz_41) begin
-                GSHARE_PHT_39 <= 2'b11;
-              end
-              if(_zz_42) begin
-                GSHARE_PHT_40 <= 2'b11;
-              end
-              if(_zz_43) begin
-                GSHARE_PHT_41 <= 2'b11;
-              end
-              if(_zz_44) begin
-                GSHARE_PHT_42 <= 2'b11;
-              end
-              if(_zz_45) begin
-                GSHARE_PHT_43 <= 2'b11;
-              end
-              if(_zz_46) begin
-                GSHARE_PHT_44 <= 2'b11;
-              end
-              if(_zz_47) begin
-                GSHARE_PHT_45 <= 2'b11;
-              end
-              if(_zz_48) begin
-                GSHARE_PHT_46 <= 2'b11;
-              end
-              if(_zz_49) begin
-                GSHARE_PHT_47 <= 2'b11;
-              end
-              if(_zz_50) begin
-                GSHARE_PHT_48 <= 2'b11;
-              end
-              if(_zz_51) begin
-                GSHARE_PHT_49 <= 2'b11;
-              end
-              if(_zz_52) begin
-                GSHARE_PHT_50 <= 2'b11;
-              end
-              if(_zz_53) begin
-                GSHARE_PHT_51 <= 2'b11;
-              end
-              if(_zz_54) begin
-                GSHARE_PHT_52 <= 2'b11;
-              end
-              if(_zz_55) begin
-                GSHARE_PHT_53 <= 2'b11;
-              end
-              if(_zz_56) begin
-                GSHARE_PHT_54 <= 2'b11;
-              end
-              if(_zz_57) begin
-                GSHARE_PHT_55 <= 2'b11;
-              end
-              if(_zz_58) begin
-                GSHARE_PHT_56 <= 2'b11;
-              end
-              if(_zz_59) begin
-                GSHARE_PHT_57 <= 2'b11;
-              end
-              if(_zz_60) begin
-                GSHARE_PHT_58 <= 2'b11;
-              end
-              if(_zz_61) begin
-                GSHARE_PHT_59 <= 2'b11;
-              end
-              if(_zz_62) begin
-                GSHARE_PHT_60 <= 2'b11;
-              end
-              if(_zz_63) begin
-                GSHARE_PHT_61 <= 2'b11;
-              end
-              if(_zz_64) begin
-                GSHARE_PHT_62 <= 2'b11;
-              end
-              if(_zz_65) begin
-                GSHARE_PHT_63 <= 2'b11;
-              end
-              if(_zz_66) begin
-                GSHARE_PHT_64 <= 2'b11;
-              end
-              if(_zz_67) begin
-                GSHARE_PHT_65 <= 2'b11;
-              end
-              if(_zz_68) begin
-                GSHARE_PHT_66 <= 2'b11;
-              end
-              if(_zz_69) begin
-                GSHARE_PHT_67 <= 2'b11;
-              end
-              if(_zz_70) begin
-                GSHARE_PHT_68 <= 2'b11;
-              end
-              if(_zz_71) begin
-                GSHARE_PHT_69 <= 2'b11;
-              end
-              if(_zz_72) begin
-                GSHARE_PHT_70 <= 2'b11;
-              end
-              if(_zz_73) begin
-                GSHARE_PHT_71 <= 2'b11;
-              end
-              if(_zz_74) begin
-                GSHARE_PHT_72 <= 2'b11;
-              end
-              if(_zz_75) begin
-                GSHARE_PHT_73 <= 2'b11;
-              end
-              if(_zz_76) begin
-                GSHARE_PHT_74 <= 2'b11;
-              end
-              if(_zz_77) begin
-                GSHARE_PHT_75 <= 2'b11;
-              end
-              if(_zz_78) begin
-                GSHARE_PHT_76 <= 2'b11;
-              end
-              if(_zz_79) begin
-                GSHARE_PHT_77 <= 2'b11;
-              end
-              if(_zz_80) begin
-                GSHARE_PHT_78 <= 2'b11;
-              end
-              if(_zz_81) begin
-                GSHARE_PHT_79 <= 2'b11;
-              end
-              if(_zz_82) begin
-                GSHARE_PHT_80 <= 2'b11;
-              end
-              if(_zz_83) begin
-                GSHARE_PHT_81 <= 2'b11;
-              end
-              if(_zz_84) begin
-                GSHARE_PHT_82 <= 2'b11;
-              end
-              if(_zz_85) begin
-                GSHARE_PHT_83 <= 2'b11;
-              end
-              if(_zz_86) begin
-                GSHARE_PHT_84 <= 2'b11;
-              end
-              if(_zz_87) begin
-                GSHARE_PHT_85 <= 2'b11;
-              end
-              if(_zz_88) begin
-                GSHARE_PHT_86 <= 2'b11;
-              end
-              if(_zz_89) begin
-                GSHARE_PHT_87 <= 2'b11;
-              end
-              if(_zz_90) begin
-                GSHARE_PHT_88 <= 2'b11;
-              end
-              if(_zz_91) begin
-                GSHARE_PHT_89 <= 2'b11;
-              end
-              if(_zz_92) begin
-                GSHARE_PHT_90 <= 2'b11;
-              end
-              if(_zz_93) begin
-                GSHARE_PHT_91 <= 2'b11;
-              end
-              if(_zz_94) begin
-                GSHARE_PHT_92 <= 2'b11;
-              end
-              if(_zz_95) begin
-                GSHARE_PHT_93 <= 2'b11;
-              end
-              if(_zz_96) begin
-                GSHARE_PHT_94 <= 2'b11;
-              end
-              if(_zz_97) begin
-                GSHARE_PHT_95 <= 2'b11;
-              end
-              if(_zz_98) begin
-                GSHARE_PHT_96 <= 2'b11;
-              end
-              if(_zz_99) begin
-                GSHARE_PHT_97 <= 2'b11;
-              end
-              if(_zz_100) begin
-                GSHARE_PHT_98 <= 2'b11;
-              end
-              if(_zz_101) begin
-                GSHARE_PHT_99 <= 2'b11;
-              end
-              if(_zz_102) begin
-                GSHARE_PHT_100 <= 2'b11;
-              end
-              if(_zz_103) begin
-                GSHARE_PHT_101 <= 2'b11;
-              end
-              if(_zz_104) begin
-                GSHARE_PHT_102 <= 2'b11;
-              end
-              if(_zz_105) begin
-                GSHARE_PHT_103 <= 2'b11;
-              end
-              if(_zz_106) begin
-                GSHARE_PHT_104 <= 2'b11;
-              end
-              if(_zz_107) begin
-                GSHARE_PHT_105 <= 2'b11;
-              end
-              if(_zz_108) begin
-                GSHARE_PHT_106 <= 2'b11;
-              end
-              if(_zz_109) begin
-                GSHARE_PHT_107 <= 2'b11;
-              end
-              if(_zz_110) begin
-                GSHARE_PHT_108 <= 2'b11;
-              end
-              if(_zz_111) begin
-                GSHARE_PHT_109 <= 2'b11;
-              end
-              if(_zz_112) begin
-                GSHARE_PHT_110 <= 2'b11;
-              end
-              if(_zz_113) begin
-                GSHARE_PHT_111 <= 2'b11;
-              end
-              if(_zz_114) begin
-                GSHARE_PHT_112 <= 2'b11;
-              end
-              if(_zz_115) begin
-                GSHARE_PHT_113 <= 2'b11;
-              end
-              if(_zz_116) begin
-                GSHARE_PHT_114 <= 2'b11;
-              end
-              if(_zz_117) begin
-                GSHARE_PHT_115 <= 2'b11;
-              end
-              if(_zz_118) begin
-                GSHARE_PHT_116 <= 2'b11;
-              end
-              if(_zz_119) begin
-                GSHARE_PHT_117 <= 2'b11;
-              end
-              if(_zz_120) begin
-                GSHARE_PHT_118 <= 2'b11;
-              end
-              if(_zz_121) begin
-                GSHARE_PHT_119 <= 2'b11;
-              end
-              if(_zz_122) begin
-                GSHARE_PHT_120 <= 2'b11;
-              end
-              if(_zz_123) begin
-                GSHARE_PHT_121 <= 2'b11;
-              end
-              if(_zz_124) begin
-                GSHARE_PHT_122 <= 2'b11;
-              end
-              if(_zz_125) begin
-                GSHARE_PHT_123 <= 2'b11;
-              end
-              if(_zz_126) begin
-                GSHARE_PHT_124 <= 2'b11;
-              end
-              if(_zz_127) begin
-                GSHARE_PHT_125 <= 2'b11;
-              end
-              if(_zz_128) begin
-                GSHARE_PHT_126 <= 2'b11;
-              end
-              if(_zz_129) begin
-                GSHARE_PHT_127 <= 2'b11;
-              end
             end
           end
         endcase
       end
       if(when_Predictor_l70) begin
-        GSHARE_global_branch_history <= {train_history[5 : 0],train_taken};
+        GSHARE_global_branch_history <= {train_history[3 : 0],train_taken};
       end else begin
         if(predict_valid) begin
-          GSHARE_global_branch_history <= {GSHARE_global_branch_history[5 : 0],predict_taken};
+          GSHARE_global_branch_history <= {GSHARE_global_branch_history[3 : 0],predict_taken};
         end
       end
       BTB_btb_alloc_index_value <= BTB_btb_alloc_index_valueNext;
       if(BTB_btb_is_hit) begin
-        if(_zz_130[0]) begin
+        if(_zz_34[0]) begin
           BTB_source_pc_0 <= train_pc;
         end
-        if(_zz_130[1]) begin
+        if(_zz_34[1]) begin
           BTB_source_pc_1 <= train_pc;
         end
-        if(_zz_130[2]) begin
+        if(_zz_34[2]) begin
           BTB_source_pc_2 <= train_pc;
         end
-        if(_zz_130[3]) begin
+        if(_zz_34[3]) begin
           BTB_source_pc_3 <= train_pc;
         end
-        if(_zz_130[4]) begin
+        if(_zz_34[4]) begin
           BTB_source_pc_4 <= train_pc;
         end
-        if(_zz_130[5]) begin
+        if(_zz_34[5]) begin
           BTB_source_pc_5 <= train_pc;
         end
-        if(_zz_130[6]) begin
+        if(_zz_34[6]) begin
           BTB_source_pc_6 <= train_pc;
         end
-        if(_zz_130[7]) begin
+        if(_zz_34[7]) begin
           BTB_source_pc_7 <= train_pc;
         end
-        if(_zz_130[8]) begin
+        if(_zz_34[8]) begin
           BTB_source_pc_8 <= train_pc;
         end
-        if(_zz_130[9]) begin
+        if(_zz_34[9]) begin
           BTB_source_pc_9 <= train_pc;
         end
-        if(_zz_130[10]) begin
+        if(_zz_34[10]) begin
           BTB_source_pc_10 <= train_pc;
         end
-        if(_zz_130[11]) begin
+        if(_zz_34[11]) begin
           BTB_source_pc_11 <= train_pc;
         end
-        if(_zz_130[12]) begin
+        if(_zz_34[12]) begin
           BTB_source_pc_12 <= train_pc;
         end
-        if(_zz_130[13]) begin
+        if(_zz_34[13]) begin
           BTB_source_pc_13 <= train_pc;
         end
-        if(_zz_130[14]) begin
+        if(_zz_34[14]) begin
           BTB_source_pc_14 <= train_pc;
         end
-        if(_zz_130[15]) begin
+        if(_zz_34[15]) begin
           BTB_source_pc_15 <= train_pc;
-        end
-        if(_zz_130[16]) begin
-          BTB_source_pc_16 <= train_pc;
-        end
-        if(_zz_130[17]) begin
-          BTB_source_pc_17 <= train_pc;
-        end
-        if(_zz_130[18]) begin
-          BTB_source_pc_18 <= train_pc;
-        end
-        if(_zz_130[19]) begin
-          BTB_source_pc_19 <= train_pc;
-        end
-        if(_zz_130[20]) begin
-          BTB_source_pc_20 <= train_pc;
-        end
-        if(_zz_130[21]) begin
-          BTB_source_pc_21 <= train_pc;
-        end
-        if(_zz_130[22]) begin
-          BTB_source_pc_22 <= train_pc;
-        end
-        if(_zz_130[23]) begin
-          BTB_source_pc_23 <= train_pc;
-        end
-        if(_zz_130[24]) begin
-          BTB_source_pc_24 <= train_pc;
-        end
-        if(_zz_130[25]) begin
-          BTB_source_pc_25 <= train_pc;
-        end
-        if(_zz_130[26]) begin
-          BTB_source_pc_26 <= train_pc;
-        end
-        if(_zz_130[27]) begin
-          BTB_source_pc_27 <= train_pc;
-        end
-        if(_zz_130[28]) begin
-          BTB_source_pc_28 <= train_pc;
-        end
-        if(_zz_130[29]) begin
-          BTB_source_pc_29 <= train_pc;
-        end
-        if(_zz_130[30]) begin
-          BTB_source_pc_30 <= train_pc;
-        end
-        if(_zz_130[31]) begin
-          BTB_source_pc_31 <= train_pc;
-        end
-        if(_zz_130[32]) begin
-          BTB_source_pc_32 <= train_pc;
-        end
-        if(_zz_130[33]) begin
-          BTB_source_pc_33 <= train_pc;
-        end
-        if(_zz_130[34]) begin
-          BTB_source_pc_34 <= train_pc;
-        end
-        if(_zz_130[35]) begin
-          BTB_source_pc_35 <= train_pc;
-        end
-        if(_zz_130[36]) begin
-          BTB_source_pc_36 <= train_pc;
-        end
-        if(_zz_130[37]) begin
-          BTB_source_pc_37 <= train_pc;
-        end
-        if(_zz_130[38]) begin
-          BTB_source_pc_38 <= train_pc;
-        end
-        if(_zz_130[39]) begin
-          BTB_source_pc_39 <= train_pc;
-        end
-        if(_zz_130[40]) begin
-          BTB_source_pc_40 <= train_pc;
-        end
-        if(_zz_130[41]) begin
-          BTB_source_pc_41 <= train_pc;
-        end
-        if(_zz_130[42]) begin
-          BTB_source_pc_42 <= train_pc;
-        end
-        if(_zz_130[43]) begin
-          BTB_source_pc_43 <= train_pc;
-        end
-        if(_zz_130[44]) begin
-          BTB_source_pc_44 <= train_pc;
-        end
-        if(_zz_130[45]) begin
-          BTB_source_pc_45 <= train_pc;
-        end
-        if(_zz_130[46]) begin
-          BTB_source_pc_46 <= train_pc;
-        end
-        if(_zz_130[47]) begin
-          BTB_source_pc_47 <= train_pc;
-        end
-        if(_zz_130[48]) begin
-          BTB_source_pc_48 <= train_pc;
-        end
-        if(_zz_130[49]) begin
-          BTB_source_pc_49 <= train_pc;
-        end
-        if(_zz_130[50]) begin
-          BTB_source_pc_50 <= train_pc;
-        end
-        if(_zz_130[51]) begin
-          BTB_source_pc_51 <= train_pc;
-        end
-        if(_zz_130[52]) begin
-          BTB_source_pc_52 <= train_pc;
-        end
-        if(_zz_130[53]) begin
-          BTB_source_pc_53 <= train_pc;
-        end
-        if(_zz_130[54]) begin
-          BTB_source_pc_54 <= train_pc;
-        end
-        if(_zz_130[55]) begin
-          BTB_source_pc_55 <= train_pc;
-        end
-        if(_zz_130[56]) begin
-          BTB_source_pc_56 <= train_pc;
-        end
-        if(_zz_130[57]) begin
-          BTB_source_pc_57 <= train_pc;
-        end
-        if(_zz_130[58]) begin
-          BTB_source_pc_58 <= train_pc;
-        end
-        if(_zz_130[59]) begin
-          BTB_source_pc_59 <= train_pc;
-        end
-        if(_zz_130[60]) begin
-          BTB_source_pc_60 <= train_pc;
-        end
-        if(_zz_130[61]) begin
-          BTB_source_pc_61 <= train_pc;
-        end
-        if(_zz_130[62]) begin
-          BTB_source_pc_62 <= train_pc;
-        end
-        if(_zz_130[63]) begin
-          BTB_source_pc_63 <= train_pc;
         end
         BTB_call[BTB_btb_write_index] <= train_is_call;
         BTB_ret[BTB_btb_write_index] <= train_is_ret;
         BTB_jmp[BTB_btb_write_index] <= train_is_jmp;
-        if(_zz_131[0]) begin
+        if(_zz_35[0]) begin
           BTB_target_pc_0 <= train_pc_next;
         end
-        if(_zz_131[1]) begin
+        if(_zz_35[1]) begin
           BTB_target_pc_1 <= train_pc_next;
         end
-        if(_zz_131[2]) begin
+        if(_zz_35[2]) begin
           BTB_target_pc_2 <= train_pc_next;
         end
-        if(_zz_131[3]) begin
+        if(_zz_35[3]) begin
           BTB_target_pc_3 <= train_pc_next;
         end
-        if(_zz_131[4]) begin
+        if(_zz_35[4]) begin
           BTB_target_pc_4 <= train_pc_next;
         end
-        if(_zz_131[5]) begin
+        if(_zz_35[5]) begin
           BTB_target_pc_5 <= train_pc_next;
         end
-        if(_zz_131[6]) begin
+        if(_zz_35[6]) begin
           BTB_target_pc_6 <= train_pc_next;
         end
-        if(_zz_131[7]) begin
+        if(_zz_35[7]) begin
           BTB_target_pc_7 <= train_pc_next;
         end
-        if(_zz_131[8]) begin
+        if(_zz_35[8]) begin
           BTB_target_pc_8 <= train_pc_next;
         end
-        if(_zz_131[9]) begin
+        if(_zz_35[9]) begin
           BTB_target_pc_9 <= train_pc_next;
         end
-        if(_zz_131[10]) begin
+        if(_zz_35[10]) begin
           BTB_target_pc_10 <= train_pc_next;
         end
-        if(_zz_131[11]) begin
+        if(_zz_35[11]) begin
           BTB_target_pc_11 <= train_pc_next;
         end
-        if(_zz_131[12]) begin
+        if(_zz_35[12]) begin
           BTB_target_pc_12 <= train_pc_next;
         end
-        if(_zz_131[13]) begin
+        if(_zz_35[13]) begin
           BTB_target_pc_13 <= train_pc_next;
         end
-        if(_zz_131[14]) begin
+        if(_zz_35[14]) begin
           BTB_target_pc_14 <= train_pc_next;
         end
-        if(_zz_131[15]) begin
+        if(_zz_35[15]) begin
           BTB_target_pc_15 <= train_pc_next;
-        end
-        if(_zz_131[16]) begin
-          BTB_target_pc_16 <= train_pc_next;
-        end
-        if(_zz_131[17]) begin
-          BTB_target_pc_17 <= train_pc_next;
-        end
-        if(_zz_131[18]) begin
-          BTB_target_pc_18 <= train_pc_next;
-        end
-        if(_zz_131[19]) begin
-          BTB_target_pc_19 <= train_pc_next;
-        end
-        if(_zz_131[20]) begin
-          BTB_target_pc_20 <= train_pc_next;
-        end
-        if(_zz_131[21]) begin
-          BTB_target_pc_21 <= train_pc_next;
-        end
-        if(_zz_131[22]) begin
-          BTB_target_pc_22 <= train_pc_next;
-        end
-        if(_zz_131[23]) begin
-          BTB_target_pc_23 <= train_pc_next;
-        end
-        if(_zz_131[24]) begin
-          BTB_target_pc_24 <= train_pc_next;
-        end
-        if(_zz_131[25]) begin
-          BTB_target_pc_25 <= train_pc_next;
-        end
-        if(_zz_131[26]) begin
-          BTB_target_pc_26 <= train_pc_next;
-        end
-        if(_zz_131[27]) begin
-          BTB_target_pc_27 <= train_pc_next;
-        end
-        if(_zz_131[28]) begin
-          BTB_target_pc_28 <= train_pc_next;
-        end
-        if(_zz_131[29]) begin
-          BTB_target_pc_29 <= train_pc_next;
-        end
-        if(_zz_131[30]) begin
-          BTB_target_pc_30 <= train_pc_next;
-        end
-        if(_zz_131[31]) begin
-          BTB_target_pc_31 <= train_pc_next;
-        end
-        if(_zz_131[32]) begin
-          BTB_target_pc_32 <= train_pc_next;
-        end
-        if(_zz_131[33]) begin
-          BTB_target_pc_33 <= train_pc_next;
-        end
-        if(_zz_131[34]) begin
-          BTB_target_pc_34 <= train_pc_next;
-        end
-        if(_zz_131[35]) begin
-          BTB_target_pc_35 <= train_pc_next;
-        end
-        if(_zz_131[36]) begin
-          BTB_target_pc_36 <= train_pc_next;
-        end
-        if(_zz_131[37]) begin
-          BTB_target_pc_37 <= train_pc_next;
-        end
-        if(_zz_131[38]) begin
-          BTB_target_pc_38 <= train_pc_next;
-        end
-        if(_zz_131[39]) begin
-          BTB_target_pc_39 <= train_pc_next;
-        end
-        if(_zz_131[40]) begin
-          BTB_target_pc_40 <= train_pc_next;
-        end
-        if(_zz_131[41]) begin
-          BTB_target_pc_41 <= train_pc_next;
-        end
-        if(_zz_131[42]) begin
-          BTB_target_pc_42 <= train_pc_next;
-        end
-        if(_zz_131[43]) begin
-          BTB_target_pc_43 <= train_pc_next;
-        end
-        if(_zz_131[44]) begin
-          BTB_target_pc_44 <= train_pc_next;
-        end
-        if(_zz_131[45]) begin
-          BTB_target_pc_45 <= train_pc_next;
-        end
-        if(_zz_131[46]) begin
-          BTB_target_pc_46 <= train_pc_next;
-        end
-        if(_zz_131[47]) begin
-          BTB_target_pc_47 <= train_pc_next;
-        end
-        if(_zz_131[48]) begin
-          BTB_target_pc_48 <= train_pc_next;
-        end
-        if(_zz_131[49]) begin
-          BTB_target_pc_49 <= train_pc_next;
-        end
-        if(_zz_131[50]) begin
-          BTB_target_pc_50 <= train_pc_next;
-        end
-        if(_zz_131[51]) begin
-          BTB_target_pc_51 <= train_pc_next;
-        end
-        if(_zz_131[52]) begin
-          BTB_target_pc_52 <= train_pc_next;
-        end
-        if(_zz_131[53]) begin
-          BTB_target_pc_53 <= train_pc_next;
-        end
-        if(_zz_131[54]) begin
-          BTB_target_pc_54 <= train_pc_next;
-        end
-        if(_zz_131[55]) begin
-          BTB_target_pc_55 <= train_pc_next;
-        end
-        if(_zz_131[56]) begin
-          BTB_target_pc_56 <= train_pc_next;
-        end
-        if(_zz_131[57]) begin
-          BTB_target_pc_57 <= train_pc_next;
-        end
-        if(_zz_131[58]) begin
-          BTB_target_pc_58 <= train_pc_next;
-        end
-        if(_zz_131[59]) begin
-          BTB_target_pc_59 <= train_pc_next;
-        end
-        if(_zz_131[60]) begin
-          BTB_target_pc_60 <= train_pc_next;
-        end
-        if(_zz_131[61]) begin
-          BTB_target_pc_61 <= train_pc_next;
-        end
-        if(_zz_131[62]) begin
-          BTB_target_pc_62 <= train_pc_next;
-        end
-        if(_zz_131[63]) begin
-          BTB_target_pc_63 <= train_pc_next;
         end
       end else begin
         if(BTB_btb_is_miss) begin
           BTB_valid[BTB_btb_alloc_index_value] <= 1'b1;
-          if(_zz_132[0]) begin
+          if(_zz_36[0]) begin
             BTB_source_pc_0 <= train_pc;
           end
-          if(_zz_132[1]) begin
+          if(_zz_36[1]) begin
             BTB_source_pc_1 <= train_pc;
           end
-          if(_zz_132[2]) begin
+          if(_zz_36[2]) begin
             BTB_source_pc_2 <= train_pc;
           end
-          if(_zz_132[3]) begin
+          if(_zz_36[3]) begin
             BTB_source_pc_3 <= train_pc;
           end
-          if(_zz_132[4]) begin
+          if(_zz_36[4]) begin
             BTB_source_pc_4 <= train_pc;
           end
-          if(_zz_132[5]) begin
+          if(_zz_36[5]) begin
             BTB_source_pc_5 <= train_pc;
           end
-          if(_zz_132[6]) begin
+          if(_zz_36[6]) begin
             BTB_source_pc_6 <= train_pc;
           end
-          if(_zz_132[7]) begin
+          if(_zz_36[7]) begin
             BTB_source_pc_7 <= train_pc;
           end
-          if(_zz_132[8]) begin
+          if(_zz_36[8]) begin
             BTB_source_pc_8 <= train_pc;
           end
-          if(_zz_132[9]) begin
+          if(_zz_36[9]) begin
             BTB_source_pc_9 <= train_pc;
           end
-          if(_zz_132[10]) begin
+          if(_zz_36[10]) begin
             BTB_source_pc_10 <= train_pc;
           end
-          if(_zz_132[11]) begin
+          if(_zz_36[11]) begin
             BTB_source_pc_11 <= train_pc;
           end
-          if(_zz_132[12]) begin
+          if(_zz_36[12]) begin
             BTB_source_pc_12 <= train_pc;
           end
-          if(_zz_132[13]) begin
+          if(_zz_36[13]) begin
             BTB_source_pc_13 <= train_pc;
           end
-          if(_zz_132[14]) begin
+          if(_zz_36[14]) begin
             BTB_source_pc_14 <= train_pc;
           end
-          if(_zz_132[15]) begin
+          if(_zz_36[15]) begin
             BTB_source_pc_15 <= train_pc;
-          end
-          if(_zz_132[16]) begin
-            BTB_source_pc_16 <= train_pc;
-          end
-          if(_zz_132[17]) begin
-            BTB_source_pc_17 <= train_pc;
-          end
-          if(_zz_132[18]) begin
-            BTB_source_pc_18 <= train_pc;
-          end
-          if(_zz_132[19]) begin
-            BTB_source_pc_19 <= train_pc;
-          end
-          if(_zz_132[20]) begin
-            BTB_source_pc_20 <= train_pc;
-          end
-          if(_zz_132[21]) begin
-            BTB_source_pc_21 <= train_pc;
-          end
-          if(_zz_132[22]) begin
-            BTB_source_pc_22 <= train_pc;
-          end
-          if(_zz_132[23]) begin
-            BTB_source_pc_23 <= train_pc;
-          end
-          if(_zz_132[24]) begin
-            BTB_source_pc_24 <= train_pc;
-          end
-          if(_zz_132[25]) begin
-            BTB_source_pc_25 <= train_pc;
-          end
-          if(_zz_132[26]) begin
-            BTB_source_pc_26 <= train_pc;
-          end
-          if(_zz_132[27]) begin
-            BTB_source_pc_27 <= train_pc;
-          end
-          if(_zz_132[28]) begin
-            BTB_source_pc_28 <= train_pc;
-          end
-          if(_zz_132[29]) begin
-            BTB_source_pc_29 <= train_pc;
-          end
-          if(_zz_132[30]) begin
-            BTB_source_pc_30 <= train_pc;
-          end
-          if(_zz_132[31]) begin
-            BTB_source_pc_31 <= train_pc;
-          end
-          if(_zz_132[32]) begin
-            BTB_source_pc_32 <= train_pc;
-          end
-          if(_zz_132[33]) begin
-            BTB_source_pc_33 <= train_pc;
-          end
-          if(_zz_132[34]) begin
-            BTB_source_pc_34 <= train_pc;
-          end
-          if(_zz_132[35]) begin
-            BTB_source_pc_35 <= train_pc;
-          end
-          if(_zz_132[36]) begin
-            BTB_source_pc_36 <= train_pc;
-          end
-          if(_zz_132[37]) begin
-            BTB_source_pc_37 <= train_pc;
-          end
-          if(_zz_132[38]) begin
-            BTB_source_pc_38 <= train_pc;
-          end
-          if(_zz_132[39]) begin
-            BTB_source_pc_39 <= train_pc;
-          end
-          if(_zz_132[40]) begin
-            BTB_source_pc_40 <= train_pc;
-          end
-          if(_zz_132[41]) begin
-            BTB_source_pc_41 <= train_pc;
-          end
-          if(_zz_132[42]) begin
-            BTB_source_pc_42 <= train_pc;
-          end
-          if(_zz_132[43]) begin
-            BTB_source_pc_43 <= train_pc;
-          end
-          if(_zz_132[44]) begin
-            BTB_source_pc_44 <= train_pc;
-          end
-          if(_zz_132[45]) begin
-            BTB_source_pc_45 <= train_pc;
-          end
-          if(_zz_132[46]) begin
-            BTB_source_pc_46 <= train_pc;
-          end
-          if(_zz_132[47]) begin
-            BTB_source_pc_47 <= train_pc;
-          end
-          if(_zz_132[48]) begin
-            BTB_source_pc_48 <= train_pc;
-          end
-          if(_zz_132[49]) begin
-            BTB_source_pc_49 <= train_pc;
-          end
-          if(_zz_132[50]) begin
-            BTB_source_pc_50 <= train_pc;
-          end
-          if(_zz_132[51]) begin
-            BTB_source_pc_51 <= train_pc;
-          end
-          if(_zz_132[52]) begin
-            BTB_source_pc_52 <= train_pc;
-          end
-          if(_zz_132[53]) begin
-            BTB_source_pc_53 <= train_pc;
-          end
-          if(_zz_132[54]) begin
-            BTB_source_pc_54 <= train_pc;
-          end
-          if(_zz_132[55]) begin
-            BTB_source_pc_55 <= train_pc;
-          end
-          if(_zz_132[56]) begin
-            BTB_source_pc_56 <= train_pc;
-          end
-          if(_zz_132[57]) begin
-            BTB_source_pc_57 <= train_pc;
-          end
-          if(_zz_132[58]) begin
-            BTB_source_pc_58 <= train_pc;
-          end
-          if(_zz_132[59]) begin
-            BTB_source_pc_59 <= train_pc;
-          end
-          if(_zz_132[60]) begin
-            BTB_source_pc_60 <= train_pc;
-          end
-          if(_zz_132[61]) begin
-            BTB_source_pc_61 <= train_pc;
-          end
-          if(_zz_132[62]) begin
-            BTB_source_pc_62 <= train_pc;
-          end
-          if(_zz_132[63]) begin
-            BTB_source_pc_63 <= train_pc;
           end
           BTB_call[BTB_btb_alloc_index_value] <= train_is_call;
           BTB_ret[BTB_btb_alloc_index_value] <= train_is_ret;
           BTB_jmp[BTB_btb_alloc_index_value] <= train_is_jmp;
-          if(_zz_133[0]) begin
+          if(_zz_37[0]) begin
             BTB_target_pc_0 <= train_pc_next;
           end
-          if(_zz_133[1]) begin
+          if(_zz_37[1]) begin
             BTB_target_pc_1 <= train_pc_next;
           end
-          if(_zz_133[2]) begin
+          if(_zz_37[2]) begin
             BTB_target_pc_2 <= train_pc_next;
           end
-          if(_zz_133[3]) begin
+          if(_zz_37[3]) begin
             BTB_target_pc_3 <= train_pc_next;
           end
-          if(_zz_133[4]) begin
+          if(_zz_37[4]) begin
             BTB_target_pc_4 <= train_pc_next;
           end
-          if(_zz_133[5]) begin
+          if(_zz_37[5]) begin
             BTB_target_pc_5 <= train_pc_next;
           end
-          if(_zz_133[6]) begin
+          if(_zz_37[6]) begin
             BTB_target_pc_6 <= train_pc_next;
           end
-          if(_zz_133[7]) begin
+          if(_zz_37[7]) begin
             BTB_target_pc_7 <= train_pc_next;
           end
-          if(_zz_133[8]) begin
+          if(_zz_37[8]) begin
             BTB_target_pc_8 <= train_pc_next;
           end
-          if(_zz_133[9]) begin
+          if(_zz_37[9]) begin
             BTB_target_pc_9 <= train_pc_next;
           end
-          if(_zz_133[10]) begin
+          if(_zz_37[10]) begin
             BTB_target_pc_10 <= train_pc_next;
           end
-          if(_zz_133[11]) begin
+          if(_zz_37[11]) begin
             BTB_target_pc_11 <= train_pc_next;
           end
-          if(_zz_133[12]) begin
+          if(_zz_37[12]) begin
             BTB_target_pc_12 <= train_pc_next;
           end
-          if(_zz_133[13]) begin
+          if(_zz_37[13]) begin
             BTB_target_pc_13 <= train_pc_next;
           end
-          if(_zz_133[14]) begin
+          if(_zz_37[14]) begin
             BTB_target_pc_14 <= train_pc_next;
           end
-          if(_zz_133[15]) begin
+          if(_zz_37[15]) begin
             BTB_target_pc_15 <= train_pc_next;
-          end
-          if(_zz_133[16]) begin
-            BTB_target_pc_16 <= train_pc_next;
-          end
-          if(_zz_133[17]) begin
-            BTB_target_pc_17 <= train_pc_next;
-          end
-          if(_zz_133[18]) begin
-            BTB_target_pc_18 <= train_pc_next;
-          end
-          if(_zz_133[19]) begin
-            BTB_target_pc_19 <= train_pc_next;
-          end
-          if(_zz_133[20]) begin
-            BTB_target_pc_20 <= train_pc_next;
-          end
-          if(_zz_133[21]) begin
-            BTB_target_pc_21 <= train_pc_next;
-          end
-          if(_zz_133[22]) begin
-            BTB_target_pc_22 <= train_pc_next;
-          end
-          if(_zz_133[23]) begin
-            BTB_target_pc_23 <= train_pc_next;
-          end
-          if(_zz_133[24]) begin
-            BTB_target_pc_24 <= train_pc_next;
-          end
-          if(_zz_133[25]) begin
-            BTB_target_pc_25 <= train_pc_next;
-          end
-          if(_zz_133[26]) begin
-            BTB_target_pc_26 <= train_pc_next;
-          end
-          if(_zz_133[27]) begin
-            BTB_target_pc_27 <= train_pc_next;
-          end
-          if(_zz_133[28]) begin
-            BTB_target_pc_28 <= train_pc_next;
-          end
-          if(_zz_133[29]) begin
-            BTB_target_pc_29 <= train_pc_next;
-          end
-          if(_zz_133[30]) begin
-            BTB_target_pc_30 <= train_pc_next;
-          end
-          if(_zz_133[31]) begin
-            BTB_target_pc_31 <= train_pc_next;
-          end
-          if(_zz_133[32]) begin
-            BTB_target_pc_32 <= train_pc_next;
-          end
-          if(_zz_133[33]) begin
-            BTB_target_pc_33 <= train_pc_next;
-          end
-          if(_zz_133[34]) begin
-            BTB_target_pc_34 <= train_pc_next;
-          end
-          if(_zz_133[35]) begin
-            BTB_target_pc_35 <= train_pc_next;
-          end
-          if(_zz_133[36]) begin
-            BTB_target_pc_36 <= train_pc_next;
-          end
-          if(_zz_133[37]) begin
-            BTB_target_pc_37 <= train_pc_next;
-          end
-          if(_zz_133[38]) begin
-            BTB_target_pc_38 <= train_pc_next;
-          end
-          if(_zz_133[39]) begin
-            BTB_target_pc_39 <= train_pc_next;
-          end
-          if(_zz_133[40]) begin
-            BTB_target_pc_40 <= train_pc_next;
-          end
-          if(_zz_133[41]) begin
-            BTB_target_pc_41 <= train_pc_next;
-          end
-          if(_zz_133[42]) begin
-            BTB_target_pc_42 <= train_pc_next;
-          end
-          if(_zz_133[43]) begin
-            BTB_target_pc_43 <= train_pc_next;
-          end
-          if(_zz_133[44]) begin
-            BTB_target_pc_44 <= train_pc_next;
-          end
-          if(_zz_133[45]) begin
-            BTB_target_pc_45 <= train_pc_next;
-          end
-          if(_zz_133[46]) begin
-            BTB_target_pc_46 <= train_pc_next;
-          end
-          if(_zz_133[47]) begin
-            BTB_target_pc_47 <= train_pc_next;
-          end
-          if(_zz_133[48]) begin
-            BTB_target_pc_48 <= train_pc_next;
-          end
-          if(_zz_133[49]) begin
-            BTB_target_pc_49 <= train_pc_next;
-          end
-          if(_zz_133[50]) begin
-            BTB_target_pc_50 <= train_pc_next;
-          end
-          if(_zz_133[51]) begin
-            BTB_target_pc_51 <= train_pc_next;
-          end
-          if(_zz_133[52]) begin
-            BTB_target_pc_52 <= train_pc_next;
-          end
-          if(_zz_133[53]) begin
-            BTB_target_pc_53 <= train_pc_next;
-          end
-          if(_zz_133[54]) begin
-            BTB_target_pc_54 <= train_pc_next;
-          end
-          if(_zz_133[55]) begin
-            BTB_target_pc_55 <= train_pc_next;
-          end
-          if(_zz_133[56]) begin
-            BTB_target_pc_56 <= train_pc_next;
-          end
-          if(_zz_133[57]) begin
-            BTB_target_pc_57 <= train_pc_next;
-          end
-          if(_zz_133[58]) begin
-            BTB_target_pc_58 <= train_pc_next;
-          end
-          if(_zz_133[59]) begin
-            BTB_target_pc_59 <= train_pc_next;
-          end
-          if(_zz_133[60]) begin
-            BTB_target_pc_60 <= train_pc_next;
-          end
-          if(_zz_133[61]) begin
-            BTB_target_pc_61 <= train_pc_next;
-          end
-          if(_zz_133[62]) begin
-            BTB_target_pc_62 <= train_pc_next;
-          end
-          if(_zz_133[63]) begin
-            BTB_target_pc_63 <= train_pc_next;
           end
         end
       end
@@ -29487,391 +23311,199 @@ module gshare_predictor (
 
   always @(posedge io_axiClk) begin
     if(when_Predictor_l197) begin
-      if(_zz_135) begin
+      if(_zz_39) begin
         RAS_ras_regfile_0 <= _zz_RAS_ras_regfile_0;
       end
-      if(_zz_136) begin
+      if(_zz_40) begin
         RAS_ras_regfile_1 <= _zz_RAS_ras_regfile_0;
       end
-      if(_zz_137) begin
+      if(_zz_41) begin
         RAS_ras_regfile_2 <= _zz_RAS_ras_regfile_0;
       end
-      if(_zz_138) begin
+      if(_zz_42) begin
         RAS_ras_regfile_3 <= _zz_RAS_ras_regfile_0;
       end
-      if(_zz_139) begin
+      if(_zz_43) begin
         RAS_ras_regfile_4 <= _zz_RAS_ras_regfile_0;
       end
-      if(_zz_140) begin
+      if(_zz_44) begin
         RAS_ras_regfile_5 <= _zz_RAS_ras_regfile_0;
       end
-      if(_zz_141) begin
+      if(_zz_45) begin
         RAS_ras_regfile_6 <= _zz_RAS_ras_regfile_0;
       end
-      if(_zz_142) begin
+      if(_zz_46) begin
         RAS_ras_regfile_7 <= _zz_RAS_ras_regfile_0;
       end
-      if(_zz_143) begin
+      if(_zz_47) begin
         RAS_ras_regfile_8 <= _zz_RAS_ras_regfile_0;
       end
-      if(_zz_144) begin
+      if(_zz_48) begin
         RAS_ras_regfile_9 <= _zz_RAS_ras_regfile_0;
       end
-      if(_zz_145) begin
+      if(_zz_49) begin
         RAS_ras_regfile_10 <= _zz_RAS_ras_regfile_0;
       end
-      if(_zz_146) begin
+      if(_zz_50) begin
         RAS_ras_regfile_11 <= _zz_RAS_ras_regfile_0;
       end
-      if(_zz_147) begin
+      if(_zz_51) begin
         RAS_ras_regfile_12 <= _zz_RAS_ras_regfile_0;
       end
-      if(_zz_148) begin
+      if(_zz_52) begin
         RAS_ras_regfile_13 <= _zz_RAS_ras_regfile_0;
       end
-      if(_zz_149) begin
+      if(_zz_53) begin
         RAS_ras_regfile_14 <= _zz_RAS_ras_regfile_0;
       end
-      if(_zz_150) begin
+      if(_zz_54) begin
         RAS_ras_regfile_15 <= _zz_RAS_ras_regfile_0;
       end
-      if(_zz_151) begin
+      if(_zz_55) begin
         RAS_ras_regfile_16 <= _zz_RAS_ras_regfile_0;
       end
-      if(_zz_152) begin
+      if(_zz_56) begin
         RAS_ras_regfile_17 <= _zz_RAS_ras_regfile_0;
       end
-      if(_zz_153) begin
+      if(_zz_57) begin
         RAS_ras_regfile_18 <= _zz_RAS_ras_regfile_0;
       end
-      if(_zz_154) begin
+      if(_zz_58) begin
         RAS_ras_regfile_19 <= _zz_RAS_ras_regfile_0;
       end
-      if(_zz_155) begin
+      if(_zz_59) begin
         RAS_ras_regfile_20 <= _zz_RAS_ras_regfile_0;
       end
-      if(_zz_156) begin
+      if(_zz_60) begin
         RAS_ras_regfile_21 <= _zz_RAS_ras_regfile_0;
       end
-      if(_zz_157) begin
+      if(_zz_61) begin
         RAS_ras_regfile_22 <= _zz_RAS_ras_regfile_0;
       end
-      if(_zz_158) begin
+      if(_zz_62) begin
         RAS_ras_regfile_23 <= _zz_RAS_ras_regfile_0;
       end
-      if(_zz_159) begin
+      if(_zz_63) begin
         RAS_ras_regfile_24 <= _zz_RAS_ras_regfile_0;
       end
-      if(_zz_160) begin
+      if(_zz_64) begin
         RAS_ras_regfile_25 <= _zz_RAS_ras_regfile_0;
       end
-      if(_zz_161) begin
+      if(_zz_65) begin
         RAS_ras_regfile_26 <= _zz_RAS_ras_regfile_0;
       end
-      if(_zz_162) begin
+      if(_zz_66) begin
         RAS_ras_regfile_27 <= _zz_RAS_ras_regfile_0;
       end
-      if(_zz_163) begin
+      if(_zz_67) begin
         RAS_ras_regfile_28 <= _zz_RAS_ras_regfile_0;
       end
-      if(_zz_164) begin
+      if(_zz_68) begin
         RAS_ras_regfile_29 <= _zz_RAS_ras_regfile_0;
       end
-      if(_zz_165) begin
+      if(_zz_69) begin
         RAS_ras_regfile_30 <= _zz_RAS_ras_regfile_0;
       end
-      if(_zz_166) begin
+      if(_zz_70) begin
         RAS_ras_regfile_31 <= _zz_RAS_ras_regfile_0;
-      end
-      if(_zz_167) begin
-        RAS_ras_regfile_32 <= _zz_RAS_ras_regfile_0;
-      end
-      if(_zz_168) begin
-        RAS_ras_regfile_33 <= _zz_RAS_ras_regfile_0;
-      end
-      if(_zz_169) begin
-        RAS_ras_regfile_34 <= _zz_RAS_ras_regfile_0;
-      end
-      if(_zz_170) begin
-        RAS_ras_regfile_35 <= _zz_RAS_ras_regfile_0;
-      end
-      if(_zz_171) begin
-        RAS_ras_regfile_36 <= _zz_RAS_ras_regfile_0;
-      end
-      if(_zz_172) begin
-        RAS_ras_regfile_37 <= _zz_RAS_ras_regfile_0;
-      end
-      if(_zz_173) begin
-        RAS_ras_regfile_38 <= _zz_RAS_ras_regfile_0;
-      end
-      if(_zz_174) begin
-        RAS_ras_regfile_39 <= _zz_RAS_ras_regfile_0;
-      end
-      if(_zz_175) begin
-        RAS_ras_regfile_40 <= _zz_RAS_ras_regfile_0;
-      end
-      if(_zz_176) begin
-        RAS_ras_regfile_41 <= _zz_RAS_ras_regfile_0;
-      end
-      if(_zz_177) begin
-        RAS_ras_regfile_42 <= _zz_RAS_ras_regfile_0;
-      end
-      if(_zz_178) begin
-        RAS_ras_regfile_43 <= _zz_RAS_ras_regfile_0;
-      end
-      if(_zz_179) begin
-        RAS_ras_regfile_44 <= _zz_RAS_ras_regfile_0;
-      end
-      if(_zz_180) begin
-        RAS_ras_regfile_45 <= _zz_RAS_ras_regfile_0;
-      end
-      if(_zz_181) begin
-        RAS_ras_regfile_46 <= _zz_RAS_ras_regfile_0;
-      end
-      if(_zz_182) begin
-        RAS_ras_regfile_47 <= _zz_RAS_ras_regfile_0;
-      end
-      if(_zz_183) begin
-        RAS_ras_regfile_48 <= _zz_RAS_ras_regfile_0;
-      end
-      if(_zz_184) begin
-        RAS_ras_regfile_49 <= _zz_RAS_ras_regfile_0;
-      end
-      if(_zz_185) begin
-        RAS_ras_regfile_50 <= _zz_RAS_ras_regfile_0;
-      end
-      if(_zz_186) begin
-        RAS_ras_regfile_51 <= _zz_RAS_ras_regfile_0;
-      end
-      if(_zz_187) begin
-        RAS_ras_regfile_52 <= _zz_RAS_ras_regfile_0;
-      end
-      if(_zz_188) begin
-        RAS_ras_regfile_53 <= _zz_RAS_ras_regfile_0;
-      end
-      if(_zz_189) begin
-        RAS_ras_regfile_54 <= _zz_RAS_ras_regfile_0;
-      end
-      if(_zz_190) begin
-        RAS_ras_regfile_55 <= _zz_RAS_ras_regfile_0;
-      end
-      if(_zz_191) begin
-        RAS_ras_regfile_56 <= _zz_RAS_ras_regfile_0;
-      end
-      if(_zz_192) begin
-        RAS_ras_regfile_57 <= _zz_RAS_ras_regfile_0;
-      end
-      if(_zz_193) begin
-        RAS_ras_regfile_58 <= _zz_RAS_ras_regfile_0;
-      end
-      if(_zz_194) begin
-        RAS_ras_regfile_59 <= _zz_RAS_ras_regfile_0;
-      end
-      if(_zz_195) begin
-        RAS_ras_regfile_60 <= _zz_RAS_ras_regfile_0;
-      end
-      if(_zz_196) begin
-        RAS_ras_regfile_61 <= _zz_RAS_ras_regfile_0;
-      end
-      if(_zz_197) begin
-        RAS_ras_regfile_62 <= _zz_RAS_ras_regfile_0;
-      end
-      if(_zz_198) begin
-        RAS_ras_regfile_63 <= _zz_RAS_ras_regfile_0;
       end
     end else begin
       if(RAS_ras_call_matched) begin
-        if(_zz_135) begin
+        if(_zz_39) begin
           RAS_ras_regfile_0 <= _zz_RAS_ras_regfile_0_1;
         end
-        if(_zz_136) begin
+        if(_zz_40) begin
           RAS_ras_regfile_1 <= _zz_RAS_ras_regfile_0_1;
         end
-        if(_zz_137) begin
+        if(_zz_41) begin
           RAS_ras_regfile_2 <= _zz_RAS_ras_regfile_0_1;
         end
-        if(_zz_138) begin
+        if(_zz_42) begin
           RAS_ras_regfile_3 <= _zz_RAS_ras_regfile_0_1;
         end
-        if(_zz_139) begin
+        if(_zz_43) begin
           RAS_ras_regfile_4 <= _zz_RAS_ras_regfile_0_1;
         end
-        if(_zz_140) begin
+        if(_zz_44) begin
           RAS_ras_regfile_5 <= _zz_RAS_ras_regfile_0_1;
         end
-        if(_zz_141) begin
+        if(_zz_45) begin
           RAS_ras_regfile_6 <= _zz_RAS_ras_regfile_0_1;
         end
-        if(_zz_142) begin
+        if(_zz_46) begin
           RAS_ras_regfile_7 <= _zz_RAS_ras_regfile_0_1;
         end
-        if(_zz_143) begin
+        if(_zz_47) begin
           RAS_ras_regfile_8 <= _zz_RAS_ras_regfile_0_1;
         end
-        if(_zz_144) begin
+        if(_zz_48) begin
           RAS_ras_regfile_9 <= _zz_RAS_ras_regfile_0_1;
         end
-        if(_zz_145) begin
+        if(_zz_49) begin
           RAS_ras_regfile_10 <= _zz_RAS_ras_regfile_0_1;
         end
-        if(_zz_146) begin
+        if(_zz_50) begin
           RAS_ras_regfile_11 <= _zz_RAS_ras_regfile_0_1;
         end
-        if(_zz_147) begin
+        if(_zz_51) begin
           RAS_ras_regfile_12 <= _zz_RAS_ras_regfile_0_1;
         end
-        if(_zz_148) begin
+        if(_zz_52) begin
           RAS_ras_regfile_13 <= _zz_RAS_ras_regfile_0_1;
         end
-        if(_zz_149) begin
+        if(_zz_53) begin
           RAS_ras_regfile_14 <= _zz_RAS_ras_regfile_0_1;
         end
-        if(_zz_150) begin
+        if(_zz_54) begin
           RAS_ras_regfile_15 <= _zz_RAS_ras_regfile_0_1;
         end
-        if(_zz_151) begin
+        if(_zz_55) begin
           RAS_ras_regfile_16 <= _zz_RAS_ras_regfile_0_1;
         end
-        if(_zz_152) begin
+        if(_zz_56) begin
           RAS_ras_regfile_17 <= _zz_RAS_ras_regfile_0_1;
         end
-        if(_zz_153) begin
+        if(_zz_57) begin
           RAS_ras_regfile_18 <= _zz_RAS_ras_regfile_0_1;
         end
-        if(_zz_154) begin
+        if(_zz_58) begin
           RAS_ras_regfile_19 <= _zz_RAS_ras_regfile_0_1;
         end
-        if(_zz_155) begin
+        if(_zz_59) begin
           RAS_ras_regfile_20 <= _zz_RAS_ras_regfile_0_1;
         end
-        if(_zz_156) begin
+        if(_zz_60) begin
           RAS_ras_regfile_21 <= _zz_RAS_ras_regfile_0_1;
         end
-        if(_zz_157) begin
+        if(_zz_61) begin
           RAS_ras_regfile_22 <= _zz_RAS_ras_regfile_0_1;
         end
-        if(_zz_158) begin
+        if(_zz_62) begin
           RAS_ras_regfile_23 <= _zz_RAS_ras_regfile_0_1;
         end
-        if(_zz_159) begin
+        if(_zz_63) begin
           RAS_ras_regfile_24 <= _zz_RAS_ras_regfile_0_1;
         end
-        if(_zz_160) begin
+        if(_zz_64) begin
           RAS_ras_regfile_25 <= _zz_RAS_ras_regfile_0_1;
         end
-        if(_zz_161) begin
+        if(_zz_65) begin
           RAS_ras_regfile_26 <= _zz_RAS_ras_regfile_0_1;
         end
-        if(_zz_162) begin
+        if(_zz_66) begin
           RAS_ras_regfile_27 <= _zz_RAS_ras_regfile_0_1;
         end
-        if(_zz_163) begin
+        if(_zz_67) begin
           RAS_ras_regfile_28 <= _zz_RAS_ras_regfile_0_1;
         end
-        if(_zz_164) begin
+        if(_zz_68) begin
           RAS_ras_regfile_29 <= _zz_RAS_ras_regfile_0_1;
         end
-        if(_zz_165) begin
+        if(_zz_69) begin
           RAS_ras_regfile_30 <= _zz_RAS_ras_regfile_0_1;
         end
-        if(_zz_166) begin
+        if(_zz_70) begin
           RAS_ras_regfile_31 <= _zz_RAS_ras_regfile_0_1;
-        end
-        if(_zz_167) begin
-          RAS_ras_regfile_32 <= _zz_RAS_ras_regfile_0_1;
-        end
-        if(_zz_168) begin
-          RAS_ras_regfile_33 <= _zz_RAS_ras_regfile_0_1;
-        end
-        if(_zz_169) begin
-          RAS_ras_regfile_34 <= _zz_RAS_ras_regfile_0_1;
-        end
-        if(_zz_170) begin
-          RAS_ras_regfile_35 <= _zz_RAS_ras_regfile_0_1;
-        end
-        if(_zz_171) begin
-          RAS_ras_regfile_36 <= _zz_RAS_ras_regfile_0_1;
-        end
-        if(_zz_172) begin
-          RAS_ras_regfile_37 <= _zz_RAS_ras_regfile_0_1;
-        end
-        if(_zz_173) begin
-          RAS_ras_regfile_38 <= _zz_RAS_ras_regfile_0_1;
-        end
-        if(_zz_174) begin
-          RAS_ras_regfile_39 <= _zz_RAS_ras_regfile_0_1;
-        end
-        if(_zz_175) begin
-          RAS_ras_regfile_40 <= _zz_RAS_ras_regfile_0_1;
-        end
-        if(_zz_176) begin
-          RAS_ras_regfile_41 <= _zz_RAS_ras_regfile_0_1;
-        end
-        if(_zz_177) begin
-          RAS_ras_regfile_42 <= _zz_RAS_ras_regfile_0_1;
-        end
-        if(_zz_178) begin
-          RAS_ras_regfile_43 <= _zz_RAS_ras_regfile_0_1;
-        end
-        if(_zz_179) begin
-          RAS_ras_regfile_44 <= _zz_RAS_ras_regfile_0_1;
-        end
-        if(_zz_180) begin
-          RAS_ras_regfile_45 <= _zz_RAS_ras_regfile_0_1;
-        end
-        if(_zz_181) begin
-          RAS_ras_regfile_46 <= _zz_RAS_ras_regfile_0_1;
-        end
-        if(_zz_182) begin
-          RAS_ras_regfile_47 <= _zz_RAS_ras_regfile_0_1;
-        end
-        if(_zz_183) begin
-          RAS_ras_regfile_48 <= _zz_RAS_ras_regfile_0_1;
-        end
-        if(_zz_184) begin
-          RAS_ras_regfile_49 <= _zz_RAS_ras_regfile_0_1;
-        end
-        if(_zz_185) begin
-          RAS_ras_regfile_50 <= _zz_RAS_ras_regfile_0_1;
-        end
-        if(_zz_186) begin
-          RAS_ras_regfile_51 <= _zz_RAS_ras_regfile_0_1;
-        end
-        if(_zz_187) begin
-          RAS_ras_regfile_52 <= _zz_RAS_ras_regfile_0_1;
-        end
-        if(_zz_188) begin
-          RAS_ras_regfile_53 <= _zz_RAS_ras_regfile_0_1;
-        end
-        if(_zz_189) begin
-          RAS_ras_regfile_54 <= _zz_RAS_ras_regfile_0_1;
-        end
-        if(_zz_190) begin
-          RAS_ras_regfile_55 <= _zz_RAS_ras_regfile_0_1;
-        end
-        if(_zz_191) begin
-          RAS_ras_regfile_56 <= _zz_RAS_ras_regfile_0_1;
-        end
-        if(_zz_192) begin
-          RAS_ras_regfile_57 <= _zz_RAS_ras_regfile_0_1;
-        end
-        if(_zz_193) begin
-          RAS_ras_regfile_58 <= _zz_RAS_ras_regfile_0_1;
-        end
-        if(_zz_194) begin
-          RAS_ras_regfile_59 <= _zz_RAS_ras_regfile_0_1;
-        end
-        if(_zz_195) begin
-          RAS_ras_regfile_60 <= _zz_RAS_ras_regfile_0_1;
-        end
-        if(_zz_196) begin
-          RAS_ras_regfile_61 <= _zz_RAS_ras_regfile_0_1;
-        end
-        if(_zz_197) begin
-          RAS_ras_regfile_62 <= _zz_RAS_ras_regfile_0_1;
-        end
-        if(_zz_198) begin
-          RAS_ras_regfile_63 <= _zz_RAS_ras_regfile_0_1;
         end
       end
     end

@@ -4406,3 +4406,150 @@ srcAction -pos 1527 7 3 -win $_nTrace1 -name "axi_uartCtrl_io_uart_txd" -ctrlKey
           off
 wvZoomOut -win $_nWave2
 wvZoom -win $_nWave2 538137.348220 1932001.299348
+srcDeselectAll -win $_nTrace1
+debReload
+debReload
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple" -win $_nTrace1
+srcSetScope -win $_nTrace1 "tb_DandSocSimple.u_DandSocSimple" -delim "."
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple" -win $_nTrace1
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.axi_ram" -win $_nTrace1
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.core_cpu" -win $_nTrace1
+srcSetScope -win $_nTrace1 "tb_DandSocSimple.u_DandSocSimple.core_cpu" -delim "."
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.core_cpu" -win $_nTrace1
+srcSearchString "execute_to_mem" -win $_nTrace1 -next -case
+srcSearchString "execute_to_mem" -win $_nTrace1 -prev -case
+srcSelect -win $_nTrace1 -range {8552 8552 2 2 1 15}
+nsMsgSwitchTab -tab general
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "memaccess_to_writeback_ALU_RESULT" -line 8549 -pos 1 -win \
+          $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "_zz_execute_MEM_WDATA_1" -line 8549 -pos 1 -win $_nTrace1
+srcAction -pos 8548 5 10 -win $_nTrace1 -name "_zz_execute_MEM_WDATA_1" -ctrlKey \
+          off
+srcDeselectAll -win $_nTrace1
+srcBackwardHistory -win $_nTrace1
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple.core_cpu" -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "execute_to_memaccess_ALU_RESULT" -line 8546 -pos 1 -win \
+          $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvSelectSignal -win $_nWave2 {( "G1" 2 )} 
+wvSelectSignal -win $_nWave2 {( "G1" 1 2 )} 
+wvCut -win $_nWave2
+wvSetPosition -win $_nWave2 {("G1" 1)}
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple" -win $_nTrace1
+srcSetScope -win $_nTrace1 "tb_DandSocSimple.u_DandSocSimple" -delim "."
+srcHBSelect "tb_DandSocSimple.u_DandSocSimple" -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_uart_txd" -line 10 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "io_axiClk" -line 9 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvZoom -win $_nWave2 658227.246808 934331.372620
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomIn -win $_nWave2
+wvZoom -win $_nWave2 669816.300689 943480.625685
+wvSetCursor -win $_nWave2 813197.867136 -snap {("G1" 2)}
+srcActiveTrace "tb_DandSocSimple.u_DandSocSimple.io_uart_txd" -win $_nTrace1 \
+           -TraceByDConWave -TraceTime 685000 -TraceValue 0
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "axi_uartCtrl_io_uart_txd" -line 1528 -pos 1 -win $_nTrace1
+srcAction -pos 1527 7 3 -win $_nTrace1 -name "axi_uartCtrl_io_uart_txd" -ctrlKey \
+          off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "uartCtrl_uart_tx" -line 3807 -pos 1 -win $_nTrace1
+srcAction -pos 3806 7 7 -win $_nTrace1 -name "uartCtrl_uart_tx" -ctrlKey off
+srcHBSelect \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter" \
+           -win $_nTrace1
+srcSetScope -win $_nTrace1 \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter" \
+           -delim "."
+srcHBSelect \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter" \
+           -win $_nTrace1
+srcHBSelect \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter.fifo_tx" \
+           -win $_nTrace1
+srcSetScope -win $_nTrace1 \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter.fifo_tx" \
+           -delim "."
+srcHBSelect \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter.fifo_tx" \
+           -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "data_out" -line 148 -pos 1 -win $_nTrace1
+srcAction -pos 147 7 3 -win $_nTrace1 -name "data_out" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "ram\[dpra\]" -line 118 -pos 1 -win $_nTrace1
+srcAction -pos 117 7 1 -win $_nTrace1 -name "ram\[dpra\]" -ctrlKey off
+srcHBSelect \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter.fifo_tx.tfifo" \
+           -win $_nTrace1
+srcSetScope -win $_nTrace1 \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter.fifo_tx.tfifo" \
+           -delim "."
+srcHBSelect \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter.fifo_tx.tfifo" \
+           -win $_nTrace1
+srcHBSelect \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter.fifo_tx" \
+           -win $_nTrace1
+srcSetScope -win $_nTrace1 \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter.fifo_tx" \
+           -delim "."
+srcHBSelect \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter.fifo_tx" \
+           -win $_nTrace1
+srcHBSelect \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter" \
+           -win $_nTrace1
+srcSetScope -win $_nTrace1 \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter" \
+           -delim "."
+srcHBSelect \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter" \
+           -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "stx_pad_o" -line 168 -pos 1 -win $_nTrace1
+srcAction -pos 167 2 2 -win $_nTrace1 -name "stx_pad_o" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "stx_pad_o" -line 349 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "stx_o_tmp" -line 349 -pos 1 -win $_nTrace1
+srcAction -pos 348 21 4 -win $_nTrace1 -name "stx_o_tmp" -ctrlKey off
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "stx_o_tmp" -line 306 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "counter" -line 305 -pos 1 -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "counter" -line 305 -pos 2 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvZoom -win $_nWave2 804935.542154 872344.022795
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 665303.689397 926995.522932
+srcSearchString "bit_count" -win $_nTrace1 -next -case
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "bit_counter" -line 174 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvSetCursor -win $_nWave2 811180.506765 -snap {("G1" 3)}
+wvSetMarker -win $_nWave2 843000.000000
+wvSetWindowTimeUnit -win $_nWave2 1.000000 ns
+wvSetMarker -win $_nWave2 813.000000
+wvSetMarker -win $_nWave2 843.000000

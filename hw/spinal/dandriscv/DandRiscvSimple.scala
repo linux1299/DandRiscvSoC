@@ -26,7 +26,7 @@ case class DandRiscvSimpleConfig(){
   var addressWidth = 64
   var XLEN = 64
   var MXLEN = 64
-  var PredictorHistoryLen = 7
+  var PredictorHistoryLen = 5
   val plugins = ArrayBuffer[Plugin[DandRiscvSimple]]()
 
   def add(that : Plugin[DandRiscvSimple]) : this.type = {plugins += that;this}
@@ -94,7 +94,7 @@ case class DandRiscvSimpleConfig(){
   object BRANCH_TAKEN extends Stageable(Bool())
   object BRANCH_OR_JALR extends Stageable(Bool())
   object BRANCH_OR_JUMP extends Stageable(Bool())
-  object BRANCH_HISTORY extends Stageable(UInt(7 bits))
+  object BRANCH_HISTORY extends Stageable(UInt(PredictorHistoryLen bits))
   object IS_CALL extends Stageable(Bool())
   object IS_RET extends Stageable(Bool())
   object IS_JMP extends Stageable(Bool())
