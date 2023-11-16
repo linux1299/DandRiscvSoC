@@ -47,7 +47,7 @@ obj_dir
 *.o
 # *.bin
 explor
-
+*.so
 simWorkspace/
 tmp/
 /archive.tar.gz

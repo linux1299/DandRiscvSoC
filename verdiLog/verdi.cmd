@@ -4553,3 +4553,224 @@ wvSetMarker -win $_nWave2 843000.000000
 wvSetWindowTimeUnit -win $_nWave2 1.000000 ns
 wvSetMarker -win $_nWave2 813.000000
 wvSetMarker -win $_nWave2 843.000000
+srcDeselectAll -win $_nTrace1
+debReload
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 9469.679676 13233.008100
+srcHBSelect "tb_DandSocSimple" -win $_nTrace1
+srcSetScope -win $_nTrace1 "tb_DandSocSimple" -delim "."
+srcHBSelect "tb_DandSocSimple" -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "rst_n" -line 6 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 9200.478916 13024.774369
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 9687.464182 12233.239653
+wvZoom -win $_nWave2 10039.898488 10319.221423
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+srcDeselectAll -win $_nTrace1
+debReload
+wvZoom -win $_nWave2 0.000000 3040.876484
+wvZoom -win $_nWave2 591.157137 1398.400121
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 15141.453086 19155.079470
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 13566.149064 20931.360365
+wvZoom -win $_nWave2 15271.862580 17547.051196
+wvZoom -win $_nWave2 15634.585949 16584.535835
+wvSetCursor -win $_nWave2 15748.258155 -snap {("G1" 7)}
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 14582.897644 19532.492636
+wvZoom -win $_nWave2 15607.077462 16175.661275
+wvZoom -win $_nWave2 15669.462578 15792.558043
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvSetCursor -win $_nWave2 10059.383138 -snap {("G1" 1)}
+wvZoom -win $_nWave2 9583.679898 12321.874155
+wvZoom -win $_nWave2 9968.801477 10325.694248
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 14889.690722 19675.662739
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvSelectSignal -win $_nWave2 {( "G1" 4 )} 
+wvSelectSignal -win $_nWave2 {( "G1" 2 )} 
+wvZoom -win $_nWave2 14801.975312 18410.837865
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomIn -win $_nWave2
+wvZoom -win $_nWave2 14682.388556 17690.659844
+wvZoom -win $_nWave2 15447.747709 16368.172393
+wvZoom -win $_nWave2 15643.287121 15980.143578
+wvSelectSignal -win $_nWave2 {( "G1" 6 )} 
+wvSelectSignal -win $_nWave2 {( "G1" 5 )} 
+wvSelectSignal -win $_nWave2 {( "G1" 4 )} 
+wvSetCursor -win $_nWave2 15686.696458 -snap {("G1" 4)}
+srcActiveTrace \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter.stx_pad_o" \
+           -win $_nTrace1 -TraceByDConWave -TraceTime 15685000 -TraceValue 0
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "stx_o_tmp" -line 349 -pos 1 -win $_nTrace1
+srcAction -pos 348 21 2 -win $_nTrace1 -name "stx_o_tmp" -ctrlKey off
+srcHBSelect \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter.fifo_tx" \
+           -win $_nTrace1
+srcSetScope -win $_nTrace1 \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter.fifo_tx" \
+           -delim "."
+srcHBSelect \
+           "tb_DandSocSimple.u_DandSocSimple.axi_uartCtrl.uartCtrl.Uregs.transmitter.fifo_tx" \
+           -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "data_in" -line 148 -pos 1 -win $_nTrace1
+wvSetPosition -win $_nWave2 {("G1" 6)}
+wvSetPosition -win $_nWave2 {("G1" 7)}
+wvSetPosition -win $_nWave2 {("G1" 8)}
+wvSetPosition -win $_nWave2 {("G2" 0)}
+wvAddSignal -win $_nWave2 \
+           "/tb_DandSocSimple/u_DandSocSimple/axi_uartCtrl/uartCtrl/Uregs/transmitter/fifo_tx/data_in\[7:0\]"
+wvSetPosition -win $_nWave2 {("G2" 0)}
+wvSetPosition -win $_nWave2 {("G2" 1)}
+wvSetPosition -win $_nWave2 {("G2" 1)}
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvSetCursor -win $_nWave2 285.757465 -snap {("G2" 1)}
+wvZoom -win $_nWave2 476.262442 3508.466656
+wvZoom -win $_nWave2 637.027319 1110.390569
+wvZoom -win $_nWave2 669.793259 784.822620
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 978.511915 1166.895787
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 651.436426 824.560928
+wvSetCursor -win $_nWave2 673.045117 -snap {("G2" 1)}
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvSetCursor -win $_nWave2 969.511265 -snap {("G2" 1)}
+wvZoom -win $_nWave2 981.749816 1018.465469
+wvZoom -win $_nWave2 1007.975282 1008.056392
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 2890.702507 3105.988408
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 14869.237850 18305.320324
+wvZoom -win $_nWave2 15486.619384 16174.847980
+wvZoom -win $_nWave2 15657.409544 15743.818215
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 15945.968693 16193.359645
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 19340.034113 19841.374247
+wvZoom -win $_nWave2 19571.876237 19647.926360
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvSelectSignal -win $_nWave2 {( "G1" 2 )} 
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 204.528719 4254.197349
+wvZoom -win $_nWave2 468.443059 1140.902761
+wvSetCursor -win $_nWave2 689.047475 -snap {("G1" 2)}
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 590.259179 724.949193
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoomOut -win $_nWave2
+wvZoom -win $_nWave2 618.106162 784.732983
+srcDeselectAll -win $_nTrace1
+debExit

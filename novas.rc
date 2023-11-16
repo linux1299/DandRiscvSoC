@@ -402,12 +402,12 @@ importDesignForm = 1058,577,715,574
 schExtrFSM = 1170,617,288,105
 restoreSigDlg = 1038,451,551,438
 ActiveFileDialog = 975,534,678,272
-SetWindowTimeUnitDialog = 1097,627,433,86
 monoFontDlg = 1657,750,366,432
 openFileDlg = 995,768,602,483
 QwInfoMsgDlg = 1474,1046,750,250
 saveSigDlg = 1546,932,551,386
-QwWarnMsgDlg = 676,968,600,250
+QwWarnMsgDlg = 676,1079,600,250
+SetWindowTimeUnitDialog = 1737,945,433,98
 QwUserAskDlg = 1781,902,349,188
 [Relationship]
 hideRecursiceNode = FALSE
@@ -700,6 +700,36 @@ DefaultLogTimeUnit = "1.000000ns"
 [VIA.oneSearch.preference.vgifColumnSettingRC]
 [VIA.oneSearch.preference.vgifColumnSettingRC.setting0]
 parRuleSets = ""
+[VIA.oneSearch.preference.vgifColumnSettingRC.setting0.column0]
+name = Severity
+width = 60
+visualIndex = 1
+isHidden = TRUE
+isUserChangeColumnVisible = FALSE
+[VIA.oneSearch.preference.vgifColumnSettingRC.setting0.column1]
+name = Type
+width = 60
+visualIndex = 3
+isHidden = FALSE
+isUserChangeColumnVisible = FALSE
+[VIA.oneSearch.preference.vgifColumnSettingRC.setting0.column2]
+name = Message
+width = 60
+visualIndex = 4
+isHidden = FALSE
+isUserChangeColumnVisible = FALSE
+[VIA.oneSearch.preference.vgifColumnSettingRC.setting0.column3]
+name = Code
+width = 60
+visualIndex = 2
+isHidden = TRUE
+isUserChangeColumnVisible = FALSE
+[VIA.oneSearch.preference.vgifColumnSettingRC.setting0.column4]
+name = Time
+width = 60
+visualIndex = 0
+isHidden = TRUE
+isUserChangeColumnVisible = FALSE
 [Vi]
 ViFont = "Clean 14"
 ViBG = white
@@ -719,7 +749,7 @@ scope_to_save_with_macro
 open_file_dir
 open_rc_file_dir
 getSignalForm = 0 0 800 479 100 30 100 30
-viewPort = 0 28 3766 816 621 403
+viewPort = 0 28 3766 1121 621 403
 signalSpacing = 5
 digitalSignalHeight = 15
 analogSignalHeight = 98
@@ -1600,7 +1630,7 @@ AddImportArgument = FALSE
 LineBreakWithScope = TRUE
 StopAfterCompileOption = -s
 [wave.0]
-viewPort = 0 28 3766 816 621 403
+viewPort = 0 28 3766 1121 621 403
 [wave.1]
 viewPort = 127 219 960 332 100 65
 [wave.2]
