@@ -11696,3 +11696,69 @@ Nov 14, 2023 9:26:10 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellat
 WARNING: Unmatched cancel notification for request id 2086
 2023.11.14 21:26:30 INFO  compiling projectname (1 scala source)[0m
 2023.11.14 21:26:31 INFO  time: compiled projectname in 1.14s[0m
+Nov 16, 2023 7:48:48 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+Nov 16, 2023 7:48:53 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+2023.11.16 19:49:06 INFO  Shutting down server[0m
+2023.11.16 19:49:06 INFO  shutting down Metals[0m
+2023.11.16 19:49:07 INFO  Shut down connection with build server.[0m
+2023.11.16 19:49:07 INFO  Shut down connection with build server.[0m
+2023.11.16 19:49:07 INFO  Shut down connection with build server.[0m
+2023.11.16 19:49:07 INFO  Exiting server[0m
+2023.11.27 19:03:09 INFO  Started: Metals version 1.1.0 in folders '/home/lin/SpinalProjects/DandRiscvSoC' for client Visual Studio Code 1.84.2.[0m
+2023.11.27 19:03:13 INFO  Attempting to connect to the build server...[0m
+2023.11.27 19:03:13 INFO  skipping build import with status 'Installed'[0m
+2023.11.27 19:03:13 INFO  Bloop uses /usr/lib/jvm/java-11-openjdk-amd64 defined at /home/lin/.bloop/bloop.json[0m
+2023.11.27 19:03:16 INFO  no build target found for /home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/plugin_simple/BPUPlugin.scala. Using presentation compiler with project's scala-library version: 3.3.1[0m
+2023.11.27 19:03:19 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/lin/SpinalProjects/DandRiscvSoC/.metals/bsp.trace.json or /home/lin/.cache/metals/bsp.trace.json[0m
+2023.11.27 19:03:20 INFO  Attempting to connect to the build server...[0m
+2023.11.27 19:03:20 INFO  Bloop uses /usr/lib/jvm/java-11-openjdk-amd64 defined at /home/lin/.bloop/bloop.json[0m
+2023.11.27 19:03:20 INFO  Attempting to connect to the build server...[0m
+2023.11.27 19:03:20 INFO  Bloop uses /usr/lib/jvm/java-11-openjdk-amd64 defined at /home/lin/.bloop/bloop.json[0m
+2023.11.27 19:03:20 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/lin/SpinalProjects/DandRiscvSoC/project/project/.metals/bsp.trace.json or /home/lin/.cache/metals/bsp.trace.json[0m
+2023.11.27 19:03:20 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/lin/SpinalProjects/DandRiscvSoC/project/.metals/bsp.trace.json or /home/lin/.cache/metals/bsp.trace.json[0m
+2023.11.27 19:03:20 INFO  time: Connected to build server in 7.57s[0m
+2023.11.27 19:03:20 INFO  Connected to Build server: Bloop v1.5.11[0m
+2023.11.27 19:03:20 INFO  time: Imported build in 0.23s[0m
+2023.11.27 19:03:22 WARN  Could not find java sources in /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/lib/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/lib/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/lib/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/lib/src.zip. Java symbols will not be available.[0m
+2023.11.27 19:03:22 WARN  Could not find java sources in /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/lib/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/lib/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/lib/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/lib/src.zip. Java symbols will not be available.[0m
+2023.11.27 19:03:22 WARN  Could not find java sources in /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/lib/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/lib/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/lib/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/src.zip, /home/lin/vcs_verdi/verdi/verdi/Verdi_O-2018.09-SP2/share/jre/linux64/lib/src.zip. Java symbols will not be available.[0m
+2023.11.27 19:03:22 INFO  time: indexed workspace in 2.01s[0m
+2023.11.27 19:16:32 INFO  compiling projectname (1 scala source)[0m
+2023.11.27 19:16:38 WARN  1 deprecation[0m
+2023.11.27 19:16:38 WARN  2 deprecations (since 2.13.0)[0m
+2023.11.27 19:16:38 WARN  1 deprecation (since 2.13.2)[0m
+2023.11.27 19:16:38 WARN  4 deprecations (since SpinalHDL 1.3.1)[0m
+2023.11.27 19:16:38 WARN  8 deprecations in total; re-run with -deprecation for details[0m
+2023.11.27 19:16:38 INFO  time: compiled projectname in 5.76s[0m
+2023.11.27 19:16:51 INFO  time: code lens generation in 2.98s[0m
+2023.11.27 19:16:53 WARN  no build target for: /home/lin/SpinalProjects/DandRiscvSoC/build.sc[0m
+2023.11.27 19:29:55 INFO  compiling projectname (1 scala source)[0m
+2023.11.27 19:29:57 WARN  1 deprecation[0m
+2023.11.27 19:29:57 WARN  2 deprecations (since 2.13.0)[0m
+2023.11.27 19:29:57 WARN  1 deprecation (since 2.13.2)[0m
+2023.11.27 19:29:57 WARN  4 deprecations (since SpinalHDL 1.3.1)[0m
+2023.11.27 19:29:57 WARN  8 deprecations in total; re-run with -deprecation for details[0m
+2023.11.27 19:29:57 INFO  time: compiled projectname in 1.92s[0m
+2023.11.27 19:33:20 INFO  compiling projectname (1 scala source)[0m
+2023.11.27 19:33:22 WARN  1 deprecation[0m
+2023.11.27 19:33:22 WARN  2 deprecations (since 2.13.0)[0m
+2023.11.27 19:33:22 WARN  1 deprecation (since 2.13.2)[0m
+2023.11.27 19:33:22 WARN  4 deprecations (since SpinalHDL 1.3.1)[0m
+2023.11.27 19:33:22 WARN  8 deprecations in total; re-run with -deprecation for details[0m
+2023.11.27 19:33:22 INFO  time: compiled projectname in 1.55s[0m
+2023.11.27 19:37:07 INFO  compiling projectname (1 scala source)[0m
+2023.11.27 19:37:09 WARN  1 deprecation[0m
+2023.11.27 19:37:09 WARN  2 deprecations (since 2.13.0)[0m
+2023.11.27 19:37:09 WARN  1 deprecation (since 2.13.2)[0m
+2023.11.27 19:37:09 WARN  5 deprecations (since SpinalHDL 1.3.1)[0m
+2023.11.27 19:37:09 WARN  9 deprecations in total; re-run with -deprecation for details[0m
+2023.11.27 19:37:09 INFO  time: compiled projectname in 1.4s[0m
+2023.11.27 19:41:18 INFO  compiling projectname (1 scala source)[0m
+2023.11.27 19:41:20 WARN  1 deprecation[0m
+2023.11.27 19:41:20 WARN  2 deprecations (since 2.13.0)[0m
+2023.11.27 19:41:20 WARN  1 deprecation (since 2.13.2)[0m
+2023.11.27 19:41:20 WARN  5 deprecations (since SpinalHDL 1.3.1)[0m
+2023.11.27 19:41:20 WARN  9 deprecations in total; re-run with -deprecation for details[0m
+2023.11.27 19:41:20 INFO  time: compiled projectname in 1.66s[0m

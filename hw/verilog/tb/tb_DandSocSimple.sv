@@ -16,9 +16,9 @@ DandSocSimple u_DandSocSimple(
 
 // ============================== dump fsdb =============================
 initial begin
-	$display("\n================== Time:%d, Dump Start ================\n",$time);
-	$fsdbDumpfile("./simWorkspace/tb_DandSocSimple/tb_DandSocSimple.fsdb");
-	$fsdbDumpvars(0, "tb_DandSocSimple", "+mda");
+	// $display("\n================== Time:%d, Dump Start ================\n",$time);
+	// $fsdbDumpfile("./simWorkspace/tb_DandSocSimple/tb_DandSocSimple.fsdb");
+	// $fsdbDumpvars(0, "tb_DandSocSimple", "+mda");
 end
 
 // ========================== axi clk and reset =============================	 
@@ -42,7 +42,7 @@ end
 
 // ========================== Time out =============================
 initial begin
-  #55000
+  #5500000
   $display("\n============== TimeOut ! Simulation finish ! ============\n");
   $finish;
 end

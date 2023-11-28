@@ -36,7 +36,8 @@ object DandConfig{
   def default = {
     val config = DandConfig(
       axiFrequency = 50 MHz,
-      onChipRamSize  = 128 kB,
+//      onChipRamSize  = 128 kB,
+      onChipRamSize  = 1 GB,
       uartCtrlConfig = UartCtrlMemoryMappedConfig(
         uartCtrlConfig = UartCtrlGenerics(
           dataWidthMax      = 8,
@@ -176,7 +177,8 @@ class DandSocSimple(val config: DandConfig) extends Component{
     )
     val bootram = Axi4SharedOnChipRam(
       dataWidth = 32,
-      byteCount = onChipRamSize, 
+//      byteCount = onChipRamSize,
+      byteCount = 128 kB,
       idWidth = 4
     )
     val apbBridge = Axi4SharedToApb3Bridge(
@@ -255,7 +257,8 @@ object DandSocSimpleWithMemoryInit{
     val config = SpinalConfig()
     config.generateVerilog({
       val toplevel = new DandSocSimple(DandConfig.default)
-      BinTools.initRam(toplevel.axi.bootram.ram, "/home/lin/oscpu/libraries/ysyxSoC/ysyx/program/bin/flash/hello-flash.bin", false)
+//      BinTools.initRam(toplevel.axi.bootram.ram, "/home/lin/oscpu/libraries/ysyxSoC/ysyx/program/bin/flash/hello-flash.bin", false)
+      BinTools.initRam(toplevel.axi.bootram.ram, "/home/lin/oscpu/libraries/ysyxSoC/ysyx/program/bin/flash/rtthread-flash.bin", false)
       toplevel
     })
   }
