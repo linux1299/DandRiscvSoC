@@ -61,4 +61,5 @@ verdiLog/
 project/
 *.db
 *.key
-!simWorkspace/tb_DandSocSimple/Makefile
+./.metals/
+ysyx-workbench
