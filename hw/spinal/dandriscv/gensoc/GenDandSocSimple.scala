@@ -250,12 +250,24 @@ class DandSocSimple(val config: DandConfig) extends Component{
   io.uart           <> axi.uartCtrl.io.uart
 }
 
+object GenDandSocSimpleConfig {
+  def spinal = SpinalConfig(
+    targetDirectory = "hw/gen",
+    defaultConfigForClockDomains = ClockDomainConfig(
+      resetActiveLevel = HIGH
+    ),
+    onlyStdLogicVectorAtTopLevelIo = true,
+    nameWhenByFile = false,
+    genLineComments = true,
+    anonymSignalPrefix = "tmp"
+  )
+}
 
 //Artix7-SoC with memory init
 object DandSocSimpleWithMemoryInit{
   def main(args: Array[String]) {
-    val config = SpinalConfig()
-    config.generateVerilog({
+    // val config = SpinalConfig()
+    GenDandSocSimpleConfig.spinal.generateVerilog({
       val toplevel = new DandSocSimple(DandConfig.default)
 //      BinTools.initRam(toplevel.axi.bootram.ram, "/home/lin/oscpu/libraries/ysyxSoC/ysyx/program/bin/flash/hello-flash.bin", false)
       BinTools.initRam(toplevel.axi.bootram.ram, "/home/lin/oscpu/libraries/ysyxSoC/ysyx/program/bin/flash/rtthread-flash.bin", false)

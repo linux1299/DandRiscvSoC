@@ -9,6 +9,6 @@
 /home/lin/SpinalProjects/DandRiscvSoC/hw/verilog/uart16550/rtl/uart_tfifo.v
 /home/lin/SpinalProjects/DandRiscvSoC/hw/verilog/uart16550/rtl/uart_transmitter.v
 
-./DandSocSimple.v
+./hw/gen/DandSocSimple.v
 
 ./hw/verilog/tb/tb_DandSocSimple.sv

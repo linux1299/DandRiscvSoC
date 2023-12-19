@@ -1,4 +1,4 @@
-./ysyx_210238.v
+./hw/gen/ysyx_210238.v
 
 ./hw/verilog/tb/tb_DandRiscvYsyx3rd.sv
 

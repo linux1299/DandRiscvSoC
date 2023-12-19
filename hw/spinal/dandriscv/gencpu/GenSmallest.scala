@@ -5,6 +5,19 @@ import dandriscv.ip._
 import dandriscv.{plugin_simple, DandRiscvSimple, DandRiscvSimpleConfig}
 import spinal.core._
 
+object GenSmallestConfig {
+  def spinal = SpinalConfig(
+    targetDirectory = "hw/gen",
+    defaultConfigForClockDomains = ClockDomainConfig(
+      resetActiveLevel = HIGH
+    ),
+    onlyStdLogicVectorAtTopLevelIo = true,
+    nameWhenByFile = false,
+    genLineComments = true,
+    anonymSignalPrefix = "tmp"
+  )
+}
+
 object GenSmallest extends App{
   def cpu() = new DandRiscvSimple(
     config = DandRiscvSimpleConfig(
@@ -48,5 +61,5 @@ object GenSmallest extends App{
     )
   )
 
-  SpinalVerilog(cpu())
+  GenSmallestConfig.spinal.generateVerilog(cpu())
 }

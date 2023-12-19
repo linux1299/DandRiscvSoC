@@ -102,7 +102,8 @@ end
 // ==================== initial program in ram =======================
 initial begin
 
-  fd = $fopen ("../../oscpu/bin/non-output/coremark/coremark.bin", "rb");
+  // fd = $fopen ("../../oscpu/bin/non-output/coremark/coremark.bin", "rb");
+  fd = $fopen ("../../oscpu/bin/custom-output/mario/fceux-mario.bin", "rb");
   // fd = $fopen ("../../oscpu/bin/non-output/dhrystone/dhrystone.bin", "rb");
   // fd = $fopen ("./ysyx-workbench/am-kernels/tests/cpu-tests/build/add-longlong-riscv64-nemu.bin", "rb");
   tmp = $fread(ram_tmp, fd);

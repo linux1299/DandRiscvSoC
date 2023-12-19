@@ -1,4 +1,4 @@
-./DandRiscvSimple.v
+./hw/gen/DandRiscvSimple.v
 
 ./hw/verilog/tb/tb_DandRiscvSimple.sv
 

@@ -45,7 +45,7 @@ obj_dir
 *.debugTrace
 *.tcl
 *.o
-# *.bin
+./*.bin
 explor
 *.so
 simWorkspace/
@@ -60,3 +60,5 @@ verdiLog/
 .metals/metals.log
 project/
 *.db
+*.key
+!simWorkspace/tb_DandSocSimple/Makefile

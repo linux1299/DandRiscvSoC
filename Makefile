@@ -1,5 +1,5 @@
 clean:
-	rm -rf  *simv*  *.vpd DVEfiles csrc simv* ucli* *.log   vpd2fsdb* v* V* *fsdb* verdilog*
+	rm -rf  *simv*  *.vpd DVEfiles csrc simv* ucli* *.log   vpd2fsdb* v* V* *fsdb* verdilog* *bin*
 
 all: clean com sim
 re: com sim
@@ -9,13 +9,13 @@ com:
 	-f ./hw/verilog/tb/tb_DandRiscvSimple.f                       \
 	-debug_all                                 \
 	-o ./simWorkspace/tb_DandRiscvSimple/tb_DandRiscvSimple.simv  \
-	-l compile.log                             \
+	-l ./simWorkspace/tb_DandRiscvSimple/compile.log                             \
 	-fsdb                                      \
 	-top tb_DandRiscvSimple
 
 
 sim:
-	./simWorkspace/tb_DandRiscvSimple/tb_DandRiscvSimple.simv -l sim.log  +nospecify +notimingcheck +fsdb+autoflush \
+	./simWorkspace/tb_DandRiscvSimple/tb_DandRiscvSimple.simv -l ./simWorkspace/tb_DandRiscvSimple/sim.log  +nospecify +notimingcheck +fsdb+autoflush \
 	-lca -cm line+tgl+cond+fsm \
   urg -dir ./simWorkspace/tb_DandRiscvSimple/tb_DandRiscvSimple.simv.vdb/ -report both  
 
@@ -31,13 +31,13 @@ com2:
 	-f ./hw/verilog/tb/tb_DandRiscvSmallest.f                       \
 	-debug_all                                 \
 	-o ./simWorkspace/tb_DandRiscvSmallest/tb_DandRiscvSmallest.simv  \
-	-l compile.log                             \
+	-l ./simWorkspace/tb_DandRiscvSmallest/compile.log                             \
 	-fsdb                                      \
 	-top tb_DandRiscvSmallest
 
 
 sim2:
-	./simWorkspace/tb_DandRiscvSmallest/tb_DandRiscvSmallest.simv -l sim.log  +nospecify +notimingcheck +fsdb+autoflush \
+	./simWorkspace/tb_DandRiscvSmallest/tb_DandRiscvSmallest.simv -l ./simWorkspace/tb_DandRiscvSmallest/sim.log  +nospecify +notimingcheck +fsdb+autoflush \
 	-lca -cm line+tgl+cond+fsm \
   urg -dir ./simWorkspace/tb_DandRiscvSmallest/tb_DandRiscvSmallest.simv.vdb/ -report both  
 
@@ -52,13 +52,13 @@ com3:
 	-f ./hw/verilog/tb/tb_DandRiscvYsyx3rd.f                       \
 	-debug_all                                 \
 	-o ./simWorkspace/tb_DandRiscvYsyx3rd/tb_DandRiscvYsyx3rd.simv  \
-	-l compile.log                             \
+	-l ./simWorkspace/tb_DandRiscvYsyx3rd/compile.log                             \
 	-fsdb                                      \
 	-top tb_DandRiscvYsyx3rd
 
 
 sim3:
-	./simWorkspace/tb_DandRiscvYsyx3rd/tb_DandRiscvYsyx3rd.simv -l sim.log  +nospecify +notimingcheck +fsdb+autoflush \
+	./simWorkspace/tb_DandRiscvYsyx3rd/tb_DandRiscvYsyx3rd.simv -l ./simWorkspace/tb_DandRiscvYsyx3rd/sim.log  +nospecify +notimingcheck +fsdb+autoflush \
 	-lca -cm line+tgl+cond+fsm \
   urg -dir ./simWorkspace/tb_DandRiscvYsyx3rd/tb_DandRiscvYsyx3rd.simv.vdb/ -report both  
 
@@ -67,19 +67,24 @@ ver3:
 	verdi  ./simWorkspace/tb_DandRiscvYsyx3rd/tb_DandRiscvYsyx3rd.fsdb -f ./hw/verilog/tb/tb_DandRiscvYsyx3rd.f -ssf -sv -v2k &
 
 soc: clean com_soc sim_soc
-re_soc: com_soc sim_soc 
+re_soc: com_soc cp_bin sim_soc rm_bin
 com_soc:
 	vcs -sverilog +v2k -timescale=1ns/1ns  -full64 -cpp g++ -cc gcc -LDFLAGS -Wl,--no-as-needed \
 	-f ./hw/verilog/tb/tb_DandSocSimple.f                       \
 	-debug_all                                 \
 	-o ./simWorkspace/tb_DandSocSimple/tb_DandSocSimple.simv  \
-	-l compile.log                             \
+	-l ./simWorkspace/tb_DandSocSimple/compile.log                             \
 	-fsdb                                      \
 	-top tb_DandSocSimple
 
+cp_bin:
+	cp ./hw/gen/*.bin ./
+rm_bin:
+	rm ./*.bin
+
 
 sim_soc:
-	./simWorkspace/tb_DandSocSimple/tb_DandSocSimple.simv -l sim.log  +nospecify +notimingcheck +fsdb+autoflush \
+	./simWorkspace/tb_DandSocSimple/tb_DandSocSimple.simv -l ./simWorkspace/tb_DandSocSimple/sim.log  +nospecify +notimingcheck +fsdb+autoflush \
 	-lca -cm line+tgl+cond+fsm \
   urg -dir ./simWorkspace/tb_DandSocSimple/tb_DandSocSimple.simv.vdb/ -report both  
 

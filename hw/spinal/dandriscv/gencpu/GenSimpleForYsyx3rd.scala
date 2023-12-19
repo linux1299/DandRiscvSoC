@@ -83,8 +83,8 @@ case class ysyx_210238() extends Component{
   val core = new ClockingArea(coreClockDomain){
     val config = DandRiscvSimpleConfig(
         plugins = List(
-          // new FetchPlugin(resetVector=0x80000000l),
-          new FetchPlugin(resetVector=0x30000000l),
+          new FetchPlugin(resetVector=0x80000000l),
+          // new FetchPlugin(resetVector=0x30000000l),
           new BPUPlugin(p = PredictorConfig(
             predictorType = "GSHARE",
             addressWidth =64, 
@@ -222,7 +222,7 @@ case class ysyx_210238() extends Component{
   // master write
   io_master_awvalid := core.dcache_write.aw.valid
   io_master_awaddr  := core.dcache_write.aw.payload.addr.resize(32)
-  io_master_awid    := core.dcache_write.aw.payload.id
+  io_master_awid    := core.dcache_write.aw.payload.id.resized
   io_master_awlen   := core.dcache_write.aw.payload.len
   io_master_awsize  := core.dcache_write.aw.payload.size
   io_master_awburst := core.dcache_write.aw.payload.burst
@@ -235,13 +235,13 @@ case class ysyx_210238() extends Component{
   core.dcache_write.w.ready  := io_master_wready
   core.dcache_write.b.valid  := io_master_bvalid
   core.dcache_write.b.payload.resp := io_master_bresp
-  core.dcache_write.b.payload.id   := io_master_bid
+  core.dcache_write.b.payload.id   := io_master_bid.resized
   
   // master read
   
   io_master_arvalid := (core.dcache_read.ar.valid & core.dcache_valid) | (core.icache_read.ar.valid & core.icache_valid)
   io_master_araddr  := (core.dcache_read.ar.payload.addr(31 downto 0) & U(32 bits, default -> core.dcache_valid)) | (core.icache_read.ar.payload.addr(31 downto 0) & U(32 bits, default -> core.icache_valid))
-  io_master_arid    := (core.dcache_read.ar.payload.id & U(4 bits, default -> core.dcache_valid)) | (core.icache_read.ar.payload.id & U(4 bits, default -> core.icache_valid))
+  io_master_arid    := (core.dcache_read.ar.payload.id.resized & U(4 bits, default -> core.dcache_valid)) | (core.icache_read.ar.payload.id.resized & U(4 bits, default -> core.icache_valid))
   io_master_arlen   := (core.dcache_read.ar.payload.len & U(8 bits, default -> core.dcache_valid)) | (core.icache_read.ar.payload.len & U(8 bits, default -> core.icache_valid))
   io_master_arsize  := (core.dcache_read.ar.payload.size & U(3 bits, default -> core.dcache_valid)) | (core.icache_read.ar.payload.size & U(3 bits, default -> core.icache_valid))
   io_master_arburst := (core.dcache_read.ar.payload.burst & B(2 bits, default -> core.dcache_valid)) | (core.icache_read.ar.payload.burst & B(2 bits, default -> core.icache_valid))
@@ -256,17 +256,30 @@ case class ysyx_210238() extends Component{
   core.icache_read.r.payload.resp := io_master_rresp
   core.icache_read.r.payload.data := io_master_rdata.subdivideIn(32 bits)(core.word_sel)
   core.icache_read.r.payload.last := io_master_rlast
-  core.icache_read.r.payload.id   := io_master_rid
+  core.icache_read.r.payload.id   := io_master_rid.resized
   
   core.dcache_read.ar.ready  := core.dcache_valid ? io_master_arready | False
   core.dcache_read.r.valid   := io_master_rvalid && (io_master_rid===U(1))
   core.dcache_read.r.payload.resp := io_master_rresp
   core.dcache_read.r.payload.data := io_master_rdata
   core.dcache_read.r.payload.last := io_master_rlast
-  core.dcache_read.r.payload.id   := io_master_rid
+  core.dcache_read.r.payload.id   := io_master_rid.resized
 
 }
 
+object GenSimpleForYsyx3rdConfig {
+  def spinal = SpinalConfig(
+    targetDirectory = "hw/gen",
+    defaultConfigForClockDomains = ClockDomainConfig(
+      resetActiveLevel = HIGH
+    ),
+    onlyStdLogicVectorAtTopLevelIo = true,
+    nameWhenByFile = false,
+    genLineComments = true,
+    anonymSignalPrefix = "tmp"
+  )
+}
+
 object GenSimpleForYsyx3rd extends App{
-  SpinalVerilog(ysyx_210238())
+  GenSimpleForYsyx3rdConfig.spinal.generateVerilog(ysyx_210238())
 }
