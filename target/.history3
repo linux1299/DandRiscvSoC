@@ -65,3 +65,4 @@
 1702904508225:runMain dandriscv.gensoc.DandSocSimpleWithMemoryInit
 1702904743496:runMain dandriscv.gencpu.GenSimple
 1702984411875:runMain dandriscv.gencpu.GenSmallest
+1703321226982:runMain dandriscv.gensoc.DandSocSimpleWithMemoryInit

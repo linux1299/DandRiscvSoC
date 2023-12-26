@@ -99,15 +99,19 @@ case class uart_apb() extends BlackBox {
     val uart_tx = out Bool()
   }
   noIoPrefix()
-  addRTLPath("/home/lin/SpinalProjects/DandRiscvSoC/hw/verilog/uart16550/rtl/raminfr.v")
-  addRTLPath("/home/lin/SpinalProjects/DandRiscvSoC/hw/verilog/uart16550/rtl/uart_apb.v")
-  addRTLPath("/home/lin/SpinalProjects/DandRiscvSoC/hw/verilog/uart16550/rtl/uart_defines.v")
-  addRTLPath("/home/lin/SpinalProjects/DandRiscvSoC/hw/verilog/uart16550/rtl/uart_receiver.v")
-  addRTLPath("/home/lin/SpinalProjects/DandRiscvSoC/hw/verilog/uart16550/rtl/uart_regs.v")
-  addRTLPath("/home/lin/SpinalProjects/DandRiscvSoC/hw/verilog/uart16550/rtl/uart_rfifo.v")
-  addRTLPath("/home/lin/SpinalProjects/DandRiscvSoC/hw/verilog/uart16550/rtl/uart_sync_flops.v")
-  addRTLPath("/home/lin/SpinalProjects/DandRiscvSoC/hw/verilog/uart16550/rtl/uart_tfifo.v")
-  addRTLPath("/home/lin/SpinalProjects/DandRiscvSoC/hw/verilog/uart16550/rtl/uart_transmitter.v")
+  // addRTLPath("/home/lin/SpinalProjects/DandRiscvSoC/hw/verilog/uart16550/rtl/raminfr.v")
+  // addRTLPath("/home/lin/SpinalProjects/DandRiscvSoC/hw/verilog/uart16550/rtl/uart_apb.v")
+  // addRTLPath("/home/lin/SpinalProjects/DandRiscvSoC/hw/verilog/uart16550/rtl/uart_defines.v")
+  // addRTLPath("/home/lin/SpinalProjects/DandRiscvSoC/hw/verilog/uart16550/rtl/uart_receiver.v")
+  // addRTLPath("/home/lin/SpinalProjects/DandRiscvSoC/hw/verilog/uart16550/rtl/uart_regs.v")
+  // addRTLPath("/home/lin/SpinalProjects/DandRiscvSoC/hw/verilog/uart16550/rtl/uart_rfifo.v")
+  // addRTLPath("/home/lin/SpinalProjects/DandRiscvSoC/hw/verilog/uart16550/rtl/uart_sync_flops.v")
+  // addRTLPath("/home/lin/SpinalProjects/DandRiscvSoC/hw/verilog/uart16550/rtl/uart_tfifo.v")
+  // addRTLPath("/home/lin/SpinalProjects/DandRiscvSoC/hw/verilog/uart16550/rtl/uart_transmitter.v")
+  addRTLPath("/home/lin/SpinalProjects/DandRiscvSoC/hw/verilog/uart_simple/uart_simple.v")
+  addRTLPath("/home/lin/SpinalProjects/DandRiscvSoC/hw/verilog/uart_simple/uart_send_data.v")
+  addRTLPath("/home/lin/SpinalProjects/DandRiscvSoC/hw/verilog/uart_simple/uart_send.v")
+  addRTLPath("/home/lin/SpinalProjects/DandRiscvSoC/hw/verilog/uart_simple/uart_recv.v")
   
 }
 

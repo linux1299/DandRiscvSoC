@@ -269,8 +269,9 @@ object DandSocSimpleWithMemoryInit{
     // val config = SpinalConfig()
     GenDandSocSimpleConfig.spinal.generateVerilog({
       val toplevel = new DandSocSimple(DandConfig.default)
-//      BinTools.initRam(toplevel.axi.bootram.ram, "/home/lin/oscpu/libraries/ysyxSoC/ysyx/program/bin/flash/hello-flash.bin", false)
-      BinTools.initRam(toplevel.axi.bootram.ram, "/home/lin/oscpu/libraries/ysyxSoC/ysyx/program/bin/flash/rtthread-flash.bin", false)
+    //  BinTools.initRam(toplevel.axi.bootram.ram, "/home/lin/oscpu/libraries/ysyxSoC/ysyx/program/bin/flash/hello-flash.bin", false)
+      // BinTools.initRam(toplevel.axi.bootram.ram, "/home/lin/oscpu/libraries/ysyxSoC/ysyx/program/bin/flash/rtthread-flash.bin", false)
+      BinTools.initRam(toplevel.axi.bootram.ram, "/home/lin/SpinalProjects/DandRiscvSoC/ysyx-workbench/am-kernels/kernels/hello/build/hello-riscv64-nemu.bin", false)
       toplevel
     })
   }

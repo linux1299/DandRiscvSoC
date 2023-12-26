@@ -63,3 +63,5 @@ project/
 *.key
 ./.metals/
 ysyx-workbench
+novas.conf
+novas.rc
