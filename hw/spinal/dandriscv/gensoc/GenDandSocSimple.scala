@@ -36,8 +36,8 @@ object DandConfig{
   def default = {
     val config = DandConfig(
       axiFrequency = 50 MHz,
-//      onChipRamSize  = 128 kB,
-      onChipRamSize  = 1 GB,
+     onChipRamSize  = 128 kB,
+      // onChipRamSize  = 1 GB,
       uartCtrlConfig = UartCtrlMemoryMappedConfig(
         uartCtrlConfig = UartCtrlGenerics(
           dataWidthMax      = 8,
