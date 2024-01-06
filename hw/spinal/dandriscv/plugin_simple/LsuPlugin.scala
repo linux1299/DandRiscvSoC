@@ -37,6 +37,7 @@ with DCacheAccessService
       import memaccess._
 
       val cpu_addr  = input(ALU_RESULT).asUInt
+      cpu_addr.addAttribute("MAX_FANOUT = 50")
       val cpu_addr_offset = cpu_addr(2 downto 0)
       val is_mem    = input(IS_LOAD) || input(IS_STORE)
       val is_timer  = (cpu_addr===MTIME) || (cpu_addr===MTIMECMP)

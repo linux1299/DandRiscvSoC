@@ -258,8 +258,8 @@ object GenDandSocSimpleConfig {
     ),
     onlyStdLogicVectorAtTopLevelIo = true,
     nameWhenByFile = false,
-    genLineComments = true
-    // anonymSignalPrefix = "tmp"
+    genLineComments = true,
+    anonymSignalPrefix = "tmp"
   )
 }
 
