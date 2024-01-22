@@ -197,6 +197,46 @@ class DecodePlugin() extends Plugin[DandRiscvSimple]
         is(CSRRW,CSRRS,CSRRC,CSRRWI,CSRRSI,CSRRCI){
           alu_ctrl := AluCtrlEnum.CSR.asBits
         }
+        // RV64 M extension
+        is(MUL){
+          alu_ctrl := AluCtrlEnum.MUL.asBits
+        }
+        is(MULH){
+          alu_ctrl := AluCtrlEnum.MULH.asBits
+        }
+        is(MULHSU){
+          alu_ctrl := AluCtrlEnum.MULHSU.asBits
+        }
+        is(MULHU){
+          alu_ctrl := AluCtrlEnum.MULHU.asBits
+        }
+        is(DIV){
+          alu_ctrl := AluCtrlEnum.DIV.asBits
+        }
+        is(DIVU){
+          alu_ctrl := AluCtrlEnum.DIVU.asBits
+        }
+        is(REM){
+          alu_ctrl := AluCtrlEnum.REM.asBits
+        }
+        is(REMU){
+          alu_ctrl := AluCtrlEnum.REMU.asBits
+        }
+        is(MULW){
+          alu_ctrl := AluCtrlEnum.MULW.asBits
+        }
+        is(DIVW){
+          alu_ctrl := AluCtrlEnum.DIVW.asBits
+        }
+        is(DIVUW){
+          alu_ctrl := AluCtrlEnum.DIVUW.asBits
+        }
+        is(REMW){
+          alu_ctrl := AluCtrlEnum.REMW.asBits
+        }
+        is(REMUW){
+          alu_ctrl := AluCtrlEnum.REMUW.asBits
+        }
         default {
           alu_ctrl := B(0)
         }

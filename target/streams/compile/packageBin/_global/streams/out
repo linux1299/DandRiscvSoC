@@ -686,6 +686,10 @@
 [0m[[0m[0mdebug[0m] [0m[0m	  /home/lin/SpinalProjects/DandRiscvSoC/target/scala-2.13/classes/dandriscv/ip/SramBanks$$anon$1.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	dandriscv/ip/Apb3Uart$$anon$2.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  /home/lin/SpinalProjects/DandRiscvSoC/target/scala-2.13/classes/dandriscv/ip/Apb3Uart$$anon$2.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	dandriscv/ip/Apb3Timer.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /home/lin/SpinalProjects/DandRiscvSoC/target/scala-2.13/classes/dandriscv/ip/Apb3Timer.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	dandriscv/ip/Apb3Timer$$anon$1.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /home/lin/SpinalProjects/DandRiscvSoC/target/scala-2.13/classes/dandriscv/ip/Apb3Timer$$anon$1.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	dandriscv/DandRiscvSimpleConfig$RS2$$anonfun$$lessinit$greater$12.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  /home/lin/SpinalProjects/DandRiscvSoC/target/scala-2.13/classes/dandriscv/DandRiscvSimpleConfig$RS2$$anonfun$$lessinit$greater$12.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	dandriscv/DandRiscvSimpleConfig$FETCH_DEC_JAL$.class[0m

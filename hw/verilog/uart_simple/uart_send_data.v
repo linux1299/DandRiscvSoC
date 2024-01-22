@@ -51,7 +51,7 @@ always @(posedge sys_clk or negedge sys_rst_n) begin
             tx_ready  <= 1'b1;                
             send_en   <= 1'b0;
             send_data <= apb_wdata_d0;           
-            $display("%s",apb_wdata_d0);
+            $write("%s",apb_wdata_d0);
         end
         else if(tx_ready && (~tx_busy)) begin 
             tx_ready <= 1'b0;                 

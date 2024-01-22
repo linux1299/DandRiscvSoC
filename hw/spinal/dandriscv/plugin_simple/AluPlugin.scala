@@ -49,6 +49,32 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
       val sraw_temp  = src1_word.asSInt |>> shift_bits(4 downto 0)
       val sraw_result= B((31 downto 0) -> sraw_temp(31)) ## sraw_temp
       val alu_result  = Bits(XLEN bits)
+      // RV64 M extension
+      val mul_temp = src1.asUInt * src2.asUInt
+      val mul_result = mul_temp(63 downto 0)
+      val mulh_temp = src1.asSInt * src2.asSInt
+      val mulh_result = mulh_temp(127 downto 64)
+      val mulhu_result = mul_temp(63 downto 0)
+      val mulhsu_src2 = B(0, 1 bits) ## src2
+      val mulhsu_temp = src1.asSInt * mulhsu_src2.asSInt
+      val mulhsu_result = mulhsu_temp(127 downto 64)
+      val div_temp = src1.asSInt / src2.asSInt
+      val div_result = div_temp(63 downto 0)
+      val divu_temp = src1.asUInt / src2.asUInt
+      val divu_result = divu_temp(63 downto 0)
+      val rem_temp = src1.asSInt % src2.asSInt
+      val rem_result = rem_temp(63 downto 0)
+      val remu_temp = src1.asUInt % src2.asUInt
+      val remu_result = remu_temp(63 downto 0)
+      val mulw_result= B((31 downto 0) -> mul_result(31)) ## mul_result(31 downto 0)
+      val divw_temp = src1_word.asSInt / src2_word.asSInt
+      val divw_result= B((31 downto 0) -> divw_temp(31)) ## divw_temp(31 downto 0)
+      val divuw_temp = src1_word.asUInt / src2_word.asUInt
+      val divuw_result =  B((31 downto 0) -> divuw_temp(31)) ## divuw_temp(31 downto 0)
+      val remw_temp = src1_word.asSInt % src2_word.asSInt
+      val remw_result = B((31 downto 0) -> remw_temp(31)) ## remw_temp(31 downto 0)
+      val remuw_temp = src1_word.asUInt % src2_word.asUInt
+      val remuw_result = B((31 downto 0) -> remuw_temp(31)) ## remuw_temp(31 downto 0)
 
       // branch related
       val pc_next = UInt(addressWidth bits)
@@ -200,6 +226,46 @@ class ALUPlugin() extends Plugin[DandRiscvSimple]{
         }
         is(AluCtrlEnum.CSR.asBits){
           alu_result := input(CSR_RDATA)
+        }
+        // RV64 M extension
+        is(AluCtrlEnum.MUL.asBits){
+          alu_result := mul_result.asBits
+        }
+        is(AluCtrlEnum.MULH.asBits){
+          alu_result := mulh_result.asBits
+        }
+        is(AluCtrlEnum.MULHSU.asBits){
+          alu_result := mulhsu_result.asBits
+        }
+        is(AluCtrlEnum.MULHU.asBits){
+          alu_result := mulhu_result.asBits
+        }
+        is(AluCtrlEnum.DIV.asBits){
+          alu_result := div_result.asBits
+        }
+        is(AluCtrlEnum.DIVU.asBits){
+          alu_result := divu_result.asBits
+        }
+        is(AluCtrlEnum.REM.asBits){
+          alu_result := rem_result.asBits
+        }
+        is(AluCtrlEnum.REMU.asBits){
+          alu_result := remu_result.asBits
+        }
+        is(AluCtrlEnum.MULW.asBits){
+          alu_result := mulw_result.asBits
+        }
+        is(AluCtrlEnum.DIVW.asBits){
+          alu_result := divw_result.asBits
+        }
+        is(AluCtrlEnum.DIVUW.asBits){
+          alu_result := divuw_result.asBits
+        }
+        is(AluCtrlEnum.REMW.asBits){
+          alu_result := remw_result.asBits
+        }
+        is(AluCtrlEnum.REMUW.asBits){
+          alu_result := remuw_result.asBits
         }
         default{
           alu_result := add_result.asBits

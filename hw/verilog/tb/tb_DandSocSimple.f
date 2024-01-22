@@ -15,7 +15,7 @@
 /home/lin/SpinalProjects/DandRiscvSoC/hw/verilog/uart_simple/uart_send_data.v
 /home/lin/SpinalProjects/DandRiscvSoC/hw/verilog/uart_simple/uart_send.v
 /home/lin/SpinalProjects/DandRiscvSoC/hw/verilog/uart_simple/uart_recv.v
-
+/home/lin/SpinalProjects/DandRiscvSoC/hw/verilog/uart_simple/uart_rx.v
 ./hw/gen/DandSocSimple.v
 
 ./hw/verilog/tb/tb_DandSocSimple.sv

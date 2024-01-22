@@ -191,6 +191,8 @@ class DandSocSimple(val config: DandConfig) extends Component{
     uartCtrl.io.apb.addAttribute(Verilator.public)
     uartCtrl.io.clock := axiClockDomain.clock
     uartCtrl.io.resetn := ~axiClockDomain.reset
+
+    val timer = new Apb3Timer()
     
     val axiCrossbar = Axi4CrossbarFactory()
 
@@ -209,7 +211,8 @@ class DandSocSimple(val config: DandConfig) extends Component{
 
     axiCrossbar32.addSlaves(
       bootram.io.axi   -> (0x30000000L,   onChipRamSize),
-      apbBridge.io.axi -> (0x10000000L,   512 MB) // 0x1000_0000 ~ 0x2fff_ffff
+      // apbBridge.io.axi -> (0x10000000L,   512 MB) // 0x1000_0000 ~ 0x2fff_ffff
+      apbBridge.io.axi -> (0x10000000L,   128 Byte) // 0x1000_0000 ~ 0x1000_007f
     )
 
     axiCrossbar32.addConnections(
@@ -243,7 +246,10 @@ class DandSocSimple(val config: DandConfig) extends Component{
     val apbDecoder = Apb3Decoder(
       master = apbBridge.io.apb,
       slaves = List(
-        uartCtrl.io.apb  -> (0x0, 4 kB),
+        // uartCtrl.io.apb  -> (0x0, 4 kB),
+        // timer.io.apb     -> (0x40, 4 kB)
+        uartCtrl.io.apb  -> (0x0, 64),
+        timer.io.apb     -> (0x40, 64)
       )
     )
   }
@@ -269,9 +275,10 @@ object DandSocSimpleWithMemoryInit{
     // val config = SpinalConfig()
     GenDandSocSimpleConfig.spinal.generateVerilog({
       val toplevel = new DandSocSimple(DandConfig.default)
-    //  BinTools.initRam(toplevel.axi.bootram.ram, "/home/lin/oscpu/libraries/ysyxSoC/ysyx/program/bin/flash/hello-flash.bin", false)
+      // BinTools.initRam(toplevel.axi.bootram.ram, "/home/lin/oscpu/libraries/ysyxSoC/ysyx/program/bin/flash/hello-flash.bin", false)
       // BinTools.initRam(toplevel.axi.bootram.ram, "/home/lin/oscpu/libraries/ysyxSoC/ysyx/program/bin/flash/rtthread-flash.bin", false)
-      BinTools.initRam(toplevel.axi.bootram.ram, "/home/lin/SpinalProjects/DandRiscvSoC/ysyx-workbench/am-kernels/kernels/hello/build/hello-riscv64-nemu.bin", false)
+      // BinTools.initRam(toplevel.axi.bootram.ram, "/home/lin/SpinalProjects/DandRiscvSoC/ysyx-workbench/am-kernels/kernels/hello/build/hello-riscv64-nemu.bin", false)
+      BinTools.initRam(toplevel.axi.bootram.ram, "/home/lin/SpinalProjects/DandRiscvSoC/ysyx-workbench/am-kernels/benchmarks/coremark/build/coremark-riscv64-nemu.bin", false)
       toplevel
     })
   }

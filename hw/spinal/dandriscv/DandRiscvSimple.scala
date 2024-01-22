@@ -44,7 +44,8 @@ case class DandRiscvSimpleConfig(){
   }
   
   object AluCtrlEnum extends SpinalEnum(binarySequential){
-    val IDLE, ADD, SUB, SLT, SLTU, XOR, SLL, SRL, SRA, AND, OR, LUI, AUIPC, JAL, JALR, BEQ, BNE, BLT, BGE, BLTU, BGEU, CSR= newElement()
+    val IDLE, ADD, SUB, SLT, SLTU, XOR, SLL, SRL, SRA, AND, OR, LUI, AUIPC, JAL, JALR, BEQ, BNE, BLT, BGE, BLTU, BGEU, CSR,
+    MUL, MULH, MULHSU, MULHU, DIV, DIVU, REM, REMU, MULW, DIVW, DIVUW, REMW, REMUW = newElement()
   }
 
   object MemCtrlEnum extends SpinalEnum(binarySequential){

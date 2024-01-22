@@ -128,14 +128,32 @@ object Riscv{
   def MULH               = M"0000001----------001-----0110011"
   def MULHSU             = M"0000001----------010-----0110011"
   def MULHU              = M"0000001----------011-----0110011"
+  def MULW               = M"0000001----------000-----0111011"
 
 
   def DIV                = M"0000001----------100-----0110011"
   def DIVU               = M"0000001----------101-----0110011"
+  def DIVW               = M"0000001----------100-----0111011"
+  def DIVUW              = M"0000001----------101-----0111011"
   def REM                = M"0000001----------110-----0110011"
+  def REMW               = M"0000001----------110-----0111011"
   def REMU               = M"0000001----------111-----0110011"
+  def REMUW              = M"0000001----------111-----0111011"
 
-
+  //乘法单元：
+  // INSTPAT("0000001 ????? ????? 000 ????? 01100 11", mul    , R, R(dest) = src1 * src2);
+  // INSTPAT("0000001 ????? ????? 001 ????? 01100 11", mulh   , R, temp = (sword_t)src1*(sword_t)src2, R(dest) = temp >> 64);
+  // INSTPAT("0000001 ????? ????? 010 ????? 01100 11", mulhsu , R, temp = (sword_t)src1*(word_t )src2, R(dest) = temp >> 64);
+  // INSTPAT("0000001 ????? ????? 011 ????? 01100 11", mulhu  , R, temp = (word_t )src1*(word_t )src2, R(dest) = temp >> 64);
+  // INSTPAT("0000001 ????? ????? 100 ????? 01100 11", div    , R, R(dest) = (sword_t)src1 / (sword_t)src2);
+  // INSTPAT("0000001 ????? ????? 101 ????? 01100 11", divu   , R, R(dest) = (word_t )src1 / (word_t )src2);
+  // INSTPAT("0000001 ????? ????? 110 ????? 01100 11", rem    , R, R(dest) = (sword_t)src1 % (sword_t)src2);
+  // INSTPAT("0000001 ????? ????? 111 ????? 01100 11", remu   , R, R(dest) = (word_t )src1 % (word_t )src2);
+  // INSTPAT("0000001 ????? ????? 000 ????? 01110 11", mulw   , R, R(dest) = SEXT(BITS((int32_t)src1*(int32_t)src2,31,0),32));
+  // INSTPAT("0000001 ????? ????? 100 ????? 01110 11", divw   , R, R(dest) = SEXT((int32_t )src1 / (int32_t )src2,32));
+  // INSTPAT("0000001 ????? ????? 101 ????? 01110 11", divuw  , R, R(dest) = SEXT((uint32_t)src1 / (uint32_t)src2,32));
+  // INSTPAT("0000001 ????? ????? 110 ????? 01110 11", remw   , R, R(dest) = SEXT((int32_t )src1 % (int32_t )src2,32));
+  // INSTPAT("0000001 ????? ????? 111 ????? 01110 11", remuw  , R, R(dest) = SEXT((uint32_t)src1 % (uint32_t)src2,32));
 
   def CSRRW              = M"-----------------001-----1110011"
   def CSRRS              = M"-----------------010-----1110011"

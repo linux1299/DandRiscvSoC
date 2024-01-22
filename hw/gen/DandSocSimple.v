@@ -1,6 +1,6 @@
 // Generator : SpinalHDL v1.8.1    git head : 2a7592004363e5b40ec43e1f122ed8641cd8965b
 // Component : DandSocSimple
-// Git hash  : e34b04c6852275583483b049c815ff800c7f9a53
+// Git hash  : c79320936e42d797f4111c8b17a2851dcc7beb28
 
 `timescale 1ns/1ps
 
@@ -16,6 +16,7 @@ module DandSocSimple (
   wire       [3:0]    axi_downsizer_io_input_aw_payload_id;
   wire       [15:0]   axi_uartCtrl_io_apb_PADDR;
   wire                axi_uartCtrl_io_resetn;
+  wire       [7:0]    axi_timer_io_apb_PADDR;
   wire       [1:0]    core_cpu_icache_decoder_io_outputs_0_r_payload_id;
   wire       [1:0]    core_cpu_icache_decoder_io_outputs_1_r_payload_id;
   wire       [1:0]    core_cpu_dcache_decoder_io_outputs_0_r_payload_id;
@@ -140,6 +141,9 @@ module DandSocSimple (
   wire       [31:0]   axi_uartCtrl_io_apb_PRDATA;
   wire                axi_uartCtrl_io_apb_PSLVERROR;
   wire                axi_uartCtrl_io_uart_txd;
+  wire                axi_timer_io_apb_PREADY;
+  wire       [31:0]   axi_timer_io_apb_PRDATA;
+  wire                axi_timer_io_apb_PSLVERROR;
   wire                core_cpu_icache_decoder_io_input_ar_ready;
   wire                core_cpu_icache_decoder_io_input_r_valid;
   wire       [63:0]   core_cpu_icache_decoder_io_input_r_payload_data;
@@ -380,7 +384,7 @@ module DandSocSimple (
   wire       [31:0]   io_apb_decoder_io_input_PRDATA;
   wire                io_apb_decoder_io_input_PSLVERROR;
   wire       [19:0]   io_apb_decoder_io_output_PADDR;
-  wire       [0:0]    io_apb_decoder_io_output_PSEL;
+  wire       [1:0]    io_apb_decoder_io_output_PSEL;
   wire                io_apb_decoder_io_output_PENABLE;
   wire                io_apb_decoder_io_output_PWRITE;
   wire       [31:0]   io_apb_decoder_io_output_PWDATA;
@@ -392,6 +396,11 @@ module DandSocSimple (
   wire                apb3Router_1_io_outputs_0_PENABLE;
   wire                apb3Router_1_io_outputs_0_PWRITE;
   wire       [31:0]   apb3Router_1_io_outputs_0_PWDATA;
+  wire       [19:0]   apb3Router_1_io_outputs_1_PADDR;
+  wire       [0:0]    apb3Router_1_io_outputs_1_PSEL;
+  wire                apb3Router_1_io_outputs_1_PENABLE;
+  wire                apb3Router_1_io_outputs_1_PWRITE;
+  wire       [31:0]   apb3Router_1_io_outputs_1_PWDATA;
   wire                tmp_when;
   reg                 resetCtrl_systemResetUnbuffered;
   reg        [5:0]    resetCtrl_systemResetCounter;
@@ -797,6 +806,18 @@ module DandSocSimple (
     .io_uart_rxd      (io_uart_rxd                           ), //i
     .io_clock         (io_axiClk                             ), //i
     .io_resetn        (axi_uartCtrl_io_resetn                )  //i
+  );
+  Apb3Timer axi_timer (
+    .io_apb_PADDR       (axi_timer_io_apb_PADDR[7:0]           ), //i
+    .io_apb_PSEL        (apb3Router_1_io_outputs_1_PSEL        ), //i
+    .io_apb_PENABLE     (apb3Router_1_io_outputs_1_PENABLE     ), //i
+    .io_apb_PREADY      (axi_timer_io_apb_PREADY               ), //o
+    .io_apb_PWRITE      (apb3Router_1_io_outputs_1_PWRITE      ), //i
+    .io_apb_PWDATA      (apb3Router_1_io_outputs_1_PWDATA[31:0]), //i
+    .io_apb_PRDATA      (axi_timer_io_apb_PRDATA[31:0]         ), //o
+    .io_apb_PSLVERROR   (axi_timer_io_apb_PSLVERROR            ), //o
+    .io_axiClk          (io_axiClk                             ), //i
+    .resetCtrl_axiReset (resetCtrl_axiReset                    )  //i
   );
   Axi4ReadOnlyDecoder core_cpu_icache_decoder (
     .io_input_ar_valid             (core_cpu_icache_ar_valid                                         ), //i
@@ -1310,7 +1331,7 @@ module DandSocSimple (
     .io_input_PRDATA     (io_apb_decoder_io_input_PRDATA[31:0] ), //o
     .io_input_PSLVERROR  (io_apb_decoder_io_input_PSLVERROR    ), //o
     .io_output_PADDR     (io_apb_decoder_io_output_PADDR[19:0] ), //o
-    .io_output_PSEL      (io_apb_decoder_io_output_PSEL        ), //o
+    .io_output_PSEL      (io_apb_decoder_io_output_PSEL[1:0]   ), //o
     .io_output_PENABLE   (io_apb_decoder_io_output_PENABLE     ), //o
     .io_output_PREADY    (apb3Router_1_io_input_PREADY         ), //i
     .io_output_PWRITE    (io_apb_decoder_io_output_PWRITE      ), //o
@@ -1320,7 +1341,7 @@ module DandSocSimple (
   );
   Apb3Router apb3Router_1 (
     .io_input_PADDR         (io_apb_decoder_io_output_PADDR[19:0]  ), //i
-    .io_input_PSEL          (io_apb_decoder_io_output_PSEL         ), //i
+    .io_input_PSEL          (io_apb_decoder_io_output_PSEL[1:0]    ), //i
     .io_input_PENABLE       (io_apb_decoder_io_output_PENABLE      ), //i
     .io_input_PREADY        (apb3Router_1_io_input_PREADY          ), //o
     .io_input_PWRITE        (io_apb_decoder_io_output_PWRITE       ), //i
@@ -1335,6 +1356,14 @@ module DandSocSimple (
     .io_outputs_0_PWDATA    (apb3Router_1_io_outputs_0_PWDATA[31:0]), //o
     .io_outputs_0_PRDATA    (axi_uartCtrl_io_apb_PRDATA[31:0]      ), //i
     .io_outputs_0_PSLVERROR (axi_uartCtrl_io_apb_PSLVERROR         ), //i
+    .io_outputs_1_PADDR     (apb3Router_1_io_outputs_1_PADDR[19:0] ), //o
+    .io_outputs_1_PSEL      (apb3Router_1_io_outputs_1_PSEL        ), //o
+    .io_outputs_1_PENABLE   (apb3Router_1_io_outputs_1_PENABLE     ), //o
+    .io_outputs_1_PREADY    (axi_timer_io_apb_PREADY               ), //i
+    .io_outputs_1_PWRITE    (apb3Router_1_io_outputs_1_PWRITE      ), //o
+    .io_outputs_1_PWDATA    (apb3Router_1_io_outputs_1_PWDATA[31:0]), //o
+    .io_outputs_1_PRDATA    (axi_timer_io_apb_PRDATA[31:0]         ), //i
+    .io_outputs_1_PSLVERROR (axi_timer_io_apb_PSLVERROR            ), //i
     .io_axiClk              (io_axiClk                             ), //i
     .resetCtrl_axiReset     (resetCtrl_axiReset                    )  //i
   );
@@ -1523,7 +1552,8 @@ module DandSocSimple (
   assign axi_apbBridge_io_axi_arbiter_io_readInputs_0_ar_payload_addr = toplevel_toplevel_axi_downsizer_io_output_readOnly_decoder_io_outputs_1_ar_validPipe_payload_addr[19:0]; // @ Axi4Channel.scala l361
   assign axi_apbBridge_io_axi_arbiter_io_writeInputs_0_aw_payload_addr = toplevel_toplevel_axi_downsizer_io_output_writeOnly_decoder_io_outputs_1_aw_validPipe_payload_addr[19:0]; // @ Axi4Channel.scala l361
   assign axi_uartCtrl_io_apb_PADDR = apb3Router_1_io_outputs_0_PADDR[15:0]; // @ APB3.scala l72
-  assign io_uart_txd = axi_uartCtrl_io_uart_txd; // @ GenDandSocSimple.scala l250
+  assign axi_timer_io_apb_PADDR = apb3Router_1_io_outputs_1_PADDR[7:0]; // @ APB3.scala l72
+  assign io_uart_txd = axi_uartCtrl_io_uart_txd; // @ GenDandSocSimple.scala l256
   always @(posedge io_axiClk or negedge io_asyncResetn) begin
     if(!io_asyncResetn) begin
       resetCtrl_systemResetCounter <= 6'h0; // @ Data.scala l400
@@ -1622,7 +1652,7 @@ endmodule
 
 module Apb3Router (
   input      [19:0]   io_input_PADDR,
-  input      [0:0]    io_input_PSEL,
+  input      [1:0]    io_input_PSEL,
   input               io_input_PENABLE,
   output              io_input_PREADY,
   input               io_input_PWRITE,
@@ -1637,19 +1667,57 @@ module Apb3Router (
   output     [31:0]   io_outputs_0_PWDATA,
   input      [31:0]   io_outputs_0_PRDATA,
   input               io_outputs_0_PSLVERROR,
+  output     [19:0]   io_outputs_1_PADDR,
+  output     [0:0]    io_outputs_1_PSEL,
+  output              io_outputs_1_PENABLE,
+  input               io_outputs_1_PREADY,
+  output              io_outputs_1_PWRITE,
+  output     [31:0]   io_outputs_1_PWDATA,
+  input      [31:0]   io_outputs_1_PRDATA,
+  input               io_outputs_1_PSLVERROR,
   input               io_axiClk,
   input               resetCtrl_axiReset
 );
 
+  reg                 tmp_io_input_PREADY;
+  reg        [31:0]   tmp_io_input_PRDATA;
+  reg                 tmp_io_input_PSLVERROR;
+  wire                tmp_selIndex;
+  reg        [0:0]    selIndex;
+
+  always @(*) begin
+    case(selIndex)
+      1'b0 : begin
+        tmp_io_input_PREADY = io_outputs_0_PREADY;
+        tmp_io_input_PRDATA = io_outputs_0_PRDATA;
+        tmp_io_input_PSLVERROR = io_outputs_0_PSLVERROR;
+      end
+      default : begin
+        tmp_io_input_PREADY = io_outputs_1_PREADY;
+        tmp_io_input_PRDATA = io_outputs_1_PRDATA;
+        tmp_io_input_PSLVERROR = io_outputs_1_PSLVERROR;
+      end
+    endcase
+  end
 
   assign io_outputs_0_PADDR = io_input_PADDR; // @ Apb3Router.scala l47
   assign io_outputs_0_PENABLE = io_input_PENABLE; // @ Apb3Router.scala l48
   assign io_outputs_0_PSEL[0] = io_input_PSEL[0]; // @ Apb3Router.scala l49
   assign io_outputs_0_PWRITE = io_input_PWRITE; // @ Apb3Router.scala l50
   assign io_outputs_0_PWDATA = io_input_PWDATA; // @ Apb3Router.scala l51
-  assign io_input_PREADY = io_outputs_0_PREADY; // @ Apb3Router.scala l56
-  assign io_input_PRDATA = io_outputs_0_PRDATA; // @ Apb3Router.scala l57
-  assign io_input_PSLVERROR = io_outputs_0_PSLVERROR; // @ Apb3Router.scala l59
+  assign io_outputs_1_PADDR = io_input_PADDR; // @ Apb3Router.scala l47
+  assign io_outputs_1_PENABLE = io_input_PENABLE; // @ Apb3Router.scala l48
+  assign io_outputs_1_PSEL[0] = io_input_PSEL[1]; // @ Apb3Router.scala l49
+  assign io_outputs_1_PWRITE = io_input_PWRITE; // @ Apb3Router.scala l50
+  assign io_outputs_1_PWDATA = io_input_PWDATA; // @ Apb3Router.scala l51
+  assign tmp_selIndex = io_input_PSEL[1]; // @ BaseType.scala l305
+  assign io_input_PREADY = tmp_io_input_PREADY; // @ Apb3Router.scala l56
+  assign io_input_PRDATA = tmp_io_input_PRDATA; // @ Apb3Router.scala l57
+  assign io_input_PSLVERROR = tmp_io_input_PSLVERROR; // @ Apb3Router.scala l59
+  always @(posedge io_axiClk) begin
+    selIndex <= tmp_selIndex; // @ Reg.scala l39
+  end
+
 
 endmodule
 
@@ -1663,7 +1731,7 @@ module Apb3Decoder (
   output     [31:0]   io_input_PRDATA,
   output reg          io_input_PSLVERROR,
   output     [19:0]   io_output_PADDR,
-  output     [0:0]    io_output_PSEL,
+  output reg [1:0]    io_output_PSEL,
   output              io_output_PENABLE,
   input               io_output_PREADY,
   output              io_output_PWRITE,
@@ -1674,12 +1742,16 @@ module Apb3Decoder (
 
   wire                tmp_when;
 
-  assign tmp_when = (io_input_PSEL[0] && (io_output_PSEL == 1'b0));
+  assign tmp_when = (io_input_PSEL[0] && (io_output_PSEL == 2'b00));
   assign io_output_PADDR = io_input_PADDR; // @ Apb3Decoder.scala l74
   assign io_output_PENABLE = io_input_PENABLE; // @ Apb3Decoder.scala l75
   assign io_output_PWRITE = io_input_PWRITE; // @ Apb3Decoder.scala l76
   assign io_output_PWDATA = io_input_PWDATA; // @ Apb3Decoder.scala l77
-  assign io_output_PSEL[0] = (((io_input_PADDR & (~ 20'h00fff)) == 20'h0) && io_input_PSEL[0]); // @ Apb3Decoder.scala l80
+  always @(*) begin
+    io_output_PSEL[0] = (((io_input_PADDR & (~ 20'h0003f)) == 20'h0) && io_input_PSEL[0]); // @ Apb3Decoder.scala l80
+    io_output_PSEL[1] = (((io_input_PADDR & (~ 20'h0003f)) == 20'h00040) && io_input_PSEL[0]); // @ Apb3Decoder.scala l80
+  end
+
   always @(*) begin
     io_input_PREADY = io_output_PREADY; // @ Apb3Decoder.scala l83
     if(tmp_when) begin
@@ -2468,7 +2540,7 @@ module Axi4WriteOnlyDecoder_1 (
   end
 
   assign pendingDataCounter_valueNext = (pendingDataCounter_value + pendingDataCounter_finalIncrement); // @ Utils.scala l678
-  assign decodedCmdSels = {(((32'h10000000 <= io_input_aw_payload_addr) && (io_input_aw_payload_addr < 32'h30000000)) && io_input_aw_valid),(((io_input_aw_payload_addr & (~ 32'h0001ffff)) == 32'h30000000) && io_input_aw_valid)}; // @ BaseType.scala l299
+  assign decodedCmdSels = {(((io_input_aw_payload_addr & (~ 32'h0000007f)) == 32'h10000000) && io_input_aw_valid),(((io_input_aw_payload_addr & (~ 32'h0001ffff)) == 32'h30000000) && io_input_aw_valid)}; // @ BaseType.scala l299
   assign decodedCmdError = (decodedCmdSels == 2'b00); // @ BaseType.scala l305
   assign allowCmd = ((pendingCmdCounter_value == 3'b000) || ((pendingCmdCounter_value != 3'b111) && (pendingSels == decodedCmdSels))); // @ BaseType.scala l305
   assign allowData = (pendingDataCounter_value != 3'b000); // @ BaseType.scala l305
@@ -2692,7 +2764,7 @@ module Axi4ReadOnlyDecoder_2 (
   end
 
   assign pendingCmdCounter_valueNext = (pendingCmdCounter_value + pendingCmdCounter_finalIncrement); // @ Utils.scala l678
-  assign decodedCmdSels = {(((32'h10000000 <= io_input_ar_payload_addr) && (io_input_ar_payload_addr < 32'h30000000)) && io_input_ar_valid),(((io_input_ar_payload_addr & (~ 32'h0001ffff)) == 32'h30000000) && io_input_ar_valid)}; // @ BaseType.scala l299
+  assign decodedCmdSels = {(((io_input_ar_payload_addr & (~ 32'h0000007f)) == 32'h10000000) && io_input_ar_valid),(((io_input_ar_payload_addr & (~ 32'h0001ffff)) == 32'h30000000) && io_input_ar_valid)}; // @ BaseType.scala l299
   assign decodedCmdError = (decodedCmdSels == 2'b00); // @ BaseType.scala l305
   assign allowCmd = ((pendingCmdCounter_value == 3'b000) || ((pendingCmdCounter_value != 3'b111) && (pendingSels == decodedCmdSels))); // @ BaseType.scala l305
   assign io_input_ar_ready = (((|(decodedCmdSels & {io_outputs_1_ar_ready,io_outputs_0_ar_ready})) || (decodedCmdError && errorSlave_io_axi_ar_ready)) && allowCmd); // @ Axi4Decoder.scala l33
@@ -3714,6 +3786,46 @@ module Axi4ReadOnlyDecoder (
       if(io_input_ar_ready) begin
         pendingError <= decodedCmdError; // @ Axi4Decoder.scala l25
       end
+    end
+  end
+
+
+endmodule
+
+module Apb3Timer (
+  input      [7:0]    io_apb_PADDR,
+  input      [0:0]    io_apb_PSEL,
+  input               io_apb_PENABLE,
+  output              io_apb_PREADY,
+  input               io_apb_PWRITE,
+  input      [31:0]   io_apb_PWDATA,
+  output reg [31:0]   io_apb_PRDATA,
+  output              io_apb_PSLVERROR,
+  input               io_axiClk,
+  input               resetCtrl_axiReset
+);
+
+  reg        [63:0]   timer_1;
+
+  assign io_apb_PREADY = 1'b1; // @ ApbTimer.scala l41
+  always @(*) begin
+    if((io_apb_PADDR == 8'h40)) begin
+      io_apb_PRDATA = timer_1[31 : 0]; // @ ApbTimer.scala l43
+    end else begin
+      if((io_apb_PADDR == 8'h44)) begin
+        io_apb_PRDATA = timer_1[63 : 32]; // @ ApbTimer.scala l45
+      end else begin
+        io_apb_PRDATA = 32'h0; // @ ApbTimer.scala l47
+      end
+    end
+  end
+
+  assign io_apb_PSLVERROR = 1'b0; // @ ApbTimer.scala l49
+  always @(posedge io_axiClk or posedge resetCtrl_axiReset) begin
+    if(resetCtrl_axiReset) begin
+      timer_1 <= 64'h0; // @ Data.scala l400
+    end else begin
+      timer_1 <= (timer_1 + 64'h0000000000000001); // @ ApbTimer.scala l39
     end
   end
 
@@ -5063,28 +5175,41 @@ module DandRiscvSimple (
   localparam CsrCtrlEnum_CSRRWI = 4'd7;
   localparam CsrCtrlEnum_CSRRSI = 4'd8;
   localparam CsrCtrlEnum_CSRRCI = 4'd9;
-  localparam AluCtrlEnum_IDLE = 5'd0;
-  localparam AluCtrlEnum_ADD = 5'd1;
-  localparam AluCtrlEnum_SUB = 5'd2;
-  localparam AluCtrlEnum_SLT = 5'd3;
-  localparam AluCtrlEnum_SLTU = 5'd4;
-  localparam AluCtrlEnum_XOR_1 = 5'd5;
-  localparam AluCtrlEnum_SLL_1 = 5'd6;
-  localparam AluCtrlEnum_SRL_1 = 5'd7;
-  localparam AluCtrlEnum_SRA_1 = 5'd8;
-  localparam AluCtrlEnum_AND_1 = 5'd9;
-  localparam AluCtrlEnum_OR_1 = 5'd10;
-  localparam AluCtrlEnum_LUI = 5'd11;
-  localparam AluCtrlEnum_AUIPC = 5'd12;
-  localparam AluCtrlEnum_JAL = 5'd13;
-  localparam AluCtrlEnum_JALR = 5'd14;
-  localparam AluCtrlEnum_BEQ = 5'd15;
-  localparam AluCtrlEnum_BNE = 5'd16;
-  localparam AluCtrlEnum_BLT = 5'd17;
-  localparam AluCtrlEnum_BGE = 5'd18;
-  localparam AluCtrlEnum_BLTU = 5'd19;
-  localparam AluCtrlEnum_BGEU = 5'd20;
-  localparam AluCtrlEnum_CSR = 5'd21;
+  localparam AluCtrlEnum_IDLE = 6'd0;
+  localparam AluCtrlEnum_ADD = 6'd1;
+  localparam AluCtrlEnum_SUB = 6'd2;
+  localparam AluCtrlEnum_SLT = 6'd3;
+  localparam AluCtrlEnum_SLTU = 6'd4;
+  localparam AluCtrlEnum_XOR_1 = 6'd5;
+  localparam AluCtrlEnum_SLL_1 = 6'd6;
+  localparam AluCtrlEnum_SRL_1 = 6'd7;
+  localparam AluCtrlEnum_SRA_1 = 6'd8;
+  localparam AluCtrlEnum_AND_1 = 6'd9;
+  localparam AluCtrlEnum_OR_1 = 6'd10;
+  localparam AluCtrlEnum_LUI = 6'd11;
+  localparam AluCtrlEnum_AUIPC = 6'd12;
+  localparam AluCtrlEnum_JAL = 6'd13;
+  localparam AluCtrlEnum_JALR = 6'd14;
+  localparam AluCtrlEnum_BEQ = 6'd15;
+  localparam AluCtrlEnum_BNE = 6'd16;
+  localparam AluCtrlEnum_BLT = 6'd17;
+  localparam AluCtrlEnum_BGE = 6'd18;
+  localparam AluCtrlEnum_BLTU = 6'd19;
+  localparam AluCtrlEnum_BGEU = 6'd20;
+  localparam AluCtrlEnum_CSR = 6'd21;
+  localparam AluCtrlEnum_MUL = 6'd22;
+  localparam AluCtrlEnum_MULH = 6'd23;
+  localparam AluCtrlEnum_MULHSU = 6'd24;
+  localparam AluCtrlEnum_MULHU = 6'd25;
+  localparam AluCtrlEnum_DIV = 6'd26;
+  localparam AluCtrlEnum_DIVU = 6'd27;
+  localparam AluCtrlEnum_REM_1 = 6'd28;
+  localparam AluCtrlEnum_REMU = 6'd29;
+  localparam AluCtrlEnum_MULW = 6'd30;
+  localparam AluCtrlEnum_DIVW = 6'd31;
+  localparam AluCtrlEnum_DIVUW = 6'd32;
+  localparam AluCtrlEnum_REMW = 6'd33;
+  localparam AluCtrlEnum_REMUW = 6'd34;
   localparam MemCtrlEnum_IDLE = 4'd0;
   localparam MemCtrlEnum_LB = 4'd1;
   localparam MemCtrlEnum_LBU = 4'd2;
@@ -5235,6 +5360,20 @@ module DandRiscvSimple (
   wire       [31:0]   tmp_execute_ALUPlugin_addw_result_2;
   wire       [31:0]   tmp_execute_ALUPlugin_subw_result_2;
   wire       [31:0]   tmp_execute_ALUPlugin_sraw_temp;
+  wire       [63:0]   tmp_execute_ALUPlugin_mulh_temp;
+  wire       [63:0]   tmp_execute_ALUPlugin_mulh_temp_1;
+  wire       [63:0]   tmp_execute_ALUPlugin_mulhsu_temp;
+  wire       [64:0]   tmp_execute_ALUPlugin_mulhsu_temp_1;
+  wire       [63:0]   tmp_execute_ALUPlugin_div_temp;
+  wire       [63:0]   tmp_execute_ALUPlugin_div_temp_1;
+  wire       [63:0]   tmp_execute_ALUPlugin_rem_temp;
+  wire       [63:0]   tmp_execute_ALUPlugin_rem_temp_1;
+  wire       [31:0]   tmp_execute_ALUPlugin_divw_temp;
+  wire       [31:0]   tmp_execute_ALUPlugin_divw_temp_1;
+  wire       [31:0]   tmp_execute_ALUPlugin_divw_result_2;
+  wire       [31:0]   tmp_execute_ALUPlugin_remw_temp;
+  wire       [31:0]   tmp_execute_ALUPlugin_remw_temp_1;
+  wire       [31:0]   tmp_execute_ALUPlugin_remw_result_2;
   wire       [63:0]   tmp_execute_ALUPlugin_blt_result;
   wire       [63:0]   tmp_execute_ALUPlugin_blt_result_1;
   wire       [63:0]   tmp_execute_ALUPlugin_bge_result;
@@ -5289,7 +5428,7 @@ module DandRiscvSimple (
   wire       [3:0]    decode_MEM_CTRL;
   wire                decode_SRC2_IS_IMM;
   wire                decode_ALU_WORD;
-  wire       [4:0]    decode_ALU_CTRL;
+  wire       [5:0]    decode_ALU_CTRL;
   wire       [4:0]    execute_RS2_ADDR;
   wire       [4:0]    decode_RS2_ADDR;
   wire       [4:0]    decode_RS1_ADDR;
@@ -5356,7 +5495,7 @@ module DandRiscvSimple (
   wire       [63:0]   execute_PC;
   wire       [4:0]    execute_RS1_ADDR;
   wire       [4:0]    execute_RD_ADDR;
-  wire       [4:0]    execute_ALU_CTRL;
+  wire       [5:0]    execute_ALU_CTRL;
   wire       [63:0]   tmp_execute_MEM_WDATA_2;
   wire       [4:0]    tmp_DecodePlugin_hazard_rs1_from_wb;
   wire                tmp_DecodePlugin_hazard_rs1_from_wb_1;
@@ -5500,7 +5639,7 @@ module DandRiscvSimple (
   wire       [4:0]    decode_DecodePlugin_rs2_addr;
   wire                decode_DecodePlugin_rd_wen;
   wire       [4:0]    decode_DecodePlugin_rd_addr;
-  reg        [4:0]    decode_DecodePlugin_alu_ctrl;
+  reg        [5:0]    decode_DecodePlugin_alu_ctrl;
   wire                decode_DecodePlugin_alu_word;
   wire                decode_DecodePlugin_src2_is_imm;
   reg        [3:0]    decode_DecodePlugin_mem_ctrl;
@@ -5555,6 +5694,41 @@ module DandRiscvSimple (
   reg        [31:0]   tmp_execute_ALUPlugin_sraw_result_1;
   wire       [63:0]   execute_ALUPlugin_sraw_result;
   reg        [63:0]   execute_ALUPlugin_alu_result;
+  wire       [127:0]  execute_ALUPlugin_mul_temp;
+  wire       [63:0]   execute_ALUPlugin_mul_result;
+  wire       [127:0]  execute_ALUPlugin_mulh_temp;
+  wire       [63:0]   execute_ALUPlugin_mulh_result;
+  wire       [63:0]   execute_ALUPlugin_mulhu_result;
+  wire       [64:0]   execute_ALUPlugin_mulhsu_src2;
+  wire       [128:0]  execute_ALUPlugin_mulhsu_temp;
+  wire       [63:0]   execute_ALUPlugin_mulhsu_result;
+  wire       [63:0]   execute_ALUPlugin_div_temp;
+  wire       [63:0]   execute_ALUPlugin_div_result;
+  wire       [63:0]   execute_ALUPlugin_divu_temp;
+  wire       [63:0]   execute_ALUPlugin_divu_result;
+  wire       [63:0]   execute_ALUPlugin_rem_temp;
+  wire       [63:0]   execute_ALUPlugin_rem_result;
+  wire       [63:0]   execute_ALUPlugin_remu_temp;
+  wire       [63:0]   execute_ALUPlugin_remu_result;
+  wire                tmp_execute_ALUPlugin_mulw_result;
+  reg        [31:0]   tmp_execute_ALUPlugin_mulw_result_1;
+  wire       [63:0]   execute_ALUPlugin_mulw_result;
+  wire       [31:0]   execute_ALUPlugin_divw_temp;
+  wire                tmp_execute_ALUPlugin_divw_result;
+  reg        [31:0]   tmp_execute_ALUPlugin_divw_result_1;
+  wire       [63:0]   execute_ALUPlugin_divw_result;
+  wire       [31:0]   execute_ALUPlugin_divuw_temp;
+  wire                tmp_execute_ALUPlugin_divuw_result;
+  reg        [31:0]   tmp_execute_ALUPlugin_divuw_result_1;
+  wire       [63:0]   execute_ALUPlugin_divuw_result;
+  wire       [31:0]   execute_ALUPlugin_remw_temp;
+  wire                tmp_execute_ALUPlugin_remw_result;
+  reg        [31:0]   tmp_execute_ALUPlugin_remw_result_1;
+  wire       [63:0]   execute_ALUPlugin_remw_result;
+  wire       [31:0]   execute_ALUPlugin_remuw_temp;
+  wire                tmp_execute_ALUPlugin_remuw_result;
+  reg        [31:0]   tmp_execute_ALUPlugin_remuw_result_1;
+  wire       [63:0]   execute_ALUPlugin_remuw_result;
   reg        [63:0]   execute_ALUPlugin_pc_next;
   wire                execute_ALUPlugin_jal;
   wire                execute_ALUPlugin_jalr;
@@ -5677,7 +5851,7 @@ module DandRiscvSimple (
   reg        [63:0]   decode_to_execute_RS2;
   reg        [4:0]    decode_to_execute_RS1_ADDR;
   reg        [4:0]    decode_to_execute_RS2_ADDR;
-  reg        [4:0]    decode_to_execute_ALU_CTRL;
+  reg        [5:0]    decode_to_execute_ALU_CTRL;
   reg                 decode_to_execute_ALU_WORD;
   reg                 decode_to_execute_SRC2_IS_IMM;
   reg        [3:0]    decode_to_execute_MEM_CTRL;
@@ -5890,6 +6064,20 @@ module DandRiscvSimple (
   assign tmp_execute_ALUPlugin_addw_result_2 = execute_ALUPlugin_add_result[31 : 0];
   assign tmp_execute_ALUPlugin_subw_result_2 = execute_ALUPlugin_sub_result[31 : 0];
   assign tmp_execute_ALUPlugin_sraw_temp = execute_ALUPlugin_src1_word;
+  assign tmp_execute_ALUPlugin_mulh_temp = execute_ALUPlugin_src1;
+  assign tmp_execute_ALUPlugin_mulh_temp_1 = execute_ALUPlugin_src2;
+  assign tmp_execute_ALUPlugin_mulhsu_temp = execute_ALUPlugin_src1;
+  assign tmp_execute_ALUPlugin_mulhsu_temp_1 = execute_ALUPlugin_mulhsu_src2;
+  assign tmp_execute_ALUPlugin_div_temp = execute_ALUPlugin_src1;
+  assign tmp_execute_ALUPlugin_div_temp_1 = execute_ALUPlugin_src2;
+  assign tmp_execute_ALUPlugin_rem_temp = execute_ALUPlugin_src1;
+  assign tmp_execute_ALUPlugin_rem_temp_1 = execute_ALUPlugin_src2;
+  assign tmp_execute_ALUPlugin_divw_temp = execute_ALUPlugin_src1_word;
+  assign tmp_execute_ALUPlugin_divw_temp_1 = execute_ALUPlugin_src2_word;
+  assign tmp_execute_ALUPlugin_divw_result_2 = execute_ALUPlugin_divw_temp[31 : 0];
+  assign tmp_execute_ALUPlugin_remw_temp = execute_ALUPlugin_src1_word;
+  assign tmp_execute_ALUPlugin_remw_temp_1 = execute_ALUPlugin_src2_word;
+  assign tmp_execute_ALUPlugin_remw_result_2 = execute_ALUPlugin_remw_temp[31 : 0];
   assign tmp_execute_ALUPlugin_blt_result = execute_ALUPlugin_branch_src1;
   assign tmp_execute_ALUPlugin_blt_result_1 = execute_ALUPlugin_branch_src2;
   assign tmp_execute_ALUPlugin_bge_result = execute_ALUPlugin_branch_src2;
@@ -6825,8 +7013,47 @@ module DandRiscvSimple (
       32'b?????????????????001?????1110011, 32'b?????????????????010?????1110011, 32'b?????????????????011?????1110011, 32'b?????????????????101?????1110011, 32'b?????????????????110?????1110011, 32'b?????????????????111?????1110011 : begin
         decode_DecodePlugin_alu_ctrl = AluCtrlEnum_CSR; // @ DecodePlugin.scala l198
       end
+      32'b0000001??????????000?????0110011 : begin
+        decode_DecodePlugin_alu_ctrl = AluCtrlEnum_MUL; // @ DecodePlugin.scala l202
+      end
+      32'b0000001??????????001?????0110011 : begin
+        decode_DecodePlugin_alu_ctrl = AluCtrlEnum_MULH; // @ DecodePlugin.scala l205
+      end
+      32'b0000001??????????010?????0110011 : begin
+        decode_DecodePlugin_alu_ctrl = AluCtrlEnum_MULHSU; // @ DecodePlugin.scala l208
+      end
+      32'b0000001??????????011?????0110011 : begin
+        decode_DecodePlugin_alu_ctrl = AluCtrlEnum_MULHU; // @ DecodePlugin.scala l211
+      end
+      32'b0000001??????????100?????0110011 : begin
+        decode_DecodePlugin_alu_ctrl = AluCtrlEnum_DIV; // @ DecodePlugin.scala l214
+      end
+      32'b0000001??????????101?????0110011 : begin
+        decode_DecodePlugin_alu_ctrl = AluCtrlEnum_DIVU; // @ DecodePlugin.scala l217
+      end
+      32'b0000001??????????110?????0110011 : begin
+        decode_DecodePlugin_alu_ctrl = AluCtrlEnum_REM_1; // @ DecodePlugin.scala l220
+      end
+      32'b0000001??????????111?????0110011 : begin
+        decode_DecodePlugin_alu_ctrl = AluCtrlEnum_REMU; // @ DecodePlugin.scala l223
+      end
+      32'b0000001??????????000?????0111011 : begin
+        decode_DecodePlugin_alu_ctrl = AluCtrlEnum_MULW; // @ DecodePlugin.scala l226
+      end
+      32'b0000001??????????100?????0111011 : begin
+        decode_DecodePlugin_alu_ctrl = AluCtrlEnum_DIVW; // @ DecodePlugin.scala l229
+      end
+      32'b0000001??????????101?????0111011 : begin
+        decode_DecodePlugin_alu_ctrl = AluCtrlEnum_DIVUW; // @ DecodePlugin.scala l232
+      end
+      32'b0000001??????????110?????0111011 : begin
+        decode_DecodePlugin_alu_ctrl = AluCtrlEnum_REMW; // @ DecodePlugin.scala l235
+      end
+      32'b0000001??????????111?????0111011 : begin
+        decode_DecodePlugin_alu_ctrl = AluCtrlEnum_REMUW; // @ DecodePlugin.scala l238
+      end
       default : begin
-        decode_DecodePlugin_alu_ctrl = 5'h0; // @ DecodePlugin.scala l201
+        decode_DecodePlugin_alu_ctrl = 6'h0; // @ DecodePlugin.scala l241
       end
     endcase
   end
@@ -6834,40 +7061,40 @@ module DandRiscvSimple (
   always @(*) begin
     casez(decode_INSTRUCTION)
       32'b?????????????????000?????0000011 : begin
-        decode_DecodePlugin_mem_ctrl = MemCtrlEnum_LB; // @ DecodePlugin.scala l208
+        decode_DecodePlugin_mem_ctrl = MemCtrlEnum_LB; // @ DecodePlugin.scala l248
       end
       32'b?????????????????100?????0000011 : begin
-        decode_DecodePlugin_mem_ctrl = MemCtrlEnum_LBU; // @ DecodePlugin.scala l213
+        decode_DecodePlugin_mem_ctrl = MemCtrlEnum_LBU; // @ DecodePlugin.scala l253
       end
       32'b?????????????????001?????0000011 : begin
-        decode_DecodePlugin_mem_ctrl = MemCtrlEnum_LH; // @ DecodePlugin.scala l218
+        decode_DecodePlugin_mem_ctrl = MemCtrlEnum_LH; // @ DecodePlugin.scala l258
       end
       32'b?????????????????101?????0000011 : begin
-        decode_DecodePlugin_mem_ctrl = MemCtrlEnum_LHU; // @ DecodePlugin.scala l223
+        decode_DecodePlugin_mem_ctrl = MemCtrlEnum_LHU; // @ DecodePlugin.scala l263
       end
       32'b?????????????????010?????0000011 : begin
-        decode_DecodePlugin_mem_ctrl = MemCtrlEnum_LW; // @ DecodePlugin.scala l228
+        decode_DecodePlugin_mem_ctrl = MemCtrlEnum_LW; // @ DecodePlugin.scala l268
       end
       32'b?????????????????110?????0000011 : begin
-        decode_DecodePlugin_mem_ctrl = MemCtrlEnum_LWU; // @ DecodePlugin.scala l233
+        decode_DecodePlugin_mem_ctrl = MemCtrlEnum_LWU; // @ DecodePlugin.scala l273
       end
       32'b?????????????????011?????0000011 : begin
-        decode_DecodePlugin_mem_ctrl = MemCtrlEnum_LD; // @ DecodePlugin.scala l238
+        decode_DecodePlugin_mem_ctrl = MemCtrlEnum_LD; // @ DecodePlugin.scala l278
       end
       32'b?????????????????000?????0100011 : begin
-        decode_DecodePlugin_mem_ctrl = MemCtrlEnum_SB; // @ DecodePlugin.scala l243
+        decode_DecodePlugin_mem_ctrl = MemCtrlEnum_SB; // @ DecodePlugin.scala l283
       end
       32'b?????????????????001?????0100011 : begin
-        decode_DecodePlugin_mem_ctrl = MemCtrlEnum_SH; // @ DecodePlugin.scala l248
+        decode_DecodePlugin_mem_ctrl = MemCtrlEnum_SH; // @ DecodePlugin.scala l288
       end
       32'b?????????????????010?????0100011 : begin
-        decode_DecodePlugin_mem_ctrl = MemCtrlEnum_SW; // @ DecodePlugin.scala l253
+        decode_DecodePlugin_mem_ctrl = MemCtrlEnum_SW; // @ DecodePlugin.scala l293
       end
       32'b?????????????????011?????0100011 : begin
-        decode_DecodePlugin_mem_ctrl = MemCtrlEnum_SD; // @ DecodePlugin.scala l258
+        decode_DecodePlugin_mem_ctrl = MemCtrlEnum_SD; // @ DecodePlugin.scala l298
       end
       default : begin
-        decode_DecodePlugin_mem_ctrl = 4'b0000; // @ DecodePlugin.scala l263
+        decode_DecodePlugin_mem_ctrl = 4'b0000; // @ DecodePlugin.scala l303
       end
     endcase
   end
@@ -6875,40 +7102,40 @@ module DandRiscvSimple (
   always @(*) begin
     casez(decode_INSTRUCTION)
       32'b?????????????????000?????0000011 : begin
-        decode_DecodePlugin_is_load = 1'b1; // @ DecodePlugin.scala l209
+        decode_DecodePlugin_is_load = 1'b1; // @ DecodePlugin.scala l249
       end
       32'b?????????????????100?????0000011 : begin
-        decode_DecodePlugin_is_load = 1'b1; // @ DecodePlugin.scala l214
+        decode_DecodePlugin_is_load = 1'b1; // @ DecodePlugin.scala l254
       end
       32'b?????????????????001?????0000011 : begin
-        decode_DecodePlugin_is_load = 1'b1; // @ DecodePlugin.scala l219
+        decode_DecodePlugin_is_load = 1'b1; // @ DecodePlugin.scala l259
       end
       32'b?????????????????101?????0000011 : begin
-        decode_DecodePlugin_is_load = 1'b1; // @ DecodePlugin.scala l224
+        decode_DecodePlugin_is_load = 1'b1; // @ DecodePlugin.scala l264
       end
       32'b?????????????????010?????0000011 : begin
-        decode_DecodePlugin_is_load = 1'b1; // @ DecodePlugin.scala l229
+        decode_DecodePlugin_is_load = 1'b1; // @ DecodePlugin.scala l269
       end
       32'b?????????????????110?????0000011 : begin
-        decode_DecodePlugin_is_load = 1'b1; // @ DecodePlugin.scala l234
+        decode_DecodePlugin_is_load = 1'b1; // @ DecodePlugin.scala l274
       end
       32'b?????????????????011?????0000011 : begin
-        decode_DecodePlugin_is_load = 1'b1; // @ DecodePlugin.scala l239
+        decode_DecodePlugin_is_load = 1'b1; // @ DecodePlugin.scala l279
       end
       32'b?????????????????000?????0100011 : begin
-        decode_DecodePlugin_is_load = 1'b0; // @ DecodePlugin.scala l244
+        decode_DecodePlugin_is_load = 1'b0; // @ DecodePlugin.scala l284
       end
       32'b?????????????????001?????0100011 : begin
-        decode_DecodePlugin_is_load = 1'b0; // @ DecodePlugin.scala l249
+        decode_DecodePlugin_is_load = 1'b0; // @ DecodePlugin.scala l289
       end
       32'b?????????????????010?????0100011 : begin
-        decode_DecodePlugin_is_load = 1'b0; // @ DecodePlugin.scala l254
+        decode_DecodePlugin_is_load = 1'b0; // @ DecodePlugin.scala l294
       end
       32'b?????????????????011?????0100011 : begin
-        decode_DecodePlugin_is_load = 1'b0; // @ DecodePlugin.scala l259
+        decode_DecodePlugin_is_load = 1'b0; // @ DecodePlugin.scala l299
       end
       default : begin
-        decode_DecodePlugin_is_load = 1'b0; // @ DecodePlugin.scala l264
+        decode_DecodePlugin_is_load = 1'b0; // @ DecodePlugin.scala l304
       end
     endcase
   end
@@ -6916,40 +7143,40 @@ module DandRiscvSimple (
   always @(*) begin
     casez(decode_INSTRUCTION)
       32'b?????????????????000?????0000011 : begin
-        decode_DecodePlugin_is_store = 1'b0; // @ DecodePlugin.scala l210
+        decode_DecodePlugin_is_store = 1'b0; // @ DecodePlugin.scala l250
       end
       32'b?????????????????100?????0000011 : begin
-        decode_DecodePlugin_is_store = 1'b0; // @ DecodePlugin.scala l215
+        decode_DecodePlugin_is_store = 1'b0; // @ DecodePlugin.scala l255
       end
       32'b?????????????????001?????0000011 : begin
-        decode_DecodePlugin_is_store = 1'b0; // @ DecodePlugin.scala l220
+        decode_DecodePlugin_is_store = 1'b0; // @ DecodePlugin.scala l260
       end
       32'b?????????????????101?????0000011 : begin
-        decode_DecodePlugin_is_store = 1'b0; // @ DecodePlugin.scala l225
-      end
-      32'b?????????????????010?????0000011 : begin
-        decode_DecodePlugin_is_store = 1'b0; // @ DecodePlugin.scala l230
-      end
-      32'b?????????????????110?????0000011 : begin
-        decode_DecodePlugin_is_store = 1'b0; // @ DecodePlugin.scala l235
-      end
-      32'b?????????????????011?????0000011 : begin
-        decode_DecodePlugin_is_store = 1'b0; // @ DecodePlugin.scala l240
-      end
-      32'b?????????????????000?????0100011 : begin
-        decode_DecodePlugin_is_store = 1'b1; // @ DecodePlugin.scala l245
-      end
-      32'b?????????????????001?????0100011 : begin
-        decode_DecodePlugin_is_store = 1'b1; // @ DecodePlugin.scala l250
-      end
-      32'b?????????????????010?????0100011 : begin
-        decode_DecodePlugin_is_store = 1'b1; // @ DecodePlugin.scala l255
-      end
-      32'b?????????????????011?????0100011 : begin
-        decode_DecodePlugin_is_store = 1'b1; // @ DecodePlugin.scala l260
-      end
-      default : begin
         decode_DecodePlugin_is_store = 1'b0; // @ DecodePlugin.scala l265
+      end
+      32'b?????????????????010?????0000011 : begin
+        decode_DecodePlugin_is_store = 1'b0; // @ DecodePlugin.scala l270
+      end
+      32'b?????????????????110?????0000011 : begin
+        decode_DecodePlugin_is_store = 1'b0; // @ DecodePlugin.scala l275
+      end
+      32'b?????????????????011?????0000011 : begin
+        decode_DecodePlugin_is_store = 1'b0; // @ DecodePlugin.scala l280
+      end
+      32'b?????????????????000?????0100011 : begin
+        decode_DecodePlugin_is_store = 1'b1; // @ DecodePlugin.scala l285
+      end
+      32'b?????????????????001?????0100011 : begin
+        decode_DecodePlugin_is_store = 1'b1; // @ DecodePlugin.scala l290
+      end
+      32'b?????????????????010?????0100011 : begin
+        decode_DecodePlugin_is_store = 1'b1; // @ DecodePlugin.scala l295
+      end
+      32'b?????????????????011?????0100011 : begin
+        decode_DecodePlugin_is_store = 1'b1; // @ DecodePlugin.scala l300
+      end
+      default : begin
+        decode_DecodePlugin_is_store = 1'b0; // @ DecodePlugin.scala l305
       end
     endcase
   end
@@ -6957,46 +7184,46 @@ module DandRiscvSimple (
   always @(*) begin
     casez(decode_INSTRUCTION)
       32'b00000000000000000000000001110011 : begin
-        decode_DecodePlugin_csr_ctrl = CsrCtrlEnum_ECALL; // @ DecodePlugin.scala l272
+        decode_DecodePlugin_csr_ctrl = CsrCtrlEnum_ECALL; // @ DecodePlugin.scala l312
       end
       32'b00000000000100000000000001110011 : begin
-        decode_DecodePlugin_csr_ctrl = CsrCtrlEnum_EBREAK; // @ DecodePlugin.scala l275
+        decode_DecodePlugin_csr_ctrl = CsrCtrlEnum_EBREAK; // @ DecodePlugin.scala l315
       end
       32'b00110000001000000000000001110011 : begin
-        decode_DecodePlugin_csr_ctrl = CsrCtrlEnum_MRET; // @ DecodePlugin.scala l278
+        decode_DecodePlugin_csr_ctrl = CsrCtrlEnum_MRET; // @ DecodePlugin.scala l318
       end
       32'b?????????????????001?????1110011 : begin
-        decode_DecodePlugin_csr_ctrl = CsrCtrlEnum_CSRRW; // @ DecodePlugin.scala l281
+        decode_DecodePlugin_csr_ctrl = CsrCtrlEnum_CSRRW; // @ DecodePlugin.scala l321
       end
       32'b?????????????????010?????1110011 : begin
-        decode_DecodePlugin_csr_ctrl = CsrCtrlEnum_CSRRS; // @ DecodePlugin.scala l284
+        decode_DecodePlugin_csr_ctrl = CsrCtrlEnum_CSRRS; // @ DecodePlugin.scala l324
       end
       32'b?????????????????011?????1110011 : begin
-        decode_DecodePlugin_csr_ctrl = CsrCtrlEnum_CSRRC; // @ DecodePlugin.scala l287
+        decode_DecodePlugin_csr_ctrl = CsrCtrlEnum_CSRRC; // @ DecodePlugin.scala l327
       end
       32'b?????????????????101?????1110011 : begin
-        decode_DecodePlugin_csr_ctrl = CsrCtrlEnum_CSRRWI; // @ DecodePlugin.scala l290
+        decode_DecodePlugin_csr_ctrl = CsrCtrlEnum_CSRRWI; // @ DecodePlugin.scala l330
       end
       32'b?????????????????110?????1110011 : begin
-        decode_DecodePlugin_csr_ctrl = CsrCtrlEnum_CSRRSI; // @ DecodePlugin.scala l293
+        decode_DecodePlugin_csr_ctrl = CsrCtrlEnum_CSRRSI; // @ DecodePlugin.scala l333
       end
       32'b?????????????????111?????1110011 : begin
-        decode_DecodePlugin_csr_ctrl = CsrCtrlEnum_CSRRCI; // @ DecodePlugin.scala l296
+        decode_DecodePlugin_csr_ctrl = CsrCtrlEnum_CSRRCI; // @ DecodePlugin.scala l336
       end
       default : begin
-        decode_DecodePlugin_csr_ctrl = 4'b0000; // @ DecodePlugin.scala l299
+        decode_DecodePlugin_csr_ctrl = 4'b0000; // @ DecodePlugin.scala l339
       end
     endcase
   end
 
-  assign decode_DecodePlugin_rs1 = regFileModule_1_read_ports_rs1_value; // @ DecodePlugin.scala l308
-  assign decode_DecodePlugin_rs2 = regFileModule_1_read_ports_rs2_value; // @ DecodePlugin.scala l309
-  assign decode_DecodePlugin_rd_wen = ((((((! (decode_INSTRUCTION[6 : 0] == 7'h23)) && (! (decode_INSTRUCTION[6 : 0] == 7'h63))) && (! ((decode_INSTRUCTION & 32'hffffffff) == 32'h00100073))) && (! ((decode_INSTRUCTION & 32'hffffffff) == 32'h00000073))) && (! ((decode_INSTRUCTION & 32'hffffffff) == 32'h30200073))) && (decode_INSTRUCTION[6 : 0] != 7'h0f)); // @ DecodePlugin.scala l310
-  assign DecodePlugin_hazard_decode_rs1_req = decode_DecodePlugin_rs1_req; // @ DecodePlugin.scala l337
-  assign DecodePlugin_hazard_decode_rs2_req = decode_DecodePlugin_rs2_req; // @ DecodePlugin.scala l338
-  assign DecodePlugin_hazard_decode_rs1_addr = decode_DecodePlugin_rs1_addr; // @ DecodePlugin.scala l339
-  assign DecodePlugin_hazard_decode_rs2_addr = decode_DecodePlugin_rs2_addr; // @ DecodePlugin.scala l340
-  assign regFileModule_1_write_ports_rd_wen = (writeback_arbitration_isFiring && tmp_DecodePlugin_hazard_rs1_from_wb_1); // @ DecodePlugin.scala l346
+  assign decode_DecodePlugin_rs1 = regFileModule_1_read_ports_rs1_value; // @ DecodePlugin.scala l348
+  assign decode_DecodePlugin_rs2 = regFileModule_1_read_ports_rs2_value; // @ DecodePlugin.scala l349
+  assign decode_DecodePlugin_rd_wen = ((((((! (decode_INSTRUCTION[6 : 0] == 7'h23)) && (! (decode_INSTRUCTION[6 : 0] == 7'h63))) && (! ((decode_INSTRUCTION & 32'hffffffff) == 32'h00100073))) && (! ((decode_INSTRUCTION & 32'hffffffff) == 32'h00000073))) && (! ((decode_INSTRUCTION & 32'hffffffff) == 32'h30200073))) && (decode_INSTRUCTION[6 : 0] != 7'h0f)); // @ DecodePlugin.scala l350
+  assign DecodePlugin_hazard_decode_rs1_req = decode_DecodePlugin_rs1_req; // @ DecodePlugin.scala l377
+  assign DecodePlugin_hazard_decode_rs2_req = decode_DecodePlugin_rs2_req; // @ DecodePlugin.scala l378
+  assign DecodePlugin_hazard_decode_rs1_addr = decode_DecodePlugin_rs1_addr; // @ DecodePlugin.scala l379
+  assign DecodePlugin_hazard_decode_rs2_addr = decode_DecodePlugin_rs2_addr; // @ DecodePlugin.scala l380
+  assign regFileModule_1_write_ports_rd_wen = (writeback_arbitration_isFiring && tmp_DecodePlugin_hazard_rs1_from_wb_1); // @ DecodePlugin.scala l386
   assign execute_ALUPlugin_src1_word = execute_ALUPlugin_src1[31 : 0]; // @ BaseType.scala l299
   assign execute_ALUPlugin_src2_word = execute_ALUPlugin_src2[31 : 0]; // @ BaseType.scala l299
   assign execute_ALUPlugin_shift_bits = execute_ALUPlugin_src2[5 : 0]; // @ BaseType.scala l318
@@ -7198,6 +7425,211 @@ module DandRiscvSimple (
   end
 
   assign execute_ALUPlugin_sraw_result = {tmp_execute_ALUPlugin_sraw_result_1,execute_ALUPlugin_sraw_temp}; // @ BaseType.scala l299
+  assign execute_ALUPlugin_mul_temp = (execute_ALUPlugin_src1 * execute_ALUPlugin_src2); // @ BaseType.scala l299
+  assign execute_ALUPlugin_mul_result = execute_ALUPlugin_mul_temp[63 : 0]; // @ BaseType.scala l299
+  assign execute_ALUPlugin_mulh_temp = ($signed(tmp_execute_ALUPlugin_mulh_temp) * $signed(tmp_execute_ALUPlugin_mulh_temp_1)); // @ BaseType.scala l299
+  assign execute_ALUPlugin_mulh_result = execute_ALUPlugin_mulh_temp[127 : 64]; // @ BaseType.scala l299
+  assign execute_ALUPlugin_mulhu_result = execute_ALUPlugin_mul_temp[63 : 0]; // @ BaseType.scala l299
+  assign execute_ALUPlugin_mulhsu_src2 = {1'b0,execute_ALUPlugin_src2}; // @ BaseType.scala l299
+  assign execute_ALUPlugin_mulhsu_temp = ($signed(tmp_execute_ALUPlugin_mulhsu_temp) * $signed(tmp_execute_ALUPlugin_mulhsu_temp_1)); // @ BaseType.scala l299
+  assign execute_ALUPlugin_mulhsu_result = execute_ALUPlugin_mulhsu_temp[127 : 64]; // @ BaseType.scala l299
+  assign execute_ALUPlugin_div_temp = ($signed(tmp_execute_ALUPlugin_div_temp) / $signed(tmp_execute_ALUPlugin_div_temp_1)); // @ BaseType.scala l299
+  assign execute_ALUPlugin_div_result = execute_ALUPlugin_div_temp[63 : 0]; // @ BaseType.scala l299
+  assign execute_ALUPlugin_divu_temp = (execute_ALUPlugin_src1 / execute_ALUPlugin_src2); // @ BaseType.scala l299
+  assign execute_ALUPlugin_divu_result = execute_ALUPlugin_divu_temp[63 : 0]; // @ BaseType.scala l299
+  assign execute_ALUPlugin_rem_temp = ($signed(tmp_execute_ALUPlugin_rem_temp) % $signed(tmp_execute_ALUPlugin_rem_temp_1)); // @ BaseType.scala l299
+  assign execute_ALUPlugin_rem_result = execute_ALUPlugin_rem_temp[63 : 0]; // @ BaseType.scala l299
+  assign execute_ALUPlugin_remu_temp = (execute_ALUPlugin_src1 % execute_ALUPlugin_src2); // @ BaseType.scala l299
+  assign execute_ALUPlugin_remu_result = execute_ALUPlugin_remu_temp[63 : 0]; // @ BaseType.scala l299
+  assign tmp_execute_ALUPlugin_mulw_result = execute_ALUPlugin_mul_result[31]; // @ BaseType.scala l305
+  always @(*) begin
+    tmp_execute_ALUPlugin_mulw_result_1[31] = tmp_execute_ALUPlugin_mulw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_mulw_result_1[30] = tmp_execute_ALUPlugin_mulw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_mulw_result_1[29] = tmp_execute_ALUPlugin_mulw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_mulw_result_1[28] = tmp_execute_ALUPlugin_mulw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_mulw_result_1[27] = tmp_execute_ALUPlugin_mulw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_mulw_result_1[26] = tmp_execute_ALUPlugin_mulw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_mulw_result_1[25] = tmp_execute_ALUPlugin_mulw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_mulw_result_1[24] = tmp_execute_ALUPlugin_mulw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_mulw_result_1[23] = tmp_execute_ALUPlugin_mulw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_mulw_result_1[22] = tmp_execute_ALUPlugin_mulw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_mulw_result_1[21] = tmp_execute_ALUPlugin_mulw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_mulw_result_1[20] = tmp_execute_ALUPlugin_mulw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_mulw_result_1[19] = tmp_execute_ALUPlugin_mulw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_mulw_result_1[18] = tmp_execute_ALUPlugin_mulw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_mulw_result_1[17] = tmp_execute_ALUPlugin_mulw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_mulw_result_1[16] = tmp_execute_ALUPlugin_mulw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_mulw_result_1[15] = tmp_execute_ALUPlugin_mulw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_mulw_result_1[14] = tmp_execute_ALUPlugin_mulw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_mulw_result_1[13] = tmp_execute_ALUPlugin_mulw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_mulw_result_1[12] = tmp_execute_ALUPlugin_mulw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_mulw_result_1[11] = tmp_execute_ALUPlugin_mulw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_mulw_result_1[10] = tmp_execute_ALUPlugin_mulw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_mulw_result_1[9] = tmp_execute_ALUPlugin_mulw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_mulw_result_1[8] = tmp_execute_ALUPlugin_mulw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_mulw_result_1[7] = tmp_execute_ALUPlugin_mulw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_mulw_result_1[6] = tmp_execute_ALUPlugin_mulw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_mulw_result_1[5] = tmp_execute_ALUPlugin_mulw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_mulw_result_1[4] = tmp_execute_ALUPlugin_mulw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_mulw_result_1[3] = tmp_execute_ALUPlugin_mulw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_mulw_result_1[2] = tmp_execute_ALUPlugin_mulw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_mulw_result_1[1] = tmp_execute_ALUPlugin_mulw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_mulw_result_1[0] = tmp_execute_ALUPlugin_mulw_result; // @ Literal.scala l87
+  end
+
+  assign execute_ALUPlugin_mulw_result = {tmp_execute_ALUPlugin_mulw_result_1,execute_ALUPlugin_mul_result[31 : 0]}; // @ BaseType.scala l299
+  assign execute_ALUPlugin_divw_temp = ($signed(tmp_execute_ALUPlugin_divw_temp) / $signed(tmp_execute_ALUPlugin_divw_temp_1)); // @ BaseType.scala l299
+  assign tmp_execute_ALUPlugin_divw_result = execute_ALUPlugin_divw_temp[31]; // @ BaseType.scala l305
+  always @(*) begin
+    tmp_execute_ALUPlugin_divw_result_1[31] = tmp_execute_ALUPlugin_divw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divw_result_1[30] = tmp_execute_ALUPlugin_divw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divw_result_1[29] = tmp_execute_ALUPlugin_divw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divw_result_1[28] = tmp_execute_ALUPlugin_divw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divw_result_1[27] = tmp_execute_ALUPlugin_divw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divw_result_1[26] = tmp_execute_ALUPlugin_divw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divw_result_1[25] = tmp_execute_ALUPlugin_divw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divw_result_1[24] = tmp_execute_ALUPlugin_divw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divw_result_1[23] = tmp_execute_ALUPlugin_divw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divw_result_1[22] = tmp_execute_ALUPlugin_divw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divw_result_1[21] = tmp_execute_ALUPlugin_divw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divw_result_1[20] = tmp_execute_ALUPlugin_divw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divw_result_1[19] = tmp_execute_ALUPlugin_divw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divw_result_1[18] = tmp_execute_ALUPlugin_divw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divw_result_1[17] = tmp_execute_ALUPlugin_divw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divw_result_1[16] = tmp_execute_ALUPlugin_divw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divw_result_1[15] = tmp_execute_ALUPlugin_divw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divw_result_1[14] = tmp_execute_ALUPlugin_divw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divw_result_1[13] = tmp_execute_ALUPlugin_divw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divw_result_1[12] = tmp_execute_ALUPlugin_divw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divw_result_1[11] = tmp_execute_ALUPlugin_divw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divw_result_1[10] = tmp_execute_ALUPlugin_divw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divw_result_1[9] = tmp_execute_ALUPlugin_divw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divw_result_1[8] = tmp_execute_ALUPlugin_divw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divw_result_1[7] = tmp_execute_ALUPlugin_divw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divw_result_1[6] = tmp_execute_ALUPlugin_divw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divw_result_1[5] = tmp_execute_ALUPlugin_divw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divw_result_1[4] = tmp_execute_ALUPlugin_divw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divw_result_1[3] = tmp_execute_ALUPlugin_divw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divw_result_1[2] = tmp_execute_ALUPlugin_divw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divw_result_1[1] = tmp_execute_ALUPlugin_divw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divw_result_1[0] = tmp_execute_ALUPlugin_divw_result; // @ Literal.scala l87
+  end
+
+  assign execute_ALUPlugin_divw_result = {tmp_execute_ALUPlugin_divw_result_1,tmp_execute_ALUPlugin_divw_result_2}; // @ BaseType.scala l299
+  assign execute_ALUPlugin_divuw_temp = (execute_ALUPlugin_src1_word / execute_ALUPlugin_src2_word); // @ BaseType.scala l299
+  assign tmp_execute_ALUPlugin_divuw_result = execute_ALUPlugin_divuw_temp[31]; // @ BaseType.scala l305
+  always @(*) begin
+    tmp_execute_ALUPlugin_divuw_result_1[31] = tmp_execute_ALUPlugin_divuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divuw_result_1[30] = tmp_execute_ALUPlugin_divuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divuw_result_1[29] = tmp_execute_ALUPlugin_divuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divuw_result_1[28] = tmp_execute_ALUPlugin_divuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divuw_result_1[27] = tmp_execute_ALUPlugin_divuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divuw_result_1[26] = tmp_execute_ALUPlugin_divuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divuw_result_1[25] = tmp_execute_ALUPlugin_divuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divuw_result_1[24] = tmp_execute_ALUPlugin_divuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divuw_result_1[23] = tmp_execute_ALUPlugin_divuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divuw_result_1[22] = tmp_execute_ALUPlugin_divuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divuw_result_1[21] = tmp_execute_ALUPlugin_divuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divuw_result_1[20] = tmp_execute_ALUPlugin_divuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divuw_result_1[19] = tmp_execute_ALUPlugin_divuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divuw_result_1[18] = tmp_execute_ALUPlugin_divuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divuw_result_1[17] = tmp_execute_ALUPlugin_divuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divuw_result_1[16] = tmp_execute_ALUPlugin_divuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divuw_result_1[15] = tmp_execute_ALUPlugin_divuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divuw_result_1[14] = tmp_execute_ALUPlugin_divuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divuw_result_1[13] = tmp_execute_ALUPlugin_divuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divuw_result_1[12] = tmp_execute_ALUPlugin_divuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divuw_result_1[11] = tmp_execute_ALUPlugin_divuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divuw_result_1[10] = tmp_execute_ALUPlugin_divuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divuw_result_1[9] = tmp_execute_ALUPlugin_divuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divuw_result_1[8] = tmp_execute_ALUPlugin_divuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divuw_result_1[7] = tmp_execute_ALUPlugin_divuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divuw_result_1[6] = tmp_execute_ALUPlugin_divuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divuw_result_1[5] = tmp_execute_ALUPlugin_divuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divuw_result_1[4] = tmp_execute_ALUPlugin_divuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divuw_result_1[3] = tmp_execute_ALUPlugin_divuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divuw_result_1[2] = tmp_execute_ALUPlugin_divuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divuw_result_1[1] = tmp_execute_ALUPlugin_divuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_divuw_result_1[0] = tmp_execute_ALUPlugin_divuw_result; // @ Literal.scala l87
+  end
+
+  assign execute_ALUPlugin_divuw_result = {tmp_execute_ALUPlugin_divuw_result_1,execute_ALUPlugin_divuw_temp[31 : 0]}; // @ BaseType.scala l299
+  assign execute_ALUPlugin_remw_temp = ($signed(tmp_execute_ALUPlugin_remw_temp) % $signed(tmp_execute_ALUPlugin_remw_temp_1)); // @ BaseType.scala l299
+  assign tmp_execute_ALUPlugin_remw_result = execute_ALUPlugin_remw_temp[31]; // @ BaseType.scala l305
+  always @(*) begin
+    tmp_execute_ALUPlugin_remw_result_1[31] = tmp_execute_ALUPlugin_remw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remw_result_1[30] = tmp_execute_ALUPlugin_remw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remw_result_1[29] = tmp_execute_ALUPlugin_remw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remw_result_1[28] = tmp_execute_ALUPlugin_remw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remw_result_1[27] = tmp_execute_ALUPlugin_remw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remw_result_1[26] = tmp_execute_ALUPlugin_remw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remw_result_1[25] = tmp_execute_ALUPlugin_remw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remw_result_1[24] = tmp_execute_ALUPlugin_remw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remw_result_1[23] = tmp_execute_ALUPlugin_remw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remw_result_1[22] = tmp_execute_ALUPlugin_remw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remw_result_1[21] = tmp_execute_ALUPlugin_remw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remw_result_1[20] = tmp_execute_ALUPlugin_remw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remw_result_1[19] = tmp_execute_ALUPlugin_remw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remw_result_1[18] = tmp_execute_ALUPlugin_remw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remw_result_1[17] = tmp_execute_ALUPlugin_remw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remw_result_1[16] = tmp_execute_ALUPlugin_remw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remw_result_1[15] = tmp_execute_ALUPlugin_remw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remw_result_1[14] = tmp_execute_ALUPlugin_remw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remw_result_1[13] = tmp_execute_ALUPlugin_remw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remw_result_1[12] = tmp_execute_ALUPlugin_remw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remw_result_1[11] = tmp_execute_ALUPlugin_remw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remw_result_1[10] = tmp_execute_ALUPlugin_remw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remw_result_1[9] = tmp_execute_ALUPlugin_remw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remw_result_1[8] = tmp_execute_ALUPlugin_remw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remw_result_1[7] = tmp_execute_ALUPlugin_remw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remw_result_1[6] = tmp_execute_ALUPlugin_remw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remw_result_1[5] = tmp_execute_ALUPlugin_remw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remw_result_1[4] = tmp_execute_ALUPlugin_remw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remw_result_1[3] = tmp_execute_ALUPlugin_remw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remw_result_1[2] = tmp_execute_ALUPlugin_remw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remw_result_1[1] = tmp_execute_ALUPlugin_remw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remw_result_1[0] = tmp_execute_ALUPlugin_remw_result; // @ Literal.scala l87
+  end
+
+  assign execute_ALUPlugin_remw_result = {tmp_execute_ALUPlugin_remw_result_1,tmp_execute_ALUPlugin_remw_result_2}; // @ BaseType.scala l299
+  assign execute_ALUPlugin_remuw_temp = (execute_ALUPlugin_src1_word % execute_ALUPlugin_src2_word); // @ BaseType.scala l299
+  assign tmp_execute_ALUPlugin_remuw_result = execute_ALUPlugin_remuw_temp[31]; // @ BaseType.scala l305
+  always @(*) begin
+    tmp_execute_ALUPlugin_remuw_result_1[31] = tmp_execute_ALUPlugin_remuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remuw_result_1[30] = tmp_execute_ALUPlugin_remuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remuw_result_1[29] = tmp_execute_ALUPlugin_remuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remuw_result_1[28] = tmp_execute_ALUPlugin_remuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remuw_result_1[27] = tmp_execute_ALUPlugin_remuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remuw_result_1[26] = tmp_execute_ALUPlugin_remuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remuw_result_1[25] = tmp_execute_ALUPlugin_remuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remuw_result_1[24] = tmp_execute_ALUPlugin_remuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remuw_result_1[23] = tmp_execute_ALUPlugin_remuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remuw_result_1[22] = tmp_execute_ALUPlugin_remuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remuw_result_1[21] = tmp_execute_ALUPlugin_remuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remuw_result_1[20] = tmp_execute_ALUPlugin_remuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remuw_result_1[19] = tmp_execute_ALUPlugin_remuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remuw_result_1[18] = tmp_execute_ALUPlugin_remuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remuw_result_1[17] = tmp_execute_ALUPlugin_remuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remuw_result_1[16] = tmp_execute_ALUPlugin_remuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remuw_result_1[15] = tmp_execute_ALUPlugin_remuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remuw_result_1[14] = tmp_execute_ALUPlugin_remuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remuw_result_1[13] = tmp_execute_ALUPlugin_remuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remuw_result_1[12] = tmp_execute_ALUPlugin_remuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remuw_result_1[11] = tmp_execute_ALUPlugin_remuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remuw_result_1[10] = tmp_execute_ALUPlugin_remuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remuw_result_1[9] = tmp_execute_ALUPlugin_remuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remuw_result_1[8] = tmp_execute_ALUPlugin_remuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remuw_result_1[7] = tmp_execute_ALUPlugin_remuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remuw_result_1[6] = tmp_execute_ALUPlugin_remuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remuw_result_1[5] = tmp_execute_ALUPlugin_remuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remuw_result_1[4] = tmp_execute_ALUPlugin_remuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remuw_result_1[3] = tmp_execute_ALUPlugin_remuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remuw_result_1[2] = tmp_execute_ALUPlugin_remuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remuw_result_1[1] = tmp_execute_ALUPlugin_remuw_result; // @ Literal.scala l87
+    tmp_execute_ALUPlugin_remuw_result_1[0] = tmp_execute_ALUPlugin_remuw_result; // @ Literal.scala l87
+  end
+
+  assign execute_ALUPlugin_remuw_result = {tmp_execute_ALUPlugin_remuw_result_1,execute_ALUPlugin_remuw_temp[31 : 0]}; // @ BaseType.scala l299
   assign execute_ALUPlugin_jal = (execute_ALU_CTRL == AluCtrlEnum_JAL); // @ BaseType.scala l305
   assign execute_ALUPlugin_jalr = (execute_ALU_CTRL == AluCtrlEnum_JALR); // @ BaseType.scala l305
   assign execute_ALUPlugin_beq = (execute_ALU_CTRL == AluCtrlEnum_BEQ); // @ BaseType.scala l305
@@ -7211,24 +7643,24 @@ module DandRiscvSimple (
   assign execute_ALUPlugin_rd_is_link = ((execute_RD_ADDR == 5'h0) || (execute_RD_ADDR == 5'h05)); // @ BaseType.scala l305
   assign execute_ALUPlugin_rs1_is_link = ((execute_RS1_ADDR == 5'h0) || (execute_RS1_ADDR == 5'h05)); // @ BaseType.scala l305
   always @(*) begin
-    execute_ALUPlugin_is_call = 1'b0; // @ AluPlugin.scala l69
+    execute_ALUPlugin_is_call = 1'b0; // @ AluPlugin.scala l95
     if(execute_ALUPlugin_jal) begin
       if(execute_ALUPlugin_rd_is_link) begin
-        execute_ALUPlugin_is_call = 1'b1; // @ AluPlugin.scala l249
+        execute_ALUPlugin_is_call = 1'b1; // @ AluPlugin.scala l315
       end else begin
-        execute_ALUPlugin_is_call = 1'b0; // @ AluPlugin.scala l253
+        execute_ALUPlugin_is_call = 1'b0; // @ AluPlugin.scala l319
       end
     end else begin
       if(execute_ALUPlugin_jalr) begin
         if(execute_ALUPlugin_rd_is_link) begin
           if(execute_ALUPlugin_rs1_is_link) begin
             if(tmp_when_1) begin
-              execute_ALUPlugin_is_call = 1'b1; // @ AluPlugin.scala l271
+              execute_ALUPlugin_is_call = 1'b1; // @ AluPlugin.scala l337
             end else begin
-              execute_ALUPlugin_is_call = 1'b1; // @ AluPlugin.scala l273
+              execute_ALUPlugin_is_call = 1'b1; // @ AluPlugin.scala l339
             end
           end else begin
-            execute_ALUPlugin_is_call = 1'b1; // @ AluPlugin.scala l277
+            execute_ALUPlugin_is_call = 1'b1; // @ AluPlugin.scala l343
           end
         end
       end
@@ -7236,24 +7668,24 @@ module DandRiscvSimple (
   end
 
   always @(*) begin
-    execute_ALUPlugin_is_ret = 1'b0; // @ AluPlugin.scala l70
+    execute_ALUPlugin_is_ret = 1'b0; // @ AluPlugin.scala l96
     if(execute_ALUPlugin_jal) begin
       if(execute_ALUPlugin_rd_is_link) begin
-        execute_ALUPlugin_is_ret = 1'b0; // @ AluPlugin.scala l250
+        execute_ALUPlugin_is_ret = 1'b0; // @ AluPlugin.scala l316
       end else begin
-        execute_ALUPlugin_is_ret = 1'b0; // @ AluPlugin.scala l254
+        execute_ALUPlugin_is_ret = 1'b0; // @ AluPlugin.scala l320
       end
     end else begin
       if(execute_ALUPlugin_jalr) begin
         if(execute_ALUPlugin_rd_is_link) begin
           if(execute_ALUPlugin_rs1_is_link) begin
             if(!tmp_when_1) begin
-              execute_ALUPlugin_is_ret = 1'b1; // @ AluPlugin.scala l274
+              execute_ALUPlugin_is_ret = 1'b1; // @ AluPlugin.scala l340
             end
           end
         end else begin
           if(execute_ALUPlugin_rs1_is_link) begin
-            execute_ALUPlugin_is_ret = 1'b1; // @ AluPlugin.scala l281
+            execute_ALUPlugin_is_ret = 1'b1; // @ AluPlugin.scala l347
           end
         end
       end
@@ -7261,18 +7693,18 @@ module DandRiscvSimple (
   end
 
   always @(*) begin
-    execute_ALUPlugin_is_jmp = 1'b0; // @ AluPlugin.scala l71
+    execute_ALUPlugin_is_jmp = 1'b0; // @ AluPlugin.scala l97
     if(execute_ALUPlugin_jal) begin
       if(execute_ALUPlugin_rd_is_link) begin
-        execute_ALUPlugin_is_jmp = 1'b0; // @ AluPlugin.scala l251
+        execute_ALUPlugin_is_jmp = 1'b0; // @ AluPlugin.scala l317
       end else begin
-        execute_ALUPlugin_is_jmp = 1'b1; // @ AluPlugin.scala l255
+        execute_ALUPlugin_is_jmp = 1'b1; // @ AluPlugin.scala l321
       end
     end else begin
       if(execute_ALUPlugin_jalr) begin
         if(!execute_ALUPlugin_rd_is_link) begin
           if(!execute_ALUPlugin_rs1_is_link) begin
-            execute_ALUPlugin_is_jmp = 1'b1; // @ AluPlugin.scala l283
+            execute_ALUPlugin_is_jmp = 1'b1; // @ AluPlugin.scala l349
           end
         end
       end
@@ -7284,26 +7716,26 @@ module DandRiscvSimple (
     if(execute_ALUPlugin_branch_or_jump) begin
       if(execute_ALUPlugin_branch_taken) begin
         if(tmp_when) begin
-          execute_ALUPlugin_redirect_pc_next = execute_ALUPlugin_pc_next; // @ AluPlugin.scala l236
+          execute_ALUPlugin_redirect_pc_next = execute_ALUPlugin_pc_next; // @ AluPlugin.scala l302
         end
       end else begin
         if(execute_PREDICT_TAKEN) begin
-          execute_ALUPlugin_redirect_pc_next = (execute_PC + 64'h0000000000000004); // @ AluPlugin.scala l242
+          execute_ALUPlugin_redirect_pc_next = (execute_PC + 64'h0000000000000004); // @ AluPlugin.scala l308
         end
       end
     end
   end
 
   always @(*) begin
-    execute_ALUPlugin_redirect_valid = 1'b0; // @ AluPlugin.scala l74
+    execute_ALUPlugin_redirect_valid = 1'b0; // @ AluPlugin.scala l100
     if(execute_ALUPlugin_branch_or_jump) begin
       if(execute_ALUPlugin_branch_taken) begin
         if(tmp_when) begin
-          execute_ALUPlugin_redirect_valid = execute_arbitration_isFiring; // @ AluPlugin.scala l235
+          execute_ALUPlugin_redirect_valid = execute_arbitration_isFiring; // @ AluPlugin.scala l301
         end
       end else begin
         if(execute_PREDICT_TAKEN) begin
-          execute_ALUPlugin_redirect_valid = execute_arbitration_isFiring; // @ AluPlugin.scala l241
+          execute_ALUPlugin_redirect_valid = execute_arbitration_isFiring; // @ AluPlugin.scala l307
         end
       end
     end
@@ -7311,18 +7743,18 @@ module DandRiscvSimple (
 
   always @(*) begin
     if((((execute_ALU_CTRL == AluCtrlEnum_AUIPC) || execute_ALUPlugin_jal) || execute_ALUPlugin_jalr)) begin
-      execute_ALUPlugin_src1 = execute_PC; // @ AluPlugin.scala l78
+      execute_ALUPlugin_src1 = execute_PC; // @ AluPlugin.scala l104
     end else begin
       if(execute_RS1_FROM_MEM) begin
-        execute_ALUPlugin_src1 = memaccess_ALU_RESULT; // @ AluPlugin.scala l82
+        execute_ALUPlugin_src1 = memaccess_ALU_RESULT; // @ AluPlugin.scala l108
       end else begin
         if(execute_RS1_FROM_LOAD) begin
-          execute_ALUPlugin_src1 = memaccess_LSU_RDATA; // @ AluPlugin.scala l85
+          execute_ALUPlugin_src1 = memaccess_LSU_RDATA; // @ AluPlugin.scala l111
         end else begin
           if(execute_RS1_FROM_WB) begin
-            execute_ALUPlugin_src1 = tmp_execute_MEM_WDATA_2; // @ AluPlugin.scala l88
+            execute_ALUPlugin_src1 = tmp_execute_MEM_WDATA_2; // @ AluPlugin.scala l114
           end else begin
-            execute_ALUPlugin_src1 = execute_RS1; // @ AluPlugin.scala l91
+            execute_ALUPlugin_src1 = execute_RS1; // @ AluPlugin.scala l117
           end
         end
       end
@@ -7331,21 +7763,21 @@ module DandRiscvSimple (
 
   always @(*) begin
     if((execute_ALUPlugin_jal || execute_ALUPlugin_jalr)) begin
-      execute_ALUPlugin_src2 = 64'h0000000000000004; // @ AluPlugin.scala l96
+      execute_ALUPlugin_src2 = 64'h0000000000000004; // @ AluPlugin.scala l122
     end else begin
       if(execute_SRC2_IS_IMM) begin
-        execute_ALUPlugin_src2 = execute_IMM; // @ AluPlugin.scala l99
+        execute_ALUPlugin_src2 = execute_IMM; // @ AluPlugin.scala l125
       end else begin
         if(execute_RS2_FROM_MEM) begin
-          execute_ALUPlugin_src2 = memaccess_ALU_RESULT; // @ AluPlugin.scala l103
+          execute_ALUPlugin_src2 = memaccess_ALU_RESULT; // @ AluPlugin.scala l129
         end else begin
           if(execute_RS2_FROM_LOAD) begin
-            execute_ALUPlugin_src2 = memaccess_LSU_RDATA; // @ AluPlugin.scala l106
+            execute_ALUPlugin_src2 = memaccess_LSU_RDATA; // @ AluPlugin.scala l132
           end else begin
             if(execute_RS2_FROM_WB) begin
-              execute_ALUPlugin_src2 = tmp_execute_MEM_WDATA_2; // @ AluPlugin.scala l109
+              execute_ALUPlugin_src2 = tmp_execute_MEM_WDATA_2; // @ AluPlugin.scala l135
             end else begin
-              execute_ALUPlugin_src2 = execute_RS2; // @ AluPlugin.scala l112
+              execute_ALUPlugin_src2 = execute_RS2; // @ AluPlugin.scala l138
             end
           end
         end
@@ -7355,15 +7787,15 @@ module DandRiscvSimple (
 
   always @(*) begin
     if(execute_CTRL_RS1_FROM_MEM) begin
-      execute_ALUPlugin_branch_src1 = tmp_execute_MEM_WDATA_1; // @ AluPlugin.scala l118
+      execute_ALUPlugin_branch_src1 = tmp_execute_MEM_WDATA_1; // @ AluPlugin.scala l144
     end else begin
       if(execute_CTRL_RS1_FROM_LOAD) begin
-        execute_ALUPlugin_branch_src1 = tmp_execute_MEM_WDATA; // @ AluPlugin.scala l121
+        execute_ALUPlugin_branch_src1 = tmp_execute_MEM_WDATA; // @ AluPlugin.scala l147
       end else begin
         if(execute_CTRL_RS1_FROM_WB) begin
-          execute_ALUPlugin_branch_src1 = tmp_execute_MEM_WDATA_2; // @ AluPlugin.scala l124
+          execute_ALUPlugin_branch_src1 = tmp_execute_MEM_WDATA_2; // @ AluPlugin.scala l150
         end else begin
-          execute_ALUPlugin_branch_src1 = execute_RS1; // @ AluPlugin.scala l127
+          execute_ALUPlugin_branch_src1 = execute_RS1; // @ AluPlugin.scala l153
         end
       end
     end
@@ -7371,15 +7803,15 @@ module DandRiscvSimple (
 
   always @(*) begin
     if(execute_CTRL_RS2_FROM_MEM) begin
-      execute_ALUPlugin_branch_src2 = tmp_execute_MEM_WDATA_1; // @ AluPlugin.scala l131
+      execute_ALUPlugin_branch_src2 = tmp_execute_MEM_WDATA_1; // @ AluPlugin.scala l157
     end else begin
       if(execute_CTRL_RS2_FROM_LOAD) begin
-        execute_ALUPlugin_branch_src2 = tmp_execute_MEM_WDATA; // @ AluPlugin.scala l134
+        execute_ALUPlugin_branch_src2 = tmp_execute_MEM_WDATA; // @ AluPlugin.scala l160
       end else begin
         if(execute_CTRL_RS2_FROM_WB) begin
-          execute_ALUPlugin_branch_src2 = tmp_execute_MEM_WDATA_2; // @ AluPlugin.scala l137
+          execute_ALUPlugin_branch_src2 = tmp_execute_MEM_WDATA_2; // @ AluPlugin.scala l163
         end else begin
-          execute_ALUPlugin_branch_src2 = execute_RS2; // @ AluPlugin.scala l140
+          execute_ALUPlugin_branch_src2 = execute_RS2; // @ AluPlugin.scala l166
         end
       end
     end
@@ -7388,52 +7820,78 @@ module DandRiscvSimple (
   always @(*) begin
     if((execute_ALU_CTRL == AluCtrlEnum_ADD)) begin
         if((execute_ALU_WORD == 1'b1)) begin
-          execute_ALUPlugin_alu_result = execute_ALUPlugin_addw_result; // @ AluPlugin.scala l147
+          execute_ALUPlugin_alu_result = execute_ALUPlugin_addw_result; // @ AluPlugin.scala l173
         end else begin
-          execute_ALUPlugin_alu_result = execute_ALUPlugin_add_result; // @ AluPlugin.scala l149
+          execute_ALUPlugin_alu_result = execute_ALUPlugin_add_result; // @ AluPlugin.scala l175
         end
     end else if((execute_ALU_CTRL == AluCtrlEnum_SUB)) begin
         if((execute_ALU_WORD == 1'b1)) begin
-          execute_ALUPlugin_alu_result = execute_ALUPlugin_subw_result; // @ AluPlugin.scala l154
+          execute_ALUPlugin_alu_result = execute_ALUPlugin_subw_result; // @ AluPlugin.scala l180
         end else begin
-          execute_ALUPlugin_alu_result = execute_ALUPlugin_sub_result; // @ AluPlugin.scala l156
+          execute_ALUPlugin_alu_result = execute_ALUPlugin_sub_result; // @ AluPlugin.scala l182
         end
     end else if((execute_ALU_CTRL == AluCtrlEnum_SLT)) begin
-        execute_ALUPlugin_alu_result = {tmp_execute_ALUPlugin_alu_result,execute_ALUPlugin_slt_result}; // @ AluPlugin.scala l160
+        execute_ALUPlugin_alu_result = {tmp_execute_ALUPlugin_alu_result,execute_ALUPlugin_slt_result}; // @ AluPlugin.scala l186
     end else if((execute_ALU_CTRL == AluCtrlEnum_SLTU)) begin
-        execute_ALUPlugin_alu_result = {tmp_execute_ALUPlugin_alu_result_1,execute_ALUPlugin_sltu_result}; // @ AluPlugin.scala l163
+        execute_ALUPlugin_alu_result = {tmp_execute_ALUPlugin_alu_result_1,execute_ALUPlugin_sltu_result}; // @ AluPlugin.scala l189
     end else if((execute_ALU_CTRL == AluCtrlEnum_XOR_1)) begin
-        execute_ALUPlugin_alu_result = execute_ALUPlugin_xor_result; // @ AluPlugin.scala l166
+        execute_ALUPlugin_alu_result = execute_ALUPlugin_xor_result; // @ AluPlugin.scala l192
     end else if((execute_ALU_CTRL == AluCtrlEnum_SLL_1)) begin
         if((execute_ALU_WORD == 1'b1)) begin
-          execute_ALUPlugin_alu_result = execute_ALUPlugin_sllw_result; // @ AluPlugin.scala l170
+          execute_ALUPlugin_alu_result = execute_ALUPlugin_sllw_result; // @ AluPlugin.scala l196
         end else begin
-          execute_ALUPlugin_alu_result = execute_ALUPlugin_sll_result; // @ AluPlugin.scala l172
+          execute_ALUPlugin_alu_result = execute_ALUPlugin_sll_result; // @ AluPlugin.scala l198
         end
     end else if((execute_ALU_CTRL == AluCtrlEnum_SRL_1)) begin
         if((execute_ALU_WORD == 1'b1)) begin
-          execute_ALUPlugin_alu_result = execute_ALUPlugin_srlw_result; // @ AluPlugin.scala l177
+          execute_ALUPlugin_alu_result = execute_ALUPlugin_srlw_result; // @ AluPlugin.scala l203
         end else begin
-          execute_ALUPlugin_alu_result = execute_ALUPlugin_srl_result; // @ AluPlugin.scala l179
+          execute_ALUPlugin_alu_result = execute_ALUPlugin_srl_result; // @ AluPlugin.scala l205
         end
     end else if((execute_ALU_CTRL == AluCtrlEnum_SRA_1)) begin
         if((execute_ALU_WORD == 1'b1)) begin
-          execute_ALUPlugin_alu_result = execute_ALUPlugin_sraw_result; // @ AluPlugin.scala l184
+          execute_ALUPlugin_alu_result = execute_ALUPlugin_sraw_result; // @ AluPlugin.scala l210
         end else begin
-          execute_ALUPlugin_alu_result = execute_ALUPlugin_sra_result; // @ AluPlugin.scala l186
+          execute_ALUPlugin_alu_result = execute_ALUPlugin_sra_result; // @ AluPlugin.scala l212
         end
     end else if((execute_ALU_CTRL == AluCtrlEnum_AND_1)) begin
-        execute_ALUPlugin_alu_result = execute_ALUPlugin_and_result; // @ AluPlugin.scala l190
+        execute_ALUPlugin_alu_result = execute_ALUPlugin_and_result; // @ AluPlugin.scala l216
     end else if((execute_ALU_CTRL == AluCtrlEnum_OR_1)) begin
-        execute_ALUPlugin_alu_result = execute_ALUPlugin_or_result; // @ AluPlugin.scala l193
+        execute_ALUPlugin_alu_result = execute_ALUPlugin_or_result; // @ AluPlugin.scala l219
     end else if((execute_ALU_CTRL == AluCtrlEnum_LUI)) begin
-        execute_ALUPlugin_alu_result = execute_IMM; // @ AluPlugin.scala l196
+        execute_ALUPlugin_alu_result = execute_IMM; // @ AluPlugin.scala l222
     end else if((execute_ALU_CTRL == AluCtrlEnum_JAL) || (execute_ALU_CTRL == AluCtrlEnum_JALR) || (execute_ALU_CTRL == AluCtrlEnum_AUIPC)) begin
-        execute_ALUPlugin_alu_result = execute_ALUPlugin_add_result; // @ AluPlugin.scala l199
+        execute_ALUPlugin_alu_result = execute_ALUPlugin_add_result; // @ AluPlugin.scala l225
     end else if((execute_ALU_CTRL == AluCtrlEnum_CSR)) begin
-        execute_ALUPlugin_alu_result = execute_CSR_RDATA; // @ AluPlugin.scala l202
+        execute_ALUPlugin_alu_result = execute_CSR_RDATA; // @ AluPlugin.scala l228
+    end else if((execute_ALU_CTRL == AluCtrlEnum_MUL)) begin
+        execute_ALUPlugin_alu_result = execute_ALUPlugin_mul_result; // @ AluPlugin.scala l232
+    end else if((execute_ALU_CTRL == AluCtrlEnum_MULH)) begin
+        execute_ALUPlugin_alu_result = execute_ALUPlugin_mulh_result; // @ AluPlugin.scala l235
+    end else if((execute_ALU_CTRL == AluCtrlEnum_MULHSU)) begin
+        execute_ALUPlugin_alu_result = execute_ALUPlugin_mulhsu_result; // @ AluPlugin.scala l238
+    end else if((execute_ALU_CTRL == AluCtrlEnum_MULHU)) begin
+        execute_ALUPlugin_alu_result = execute_ALUPlugin_mulhu_result; // @ AluPlugin.scala l241
+    end else if((execute_ALU_CTRL == AluCtrlEnum_DIV)) begin
+        execute_ALUPlugin_alu_result = execute_ALUPlugin_div_result; // @ AluPlugin.scala l244
+    end else if((execute_ALU_CTRL == AluCtrlEnum_DIVU)) begin
+        execute_ALUPlugin_alu_result = execute_ALUPlugin_divu_result; // @ AluPlugin.scala l247
+    end else if((execute_ALU_CTRL == AluCtrlEnum_REM_1)) begin
+        execute_ALUPlugin_alu_result = execute_ALUPlugin_rem_result; // @ AluPlugin.scala l250
+    end else if((execute_ALU_CTRL == AluCtrlEnum_REMU)) begin
+        execute_ALUPlugin_alu_result = execute_ALUPlugin_remu_result; // @ AluPlugin.scala l253
+    end else if((execute_ALU_CTRL == AluCtrlEnum_MULW)) begin
+        execute_ALUPlugin_alu_result = execute_ALUPlugin_mulw_result; // @ AluPlugin.scala l256
+    end else if((execute_ALU_CTRL == AluCtrlEnum_DIVW)) begin
+        execute_ALUPlugin_alu_result = execute_ALUPlugin_divw_result; // @ AluPlugin.scala l259
+    end else if((execute_ALU_CTRL == AluCtrlEnum_DIVUW)) begin
+        execute_ALUPlugin_alu_result = execute_ALUPlugin_divuw_result; // @ AluPlugin.scala l262
+    end else if((execute_ALU_CTRL == AluCtrlEnum_REMW)) begin
+        execute_ALUPlugin_alu_result = execute_ALUPlugin_remw_result; // @ AluPlugin.scala l265
+    end else if((execute_ALU_CTRL == AluCtrlEnum_REMUW)) begin
+        execute_ALUPlugin_alu_result = execute_ALUPlugin_remuw_result; // @ AluPlugin.scala l268
     end else begin
-        execute_ALUPlugin_alu_result = execute_ALUPlugin_add_result; // @ AluPlugin.scala l205
+        execute_ALUPlugin_alu_result = execute_ALUPlugin_add_result; // @ AluPlugin.scala l271
     end
   end
 
@@ -7448,9 +7906,9 @@ module DandRiscvSimple (
   assign execute_ALUPlugin_branch_taken = (((((((execute_ALUPlugin_beq_result || execute_ALUPlugin_bne_result) || execute_ALUPlugin_blt_result) || execute_ALUPlugin_bge_result) || execute_ALUPlugin_bltu_result) || execute_ALUPlugin_bgeu_result) || execute_ALUPlugin_jal) || execute_ALUPlugin_jalr); // @ BaseType.scala l305
   always @(*) begin
     if((execute_ALU_CTRL == AluCtrlEnum_JALR)) begin
-      execute_ALUPlugin_pc_next = tmp_execute_ALUPlugin_pc_next; // @ AluPlugin.scala l227
+      execute_ALUPlugin_pc_next = tmp_execute_ALUPlugin_pc_next; // @ AluPlugin.scala l293
     end else begin
-      execute_ALUPlugin_pc_next = tmp_execute_ALUPlugin_pc_next_6; // @ AluPlugin.scala l229
+      execute_ALUPlugin_pc_next = tmp_execute_ALUPlugin_pc_next_6; // @ AluPlugin.scala l295
     end
   end
 
@@ -8046,7 +8504,7 @@ module DandRiscvSimple (
         end
       end
       if(execute_arbitration_isFiring) begin
-        execute_ALUPlugin_branch_history <= {execute_ALUPlugin_branch_history[3 : 0],execute_ALUPlugin_branch_taken}; // @ AluPlugin.scala l221
+        execute_ALUPlugin_branch_history <= {execute_ALUPlugin_branch_history[3 : 0],execute_ALUPlugin_branch_taken}; // @ AluPlugin.scala l287
       end
       if(iCache_1_next_level_cmd_valid) begin
         ar_len_cnt <= iCache_1_next_level_cmd_payload_len; // @ ICachePlugin.scala l140
