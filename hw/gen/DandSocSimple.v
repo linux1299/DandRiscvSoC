@@ -1,6 +1,6 @@
 // Generator : SpinalHDL v1.8.1    git head : 2a7592004363e5b40ec43e1f122ed8641cd8965b
 // Component : DandSocSimple
-// Git hash  : c79320936e42d797f4111c8b17a2851dcc7beb28
+// Git hash  : caf1ccc853dadd7629bb360f9a3df00cbdb541e6
 
 `timescale 1ns/1ps
 
@@ -1376,7 +1376,7 @@ module DandSocSimple (
 
   assign tmp_1[5 : 0] = 6'h3f; // @ Literal.scala l88
   assign bufferCC_1_io_dataIn = (! io_asyncResetn); // @ CrossClock.scala l9
-  assign axi_uartCtrl_io_resetn = (! resetCtrl_axiReset); // @ GenDandSocSimple.scala l193
+  assign axi_uartCtrl_io_resetn = (! resetCtrl_axiReset); // @ GenDandSocSimple.scala l194
   assign axi_downsizer_io_input_aw_payload_addr = toplevel_core_cpu_dcache_decoder_1_io_outputs_1_aw_validPipe_payload_addr[31:0]; // @ Axi4Channel.scala l361
   assign axi_downsizer_io_input_aw_payload_id = {2'd0, toplevel_core_cpu_dcache_decoder_1_io_outputs_1_aw_validPipe_payload_id}; // @ Axi4Channel.scala l352
   assign toplevel_axi_downsizer_io_output_readOnly_ar_valid = axi_downsizer_io_output_ar_valid; // @ Stream.scala l303
@@ -1553,7 +1553,7 @@ module DandSocSimple (
   assign axi_apbBridge_io_axi_arbiter_io_writeInputs_0_aw_payload_addr = toplevel_toplevel_axi_downsizer_io_output_writeOnly_decoder_io_outputs_1_aw_validPipe_payload_addr[19:0]; // @ Axi4Channel.scala l361
   assign axi_uartCtrl_io_apb_PADDR = apb3Router_1_io_outputs_0_PADDR[15:0]; // @ APB3.scala l72
   assign axi_timer_io_apb_PADDR = apb3Router_1_io_outputs_1_PADDR[7:0]; // @ APB3.scala l72
-  assign io_uart_txd = axi_uartCtrl_io_uart_txd; // @ GenDandSocSimple.scala l256
+  assign io_uart_txd = axi_uartCtrl_io_uart_txd; // @ GenDandSocSimple.scala l257
   always @(posedge io_axiClk or negedge io_asyncResetn) begin
     if(!io_asyncResetn) begin
       resetCtrl_systemResetCounter <= 6'h0; // @ Data.scala l400
@@ -3806,26 +3806,33 @@ module Apb3Timer (
 );
 
   reg        [63:0]   timer_1;
+  reg        [31:0]   cycle_cnt;
 
-  assign io_apb_PREADY = 1'b1; // @ ApbTimer.scala l41
+  assign io_apb_PREADY = 1'b1; // @ ApbTimer.scala l50
   always @(*) begin
     if((io_apb_PADDR == 8'h40)) begin
-      io_apb_PRDATA = timer_1[31 : 0]; // @ ApbTimer.scala l43
+      io_apb_PRDATA = timer_1[31 : 0]; // @ ApbTimer.scala l52
     end else begin
       if((io_apb_PADDR == 8'h44)) begin
-        io_apb_PRDATA = timer_1[63 : 32]; // @ ApbTimer.scala l45
+        io_apb_PRDATA = timer_1[63 : 32]; // @ ApbTimer.scala l54
       end else begin
-        io_apb_PRDATA = 32'h0; // @ ApbTimer.scala l47
+        io_apb_PRDATA = 32'h0; // @ ApbTimer.scala l56
       end
     end
   end
 
-  assign io_apb_PSLVERROR = 1'b0; // @ ApbTimer.scala l49
+  assign io_apb_PSLVERROR = 1'b0; // @ ApbTimer.scala l58
   always @(posedge io_axiClk or posedge resetCtrl_axiReset) begin
     if(resetCtrl_axiReset) begin
       timer_1 <= 64'h0; // @ Data.scala l400
+      cycle_cnt <= 32'h0; // @ Data.scala l400
     end else begin
-      timer_1 <= (timer_1 + 64'h0000000000000001); // @ ApbTimer.scala l39
+      if((cycle_cnt == 32'h00000063)) begin
+        cycle_cnt <= 32'h0; // @ ApbTimer.scala l43
+        timer_1 <= (timer_1 + 64'h0000000000000001); // @ ApbTimer.scala l44
+      end else begin
+        cycle_cnt <= (cycle_cnt + 32'h00000001); // @ ApbTimer.scala l46
+      end
     end
   end
 
@@ -21036,12 +21043,6 @@ module gshare_predictor (
   wire                tmp_when_13;
   wire                tmp_when_14;
   wire                tmp_when_15;
-  wire       [3:0]    tmp_BTB_btb_alloc_index_valueNext;
-  wire       [0:0]    tmp_BTB_btb_alloc_index_valueNext_1;
-  wire       [0:0]    tmp_BTB_btb_is_hit;
-  wire       [4:0]    tmp_BTB_btb_is_hit_1;
-  wire       [0:0]    tmp_BTB_btb_is_miss;
-  wire       [4:0]    tmp_BTB_btb_is_miss_1;
   wire                tmp_when_16;
   wire                tmp_when_17;
   wire                tmp_when_18;
@@ -21058,7 +21059,49 @@ module gshare_predictor (
   wire                tmp_when_29;
   wire                tmp_when_30;
   wire                tmp_when_31;
+  wire       [4:0]    tmp_BTB_btb_alloc_index_valueNext;
+  wire       [0:0]    tmp_BTB_btb_alloc_index_valueNext_1;
+  wire       [0:0]    tmp_BTB_btb_is_hit;
+  wire       [20:0]   tmp_BTB_btb_is_hit_1;
+  wire       [0:0]    tmp_BTB_btb_is_hit_2;
+  wire       [9:0]    tmp_BTB_btb_is_hit_3;
+  wire       [0:0]    tmp_BTB_btb_is_miss;
+  wire       [20:0]   tmp_BTB_btb_is_miss_1;
+  wire       [0:0]    tmp_BTB_btb_is_miss_2;
+  wire       [9:0]    tmp_BTB_btb_is_miss_3;
   wire                tmp_when_32;
+  wire                tmp_when_33;
+  wire                tmp_when_34;
+  wire                tmp_when_35;
+  wire                tmp_when_36;
+  wire                tmp_when_37;
+  wire                tmp_when_38;
+  wire                tmp_when_39;
+  wire                tmp_when_40;
+  wire                tmp_when_41;
+  wire                tmp_when_42;
+  wire                tmp_when_43;
+  wire                tmp_when_44;
+  wire                tmp_when_45;
+  wire                tmp_when_46;
+  wire                tmp_when_47;
+  wire                tmp_when_48;
+  wire                tmp_when_49;
+  wire                tmp_when_50;
+  wire                tmp_when_51;
+  wire                tmp_when_52;
+  wire                tmp_when_53;
+  wire                tmp_when_54;
+  wire                tmp_when_55;
+  wire                tmp_when_56;
+  wire                tmp_when_57;
+  wire                tmp_when_58;
+  wire                tmp_when_59;
+  wire                tmp_when_60;
+  wire                tmp_when_61;
+  wire                tmp_when_62;
+  wire                tmp_when_63;
+  wire                tmp_when_64;
   reg        [63:0]   tmp_RAS_ras_predict_pc;
   wire       [63:0]   tmp_predict_pc_next;
   reg        [4:0]    GSHARE_global_branch_history;
@@ -21130,7 +21173,7 @@ module gshare_predictor (
   wire                tmp_31;
   wire                tmp_32;
   wire                tmp_33;
-  reg        [15:0]   BTB_valid;
+  reg        [31:0]   BTB_valid;
   reg        [63:0]   BTB_source_pc_0;
   reg        [63:0]   BTB_source_pc_1;
   reg        [63:0]   BTB_source_pc_2;
@@ -21147,9 +21190,25 @@ module gshare_predictor (
   reg        [63:0]   BTB_source_pc_13;
   reg        [63:0]   BTB_source_pc_14;
   reg        [63:0]   BTB_source_pc_15;
-  reg        [15:0]   BTB_call;
-  reg        [15:0]   BTB_ret;
-  reg        [15:0]   BTB_jmp;
+  reg        [63:0]   BTB_source_pc_16;
+  reg        [63:0]   BTB_source_pc_17;
+  reg        [63:0]   BTB_source_pc_18;
+  reg        [63:0]   BTB_source_pc_19;
+  reg        [63:0]   BTB_source_pc_20;
+  reg        [63:0]   BTB_source_pc_21;
+  reg        [63:0]   BTB_source_pc_22;
+  reg        [63:0]   BTB_source_pc_23;
+  reg        [63:0]   BTB_source_pc_24;
+  reg        [63:0]   BTB_source_pc_25;
+  reg        [63:0]   BTB_source_pc_26;
+  reg        [63:0]   BTB_source_pc_27;
+  reg        [63:0]   BTB_source_pc_28;
+  reg        [63:0]   BTB_source_pc_29;
+  reg        [63:0]   BTB_source_pc_30;
+  reg        [63:0]   BTB_source_pc_31;
+  reg        [31:0]   BTB_call;
+  reg        [31:0]   BTB_ret;
+  reg        [31:0]   BTB_jmp;
   reg        [63:0]   BTB_target_pc_0;
   reg        [63:0]   BTB_target_pc_1;
   reg        [63:0]   BTB_target_pc_2;
@@ -21166,16 +21225,32 @@ module gshare_predictor (
   reg        [63:0]   BTB_target_pc_13;
   reg        [63:0]   BTB_target_pc_14;
   reg        [63:0]   BTB_target_pc_15;
+  reg        [63:0]   BTB_target_pc_16;
+  reg        [63:0]   BTB_target_pc_17;
+  reg        [63:0]   BTB_target_pc_18;
+  reg        [63:0]   BTB_target_pc_19;
+  reg        [63:0]   BTB_target_pc_20;
+  reg        [63:0]   BTB_target_pc_21;
+  reg        [63:0]   BTB_target_pc_22;
+  reg        [63:0]   BTB_target_pc_23;
+  reg        [63:0]   BTB_target_pc_24;
+  reg        [63:0]   BTB_target_pc_25;
+  reg        [63:0]   BTB_target_pc_26;
+  reg        [63:0]   BTB_target_pc_27;
+  reg        [63:0]   BTB_target_pc_28;
+  reg        [63:0]   BTB_target_pc_29;
+  reg        [63:0]   BTB_target_pc_30;
+  reg        [63:0]   BTB_target_pc_31;
   reg                 BTB_is_matched;
   reg                 BTB_is_call;
   reg                 BTB_is_ret;
   reg                 BTB_is_jmp;
   reg        [63:0]   BTB_target_pc_read;
-  wire       [3:0]    BTB_btb_write_index;
+  wire       [4:0]    BTB_btb_write_index;
   reg                 BTB_btb_alloc_index_willIncrement;
   reg                 BTB_btb_alloc_index_willClear;
-  reg        [3:0]    BTB_btb_alloc_index_valueNext;
-  reg        [3:0]    BTB_btb_alloc_index_value;
+  reg        [4:0]    BTB_btb_alloc_index_valueNext;
+  reg        [4:0]    BTB_btb_alloc_index_value;
   wire                BTB_btb_alloc_index_willOverflowIfInc;
   wire                BTB_btb_alloc_index_willOverflow;
   reg                 BTB_btb_is_hit_vec_0;
@@ -21194,6 +21269,22 @@ module gshare_predictor (
   reg                 BTB_btb_is_hit_vec_13;
   reg                 BTB_btb_is_hit_vec_14;
   reg                 BTB_btb_is_hit_vec_15;
+  reg                 BTB_btb_is_hit_vec_16;
+  reg                 BTB_btb_is_hit_vec_17;
+  reg                 BTB_btb_is_hit_vec_18;
+  reg                 BTB_btb_is_hit_vec_19;
+  reg                 BTB_btb_is_hit_vec_20;
+  reg                 BTB_btb_is_hit_vec_21;
+  reg                 BTB_btb_is_hit_vec_22;
+  reg                 BTB_btb_is_hit_vec_23;
+  reg                 BTB_btb_is_hit_vec_24;
+  reg                 BTB_btb_is_hit_vec_25;
+  reg                 BTB_btb_is_hit_vec_26;
+  reg                 BTB_btb_is_hit_vec_27;
+  reg                 BTB_btb_is_hit_vec_28;
+  reg                 BTB_btb_is_hit_vec_29;
+  reg                 BTB_btb_is_hit_vec_30;
+  reg                 BTB_btb_is_hit_vec_31;
   reg                 BTB_btb_is_miss_vec_0;
   reg                 BTB_btb_is_miss_vec_1;
   reg                 BTB_btb_is_miss_vec_2;
@@ -21210,16 +21301,33 @@ module gshare_predictor (
   reg                 BTB_btb_is_miss_vec_13;
   reg                 BTB_btb_is_miss_vec_14;
   reg                 BTB_btb_is_miss_vec_15;
+  reg                 BTB_btb_is_miss_vec_16;
+  reg                 BTB_btb_is_miss_vec_17;
+  reg                 BTB_btb_is_miss_vec_18;
+  reg                 BTB_btb_is_miss_vec_19;
+  reg                 BTB_btb_is_miss_vec_20;
+  reg                 BTB_btb_is_miss_vec_21;
+  reg                 BTB_btb_is_miss_vec_22;
+  reg                 BTB_btb_is_miss_vec_23;
+  reg                 BTB_btb_is_miss_vec_24;
+  reg                 BTB_btb_is_miss_vec_25;
+  reg                 BTB_btb_is_miss_vec_26;
+  reg                 BTB_btb_is_miss_vec_27;
+  reg                 BTB_btb_is_miss_vec_28;
+  reg                 BTB_btb_is_miss_vec_29;
+  reg                 BTB_btb_is_miss_vec_30;
+  reg                 BTB_btb_is_miss_vec_31;
   wire                BTB_btb_is_hit;
   wire                BTB_btb_is_miss;
   wire                tmp_BTB_btb_write_index;
   wire                tmp_BTB_btb_write_index_1;
   wire                tmp_BTB_btb_write_index_2;
   wire                tmp_BTB_btb_write_index_3;
-  wire       [15:0]   tmp_34;
-  wire       [15:0]   tmp_35;
-  wire       [15:0]   tmp_36;
-  wire       [15:0]   tmp_37;
+  wire                tmp_BTB_btb_write_index_4;
+  wire       [31:0]   tmp_34;
+  wire       [31:0]   tmp_35;
+  wire       [31:0]   tmp_36;
+  wire       [31:0]   tmp_37;
   reg        [63:0]   RAS_ras_regfile_0;
   reg        [63:0]   RAS_ras_regfile_1;
   reg        [63:0]   RAS_ras_regfile_2;
@@ -21311,30 +21419,66 @@ module gshare_predictor (
   assign tmp_when_13 = ((BTB_source_pc_13 == predict_pc) && BTB_valid[13]);
   assign tmp_when_14 = ((BTB_source_pc_14 == predict_pc) && BTB_valid[14]);
   assign tmp_when_15 = ((BTB_source_pc_15 == predict_pc) && BTB_valid[15]);
-  assign tmp_when_16 = (train_valid && train_taken);
-  assign tmp_when_17 = (train_valid && train_taken);
-  assign tmp_when_18 = (train_valid && train_taken);
-  assign tmp_when_19 = (train_valid && train_taken);
-  assign tmp_when_20 = (train_valid && train_taken);
-  assign tmp_when_21 = (train_valid && train_taken);
-  assign tmp_when_22 = (train_valid && train_taken);
-  assign tmp_when_23 = (train_valid && train_taken);
-  assign tmp_when_24 = (train_valid && train_taken);
-  assign tmp_when_25 = (train_valid && train_taken);
-  assign tmp_when_26 = (train_valid && train_taken);
-  assign tmp_when_27 = (train_valid && train_taken);
-  assign tmp_when_28 = (train_valid && train_taken);
-  assign tmp_when_29 = (train_valid && train_taken);
-  assign tmp_when_30 = (train_valid && train_taken);
-  assign tmp_when_31 = (train_valid && train_taken);
-  assign tmp_when_32 = ((train_mispredicted && train_valid) && train_is_call);
+  assign tmp_when_16 = ((BTB_source_pc_16 == predict_pc) && BTB_valid[16]);
+  assign tmp_when_17 = ((BTB_source_pc_17 == predict_pc) && BTB_valid[17]);
+  assign tmp_when_18 = ((BTB_source_pc_18 == predict_pc) && BTB_valid[18]);
+  assign tmp_when_19 = ((BTB_source_pc_19 == predict_pc) && BTB_valid[19]);
+  assign tmp_when_20 = ((BTB_source_pc_20 == predict_pc) && BTB_valid[20]);
+  assign tmp_when_21 = ((BTB_source_pc_21 == predict_pc) && BTB_valid[21]);
+  assign tmp_when_22 = ((BTB_source_pc_22 == predict_pc) && BTB_valid[22]);
+  assign tmp_when_23 = ((BTB_source_pc_23 == predict_pc) && BTB_valid[23]);
+  assign tmp_when_24 = ((BTB_source_pc_24 == predict_pc) && BTB_valid[24]);
+  assign tmp_when_25 = ((BTB_source_pc_25 == predict_pc) && BTB_valid[25]);
+  assign tmp_when_26 = ((BTB_source_pc_26 == predict_pc) && BTB_valid[26]);
+  assign tmp_when_27 = ((BTB_source_pc_27 == predict_pc) && BTB_valid[27]);
+  assign tmp_when_28 = ((BTB_source_pc_28 == predict_pc) && BTB_valid[28]);
+  assign tmp_when_29 = ((BTB_source_pc_29 == predict_pc) && BTB_valid[29]);
+  assign tmp_when_30 = ((BTB_source_pc_30 == predict_pc) && BTB_valid[30]);
+  assign tmp_when_31 = ((BTB_source_pc_31 == predict_pc) && BTB_valid[31]);
+  assign tmp_when_32 = (train_valid && train_taken);
+  assign tmp_when_33 = (train_valid && train_taken);
+  assign tmp_when_34 = (train_valid && train_taken);
+  assign tmp_when_35 = (train_valid && train_taken);
+  assign tmp_when_36 = (train_valid && train_taken);
+  assign tmp_when_37 = (train_valid && train_taken);
+  assign tmp_when_38 = (train_valid && train_taken);
+  assign tmp_when_39 = (train_valid && train_taken);
+  assign tmp_when_40 = (train_valid && train_taken);
+  assign tmp_when_41 = (train_valid && train_taken);
+  assign tmp_when_42 = (train_valid && train_taken);
+  assign tmp_when_43 = (train_valid && train_taken);
+  assign tmp_when_44 = (train_valid && train_taken);
+  assign tmp_when_45 = (train_valid && train_taken);
+  assign tmp_when_46 = (train_valid && train_taken);
+  assign tmp_when_47 = (train_valid && train_taken);
+  assign tmp_when_48 = (train_valid && train_taken);
+  assign tmp_when_49 = (train_valid && train_taken);
+  assign tmp_when_50 = (train_valid && train_taken);
+  assign tmp_when_51 = (train_valid && train_taken);
+  assign tmp_when_52 = (train_valid && train_taken);
+  assign tmp_when_53 = (train_valid && train_taken);
+  assign tmp_when_54 = (train_valid && train_taken);
+  assign tmp_when_55 = (train_valid && train_taken);
+  assign tmp_when_56 = (train_valid && train_taken);
+  assign tmp_when_57 = (train_valid && train_taken);
+  assign tmp_when_58 = (train_valid && train_taken);
+  assign tmp_when_59 = (train_valid && train_taken);
+  assign tmp_when_60 = (train_valid && train_taken);
+  assign tmp_when_61 = (train_valid && train_taken);
+  assign tmp_when_62 = (train_valid && train_taken);
+  assign tmp_when_63 = (train_valid && train_taken);
+  assign tmp_when_64 = ((train_mispredicted && train_valid) && train_is_call);
   assign tmp_BTB_btb_alloc_index_valueNext_1 = BTB_btb_alloc_index_willIncrement;
-  assign tmp_BTB_btb_alloc_index_valueNext = {3'd0, tmp_BTB_btb_alloc_index_valueNext_1};
+  assign tmp_BTB_btb_alloc_index_valueNext = {4'd0, tmp_BTB_btb_alloc_index_valueNext_1};
   assign tmp_predict_pc_next = (predict_pc + 64'h0000000000000004);
-  assign tmp_BTB_btb_is_hit = BTB_btb_is_hit_vec_5;
-  assign tmp_BTB_btb_is_hit_1 = {BTB_btb_is_hit_vec_4,{BTB_btb_is_hit_vec_3,{BTB_btb_is_hit_vec_2,{BTB_btb_is_hit_vec_1,BTB_btb_is_hit_vec_0}}}};
-  assign tmp_BTB_btb_is_miss = BTB_btb_is_miss_vec_5;
-  assign tmp_BTB_btb_is_miss_1 = {BTB_btb_is_miss_vec_4,{BTB_btb_is_miss_vec_3,{BTB_btb_is_miss_vec_2,{BTB_btb_is_miss_vec_1,BTB_btb_is_miss_vec_0}}}};
+  assign tmp_BTB_btb_is_hit = BTB_btb_is_hit_vec_21;
+  assign tmp_BTB_btb_is_hit_1 = {BTB_btb_is_hit_vec_20,{BTB_btb_is_hit_vec_19,{BTB_btb_is_hit_vec_18,{BTB_btb_is_hit_vec_17,{BTB_btb_is_hit_vec_16,{BTB_btb_is_hit_vec_15,{BTB_btb_is_hit_vec_14,{BTB_btb_is_hit_vec_13,{BTB_btb_is_hit_vec_12,{BTB_btb_is_hit_vec_11,{tmp_BTB_btb_is_hit_2,tmp_BTB_btb_is_hit_3}}}}}}}}}}};
+  assign tmp_BTB_btb_is_hit_2 = BTB_btb_is_hit_vec_10;
+  assign tmp_BTB_btb_is_hit_3 = {BTB_btb_is_hit_vec_9,{BTB_btb_is_hit_vec_8,{BTB_btb_is_hit_vec_7,{BTB_btb_is_hit_vec_6,{BTB_btb_is_hit_vec_5,{BTB_btb_is_hit_vec_4,{BTB_btb_is_hit_vec_3,{BTB_btb_is_hit_vec_2,{BTB_btb_is_hit_vec_1,BTB_btb_is_hit_vec_0}}}}}}}}};
+  assign tmp_BTB_btb_is_miss = BTB_btb_is_miss_vec_21;
+  assign tmp_BTB_btb_is_miss_1 = {BTB_btb_is_miss_vec_20,{BTB_btb_is_miss_vec_19,{BTB_btb_is_miss_vec_18,{BTB_btb_is_miss_vec_17,{BTB_btb_is_miss_vec_16,{BTB_btb_is_miss_vec_15,{BTB_btb_is_miss_vec_14,{BTB_btb_is_miss_vec_13,{BTB_btb_is_miss_vec_12,{BTB_btb_is_miss_vec_11,{tmp_BTB_btb_is_miss_2,tmp_BTB_btb_is_miss_3}}}}}}}}}}};
+  assign tmp_BTB_btb_is_miss_2 = BTB_btb_is_miss_vec_10;
+  assign tmp_BTB_btb_is_miss_3 = {BTB_btb_is_miss_vec_9,{BTB_btb_is_miss_vec_8,{BTB_btb_is_miss_vec_7,{BTB_btb_is_miss_vec_6,{BTB_btb_is_miss_vec_5,{BTB_btb_is_miss_vec_4,{BTB_btb_is_miss_vec_3,{BTB_btb_is_miss_vec_2,{BTB_btb_is_miss_vec_1,BTB_btb_is_miss_vec_0}}}}}}}}};
   always @(*) begin
     case(GSHARE_predict_index)
       5'b00000 : tmp_GSHARE_pht_predict_taken = GSHARE_PHT_0;
@@ -21532,6 +21676,54 @@ module gshare_predictor (
     if(tmp_when_15) begin
       BTB_is_matched = 1'b1; // @ Predictor.scala l96
     end
+    if(tmp_when_16) begin
+      BTB_is_matched = 1'b1; // @ Predictor.scala l96
+    end
+    if(tmp_when_17) begin
+      BTB_is_matched = 1'b1; // @ Predictor.scala l96
+    end
+    if(tmp_when_18) begin
+      BTB_is_matched = 1'b1; // @ Predictor.scala l96
+    end
+    if(tmp_when_19) begin
+      BTB_is_matched = 1'b1; // @ Predictor.scala l96
+    end
+    if(tmp_when_20) begin
+      BTB_is_matched = 1'b1; // @ Predictor.scala l96
+    end
+    if(tmp_when_21) begin
+      BTB_is_matched = 1'b1; // @ Predictor.scala l96
+    end
+    if(tmp_when_22) begin
+      BTB_is_matched = 1'b1; // @ Predictor.scala l96
+    end
+    if(tmp_when_23) begin
+      BTB_is_matched = 1'b1; // @ Predictor.scala l96
+    end
+    if(tmp_when_24) begin
+      BTB_is_matched = 1'b1; // @ Predictor.scala l96
+    end
+    if(tmp_when_25) begin
+      BTB_is_matched = 1'b1; // @ Predictor.scala l96
+    end
+    if(tmp_when_26) begin
+      BTB_is_matched = 1'b1; // @ Predictor.scala l96
+    end
+    if(tmp_when_27) begin
+      BTB_is_matched = 1'b1; // @ Predictor.scala l96
+    end
+    if(tmp_when_28) begin
+      BTB_is_matched = 1'b1; // @ Predictor.scala l96
+    end
+    if(tmp_when_29) begin
+      BTB_is_matched = 1'b1; // @ Predictor.scala l96
+    end
+    if(tmp_when_30) begin
+      BTB_is_matched = 1'b1; // @ Predictor.scala l96
+    end
+    if(tmp_when_31) begin
+      BTB_is_matched = 1'b1; // @ Predictor.scala l96
+    end
   end
 
   always @(*) begin
@@ -21583,6 +21775,54 @@ module gshare_predictor (
     end
     if(tmp_when_15) begin
       BTB_is_call = BTB_call[15]; // @ Predictor.scala l97
+    end
+    if(tmp_when_16) begin
+      BTB_is_call = BTB_call[16]; // @ Predictor.scala l97
+    end
+    if(tmp_when_17) begin
+      BTB_is_call = BTB_call[17]; // @ Predictor.scala l97
+    end
+    if(tmp_when_18) begin
+      BTB_is_call = BTB_call[18]; // @ Predictor.scala l97
+    end
+    if(tmp_when_19) begin
+      BTB_is_call = BTB_call[19]; // @ Predictor.scala l97
+    end
+    if(tmp_when_20) begin
+      BTB_is_call = BTB_call[20]; // @ Predictor.scala l97
+    end
+    if(tmp_when_21) begin
+      BTB_is_call = BTB_call[21]; // @ Predictor.scala l97
+    end
+    if(tmp_when_22) begin
+      BTB_is_call = BTB_call[22]; // @ Predictor.scala l97
+    end
+    if(tmp_when_23) begin
+      BTB_is_call = BTB_call[23]; // @ Predictor.scala l97
+    end
+    if(tmp_when_24) begin
+      BTB_is_call = BTB_call[24]; // @ Predictor.scala l97
+    end
+    if(tmp_when_25) begin
+      BTB_is_call = BTB_call[25]; // @ Predictor.scala l97
+    end
+    if(tmp_when_26) begin
+      BTB_is_call = BTB_call[26]; // @ Predictor.scala l97
+    end
+    if(tmp_when_27) begin
+      BTB_is_call = BTB_call[27]; // @ Predictor.scala l97
+    end
+    if(tmp_when_28) begin
+      BTB_is_call = BTB_call[28]; // @ Predictor.scala l97
+    end
+    if(tmp_when_29) begin
+      BTB_is_call = BTB_call[29]; // @ Predictor.scala l97
+    end
+    if(tmp_when_30) begin
+      BTB_is_call = BTB_call[30]; // @ Predictor.scala l97
+    end
+    if(tmp_when_31) begin
+      BTB_is_call = BTB_call[31]; // @ Predictor.scala l97
     end
   end
 
@@ -21636,6 +21876,54 @@ module gshare_predictor (
     if(tmp_when_15) begin
       BTB_is_ret = BTB_ret[15]; // @ Predictor.scala l98
     end
+    if(tmp_when_16) begin
+      BTB_is_ret = BTB_ret[16]; // @ Predictor.scala l98
+    end
+    if(tmp_when_17) begin
+      BTB_is_ret = BTB_ret[17]; // @ Predictor.scala l98
+    end
+    if(tmp_when_18) begin
+      BTB_is_ret = BTB_ret[18]; // @ Predictor.scala l98
+    end
+    if(tmp_when_19) begin
+      BTB_is_ret = BTB_ret[19]; // @ Predictor.scala l98
+    end
+    if(tmp_when_20) begin
+      BTB_is_ret = BTB_ret[20]; // @ Predictor.scala l98
+    end
+    if(tmp_when_21) begin
+      BTB_is_ret = BTB_ret[21]; // @ Predictor.scala l98
+    end
+    if(tmp_when_22) begin
+      BTB_is_ret = BTB_ret[22]; // @ Predictor.scala l98
+    end
+    if(tmp_when_23) begin
+      BTB_is_ret = BTB_ret[23]; // @ Predictor.scala l98
+    end
+    if(tmp_when_24) begin
+      BTB_is_ret = BTB_ret[24]; // @ Predictor.scala l98
+    end
+    if(tmp_when_25) begin
+      BTB_is_ret = BTB_ret[25]; // @ Predictor.scala l98
+    end
+    if(tmp_when_26) begin
+      BTB_is_ret = BTB_ret[26]; // @ Predictor.scala l98
+    end
+    if(tmp_when_27) begin
+      BTB_is_ret = BTB_ret[27]; // @ Predictor.scala l98
+    end
+    if(tmp_when_28) begin
+      BTB_is_ret = BTB_ret[28]; // @ Predictor.scala l98
+    end
+    if(tmp_when_29) begin
+      BTB_is_ret = BTB_ret[29]; // @ Predictor.scala l98
+    end
+    if(tmp_when_30) begin
+      BTB_is_ret = BTB_ret[30]; // @ Predictor.scala l98
+    end
+    if(tmp_when_31) begin
+      BTB_is_ret = BTB_ret[31]; // @ Predictor.scala l98
+    end
   end
 
   always @(*) begin
@@ -21687,6 +21975,54 @@ module gshare_predictor (
     end
     if(tmp_when_15) begin
       BTB_is_jmp = BTB_jmp[15]; // @ Predictor.scala l99
+    end
+    if(tmp_when_16) begin
+      BTB_is_jmp = BTB_jmp[16]; // @ Predictor.scala l99
+    end
+    if(tmp_when_17) begin
+      BTB_is_jmp = BTB_jmp[17]; // @ Predictor.scala l99
+    end
+    if(tmp_when_18) begin
+      BTB_is_jmp = BTB_jmp[18]; // @ Predictor.scala l99
+    end
+    if(tmp_when_19) begin
+      BTB_is_jmp = BTB_jmp[19]; // @ Predictor.scala l99
+    end
+    if(tmp_when_20) begin
+      BTB_is_jmp = BTB_jmp[20]; // @ Predictor.scala l99
+    end
+    if(tmp_when_21) begin
+      BTB_is_jmp = BTB_jmp[21]; // @ Predictor.scala l99
+    end
+    if(tmp_when_22) begin
+      BTB_is_jmp = BTB_jmp[22]; // @ Predictor.scala l99
+    end
+    if(tmp_when_23) begin
+      BTB_is_jmp = BTB_jmp[23]; // @ Predictor.scala l99
+    end
+    if(tmp_when_24) begin
+      BTB_is_jmp = BTB_jmp[24]; // @ Predictor.scala l99
+    end
+    if(tmp_when_25) begin
+      BTB_is_jmp = BTB_jmp[25]; // @ Predictor.scala l99
+    end
+    if(tmp_when_26) begin
+      BTB_is_jmp = BTB_jmp[26]; // @ Predictor.scala l99
+    end
+    if(tmp_when_27) begin
+      BTB_is_jmp = BTB_jmp[27]; // @ Predictor.scala l99
+    end
+    if(tmp_when_28) begin
+      BTB_is_jmp = BTB_jmp[28]; // @ Predictor.scala l99
+    end
+    if(tmp_when_29) begin
+      BTB_is_jmp = BTB_jmp[29]; // @ Predictor.scala l99
+    end
+    if(tmp_when_30) begin
+      BTB_is_jmp = BTB_jmp[30]; // @ Predictor.scala l99
+    end
+    if(tmp_when_31) begin
+      BTB_is_jmp = BTB_jmp[31]; // @ Predictor.scala l99
     end
   end
 
@@ -21740,6 +22076,54 @@ module gshare_predictor (
     if(tmp_when_15) begin
       BTB_target_pc_read = BTB_target_pc_15; // @ Predictor.scala l100
     end
+    if(tmp_when_16) begin
+      BTB_target_pc_read = BTB_target_pc_16; // @ Predictor.scala l100
+    end
+    if(tmp_when_17) begin
+      BTB_target_pc_read = BTB_target_pc_17; // @ Predictor.scala l100
+    end
+    if(tmp_when_18) begin
+      BTB_target_pc_read = BTB_target_pc_18; // @ Predictor.scala l100
+    end
+    if(tmp_when_19) begin
+      BTB_target_pc_read = BTB_target_pc_19; // @ Predictor.scala l100
+    end
+    if(tmp_when_20) begin
+      BTB_target_pc_read = BTB_target_pc_20; // @ Predictor.scala l100
+    end
+    if(tmp_when_21) begin
+      BTB_target_pc_read = BTB_target_pc_21; // @ Predictor.scala l100
+    end
+    if(tmp_when_22) begin
+      BTB_target_pc_read = BTB_target_pc_22; // @ Predictor.scala l100
+    end
+    if(tmp_when_23) begin
+      BTB_target_pc_read = BTB_target_pc_23; // @ Predictor.scala l100
+    end
+    if(tmp_when_24) begin
+      BTB_target_pc_read = BTB_target_pc_24; // @ Predictor.scala l100
+    end
+    if(tmp_when_25) begin
+      BTB_target_pc_read = BTB_target_pc_25; // @ Predictor.scala l100
+    end
+    if(tmp_when_26) begin
+      BTB_target_pc_read = BTB_target_pc_26; // @ Predictor.scala l100
+    end
+    if(tmp_when_27) begin
+      BTB_target_pc_read = BTB_target_pc_27; // @ Predictor.scala l100
+    end
+    if(tmp_when_28) begin
+      BTB_target_pc_read = BTB_target_pc_28; // @ Predictor.scala l100
+    end
+    if(tmp_when_29) begin
+      BTB_target_pc_read = BTB_target_pc_29; // @ Predictor.scala l100
+    end
+    if(tmp_when_30) begin
+      BTB_target_pc_read = BTB_target_pc_30; // @ Predictor.scala l100
+    end
+    if(tmp_when_31) begin
+      BTB_target_pc_read = BTB_target_pc_31; // @ Predictor.scala l100
+    end
   end
 
   always @(*) begin
@@ -21760,19 +22144,19 @@ module gshare_predictor (
     end
   end
 
-  assign BTB_btb_alloc_index_willOverflowIfInc = (BTB_btb_alloc_index_value == 4'b1111); // @ BaseType.scala l305
+  assign BTB_btb_alloc_index_willOverflowIfInc = (BTB_btb_alloc_index_value == 5'h1f); // @ BaseType.scala l305
   assign BTB_btb_alloc_index_willOverflow = (BTB_btb_alloc_index_willOverflowIfInc && BTB_btb_alloc_index_willIncrement); // @ BaseType.scala l305
   always @(*) begin
     BTB_btb_alloc_index_valueNext = (BTB_btb_alloc_index_value + tmp_BTB_btb_alloc_index_valueNext); // @ Utils.scala l548
     if(BTB_btb_alloc_index_willClear) begin
-      BTB_btb_alloc_index_valueNext = 4'b0000; // @ Utils.scala l558
+      BTB_btb_alloc_index_valueNext = 5'h0; // @ Utils.scala l558
     end
   end
 
-  assign BTB_btb_is_hit = (|{BTB_btb_is_hit_vec_15,{BTB_btb_is_hit_vec_14,{BTB_btb_is_hit_vec_13,{BTB_btb_is_hit_vec_12,{BTB_btb_is_hit_vec_11,{BTB_btb_is_hit_vec_10,{BTB_btb_is_hit_vec_9,{BTB_btb_is_hit_vec_8,{BTB_btb_is_hit_vec_7,{BTB_btb_is_hit_vec_6,{tmp_BTB_btb_is_hit,tmp_BTB_btb_is_hit_1}}}}}}}}}}}); // @ BaseType.scala l312
-  assign BTB_btb_is_miss = (|{BTB_btb_is_miss_vec_15,{BTB_btb_is_miss_vec_14,{BTB_btb_is_miss_vec_13,{BTB_btb_is_miss_vec_12,{BTB_btb_is_miss_vec_11,{BTB_btb_is_miss_vec_10,{BTB_btb_is_miss_vec_9,{BTB_btb_is_miss_vec_8,{BTB_btb_is_miss_vec_7,{BTB_btb_is_miss_vec_6,{tmp_BTB_btb_is_miss,tmp_BTB_btb_is_miss_1}}}}}}}}}}}); // @ BaseType.scala l312
+  assign BTB_btb_is_hit = (|{BTB_btb_is_hit_vec_31,{BTB_btb_is_hit_vec_30,{BTB_btb_is_hit_vec_29,{BTB_btb_is_hit_vec_28,{BTB_btb_is_hit_vec_27,{BTB_btb_is_hit_vec_26,{BTB_btb_is_hit_vec_25,{BTB_btb_is_hit_vec_24,{BTB_btb_is_hit_vec_23,{BTB_btb_is_hit_vec_22,{tmp_BTB_btb_is_hit,tmp_BTB_btb_is_hit_1}}}}}}}}}}}); // @ BaseType.scala l312
+  assign BTB_btb_is_miss = (|{BTB_btb_is_miss_vec_31,{BTB_btb_is_miss_vec_30,{BTB_btb_is_miss_vec_29,{BTB_btb_is_miss_vec_28,{BTB_btb_is_miss_vec_27,{BTB_btb_is_miss_vec_26,{BTB_btb_is_miss_vec_25,{BTB_btb_is_miss_vec_24,{BTB_btb_is_miss_vec_23,{BTB_btb_is_miss_vec_22,{tmp_BTB_btb_is_miss,tmp_BTB_btb_is_miss_1}}}}}}}}}}}); // @ BaseType.scala l312
   always @(*) begin
-    if(tmp_when_16) begin
+    if(tmp_when_32) begin
       if(((BTB_source_pc_0 == train_pc) && BTB_valid[0])) begin
         BTB_btb_is_hit_vec_0 = 1'b1; // @ Predictor.scala l115
       end else begin
@@ -21784,7 +22168,7 @@ module gshare_predictor (
   end
 
   always @(*) begin
-    if(tmp_when_16) begin
+    if(tmp_when_32) begin
       if(((BTB_source_pc_0 != train_pc) || (! BTB_valid[0]))) begin
         BTB_btb_is_miss_vec_0 = 1'b1; // @ Predictor.scala l120
       end else begin
@@ -21796,7 +22180,7 @@ module gshare_predictor (
   end
 
   always @(*) begin
-    if(tmp_when_17) begin
+    if(tmp_when_33) begin
       if(((BTB_source_pc_1 == train_pc) && BTB_valid[1])) begin
         BTB_btb_is_hit_vec_1 = 1'b1; // @ Predictor.scala l115
       end else begin
@@ -21808,7 +22192,7 @@ module gshare_predictor (
   end
 
   always @(*) begin
-    if(tmp_when_17) begin
+    if(tmp_when_33) begin
       if(((BTB_source_pc_1 != train_pc) || (! BTB_valid[1]))) begin
         BTB_btb_is_miss_vec_1 = 1'b1; // @ Predictor.scala l120
       end else begin
@@ -21820,7 +22204,7 @@ module gshare_predictor (
   end
 
   always @(*) begin
-    if(tmp_when_18) begin
+    if(tmp_when_34) begin
       if(((BTB_source_pc_2 == train_pc) && BTB_valid[2])) begin
         BTB_btb_is_hit_vec_2 = 1'b1; // @ Predictor.scala l115
       end else begin
@@ -21832,7 +22216,7 @@ module gshare_predictor (
   end
 
   always @(*) begin
-    if(tmp_when_18) begin
+    if(tmp_when_34) begin
       if(((BTB_source_pc_2 != train_pc) || (! BTB_valid[2]))) begin
         BTB_btb_is_miss_vec_2 = 1'b1; // @ Predictor.scala l120
       end else begin
@@ -21844,7 +22228,7 @@ module gshare_predictor (
   end
 
   always @(*) begin
-    if(tmp_when_19) begin
+    if(tmp_when_35) begin
       if(((BTB_source_pc_3 == train_pc) && BTB_valid[3])) begin
         BTB_btb_is_hit_vec_3 = 1'b1; // @ Predictor.scala l115
       end else begin
@@ -21856,7 +22240,7 @@ module gshare_predictor (
   end
 
   always @(*) begin
-    if(tmp_when_19) begin
+    if(tmp_when_35) begin
       if(((BTB_source_pc_3 != train_pc) || (! BTB_valid[3]))) begin
         BTB_btb_is_miss_vec_3 = 1'b1; // @ Predictor.scala l120
       end else begin
@@ -21868,7 +22252,7 @@ module gshare_predictor (
   end
 
   always @(*) begin
-    if(tmp_when_20) begin
+    if(tmp_when_36) begin
       if(((BTB_source_pc_4 == train_pc) && BTB_valid[4])) begin
         BTB_btb_is_hit_vec_4 = 1'b1; // @ Predictor.scala l115
       end else begin
@@ -21880,7 +22264,7 @@ module gshare_predictor (
   end
 
   always @(*) begin
-    if(tmp_when_20) begin
+    if(tmp_when_36) begin
       if(((BTB_source_pc_4 != train_pc) || (! BTB_valid[4]))) begin
         BTB_btb_is_miss_vec_4 = 1'b1; // @ Predictor.scala l120
       end else begin
@@ -21892,7 +22276,7 @@ module gshare_predictor (
   end
 
   always @(*) begin
-    if(tmp_when_21) begin
+    if(tmp_when_37) begin
       if(((BTB_source_pc_5 == train_pc) && BTB_valid[5])) begin
         BTB_btb_is_hit_vec_5 = 1'b1; // @ Predictor.scala l115
       end else begin
@@ -21904,7 +22288,7 @@ module gshare_predictor (
   end
 
   always @(*) begin
-    if(tmp_when_21) begin
+    if(tmp_when_37) begin
       if(((BTB_source_pc_5 != train_pc) || (! BTB_valid[5]))) begin
         BTB_btb_is_miss_vec_5 = 1'b1; // @ Predictor.scala l120
       end else begin
@@ -21916,7 +22300,7 @@ module gshare_predictor (
   end
 
   always @(*) begin
-    if(tmp_when_22) begin
+    if(tmp_when_38) begin
       if(((BTB_source_pc_6 == train_pc) && BTB_valid[6])) begin
         BTB_btb_is_hit_vec_6 = 1'b1; // @ Predictor.scala l115
       end else begin
@@ -21928,7 +22312,7 @@ module gshare_predictor (
   end
 
   always @(*) begin
-    if(tmp_when_22) begin
+    if(tmp_when_38) begin
       if(((BTB_source_pc_6 != train_pc) || (! BTB_valid[6]))) begin
         BTB_btb_is_miss_vec_6 = 1'b1; // @ Predictor.scala l120
       end else begin
@@ -21940,7 +22324,7 @@ module gshare_predictor (
   end
 
   always @(*) begin
-    if(tmp_when_23) begin
+    if(tmp_when_39) begin
       if(((BTB_source_pc_7 == train_pc) && BTB_valid[7])) begin
         BTB_btb_is_hit_vec_7 = 1'b1; // @ Predictor.scala l115
       end else begin
@@ -21952,7 +22336,7 @@ module gshare_predictor (
   end
 
   always @(*) begin
-    if(tmp_when_23) begin
+    if(tmp_when_39) begin
       if(((BTB_source_pc_7 != train_pc) || (! BTB_valid[7]))) begin
         BTB_btb_is_miss_vec_7 = 1'b1; // @ Predictor.scala l120
       end else begin
@@ -21964,7 +22348,7 @@ module gshare_predictor (
   end
 
   always @(*) begin
-    if(tmp_when_24) begin
+    if(tmp_when_40) begin
       if(((BTB_source_pc_8 == train_pc) && BTB_valid[8])) begin
         BTB_btb_is_hit_vec_8 = 1'b1; // @ Predictor.scala l115
       end else begin
@@ -21976,7 +22360,7 @@ module gshare_predictor (
   end
 
   always @(*) begin
-    if(tmp_when_24) begin
+    if(tmp_when_40) begin
       if(((BTB_source_pc_8 != train_pc) || (! BTB_valid[8]))) begin
         BTB_btb_is_miss_vec_8 = 1'b1; // @ Predictor.scala l120
       end else begin
@@ -21988,7 +22372,7 @@ module gshare_predictor (
   end
 
   always @(*) begin
-    if(tmp_when_25) begin
+    if(tmp_when_41) begin
       if(((BTB_source_pc_9 == train_pc) && BTB_valid[9])) begin
         BTB_btb_is_hit_vec_9 = 1'b1; // @ Predictor.scala l115
       end else begin
@@ -22000,7 +22384,7 @@ module gshare_predictor (
   end
 
   always @(*) begin
-    if(tmp_when_25) begin
+    if(tmp_when_41) begin
       if(((BTB_source_pc_9 != train_pc) || (! BTB_valid[9]))) begin
         BTB_btb_is_miss_vec_9 = 1'b1; // @ Predictor.scala l120
       end else begin
@@ -22012,7 +22396,7 @@ module gshare_predictor (
   end
 
   always @(*) begin
-    if(tmp_when_26) begin
+    if(tmp_when_42) begin
       if(((BTB_source_pc_10 == train_pc) && BTB_valid[10])) begin
         BTB_btb_is_hit_vec_10 = 1'b1; // @ Predictor.scala l115
       end else begin
@@ -22024,7 +22408,7 @@ module gshare_predictor (
   end
 
   always @(*) begin
-    if(tmp_when_26) begin
+    if(tmp_when_42) begin
       if(((BTB_source_pc_10 != train_pc) || (! BTB_valid[10]))) begin
         BTB_btb_is_miss_vec_10 = 1'b1; // @ Predictor.scala l120
       end else begin
@@ -22036,7 +22420,7 @@ module gshare_predictor (
   end
 
   always @(*) begin
-    if(tmp_when_27) begin
+    if(tmp_when_43) begin
       if(((BTB_source_pc_11 == train_pc) && BTB_valid[11])) begin
         BTB_btb_is_hit_vec_11 = 1'b1; // @ Predictor.scala l115
       end else begin
@@ -22048,7 +22432,7 @@ module gshare_predictor (
   end
 
   always @(*) begin
-    if(tmp_when_27) begin
+    if(tmp_when_43) begin
       if(((BTB_source_pc_11 != train_pc) || (! BTB_valid[11]))) begin
         BTB_btb_is_miss_vec_11 = 1'b1; // @ Predictor.scala l120
       end else begin
@@ -22060,7 +22444,7 @@ module gshare_predictor (
   end
 
   always @(*) begin
-    if(tmp_when_28) begin
+    if(tmp_when_44) begin
       if(((BTB_source_pc_12 == train_pc) && BTB_valid[12])) begin
         BTB_btb_is_hit_vec_12 = 1'b1; // @ Predictor.scala l115
       end else begin
@@ -22072,7 +22456,7 @@ module gshare_predictor (
   end
 
   always @(*) begin
-    if(tmp_when_28) begin
+    if(tmp_when_44) begin
       if(((BTB_source_pc_12 != train_pc) || (! BTB_valid[12]))) begin
         BTB_btb_is_miss_vec_12 = 1'b1; // @ Predictor.scala l120
       end else begin
@@ -22084,7 +22468,7 @@ module gshare_predictor (
   end
 
   always @(*) begin
-    if(tmp_when_29) begin
+    if(tmp_when_45) begin
       if(((BTB_source_pc_13 == train_pc) && BTB_valid[13])) begin
         BTB_btb_is_hit_vec_13 = 1'b1; // @ Predictor.scala l115
       end else begin
@@ -22096,7 +22480,7 @@ module gshare_predictor (
   end
 
   always @(*) begin
-    if(tmp_when_29) begin
+    if(tmp_when_45) begin
       if(((BTB_source_pc_13 != train_pc) || (! BTB_valid[13]))) begin
         BTB_btb_is_miss_vec_13 = 1'b1; // @ Predictor.scala l120
       end else begin
@@ -22108,7 +22492,7 @@ module gshare_predictor (
   end
 
   always @(*) begin
-    if(tmp_when_30) begin
+    if(tmp_when_46) begin
       if(((BTB_source_pc_14 == train_pc) && BTB_valid[14])) begin
         BTB_btb_is_hit_vec_14 = 1'b1; // @ Predictor.scala l115
       end else begin
@@ -22120,7 +22504,7 @@ module gshare_predictor (
   end
 
   always @(*) begin
-    if(tmp_when_30) begin
+    if(tmp_when_46) begin
       if(((BTB_source_pc_14 != train_pc) || (! BTB_valid[14]))) begin
         BTB_btb_is_miss_vec_14 = 1'b1; // @ Predictor.scala l120
       end else begin
@@ -22132,7 +22516,7 @@ module gshare_predictor (
   end
 
   always @(*) begin
-    if(tmp_when_31) begin
+    if(tmp_when_47) begin
       if(((BTB_source_pc_15 == train_pc) && BTB_valid[15])) begin
         BTB_btb_is_hit_vec_15 = 1'b1; // @ Predictor.scala l115
       end else begin
@@ -22144,7 +22528,7 @@ module gshare_predictor (
   end
 
   always @(*) begin
-    if(tmp_when_31) begin
+    if(tmp_when_47) begin
       if(((BTB_source_pc_15 != train_pc) || (! BTB_valid[15]))) begin
         BTB_btb_is_miss_vec_15 = 1'b1; // @ Predictor.scala l120
       end else begin
@@ -22155,15 +22539,400 @@ module gshare_predictor (
     end
   end
 
-  assign tmp_BTB_btb_write_index = (((((((BTB_btb_is_hit_vec_1 || BTB_btb_is_hit_vec_3) || BTB_btb_is_hit_vec_5) || BTB_btb_is_hit_vec_7) || BTB_btb_is_hit_vec_9) || BTB_btb_is_hit_vec_11) || BTB_btb_is_hit_vec_13) || BTB_btb_is_hit_vec_15); // @ BaseType.scala l305
-  assign tmp_BTB_btb_write_index_1 = (((((((BTB_btb_is_hit_vec_2 || BTB_btb_is_hit_vec_3) || BTB_btb_is_hit_vec_6) || BTB_btb_is_hit_vec_7) || BTB_btb_is_hit_vec_10) || BTB_btb_is_hit_vec_11) || BTB_btb_is_hit_vec_14) || BTB_btb_is_hit_vec_15); // @ BaseType.scala l305
-  assign tmp_BTB_btb_write_index_2 = (((((((BTB_btb_is_hit_vec_4 || BTB_btb_is_hit_vec_5) || BTB_btb_is_hit_vec_6) || BTB_btb_is_hit_vec_7) || BTB_btb_is_hit_vec_12) || BTB_btb_is_hit_vec_13) || BTB_btb_is_hit_vec_14) || BTB_btb_is_hit_vec_15); // @ BaseType.scala l305
-  assign tmp_BTB_btb_write_index_3 = (((((((BTB_btb_is_hit_vec_8 || BTB_btb_is_hit_vec_9) || BTB_btb_is_hit_vec_10) || BTB_btb_is_hit_vec_11) || BTB_btb_is_hit_vec_12) || BTB_btb_is_hit_vec_13) || BTB_btb_is_hit_vec_14) || BTB_btb_is_hit_vec_15); // @ BaseType.scala l305
-  assign BTB_btb_write_index = {tmp_BTB_btb_write_index_3,{tmp_BTB_btb_write_index_2,{tmp_BTB_btb_write_index_1,tmp_BTB_btb_write_index}}}; // @ Predictor.scala l129
-  assign tmp_34 = ({15'd0,1'b1} <<< BTB_btb_write_index); // @ BaseType.scala l299
-  assign tmp_35 = ({15'd0,1'b1} <<< BTB_btb_write_index); // @ BaseType.scala l299
-  assign tmp_36 = ({15'd0,1'b1} <<< BTB_btb_alloc_index_value); // @ BaseType.scala l299
-  assign tmp_37 = ({15'd0,1'b1} <<< BTB_btb_alloc_index_value); // @ BaseType.scala l299
+  always @(*) begin
+    if(tmp_when_48) begin
+      if(((BTB_source_pc_16 == train_pc) && BTB_valid[16])) begin
+        BTB_btb_is_hit_vec_16 = 1'b1; // @ Predictor.scala l115
+      end else begin
+        BTB_btb_is_hit_vec_16 = 1'b0; // @ Predictor.scala l117
+      end
+    end else begin
+      BTB_btb_is_hit_vec_16 = 1'b0; // @ Predictor.scala l125
+    end
+  end
+
+  always @(*) begin
+    if(tmp_when_48) begin
+      if(((BTB_source_pc_16 != train_pc) || (! BTB_valid[16]))) begin
+        BTB_btb_is_miss_vec_16 = 1'b1; // @ Predictor.scala l120
+      end else begin
+        BTB_btb_is_miss_vec_16 = 1'b0; // @ Predictor.scala l122
+      end
+    end else begin
+      BTB_btb_is_miss_vec_16 = 1'b0; // @ Predictor.scala l126
+    end
+  end
+
+  always @(*) begin
+    if(tmp_when_49) begin
+      if(((BTB_source_pc_17 == train_pc) && BTB_valid[17])) begin
+        BTB_btb_is_hit_vec_17 = 1'b1; // @ Predictor.scala l115
+      end else begin
+        BTB_btb_is_hit_vec_17 = 1'b0; // @ Predictor.scala l117
+      end
+    end else begin
+      BTB_btb_is_hit_vec_17 = 1'b0; // @ Predictor.scala l125
+    end
+  end
+
+  always @(*) begin
+    if(tmp_when_49) begin
+      if(((BTB_source_pc_17 != train_pc) || (! BTB_valid[17]))) begin
+        BTB_btb_is_miss_vec_17 = 1'b1; // @ Predictor.scala l120
+      end else begin
+        BTB_btb_is_miss_vec_17 = 1'b0; // @ Predictor.scala l122
+      end
+    end else begin
+      BTB_btb_is_miss_vec_17 = 1'b0; // @ Predictor.scala l126
+    end
+  end
+
+  always @(*) begin
+    if(tmp_when_50) begin
+      if(((BTB_source_pc_18 == train_pc) && BTB_valid[18])) begin
+        BTB_btb_is_hit_vec_18 = 1'b1; // @ Predictor.scala l115
+      end else begin
+        BTB_btb_is_hit_vec_18 = 1'b0; // @ Predictor.scala l117
+      end
+    end else begin
+      BTB_btb_is_hit_vec_18 = 1'b0; // @ Predictor.scala l125
+    end
+  end
+
+  always @(*) begin
+    if(tmp_when_50) begin
+      if(((BTB_source_pc_18 != train_pc) || (! BTB_valid[18]))) begin
+        BTB_btb_is_miss_vec_18 = 1'b1; // @ Predictor.scala l120
+      end else begin
+        BTB_btb_is_miss_vec_18 = 1'b0; // @ Predictor.scala l122
+      end
+    end else begin
+      BTB_btb_is_miss_vec_18 = 1'b0; // @ Predictor.scala l126
+    end
+  end
+
+  always @(*) begin
+    if(tmp_when_51) begin
+      if(((BTB_source_pc_19 == train_pc) && BTB_valid[19])) begin
+        BTB_btb_is_hit_vec_19 = 1'b1; // @ Predictor.scala l115
+      end else begin
+        BTB_btb_is_hit_vec_19 = 1'b0; // @ Predictor.scala l117
+      end
+    end else begin
+      BTB_btb_is_hit_vec_19 = 1'b0; // @ Predictor.scala l125
+    end
+  end
+
+  always @(*) begin
+    if(tmp_when_51) begin
+      if(((BTB_source_pc_19 != train_pc) || (! BTB_valid[19]))) begin
+        BTB_btb_is_miss_vec_19 = 1'b1; // @ Predictor.scala l120
+      end else begin
+        BTB_btb_is_miss_vec_19 = 1'b0; // @ Predictor.scala l122
+      end
+    end else begin
+      BTB_btb_is_miss_vec_19 = 1'b0; // @ Predictor.scala l126
+    end
+  end
+
+  always @(*) begin
+    if(tmp_when_52) begin
+      if(((BTB_source_pc_20 == train_pc) && BTB_valid[20])) begin
+        BTB_btb_is_hit_vec_20 = 1'b1; // @ Predictor.scala l115
+      end else begin
+        BTB_btb_is_hit_vec_20 = 1'b0; // @ Predictor.scala l117
+      end
+    end else begin
+      BTB_btb_is_hit_vec_20 = 1'b0; // @ Predictor.scala l125
+    end
+  end
+
+  always @(*) begin
+    if(tmp_when_52) begin
+      if(((BTB_source_pc_20 != train_pc) || (! BTB_valid[20]))) begin
+        BTB_btb_is_miss_vec_20 = 1'b1; // @ Predictor.scala l120
+      end else begin
+        BTB_btb_is_miss_vec_20 = 1'b0; // @ Predictor.scala l122
+      end
+    end else begin
+      BTB_btb_is_miss_vec_20 = 1'b0; // @ Predictor.scala l126
+    end
+  end
+
+  always @(*) begin
+    if(tmp_when_53) begin
+      if(((BTB_source_pc_21 == train_pc) && BTB_valid[21])) begin
+        BTB_btb_is_hit_vec_21 = 1'b1; // @ Predictor.scala l115
+      end else begin
+        BTB_btb_is_hit_vec_21 = 1'b0; // @ Predictor.scala l117
+      end
+    end else begin
+      BTB_btb_is_hit_vec_21 = 1'b0; // @ Predictor.scala l125
+    end
+  end
+
+  always @(*) begin
+    if(tmp_when_53) begin
+      if(((BTB_source_pc_21 != train_pc) || (! BTB_valid[21]))) begin
+        BTB_btb_is_miss_vec_21 = 1'b1; // @ Predictor.scala l120
+      end else begin
+        BTB_btb_is_miss_vec_21 = 1'b0; // @ Predictor.scala l122
+      end
+    end else begin
+      BTB_btb_is_miss_vec_21 = 1'b0; // @ Predictor.scala l126
+    end
+  end
+
+  always @(*) begin
+    if(tmp_when_54) begin
+      if(((BTB_source_pc_22 == train_pc) && BTB_valid[22])) begin
+        BTB_btb_is_hit_vec_22 = 1'b1; // @ Predictor.scala l115
+      end else begin
+        BTB_btb_is_hit_vec_22 = 1'b0; // @ Predictor.scala l117
+      end
+    end else begin
+      BTB_btb_is_hit_vec_22 = 1'b0; // @ Predictor.scala l125
+    end
+  end
+
+  always @(*) begin
+    if(tmp_when_54) begin
+      if(((BTB_source_pc_22 != train_pc) || (! BTB_valid[22]))) begin
+        BTB_btb_is_miss_vec_22 = 1'b1; // @ Predictor.scala l120
+      end else begin
+        BTB_btb_is_miss_vec_22 = 1'b0; // @ Predictor.scala l122
+      end
+    end else begin
+      BTB_btb_is_miss_vec_22 = 1'b0; // @ Predictor.scala l126
+    end
+  end
+
+  always @(*) begin
+    if(tmp_when_55) begin
+      if(((BTB_source_pc_23 == train_pc) && BTB_valid[23])) begin
+        BTB_btb_is_hit_vec_23 = 1'b1; // @ Predictor.scala l115
+      end else begin
+        BTB_btb_is_hit_vec_23 = 1'b0; // @ Predictor.scala l117
+      end
+    end else begin
+      BTB_btb_is_hit_vec_23 = 1'b0; // @ Predictor.scala l125
+    end
+  end
+
+  always @(*) begin
+    if(tmp_when_55) begin
+      if(((BTB_source_pc_23 != train_pc) || (! BTB_valid[23]))) begin
+        BTB_btb_is_miss_vec_23 = 1'b1; // @ Predictor.scala l120
+      end else begin
+        BTB_btb_is_miss_vec_23 = 1'b0; // @ Predictor.scala l122
+      end
+    end else begin
+      BTB_btb_is_miss_vec_23 = 1'b0; // @ Predictor.scala l126
+    end
+  end
+
+  always @(*) begin
+    if(tmp_when_56) begin
+      if(((BTB_source_pc_24 == train_pc) && BTB_valid[24])) begin
+        BTB_btb_is_hit_vec_24 = 1'b1; // @ Predictor.scala l115
+      end else begin
+        BTB_btb_is_hit_vec_24 = 1'b0; // @ Predictor.scala l117
+      end
+    end else begin
+      BTB_btb_is_hit_vec_24 = 1'b0; // @ Predictor.scala l125
+    end
+  end
+
+  always @(*) begin
+    if(tmp_when_56) begin
+      if(((BTB_source_pc_24 != train_pc) || (! BTB_valid[24]))) begin
+        BTB_btb_is_miss_vec_24 = 1'b1; // @ Predictor.scala l120
+      end else begin
+        BTB_btb_is_miss_vec_24 = 1'b0; // @ Predictor.scala l122
+      end
+    end else begin
+      BTB_btb_is_miss_vec_24 = 1'b0; // @ Predictor.scala l126
+    end
+  end
+
+  always @(*) begin
+    if(tmp_when_57) begin
+      if(((BTB_source_pc_25 == train_pc) && BTB_valid[25])) begin
+        BTB_btb_is_hit_vec_25 = 1'b1; // @ Predictor.scala l115
+      end else begin
+        BTB_btb_is_hit_vec_25 = 1'b0; // @ Predictor.scala l117
+      end
+    end else begin
+      BTB_btb_is_hit_vec_25 = 1'b0; // @ Predictor.scala l125
+    end
+  end
+
+  always @(*) begin
+    if(tmp_when_57) begin
+      if(((BTB_source_pc_25 != train_pc) || (! BTB_valid[25]))) begin
+        BTB_btb_is_miss_vec_25 = 1'b1; // @ Predictor.scala l120
+      end else begin
+        BTB_btb_is_miss_vec_25 = 1'b0; // @ Predictor.scala l122
+      end
+    end else begin
+      BTB_btb_is_miss_vec_25 = 1'b0; // @ Predictor.scala l126
+    end
+  end
+
+  always @(*) begin
+    if(tmp_when_58) begin
+      if(((BTB_source_pc_26 == train_pc) && BTB_valid[26])) begin
+        BTB_btb_is_hit_vec_26 = 1'b1; // @ Predictor.scala l115
+      end else begin
+        BTB_btb_is_hit_vec_26 = 1'b0; // @ Predictor.scala l117
+      end
+    end else begin
+      BTB_btb_is_hit_vec_26 = 1'b0; // @ Predictor.scala l125
+    end
+  end
+
+  always @(*) begin
+    if(tmp_when_58) begin
+      if(((BTB_source_pc_26 != train_pc) || (! BTB_valid[26]))) begin
+        BTB_btb_is_miss_vec_26 = 1'b1; // @ Predictor.scala l120
+      end else begin
+        BTB_btb_is_miss_vec_26 = 1'b0; // @ Predictor.scala l122
+      end
+    end else begin
+      BTB_btb_is_miss_vec_26 = 1'b0; // @ Predictor.scala l126
+    end
+  end
+
+  always @(*) begin
+    if(tmp_when_59) begin
+      if(((BTB_source_pc_27 == train_pc) && BTB_valid[27])) begin
+        BTB_btb_is_hit_vec_27 = 1'b1; // @ Predictor.scala l115
+      end else begin
+        BTB_btb_is_hit_vec_27 = 1'b0; // @ Predictor.scala l117
+      end
+    end else begin
+      BTB_btb_is_hit_vec_27 = 1'b0; // @ Predictor.scala l125
+    end
+  end
+
+  always @(*) begin
+    if(tmp_when_59) begin
+      if(((BTB_source_pc_27 != train_pc) || (! BTB_valid[27]))) begin
+        BTB_btb_is_miss_vec_27 = 1'b1; // @ Predictor.scala l120
+      end else begin
+        BTB_btb_is_miss_vec_27 = 1'b0; // @ Predictor.scala l122
+      end
+    end else begin
+      BTB_btb_is_miss_vec_27 = 1'b0; // @ Predictor.scala l126
+    end
+  end
+
+  always @(*) begin
+    if(tmp_when_60) begin
+      if(((BTB_source_pc_28 == train_pc) && BTB_valid[28])) begin
+        BTB_btb_is_hit_vec_28 = 1'b1; // @ Predictor.scala l115
+      end else begin
+        BTB_btb_is_hit_vec_28 = 1'b0; // @ Predictor.scala l117
+      end
+    end else begin
+      BTB_btb_is_hit_vec_28 = 1'b0; // @ Predictor.scala l125
+    end
+  end
+
+  always @(*) begin
+    if(tmp_when_60) begin
+      if(((BTB_source_pc_28 != train_pc) || (! BTB_valid[28]))) begin
+        BTB_btb_is_miss_vec_28 = 1'b1; // @ Predictor.scala l120
+      end else begin
+        BTB_btb_is_miss_vec_28 = 1'b0; // @ Predictor.scala l122
+      end
+    end else begin
+      BTB_btb_is_miss_vec_28 = 1'b0; // @ Predictor.scala l126
+    end
+  end
+
+  always @(*) begin
+    if(tmp_when_61) begin
+      if(((BTB_source_pc_29 == train_pc) && BTB_valid[29])) begin
+        BTB_btb_is_hit_vec_29 = 1'b1; // @ Predictor.scala l115
+      end else begin
+        BTB_btb_is_hit_vec_29 = 1'b0; // @ Predictor.scala l117
+      end
+    end else begin
+      BTB_btb_is_hit_vec_29 = 1'b0; // @ Predictor.scala l125
+    end
+  end
+
+  always @(*) begin
+    if(tmp_when_61) begin
+      if(((BTB_source_pc_29 != train_pc) || (! BTB_valid[29]))) begin
+        BTB_btb_is_miss_vec_29 = 1'b1; // @ Predictor.scala l120
+      end else begin
+        BTB_btb_is_miss_vec_29 = 1'b0; // @ Predictor.scala l122
+      end
+    end else begin
+      BTB_btb_is_miss_vec_29 = 1'b0; // @ Predictor.scala l126
+    end
+  end
+
+  always @(*) begin
+    if(tmp_when_62) begin
+      if(((BTB_source_pc_30 == train_pc) && BTB_valid[30])) begin
+        BTB_btb_is_hit_vec_30 = 1'b1; // @ Predictor.scala l115
+      end else begin
+        BTB_btb_is_hit_vec_30 = 1'b0; // @ Predictor.scala l117
+      end
+    end else begin
+      BTB_btb_is_hit_vec_30 = 1'b0; // @ Predictor.scala l125
+    end
+  end
+
+  always @(*) begin
+    if(tmp_when_62) begin
+      if(((BTB_source_pc_30 != train_pc) || (! BTB_valid[30]))) begin
+        BTB_btb_is_miss_vec_30 = 1'b1; // @ Predictor.scala l120
+      end else begin
+        BTB_btb_is_miss_vec_30 = 1'b0; // @ Predictor.scala l122
+      end
+    end else begin
+      BTB_btb_is_miss_vec_30 = 1'b0; // @ Predictor.scala l126
+    end
+  end
+
+  always @(*) begin
+    if(tmp_when_63) begin
+      if(((BTB_source_pc_31 == train_pc) && BTB_valid[31])) begin
+        BTB_btb_is_hit_vec_31 = 1'b1; // @ Predictor.scala l115
+      end else begin
+        BTB_btb_is_hit_vec_31 = 1'b0; // @ Predictor.scala l117
+      end
+    end else begin
+      BTB_btb_is_hit_vec_31 = 1'b0; // @ Predictor.scala l125
+    end
+  end
+
+  always @(*) begin
+    if(tmp_when_63) begin
+      if(((BTB_source_pc_31 != train_pc) || (! BTB_valid[31]))) begin
+        BTB_btb_is_miss_vec_31 = 1'b1; // @ Predictor.scala l120
+      end else begin
+        BTB_btb_is_miss_vec_31 = 1'b0; // @ Predictor.scala l122
+      end
+    end else begin
+      BTB_btb_is_miss_vec_31 = 1'b0; // @ Predictor.scala l126
+    end
+  end
+
+  assign tmp_BTB_btb_write_index = (((((((((((((((BTB_btb_is_hit_vec_1 || BTB_btb_is_hit_vec_3) || BTB_btb_is_hit_vec_5) || BTB_btb_is_hit_vec_7) || BTB_btb_is_hit_vec_9) || BTB_btb_is_hit_vec_11) || BTB_btb_is_hit_vec_13) || BTB_btb_is_hit_vec_15) || BTB_btb_is_hit_vec_17) || BTB_btb_is_hit_vec_19) || BTB_btb_is_hit_vec_21) || BTB_btb_is_hit_vec_23) || BTB_btb_is_hit_vec_25) || BTB_btb_is_hit_vec_27) || BTB_btb_is_hit_vec_29) || BTB_btb_is_hit_vec_31); // @ BaseType.scala l305
+  assign tmp_BTB_btb_write_index_1 = (((((((((((((((BTB_btb_is_hit_vec_2 || BTB_btb_is_hit_vec_3) || BTB_btb_is_hit_vec_6) || BTB_btb_is_hit_vec_7) || BTB_btb_is_hit_vec_10) || BTB_btb_is_hit_vec_11) || BTB_btb_is_hit_vec_14) || BTB_btb_is_hit_vec_15) || BTB_btb_is_hit_vec_18) || BTB_btb_is_hit_vec_19) || BTB_btb_is_hit_vec_22) || BTB_btb_is_hit_vec_23) || BTB_btb_is_hit_vec_26) || BTB_btb_is_hit_vec_27) || BTB_btb_is_hit_vec_30) || BTB_btb_is_hit_vec_31); // @ BaseType.scala l305
+  assign tmp_BTB_btb_write_index_2 = (((((((((((((((BTB_btb_is_hit_vec_4 || BTB_btb_is_hit_vec_5) || BTB_btb_is_hit_vec_6) || BTB_btb_is_hit_vec_7) || BTB_btb_is_hit_vec_12) || BTB_btb_is_hit_vec_13) || BTB_btb_is_hit_vec_14) || BTB_btb_is_hit_vec_15) || BTB_btb_is_hit_vec_20) || BTB_btb_is_hit_vec_21) || BTB_btb_is_hit_vec_22) || BTB_btb_is_hit_vec_23) || BTB_btb_is_hit_vec_28) || BTB_btb_is_hit_vec_29) || BTB_btb_is_hit_vec_30) || BTB_btb_is_hit_vec_31); // @ BaseType.scala l305
+  assign tmp_BTB_btb_write_index_3 = (((((((((((((((BTB_btb_is_hit_vec_8 || BTB_btb_is_hit_vec_9) || BTB_btb_is_hit_vec_10) || BTB_btb_is_hit_vec_11) || BTB_btb_is_hit_vec_12) || BTB_btb_is_hit_vec_13) || BTB_btb_is_hit_vec_14) || BTB_btb_is_hit_vec_15) || BTB_btb_is_hit_vec_24) || BTB_btb_is_hit_vec_25) || BTB_btb_is_hit_vec_26) || BTB_btb_is_hit_vec_27) || BTB_btb_is_hit_vec_28) || BTB_btb_is_hit_vec_29) || BTB_btb_is_hit_vec_30) || BTB_btb_is_hit_vec_31); // @ BaseType.scala l305
+  assign tmp_BTB_btb_write_index_4 = (((((((((((((((BTB_btb_is_hit_vec_16 || BTB_btb_is_hit_vec_17) || BTB_btb_is_hit_vec_18) || BTB_btb_is_hit_vec_19) || BTB_btb_is_hit_vec_20) || BTB_btb_is_hit_vec_21) || BTB_btb_is_hit_vec_22) || BTB_btb_is_hit_vec_23) || BTB_btb_is_hit_vec_24) || BTB_btb_is_hit_vec_25) || BTB_btb_is_hit_vec_26) || BTB_btb_is_hit_vec_27) || BTB_btb_is_hit_vec_28) || BTB_btb_is_hit_vec_29) || BTB_btb_is_hit_vec_30) || BTB_btb_is_hit_vec_31); // @ BaseType.scala l305
+  assign BTB_btb_write_index = {tmp_BTB_btb_write_index_4,{tmp_BTB_btb_write_index_3,{tmp_BTB_btb_write_index_2,{tmp_BTB_btb_write_index_1,tmp_BTB_btb_write_index}}}}; // @ Predictor.scala l129
+  assign tmp_34 = ({31'd0,1'b1} <<< BTB_btb_write_index); // @ BaseType.scala l299
+  assign tmp_35 = ({31'd0,1'b1} <<< BTB_btb_write_index); // @ BaseType.scala l299
+  assign tmp_36 = ({31'd0,1'b1} <<< BTB_btb_alloc_index_value); // @ BaseType.scala l299
+  assign tmp_37 = ({31'd0,1'b1} <<< BTB_btb_alloc_index_value); // @ BaseType.scala l299
   assign RAS_ras_call_matched = (BTB_is_matched && BTB_is_call); // @ BaseType.scala l305
   assign RAS_ras_ret_matched = (BTB_is_matched && BTB_is_ret); // @ BaseType.scala l305
   always @(*) begin
@@ -22272,7 +23041,7 @@ module gshare_predictor (
       GSHARE_PHT_29 <= 2'b01; // @ Data.scala l400
       GSHARE_PHT_30 <= 2'b01; // @ Data.scala l400
       GSHARE_PHT_31 <= 2'b01; // @ Data.scala l400
-      BTB_valid <= 16'h0; // @ Data.scala l400
+      BTB_valid <= 32'h0; // @ Data.scala l400
       BTB_source_pc_0 <= 64'h0; // @ Data.scala l400
       BTB_source_pc_1 <= 64'h0; // @ Data.scala l400
       BTB_source_pc_2 <= 64'h0; // @ Data.scala l400
@@ -22289,9 +23058,25 @@ module gshare_predictor (
       BTB_source_pc_13 <= 64'h0; // @ Data.scala l400
       BTB_source_pc_14 <= 64'h0; // @ Data.scala l400
       BTB_source_pc_15 <= 64'h0; // @ Data.scala l400
-      BTB_call <= 16'h0; // @ Data.scala l400
-      BTB_ret <= 16'h0; // @ Data.scala l400
-      BTB_jmp <= 16'h0; // @ Data.scala l400
+      BTB_source_pc_16 <= 64'h0; // @ Data.scala l400
+      BTB_source_pc_17 <= 64'h0; // @ Data.scala l400
+      BTB_source_pc_18 <= 64'h0; // @ Data.scala l400
+      BTB_source_pc_19 <= 64'h0; // @ Data.scala l400
+      BTB_source_pc_20 <= 64'h0; // @ Data.scala l400
+      BTB_source_pc_21 <= 64'h0; // @ Data.scala l400
+      BTB_source_pc_22 <= 64'h0; // @ Data.scala l400
+      BTB_source_pc_23 <= 64'h0; // @ Data.scala l400
+      BTB_source_pc_24 <= 64'h0; // @ Data.scala l400
+      BTB_source_pc_25 <= 64'h0; // @ Data.scala l400
+      BTB_source_pc_26 <= 64'h0; // @ Data.scala l400
+      BTB_source_pc_27 <= 64'h0; // @ Data.scala l400
+      BTB_source_pc_28 <= 64'h0; // @ Data.scala l400
+      BTB_source_pc_29 <= 64'h0; // @ Data.scala l400
+      BTB_source_pc_30 <= 64'h0; // @ Data.scala l400
+      BTB_source_pc_31 <= 64'h0; // @ Data.scala l400
+      BTB_call <= 32'h0; // @ Data.scala l400
+      BTB_ret <= 32'h0; // @ Data.scala l400
+      BTB_jmp <= 32'h0; // @ Data.scala l400
       BTB_target_pc_0 <= 64'h0; // @ Data.scala l400
       BTB_target_pc_1 <= 64'h0; // @ Data.scala l400
       BTB_target_pc_2 <= 64'h0; // @ Data.scala l400
@@ -22308,7 +23093,23 @@ module gshare_predictor (
       BTB_target_pc_13 <= 64'h0; // @ Data.scala l400
       BTB_target_pc_14 <= 64'h0; // @ Data.scala l400
       BTB_target_pc_15 <= 64'h0; // @ Data.scala l400
-      BTB_btb_alloc_index_value <= 4'b0000; // @ Data.scala l400
+      BTB_target_pc_16 <= 64'h0; // @ Data.scala l400
+      BTB_target_pc_17 <= 64'h0; // @ Data.scala l400
+      BTB_target_pc_18 <= 64'h0; // @ Data.scala l400
+      BTB_target_pc_19 <= 64'h0; // @ Data.scala l400
+      BTB_target_pc_20 <= 64'h0; // @ Data.scala l400
+      BTB_target_pc_21 <= 64'h0; // @ Data.scala l400
+      BTB_target_pc_22 <= 64'h0; // @ Data.scala l400
+      BTB_target_pc_23 <= 64'h0; // @ Data.scala l400
+      BTB_target_pc_24 <= 64'h0; // @ Data.scala l400
+      BTB_target_pc_25 <= 64'h0; // @ Data.scala l400
+      BTB_target_pc_26 <= 64'h0; // @ Data.scala l400
+      BTB_target_pc_27 <= 64'h0; // @ Data.scala l400
+      BTB_target_pc_28 <= 64'h0; // @ Data.scala l400
+      BTB_target_pc_29 <= 64'h0; // @ Data.scala l400
+      BTB_target_pc_30 <= 64'h0; // @ Data.scala l400
+      BTB_target_pc_31 <= 64'h0; // @ Data.scala l400
+      BTB_btb_alloc_index_value <= 5'h0; // @ Data.scala l400
       RAS_ras_curr_index <= 5'h0; // @ Data.scala l400
       RAS_ras_curr_index_proven <= 5'h0; // @ Data.scala l400
     end else begin
@@ -23161,6 +23962,54 @@ module gshare_predictor (
         if(tmp_34[15]) begin
           BTB_source_pc_15 <= train_pc; // @ Predictor.scala l141
         end
+        if(tmp_34[16]) begin
+          BTB_source_pc_16 <= train_pc; // @ Predictor.scala l141
+        end
+        if(tmp_34[17]) begin
+          BTB_source_pc_17 <= train_pc; // @ Predictor.scala l141
+        end
+        if(tmp_34[18]) begin
+          BTB_source_pc_18 <= train_pc; // @ Predictor.scala l141
+        end
+        if(tmp_34[19]) begin
+          BTB_source_pc_19 <= train_pc; // @ Predictor.scala l141
+        end
+        if(tmp_34[20]) begin
+          BTB_source_pc_20 <= train_pc; // @ Predictor.scala l141
+        end
+        if(tmp_34[21]) begin
+          BTB_source_pc_21 <= train_pc; // @ Predictor.scala l141
+        end
+        if(tmp_34[22]) begin
+          BTB_source_pc_22 <= train_pc; // @ Predictor.scala l141
+        end
+        if(tmp_34[23]) begin
+          BTB_source_pc_23 <= train_pc; // @ Predictor.scala l141
+        end
+        if(tmp_34[24]) begin
+          BTB_source_pc_24 <= train_pc; // @ Predictor.scala l141
+        end
+        if(tmp_34[25]) begin
+          BTB_source_pc_25 <= train_pc; // @ Predictor.scala l141
+        end
+        if(tmp_34[26]) begin
+          BTB_source_pc_26 <= train_pc; // @ Predictor.scala l141
+        end
+        if(tmp_34[27]) begin
+          BTB_source_pc_27 <= train_pc; // @ Predictor.scala l141
+        end
+        if(tmp_34[28]) begin
+          BTB_source_pc_28 <= train_pc; // @ Predictor.scala l141
+        end
+        if(tmp_34[29]) begin
+          BTB_source_pc_29 <= train_pc; // @ Predictor.scala l141
+        end
+        if(tmp_34[30]) begin
+          BTB_source_pc_30 <= train_pc; // @ Predictor.scala l141
+        end
+        if(tmp_34[31]) begin
+          BTB_source_pc_31 <= train_pc; // @ Predictor.scala l141
+        end
         BTB_call[BTB_btb_write_index] <= train_is_call; // @ Predictor.scala l142
         BTB_ret[BTB_btb_write_index] <= train_is_ret; // @ Predictor.scala l143
         BTB_jmp[BTB_btb_write_index] <= train_is_jmp; // @ Predictor.scala l144
@@ -23211,6 +24060,54 @@ module gshare_predictor (
         end
         if(tmp_35[15]) begin
           BTB_target_pc_15 <= train_pc_next; // @ Predictor.scala l145
+        end
+        if(tmp_35[16]) begin
+          BTB_target_pc_16 <= train_pc_next; // @ Predictor.scala l145
+        end
+        if(tmp_35[17]) begin
+          BTB_target_pc_17 <= train_pc_next; // @ Predictor.scala l145
+        end
+        if(tmp_35[18]) begin
+          BTB_target_pc_18 <= train_pc_next; // @ Predictor.scala l145
+        end
+        if(tmp_35[19]) begin
+          BTB_target_pc_19 <= train_pc_next; // @ Predictor.scala l145
+        end
+        if(tmp_35[20]) begin
+          BTB_target_pc_20 <= train_pc_next; // @ Predictor.scala l145
+        end
+        if(tmp_35[21]) begin
+          BTB_target_pc_21 <= train_pc_next; // @ Predictor.scala l145
+        end
+        if(tmp_35[22]) begin
+          BTB_target_pc_22 <= train_pc_next; // @ Predictor.scala l145
+        end
+        if(tmp_35[23]) begin
+          BTB_target_pc_23 <= train_pc_next; // @ Predictor.scala l145
+        end
+        if(tmp_35[24]) begin
+          BTB_target_pc_24 <= train_pc_next; // @ Predictor.scala l145
+        end
+        if(tmp_35[25]) begin
+          BTB_target_pc_25 <= train_pc_next; // @ Predictor.scala l145
+        end
+        if(tmp_35[26]) begin
+          BTB_target_pc_26 <= train_pc_next; // @ Predictor.scala l145
+        end
+        if(tmp_35[27]) begin
+          BTB_target_pc_27 <= train_pc_next; // @ Predictor.scala l145
+        end
+        if(tmp_35[28]) begin
+          BTB_target_pc_28 <= train_pc_next; // @ Predictor.scala l145
+        end
+        if(tmp_35[29]) begin
+          BTB_target_pc_29 <= train_pc_next; // @ Predictor.scala l145
+        end
+        if(tmp_35[30]) begin
+          BTB_target_pc_30 <= train_pc_next; // @ Predictor.scala l145
+        end
+        if(tmp_35[31]) begin
+          BTB_target_pc_31 <= train_pc_next; // @ Predictor.scala l145
         end
       end else begin
         if(BTB_btb_is_miss) begin
@@ -23263,6 +24160,54 @@ module gshare_predictor (
           if(tmp_36[15]) begin
             BTB_source_pc_15 <= train_pc; // @ Predictor.scala l149
           end
+          if(tmp_36[16]) begin
+            BTB_source_pc_16 <= train_pc; // @ Predictor.scala l149
+          end
+          if(tmp_36[17]) begin
+            BTB_source_pc_17 <= train_pc; // @ Predictor.scala l149
+          end
+          if(tmp_36[18]) begin
+            BTB_source_pc_18 <= train_pc; // @ Predictor.scala l149
+          end
+          if(tmp_36[19]) begin
+            BTB_source_pc_19 <= train_pc; // @ Predictor.scala l149
+          end
+          if(tmp_36[20]) begin
+            BTB_source_pc_20 <= train_pc; // @ Predictor.scala l149
+          end
+          if(tmp_36[21]) begin
+            BTB_source_pc_21 <= train_pc; // @ Predictor.scala l149
+          end
+          if(tmp_36[22]) begin
+            BTB_source_pc_22 <= train_pc; // @ Predictor.scala l149
+          end
+          if(tmp_36[23]) begin
+            BTB_source_pc_23 <= train_pc; // @ Predictor.scala l149
+          end
+          if(tmp_36[24]) begin
+            BTB_source_pc_24 <= train_pc; // @ Predictor.scala l149
+          end
+          if(tmp_36[25]) begin
+            BTB_source_pc_25 <= train_pc; // @ Predictor.scala l149
+          end
+          if(tmp_36[26]) begin
+            BTB_source_pc_26 <= train_pc; // @ Predictor.scala l149
+          end
+          if(tmp_36[27]) begin
+            BTB_source_pc_27 <= train_pc; // @ Predictor.scala l149
+          end
+          if(tmp_36[28]) begin
+            BTB_source_pc_28 <= train_pc; // @ Predictor.scala l149
+          end
+          if(tmp_36[29]) begin
+            BTB_source_pc_29 <= train_pc; // @ Predictor.scala l149
+          end
+          if(tmp_36[30]) begin
+            BTB_source_pc_30 <= train_pc; // @ Predictor.scala l149
+          end
+          if(tmp_36[31]) begin
+            BTB_source_pc_31 <= train_pc; // @ Predictor.scala l149
+          end
           BTB_call[BTB_btb_alloc_index_value] <= train_is_call; // @ Predictor.scala l150
           BTB_ret[BTB_btb_alloc_index_value] <= train_is_ret; // @ Predictor.scala l151
           BTB_jmp[BTB_btb_alloc_index_value] <= train_is_jmp; // @ Predictor.scala l152
@@ -23314,10 +24259,58 @@ module gshare_predictor (
           if(tmp_37[15]) begin
             BTB_target_pc_15 <= train_pc_next; // @ Predictor.scala l153
           end
+          if(tmp_37[16]) begin
+            BTB_target_pc_16 <= train_pc_next; // @ Predictor.scala l153
+          end
+          if(tmp_37[17]) begin
+            BTB_target_pc_17 <= train_pc_next; // @ Predictor.scala l153
+          end
+          if(tmp_37[18]) begin
+            BTB_target_pc_18 <= train_pc_next; // @ Predictor.scala l153
+          end
+          if(tmp_37[19]) begin
+            BTB_target_pc_19 <= train_pc_next; // @ Predictor.scala l153
+          end
+          if(tmp_37[20]) begin
+            BTB_target_pc_20 <= train_pc_next; // @ Predictor.scala l153
+          end
+          if(tmp_37[21]) begin
+            BTB_target_pc_21 <= train_pc_next; // @ Predictor.scala l153
+          end
+          if(tmp_37[22]) begin
+            BTB_target_pc_22 <= train_pc_next; // @ Predictor.scala l153
+          end
+          if(tmp_37[23]) begin
+            BTB_target_pc_23 <= train_pc_next; // @ Predictor.scala l153
+          end
+          if(tmp_37[24]) begin
+            BTB_target_pc_24 <= train_pc_next; // @ Predictor.scala l153
+          end
+          if(tmp_37[25]) begin
+            BTB_target_pc_25 <= train_pc_next; // @ Predictor.scala l153
+          end
+          if(tmp_37[26]) begin
+            BTB_target_pc_26 <= train_pc_next; // @ Predictor.scala l153
+          end
+          if(tmp_37[27]) begin
+            BTB_target_pc_27 <= train_pc_next; // @ Predictor.scala l153
+          end
+          if(tmp_37[28]) begin
+            BTB_target_pc_28 <= train_pc_next; // @ Predictor.scala l153
+          end
+          if(tmp_37[29]) begin
+            BTB_target_pc_29 <= train_pc_next; // @ Predictor.scala l153
+          end
+          if(tmp_37[30]) begin
+            BTB_target_pc_30 <= train_pc_next; // @ Predictor.scala l153
+          end
+          if(tmp_37[31]) begin
+            BTB_target_pc_31 <= train_pc_next; // @ Predictor.scala l153
+          end
         end
       end
       RAS_ras_curr_index_proven <= RAS_ras_next_index; // @ Reg.scala l39
-      if(tmp_when_32) begin
+      if(tmp_when_64) begin
         RAS_ras_curr_index <= RAS_ras_next_index; // @ Predictor.scala l199
       end else begin
         if(RAS_ras_call_matched) begin
@@ -23336,7 +24329,7 @@ module gshare_predictor (
   end
 
   always @(posedge io_axiClk) begin
-    if(tmp_when_32) begin
+    if(tmp_when_64) begin
       if(tmp_39) begin
         RAS_ras_regfile_0 <= tmp_RAS_ras_regfile_0; // @ Predictor.scala l198
       end

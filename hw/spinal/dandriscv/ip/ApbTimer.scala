@@ -34,9 +34,18 @@ class Apb3Timer extends Component{
   //   clears = List(timerB.io.full)
   // )
 
-  val timer = Reg(UInt(64 bits)) init(0)
+  var CyclesPerUs = 100 // 100 MHz
+  println(CyclesPerUs)
 
-  timer := timer + 1
+  val timer = Reg(UInt(64 bits)) init(0) // us
+  val cycle_cnt = Reg(UInt(32 bits)) init(0)
+  when(cycle_cnt===U(CyclesPerUs-1, 32 bits)){
+    cycle_cnt := U(0)
+    timer := timer + 1
+  }.otherwise{
+    cycle_cnt := cycle_cnt + 1
+  }
+  
 
   io.apb.PREADY := True
   when(io.apb.PADDR===U"8'h40"){

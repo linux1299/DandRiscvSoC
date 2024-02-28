@@ -113,7 +113,8 @@ class DandSocSimple(val config: DandConfig) extends Component{
             predictorType = "GSHARE",
             addressWidth =64, 
             RAS_ENTRIES = 32, 
-            BTB_ENTRIES = 16, 
+            // BTB_ENTRIES = 16, 
+            BTB_ENTRIES = 32,
             PHT_ENTRIES = 32
           )),
           new DecodePlugin,

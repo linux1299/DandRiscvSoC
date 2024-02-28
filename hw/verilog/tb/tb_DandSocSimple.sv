@@ -16,9 +16,9 @@ DandSocSimple u_DandSocSimple(
 
 // ============================== dump fsdb =============================
 initial begin
-	$display("\n================== Time:%d, Dump Start ================\n",$time);
-	$fsdbDumpfile("./simWorkspace/tb_DandSocSimple/tb_DandSocSimple.fsdb");
-	$fsdbDumpvars(0, "tb_DandSocSimple", "+mda");
+	// $display("\n================== Time:%d, Dump Start ================\n",$time);
+	// $fsdbDumpfile("./simWorkspace/tb_DandSocSimple/tb_DandSocSimple.fsdb");
+	// $fsdbDumpvars(0, "tb_DandSocSimple", "+mda");
 end
 
 // ========================== axi clk and reset =============================	 
@@ -42,12 +42,13 @@ end
 
 // ========================== Time out =============================
 initial begin
-  // #20000000
+  #20000000
   // #4383551
-  #10000000
-  $display("\n============== TimeOut ! Simulation finish ! ============\n");
-  $display("instrCnt is %d", instrCnt);
-  $finish;
+  // #10000000
+  // $display("\n============== TimeOut ! Simulation finish ! ============\n");
+  // $display("instrCnt is %d", instrCnt);
+  // $finish;
+  ;
 end
 
 logic [31:0] instrCnt = 0;
@@ -61,16 +62,16 @@ end
 //     $display("wb_pc is %h, pc_cnt is %d", tb_DandSocSimple.u_DandSocSimple.core_cpu.writeback_PC[63:0], instrCnt);
 // end
 
-always@(posedge clk_axi_in) begin
-  if (tb_DandSocSimple.u_DandSocSimple.core_cpu.dcache_ar_valid && tb_DandSocSimple.u_DandSocSimple.core_cpu.dcache_ar_ready
-  && tb_DandSocSimple.u_DandSocSimple.core_cpu.dcache_ar_payload_addr>='h1000_0040 && tb_DandSocSimple.u_DandSocSimple.core_cpu.dcache_ar_payload_addr<'h1000_0100)
-    $display("time:%d, dcache raddr is %h", $time, tb_DandSocSimple.u_DandSocSimple.core_cpu.dcache_ar_payload_addr[63:0]);
-end
-always@(posedge clk_axi_in) begin
-  if (tb_DandSocSimple.u_DandSocSimple.core_cpu.dcache_aw_valid && tb_DandSocSimple.u_DandSocSimple.core_cpu.dcache_aw_ready
-  && tb_DandSocSimple.u_DandSocSimple.core_cpu.dcache_aw_payload_addr>='h1000_0040 && tb_DandSocSimple.u_DandSocSimple.core_cpu.dcache_aw_payload_addr<'h1000_0100)
-    $display("time:%d, dcache waddr is %h", $time, tb_DandSocSimple.u_DandSocSimple.core_cpu.dcache_aw_payload_addr[63:0]);
-end
+// always@(posedge clk_axi_in) begin
+//   if (tb_DandSocSimple.u_DandSocSimple.core_cpu.dcache_ar_valid && tb_DandSocSimple.u_DandSocSimple.core_cpu.dcache_ar_ready
+//   && tb_DandSocSimple.u_DandSocSimple.core_cpu.dcache_ar_payload_addr>='h1000_0040 && tb_DandSocSimple.u_DandSocSimple.core_cpu.dcache_ar_payload_addr<'h1000_0100)
+//     $display("time:%d, dcache raddr is %h", $time, tb_DandSocSimple.u_DandSocSimple.core_cpu.dcache_ar_payload_addr[63:0]);
+// end
+// always@(posedge clk_axi_in) begin
+//   if (tb_DandSocSimple.u_DandSocSimple.core_cpu.dcache_aw_valid && tb_DandSocSimple.u_DandSocSimple.core_cpu.dcache_aw_ready
+//   && tb_DandSocSimple.u_DandSocSimple.core_cpu.dcache_aw_payload_addr>='h1000_0040 && tb_DandSocSimple.u_DandSocSimple.core_cpu.dcache_aw_payload_addr<'h1000_0100)
+//     $display("time:%d, dcache waddr is %h", $time, tb_DandSocSimple.u_DandSocSimple.core_cpu.dcache_aw_payload_addr[63:0]);
+// end
 
 // uart_rx#(
 //     .BAUD_RATE ( 921600 ),
