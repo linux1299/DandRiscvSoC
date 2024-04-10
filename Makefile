@@ -94,4 +94,4 @@ ver_soc:
 
 
 push:
-	git push https://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@github.com/linux1299/DandRiscvSoC.git main
+	git push https://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@github.com/linux1299/DandRiscvSoC.git main

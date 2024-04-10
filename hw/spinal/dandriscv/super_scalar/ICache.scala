@@ -1,4 +1,4 @@
-package dandriscv.super_scalar.ifu
+package dandriscv.super_scalar
 
 import dandriscv.ip._
 import spinal.core._
