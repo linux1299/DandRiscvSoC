@@ -2,7 +2,5 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/ysyx-workbench" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/ysyx-workbench/am-kernels" vcs="Git" />
   </component>
 </project>
