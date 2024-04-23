@@ -2,14 +2,6 @@
 [0m[[0m[33mwarn[0m] [0m[0mIt would fail on the following input: None[0m
 [0m[[0m[33mwarn[0m] [0m[0m    plugins.find(_.getClass == clazz) match {[0m
 [0m[[0m[33mwarn[0m] [0m[0m                ^[0m
-[0m[[0m[33mwarn[0m] [0m[0mD:\MyWork\DandRiscvSoC\hw\spinal\dandriscv\super_scalar\Div.scala:28:12: Generated class dandriscv.super_scalar.Div differs only in case from dandriscv.super_scalar.div.[0m
-[0m[[0m[33mwarn[0m] [0m[0m  Such classes will overwrite one another on case-insensitive filesystems.[0m
-[0m[[0m[33mwarn[0m] [0m[0mcase class Div() extends Component {[0m
-[0m[[0m[33mwarn[0m] [0m[0m           ^[0m
-[0m[[0m[33mwarn[0m] [0m[0mD:\MyWork\DandRiscvSoC\hw\spinal\dandriscv\super_scalar\Mult.scala:27:12: Generated class dandriscv.super_scalar.Mult differs only in case from dandriscv.super_scalar.mult.[0m
-[0m[[0m[33mwarn[0m] [0m[0m  Such classes will overwrite one another on case-insensitive filesystems.[0m
-[0m[[0m[33mwarn[0m] [0m[0mcase class Mult() extends Component {[0m
-[0m[[0m[33mwarn[0m] [0m[0m           ^[0m
 [0m[[0m[33mwarn[0m] [0m[0m9 deprecations[0m
 [0m[[0m[33mwarn[0m] [0m[0m4 deprecations (since 2.13.0)[0m
 [0m[[0m[33mwarn[0m] [0m[0m1 deprecation (since 2.13.2)[0m
@@ -17,4 +9,4 @@
 [0m[[0m[33mwarn[0m] [0m[0m3 deprecations (since SpinalHDL 1.3.1)[0m
 [0m[[0m[33mwarn[0m] [0m[0m20 deprecations in total; re-run with -deprecation for details[0m
 [0m[[0m[33mwarn[0m] [0m[0m1 feature warning; re-run with -feature for details[0m
-[0m[[0m[33mwarn[0m] [0m[0m10 warnings found[0m
+[0m[[0m[33mwarn[0m] [0m[0m8 warnings found[0m

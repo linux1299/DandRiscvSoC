@@ -5,36 +5,6 @@ import spinal.core._
 import spinal.lib._
 import math._
 
-case class IssueQueueConfig(
-  DEPTH : Int,
-  ROB_AW : Int,
-  OP_WIDTH : Int
-){
-  def PTR_WIDTH = log2Up(DEPTH)+1
-}
-
-case class EnQueue(ROB_AW: Int, OP_WIDTH: Int) extends Bundle {
-  val rd_addr = UInt(ROB_AW bits)
-  val src1_addr = UInt(ROB_AW bits)
-  val src2_addr = UInt(ROB_AW bits)
-  val micro_op = Bits(OP_WIDTH bits)
-  val src1_valid = Bool()
-  val src2_valid = Bool()
-  val src1_val   = Bits(64 bits)
-  val src2_val   = Bits(64 bits)
-  val imm_val    = Bits(64 bits)
-}
-
-case class DeQueue(ROB_AW: Int, OP_WIDTH: Int) extends Bundle {
-  val rd_addr = UInt(ROB_AW bits)
-  val src1_addr = UInt(ROB_AW bits)
-  val src2_addr = UInt(ROB_AW bits)
-  val micro_op = Bits(OP_WIDTH bits)
-  val src1_val   = Bits(64 bits)
-  val src2_val   = Bits(64 bits)
-  val imm_val    = Bits(64 bits)
-}
-
 // issue 1 instructino/cycle in FIFO order
 case class IssueQueue(p : IssueQueueConfig) extends Component{
   import p._
@@ -44,9 +14,9 @@ case class IssueQueue(p : IssueQueueConfig) extends Component{
   val en_queue = slave(Stream(EnQueue(ROB_AW, OP_WIDTH)))
   val de_queue = master(Stream(DeQueue(ROB_AW, OP_WIDTH)))
   // for instruction wake up
-  val exe_rd_addr = in(UInt(ROB_AW bits))
+  val exe_rd_addr = in UInt(ROB_AW bits)
   val exe_rd_val   = in Bits(64 bits)
-  val exe_rd_valid = in(Bool())
+  val exe_rd_vld = in Bool()
 
   // =============== Entries of IQ =================
   val entry = new Area{
@@ -55,8 +25,8 @@ case class IssueQueue(p : IssueQueueConfig) extends Component{
     val src1_addr = Vec(Reg(UInt(ROB_AW bits)) init(0), DEPTH)
     val src2_addr = Vec(Reg(UInt(ROB_AW bits)) init(0), DEPTH)
     val micro_op = Vec(Reg(Bits(OP_WIDTH bits)) init(0), DEPTH)
-    val src1_valid = Vec(RegInit(False), DEPTH)
-    val src2_valid = Vec(RegInit(False), DEPTH)
+    val src1_vld = Vec(RegInit(False), DEPTH)
+    val src2_vld = Vec(RegInit(False), DEPTH)
     val src1_val = Vec(Reg(Bits(64 bits)) init(0), DEPTH)
     val src2_val = Vec(Reg(Bits(64 bits)) init(0), DEPTH)
     val imm_val = Vec(Reg(Bits(64 bits)) init(0), DEPTH)
@@ -104,22 +74,22 @@ case class IssueQueue(p : IssueQueueConfig) extends Component{
       entry.imm_val(i) := en_queue.payload.imm_val
     }
     
-    // src1_valid/src2_valid of iq entry
+    // src1_vld /src2_vld of iq entry
     when(en_queue.fire && (write_addr===U(i))){
-      entry.src1_valid(i) := en_queue.payload.src1_valid
+      entry.src1_vld(i) := en_queue.payload.src1_vld
       entry.src1_val(i) := en_queue.payload.src1_val
     }
-    .elsewhen(entry.busy(i) && (read_addr===U(i)) && (exe_rd_addr===entry.src1_addr(i) && exe_rd_valid)){
-      entry.src1_valid(i) := True
+    .elsewhen(entry.busy(i) && (read_addr===U(i)) && (exe_rd_addr===entry.src1_addr(i) && exe_rd_vld)){
+      entry.src1_vld(i) := True
       entry.src1_val(i) := exe_rd_val
     }
 
     when(en_queue.fire && (write_addr===U(i))){
-      entry.src2_valid(i) := en_queue.payload.src2_valid
+      entry.src2_vld(i) := en_queue.payload.src2_vld
       entry.src2_val(i) := en_queue.payload.src2_val
     }
-    .elsewhen(entry.busy(i) && (read_addr===U(i)) && (exe_rd_addr===entry.src2_addr(i) && exe_rd_valid)){
-      entry.src2_valid(i) := True
+    .elsewhen(entry.busy(i) && (read_addr===U(i)) && (exe_rd_addr===entry.src2_addr(i) && exe_rd_vld)){
+      entry.src2_vld(i) := True
       entry.src2_val(i) := exe_rd_val
     }
     
@@ -127,7 +97,7 @@ case class IssueQueue(p : IssueQueueConfig) extends Component{
 
   // output
   en_queue.ready := !iq_full
-  de_queue.valid := !iq_empty && entry.busy(read_addr) && entry.src1_valid(read_addr) && entry.src2_valid(read_addr)
+  de_queue.valid := !iq_empty && entry.busy(read_addr) && entry.src1_vld(read_addr) && entry.src2_vld(read_addr)
   de_queue.payload.rd_addr := entry.rd_addr(read_addr)
   de_queue.payload.src1_addr := entry.src1_addr(read_addr)
   de_queue.payload.src2_addr := entry.src2_addr(read_addr)

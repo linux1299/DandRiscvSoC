@@ -1,4 +1,4 @@
-[0m[[0m[0mdebug[0m] [0m[0mPackaging D:\MyWork\DandRiscvSoC\target\scala-2.13\projectname_2.13-1.0.jar ...[0m
+[0m[[0m[0mdebug[0m] [0m[0mPackaging D:\MyWork\DandRiscvSoC\target\scala-2.13\dandriscvsoc_2.13-1.0.jar ...[0m
 [0m[[0m[0mdebug[0m] [0m[0mInput file mappings:[0m
 [0m[[0m[0mdebug[0m] [0m[0m	dandriscv[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  D:\MyWork\DandRiscvSoC\target\scala-2.13\classes\dandriscv[0m
@@ -650,12 +650,16 @@
 [0m[[0m[0mdebug[0m] [0m[0m	  D:\MyWork\DandRiscvSoC\target\scala-2.13\classes\dandriscv\super_scalar\DeROB$.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	dandriscv\super_scalar\DeROB.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  D:\MyWork\DandRiscvSoC\target\scala-2.13\classes\dandriscv\super_scalar\DeROB.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	dandriscv\super_scalar\Div$$anon$1.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	  D:\MyWork\DandRiscvSoC\target\scala-2.13\classes\dandriscv\super_scalar\Div$$anon$1.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	dandriscv\super_scalar\div$.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  D:\MyWork\DandRiscvSoC\target\scala-2.13\classes\dandriscv\super_scalar\div$.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	dandriscv\super_scalar\div.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  D:\MyWork\DandRiscvSoC\target\scala-2.13\classes\dandriscv\super_scalar\div.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	dandriscv\super_scalar\Divider$$anon$1.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  D:\MyWork\DandRiscvSoC\target\scala-2.13\classes\dandriscv\super_scalar\Divider$$anon$1.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	dandriscv\super_scalar\Divider$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  D:\MyWork\DandRiscvSoC\target\scala-2.13\classes\dandriscv\super_scalar\Divider$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	dandriscv\super_scalar\Divider.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  D:\MyWork\DandRiscvSoC\target\scala-2.13\classes\dandriscv\super_scalar\Divider.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	dandriscv\super_scalar\EnQueue$.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  D:\MyWork\DandRiscvSoC\target\scala-2.13\classes\dandriscv\super_scalar\EnQueue$.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	dandriscv\super_scalar\EnQueue.class[0m
@@ -680,6 +684,12 @@
 [0m[[0m[0mdebug[0m] [0m[0m	  D:\MyWork\DandRiscvSoC\target\scala-2.13\classes\dandriscv\super_scalar\GenMult$delayedInit$body.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	dandriscv\super_scalar\GenMult.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  D:\MyWork\DandRiscvSoC\target\scala-2.13\classes\dandriscv\super_scalar\GenMult.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	dandriscv\super_scalar\GenROB$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  D:\MyWork\DandRiscvSoC\target\scala-2.13\classes\dandriscv\super_scalar\GenROB$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	dandriscv\super_scalar\GenROB$delayedInit$body.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  D:\MyWork\DandRiscvSoC\target\scala-2.13\classes\dandriscv\super_scalar\GenROB$delayedInit$body.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	dandriscv\super_scalar\GenROB.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  D:\MyWork\DandRiscvSoC\target\scala-2.13\classes\dandriscv\super_scalar\GenROB.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	dandriscv\super_scalar\ICache$$anon$1.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  D:\MyWork\DandRiscvSoC\target\scala-2.13\classes\dandriscv\super_scalar\ICache$$anon$1.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	dandriscv\super_scalar\ICache$$anon$2.class[0m
@@ -730,12 +740,16 @@
 [0m[[0m[0mdebug[0m] [0m[0m	  D:\MyWork\DandRiscvSoC\target\scala-2.13\classes\dandriscv\super_scalar\IssueQueueConfig$.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	dandriscv\super_scalar\IssueQueueConfig.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  D:\MyWork\DandRiscvSoC\target\scala-2.13\classes\dandriscv\super_scalar\IssueQueueConfig.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	dandriscv\super_scalar\Mult$$anon$1.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	  D:\MyWork\DandRiscvSoC\target\scala-2.13\classes\dandriscv\super_scalar\Mult$$anon$1.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	dandriscv\super_scalar\mult$.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  D:\MyWork\DandRiscvSoC\target\scala-2.13\classes\dandriscv\super_scalar\mult$.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	dandriscv\super_scalar\mult.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  D:\MyWork\DandRiscvSoC\target\scala-2.13\classes\dandriscv\super_scalar\mult.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	dandriscv\super_scalar\Multiplier$$anon$1.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  D:\MyWork\DandRiscvSoC\target\scala-2.13\classes\dandriscv\super_scalar\Multiplier$$anon$1.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	dandriscv\super_scalar\Multiplier$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  D:\MyWork\DandRiscvSoC\target\scala-2.13\classes\dandriscv\super_scalar\Multiplier$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	dandriscv\super_scalar\Multiplier.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  D:\MyWork\DandRiscvSoC\target\scala-2.13\classes\dandriscv\super_scalar\Multiplier.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	dandriscv\super_scalar\ReorderBuffer$$anon$1.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  D:\MyWork\DandRiscvSoC\target\scala-2.13\classes\dandriscv\super_scalar\ReorderBuffer$$anon$1.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	dandriscv\super_scalar\ReorderBuffer$.class[0m
@@ -746,6 +760,10 @@
 [0m[[0m[0mdebug[0m] [0m[0m	  D:\MyWork\DandRiscvSoC\target\scala-2.13\classes\dandriscv\super_scalar\ReorderBufferConfig$.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	dandriscv\super_scalar\ReorderBufferConfig.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  D:\MyWork\DandRiscvSoC\target\scala-2.13\classes\dandriscv\super_scalar\ReorderBufferConfig.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	dandriscv\super_scalar\ROBStateEnum$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  D:\MyWork\DandRiscvSoC\target\scala-2.13\classes\dandriscv\super_scalar\ROBStateEnum$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	dandriscv\super_scalar\ROBStateEnum.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  D:\MyWork\DandRiscvSoC\target\scala-2.13\classes\dandriscv\super_scalar\ROBStateEnum.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	sim[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  D:\MyWork\DandRiscvSoC\target\scala-2.13\classes\sim[0m
 [0m[[0m[0mdebug[0m] [0m[0m	sim\Config$.class[0m
