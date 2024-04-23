@@ -2,7 +2,7 @@ import mill._, scalalib._
 
 val spinalVersion = "1.8.0"
 
-object projectname extends SbtModule {
+object DandRiscvSoC extends SbtModule {
   def scalaVersion = "2.12.16"
   override def millSourcePath = os.pwd
   def sources = T.sources(

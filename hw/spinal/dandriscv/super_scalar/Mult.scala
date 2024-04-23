@@ -24,7 +24,7 @@ case class mult() extends BlackBox {
 }
 
 
-case class Mult() extends Component {
+case class Multiplier() extends Component {
   val io = new Bundle {
     val op_is_word = in Bool()
     val src1_is_signed = in Bool()
@@ -35,18 +35,18 @@ case class Mult() extends Component {
     val result_low  = out UInt(64 bits)
   }
 
-  val mult = new mult()
+  val u_mult = new mult()
 
-  mult.i_mulw := io.op_is_word
-  mult.i_x_sign := io.src1_is_signed
-  mult.i_y_sign := io.src2_is_signed
-  mult.i_x := io.src1
-  mult.i_y := io.src2
-  io.result_high := mult.o_hi_res
-  io.result_low := mult.o_lw_res
+  u_mult.i_mulw := io.op_is_word
+  u_mult.i_x_sign := io.src1_is_signed
+  u_mult.i_y_sign := io.src2_is_signed
+  u_mult.i_x := io.src1
+  u_mult.i_y := io.src2
+  io.result_high := u_mult.o_hi_res
+  io.result_low := u_mult.o_lw_res
 
 }
 
 object GenMult extends App {
-  GenConfig.spinal.generateVerilog(Mult())
+  GenConfig.spinal.generateVerilog(Multiplier())
 }

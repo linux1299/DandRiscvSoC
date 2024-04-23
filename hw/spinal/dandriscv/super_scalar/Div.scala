@@ -25,7 +25,7 @@ case class div() extends BlackBox {
 }
 
 
-case class Div() extends Component {
+case class Divider() extends Component {
   val io = new Bundle {
     val clk   = in Bool()
     val rst_n = in Bool()
@@ -60,5 +60,5 @@ case class Div() extends Component {
 
 
 object GenDiv extends App {
-  GenConfig.spinal.generateVerilog(Div())
+  GenConfig.spinal.generateVerilog(Divider())
 }
