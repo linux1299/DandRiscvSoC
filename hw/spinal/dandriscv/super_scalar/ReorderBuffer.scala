@@ -1,12 +1,13 @@
 package dandriscv.super_scalar
 
-// import dandriscv.ip._
 import spinal.core._
 import spinal.lib._
 import math._
 
+
 case class ReorderBuffer(p : ReorderBufferConfig) extends Component{
   import p._
+  import CpuConfig._
 
   // =================== IO ===================
   val en_rob_a = slave(Stream(EnROB(PC_WIDTH, OP_WIDTH, EXCPT_WIDTH)))
@@ -36,6 +37,8 @@ case class ReorderBuffer(p : ReorderBufferConfig) extends Component{
     val rd_val = Vec(Reg(Bits(64 bits)) init(0), DEPTH)
     val exception = Vec(Reg(Bits(EXCPT_WIDTH bits)) init(0), DEPTH)
   }
+
+  // =============== Signals =================
   val head_ptr = Reg(UInt(PTR_WIDTH bits)) init(0)
   val head_ptr_add_one = head_ptr + 1
   val head_ptr_add_two = head_ptr + 2
@@ -63,10 +66,9 @@ case class ReorderBuffer(p : ReorderBufferConfig) extends Component{
   val entry_flush_bits_full = Bits(DEPTH*4 bits)
 
   // when need flush, count length of flush
-  entry_flush_len :=  (tail_ptr_sub_one === flush_ptr) ? U(0) |
-                      ((tail_ptr_sub_one > flush_ptr) ? 
-                      (tail_ptr_sub_one - flush_ptr) | 
-                      (U(DEPTH*2, PTR_WIDTH+1 bits) - (flush_ptr - tail_ptr).resized).resized)
+  entry_flush_len :=  (tail_ptr_sub_one >= flush_ptr) ? 
+                      (tail_ptr_sub_one - flush_ptr) |
+                      (U(DEPTH*2, PTR_WIDTH+1 bits) - (flush_ptr - tail_ptr).resized).resized
 
   for(i <- 0 until DEPTH*4){
     entry_flush_bits_full(i) := (U(i) > flush_ptr) && (U(i) <= (flush_ptr + entry_flush_len))
@@ -77,7 +79,7 @@ case class ReorderBuffer(p : ReorderBufferConfig) extends Component{
     entry_flush(i) := flush && entry_flush_bits(i)
   }
 
-  // update head pointer of ROB(oldest)
+  // =============== update head pointer of ROB(oldest) ===============
   when(de_rob_a.fire && de_rob_b.fire){
     head_ptr := head_ptr_add_two
   }
@@ -86,7 +88,7 @@ case class ReorderBuffer(p : ReorderBufferConfig) extends Component{
     head_ptr := head_ptr_add_one
   }
 
-  // update tail pointer of ROB(newest)
+  // =============== update tail pointer of ROB(newest) ===============
   when(interrupt_vld){
     tail_ptr := interrupt_rob_ptr
   }
@@ -101,20 +103,20 @@ case class ReorderBuffer(p : ReorderBufferConfig) extends Component{
     tail_ptr := tail_ptr_add_one
   }
 
-  // count of empty entry
+  // =============== count of empty entry ===============
   empty_entry_cnt_next := empty_entry_cnt.resized + 
                           de_rob_a.fire.asUInt.resized + 
                           de_rob_b.fire.asUInt.resized - 
                           en_rob_a.fire.asUInt.resized - 
                           en_rob_b.fire.asUInt.resized
   when(flush){
-    empty_entry_cnt := empty_entry_cnt + 
+    empty_entry_cnt := empty_entry_cnt + entry_flush_len
   }
   .otherwise{
     empty_entry_cnt := empty_entry_cnt_next
   }
 
-  // update Entries of ROB
+  // =============== update Entries of ROB ===============
   for(i <- 0 until DEPTH){
     
     // busy of ROB entry

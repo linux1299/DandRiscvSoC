@@ -1,6 +1,5 @@
 package dandriscv.super_scalar
 
-import dandriscv.ip._
 import spinal.core._
 import spinal.lib._
 import math._
@@ -67,9 +66,9 @@ case class ReorderBufferConfig(
 }
 
 // ================ Cpu ===============
-case class CpuConfig(
-  IQ_NUM : Int
-){
+object CpuConfig{
+
+  def IQ_NUM = 4
 
 }
 

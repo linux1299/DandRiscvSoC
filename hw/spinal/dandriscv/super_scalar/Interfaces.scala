@@ -1,11 +1,11 @@
 package dandriscv.super_scalar
 
-import dandriscv.ip._
 import spinal.core._
 import spinal.lib._
 import math._
 
-// ================ cpu and icache ports ===============
+// ================ ICache ===============
+// cpu and icache ports
 case class ICacheAccessCmd(AW: Int) extends Bundle {
   val addr = UInt(AW bits)
 }
@@ -24,8 +24,7 @@ case class ICacheAccess(AW: Int, DW: Int) extends Bundle with IMasterSlave{
     master(rsp)
   }
 }
-
-// ================ next level ports as master ==============
+// next level ports as master
 case class ICacheNextLevelCmd(p : ICacheConfig) extends Bundle{
   val addr = UInt(p.addressWidth bits)
   val len  = UInt(4 bits)
@@ -43,6 +42,30 @@ case class ICacheNextLevelPorts(p : ICacheConfig) extends Bundle with IMasterSla
     slave(rsp)
   }
 }
+// sram ports as master
+case class SramCmd(bankNum : Int, bankDepthBits : Int, bankWidth : Int) extends Bundle{
+  val addr = UInt(bankDepthBits bits)
+  val wen = Bits(bankNum bits)
+  val wdata = Bits(bankNum*bankWidth bits)
+  val wstrb = Bits(bankNum*bankWidth/8 bits)
+}
+case class SramRsp(bankNum : Int, bankWidth : Int) extends Bundle{
+  val data = Bits(bankNum*bankWidth bits)
+}
+case class SramPorts(bankNum : Int, bankDepthBits : Int, bankWidth : Int) extends Bundle with IMasterSlave{
+  val cmd = Flow(SramCmd(bankNum, bankDepthBits, bankWidth))
+  val rsp = Flow(SramRsp(bankNum, bankWidth))
+
+  override def asMaster(): Unit = {
+    master(cmd)
+    slave(rsp)
+  }
+
+  override def asSlave(): Unit = {
+    master(rsp)
+    slave(cmd)
+  }
+}
 
 // ==================== IQ ========================
 case class EnQueue(ROB_AW: Int, OP_WIDTH: Int) extends Bundle {
@@ -50,8 +73,8 @@ case class EnQueue(ROB_AW: Int, OP_WIDTH: Int) extends Bundle {
   val src1_addr = UInt(ROB_AW bits)
   val src2_addr = UInt(ROB_AW bits)
   val micro_op = Bits(OP_WIDTH bits)
-  val src1_valid = Bool()
-  val src2_valid = Bool()
+  val src1_vld = Bool()
+  val src2_vld = Bool()
   val src1_val   = Bits(64 bits)
   val src2_val   = Bits(64 bits)
   val imm_val    = Bits(64 bits)
