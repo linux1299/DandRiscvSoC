@@ -92,12 +92,12 @@ case class DeQueue(ROB_AW: Int, OP_WIDTH: Int) extends Bundle {
 
 
 // ========================= ROB =======================
-case class EnROB(PC_WIDTH: Int, OP_WIDTH: Int, EXCPT_WIDTH: Int) extends Bundle {
+case class EnROB(PC_WIDTH: Int, OP_WIDTH: Int) extends Bundle {
   val pc = UInt(PC_WIDTH bits)
   val micro_op = Bits(OP_WIDTH bits)
   val rd_addr = UInt(5 bits)
   val rd_val = Bits(64 bits)
-  val exception = Bits(EXCPT_WIDTH bits)
+  val exception = ExceptionEnum()
 }
 
 case class DeROB() extends Bundle {

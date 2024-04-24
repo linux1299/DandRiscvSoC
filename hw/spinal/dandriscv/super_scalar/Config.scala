@@ -53,14 +53,17 @@ case class IssueQueueConfig(
 
 // ============== ROB ===============
 object ROBStateEnum extends SpinalEnum(binarySequential){
-  val IDLE, ISSUE, EXEC, WRITE, COMMIT = newElement()
+  val IDLE, ISSUE, EXECUTE, COMPLETE, COMMIT = newElement()
+}
+
+object ExceptionEnum extends SpinalEnum(binarySequential){
+  val IDLE, ECALL, EBREAK, MRET, TIME = newElement()
 }
 
 case class ReorderBufferConfig(
   DEPTH : Int,
   PC_WIDTH : Int,
-  OP_WIDTH : Int,
-  EXCPT_WIDTH : Int
+  OP_WIDTH : Int
 ){
   def PTR_WIDTH = log2Up(DEPTH)+1
 }
