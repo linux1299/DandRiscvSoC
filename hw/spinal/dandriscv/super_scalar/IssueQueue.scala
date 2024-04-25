@@ -10,8 +10,8 @@ case class IssueQueue(p : IssueQueueConfig) extends Component{
 
   // =================== IO ===================
   val flush = in Bool()
-  val en_queue = slave(Stream(EnQueue(ROB_AW, OP_WIDTH)))
-  val de_queue = master(Stream(DeQueue(ROB_AW, OP_WIDTH)))
+  val en_queue = slave(Stream(EnQueue(ROB_AW, IQ_Type)))
+  val de_queue = master(Stream(DeQueue(ROB_AW, IQ_Type)))
   // for instruction wake up
   val exe_rd_addr = in UInt(ROB_AW bits)
   val exe_rd_val   = in Bits(64 bits)
@@ -23,7 +23,7 @@ case class IssueQueue(p : IssueQueueConfig) extends Component{
     val rd_addr = Vec(Reg(UInt(ROB_AW bits)) init(0), DEPTH)
     val src1_addr = Vec(Reg(UInt(ROB_AW bits)) init(0), DEPTH)
     val src2_addr = Vec(Reg(UInt(ROB_AW bits)) init(0), DEPTH)
-    val micro_op = Vec(Reg(Bits(OP_WIDTH bits)) init(0), DEPTH)
+    val micro_op = Vec(Reg(IQ_MicroOp(IQ_Type)), DEPTH)
     val src1_vld = Vec(RegInit(False), DEPTH)
     val src2_vld = Vec(RegInit(False), DEPTH)
     val src1_val = Vec(Reg(Bits(64 bits)) init(0), DEPTH)

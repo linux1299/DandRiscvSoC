@@ -46,9 +46,26 @@ case class ICacheConfig(cacheSize : Int,
 case class IssueQueueConfig(
   DEPTH : Int,
   ROB_AW : Int,
-  OP_WIDTH : Int
+  IQ_Type: String
 ){
   def PTR_WIDTH = log2Up(DEPTH)+1
+}
+
+object AluMicroOp extends SpinalEnum(binarySequential){
+  val IDLE, ADD, SUB, SLT, SLTU, XOR, SLL, SRL, SRA, AND, OR, LUI, 
+      MUL, MULH, MULHSU, MULHU, DIV, DIVU, REM, REMU, MULW, DIVW, DIVUW, REMW, REMUW = newElement()
+}
+
+object BjuMicroOp extends SpinalEnum(binarySequential){
+  val IDLE, AUIPC, JAL, JALR, BEQ, BNE, BLT, BGE, BLTU, BGEU, CSR = newElement()
+}
+
+object LsuMicroOp extends SpinalEnum(binarySequential){
+  val IDLE, LB, LBU, LH, LHU, LW, LWU, LD, SB, SH, SW, SD = newElement()
+}
+
+object ExpMicroOp extends SpinalEnum(binarySequential){
+  val IDLE, ECALL, EBREAK, MRET, CSRRW, CSRRS, CSRRC, CSRRWI, CSRRSI, CSRRCI = newElement()
 }
 
 // ============== ROB ===============
@@ -60,10 +77,13 @@ object ExceptionEnum extends SpinalEnum(binarySequential){
   val IDLE, ECALL, EBREAK, MRET, TIME = newElement()
 }
 
+object RobMicroOp extends SpinalEnum(binarySequential){
+  val IDLE, ALU, BLU, LSU = newElement()
+}
+
 case class ReorderBufferConfig(
   DEPTH : Int,
-  PC_WIDTH : Int,
-  OP_WIDTH : Int
+  PC_WIDTH : Int
 ){
   def PTR_WIDTH = log2Up(DEPTH)+1
 }
@@ -72,6 +92,7 @@ case class ReorderBufferConfig(
 object CpuConfig{
 
   def IQ_NUM = 4
+  def XLEN = 64
 
 }
 
