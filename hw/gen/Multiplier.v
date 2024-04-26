@@ -1,6 +1,6 @@
 // Generator : SpinalHDL v1.8.1    git head : 2a7592004363e5b40ec43e1f122ed8641cd8965b
 // Component : Multiplier
-// Git hash  : a9cb3719cd82970e1dd9c2e2f5bb09b966f310fd
+// Git hash  : a43ae1532c07ad7230d3b55c4db508e48c0e9dc5
 
 `timescale 1ns/1ps
 
@@ -26,7 +26,7 @@ module Multiplier (
     .o_hi_res (u_mult_o_hi_res[63:0]), //o
     .o_lw_res (u_mult_o_lw_res[63:0])  //o
   );
-  assign io_result_high = u_mult_o_hi_res; // @ Mult.scala l45
-  assign io_result_low = u_mult_o_lw_res; // @ Mult.scala l46
+  assign io_result_high = u_mult_o_hi_res; // @ Mult.scala l44
+  assign io_result_low = u_mult_o_lw_res; // @ Mult.scala l45
 
 endmodule

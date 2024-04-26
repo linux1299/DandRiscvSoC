@@ -1,6 +1,6 @@
 // Generator : SpinalHDL v1.8.1    git head : 2a7592004363e5b40ec43e1f122ed8641cd8965b
 // Component : Divider
-// Git hash  : a9cb3719cd82970e1dd9c2e2f5bb09b966f310fd
+// Git hash  : a43ae1532c07ad7230d3b55c4db508e48c0e9dc5
 
 `timescale 1ns/1ps
 
@@ -16,7 +16,7 @@ module Divider (
   input               io_op_is_signed,
   input      [63:0]   io_dividend,
   input      [63:0]   io_divisor,
-  output     [63:0]   io_quetient,
+  output     [63:0]   io_quotient,
   output     [63:0]   io_remainder
 );
 
@@ -42,7 +42,7 @@ module Divider (
   );
   assign io_busy = u_div_o_busy; // @ Div.scala l51
   assign io_done_valid = u_div_o_end_valid; // @ Div.scala l52
-  assign io_quetient = u_div_o_quotient; // @ Div.scala l57
+  assign io_quotient = u_div_o_quotient; // @ Div.scala l57
   assign io_remainder = u_div_o_remainder; // @ Div.scala l58
 
 endmodule

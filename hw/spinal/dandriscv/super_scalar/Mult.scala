@@ -14,12 +14,12 @@ case class mult() extends BlackBox {
   val o_hi_res = out Bits(64 bits)
   val o_lw_res  = out Bits(64 bits)
 
-  addRTLPath("../../../verilog/exu/mult.sv")
-  addRTLPath("../../../verilog/exu/booth_1bit.sv")
-  addRTLPath("../../../verilog/exu/booth.sv")
-  addRTLPath("../../../verilog/exu/csa_nbit.sv")
-  addRTLPath("../../../verilog/exu/rca_nbit.sv")
-  addRTLPath("../../../verilog/exu/wallace_tree_33.sv")
+  addRTLPath("hw/verilog/exu/mult.sv")
+  addRTLPath("hw/verilog/exu/booth_1bit.sv")
+  addRTLPath("hw/verilog/exu/booth.sv")
+  addRTLPath("hw/verilog/exu/csa_nbit.sv")
+  addRTLPath("hw/verilog/exu/rca_nbit.sv")
+  addRTLPath("hw/verilog/exu/wallace_tree_33.sv")
 }
 
 
@@ -47,5 +47,5 @@ case class Multiplier() extends Component {
 }
 
 object GenMult extends App {
-  GenConfig.spinal.generateVerilog(Multiplier())
+  GenConfig.spinal.generateVerilog(Multiplier()).mergeRTLSource("mult")
 }

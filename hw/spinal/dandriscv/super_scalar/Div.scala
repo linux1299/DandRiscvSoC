@@ -15,12 +15,13 @@ case class div() extends BlackBox {
   val i_end_ready = in Bool()
   val i_divw = in Bool()
   val i_signed = in Bool()
-  val i_dividend = in UInt(64 bits)
-  val i_divisor = in UInt(64 bits)
-  val o_quotient = out UInt(64 bits)
-  val o_remainder = out UInt(64 bits)
+  val i_dividend = in Bits(64 bits)
+  val i_divisor = in Bits(64 bits)
+  val o_quotient = out Bits(64 bits)
+  val o_remainder = out Bits(64 bits)
 
-  addRTLPath("../verilog/exu/div.sv")  
+  addRTLPath("hw/verilog/exu/div.sv")
+
 }
 
 
@@ -35,10 +36,10 @@ case class Divider() extends Component {
     val done_ready = in Bool()
     val op_is_word = in Bool()
     val op_is_signed = in Bool()
-    val dividend = in UInt(64 bits)
-    val divisor = in UInt(64 bits)
-    val quetient = out UInt(64 bits)
-    val remainder = out UInt(64 bits)
+    val dividend = in Bits(64 bits)
+    val divisor = in Bits(64 bits)
+    val quotient = out Bits(64 bits)
+    val remainder = out Bits(64 bits)
   }
 
   val u_div = new div()
@@ -53,11 +54,11 @@ case class Divider() extends Component {
   u_div.i_signed := io.op_is_signed
   u_div.i_dividend := io.dividend
   u_div.i_divisor := io.divisor
-  io.quetient := u_div.o_quotient
+  io.quotient := u_div.o_quotient
   io.remainder := u_div.o_remainder
 }
 
 
 object GenDiv extends App {
-  GenConfig.spinal.generateVerilog(Divider())
+  GenConfig.spinal.generateVerilog(Divider()).mergeRTLSource("div")
 }

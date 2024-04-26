@@ -131,5 +131,5 @@ case class AluSrc() extends Bundle {
 }
 
 case class AluDst() extends Bundle {
-  val alu_result = Bits(64 bits)
+  val result = Bits(64 bits)
 }

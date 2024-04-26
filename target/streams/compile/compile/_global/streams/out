@@ -1,4 +1,4 @@
-[0m[[0m[33mwarn[0m] [0m[0m/home/lin/SpinalProjects/DandRiscvSoC/hw/spinal/dandriscv/DandRiscvSimple.scala:41:17: match may not be exhaustive.[0m
+[0m[[0m[33mwarn[0m] [0m[0mD:\MyWork\DandRiscvSoC\hw\spinal\dandriscv\DandRiscvSimple.scala:41:17: match may not be exhaustive.[0m
 [0m[[0m[33mwarn[0m] [0m[0mIt would fail on the following input: None[0m
 [0m[[0m[33mwarn[0m] [0m[0m    plugins.find(_.getClass == clazz) match {[0m
 [0m[[0m[33mwarn[0m] [0m[0m                ^[0m
