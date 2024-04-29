@@ -102,3 +102,6 @@
 1714116736881:runMain dandriscv.super_scalar.GenDiv
 1714116791910:runMain dandriscv.super_scalar.GenDiv\\
 1714117122088:runMain dandriscv.super_scalar.GenMult
+1714391844791:compile
+1714391861449:runMain dandriscv.super_scalar.GenALU
+1714392676353:runMain dandriscv.super_scalar.GenALU\\

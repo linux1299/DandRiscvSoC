@@ -49,6 +49,9 @@ obj_dir
 explor
 *.so
 simWorkspace/
+simWorkspace/*
+simWorkspace/scala-2.13*
+simWorkspace/streams
 tmp/
 /archive.tar.gz
 *.out32

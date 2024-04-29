@@ -1,10 +1,12 @@
 // Generator : SpinalHDL v1.8.1    git head : 2a7592004363e5b40ec43e1f122ed8641cd8965b
 // Component : Alu
-// Git hash  : a43ae1532c07ad7230d3b55c4db508e48c0e9dc5
+// Git hash  : ab30d1527a4a521d9eef589e5304cab7c8f34c1c
 
 `timescale 1ns/1ps
 
 module Alu (
+  input               clk,
+  input               rst_n,
   input               flush,
   input               stall,
   input               src_ports_valid,
@@ -18,7 +20,7 @@ module Alu (
   output              dst_ports_valid,
   input               dst_ports_ready,
   output     [63:0]   dst_ports_payload_result,
-  input               clk,
+  input               clk_1,
   input               resetn
 );
   localparam AluMicroOp_IDLE = 5'd0;
@@ -154,8 +156,8 @@ module Alu (
     .io_result_low     (mul_io_result_low[63:0]               )  //o
   );
   Divider div_1 (
-    .io_clk          (1'b1                                  ), //i
-    .io_rst_n        (1'b0                                  ), //i
+    .io_clk          (clk                                   ), //i
+    .io_rst_n        (rst_n                                 ), //i
     .io_flush        (flush                                 ), //i
     .io_start        (src_ports_fire                        ), //i
     .io_busy         (div_1_io_busy                         ), //o
@@ -493,67 +495,67 @@ module Alu (
     case(src_ports_payload_micro_op_alu_micro_op)
       AluMicroOp_ADD : begin
         if((src_ports_payload_micro_op_alu_is_word == 1'b1)) begin
-          alu_result = addw_result; // @ Alu.scala l72
+          alu_result = addw_result; // @ Alu.scala l74
         end else begin
-          alu_result = add_result; // @ Alu.scala l74
+          alu_result = add_result; // @ Alu.scala l76
         end
       end
       AluMicroOp_SUB : begin
         if((src_ports_payload_micro_op_alu_is_word == 1'b1)) begin
-          alu_result = subw_result; // @ Alu.scala l79
+          alu_result = subw_result; // @ Alu.scala l81
         end else begin
-          alu_result = sub_result; // @ Alu.scala l81
+          alu_result = sub_result; // @ Alu.scala l83
         end
       end
       AluMicroOp_SLT : begin
-        alu_result = {tmp_alu_result,slt_result}; // @ Alu.scala l85
+        alu_result = {tmp_alu_result,slt_result}; // @ Alu.scala l87
       end
       AluMicroOp_SLTU : begin
-        alu_result = {tmp_alu_result_1,sltu_result}; // @ Alu.scala l88
+        alu_result = {tmp_alu_result_1,sltu_result}; // @ Alu.scala l90
       end
       AluMicroOp_XOR_1 : begin
-        alu_result = xor_result; // @ Alu.scala l91
+        alu_result = xor_result; // @ Alu.scala l93
       end
       AluMicroOp_SLL_1 : begin
         if((src_ports_payload_micro_op_alu_is_word == 1'b1)) begin
-          alu_result = sllw_result; // @ Alu.scala l95
+          alu_result = sllw_result; // @ Alu.scala l97
         end else begin
-          alu_result = sll_result; // @ Alu.scala l97
+          alu_result = sll_result; // @ Alu.scala l99
         end
       end
       AluMicroOp_SRL_1 : begin
         if((src_ports_payload_micro_op_alu_is_word == 1'b1)) begin
-          alu_result = srlw_result; // @ Alu.scala l102
+          alu_result = srlw_result; // @ Alu.scala l104
         end else begin
-          alu_result = srl_result; // @ Alu.scala l104
+          alu_result = srl_result; // @ Alu.scala l106
         end
       end
       AluMicroOp_SRA_1 : begin
         if((src_ports_payload_micro_op_alu_is_word == 1'b1)) begin
-          alu_result = sraw_result; // @ Alu.scala l109
+          alu_result = sraw_result; // @ Alu.scala l111
         end else begin
-          alu_result = sra_result; // @ Alu.scala l111
+          alu_result = sra_result; // @ Alu.scala l113
         end
       end
       AluMicroOp_AND_1 : begin
-        alu_result = and_result; // @ Alu.scala l115
+        alu_result = and_result; // @ Alu.scala l117
       end
       AluMicroOp_OR_1 : begin
-        alu_result = or_result; // @ Alu.scala l118
+        alu_result = or_result; // @ Alu.scala l120
       end
       AluMicroOp_LUI : begin
-        alu_result = src_ports_payload_imm; // @ Alu.scala l121
+        alu_result = src_ports_payload_imm; // @ Alu.scala l123
       end
       default : begin
-        alu_result = 64'h0; // @ Alu.scala l124
+        alu_result = 64'h0; // @ Alu.scala l126
       end
     endcase
   end
 
   assign tmp_alu_result[62 : 0] = 63'h0; // @ Literal.scala l88
   assign tmp_alu_result_1[62 : 0] = 63'h0; // @ Literal.scala l88
-  assign mul_io_src1_is_signed = (((src_ports_payload_micro_op_alu_micro_op == AluMicroOp_MUL) || (src_ports_payload_micro_op_alu_micro_op == AluMicroOp_MULH)) || (src_ports_payload_micro_op_alu_micro_op == AluMicroOp_MULHSU)); // @ Alu.scala l131
-  assign mul_io_src2_is_signed = ((src_ports_payload_micro_op_alu_micro_op == AluMicroOp_MUL) || (src_ports_payload_micro_op_alu_micro_op == AluMicroOp_MULH)); // @ Alu.scala l135
+  assign mul_io_src1_is_signed = (((src_ports_payload_micro_op_alu_micro_op == AluMicroOp_MUL) || (src_ports_payload_micro_op_alu_micro_op == AluMicroOp_MULH)) || (src_ports_payload_micro_op_alu_micro_op == AluMicroOp_MULHSU)); // @ Alu.scala l133
+  assign mul_io_src2_is_signed = ((src_ports_payload_micro_op_alu_micro_op == AluMicroOp_MUL) || (src_ports_payload_micro_op_alu_micro_op == AluMicroOp_MULH)); // @ Alu.scala l137
   assign tmp_mul_result = mul_io_result_low[31]; // @ BaseType.scala l305
   always @(*) begin
     tmp_mul_result_1[31] = tmp_mul_result; // @ Literal.scala l87
@@ -590,12 +592,12 @@ module Alu (
     tmp_mul_result_1[0] = tmp_mul_result; // @ Literal.scala l87
   end
 
-  assign mul_result = (src_ports_payload_micro_op_alu_is_word ? {tmp_mul_result_1,mul_io_result_low[31 : 0]} : (((src_ports_payload_micro_op_alu_micro_op == AluMicroOp_MUL) || (src_ports_payload_micro_op_alu_micro_op == AluMicroOp_MULH)) ? mul_io_result_low : mul_io_result_high)); // @ Alu.scala l144
+  assign mul_result = (src_ports_payload_micro_op_alu_is_word ? {tmp_mul_result_1,mul_io_result_low[31 : 0]} : (((src_ports_payload_micro_op_alu_micro_op == AluMicroOp_MUL) || (src_ports_payload_micro_op_alu_micro_op == AluMicroOp_MULH)) ? mul_io_result_low : mul_io_result_high)); // @ Alu.scala l146
   assign src_ports_fire = (src_ports_valid && src_ports_ready); // @ BaseType.scala l305
-  assign div_1_io_op_is_signed = ((((src_ports_payload_micro_op_alu_micro_op == AluMicroOp_DIV) || (src_ports_payload_micro_op_alu_micro_op == AluMicroOp_REM_1)) || (src_ports_payload_micro_op_alu_micro_op == AluMicroOp_DIVW)) || (src_ports_payload_micro_op_alu_micro_op == AluMicroOp_REMW)); // @ Alu.scala l157
-  assign src_stream_ready = dst_stream_ready; // @ Alu.scala l167
-  assign dst_stream_valid = ((((! alu_is_div) && (! div_1_io_busy)) && src_stream_valid) || div_1_io_done_valid); // @ Alu.scala l168
-  assign dst_stream_payload_result = (alu_is_mul ? mul_result : (alu_is_quo ? div_1_io_quotient : (alu_is_rem ? div_1_io_remainder : alu_result))); // @ Alu.scala l169
+  assign div_1_io_op_is_signed = ((((src_ports_payload_micro_op_alu_micro_op == AluMicroOp_DIV) || (src_ports_payload_micro_op_alu_micro_op == AluMicroOp_REM_1)) || (src_ports_payload_micro_op_alu_micro_op == AluMicroOp_DIVW)) || (src_ports_payload_micro_op_alu_micro_op == AluMicroOp_REMW)); // @ Alu.scala l159
+  assign src_stream_ready = dst_stream_ready; // @ Alu.scala l169
+  assign dst_stream_valid = ((((! alu_is_div) && (! div_1_io_busy)) && src_stream_valid) || div_1_io_done_valid); // @ Alu.scala l170
+  assign dst_stream_payload_result = (alu_is_mul ? mul_result : (alu_is_quo ? div_1_io_quotient : (alu_is_rem ? div_1_io_remainder : alu_result))); // @ Alu.scala l171
   always @(*) begin
     dst_stream_ready = dst_stream_m2sPipe_ready; // @ Stream.scala l367
     if((! dst_stream_m2sPipe_valid)) begin
@@ -608,7 +610,7 @@ module Alu (
   assign dst_ports_valid = dst_stream_m2sPipe_valid; // @ Stream.scala l294
   assign dst_stream_m2sPipe_ready = dst_ports_ready; // @ Stream.scala l295
   assign dst_ports_payload_result = dst_stream_m2sPipe_payload_result; // @ Stream.scala l296
-  always @(posedge clk or negedge resetn) begin
+  always @(posedge clk_1 or negedge resetn) begin
     if(!resetn) begin
       dst_stream_rValid <= 1'b0; // @ Data.scala l400
     end else begin
@@ -618,7 +620,7 @@ module Alu (
     end
   end
 
-  always @(posedge clk) begin
+  always @(posedge clk_1) begin
     if(dst_stream_ready) begin
       dst_stream_rData_result <= dst_stream_payload_result; // @ Stream.scala l362
     end

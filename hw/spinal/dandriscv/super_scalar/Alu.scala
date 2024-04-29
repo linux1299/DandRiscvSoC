@@ -4,10 +4,12 @@ import spinal.core._
 import spinal.lib._
 import math._
 
-case class Alu(/* clkDomain: ClockDomain */) extends Component {
+case class Alu() extends Component {
   import CpuConfig._
 
   // =================== IO ===================
+  val clk   = in Bool()
+  val rst_n = in Bool()
   val flush = in Bool()
   val stall = in Bool()
   val src_ports = slave(Stream(AluSrc()))
@@ -146,10 +148,10 @@ case class Alu(/* clkDomain: ClockDomain */) extends Component {
 
   // ================= caclulate div =====================
   val div = Divider()
-  // div.io.clk := clkDomain.clock
-  // div.io.rst_n := clkDomain.reset
-  div.io.clk := True
-  div.io.rst_n := False
+  div.io.clk := clk
+  div.io.rst_n := rst_n
+  // div.io.clk := True
+  // div.io.rst_n := False
   div.io.flush := flush
   div.io.start := src_ports.fire
   div.io.done_ready := dst_stream.ready
@@ -173,17 +175,23 @@ case class Alu(/* clkDomain: ClockDomain */) extends Component {
   dst_stream >-> dst_ports
 }
 
+case class Alu_module() extends Component {
+  val clk = in Bool()
+  val rst_n = in Bool()
+  val clkDomain = ClockDomain(
+    clock = clk,
+    reset = rst_n,
+    config = ClockDomainConfig(
+      clockEdge        = RISING,
+      resetKind        = ASYNC,
+      resetActiveLevel = LOW
+    )
+  )
+  val alu = new Alu()
+  alu.clk := clk
+  alu.rst_n := rst_n
+}
+
 object GenALU extends App {
-  // val clk = Bool()
-  // val rst = Bool()
-  // val clkDomain = ClockDomain(
-  //   clock = clk,
-  //   reset = rst,
-  //   config = ClockDomainConfig(
-  //     clockEdge        = RISING,
-  //     resetKind        = ASYNC,
-  //     resetActiveLevel = LOW
-  //   )
-  // )
-  GenConfig.spinal.generateVerilog(Alu(/* clkDomain */))
+  GenConfig.spinal.generateVerilog(Alu())
 }
