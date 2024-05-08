@@ -108,3 +108,20 @@ object GenConfig {
     anonymSignalPrefix = "tmp"
   )
 }
+
+// ========================= function =========================
+object MyUtils {
+  // func
+  def dataMux(valid: Bits, data: Bits): Bits = {
+    var data_num = valid.getWidth
+    var data_len = data.getWidth / data_num
+    val valid_extend = Vec(Bits(data_len bits), data_num)
+    val data_valid = Vec(Bits(data_len bits), data_num)
+    for(i <- 0 until data_num){
+      valid_extend(i) := B(valid(i), data_len)
+      data_valid(i) := data(i*data_len, data_len bits) & valid_extend(i)
+    }
+    val data_out = data_valid.reduce(_ | _)
+    data_out
+  }
+}
