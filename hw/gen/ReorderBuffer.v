@@ -1,6 +1,6 @@
 // Generator : SpinalHDL v1.8.1    git head : 2a7592004363e5b40ec43e1f122ed8641cd8965b
 // Component : ReorderBuffer
-// Git hash  : 615ec52c01f94f597ec8374be8ec56b56e881ae8
+// Git hash  : 26060883647a4520726a39e14d4f7be2c55d6aa3
 
 `timescale 1ns/1ps
 
@@ -39,14 +39,14 @@ module ReorderBuffer (
   input               exe_executed_1,
   input               exe_executed_2,
   input               exe_executed_3,
-  input      [3:0]    iq_rob_ptr_0,
-  input      [3:0]    iq_rob_ptr_1,
-  input      [3:0]    iq_rob_ptr_2,
-  input      [3:0]    iq_rob_ptr_3,
-  input               iq_issued_0,
-  input               iq_issued_1,
-  input               iq_issued_2,
-  input               iq_issued_3,
+  input      [3:0]    isq_rob_ptr_0,
+  input      [3:0]    isq_rob_ptr_1,
+  input      [3:0]    isq_rob_ptr_2,
+  input      [3:0]    isq_rob_ptr_3,
+  input               isq_issued_0,
+  input               isq_issued_1,
+  input               isq_issued_2,
+  input               isq_issued_3,
   input               interrupt_vld,
   input               redirect_vld,
   input      [3:0]    redirect_rob_ptr,
@@ -1229,30 +1229,30 @@ module ReorderBuffer (
   wire                entry_de_rob_5;
   wire                entry_de_rob_6;
   wire                entry_de_rob_7;
-  reg        [3:0]    entry_iq_rd_equal_0;
-  reg        [3:0]    entry_iq_rd_equal_1;
-  reg        [3:0]    entry_iq_rd_equal_2;
-  reg        [3:0]    entry_iq_rd_equal_3;
-  reg        [3:0]    entry_iq_rd_equal_4;
-  reg        [3:0]    entry_iq_rd_equal_5;
-  reg        [3:0]    entry_iq_rd_equal_6;
-  reg        [3:0]    entry_iq_rd_equal_7;
-  wire       [3:0]    entry_iq_issue_bits_0;
-  wire       [3:0]    entry_iq_issue_bits_1;
-  wire       [3:0]    entry_iq_issue_bits_2;
-  wire       [3:0]    entry_iq_issue_bits_3;
-  wire       [3:0]    entry_iq_issue_bits_4;
-  wire       [3:0]    entry_iq_issue_bits_5;
-  wire       [3:0]    entry_iq_issue_bits_6;
-  wire       [3:0]    entry_iq_issue_bits_7;
-  wire                entry_iq_issue_0;
-  wire                entry_iq_issue_1;
-  wire                entry_iq_issue_2;
-  wire                entry_iq_issue_3;
-  wire                entry_iq_issue_4;
-  wire                entry_iq_issue_5;
-  wire                entry_iq_issue_6;
-  wire                entry_iq_issue_7;
+  reg        [3:0]    entry_isq_rd_equal_0;
+  reg        [3:0]    entry_isq_rd_equal_1;
+  reg        [3:0]    entry_isq_rd_equal_2;
+  reg        [3:0]    entry_isq_rd_equal_3;
+  reg        [3:0]    entry_isq_rd_equal_4;
+  reg        [3:0]    entry_isq_rd_equal_5;
+  reg        [3:0]    entry_isq_rd_equal_6;
+  reg        [3:0]    entry_isq_rd_equal_7;
+  wire       [3:0]    entry_isq_issue_bits_0;
+  wire       [3:0]    entry_isq_issue_bits_1;
+  wire       [3:0]    entry_isq_issue_bits_2;
+  wire       [3:0]    entry_isq_issue_bits_3;
+  wire       [3:0]    entry_isq_issue_bits_4;
+  wire       [3:0]    entry_isq_issue_bits_5;
+  wire       [3:0]    entry_isq_issue_bits_6;
+  wire       [3:0]    entry_isq_issue_bits_7;
+  wire                entry_isq_issue_0;
+  wire                entry_isq_issue_1;
+  wire                entry_isq_issue_2;
+  wire                entry_isq_issue_3;
+  wire                entry_isq_issue_4;
+  wire                entry_isq_issue_5;
+  wire                entry_isq_issue_6;
+  wire                entry_isq_issue_7;
   reg        [3:0]    entry_exe_rd_equal_0;
   reg        [3:0]    entry_exe_rd_equal_1;
   reg        [3:0]    entry_exe_rd_equal_2;
@@ -1293,6 +1293,14 @@ module ReorderBuffer (
   wire                entry_commit_5;
   wire                entry_commit_6;
   wire                entry_commit_7;
+  wire                entry_flush_0;
+  wire                entry_flush_1;
+  wire                entry_flush_2;
+  wire                entry_flush_3;
+  wire                entry_flush_4;
+  wire                entry_flush_5;
+  wire                entry_flush_6;
+  wire                entry_flush_7;
   reg        [3:0]    head_ptr;
   wire       [3:0]    head_ptr_add_one;
   wire       [3:0]    head_ptr_add_two;
@@ -1310,30 +1318,6 @@ module ReorderBuffer (
   reg        [3:0]    empty_entry_cnt;
   wire       [3:0]    busy_entry_cnt;
   wire       [3:0]    busy_entry_cnt_next;
-  wire                entry_flush_0;
-  wire                entry_flush_1;
-  wire                entry_flush_2;
-  wire                entry_flush_3;
-  wire                entry_flush_4;
-  wire                entry_flush_5;
-  wire                entry_flush_6;
-  wire                entry_flush_7;
-  wire                entry_flush_8;
-  wire                entry_flush_9;
-  wire                entry_flush_10;
-  wire                entry_flush_11;
-  wire                entry_flush_12;
-  wire                entry_flush_13;
-  wire                entry_flush_14;
-  wire                entry_flush_15;
-  wire                entry_flush_real_0;
-  wire                entry_flush_real_1;
-  wire                entry_flush_real_2;
-  wire                entry_flush_real_3;
-  wire                entry_flush_real_4;
-  wire                entry_flush_real_5;
-  wire                entry_flush_real_6;
-  wire                entry_flush_real_7;
   wire       [3:0]    entry_flush_len;
   reg        [15:0]   entry_flush_bits;
   reg        [31:0]   entry_flush_bits_full;
@@ -3050,78 +3034,62 @@ module ReorderBuffer (
   assign rob_full = ((head_addr == tail_addr) && (head_ptr[3] != tail_ptr[3])); // @ BaseType.scala l305
   assign busy_entry_cnt = (4'b1000 - empty_entry_cnt); // @ BaseType.scala l299
   assign busy_entry_cnt_next = (4'b1000 - empty_entry_cnt_next); // @ BaseType.scala l299
-  assign entry_flush_len = ((redirect_rob_ptr <= tail_ptr_sub_one) ? tmp_entry_flush_len : tmp_entry_flush_len_1); // @ ReorderBuffer.scala l85
-  assign entry_flush_bits_full_end = {1'd0, tmp_entry_flush_bits_full_end}; // @ ReorderBuffer.scala l89
+  assign entry_flush_len = ((redirect_rob_ptr <= tail_ptr_sub_one) ? tmp_entry_flush_len : tmp_entry_flush_len_1); // @ ReorderBuffer.scala l84
+  assign entry_flush_bits_full_end = {1'd0, tmp_entry_flush_bits_full_end}; // @ ReorderBuffer.scala l88
   always @(*) begin
-    entry_flush_bits_full[0] = ((tmp_entry_flush_bits_full < 5'h0) && (5'h0 <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l92
-    entry_flush_bits_full[1] = ((tmp_entry_flush_bits_full_1 < 5'h01) && (5'h01 <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l92
-    entry_flush_bits_full[2] = ((tmp_entry_flush_bits_full_2 < 5'h02) && (5'h02 <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l92
-    entry_flush_bits_full[3] = ((tmp_entry_flush_bits_full_3 < 5'h03) && (5'h03 <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l92
-    entry_flush_bits_full[4] = ((tmp_entry_flush_bits_full_4 < 5'h04) && (5'h04 <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l92
-    entry_flush_bits_full[5] = ((tmp_entry_flush_bits_full_5 < 5'h05) && (5'h05 <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l92
-    entry_flush_bits_full[6] = ((tmp_entry_flush_bits_full_6 < 5'h06) && (5'h06 <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l92
-    entry_flush_bits_full[7] = ((tmp_entry_flush_bits_full_7 < 5'h07) && (5'h07 <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l92
-    entry_flush_bits_full[8] = ((tmp_entry_flush_bits_full_8 < 5'h08) && (5'h08 <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l92
-    entry_flush_bits_full[9] = ((tmp_entry_flush_bits_full_9 < 5'h09) && (5'h09 <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l92
-    entry_flush_bits_full[10] = ((tmp_entry_flush_bits_full_10 < 5'h0a) && (5'h0a <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l92
-    entry_flush_bits_full[11] = ((tmp_entry_flush_bits_full_11 < 5'h0b) && (5'h0b <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l92
-    entry_flush_bits_full[12] = ((tmp_entry_flush_bits_full_12 < 5'h0c) && (5'h0c <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l92
-    entry_flush_bits_full[13] = ((tmp_entry_flush_bits_full_13 < 5'h0d) && (5'h0d <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l92
-    entry_flush_bits_full[14] = ((tmp_entry_flush_bits_full_14 < 5'h0e) && (5'h0e <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l92
-    entry_flush_bits_full[15] = ((tmp_entry_flush_bits_full_15 < 5'h0f) && (5'h0f <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l92
-    entry_flush_bits_full[16] = ((tmp_entry_flush_bits_full_16 < 5'h10) && (5'h10 <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l92
-    entry_flush_bits_full[17] = ((tmp_entry_flush_bits_full_17 < 5'h11) && (5'h11 <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l92
-    entry_flush_bits_full[18] = ((tmp_entry_flush_bits_full_18 < 5'h12) && (5'h12 <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l92
-    entry_flush_bits_full[19] = ((tmp_entry_flush_bits_full_19 < 5'h13) && (5'h13 <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l92
-    entry_flush_bits_full[20] = ((tmp_entry_flush_bits_full_20 < 5'h14) && (5'h14 <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l92
-    entry_flush_bits_full[21] = ((tmp_entry_flush_bits_full_21 < 5'h15) && (5'h15 <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l92
-    entry_flush_bits_full[22] = ((tmp_entry_flush_bits_full_22 < 5'h16) && (5'h16 <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l92
-    entry_flush_bits_full[23] = ((tmp_entry_flush_bits_full_23 < 5'h17) && (5'h17 <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l92
-    entry_flush_bits_full[24] = ((tmp_entry_flush_bits_full_24 < 5'h18) && (5'h18 <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l92
-    entry_flush_bits_full[25] = ((tmp_entry_flush_bits_full_25 < 5'h19) && (5'h19 <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l92
-    entry_flush_bits_full[26] = ((tmp_entry_flush_bits_full_26 < 5'h1a) && (5'h1a <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l92
-    entry_flush_bits_full[27] = ((tmp_entry_flush_bits_full_27 < 5'h1b) && (5'h1b <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l92
-    entry_flush_bits_full[28] = ((tmp_entry_flush_bits_full_28 < 5'h1c) && (5'h1c <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l92
-    entry_flush_bits_full[29] = ((tmp_entry_flush_bits_full_29 < 5'h1d) && (5'h1d <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l92
-    entry_flush_bits_full[30] = ((tmp_entry_flush_bits_full_30 < 5'h1e) && (5'h1e <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l92
-    entry_flush_bits_full[31] = ((tmp_entry_flush_bits_full_31 < 5'h1f) && (5'h1f <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l92
+    entry_flush_bits_full[0] = ((tmp_entry_flush_bits_full < 5'h0) && (5'h0 <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l91
+    entry_flush_bits_full[1] = ((tmp_entry_flush_bits_full_1 < 5'h01) && (5'h01 <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l91
+    entry_flush_bits_full[2] = ((tmp_entry_flush_bits_full_2 < 5'h02) && (5'h02 <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l91
+    entry_flush_bits_full[3] = ((tmp_entry_flush_bits_full_3 < 5'h03) && (5'h03 <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l91
+    entry_flush_bits_full[4] = ((tmp_entry_flush_bits_full_4 < 5'h04) && (5'h04 <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l91
+    entry_flush_bits_full[5] = ((tmp_entry_flush_bits_full_5 < 5'h05) && (5'h05 <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l91
+    entry_flush_bits_full[6] = ((tmp_entry_flush_bits_full_6 < 5'h06) && (5'h06 <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l91
+    entry_flush_bits_full[7] = ((tmp_entry_flush_bits_full_7 < 5'h07) && (5'h07 <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l91
+    entry_flush_bits_full[8] = ((tmp_entry_flush_bits_full_8 < 5'h08) && (5'h08 <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l91
+    entry_flush_bits_full[9] = ((tmp_entry_flush_bits_full_9 < 5'h09) && (5'h09 <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l91
+    entry_flush_bits_full[10] = ((tmp_entry_flush_bits_full_10 < 5'h0a) && (5'h0a <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l91
+    entry_flush_bits_full[11] = ((tmp_entry_flush_bits_full_11 < 5'h0b) && (5'h0b <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l91
+    entry_flush_bits_full[12] = ((tmp_entry_flush_bits_full_12 < 5'h0c) && (5'h0c <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l91
+    entry_flush_bits_full[13] = ((tmp_entry_flush_bits_full_13 < 5'h0d) && (5'h0d <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l91
+    entry_flush_bits_full[14] = ((tmp_entry_flush_bits_full_14 < 5'h0e) && (5'h0e <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l91
+    entry_flush_bits_full[15] = ((tmp_entry_flush_bits_full_15 < 5'h0f) && (5'h0f <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l91
+    entry_flush_bits_full[16] = ((tmp_entry_flush_bits_full_16 < 5'h10) && (5'h10 <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l91
+    entry_flush_bits_full[17] = ((tmp_entry_flush_bits_full_17 < 5'h11) && (5'h11 <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l91
+    entry_flush_bits_full[18] = ((tmp_entry_flush_bits_full_18 < 5'h12) && (5'h12 <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l91
+    entry_flush_bits_full[19] = ((tmp_entry_flush_bits_full_19 < 5'h13) && (5'h13 <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l91
+    entry_flush_bits_full[20] = ((tmp_entry_flush_bits_full_20 < 5'h14) && (5'h14 <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l91
+    entry_flush_bits_full[21] = ((tmp_entry_flush_bits_full_21 < 5'h15) && (5'h15 <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l91
+    entry_flush_bits_full[22] = ((tmp_entry_flush_bits_full_22 < 5'h16) && (5'h16 <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l91
+    entry_flush_bits_full[23] = ((tmp_entry_flush_bits_full_23 < 5'h17) && (5'h17 <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l91
+    entry_flush_bits_full[24] = ((tmp_entry_flush_bits_full_24 < 5'h18) && (5'h18 <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l91
+    entry_flush_bits_full[25] = ((tmp_entry_flush_bits_full_25 < 5'h19) && (5'h19 <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l91
+    entry_flush_bits_full[26] = ((tmp_entry_flush_bits_full_26 < 5'h1a) && (5'h1a <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l91
+    entry_flush_bits_full[27] = ((tmp_entry_flush_bits_full_27 < 5'h1b) && (5'h1b <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l91
+    entry_flush_bits_full[28] = ((tmp_entry_flush_bits_full_28 < 5'h1c) && (5'h1c <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l91
+    entry_flush_bits_full[29] = ((tmp_entry_flush_bits_full_29 < 5'h1d) && (5'h1d <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l91
+    entry_flush_bits_full[30] = ((tmp_entry_flush_bits_full_30 < 5'h1e) && (5'h1e <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l91
+    entry_flush_bits_full[31] = ((tmp_entry_flush_bits_full_31 < 5'h1f) && (5'h1f <= entry_flush_bits_full_end)); // @ ReorderBuffer.scala l91
   end
 
   always @(*) begin
-    entry_flush_bits[0] = (entry_flush_bits_full[0] || entry_flush_bits_full[16]); // @ ReorderBuffer.scala l97
-    entry_flush_bits[1] = (entry_flush_bits_full[1] || entry_flush_bits_full[17]); // @ ReorderBuffer.scala l97
-    entry_flush_bits[2] = (entry_flush_bits_full[2] || entry_flush_bits_full[18]); // @ ReorderBuffer.scala l97
-    entry_flush_bits[3] = (entry_flush_bits_full[3] || entry_flush_bits_full[19]); // @ ReorderBuffer.scala l97
-    entry_flush_bits[4] = (entry_flush_bits_full[4] || entry_flush_bits_full[20]); // @ ReorderBuffer.scala l97
-    entry_flush_bits[5] = (entry_flush_bits_full[5] || entry_flush_bits_full[21]); // @ ReorderBuffer.scala l97
-    entry_flush_bits[6] = (entry_flush_bits_full[6] || entry_flush_bits_full[22]); // @ ReorderBuffer.scala l97
-    entry_flush_bits[7] = (entry_flush_bits_full[7] || entry_flush_bits_full[23]); // @ ReorderBuffer.scala l97
-    entry_flush_bits[8] = (entry_flush_bits_full[8] || entry_flush_bits_full[24]); // @ ReorderBuffer.scala l97
-    entry_flush_bits[9] = (entry_flush_bits_full[9] || entry_flush_bits_full[25]); // @ ReorderBuffer.scala l97
-    entry_flush_bits[10] = (entry_flush_bits_full[10] || entry_flush_bits_full[26]); // @ ReorderBuffer.scala l97
-    entry_flush_bits[11] = (entry_flush_bits_full[11] || entry_flush_bits_full[27]); // @ ReorderBuffer.scala l97
-    entry_flush_bits[12] = (entry_flush_bits_full[12] || entry_flush_bits_full[28]); // @ ReorderBuffer.scala l97
-    entry_flush_bits[13] = (entry_flush_bits_full[13] || entry_flush_bits_full[29]); // @ ReorderBuffer.scala l97
-    entry_flush_bits[14] = (entry_flush_bits_full[14] || entry_flush_bits_full[30]); // @ ReorderBuffer.scala l97
-    entry_flush_bits[15] = (entry_flush_bits_full[15] || entry_flush_bits_full[31]); // @ ReorderBuffer.scala l97
+    entry_flush_bits[0] = (redirect_vld && (entry_flush_bits_full[0] || entry_flush_bits_full[16])); // @ ReorderBuffer.scala l95
+    entry_flush_bits[1] = (redirect_vld && (entry_flush_bits_full[1] || entry_flush_bits_full[17])); // @ ReorderBuffer.scala l95
+    entry_flush_bits[2] = (redirect_vld && (entry_flush_bits_full[2] || entry_flush_bits_full[18])); // @ ReorderBuffer.scala l95
+    entry_flush_bits[3] = (redirect_vld && (entry_flush_bits_full[3] || entry_flush_bits_full[19])); // @ ReorderBuffer.scala l95
+    entry_flush_bits[4] = (redirect_vld && (entry_flush_bits_full[4] || entry_flush_bits_full[20])); // @ ReorderBuffer.scala l95
+    entry_flush_bits[5] = (redirect_vld && (entry_flush_bits_full[5] || entry_flush_bits_full[21])); // @ ReorderBuffer.scala l95
+    entry_flush_bits[6] = (redirect_vld && (entry_flush_bits_full[6] || entry_flush_bits_full[22])); // @ ReorderBuffer.scala l95
+    entry_flush_bits[7] = (redirect_vld && (entry_flush_bits_full[7] || entry_flush_bits_full[23])); // @ ReorderBuffer.scala l95
+    entry_flush_bits[8] = (redirect_vld && (entry_flush_bits_full[8] || entry_flush_bits_full[24])); // @ ReorderBuffer.scala l95
+    entry_flush_bits[9] = (redirect_vld && (entry_flush_bits_full[9] || entry_flush_bits_full[25])); // @ ReorderBuffer.scala l95
+    entry_flush_bits[10] = (redirect_vld && (entry_flush_bits_full[10] || entry_flush_bits_full[26])); // @ ReorderBuffer.scala l95
+    entry_flush_bits[11] = (redirect_vld && (entry_flush_bits_full[11] || entry_flush_bits_full[27])); // @ ReorderBuffer.scala l95
+    entry_flush_bits[12] = (redirect_vld && (entry_flush_bits_full[12] || entry_flush_bits_full[28])); // @ ReorderBuffer.scala l95
+    entry_flush_bits[13] = (redirect_vld && (entry_flush_bits_full[13] || entry_flush_bits_full[29])); // @ ReorderBuffer.scala l95
+    entry_flush_bits[14] = (redirect_vld && (entry_flush_bits_full[14] || entry_flush_bits_full[30])); // @ ReorderBuffer.scala l95
+    entry_flush_bits[15] = (redirect_vld && (entry_flush_bits_full[15] || entry_flush_bits_full[31])); // @ ReorderBuffer.scala l95
   end
 
-  assign entry_flush_0 = (redirect_vld && entry_flush_bits[0]); // @ ReorderBuffer.scala l98
-  assign entry_flush_1 = (redirect_vld && entry_flush_bits[1]); // @ ReorderBuffer.scala l98
-  assign entry_flush_2 = (redirect_vld && entry_flush_bits[2]); // @ ReorderBuffer.scala l98
-  assign entry_flush_3 = (redirect_vld && entry_flush_bits[3]); // @ ReorderBuffer.scala l98
-  assign entry_flush_4 = (redirect_vld && entry_flush_bits[4]); // @ ReorderBuffer.scala l98
-  assign entry_flush_5 = (redirect_vld && entry_flush_bits[5]); // @ ReorderBuffer.scala l98
-  assign entry_flush_6 = (redirect_vld && entry_flush_bits[6]); // @ ReorderBuffer.scala l98
-  assign entry_flush_7 = (redirect_vld && entry_flush_bits[7]); // @ ReorderBuffer.scala l98
-  assign entry_flush_8 = (redirect_vld && entry_flush_bits[8]); // @ ReorderBuffer.scala l98
-  assign entry_flush_9 = (redirect_vld && entry_flush_bits[9]); // @ ReorderBuffer.scala l98
-  assign entry_flush_10 = (redirect_vld && entry_flush_bits[10]); // @ ReorderBuffer.scala l98
-  assign entry_flush_11 = (redirect_vld && entry_flush_bits[11]); // @ ReorderBuffer.scala l98
-  assign entry_flush_12 = (redirect_vld && entry_flush_bits[12]); // @ ReorderBuffer.scala l98
-  assign entry_flush_13 = (redirect_vld && entry_flush_bits[13]); // @ ReorderBuffer.scala l98
-  assign entry_flush_14 = (redirect_vld && entry_flush_bits[14]); // @ ReorderBuffer.scala l98
-  assign entry_flush_15 = (redirect_vld && entry_flush_bits[15]); // @ ReorderBuffer.scala l98
   assign de_rob_a_fire = (de_rob_a_valid && de_rob_a_ready); // @ BaseType.scala l305
   assign de_rob_b_fire = (de_rob_b_valid && de_rob_b_ready); // @ BaseType.scala l305
   assign de_rob_a_fire_1 = (de_rob_a_valid && de_rob_a_ready); // @ BaseType.scala l305
@@ -3135,40 +3103,40 @@ module ReorderBuffer (
   assign de_rob_b_fire_1 = (de_rob_b_valid && de_rob_b_ready); // @ BaseType.scala l305
   assign en_rob_a_fire_3 = (en_rob_a_valid && en_rob_a_ready); // @ BaseType.scala l305
   assign en_rob_b_fire_3 = (en_rob_b_valid && en_rob_b_ready); // @ BaseType.scala l305
-  assign empty_entry_cnt_next = (interrupt_vld ? 4'b1000 : (redirect_vld ? tmp_empty_entry_cnt_next : tmp_empty_entry_cnt_next_1)); // @ ReorderBuffer.scala l125
+  assign empty_entry_cnt_next = (interrupt_vld ? 4'b1000 : (redirect_vld ? tmp_empty_entry_cnt_next : tmp_empty_entry_cnt_next_1)); // @ ReorderBuffer.scala l122
   assign en_rob_a_fire_4 = (en_rob_a_valid && en_rob_a_ready); // @ BaseType.scala l305
   assign en_rob_b_fire_4 = (en_rob_b_valid && en_rob_b_ready); // @ BaseType.scala l305
-  assign entry_en_rob_0 = ((en_rob_a_fire_4 && (tail_addr == 3'b000)) || (en_rob_b_fire_4 && (tail_addr_add_one == 3'b000))); // @ ReorderBuffer.scala l138
+  assign entry_en_rob_0 = ((en_rob_a_fire_4 && (tail_addr == 3'b000)) || (en_rob_b_fire_4 && (tail_addr_add_one == 3'b000))); // @ ReorderBuffer.scala l135
   assign de_rob_a_fire_3 = (de_rob_a_valid && de_rob_a_ready); // @ BaseType.scala l305
   assign de_rob_b_fire_2 = (de_rob_b_valid && de_rob_b_ready); // @ BaseType.scala l305
-  assign entry_de_rob_0 = ((de_rob_a_fire_3 && (head_addr == 3'b000)) || (de_rob_b_fire_2 && (head_addr_add_one == 3'b000))); // @ ReorderBuffer.scala l140
-  assign entry_flush_real_0 = (entry_flush_0 || entry_flush_8); // @ ReorderBuffer.scala l142
+  assign entry_de_rob_0 = ((de_rob_a_fire_3 && (head_addr == 3'b000)) || (de_rob_b_fire_2 && (head_addr_add_one == 3'b000))); // @ ReorderBuffer.scala l137
+  assign entry_flush_0 = (entry_flush_bits[0] || entry_flush_bits[8]); // @ ReorderBuffer.scala l139
   always @(*) begin
-    entry_iq_rd_equal_0[0] = (iq_rob_ptr_0[2 : 0] == 3'b000); // @ ReorderBuffer.scala l146
-    entry_iq_rd_equal_0[1] = (iq_rob_ptr_1[2 : 0] == 3'b000); // @ ReorderBuffer.scala l146
-    entry_iq_rd_equal_0[2] = (iq_rob_ptr_2[2 : 0] == 3'b000); // @ ReorderBuffer.scala l146
-    entry_iq_rd_equal_0[3] = (iq_rob_ptr_3[2 : 0] == 3'b000); // @ ReorderBuffer.scala l146
+    entry_isq_rd_equal_0[0] = (isq_rob_ptr_0[2 : 0] == 3'b000); // @ ReorderBuffer.scala l143
+    entry_isq_rd_equal_0[1] = (isq_rob_ptr_1[2 : 0] == 3'b000); // @ ReorderBuffer.scala l143
+    entry_isq_rd_equal_0[2] = (isq_rob_ptr_2[2 : 0] == 3'b000); // @ ReorderBuffer.scala l143
+    entry_isq_rd_equal_0[3] = (isq_rob_ptr_3[2 : 0] == 3'b000); // @ ReorderBuffer.scala l143
   end
 
   always @(*) begin
-    entry_exe_rd_equal_0[0] = (exe_rob_ptr_0[2 : 0] == 3'b000); // @ ReorderBuffer.scala l147
-    entry_exe_rd_equal_0[1] = (exe_rob_ptr_1[2 : 0] == 3'b000); // @ ReorderBuffer.scala l147
-    entry_exe_rd_equal_0[2] = (exe_rob_ptr_2[2 : 0] == 3'b000); // @ ReorderBuffer.scala l147
-    entry_exe_rd_equal_0[3] = (exe_rob_ptr_3[2 : 0] == 3'b000); // @ ReorderBuffer.scala l147
+    entry_exe_rd_equal_0[0] = (exe_rob_ptr_0[2 : 0] == 3'b000); // @ ReorderBuffer.scala l144
+    entry_exe_rd_equal_0[1] = (exe_rob_ptr_1[2 : 0] == 3'b000); // @ ReorderBuffer.scala l144
+    entry_exe_rd_equal_0[2] = (exe_rob_ptr_2[2 : 0] == 3'b000); // @ ReorderBuffer.scala l144
+    entry_exe_rd_equal_0[3] = (exe_rob_ptr_3[2 : 0] == 3'b000); // @ ReorderBuffer.scala l144
   end
 
-  assign entry_exe_done_bits_0 = (entry_exe_rd_equal_0 & {exe_executed_3,{exe_executed_2,{exe_executed_1,exe_executed_0}}}); // @ ReorderBuffer.scala l149
-  assign entry_iq_issue_bits_0 = (entry_iq_rd_equal_0 & {iq_issued_3,{iq_issued_2,{iq_issued_1,iq_issued_0}}}); // @ ReorderBuffer.scala l150
-  assign entry_iq_issue_0 = (|entry_iq_issue_bits_0); // @ ReorderBuffer.scala l151
-  assign entry_exe_done_0 = (|entry_exe_done_bits_0); // @ ReorderBuffer.scala l152
+  assign entry_exe_done_bits_0 = (entry_exe_rd_equal_0 & {exe_executed_3,{exe_executed_2,{exe_executed_1,exe_executed_0}}}); // @ ReorderBuffer.scala l146
+  assign entry_isq_issue_bits_0 = (entry_isq_rd_equal_0 & {isq_issued_3,{isq_issued_2,{isq_issued_1,isq_issued_0}}}); // @ ReorderBuffer.scala l147
+  assign entry_isq_issue_0 = (|entry_isq_issue_bits_0); // @ ReorderBuffer.scala l148
+  assign entry_exe_done_0 = (|entry_exe_done_bits_0); // @ ReorderBuffer.scala l149
   assign tmp_entry_exe_rd_val_0 = {exe_rd_val_3,{exe_rd_val_2,{exe_rd_val_1,exe_rd_val_0}}}; // @ BaseType.scala l299
   assign tmp_entry_exe_rd_val_0_1 = entry_exe_done_bits_0[0]; // @ BaseType.scala l305
   assign tmp_entry_exe_rd_val_0_2 = entry_exe_done_bits_0[1]; // @ BaseType.scala l305
   assign tmp_entry_exe_rd_val_0_3 = entry_exe_done_bits_0[2]; // @ BaseType.scala l305
   assign tmp_entry_exe_rd_val_0_4 = entry_exe_done_bits_0[3]; // @ BaseType.scala l305
-  assign entry_exe_rd_val_0 = ((((tmp_entry_exe_rd_val_0[63 : 0] & {tmp_entry_exe_rd_val_0_5,tmp_entry_exe_rd_val_0_6}) | (tmp_entry_exe_rd_val_0[127 : 64] & {tmp_entry_exe_rd_val_0_37,tmp_entry_exe_rd_val_0_38})) | (tmp_entry_exe_rd_val_0[191 : 128] & {tmp_entry_exe_rd_val_0_3,{tmp_entry_exe_rd_val_0_69,tmp_entry_exe_rd_val_0_70}})) | (tmp_entry_exe_rd_val_0[255 : 192] & {tmp_entry_exe_rd_val_0_4,{tmp_entry_exe_rd_val_0_4,{tmp_entry_exe_rd_val_0_101,tmp_entry_exe_rd_val_0_102}}})); // @ ReorderBuffer.scala l153
+  assign entry_exe_rd_val_0 = ((((tmp_entry_exe_rd_val_0[63 : 0] & {tmp_entry_exe_rd_val_0_5,tmp_entry_exe_rd_val_0_6}) | (tmp_entry_exe_rd_val_0[127 : 64] & {tmp_entry_exe_rd_val_0_37,tmp_entry_exe_rd_val_0_38})) | (tmp_entry_exe_rd_val_0[191 : 128] & {tmp_entry_exe_rd_val_0_3,{tmp_entry_exe_rd_val_0_69,tmp_entry_exe_rd_val_0_70}})) | (tmp_entry_exe_rd_val_0[255 : 192] & {tmp_entry_exe_rd_val_0_4,{tmp_entry_exe_rd_val_0_4,{tmp_entry_exe_rd_val_0_101,tmp_entry_exe_rd_val_0_102}}})); // @ ReorderBuffer.scala l150
   assign tmp_de_rob_a_valid = tmp_tmp_de_rob_a_valid; // @ Vec.scala l202
-  assign entry_commit_0 = ((((entry_busy_0 && (head_addr == 3'b000)) && (entry_state_0 == ROBStateEnum_COMPLETE)) && (entry_exception_0 == ExceptionEnum_IDLE)) || (((entry_busy_0 && (head_addr_add_one == 3'b000)) && (tmp_de_rob_a_valid == ROBStateEnum_COMMIT)) && (entry_exception_0 == ExceptionEnum_IDLE))); // @ ReorderBuffer.scala l156
+  assign entry_commit_0 = ((((entry_busy_0 && (head_addr == 3'b000)) && (entry_state_0 == ROBStateEnum_COMPLETE)) && (entry_exception_0 == ExceptionEnum_IDLE)) || (((entry_busy_0 && (head_addr_add_one == 3'b000)) && (tmp_de_rob_a_valid == ROBStateEnum_COMMIT)) && (entry_exception_0 == ExceptionEnum_IDLE))); // @ ReorderBuffer.scala l153
   always @(*) begin
     case(entry_state_0)
       ROBStateEnum_IDLE : begin
@@ -3179,7 +3147,7 @@ module ReorderBuffer (
         end
       end
       ROBStateEnum_ISSUE : begin
-        if(entry_iq_issue_0) begin
+        if(entry_isq_issue_0) begin
           entry_state_nxt_0 = ROBStateEnum_EXECUTE; // @ Enum.scala l151
         end else begin
           entry_state_nxt_0 = ROBStateEnum_ISSUE; // @ Enum.scala l151
@@ -3215,36 +3183,36 @@ module ReorderBuffer (
   assign en_rob_b_fire_6 = (en_rob_b_valid && en_rob_b_ready); // @ BaseType.scala l305
   assign en_rob_a_fire_7 = (en_rob_a_valid && en_rob_a_ready); // @ BaseType.scala l305
   assign en_rob_b_fire_7 = (en_rob_b_valid && en_rob_b_ready); // @ BaseType.scala l305
-  assign entry_en_rob_1 = ((en_rob_a_fire_7 && (tail_addr == 3'b001)) || (en_rob_b_fire_7 && (tail_addr_add_one == 3'b001))); // @ ReorderBuffer.scala l138
+  assign entry_en_rob_1 = ((en_rob_a_fire_7 && (tail_addr == 3'b001)) || (en_rob_b_fire_7 && (tail_addr_add_one == 3'b001))); // @ ReorderBuffer.scala l135
   assign de_rob_a_fire_4 = (de_rob_a_valid && de_rob_a_ready); // @ BaseType.scala l305
   assign de_rob_b_fire_3 = (de_rob_b_valid && de_rob_b_ready); // @ BaseType.scala l305
-  assign entry_de_rob_1 = ((de_rob_a_fire_4 && (head_addr == 3'b001)) || (de_rob_b_fire_3 && (head_addr_add_one == 3'b001))); // @ ReorderBuffer.scala l140
-  assign entry_flush_real_1 = (entry_flush_1 || entry_flush_9); // @ ReorderBuffer.scala l142
+  assign entry_de_rob_1 = ((de_rob_a_fire_4 && (head_addr == 3'b001)) || (de_rob_b_fire_3 && (head_addr_add_one == 3'b001))); // @ ReorderBuffer.scala l137
+  assign entry_flush_1 = (entry_flush_bits[1] || entry_flush_bits[9]); // @ ReorderBuffer.scala l139
   always @(*) begin
-    entry_iq_rd_equal_1[0] = (iq_rob_ptr_0[2 : 0] == 3'b001); // @ ReorderBuffer.scala l146
-    entry_iq_rd_equal_1[1] = (iq_rob_ptr_1[2 : 0] == 3'b001); // @ ReorderBuffer.scala l146
-    entry_iq_rd_equal_1[2] = (iq_rob_ptr_2[2 : 0] == 3'b001); // @ ReorderBuffer.scala l146
-    entry_iq_rd_equal_1[3] = (iq_rob_ptr_3[2 : 0] == 3'b001); // @ ReorderBuffer.scala l146
+    entry_isq_rd_equal_1[0] = (isq_rob_ptr_0[2 : 0] == 3'b001); // @ ReorderBuffer.scala l143
+    entry_isq_rd_equal_1[1] = (isq_rob_ptr_1[2 : 0] == 3'b001); // @ ReorderBuffer.scala l143
+    entry_isq_rd_equal_1[2] = (isq_rob_ptr_2[2 : 0] == 3'b001); // @ ReorderBuffer.scala l143
+    entry_isq_rd_equal_1[3] = (isq_rob_ptr_3[2 : 0] == 3'b001); // @ ReorderBuffer.scala l143
   end
 
   always @(*) begin
-    entry_exe_rd_equal_1[0] = (exe_rob_ptr_0[2 : 0] == 3'b001); // @ ReorderBuffer.scala l147
-    entry_exe_rd_equal_1[1] = (exe_rob_ptr_1[2 : 0] == 3'b001); // @ ReorderBuffer.scala l147
-    entry_exe_rd_equal_1[2] = (exe_rob_ptr_2[2 : 0] == 3'b001); // @ ReorderBuffer.scala l147
-    entry_exe_rd_equal_1[3] = (exe_rob_ptr_3[2 : 0] == 3'b001); // @ ReorderBuffer.scala l147
+    entry_exe_rd_equal_1[0] = (exe_rob_ptr_0[2 : 0] == 3'b001); // @ ReorderBuffer.scala l144
+    entry_exe_rd_equal_1[1] = (exe_rob_ptr_1[2 : 0] == 3'b001); // @ ReorderBuffer.scala l144
+    entry_exe_rd_equal_1[2] = (exe_rob_ptr_2[2 : 0] == 3'b001); // @ ReorderBuffer.scala l144
+    entry_exe_rd_equal_1[3] = (exe_rob_ptr_3[2 : 0] == 3'b001); // @ ReorderBuffer.scala l144
   end
 
-  assign entry_exe_done_bits_1 = (entry_exe_rd_equal_1 & {exe_executed_3,{exe_executed_2,{exe_executed_1,exe_executed_0}}}); // @ ReorderBuffer.scala l149
-  assign entry_iq_issue_bits_1 = (entry_iq_rd_equal_1 & {iq_issued_3,{iq_issued_2,{iq_issued_1,iq_issued_0}}}); // @ ReorderBuffer.scala l150
-  assign entry_iq_issue_1 = (|entry_iq_issue_bits_1); // @ ReorderBuffer.scala l151
-  assign entry_exe_done_1 = (|entry_exe_done_bits_1); // @ ReorderBuffer.scala l152
+  assign entry_exe_done_bits_1 = (entry_exe_rd_equal_1 & {exe_executed_3,{exe_executed_2,{exe_executed_1,exe_executed_0}}}); // @ ReorderBuffer.scala l146
+  assign entry_isq_issue_bits_1 = (entry_isq_rd_equal_1 & {isq_issued_3,{isq_issued_2,{isq_issued_1,isq_issued_0}}}); // @ ReorderBuffer.scala l147
+  assign entry_isq_issue_1 = (|entry_isq_issue_bits_1); // @ ReorderBuffer.scala l148
+  assign entry_exe_done_1 = (|entry_exe_done_bits_1); // @ ReorderBuffer.scala l149
   assign tmp_entry_exe_rd_val_1 = {exe_rd_val_3,{exe_rd_val_2,{exe_rd_val_1,exe_rd_val_0}}}; // @ BaseType.scala l299
   assign tmp_entry_exe_rd_val_1_1 = entry_exe_done_bits_1[0]; // @ BaseType.scala l305
   assign tmp_entry_exe_rd_val_1_2 = entry_exe_done_bits_1[1]; // @ BaseType.scala l305
   assign tmp_entry_exe_rd_val_1_3 = entry_exe_done_bits_1[2]; // @ BaseType.scala l305
   assign tmp_entry_exe_rd_val_1_4 = entry_exe_done_bits_1[3]; // @ BaseType.scala l305
-  assign entry_exe_rd_val_1 = ((((tmp_entry_exe_rd_val_1[63 : 0] & {tmp_entry_exe_rd_val_1_5,tmp_entry_exe_rd_val_1_6}) | (tmp_entry_exe_rd_val_1[127 : 64] & {tmp_entry_exe_rd_val_1_37,tmp_entry_exe_rd_val_1_38})) | (tmp_entry_exe_rd_val_1[191 : 128] & {tmp_entry_exe_rd_val_1_3,{tmp_entry_exe_rd_val_1_69,tmp_entry_exe_rd_val_1_70}})) | (tmp_entry_exe_rd_val_1[255 : 192] & {tmp_entry_exe_rd_val_1_4,{tmp_entry_exe_rd_val_1_4,{tmp_entry_exe_rd_val_1_101,tmp_entry_exe_rd_val_1_102}}})); // @ ReorderBuffer.scala l153
-  assign entry_commit_1 = ((((entry_busy_1 && (head_addr == 3'b001)) && (entry_state_1 == ROBStateEnum_COMPLETE)) && (entry_exception_1 == ExceptionEnum_IDLE)) || (((entry_busy_1 && (head_addr_add_one == 3'b001)) && (tmp_de_rob_a_valid == ROBStateEnum_COMMIT)) && (entry_exception_1 == ExceptionEnum_IDLE))); // @ ReorderBuffer.scala l156
+  assign entry_exe_rd_val_1 = ((((tmp_entry_exe_rd_val_1[63 : 0] & {tmp_entry_exe_rd_val_1_5,tmp_entry_exe_rd_val_1_6}) | (tmp_entry_exe_rd_val_1[127 : 64] & {tmp_entry_exe_rd_val_1_37,tmp_entry_exe_rd_val_1_38})) | (tmp_entry_exe_rd_val_1[191 : 128] & {tmp_entry_exe_rd_val_1_3,{tmp_entry_exe_rd_val_1_69,tmp_entry_exe_rd_val_1_70}})) | (tmp_entry_exe_rd_val_1[255 : 192] & {tmp_entry_exe_rd_val_1_4,{tmp_entry_exe_rd_val_1_4,{tmp_entry_exe_rd_val_1_101,tmp_entry_exe_rd_val_1_102}}})); // @ ReorderBuffer.scala l150
+  assign entry_commit_1 = ((((entry_busy_1 && (head_addr == 3'b001)) && (entry_state_1 == ROBStateEnum_COMPLETE)) && (entry_exception_1 == ExceptionEnum_IDLE)) || (((entry_busy_1 && (head_addr_add_one == 3'b001)) && (tmp_de_rob_a_valid == ROBStateEnum_COMMIT)) && (entry_exception_1 == ExceptionEnum_IDLE))); // @ ReorderBuffer.scala l153
   always @(*) begin
     case(entry_state_1)
       ROBStateEnum_IDLE : begin
@@ -3255,7 +3223,7 @@ module ReorderBuffer (
         end
       end
       ROBStateEnum_ISSUE : begin
-        if(entry_iq_issue_1) begin
+        if(entry_isq_issue_1) begin
           entry_state_nxt_1 = ROBStateEnum_EXECUTE; // @ Enum.scala l151
         end else begin
           entry_state_nxt_1 = ROBStateEnum_ISSUE; // @ Enum.scala l151
@@ -3291,36 +3259,36 @@ module ReorderBuffer (
   assign en_rob_b_fire_9 = (en_rob_b_valid && en_rob_b_ready); // @ BaseType.scala l305
   assign en_rob_a_fire_10 = (en_rob_a_valid && en_rob_a_ready); // @ BaseType.scala l305
   assign en_rob_b_fire_10 = (en_rob_b_valid && en_rob_b_ready); // @ BaseType.scala l305
-  assign entry_en_rob_2 = ((en_rob_a_fire_10 && (tail_addr == 3'b010)) || (en_rob_b_fire_10 && (tail_addr_add_one == 3'b010))); // @ ReorderBuffer.scala l138
+  assign entry_en_rob_2 = ((en_rob_a_fire_10 && (tail_addr == 3'b010)) || (en_rob_b_fire_10 && (tail_addr_add_one == 3'b010))); // @ ReorderBuffer.scala l135
   assign de_rob_a_fire_5 = (de_rob_a_valid && de_rob_a_ready); // @ BaseType.scala l305
   assign de_rob_b_fire_4 = (de_rob_b_valid && de_rob_b_ready); // @ BaseType.scala l305
-  assign entry_de_rob_2 = ((de_rob_a_fire_5 && (head_addr == 3'b010)) || (de_rob_b_fire_4 && (head_addr_add_one == 3'b010))); // @ ReorderBuffer.scala l140
-  assign entry_flush_real_2 = (entry_flush_2 || entry_flush_10); // @ ReorderBuffer.scala l142
+  assign entry_de_rob_2 = ((de_rob_a_fire_5 && (head_addr == 3'b010)) || (de_rob_b_fire_4 && (head_addr_add_one == 3'b010))); // @ ReorderBuffer.scala l137
+  assign entry_flush_2 = (entry_flush_bits[2] || entry_flush_bits[10]); // @ ReorderBuffer.scala l139
   always @(*) begin
-    entry_iq_rd_equal_2[0] = (iq_rob_ptr_0[2 : 0] == 3'b010); // @ ReorderBuffer.scala l146
-    entry_iq_rd_equal_2[1] = (iq_rob_ptr_1[2 : 0] == 3'b010); // @ ReorderBuffer.scala l146
-    entry_iq_rd_equal_2[2] = (iq_rob_ptr_2[2 : 0] == 3'b010); // @ ReorderBuffer.scala l146
-    entry_iq_rd_equal_2[3] = (iq_rob_ptr_3[2 : 0] == 3'b010); // @ ReorderBuffer.scala l146
+    entry_isq_rd_equal_2[0] = (isq_rob_ptr_0[2 : 0] == 3'b010); // @ ReorderBuffer.scala l143
+    entry_isq_rd_equal_2[1] = (isq_rob_ptr_1[2 : 0] == 3'b010); // @ ReorderBuffer.scala l143
+    entry_isq_rd_equal_2[2] = (isq_rob_ptr_2[2 : 0] == 3'b010); // @ ReorderBuffer.scala l143
+    entry_isq_rd_equal_2[3] = (isq_rob_ptr_3[2 : 0] == 3'b010); // @ ReorderBuffer.scala l143
   end
 
   always @(*) begin
-    entry_exe_rd_equal_2[0] = (exe_rob_ptr_0[2 : 0] == 3'b010); // @ ReorderBuffer.scala l147
-    entry_exe_rd_equal_2[1] = (exe_rob_ptr_1[2 : 0] == 3'b010); // @ ReorderBuffer.scala l147
-    entry_exe_rd_equal_2[2] = (exe_rob_ptr_2[2 : 0] == 3'b010); // @ ReorderBuffer.scala l147
-    entry_exe_rd_equal_2[3] = (exe_rob_ptr_3[2 : 0] == 3'b010); // @ ReorderBuffer.scala l147
+    entry_exe_rd_equal_2[0] = (exe_rob_ptr_0[2 : 0] == 3'b010); // @ ReorderBuffer.scala l144
+    entry_exe_rd_equal_2[1] = (exe_rob_ptr_1[2 : 0] == 3'b010); // @ ReorderBuffer.scala l144
+    entry_exe_rd_equal_2[2] = (exe_rob_ptr_2[2 : 0] == 3'b010); // @ ReorderBuffer.scala l144
+    entry_exe_rd_equal_2[3] = (exe_rob_ptr_3[2 : 0] == 3'b010); // @ ReorderBuffer.scala l144
   end
 
-  assign entry_exe_done_bits_2 = (entry_exe_rd_equal_2 & {exe_executed_3,{exe_executed_2,{exe_executed_1,exe_executed_0}}}); // @ ReorderBuffer.scala l149
-  assign entry_iq_issue_bits_2 = (entry_iq_rd_equal_2 & {iq_issued_3,{iq_issued_2,{iq_issued_1,iq_issued_0}}}); // @ ReorderBuffer.scala l150
-  assign entry_iq_issue_2 = (|entry_iq_issue_bits_2); // @ ReorderBuffer.scala l151
-  assign entry_exe_done_2 = (|entry_exe_done_bits_2); // @ ReorderBuffer.scala l152
+  assign entry_exe_done_bits_2 = (entry_exe_rd_equal_2 & {exe_executed_3,{exe_executed_2,{exe_executed_1,exe_executed_0}}}); // @ ReorderBuffer.scala l146
+  assign entry_isq_issue_bits_2 = (entry_isq_rd_equal_2 & {isq_issued_3,{isq_issued_2,{isq_issued_1,isq_issued_0}}}); // @ ReorderBuffer.scala l147
+  assign entry_isq_issue_2 = (|entry_isq_issue_bits_2); // @ ReorderBuffer.scala l148
+  assign entry_exe_done_2 = (|entry_exe_done_bits_2); // @ ReorderBuffer.scala l149
   assign tmp_entry_exe_rd_val_2 = {exe_rd_val_3,{exe_rd_val_2,{exe_rd_val_1,exe_rd_val_0}}}; // @ BaseType.scala l299
   assign tmp_entry_exe_rd_val_2_1 = entry_exe_done_bits_2[0]; // @ BaseType.scala l305
   assign tmp_entry_exe_rd_val_2_2 = entry_exe_done_bits_2[1]; // @ BaseType.scala l305
   assign tmp_entry_exe_rd_val_2_3 = entry_exe_done_bits_2[2]; // @ BaseType.scala l305
   assign tmp_entry_exe_rd_val_2_4 = entry_exe_done_bits_2[3]; // @ BaseType.scala l305
-  assign entry_exe_rd_val_2 = ((((tmp_entry_exe_rd_val_2[63 : 0] & {tmp_entry_exe_rd_val_2_5,tmp_entry_exe_rd_val_2_6}) | (tmp_entry_exe_rd_val_2[127 : 64] & {tmp_entry_exe_rd_val_2_37,tmp_entry_exe_rd_val_2_38})) | (tmp_entry_exe_rd_val_2[191 : 128] & {tmp_entry_exe_rd_val_2_3,{tmp_entry_exe_rd_val_2_69,tmp_entry_exe_rd_val_2_70}})) | (tmp_entry_exe_rd_val_2[255 : 192] & {tmp_entry_exe_rd_val_2_4,{tmp_entry_exe_rd_val_2_4,{tmp_entry_exe_rd_val_2_101,tmp_entry_exe_rd_val_2_102}}})); // @ ReorderBuffer.scala l153
-  assign entry_commit_2 = ((((entry_busy_2 && (head_addr == 3'b010)) && (entry_state_2 == ROBStateEnum_COMPLETE)) && (entry_exception_2 == ExceptionEnum_IDLE)) || (((entry_busy_2 && (head_addr_add_one == 3'b010)) && (tmp_de_rob_a_valid == ROBStateEnum_COMMIT)) && (entry_exception_2 == ExceptionEnum_IDLE))); // @ ReorderBuffer.scala l156
+  assign entry_exe_rd_val_2 = ((((tmp_entry_exe_rd_val_2[63 : 0] & {tmp_entry_exe_rd_val_2_5,tmp_entry_exe_rd_val_2_6}) | (tmp_entry_exe_rd_val_2[127 : 64] & {tmp_entry_exe_rd_val_2_37,tmp_entry_exe_rd_val_2_38})) | (tmp_entry_exe_rd_val_2[191 : 128] & {tmp_entry_exe_rd_val_2_3,{tmp_entry_exe_rd_val_2_69,tmp_entry_exe_rd_val_2_70}})) | (tmp_entry_exe_rd_val_2[255 : 192] & {tmp_entry_exe_rd_val_2_4,{tmp_entry_exe_rd_val_2_4,{tmp_entry_exe_rd_val_2_101,tmp_entry_exe_rd_val_2_102}}})); // @ ReorderBuffer.scala l150
+  assign entry_commit_2 = ((((entry_busy_2 && (head_addr == 3'b010)) && (entry_state_2 == ROBStateEnum_COMPLETE)) && (entry_exception_2 == ExceptionEnum_IDLE)) || (((entry_busy_2 && (head_addr_add_one == 3'b010)) && (tmp_de_rob_a_valid == ROBStateEnum_COMMIT)) && (entry_exception_2 == ExceptionEnum_IDLE))); // @ ReorderBuffer.scala l153
   always @(*) begin
     case(entry_state_2)
       ROBStateEnum_IDLE : begin
@@ -3331,7 +3299,7 @@ module ReorderBuffer (
         end
       end
       ROBStateEnum_ISSUE : begin
-        if(entry_iq_issue_2) begin
+        if(entry_isq_issue_2) begin
           entry_state_nxt_2 = ROBStateEnum_EXECUTE; // @ Enum.scala l151
         end else begin
           entry_state_nxt_2 = ROBStateEnum_ISSUE; // @ Enum.scala l151
@@ -3367,36 +3335,36 @@ module ReorderBuffer (
   assign en_rob_b_fire_12 = (en_rob_b_valid && en_rob_b_ready); // @ BaseType.scala l305
   assign en_rob_a_fire_13 = (en_rob_a_valid && en_rob_a_ready); // @ BaseType.scala l305
   assign en_rob_b_fire_13 = (en_rob_b_valid && en_rob_b_ready); // @ BaseType.scala l305
-  assign entry_en_rob_3 = ((en_rob_a_fire_13 && (tail_addr == 3'b011)) || (en_rob_b_fire_13 && (tail_addr_add_one == 3'b011))); // @ ReorderBuffer.scala l138
+  assign entry_en_rob_3 = ((en_rob_a_fire_13 && (tail_addr == 3'b011)) || (en_rob_b_fire_13 && (tail_addr_add_one == 3'b011))); // @ ReorderBuffer.scala l135
   assign de_rob_a_fire_6 = (de_rob_a_valid && de_rob_a_ready); // @ BaseType.scala l305
   assign de_rob_b_fire_5 = (de_rob_b_valid && de_rob_b_ready); // @ BaseType.scala l305
-  assign entry_de_rob_3 = ((de_rob_a_fire_6 && (head_addr == 3'b011)) || (de_rob_b_fire_5 && (head_addr_add_one == 3'b011))); // @ ReorderBuffer.scala l140
-  assign entry_flush_real_3 = (entry_flush_3 || entry_flush_11); // @ ReorderBuffer.scala l142
+  assign entry_de_rob_3 = ((de_rob_a_fire_6 && (head_addr == 3'b011)) || (de_rob_b_fire_5 && (head_addr_add_one == 3'b011))); // @ ReorderBuffer.scala l137
+  assign entry_flush_3 = (entry_flush_bits[3] || entry_flush_bits[11]); // @ ReorderBuffer.scala l139
   always @(*) begin
-    entry_iq_rd_equal_3[0] = (iq_rob_ptr_0[2 : 0] == 3'b011); // @ ReorderBuffer.scala l146
-    entry_iq_rd_equal_3[1] = (iq_rob_ptr_1[2 : 0] == 3'b011); // @ ReorderBuffer.scala l146
-    entry_iq_rd_equal_3[2] = (iq_rob_ptr_2[2 : 0] == 3'b011); // @ ReorderBuffer.scala l146
-    entry_iq_rd_equal_3[3] = (iq_rob_ptr_3[2 : 0] == 3'b011); // @ ReorderBuffer.scala l146
+    entry_isq_rd_equal_3[0] = (isq_rob_ptr_0[2 : 0] == 3'b011); // @ ReorderBuffer.scala l143
+    entry_isq_rd_equal_3[1] = (isq_rob_ptr_1[2 : 0] == 3'b011); // @ ReorderBuffer.scala l143
+    entry_isq_rd_equal_3[2] = (isq_rob_ptr_2[2 : 0] == 3'b011); // @ ReorderBuffer.scala l143
+    entry_isq_rd_equal_3[3] = (isq_rob_ptr_3[2 : 0] == 3'b011); // @ ReorderBuffer.scala l143
   end
 
   always @(*) begin
-    entry_exe_rd_equal_3[0] = (exe_rob_ptr_0[2 : 0] == 3'b011); // @ ReorderBuffer.scala l147
-    entry_exe_rd_equal_3[1] = (exe_rob_ptr_1[2 : 0] == 3'b011); // @ ReorderBuffer.scala l147
-    entry_exe_rd_equal_3[2] = (exe_rob_ptr_2[2 : 0] == 3'b011); // @ ReorderBuffer.scala l147
-    entry_exe_rd_equal_3[3] = (exe_rob_ptr_3[2 : 0] == 3'b011); // @ ReorderBuffer.scala l147
+    entry_exe_rd_equal_3[0] = (exe_rob_ptr_0[2 : 0] == 3'b011); // @ ReorderBuffer.scala l144
+    entry_exe_rd_equal_3[1] = (exe_rob_ptr_1[2 : 0] == 3'b011); // @ ReorderBuffer.scala l144
+    entry_exe_rd_equal_3[2] = (exe_rob_ptr_2[2 : 0] == 3'b011); // @ ReorderBuffer.scala l144
+    entry_exe_rd_equal_3[3] = (exe_rob_ptr_3[2 : 0] == 3'b011); // @ ReorderBuffer.scala l144
   end
 
-  assign entry_exe_done_bits_3 = (entry_exe_rd_equal_3 & {exe_executed_3,{exe_executed_2,{exe_executed_1,exe_executed_0}}}); // @ ReorderBuffer.scala l149
-  assign entry_iq_issue_bits_3 = (entry_iq_rd_equal_3 & {iq_issued_3,{iq_issued_2,{iq_issued_1,iq_issued_0}}}); // @ ReorderBuffer.scala l150
-  assign entry_iq_issue_3 = (|entry_iq_issue_bits_3); // @ ReorderBuffer.scala l151
-  assign entry_exe_done_3 = (|entry_exe_done_bits_3); // @ ReorderBuffer.scala l152
+  assign entry_exe_done_bits_3 = (entry_exe_rd_equal_3 & {exe_executed_3,{exe_executed_2,{exe_executed_1,exe_executed_0}}}); // @ ReorderBuffer.scala l146
+  assign entry_isq_issue_bits_3 = (entry_isq_rd_equal_3 & {isq_issued_3,{isq_issued_2,{isq_issued_1,isq_issued_0}}}); // @ ReorderBuffer.scala l147
+  assign entry_isq_issue_3 = (|entry_isq_issue_bits_3); // @ ReorderBuffer.scala l148
+  assign entry_exe_done_3 = (|entry_exe_done_bits_3); // @ ReorderBuffer.scala l149
   assign tmp_entry_exe_rd_val_3 = {exe_rd_val_3,{exe_rd_val_2,{exe_rd_val_1,exe_rd_val_0}}}; // @ BaseType.scala l299
   assign tmp_entry_exe_rd_val_3_1 = entry_exe_done_bits_3[0]; // @ BaseType.scala l305
   assign tmp_entry_exe_rd_val_3_2 = entry_exe_done_bits_3[1]; // @ BaseType.scala l305
   assign tmp_entry_exe_rd_val_3_3 = entry_exe_done_bits_3[2]; // @ BaseType.scala l305
   assign tmp_entry_exe_rd_val_3_4 = entry_exe_done_bits_3[3]; // @ BaseType.scala l305
-  assign entry_exe_rd_val_3 = ((((tmp_entry_exe_rd_val_3[63 : 0] & {tmp_entry_exe_rd_val_3_5,tmp_entry_exe_rd_val_3_6}) | (tmp_entry_exe_rd_val_3[127 : 64] & {tmp_entry_exe_rd_val_3_37,tmp_entry_exe_rd_val_3_38})) | (tmp_entry_exe_rd_val_3[191 : 128] & {tmp_entry_exe_rd_val_3_3,{tmp_entry_exe_rd_val_3_69,tmp_entry_exe_rd_val_3_70}})) | (tmp_entry_exe_rd_val_3[255 : 192] & {tmp_entry_exe_rd_val_3_4,{tmp_entry_exe_rd_val_3_4,{tmp_entry_exe_rd_val_3_101,tmp_entry_exe_rd_val_3_102}}})); // @ ReorderBuffer.scala l153
-  assign entry_commit_3 = ((((entry_busy_3 && (head_addr == 3'b011)) && (entry_state_3 == ROBStateEnum_COMPLETE)) && (entry_exception_3 == ExceptionEnum_IDLE)) || (((entry_busy_3 && (head_addr_add_one == 3'b011)) && (tmp_de_rob_a_valid == ROBStateEnum_COMMIT)) && (entry_exception_3 == ExceptionEnum_IDLE))); // @ ReorderBuffer.scala l156
+  assign entry_exe_rd_val_3 = ((((tmp_entry_exe_rd_val_3[63 : 0] & {tmp_entry_exe_rd_val_3_5,tmp_entry_exe_rd_val_3_6}) | (tmp_entry_exe_rd_val_3[127 : 64] & {tmp_entry_exe_rd_val_3_37,tmp_entry_exe_rd_val_3_38})) | (tmp_entry_exe_rd_val_3[191 : 128] & {tmp_entry_exe_rd_val_3_3,{tmp_entry_exe_rd_val_3_69,tmp_entry_exe_rd_val_3_70}})) | (tmp_entry_exe_rd_val_3[255 : 192] & {tmp_entry_exe_rd_val_3_4,{tmp_entry_exe_rd_val_3_4,{tmp_entry_exe_rd_val_3_101,tmp_entry_exe_rd_val_3_102}}})); // @ ReorderBuffer.scala l150
+  assign entry_commit_3 = ((((entry_busy_3 && (head_addr == 3'b011)) && (entry_state_3 == ROBStateEnum_COMPLETE)) && (entry_exception_3 == ExceptionEnum_IDLE)) || (((entry_busy_3 && (head_addr_add_one == 3'b011)) && (tmp_de_rob_a_valid == ROBStateEnum_COMMIT)) && (entry_exception_3 == ExceptionEnum_IDLE))); // @ ReorderBuffer.scala l153
   always @(*) begin
     case(entry_state_3)
       ROBStateEnum_IDLE : begin
@@ -3407,7 +3375,7 @@ module ReorderBuffer (
         end
       end
       ROBStateEnum_ISSUE : begin
-        if(entry_iq_issue_3) begin
+        if(entry_isq_issue_3) begin
           entry_state_nxt_3 = ROBStateEnum_EXECUTE; // @ Enum.scala l151
         end else begin
           entry_state_nxt_3 = ROBStateEnum_ISSUE; // @ Enum.scala l151
@@ -3443,36 +3411,36 @@ module ReorderBuffer (
   assign en_rob_b_fire_15 = (en_rob_b_valid && en_rob_b_ready); // @ BaseType.scala l305
   assign en_rob_a_fire_16 = (en_rob_a_valid && en_rob_a_ready); // @ BaseType.scala l305
   assign en_rob_b_fire_16 = (en_rob_b_valid && en_rob_b_ready); // @ BaseType.scala l305
-  assign entry_en_rob_4 = ((en_rob_a_fire_16 && (tail_addr == 3'b100)) || (en_rob_b_fire_16 && (tail_addr_add_one == 3'b100))); // @ ReorderBuffer.scala l138
+  assign entry_en_rob_4 = ((en_rob_a_fire_16 && (tail_addr == 3'b100)) || (en_rob_b_fire_16 && (tail_addr_add_one == 3'b100))); // @ ReorderBuffer.scala l135
   assign de_rob_a_fire_7 = (de_rob_a_valid && de_rob_a_ready); // @ BaseType.scala l305
   assign de_rob_b_fire_6 = (de_rob_b_valid && de_rob_b_ready); // @ BaseType.scala l305
-  assign entry_de_rob_4 = ((de_rob_a_fire_7 && (head_addr == 3'b100)) || (de_rob_b_fire_6 && (head_addr_add_one == 3'b100))); // @ ReorderBuffer.scala l140
-  assign entry_flush_real_4 = (entry_flush_4 || entry_flush_12); // @ ReorderBuffer.scala l142
+  assign entry_de_rob_4 = ((de_rob_a_fire_7 && (head_addr == 3'b100)) || (de_rob_b_fire_6 && (head_addr_add_one == 3'b100))); // @ ReorderBuffer.scala l137
+  assign entry_flush_4 = (entry_flush_bits[4] || entry_flush_bits[12]); // @ ReorderBuffer.scala l139
   always @(*) begin
-    entry_iq_rd_equal_4[0] = (iq_rob_ptr_0[2 : 0] == 3'b100); // @ ReorderBuffer.scala l146
-    entry_iq_rd_equal_4[1] = (iq_rob_ptr_1[2 : 0] == 3'b100); // @ ReorderBuffer.scala l146
-    entry_iq_rd_equal_4[2] = (iq_rob_ptr_2[2 : 0] == 3'b100); // @ ReorderBuffer.scala l146
-    entry_iq_rd_equal_4[3] = (iq_rob_ptr_3[2 : 0] == 3'b100); // @ ReorderBuffer.scala l146
+    entry_isq_rd_equal_4[0] = (isq_rob_ptr_0[2 : 0] == 3'b100); // @ ReorderBuffer.scala l143
+    entry_isq_rd_equal_4[1] = (isq_rob_ptr_1[2 : 0] == 3'b100); // @ ReorderBuffer.scala l143
+    entry_isq_rd_equal_4[2] = (isq_rob_ptr_2[2 : 0] == 3'b100); // @ ReorderBuffer.scala l143
+    entry_isq_rd_equal_4[3] = (isq_rob_ptr_3[2 : 0] == 3'b100); // @ ReorderBuffer.scala l143
   end
 
   always @(*) begin
-    entry_exe_rd_equal_4[0] = (exe_rob_ptr_0[2 : 0] == 3'b100); // @ ReorderBuffer.scala l147
-    entry_exe_rd_equal_4[1] = (exe_rob_ptr_1[2 : 0] == 3'b100); // @ ReorderBuffer.scala l147
-    entry_exe_rd_equal_4[2] = (exe_rob_ptr_2[2 : 0] == 3'b100); // @ ReorderBuffer.scala l147
-    entry_exe_rd_equal_4[3] = (exe_rob_ptr_3[2 : 0] == 3'b100); // @ ReorderBuffer.scala l147
+    entry_exe_rd_equal_4[0] = (exe_rob_ptr_0[2 : 0] == 3'b100); // @ ReorderBuffer.scala l144
+    entry_exe_rd_equal_4[1] = (exe_rob_ptr_1[2 : 0] == 3'b100); // @ ReorderBuffer.scala l144
+    entry_exe_rd_equal_4[2] = (exe_rob_ptr_2[2 : 0] == 3'b100); // @ ReorderBuffer.scala l144
+    entry_exe_rd_equal_4[3] = (exe_rob_ptr_3[2 : 0] == 3'b100); // @ ReorderBuffer.scala l144
   end
 
-  assign entry_exe_done_bits_4 = (entry_exe_rd_equal_4 & {exe_executed_3,{exe_executed_2,{exe_executed_1,exe_executed_0}}}); // @ ReorderBuffer.scala l149
-  assign entry_iq_issue_bits_4 = (entry_iq_rd_equal_4 & {iq_issued_3,{iq_issued_2,{iq_issued_1,iq_issued_0}}}); // @ ReorderBuffer.scala l150
-  assign entry_iq_issue_4 = (|entry_iq_issue_bits_4); // @ ReorderBuffer.scala l151
-  assign entry_exe_done_4 = (|entry_exe_done_bits_4); // @ ReorderBuffer.scala l152
+  assign entry_exe_done_bits_4 = (entry_exe_rd_equal_4 & {exe_executed_3,{exe_executed_2,{exe_executed_1,exe_executed_0}}}); // @ ReorderBuffer.scala l146
+  assign entry_isq_issue_bits_4 = (entry_isq_rd_equal_4 & {isq_issued_3,{isq_issued_2,{isq_issued_1,isq_issued_0}}}); // @ ReorderBuffer.scala l147
+  assign entry_isq_issue_4 = (|entry_isq_issue_bits_4); // @ ReorderBuffer.scala l148
+  assign entry_exe_done_4 = (|entry_exe_done_bits_4); // @ ReorderBuffer.scala l149
   assign tmp_entry_exe_rd_val_4 = {exe_rd_val_3,{exe_rd_val_2,{exe_rd_val_1,exe_rd_val_0}}}; // @ BaseType.scala l299
   assign tmp_entry_exe_rd_val_4_1 = entry_exe_done_bits_4[0]; // @ BaseType.scala l305
   assign tmp_entry_exe_rd_val_4_2 = entry_exe_done_bits_4[1]; // @ BaseType.scala l305
   assign tmp_entry_exe_rd_val_4_3 = entry_exe_done_bits_4[2]; // @ BaseType.scala l305
   assign tmp_entry_exe_rd_val_4_4 = entry_exe_done_bits_4[3]; // @ BaseType.scala l305
-  assign entry_exe_rd_val_4 = ((((tmp_entry_exe_rd_val_4[63 : 0] & {tmp_entry_exe_rd_val_4_5,tmp_entry_exe_rd_val_4_6}) | (tmp_entry_exe_rd_val_4[127 : 64] & {tmp_entry_exe_rd_val_4_37,tmp_entry_exe_rd_val_4_38})) | (tmp_entry_exe_rd_val_4[191 : 128] & {tmp_entry_exe_rd_val_4_3,{tmp_entry_exe_rd_val_4_69,tmp_entry_exe_rd_val_4_70}})) | (tmp_entry_exe_rd_val_4[255 : 192] & {tmp_entry_exe_rd_val_4_4,{tmp_entry_exe_rd_val_4_4,{tmp_entry_exe_rd_val_4_101,tmp_entry_exe_rd_val_4_102}}})); // @ ReorderBuffer.scala l153
-  assign entry_commit_4 = ((((entry_busy_4 && (head_addr == 3'b100)) && (entry_state_4 == ROBStateEnum_COMPLETE)) && (entry_exception_4 == ExceptionEnum_IDLE)) || (((entry_busy_4 && (head_addr_add_one == 3'b100)) && (tmp_de_rob_a_valid == ROBStateEnum_COMMIT)) && (entry_exception_4 == ExceptionEnum_IDLE))); // @ ReorderBuffer.scala l156
+  assign entry_exe_rd_val_4 = ((((tmp_entry_exe_rd_val_4[63 : 0] & {tmp_entry_exe_rd_val_4_5,tmp_entry_exe_rd_val_4_6}) | (tmp_entry_exe_rd_val_4[127 : 64] & {tmp_entry_exe_rd_val_4_37,tmp_entry_exe_rd_val_4_38})) | (tmp_entry_exe_rd_val_4[191 : 128] & {tmp_entry_exe_rd_val_4_3,{tmp_entry_exe_rd_val_4_69,tmp_entry_exe_rd_val_4_70}})) | (tmp_entry_exe_rd_val_4[255 : 192] & {tmp_entry_exe_rd_val_4_4,{tmp_entry_exe_rd_val_4_4,{tmp_entry_exe_rd_val_4_101,tmp_entry_exe_rd_val_4_102}}})); // @ ReorderBuffer.scala l150
+  assign entry_commit_4 = ((((entry_busy_4 && (head_addr == 3'b100)) && (entry_state_4 == ROBStateEnum_COMPLETE)) && (entry_exception_4 == ExceptionEnum_IDLE)) || (((entry_busy_4 && (head_addr_add_one == 3'b100)) && (tmp_de_rob_a_valid == ROBStateEnum_COMMIT)) && (entry_exception_4 == ExceptionEnum_IDLE))); // @ ReorderBuffer.scala l153
   always @(*) begin
     case(entry_state_4)
       ROBStateEnum_IDLE : begin
@@ -3483,7 +3451,7 @@ module ReorderBuffer (
         end
       end
       ROBStateEnum_ISSUE : begin
-        if(entry_iq_issue_4) begin
+        if(entry_isq_issue_4) begin
           entry_state_nxt_4 = ROBStateEnum_EXECUTE; // @ Enum.scala l151
         end else begin
           entry_state_nxt_4 = ROBStateEnum_ISSUE; // @ Enum.scala l151
@@ -3519,36 +3487,36 @@ module ReorderBuffer (
   assign en_rob_b_fire_18 = (en_rob_b_valid && en_rob_b_ready); // @ BaseType.scala l305
   assign en_rob_a_fire_19 = (en_rob_a_valid && en_rob_a_ready); // @ BaseType.scala l305
   assign en_rob_b_fire_19 = (en_rob_b_valid && en_rob_b_ready); // @ BaseType.scala l305
-  assign entry_en_rob_5 = ((en_rob_a_fire_19 && (tail_addr == 3'b101)) || (en_rob_b_fire_19 && (tail_addr_add_one == 3'b101))); // @ ReorderBuffer.scala l138
+  assign entry_en_rob_5 = ((en_rob_a_fire_19 && (tail_addr == 3'b101)) || (en_rob_b_fire_19 && (tail_addr_add_one == 3'b101))); // @ ReorderBuffer.scala l135
   assign de_rob_a_fire_8 = (de_rob_a_valid && de_rob_a_ready); // @ BaseType.scala l305
   assign de_rob_b_fire_7 = (de_rob_b_valid && de_rob_b_ready); // @ BaseType.scala l305
-  assign entry_de_rob_5 = ((de_rob_a_fire_8 && (head_addr == 3'b101)) || (de_rob_b_fire_7 && (head_addr_add_one == 3'b101))); // @ ReorderBuffer.scala l140
-  assign entry_flush_real_5 = (entry_flush_5 || entry_flush_13); // @ ReorderBuffer.scala l142
+  assign entry_de_rob_5 = ((de_rob_a_fire_8 && (head_addr == 3'b101)) || (de_rob_b_fire_7 && (head_addr_add_one == 3'b101))); // @ ReorderBuffer.scala l137
+  assign entry_flush_5 = (entry_flush_bits[5] || entry_flush_bits[13]); // @ ReorderBuffer.scala l139
   always @(*) begin
-    entry_iq_rd_equal_5[0] = (iq_rob_ptr_0[2 : 0] == 3'b101); // @ ReorderBuffer.scala l146
-    entry_iq_rd_equal_5[1] = (iq_rob_ptr_1[2 : 0] == 3'b101); // @ ReorderBuffer.scala l146
-    entry_iq_rd_equal_5[2] = (iq_rob_ptr_2[2 : 0] == 3'b101); // @ ReorderBuffer.scala l146
-    entry_iq_rd_equal_5[3] = (iq_rob_ptr_3[2 : 0] == 3'b101); // @ ReorderBuffer.scala l146
+    entry_isq_rd_equal_5[0] = (isq_rob_ptr_0[2 : 0] == 3'b101); // @ ReorderBuffer.scala l143
+    entry_isq_rd_equal_5[1] = (isq_rob_ptr_1[2 : 0] == 3'b101); // @ ReorderBuffer.scala l143
+    entry_isq_rd_equal_5[2] = (isq_rob_ptr_2[2 : 0] == 3'b101); // @ ReorderBuffer.scala l143
+    entry_isq_rd_equal_5[3] = (isq_rob_ptr_3[2 : 0] == 3'b101); // @ ReorderBuffer.scala l143
   end
 
   always @(*) begin
-    entry_exe_rd_equal_5[0] = (exe_rob_ptr_0[2 : 0] == 3'b101); // @ ReorderBuffer.scala l147
-    entry_exe_rd_equal_5[1] = (exe_rob_ptr_1[2 : 0] == 3'b101); // @ ReorderBuffer.scala l147
-    entry_exe_rd_equal_5[2] = (exe_rob_ptr_2[2 : 0] == 3'b101); // @ ReorderBuffer.scala l147
-    entry_exe_rd_equal_5[3] = (exe_rob_ptr_3[2 : 0] == 3'b101); // @ ReorderBuffer.scala l147
+    entry_exe_rd_equal_5[0] = (exe_rob_ptr_0[2 : 0] == 3'b101); // @ ReorderBuffer.scala l144
+    entry_exe_rd_equal_5[1] = (exe_rob_ptr_1[2 : 0] == 3'b101); // @ ReorderBuffer.scala l144
+    entry_exe_rd_equal_5[2] = (exe_rob_ptr_2[2 : 0] == 3'b101); // @ ReorderBuffer.scala l144
+    entry_exe_rd_equal_5[3] = (exe_rob_ptr_3[2 : 0] == 3'b101); // @ ReorderBuffer.scala l144
   end
 
-  assign entry_exe_done_bits_5 = (entry_exe_rd_equal_5 & {exe_executed_3,{exe_executed_2,{exe_executed_1,exe_executed_0}}}); // @ ReorderBuffer.scala l149
-  assign entry_iq_issue_bits_5 = (entry_iq_rd_equal_5 & {iq_issued_3,{iq_issued_2,{iq_issued_1,iq_issued_0}}}); // @ ReorderBuffer.scala l150
-  assign entry_iq_issue_5 = (|entry_iq_issue_bits_5); // @ ReorderBuffer.scala l151
-  assign entry_exe_done_5 = (|entry_exe_done_bits_5); // @ ReorderBuffer.scala l152
+  assign entry_exe_done_bits_5 = (entry_exe_rd_equal_5 & {exe_executed_3,{exe_executed_2,{exe_executed_1,exe_executed_0}}}); // @ ReorderBuffer.scala l146
+  assign entry_isq_issue_bits_5 = (entry_isq_rd_equal_5 & {isq_issued_3,{isq_issued_2,{isq_issued_1,isq_issued_0}}}); // @ ReorderBuffer.scala l147
+  assign entry_isq_issue_5 = (|entry_isq_issue_bits_5); // @ ReorderBuffer.scala l148
+  assign entry_exe_done_5 = (|entry_exe_done_bits_5); // @ ReorderBuffer.scala l149
   assign tmp_entry_exe_rd_val_5 = {exe_rd_val_3,{exe_rd_val_2,{exe_rd_val_1,exe_rd_val_0}}}; // @ BaseType.scala l299
   assign tmp_entry_exe_rd_val_5_1 = entry_exe_done_bits_5[0]; // @ BaseType.scala l305
   assign tmp_entry_exe_rd_val_5_2 = entry_exe_done_bits_5[1]; // @ BaseType.scala l305
   assign tmp_entry_exe_rd_val_5_3 = entry_exe_done_bits_5[2]; // @ BaseType.scala l305
   assign tmp_entry_exe_rd_val_5_4 = entry_exe_done_bits_5[3]; // @ BaseType.scala l305
-  assign entry_exe_rd_val_5 = ((((tmp_entry_exe_rd_val_5[63 : 0] & {tmp_entry_exe_rd_val_5_5,tmp_entry_exe_rd_val_5_6}) | (tmp_entry_exe_rd_val_5[127 : 64] & {tmp_entry_exe_rd_val_5_37,tmp_entry_exe_rd_val_5_38})) | (tmp_entry_exe_rd_val_5[191 : 128] & {tmp_entry_exe_rd_val_5_3,{tmp_entry_exe_rd_val_5_69,tmp_entry_exe_rd_val_5_70}})) | (tmp_entry_exe_rd_val_5[255 : 192] & {tmp_entry_exe_rd_val_5_4,{tmp_entry_exe_rd_val_5_4,{tmp_entry_exe_rd_val_5_101,tmp_entry_exe_rd_val_5_102}}})); // @ ReorderBuffer.scala l153
-  assign entry_commit_5 = ((((entry_busy_5 && (head_addr == 3'b101)) && (entry_state_5 == ROBStateEnum_COMPLETE)) && (entry_exception_5 == ExceptionEnum_IDLE)) || (((entry_busy_5 && (head_addr_add_one == 3'b101)) && (tmp_de_rob_a_valid == ROBStateEnum_COMMIT)) && (entry_exception_5 == ExceptionEnum_IDLE))); // @ ReorderBuffer.scala l156
+  assign entry_exe_rd_val_5 = ((((tmp_entry_exe_rd_val_5[63 : 0] & {tmp_entry_exe_rd_val_5_5,tmp_entry_exe_rd_val_5_6}) | (tmp_entry_exe_rd_val_5[127 : 64] & {tmp_entry_exe_rd_val_5_37,tmp_entry_exe_rd_val_5_38})) | (tmp_entry_exe_rd_val_5[191 : 128] & {tmp_entry_exe_rd_val_5_3,{tmp_entry_exe_rd_val_5_69,tmp_entry_exe_rd_val_5_70}})) | (tmp_entry_exe_rd_val_5[255 : 192] & {tmp_entry_exe_rd_val_5_4,{tmp_entry_exe_rd_val_5_4,{tmp_entry_exe_rd_val_5_101,tmp_entry_exe_rd_val_5_102}}})); // @ ReorderBuffer.scala l150
+  assign entry_commit_5 = ((((entry_busy_5 && (head_addr == 3'b101)) && (entry_state_5 == ROBStateEnum_COMPLETE)) && (entry_exception_5 == ExceptionEnum_IDLE)) || (((entry_busy_5 && (head_addr_add_one == 3'b101)) && (tmp_de_rob_a_valid == ROBStateEnum_COMMIT)) && (entry_exception_5 == ExceptionEnum_IDLE))); // @ ReorderBuffer.scala l153
   always @(*) begin
     case(entry_state_5)
       ROBStateEnum_IDLE : begin
@@ -3559,7 +3527,7 @@ module ReorderBuffer (
         end
       end
       ROBStateEnum_ISSUE : begin
-        if(entry_iq_issue_5) begin
+        if(entry_isq_issue_5) begin
           entry_state_nxt_5 = ROBStateEnum_EXECUTE; // @ Enum.scala l151
         end else begin
           entry_state_nxt_5 = ROBStateEnum_ISSUE; // @ Enum.scala l151
@@ -3595,36 +3563,36 @@ module ReorderBuffer (
   assign en_rob_b_fire_21 = (en_rob_b_valid && en_rob_b_ready); // @ BaseType.scala l305
   assign en_rob_a_fire_22 = (en_rob_a_valid && en_rob_a_ready); // @ BaseType.scala l305
   assign en_rob_b_fire_22 = (en_rob_b_valid && en_rob_b_ready); // @ BaseType.scala l305
-  assign entry_en_rob_6 = ((en_rob_a_fire_22 && (tail_addr == 3'b110)) || (en_rob_b_fire_22 && (tail_addr_add_one == 3'b110))); // @ ReorderBuffer.scala l138
+  assign entry_en_rob_6 = ((en_rob_a_fire_22 && (tail_addr == 3'b110)) || (en_rob_b_fire_22 && (tail_addr_add_one == 3'b110))); // @ ReorderBuffer.scala l135
   assign de_rob_a_fire_9 = (de_rob_a_valid && de_rob_a_ready); // @ BaseType.scala l305
   assign de_rob_b_fire_8 = (de_rob_b_valid && de_rob_b_ready); // @ BaseType.scala l305
-  assign entry_de_rob_6 = ((de_rob_a_fire_9 && (head_addr == 3'b110)) || (de_rob_b_fire_8 && (head_addr_add_one == 3'b110))); // @ ReorderBuffer.scala l140
-  assign entry_flush_real_6 = (entry_flush_6 || entry_flush_14); // @ ReorderBuffer.scala l142
+  assign entry_de_rob_6 = ((de_rob_a_fire_9 && (head_addr == 3'b110)) || (de_rob_b_fire_8 && (head_addr_add_one == 3'b110))); // @ ReorderBuffer.scala l137
+  assign entry_flush_6 = (entry_flush_bits[6] || entry_flush_bits[14]); // @ ReorderBuffer.scala l139
   always @(*) begin
-    entry_iq_rd_equal_6[0] = (iq_rob_ptr_0[2 : 0] == 3'b110); // @ ReorderBuffer.scala l146
-    entry_iq_rd_equal_6[1] = (iq_rob_ptr_1[2 : 0] == 3'b110); // @ ReorderBuffer.scala l146
-    entry_iq_rd_equal_6[2] = (iq_rob_ptr_2[2 : 0] == 3'b110); // @ ReorderBuffer.scala l146
-    entry_iq_rd_equal_6[3] = (iq_rob_ptr_3[2 : 0] == 3'b110); // @ ReorderBuffer.scala l146
+    entry_isq_rd_equal_6[0] = (isq_rob_ptr_0[2 : 0] == 3'b110); // @ ReorderBuffer.scala l143
+    entry_isq_rd_equal_6[1] = (isq_rob_ptr_1[2 : 0] == 3'b110); // @ ReorderBuffer.scala l143
+    entry_isq_rd_equal_6[2] = (isq_rob_ptr_2[2 : 0] == 3'b110); // @ ReorderBuffer.scala l143
+    entry_isq_rd_equal_6[3] = (isq_rob_ptr_3[2 : 0] == 3'b110); // @ ReorderBuffer.scala l143
   end
 
   always @(*) begin
-    entry_exe_rd_equal_6[0] = (exe_rob_ptr_0[2 : 0] == 3'b110); // @ ReorderBuffer.scala l147
-    entry_exe_rd_equal_6[1] = (exe_rob_ptr_1[2 : 0] == 3'b110); // @ ReorderBuffer.scala l147
-    entry_exe_rd_equal_6[2] = (exe_rob_ptr_2[2 : 0] == 3'b110); // @ ReorderBuffer.scala l147
-    entry_exe_rd_equal_6[3] = (exe_rob_ptr_3[2 : 0] == 3'b110); // @ ReorderBuffer.scala l147
+    entry_exe_rd_equal_6[0] = (exe_rob_ptr_0[2 : 0] == 3'b110); // @ ReorderBuffer.scala l144
+    entry_exe_rd_equal_6[1] = (exe_rob_ptr_1[2 : 0] == 3'b110); // @ ReorderBuffer.scala l144
+    entry_exe_rd_equal_6[2] = (exe_rob_ptr_2[2 : 0] == 3'b110); // @ ReorderBuffer.scala l144
+    entry_exe_rd_equal_6[3] = (exe_rob_ptr_3[2 : 0] == 3'b110); // @ ReorderBuffer.scala l144
   end
 
-  assign entry_exe_done_bits_6 = (entry_exe_rd_equal_6 & {exe_executed_3,{exe_executed_2,{exe_executed_1,exe_executed_0}}}); // @ ReorderBuffer.scala l149
-  assign entry_iq_issue_bits_6 = (entry_iq_rd_equal_6 & {iq_issued_3,{iq_issued_2,{iq_issued_1,iq_issued_0}}}); // @ ReorderBuffer.scala l150
-  assign entry_iq_issue_6 = (|entry_iq_issue_bits_6); // @ ReorderBuffer.scala l151
-  assign entry_exe_done_6 = (|entry_exe_done_bits_6); // @ ReorderBuffer.scala l152
+  assign entry_exe_done_bits_6 = (entry_exe_rd_equal_6 & {exe_executed_3,{exe_executed_2,{exe_executed_1,exe_executed_0}}}); // @ ReorderBuffer.scala l146
+  assign entry_isq_issue_bits_6 = (entry_isq_rd_equal_6 & {isq_issued_3,{isq_issued_2,{isq_issued_1,isq_issued_0}}}); // @ ReorderBuffer.scala l147
+  assign entry_isq_issue_6 = (|entry_isq_issue_bits_6); // @ ReorderBuffer.scala l148
+  assign entry_exe_done_6 = (|entry_exe_done_bits_6); // @ ReorderBuffer.scala l149
   assign tmp_entry_exe_rd_val_6 = {exe_rd_val_3,{exe_rd_val_2,{exe_rd_val_1,exe_rd_val_0}}}; // @ BaseType.scala l299
   assign tmp_entry_exe_rd_val_6_1 = entry_exe_done_bits_6[0]; // @ BaseType.scala l305
   assign tmp_entry_exe_rd_val_6_2 = entry_exe_done_bits_6[1]; // @ BaseType.scala l305
   assign tmp_entry_exe_rd_val_6_3 = entry_exe_done_bits_6[2]; // @ BaseType.scala l305
   assign tmp_entry_exe_rd_val_6_4 = entry_exe_done_bits_6[3]; // @ BaseType.scala l305
-  assign entry_exe_rd_val_6 = ((((tmp_entry_exe_rd_val_6[63 : 0] & {tmp_entry_exe_rd_val_6_5,tmp_entry_exe_rd_val_6_6}) | (tmp_entry_exe_rd_val_6[127 : 64] & {tmp_entry_exe_rd_val_6_37,tmp_entry_exe_rd_val_6_38})) | (tmp_entry_exe_rd_val_6[191 : 128] & {tmp_entry_exe_rd_val_6_3,{tmp_entry_exe_rd_val_6_69,tmp_entry_exe_rd_val_6_70}})) | (tmp_entry_exe_rd_val_6[255 : 192] & {tmp_entry_exe_rd_val_6_4,{tmp_entry_exe_rd_val_6_4,{tmp_entry_exe_rd_val_6_101,tmp_entry_exe_rd_val_6_102}}})); // @ ReorderBuffer.scala l153
-  assign entry_commit_6 = ((((entry_busy_6 && (head_addr == 3'b110)) && (entry_state_6 == ROBStateEnum_COMPLETE)) && (entry_exception_6 == ExceptionEnum_IDLE)) || (((entry_busy_6 && (head_addr_add_one == 3'b110)) && (tmp_de_rob_a_valid == ROBStateEnum_COMMIT)) && (entry_exception_6 == ExceptionEnum_IDLE))); // @ ReorderBuffer.scala l156
+  assign entry_exe_rd_val_6 = ((((tmp_entry_exe_rd_val_6[63 : 0] & {tmp_entry_exe_rd_val_6_5,tmp_entry_exe_rd_val_6_6}) | (tmp_entry_exe_rd_val_6[127 : 64] & {tmp_entry_exe_rd_val_6_37,tmp_entry_exe_rd_val_6_38})) | (tmp_entry_exe_rd_val_6[191 : 128] & {tmp_entry_exe_rd_val_6_3,{tmp_entry_exe_rd_val_6_69,tmp_entry_exe_rd_val_6_70}})) | (tmp_entry_exe_rd_val_6[255 : 192] & {tmp_entry_exe_rd_val_6_4,{tmp_entry_exe_rd_val_6_4,{tmp_entry_exe_rd_val_6_101,tmp_entry_exe_rd_val_6_102}}})); // @ ReorderBuffer.scala l150
+  assign entry_commit_6 = ((((entry_busy_6 && (head_addr == 3'b110)) && (entry_state_6 == ROBStateEnum_COMPLETE)) && (entry_exception_6 == ExceptionEnum_IDLE)) || (((entry_busy_6 && (head_addr_add_one == 3'b110)) && (tmp_de_rob_a_valid == ROBStateEnum_COMMIT)) && (entry_exception_6 == ExceptionEnum_IDLE))); // @ ReorderBuffer.scala l153
   always @(*) begin
     case(entry_state_6)
       ROBStateEnum_IDLE : begin
@@ -3635,7 +3603,7 @@ module ReorderBuffer (
         end
       end
       ROBStateEnum_ISSUE : begin
-        if(entry_iq_issue_6) begin
+        if(entry_isq_issue_6) begin
           entry_state_nxt_6 = ROBStateEnum_EXECUTE; // @ Enum.scala l151
         end else begin
           entry_state_nxt_6 = ROBStateEnum_ISSUE; // @ Enum.scala l151
@@ -3671,36 +3639,36 @@ module ReorderBuffer (
   assign en_rob_b_fire_24 = (en_rob_b_valid && en_rob_b_ready); // @ BaseType.scala l305
   assign en_rob_a_fire_25 = (en_rob_a_valid && en_rob_a_ready); // @ BaseType.scala l305
   assign en_rob_b_fire_25 = (en_rob_b_valid && en_rob_b_ready); // @ BaseType.scala l305
-  assign entry_en_rob_7 = ((en_rob_a_fire_25 && (tail_addr == 3'b111)) || (en_rob_b_fire_25 && (tail_addr_add_one == 3'b111))); // @ ReorderBuffer.scala l138
+  assign entry_en_rob_7 = ((en_rob_a_fire_25 && (tail_addr == 3'b111)) || (en_rob_b_fire_25 && (tail_addr_add_one == 3'b111))); // @ ReorderBuffer.scala l135
   assign de_rob_a_fire_10 = (de_rob_a_valid && de_rob_a_ready); // @ BaseType.scala l305
   assign de_rob_b_fire_9 = (de_rob_b_valid && de_rob_b_ready); // @ BaseType.scala l305
-  assign entry_de_rob_7 = ((de_rob_a_fire_10 && (head_addr == 3'b111)) || (de_rob_b_fire_9 && (head_addr_add_one == 3'b111))); // @ ReorderBuffer.scala l140
-  assign entry_flush_real_7 = (entry_flush_7 || entry_flush_15); // @ ReorderBuffer.scala l142
+  assign entry_de_rob_7 = ((de_rob_a_fire_10 && (head_addr == 3'b111)) || (de_rob_b_fire_9 && (head_addr_add_one == 3'b111))); // @ ReorderBuffer.scala l137
+  assign entry_flush_7 = (entry_flush_bits[7] || entry_flush_bits[15]); // @ ReorderBuffer.scala l139
   always @(*) begin
-    entry_iq_rd_equal_7[0] = (iq_rob_ptr_0[2 : 0] == 3'b111); // @ ReorderBuffer.scala l146
-    entry_iq_rd_equal_7[1] = (iq_rob_ptr_1[2 : 0] == 3'b111); // @ ReorderBuffer.scala l146
-    entry_iq_rd_equal_7[2] = (iq_rob_ptr_2[2 : 0] == 3'b111); // @ ReorderBuffer.scala l146
-    entry_iq_rd_equal_7[3] = (iq_rob_ptr_3[2 : 0] == 3'b111); // @ ReorderBuffer.scala l146
+    entry_isq_rd_equal_7[0] = (isq_rob_ptr_0[2 : 0] == 3'b111); // @ ReorderBuffer.scala l143
+    entry_isq_rd_equal_7[1] = (isq_rob_ptr_1[2 : 0] == 3'b111); // @ ReorderBuffer.scala l143
+    entry_isq_rd_equal_7[2] = (isq_rob_ptr_2[2 : 0] == 3'b111); // @ ReorderBuffer.scala l143
+    entry_isq_rd_equal_7[3] = (isq_rob_ptr_3[2 : 0] == 3'b111); // @ ReorderBuffer.scala l143
   end
 
   always @(*) begin
-    entry_exe_rd_equal_7[0] = (exe_rob_ptr_0[2 : 0] == 3'b111); // @ ReorderBuffer.scala l147
-    entry_exe_rd_equal_7[1] = (exe_rob_ptr_1[2 : 0] == 3'b111); // @ ReorderBuffer.scala l147
-    entry_exe_rd_equal_7[2] = (exe_rob_ptr_2[2 : 0] == 3'b111); // @ ReorderBuffer.scala l147
-    entry_exe_rd_equal_7[3] = (exe_rob_ptr_3[2 : 0] == 3'b111); // @ ReorderBuffer.scala l147
+    entry_exe_rd_equal_7[0] = (exe_rob_ptr_0[2 : 0] == 3'b111); // @ ReorderBuffer.scala l144
+    entry_exe_rd_equal_7[1] = (exe_rob_ptr_1[2 : 0] == 3'b111); // @ ReorderBuffer.scala l144
+    entry_exe_rd_equal_7[2] = (exe_rob_ptr_2[2 : 0] == 3'b111); // @ ReorderBuffer.scala l144
+    entry_exe_rd_equal_7[3] = (exe_rob_ptr_3[2 : 0] == 3'b111); // @ ReorderBuffer.scala l144
   end
 
-  assign entry_exe_done_bits_7 = (entry_exe_rd_equal_7 & {exe_executed_3,{exe_executed_2,{exe_executed_1,exe_executed_0}}}); // @ ReorderBuffer.scala l149
-  assign entry_iq_issue_bits_7 = (entry_iq_rd_equal_7 & {iq_issued_3,{iq_issued_2,{iq_issued_1,iq_issued_0}}}); // @ ReorderBuffer.scala l150
-  assign entry_iq_issue_7 = (|entry_iq_issue_bits_7); // @ ReorderBuffer.scala l151
-  assign entry_exe_done_7 = (|entry_exe_done_bits_7); // @ ReorderBuffer.scala l152
+  assign entry_exe_done_bits_7 = (entry_exe_rd_equal_7 & {exe_executed_3,{exe_executed_2,{exe_executed_1,exe_executed_0}}}); // @ ReorderBuffer.scala l146
+  assign entry_isq_issue_bits_7 = (entry_isq_rd_equal_7 & {isq_issued_3,{isq_issued_2,{isq_issued_1,isq_issued_0}}}); // @ ReorderBuffer.scala l147
+  assign entry_isq_issue_7 = (|entry_isq_issue_bits_7); // @ ReorderBuffer.scala l148
+  assign entry_exe_done_7 = (|entry_exe_done_bits_7); // @ ReorderBuffer.scala l149
   assign tmp_entry_exe_rd_val_7 = {exe_rd_val_3,{exe_rd_val_2,{exe_rd_val_1,exe_rd_val_0}}}; // @ BaseType.scala l299
   assign tmp_entry_exe_rd_val_7_1 = entry_exe_done_bits_7[0]; // @ BaseType.scala l305
   assign tmp_entry_exe_rd_val_7_2 = entry_exe_done_bits_7[1]; // @ BaseType.scala l305
   assign tmp_entry_exe_rd_val_7_3 = entry_exe_done_bits_7[2]; // @ BaseType.scala l305
   assign tmp_entry_exe_rd_val_7_4 = entry_exe_done_bits_7[3]; // @ BaseType.scala l305
-  assign entry_exe_rd_val_7 = ((((tmp_entry_exe_rd_val_7[63 : 0] & {tmp_entry_exe_rd_val_7_5,tmp_entry_exe_rd_val_7_6}) | (tmp_entry_exe_rd_val_7[127 : 64] & {tmp_entry_exe_rd_val_7_37,tmp_entry_exe_rd_val_7_38})) | (tmp_entry_exe_rd_val_7[191 : 128] & {tmp_entry_exe_rd_val_7_3,{tmp_entry_exe_rd_val_7_69,tmp_entry_exe_rd_val_7_70}})) | (tmp_entry_exe_rd_val_7[255 : 192] & {tmp_entry_exe_rd_val_7_4,{tmp_entry_exe_rd_val_7_4,{tmp_entry_exe_rd_val_7_101,tmp_entry_exe_rd_val_7_102}}})); // @ ReorderBuffer.scala l153
-  assign entry_commit_7 = ((((entry_busy_7 && (head_addr == 3'b111)) && (entry_state_7 == ROBStateEnum_COMPLETE)) && (entry_exception_7 == ExceptionEnum_IDLE)) || (((entry_busy_7 && (head_addr_add_one == 3'b111)) && (tmp_de_rob_a_valid == ROBStateEnum_COMMIT)) && (entry_exception_7 == ExceptionEnum_IDLE))); // @ ReorderBuffer.scala l156
+  assign entry_exe_rd_val_7 = ((((tmp_entry_exe_rd_val_7[63 : 0] & {tmp_entry_exe_rd_val_7_5,tmp_entry_exe_rd_val_7_6}) | (tmp_entry_exe_rd_val_7[127 : 64] & {tmp_entry_exe_rd_val_7_37,tmp_entry_exe_rd_val_7_38})) | (tmp_entry_exe_rd_val_7[191 : 128] & {tmp_entry_exe_rd_val_7_3,{tmp_entry_exe_rd_val_7_69,tmp_entry_exe_rd_val_7_70}})) | (tmp_entry_exe_rd_val_7[255 : 192] & {tmp_entry_exe_rd_val_7_4,{tmp_entry_exe_rd_val_7_4,{tmp_entry_exe_rd_val_7_101,tmp_entry_exe_rd_val_7_102}}})); // @ ReorderBuffer.scala l150
+  assign entry_commit_7 = ((((entry_busy_7 && (head_addr == 3'b111)) && (entry_state_7 == ROBStateEnum_COMPLETE)) && (entry_exception_7 == ExceptionEnum_IDLE)) || (((entry_busy_7 && (head_addr_add_one == 3'b111)) && (tmp_de_rob_a_valid == ROBStateEnum_COMMIT)) && (entry_exception_7 == ExceptionEnum_IDLE))); // @ ReorderBuffer.scala l153
   always @(*) begin
     case(entry_state_7)
       ROBStateEnum_IDLE : begin
@@ -3711,7 +3679,7 @@ module ReorderBuffer (
         end
       end
       ROBStateEnum_ISSUE : begin
-        if(entry_iq_issue_7) begin
+        if(entry_isq_issue_7) begin
           entry_state_nxt_7 = ROBStateEnum_EXECUTE; // @ Enum.scala l151
         end else begin
           entry_state_nxt_7 = ROBStateEnum_ISSUE; // @ Enum.scala l151
@@ -3745,15 +3713,15 @@ module ReorderBuffer (
   assign en_rob_b_fire_26 = (en_rob_b_valid && en_rob_b_ready); // @ BaseType.scala l305
   assign en_rob_a_fire_27 = (en_rob_a_valid && en_rob_a_ready); // @ BaseType.scala l305
   assign en_rob_b_fire_27 = (en_rob_b_valid && en_rob_b_ready); // @ BaseType.scala l305
-  assign en_rob_a_ready = (! rob_full); // @ ReorderBuffer.scala l256
-  assign en_rob_b_ready = (4'b0010 <= empty_entry_cnt); // @ ReorderBuffer.scala l257
-  assign de_rob_a_valid = (tmp_de_rob_a_valid == ROBStateEnum_COMMIT); // @ ReorderBuffer.scala l259
-  assign de_rob_a_payload_rd_addr = tmp_de_rob_a_payload_rd_addr; // @ ReorderBuffer.scala l260
-  assign de_rob_a_payload_rd_val = tmp_de_rob_a_payload_rd_val; // @ ReorderBuffer.scala l261
+  assign en_rob_a_ready = (! rob_full); // @ ReorderBuffer.scala l253
+  assign en_rob_b_ready = (4'b0010 <= empty_entry_cnt); // @ ReorderBuffer.scala l254
+  assign de_rob_a_valid = (tmp_de_rob_a_valid == ROBStateEnum_COMMIT); // @ ReorderBuffer.scala l256
+  assign de_rob_a_payload_rd_addr = tmp_de_rob_a_payload_rd_addr; // @ ReorderBuffer.scala l257
+  assign de_rob_a_payload_rd_val = tmp_de_rob_a_payload_rd_val; // @ ReorderBuffer.scala l258
   assign tmp_de_rob_b_valid = tmp_tmp_de_rob_b_valid; // @ Vec.scala l202
-  assign de_rob_b_valid = (tmp_de_rob_b_valid == ROBStateEnum_COMMIT); // @ ReorderBuffer.scala l263
-  assign de_rob_b_payload_rd_addr = tmp_de_rob_b_payload_rd_addr; // @ ReorderBuffer.scala l264
-  assign de_rob_b_payload_rd_val = tmp_de_rob_b_payload_rd_val; // @ ReorderBuffer.scala l265
+  assign de_rob_b_valid = (tmp_de_rob_b_valid == ROBStateEnum_COMMIT); // @ ReorderBuffer.scala l260
+  assign de_rob_b_payload_rd_addr = tmp_de_rob_b_payload_rd_addr; // @ ReorderBuffer.scala l261
+  assign de_rob_b_payload_rd_val = tmp_de_rob_b_payload_rd_val; // @ ReorderBuffer.scala l262
   always @(posedge clk or negedge resetn) begin
     if(!resetn) begin
       entry_busy_0 <= 1'b0; // @ Data.scala l400
@@ -3818,344 +3786,344 @@ module ReorderBuffer (
     end else begin
       empty_entry_cnt <= empty_entry_cnt_next; // @ Reg.scala l39
       if((de_rob_a_fire && de_rob_b_fire)) begin
-        head_ptr <= head_ptr_add_two; // @ ReorderBuffer.scala l103
+        head_ptr <= head_ptr_add_two; // @ ReorderBuffer.scala l100
       end else begin
         if(de_rob_a_fire_1) begin
-          head_ptr <= head_ptr_add_one; // @ ReorderBuffer.scala l106
+          head_ptr <= head_ptr_add_one; // @ ReorderBuffer.scala l103
         end
       end
       if(interrupt_vld) begin
-        tail_ptr <= head_ptr; // @ ReorderBuffer.scala l111
+        tail_ptr <= head_ptr; // @ ReorderBuffer.scala l108
       end else begin
         if(redirect_vld) begin
-          tail_ptr <= (redirect_rob_ptr + 4'b0001); // @ ReorderBuffer.scala l114
+          tail_ptr <= (redirect_rob_ptr + 4'b0001); // @ ReorderBuffer.scala l111
         end else begin
           if((en_rob_a_fire && en_rob_b_fire)) begin
-            tail_ptr <= tail_ptr_add_two; // @ ReorderBuffer.scala l117
+            tail_ptr <= tail_ptr_add_two; // @ ReorderBuffer.scala l114
           end else begin
             if(((en_rob_a_fire_1 && (! en_rob_b_fire_1)) || ((! en_rob_a_fire_2) && en_rob_b_fire_2))) begin
-              tail_ptr <= tail_ptr_add_one; // @ ReorderBuffer.scala l121
+              tail_ptr <= tail_ptr_add_one; // @ ReorderBuffer.scala l118
             end
           end
         end
       end
-      if(entry_flush_real_0) begin
-        entry_busy_0 <= 1'b0; // @ ReorderBuffer.scala l168
+      if((interrupt_vld || entry_flush_0)) begin
+        entry_busy_0 <= 1'b0; // @ ReorderBuffer.scala l165
       end else begin
         if(entry_en_rob_0) begin
-          entry_busy_0 <= 1'b1; // @ ReorderBuffer.scala l171
+          entry_busy_0 <= 1'b1; // @ ReorderBuffer.scala l168
         end else begin
           if(entry_de_rob_0) begin
-            entry_busy_0 <= 1'b0; // @ ReorderBuffer.scala l174
+            entry_busy_0 <= 1'b0; // @ ReorderBuffer.scala l171
           end
         end
       end
-      if((interrupt_vld || entry_flush_real_0)) begin
+      if((interrupt_vld || entry_flush_0)) begin
         entry_state_0 <= ROBStateEnum_IDLE; // @ Enum.scala l151
       end else begin
-        entry_state_0 <= entry_state_nxt_0; // @ ReorderBuffer.scala l182
+        entry_state_0 <= entry_state_nxt_0; // @ ReorderBuffer.scala l179
       end
       if((en_rob_a_fire_5 && (tail_addr == 3'b000))) begin
-        entry_pc_0 <= en_rob_a_payload_pc; // @ ReorderBuffer.scala l230
-        entry_micro_op_0 <= en_rob_a_payload_micro_op; // @ ReorderBuffer.scala l231
-        entry_rd_addr_0 <= en_rob_a_payload_rd_addr; // @ ReorderBuffer.scala l232
-        entry_exception_0 <= en_rob_a_payload_exception; // @ ReorderBuffer.scala l233
+        entry_pc_0 <= en_rob_a_payload_pc; // @ ReorderBuffer.scala l227
+        entry_micro_op_0 <= en_rob_a_payload_micro_op; // @ ReorderBuffer.scala l228
+        entry_rd_addr_0 <= en_rob_a_payload_rd_addr; // @ ReorderBuffer.scala l229
+        entry_exception_0 <= en_rob_a_payload_exception; // @ ReorderBuffer.scala l230
       end else begin
         if((en_rob_b_fire_5 && (tail_addr_add_one == 3'b000))) begin
-          entry_pc_0 <= en_rob_b_payload_pc; // @ ReorderBuffer.scala l236
-          entry_micro_op_0 <= en_rob_b_payload_micro_op; // @ ReorderBuffer.scala l237
-          entry_rd_addr_0 <= en_rob_b_payload_rd_addr; // @ ReorderBuffer.scala l238
-          entry_exception_0 <= en_rob_b_payload_exception; // @ ReorderBuffer.scala l239
+          entry_pc_0 <= en_rob_b_payload_pc; // @ ReorderBuffer.scala l233
+          entry_micro_op_0 <= en_rob_b_payload_micro_op; // @ ReorderBuffer.scala l234
+          entry_rd_addr_0 <= en_rob_b_payload_rd_addr; // @ ReorderBuffer.scala l235
+          entry_exception_0 <= en_rob_b_payload_exception; // @ ReorderBuffer.scala l236
         end
       end
       if((en_rob_a_fire_6 && (tail_addr == 3'b000))) begin
-        entry_rd_val_0 <= en_rob_a_payload_rd_val; // @ ReorderBuffer.scala l244
+        entry_rd_val_0 <= en_rob_a_payload_rd_val; // @ ReorderBuffer.scala l241
       end else begin
         if((en_rob_b_fire_6 && (tail_addr_add_one == 3'b000))) begin
-          entry_rd_val_0 <= en_rob_b_payload_rd_val; // @ ReorderBuffer.scala l247
+          entry_rd_val_0 <= en_rob_b_payload_rd_val; // @ ReorderBuffer.scala l244
         end else begin
           if(entry_exe_done_0) begin
-            entry_rd_val_0 <= entry_exe_rd_val_0; // @ ReorderBuffer.scala l250
+            entry_rd_val_0 <= entry_exe_rd_val_0; // @ ReorderBuffer.scala l247
           end
         end
       end
-      if(entry_flush_real_1) begin
-        entry_busy_1 <= 1'b0; // @ ReorderBuffer.scala l168
+      if((interrupt_vld || entry_flush_1)) begin
+        entry_busy_1 <= 1'b0; // @ ReorderBuffer.scala l165
       end else begin
         if(entry_en_rob_1) begin
-          entry_busy_1 <= 1'b1; // @ ReorderBuffer.scala l171
+          entry_busy_1 <= 1'b1; // @ ReorderBuffer.scala l168
         end else begin
           if(entry_de_rob_1) begin
-            entry_busy_1 <= 1'b0; // @ ReorderBuffer.scala l174
+            entry_busy_1 <= 1'b0; // @ ReorderBuffer.scala l171
           end
         end
       end
-      if((interrupt_vld || entry_flush_real_1)) begin
+      if((interrupt_vld || entry_flush_1)) begin
         entry_state_1 <= ROBStateEnum_IDLE; // @ Enum.scala l151
       end else begin
-        entry_state_1 <= entry_state_nxt_1; // @ ReorderBuffer.scala l182
+        entry_state_1 <= entry_state_nxt_1; // @ ReorderBuffer.scala l179
       end
       if((en_rob_a_fire_8 && (tail_addr == 3'b001))) begin
-        entry_pc_1 <= en_rob_a_payload_pc; // @ ReorderBuffer.scala l230
-        entry_micro_op_1 <= en_rob_a_payload_micro_op; // @ ReorderBuffer.scala l231
-        entry_rd_addr_1 <= en_rob_a_payload_rd_addr; // @ ReorderBuffer.scala l232
-        entry_exception_1 <= en_rob_a_payload_exception; // @ ReorderBuffer.scala l233
+        entry_pc_1 <= en_rob_a_payload_pc; // @ ReorderBuffer.scala l227
+        entry_micro_op_1 <= en_rob_a_payload_micro_op; // @ ReorderBuffer.scala l228
+        entry_rd_addr_1 <= en_rob_a_payload_rd_addr; // @ ReorderBuffer.scala l229
+        entry_exception_1 <= en_rob_a_payload_exception; // @ ReorderBuffer.scala l230
       end else begin
         if((en_rob_b_fire_8 && (tail_addr_add_one == 3'b001))) begin
-          entry_pc_1 <= en_rob_b_payload_pc; // @ ReorderBuffer.scala l236
-          entry_micro_op_1 <= en_rob_b_payload_micro_op; // @ ReorderBuffer.scala l237
-          entry_rd_addr_1 <= en_rob_b_payload_rd_addr; // @ ReorderBuffer.scala l238
-          entry_exception_1 <= en_rob_b_payload_exception; // @ ReorderBuffer.scala l239
+          entry_pc_1 <= en_rob_b_payload_pc; // @ ReorderBuffer.scala l233
+          entry_micro_op_1 <= en_rob_b_payload_micro_op; // @ ReorderBuffer.scala l234
+          entry_rd_addr_1 <= en_rob_b_payload_rd_addr; // @ ReorderBuffer.scala l235
+          entry_exception_1 <= en_rob_b_payload_exception; // @ ReorderBuffer.scala l236
         end
       end
       if((en_rob_a_fire_9 && (tail_addr == 3'b001))) begin
-        entry_rd_val_1 <= en_rob_a_payload_rd_val; // @ ReorderBuffer.scala l244
+        entry_rd_val_1 <= en_rob_a_payload_rd_val; // @ ReorderBuffer.scala l241
       end else begin
         if((en_rob_b_fire_9 && (tail_addr_add_one == 3'b001))) begin
-          entry_rd_val_1 <= en_rob_b_payload_rd_val; // @ ReorderBuffer.scala l247
+          entry_rd_val_1 <= en_rob_b_payload_rd_val; // @ ReorderBuffer.scala l244
         end else begin
           if(entry_exe_done_1) begin
-            entry_rd_val_1 <= entry_exe_rd_val_1; // @ ReorderBuffer.scala l250
+            entry_rd_val_1 <= entry_exe_rd_val_1; // @ ReorderBuffer.scala l247
           end
         end
       end
-      if(entry_flush_real_2) begin
-        entry_busy_2 <= 1'b0; // @ ReorderBuffer.scala l168
+      if((interrupt_vld || entry_flush_2)) begin
+        entry_busy_2 <= 1'b0; // @ ReorderBuffer.scala l165
       end else begin
         if(entry_en_rob_2) begin
-          entry_busy_2 <= 1'b1; // @ ReorderBuffer.scala l171
+          entry_busy_2 <= 1'b1; // @ ReorderBuffer.scala l168
         end else begin
           if(entry_de_rob_2) begin
-            entry_busy_2 <= 1'b0; // @ ReorderBuffer.scala l174
+            entry_busy_2 <= 1'b0; // @ ReorderBuffer.scala l171
           end
         end
       end
-      if((interrupt_vld || entry_flush_real_2)) begin
+      if((interrupt_vld || entry_flush_2)) begin
         entry_state_2 <= ROBStateEnum_IDLE; // @ Enum.scala l151
       end else begin
-        entry_state_2 <= entry_state_nxt_2; // @ ReorderBuffer.scala l182
+        entry_state_2 <= entry_state_nxt_2; // @ ReorderBuffer.scala l179
       end
       if((en_rob_a_fire_11 && (tail_addr == 3'b010))) begin
-        entry_pc_2 <= en_rob_a_payload_pc; // @ ReorderBuffer.scala l230
-        entry_micro_op_2 <= en_rob_a_payload_micro_op; // @ ReorderBuffer.scala l231
-        entry_rd_addr_2 <= en_rob_a_payload_rd_addr; // @ ReorderBuffer.scala l232
-        entry_exception_2 <= en_rob_a_payload_exception; // @ ReorderBuffer.scala l233
+        entry_pc_2 <= en_rob_a_payload_pc; // @ ReorderBuffer.scala l227
+        entry_micro_op_2 <= en_rob_a_payload_micro_op; // @ ReorderBuffer.scala l228
+        entry_rd_addr_2 <= en_rob_a_payload_rd_addr; // @ ReorderBuffer.scala l229
+        entry_exception_2 <= en_rob_a_payload_exception; // @ ReorderBuffer.scala l230
       end else begin
         if((en_rob_b_fire_11 && (tail_addr_add_one == 3'b010))) begin
-          entry_pc_2 <= en_rob_b_payload_pc; // @ ReorderBuffer.scala l236
-          entry_micro_op_2 <= en_rob_b_payload_micro_op; // @ ReorderBuffer.scala l237
-          entry_rd_addr_2 <= en_rob_b_payload_rd_addr; // @ ReorderBuffer.scala l238
-          entry_exception_2 <= en_rob_b_payload_exception; // @ ReorderBuffer.scala l239
+          entry_pc_2 <= en_rob_b_payload_pc; // @ ReorderBuffer.scala l233
+          entry_micro_op_2 <= en_rob_b_payload_micro_op; // @ ReorderBuffer.scala l234
+          entry_rd_addr_2 <= en_rob_b_payload_rd_addr; // @ ReorderBuffer.scala l235
+          entry_exception_2 <= en_rob_b_payload_exception; // @ ReorderBuffer.scala l236
         end
       end
       if((en_rob_a_fire_12 && (tail_addr == 3'b010))) begin
-        entry_rd_val_2 <= en_rob_a_payload_rd_val; // @ ReorderBuffer.scala l244
+        entry_rd_val_2 <= en_rob_a_payload_rd_val; // @ ReorderBuffer.scala l241
       end else begin
         if((en_rob_b_fire_12 && (tail_addr_add_one == 3'b010))) begin
-          entry_rd_val_2 <= en_rob_b_payload_rd_val; // @ ReorderBuffer.scala l247
+          entry_rd_val_2 <= en_rob_b_payload_rd_val; // @ ReorderBuffer.scala l244
         end else begin
           if(entry_exe_done_2) begin
-            entry_rd_val_2 <= entry_exe_rd_val_2; // @ ReorderBuffer.scala l250
+            entry_rd_val_2 <= entry_exe_rd_val_2; // @ ReorderBuffer.scala l247
           end
         end
       end
-      if(entry_flush_real_3) begin
-        entry_busy_3 <= 1'b0; // @ ReorderBuffer.scala l168
+      if((interrupt_vld || entry_flush_3)) begin
+        entry_busy_3 <= 1'b0; // @ ReorderBuffer.scala l165
       end else begin
         if(entry_en_rob_3) begin
-          entry_busy_3 <= 1'b1; // @ ReorderBuffer.scala l171
+          entry_busy_3 <= 1'b1; // @ ReorderBuffer.scala l168
         end else begin
           if(entry_de_rob_3) begin
-            entry_busy_3 <= 1'b0; // @ ReorderBuffer.scala l174
+            entry_busy_3 <= 1'b0; // @ ReorderBuffer.scala l171
           end
         end
       end
-      if((interrupt_vld || entry_flush_real_3)) begin
+      if((interrupt_vld || entry_flush_3)) begin
         entry_state_3 <= ROBStateEnum_IDLE; // @ Enum.scala l151
       end else begin
-        entry_state_3 <= entry_state_nxt_3; // @ ReorderBuffer.scala l182
+        entry_state_3 <= entry_state_nxt_3; // @ ReorderBuffer.scala l179
       end
       if((en_rob_a_fire_14 && (tail_addr == 3'b011))) begin
-        entry_pc_3 <= en_rob_a_payload_pc; // @ ReorderBuffer.scala l230
-        entry_micro_op_3 <= en_rob_a_payload_micro_op; // @ ReorderBuffer.scala l231
-        entry_rd_addr_3 <= en_rob_a_payload_rd_addr; // @ ReorderBuffer.scala l232
-        entry_exception_3 <= en_rob_a_payload_exception; // @ ReorderBuffer.scala l233
+        entry_pc_3 <= en_rob_a_payload_pc; // @ ReorderBuffer.scala l227
+        entry_micro_op_3 <= en_rob_a_payload_micro_op; // @ ReorderBuffer.scala l228
+        entry_rd_addr_3 <= en_rob_a_payload_rd_addr; // @ ReorderBuffer.scala l229
+        entry_exception_3 <= en_rob_a_payload_exception; // @ ReorderBuffer.scala l230
       end else begin
         if((en_rob_b_fire_14 && (tail_addr_add_one == 3'b011))) begin
-          entry_pc_3 <= en_rob_b_payload_pc; // @ ReorderBuffer.scala l236
-          entry_micro_op_3 <= en_rob_b_payload_micro_op; // @ ReorderBuffer.scala l237
-          entry_rd_addr_3 <= en_rob_b_payload_rd_addr; // @ ReorderBuffer.scala l238
-          entry_exception_3 <= en_rob_b_payload_exception; // @ ReorderBuffer.scala l239
+          entry_pc_3 <= en_rob_b_payload_pc; // @ ReorderBuffer.scala l233
+          entry_micro_op_3 <= en_rob_b_payload_micro_op; // @ ReorderBuffer.scala l234
+          entry_rd_addr_3 <= en_rob_b_payload_rd_addr; // @ ReorderBuffer.scala l235
+          entry_exception_3 <= en_rob_b_payload_exception; // @ ReorderBuffer.scala l236
         end
       end
       if((en_rob_a_fire_15 && (tail_addr == 3'b011))) begin
-        entry_rd_val_3 <= en_rob_a_payload_rd_val; // @ ReorderBuffer.scala l244
+        entry_rd_val_3 <= en_rob_a_payload_rd_val; // @ ReorderBuffer.scala l241
       end else begin
         if((en_rob_b_fire_15 && (tail_addr_add_one == 3'b011))) begin
-          entry_rd_val_3 <= en_rob_b_payload_rd_val; // @ ReorderBuffer.scala l247
+          entry_rd_val_3 <= en_rob_b_payload_rd_val; // @ ReorderBuffer.scala l244
         end else begin
           if(entry_exe_done_3) begin
-            entry_rd_val_3 <= entry_exe_rd_val_3; // @ ReorderBuffer.scala l250
+            entry_rd_val_3 <= entry_exe_rd_val_3; // @ ReorderBuffer.scala l247
           end
         end
       end
-      if(entry_flush_real_4) begin
-        entry_busy_4 <= 1'b0; // @ ReorderBuffer.scala l168
+      if((interrupt_vld || entry_flush_4)) begin
+        entry_busy_4 <= 1'b0; // @ ReorderBuffer.scala l165
       end else begin
         if(entry_en_rob_4) begin
-          entry_busy_4 <= 1'b1; // @ ReorderBuffer.scala l171
+          entry_busy_4 <= 1'b1; // @ ReorderBuffer.scala l168
         end else begin
           if(entry_de_rob_4) begin
-            entry_busy_4 <= 1'b0; // @ ReorderBuffer.scala l174
+            entry_busy_4 <= 1'b0; // @ ReorderBuffer.scala l171
           end
         end
       end
-      if((interrupt_vld || entry_flush_real_4)) begin
+      if((interrupt_vld || entry_flush_4)) begin
         entry_state_4 <= ROBStateEnum_IDLE; // @ Enum.scala l151
       end else begin
-        entry_state_4 <= entry_state_nxt_4; // @ ReorderBuffer.scala l182
+        entry_state_4 <= entry_state_nxt_4; // @ ReorderBuffer.scala l179
       end
       if((en_rob_a_fire_17 && (tail_addr == 3'b100))) begin
-        entry_pc_4 <= en_rob_a_payload_pc; // @ ReorderBuffer.scala l230
-        entry_micro_op_4 <= en_rob_a_payload_micro_op; // @ ReorderBuffer.scala l231
-        entry_rd_addr_4 <= en_rob_a_payload_rd_addr; // @ ReorderBuffer.scala l232
-        entry_exception_4 <= en_rob_a_payload_exception; // @ ReorderBuffer.scala l233
+        entry_pc_4 <= en_rob_a_payload_pc; // @ ReorderBuffer.scala l227
+        entry_micro_op_4 <= en_rob_a_payload_micro_op; // @ ReorderBuffer.scala l228
+        entry_rd_addr_4 <= en_rob_a_payload_rd_addr; // @ ReorderBuffer.scala l229
+        entry_exception_4 <= en_rob_a_payload_exception; // @ ReorderBuffer.scala l230
       end else begin
         if((en_rob_b_fire_17 && (tail_addr_add_one == 3'b100))) begin
-          entry_pc_4 <= en_rob_b_payload_pc; // @ ReorderBuffer.scala l236
-          entry_micro_op_4 <= en_rob_b_payload_micro_op; // @ ReorderBuffer.scala l237
-          entry_rd_addr_4 <= en_rob_b_payload_rd_addr; // @ ReorderBuffer.scala l238
-          entry_exception_4 <= en_rob_b_payload_exception; // @ ReorderBuffer.scala l239
+          entry_pc_4 <= en_rob_b_payload_pc; // @ ReorderBuffer.scala l233
+          entry_micro_op_4 <= en_rob_b_payload_micro_op; // @ ReorderBuffer.scala l234
+          entry_rd_addr_4 <= en_rob_b_payload_rd_addr; // @ ReorderBuffer.scala l235
+          entry_exception_4 <= en_rob_b_payload_exception; // @ ReorderBuffer.scala l236
         end
       end
       if((en_rob_a_fire_18 && (tail_addr == 3'b100))) begin
-        entry_rd_val_4 <= en_rob_a_payload_rd_val; // @ ReorderBuffer.scala l244
+        entry_rd_val_4 <= en_rob_a_payload_rd_val; // @ ReorderBuffer.scala l241
       end else begin
         if((en_rob_b_fire_18 && (tail_addr_add_one == 3'b100))) begin
-          entry_rd_val_4 <= en_rob_b_payload_rd_val; // @ ReorderBuffer.scala l247
+          entry_rd_val_4 <= en_rob_b_payload_rd_val; // @ ReorderBuffer.scala l244
         end else begin
           if(entry_exe_done_4) begin
-            entry_rd_val_4 <= entry_exe_rd_val_4; // @ ReorderBuffer.scala l250
+            entry_rd_val_4 <= entry_exe_rd_val_4; // @ ReorderBuffer.scala l247
           end
         end
       end
-      if(entry_flush_real_5) begin
-        entry_busy_5 <= 1'b0; // @ ReorderBuffer.scala l168
+      if((interrupt_vld || entry_flush_5)) begin
+        entry_busy_5 <= 1'b0; // @ ReorderBuffer.scala l165
       end else begin
         if(entry_en_rob_5) begin
-          entry_busy_5 <= 1'b1; // @ ReorderBuffer.scala l171
+          entry_busy_5 <= 1'b1; // @ ReorderBuffer.scala l168
         end else begin
           if(entry_de_rob_5) begin
-            entry_busy_5 <= 1'b0; // @ ReorderBuffer.scala l174
+            entry_busy_5 <= 1'b0; // @ ReorderBuffer.scala l171
           end
         end
       end
-      if((interrupt_vld || entry_flush_real_5)) begin
+      if((interrupt_vld || entry_flush_5)) begin
         entry_state_5 <= ROBStateEnum_IDLE; // @ Enum.scala l151
       end else begin
-        entry_state_5 <= entry_state_nxt_5; // @ ReorderBuffer.scala l182
+        entry_state_5 <= entry_state_nxt_5; // @ ReorderBuffer.scala l179
       end
       if((en_rob_a_fire_20 && (tail_addr == 3'b101))) begin
-        entry_pc_5 <= en_rob_a_payload_pc; // @ ReorderBuffer.scala l230
-        entry_micro_op_5 <= en_rob_a_payload_micro_op; // @ ReorderBuffer.scala l231
-        entry_rd_addr_5 <= en_rob_a_payload_rd_addr; // @ ReorderBuffer.scala l232
-        entry_exception_5 <= en_rob_a_payload_exception; // @ ReorderBuffer.scala l233
+        entry_pc_5 <= en_rob_a_payload_pc; // @ ReorderBuffer.scala l227
+        entry_micro_op_5 <= en_rob_a_payload_micro_op; // @ ReorderBuffer.scala l228
+        entry_rd_addr_5 <= en_rob_a_payload_rd_addr; // @ ReorderBuffer.scala l229
+        entry_exception_5 <= en_rob_a_payload_exception; // @ ReorderBuffer.scala l230
       end else begin
         if((en_rob_b_fire_20 && (tail_addr_add_one == 3'b101))) begin
-          entry_pc_5 <= en_rob_b_payload_pc; // @ ReorderBuffer.scala l236
-          entry_micro_op_5 <= en_rob_b_payload_micro_op; // @ ReorderBuffer.scala l237
-          entry_rd_addr_5 <= en_rob_b_payload_rd_addr; // @ ReorderBuffer.scala l238
-          entry_exception_5 <= en_rob_b_payload_exception; // @ ReorderBuffer.scala l239
+          entry_pc_5 <= en_rob_b_payload_pc; // @ ReorderBuffer.scala l233
+          entry_micro_op_5 <= en_rob_b_payload_micro_op; // @ ReorderBuffer.scala l234
+          entry_rd_addr_5 <= en_rob_b_payload_rd_addr; // @ ReorderBuffer.scala l235
+          entry_exception_5 <= en_rob_b_payload_exception; // @ ReorderBuffer.scala l236
         end
       end
       if((en_rob_a_fire_21 && (tail_addr == 3'b101))) begin
-        entry_rd_val_5 <= en_rob_a_payload_rd_val; // @ ReorderBuffer.scala l244
+        entry_rd_val_5 <= en_rob_a_payload_rd_val; // @ ReorderBuffer.scala l241
       end else begin
         if((en_rob_b_fire_21 && (tail_addr_add_one == 3'b101))) begin
-          entry_rd_val_5 <= en_rob_b_payload_rd_val; // @ ReorderBuffer.scala l247
+          entry_rd_val_5 <= en_rob_b_payload_rd_val; // @ ReorderBuffer.scala l244
         end else begin
           if(entry_exe_done_5) begin
-            entry_rd_val_5 <= entry_exe_rd_val_5; // @ ReorderBuffer.scala l250
+            entry_rd_val_5 <= entry_exe_rd_val_5; // @ ReorderBuffer.scala l247
           end
         end
       end
-      if(entry_flush_real_6) begin
-        entry_busy_6 <= 1'b0; // @ ReorderBuffer.scala l168
+      if((interrupt_vld || entry_flush_6)) begin
+        entry_busy_6 <= 1'b0; // @ ReorderBuffer.scala l165
       end else begin
         if(entry_en_rob_6) begin
-          entry_busy_6 <= 1'b1; // @ ReorderBuffer.scala l171
+          entry_busy_6 <= 1'b1; // @ ReorderBuffer.scala l168
         end else begin
           if(entry_de_rob_6) begin
-            entry_busy_6 <= 1'b0; // @ ReorderBuffer.scala l174
+            entry_busy_6 <= 1'b0; // @ ReorderBuffer.scala l171
           end
         end
       end
-      if((interrupt_vld || entry_flush_real_6)) begin
+      if((interrupt_vld || entry_flush_6)) begin
         entry_state_6 <= ROBStateEnum_IDLE; // @ Enum.scala l151
       end else begin
-        entry_state_6 <= entry_state_nxt_6; // @ ReorderBuffer.scala l182
+        entry_state_6 <= entry_state_nxt_6; // @ ReorderBuffer.scala l179
       end
       if((en_rob_a_fire_23 && (tail_addr == 3'b110))) begin
-        entry_pc_6 <= en_rob_a_payload_pc; // @ ReorderBuffer.scala l230
-        entry_micro_op_6 <= en_rob_a_payload_micro_op; // @ ReorderBuffer.scala l231
-        entry_rd_addr_6 <= en_rob_a_payload_rd_addr; // @ ReorderBuffer.scala l232
-        entry_exception_6 <= en_rob_a_payload_exception; // @ ReorderBuffer.scala l233
+        entry_pc_6 <= en_rob_a_payload_pc; // @ ReorderBuffer.scala l227
+        entry_micro_op_6 <= en_rob_a_payload_micro_op; // @ ReorderBuffer.scala l228
+        entry_rd_addr_6 <= en_rob_a_payload_rd_addr; // @ ReorderBuffer.scala l229
+        entry_exception_6 <= en_rob_a_payload_exception; // @ ReorderBuffer.scala l230
       end else begin
         if((en_rob_b_fire_23 && (tail_addr_add_one == 3'b110))) begin
-          entry_pc_6 <= en_rob_b_payload_pc; // @ ReorderBuffer.scala l236
-          entry_micro_op_6 <= en_rob_b_payload_micro_op; // @ ReorderBuffer.scala l237
-          entry_rd_addr_6 <= en_rob_b_payload_rd_addr; // @ ReorderBuffer.scala l238
-          entry_exception_6 <= en_rob_b_payload_exception; // @ ReorderBuffer.scala l239
+          entry_pc_6 <= en_rob_b_payload_pc; // @ ReorderBuffer.scala l233
+          entry_micro_op_6 <= en_rob_b_payload_micro_op; // @ ReorderBuffer.scala l234
+          entry_rd_addr_6 <= en_rob_b_payload_rd_addr; // @ ReorderBuffer.scala l235
+          entry_exception_6 <= en_rob_b_payload_exception; // @ ReorderBuffer.scala l236
         end
       end
       if((en_rob_a_fire_24 && (tail_addr == 3'b110))) begin
-        entry_rd_val_6 <= en_rob_a_payload_rd_val; // @ ReorderBuffer.scala l244
+        entry_rd_val_6 <= en_rob_a_payload_rd_val; // @ ReorderBuffer.scala l241
       end else begin
         if((en_rob_b_fire_24 && (tail_addr_add_one == 3'b110))) begin
-          entry_rd_val_6 <= en_rob_b_payload_rd_val; // @ ReorderBuffer.scala l247
+          entry_rd_val_6 <= en_rob_b_payload_rd_val; // @ ReorderBuffer.scala l244
         end else begin
           if(entry_exe_done_6) begin
-            entry_rd_val_6 <= entry_exe_rd_val_6; // @ ReorderBuffer.scala l250
+            entry_rd_val_6 <= entry_exe_rd_val_6; // @ ReorderBuffer.scala l247
           end
         end
       end
-      if(entry_flush_real_7) begin
-        entry_busy_7 <= 1'b0; // @ ReorderBuffer.scala l168
+      if((interrupt_vld || entry_flush_7)) begin
+        entry_busy_7 <= 1'b0; // @ ReorderBuffer.scala l165
       end else begin
         if(entry_en_rob_7) begin
-          entry_busy_7 <= 1'b1; // @ ReorderBuffer.scala l171
+          entry_busy_7 <= 1'b1; // @ ReorderBuffer.scala l168
         end else begin
           if(entry_de_rob_7) begin
-            entry_busy_7 <= 1'b0; // @ ReorderBuffer.scala l174
+            entry_busy_7 <= 1'b0; // @ ReorderBuffer.scala l171
           end
         end
       end
-      if((interrupt_vld || entry_flush_real_7)) begin
+      if((interrupt_vld || entry_flush_7)) begin
         entry_state_7 <= ROBStateEnum_IDLE; // @ Enum.scala l151
       end else begin
-        entry_state_7 <= entry_state_nxt_7; // @ ReorderBuffer.scala l182
+        entry_state_7 <= entry_state_nxt_7; // @ ReorderBuffer.scala l179
       end
       if((en_rob_a_fire_26 && (tail_addr == 3'b111))) begin
-        entry_pc_7 <= en_rob_a_payload_pc; // @ ReorderBuffer.scala l230
-        entry_micro_op_7 <= en_rob_a_payload_micro_op; // @ ReorderBuffer.scala l231
-        entry_rd_addr_7 <= en_rob_a_payload_rd_addr; // @ ReorderBuffer.scala l232
-        entry_exception_7 <= en_rob_a_payload_exception; // @ ReorderBuffer.scala l233
+        entry_pc_7 <= en_rob_a_payload_pc; // @ ReorderBuffer.scala l227
+        entry_micro_op_7 <= en_rob_a_payload_micro_op; // @ ReorderBuffer.scala l228
+        entry_rd_addr_7 <= en_rob_a_payload_rd_addr; // @ ReorderBuffer.scala l229
+        entry_exception_7 <= en_rob_a_payload_exception; // @ ReorderBuffer.scala l230
       end else begin
         if((en_rob_b_fire_26 && (tail_addr_add_one == 3'b111))) begin
-          entry_pc_7 <= en_rob_b_payload_pc; // @ ReorderBuffer.scala l236
-          entry_micro_op_7 <= en_rob_b_payload_micro_op; // @ ReorderBuffer.scala l237
-          entry_rd_addr_7 <= en_rob_b_payload_rd_addr; // @ ReorderBuffer.scala l238
-          entry_exception_7 <= en_rob_b_payload_exception; // @ ReorderBuffer.scala l239
+          entry_pc_7 <= en_rob_b_payload_pc; // @ ReorderBuffer.scala l233
+          entry_micro_op_7 <= en_rob_b_payload_micro_op; // @ ReorderBuffer.scala l234
+          entry_rd_addr_7 <= en_rob_b_payload_rd_addr; // @ ReorderBuffer.scala l235
+          entry_exception_7 <= en_rob_b_payload_exception; // @ ReorderBuffer.scala l236
         end
       end
       if((en_rob_a_fire_27 && (tail_addr == 3'b111))) begin
-        entry_rd_val_7 <= en_rob_a_payload_rd_val; // @ ReorderBuffer.scala l244
+        entry_rd_val_7 <= en_rob_a_payload_rd_val; // @ ReorderBuffer.scala l241
       end else begin
         if((en_rob_b_fire_27 && (tail_addr_add_one == 3'b111))) begin
-          entry_rd_val_7 <= en_rob_b_payload_rd_val; // @ ReorderBuffer.scala l247
+          entry_rd_val_7 <= en_rob_b_payload_rd_val; // @ ReorderBuffer.scala l244
         end else begin
           if(entry_exe_done_7) begin
-            entry_rd_val_7 <= entry_exe_rd_val_7; // @ ReorderBuffer.scala l250
+            entry_rd_val_7 <= entry_exe_rd_val_7; // @ ReorderBuffer.scala l247
           end
         end
       end

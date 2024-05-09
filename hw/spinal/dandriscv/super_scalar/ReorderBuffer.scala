@@ -20,8 +20,8 @@ case class ReorderBuffer(p : ReorderBufferConfig) extends Component{
   val exe_rd_val  = in Vec(Bits(64 bits), IQ_NUM)
   val exe_executed= in Vec(Bool(), IQ_NUM)
   // for state trans
-  val iq_rob_ptr = in Vec(UInt(PTR_WIDTH bits), IQ_NUM)
-  val iq_issued = in Vec(Bool(), IQ_NUM)
+  val isq_rob_ptr = in Vec(UInt(PTR_WIDTH bits), IQ_NUM)
+  val isq_issued = in Vec(Bool(), IQ_NUM)
   // interrupt or redirect, flush newest instruction
   val interrupt_vld = in Bool()
   val redirect_vld = in Bool()
@@ -40,14 +40,15 @@ case class ReorderBuffer(p : ReorderBufferConfig) extends Component{
     val state_nxt = Vec(ROBStateEnum(), DEPTH)
     val en_rob = Vec(Bool(), DEPTH)
     val de_rob = Vec(Bool(), DEPTH)
-    val iq_rd_equal = Vec(Bits(IQ_NUM bits), DEPTH)
-    val iq_issue_bits = Vec(Bits(IQ_NUM bits), DEPTH)
-    val iq_issue = Vec(Bool(), DEPTH)
+    val isq_rd_equal = Vec(Bits(IQ_NUM bits), DEPTH)
+    val isq_issue_bits = Vec(Bits(IQ_NUM bits), DEPTH)
+    val isq_issue = Vec(Bool(), DEPTH)
     val exe_rd_equal = Vec(Bits(IQ_NUM bits), DEPTH)
     val exe_done_bits = Vec(Bits(IQ_NUM bits), DEPTH)
     val exe_rd_val = Vec(Bits(64 bits), DEPTH)
     val exe_done = Vec(Bool(), DEPTH)
     val commit = Vec(Bool(), DEPTH)
+    val flush = Vec(Bool(), DEPTH)
   }
 
   // =============== Signals =================
@@ -73,15 +74,13 @@ case class ReorderBuffer(p : ReorderBufferConfig) extends Component{
   val flush = redirect_vld
   val flush_all = interrupt_vld
   val flush_start_ptr = redirect_rob_ptr
-  val entry_flush = Vec(Bool(), DEPTH*2)
-  val entry_flush_real = Vec(Bool(), DEPTH)
   val entry_flush_len =  UInt(PTR_WIDTH bits)
   val entry_flush_bits = Bits(DEPTH*2 bits)
   val entry_flush_bits_full = Bits(DEPTH*4 bits)
   val entry_flush_bits_full_end = UInt(PTR_WIDTH+1 bits)
 
   // when need flush, count length of flush, compute end position
-  //(entry_flush_len=0 means flush 1 entry)
+  // entry_flush_len=0 means flush 1 entry
   entry_flush_len :=  (tail_ptr_sub_one >= flush_start_ptr) ? 
                       (tail_ptr_sub_one - flush_start_ptr) |
                       (U(DEPTH*2, PTR_WIDTH+1 bits) - (flush_start_ptr - tail_ptr_sub_one).resize(PTR_WIDTH+1)).resized
@@ -93,9 +92,7 @@ case class ReorderBuffer(p : ReorderBufferConfig) extends Component{
                                 (U(i, PTR_WIDTH+1 bits) <= entry_flush_bits_full_end)
   }
   for(i <- 0 until DEPTH*2){
-    // flush
-    entry_flush_bits(i) := entry_flush_bits_full(i) || entry_flush_bits_full(i+DEPTH*2)
-    entry_flush(i) := flush && entry_flush_bits(i)
+    entry_flush_bits(i) := flush && (entry_flush_bits_full(i) || entry_flush_bits_full(i+DEPTH*2))
   }
 
   // =============== update head pointer of ROB(oldest) ===============
@@ -139,18 +136,18 @@ case class ReorderBuffer(p : ReorderBufferConfig) extends Component{
                         (en_rob_b.fire && tail_addr_add_one===U(i))
     entry.de_rob(i) :=  (de_rob_a.fire && head_addr===U(i)) || 
                         (de_rob_b.fire && head_addr_add_one===U(i))
-    entry_flush_real(i) := entry_flush(i) || entry_flush(i+DEPTH)
+    entry.flush(i)  := entry_flush_bits(i) || entry_flush_bits(i+DEPTH)
 
     // issue/exe rd equal to rob entry index?
     for(j <- 0 until IQ_NUM){
-      entry.iq_rd_equal(i)(j) := iq_rob_ptr(j)(PTR_WIDTH-2 downto 0)===U(i)
-      entry.exe_rd_equal(i)(j):= exe_rob_ptr(j)(PTR_WIDTH-2 downto 0)===U(i)
+      entry.isq_rd_equal(i)(j) := isq_rob_ptr(j)(PTR_WIDTH-2 downto 0)===U(i)
+      entry.exe_rd_equal(i)(j) := exe_rob_ptr(j)(PTR_WIDTH-2 downto 0)===U(i)
     }
-    entry.exe_done_bits(i) := entry.exe_rd_equal(i) & exe_executed.asBits
-    entry.iq_issue_bits(i) := entry.iq_rd_equal(i)  & iq_issued.asBits
-    entry.iq_issue(i) := entry.iq_issue_bits(i).orR
-    entry.exe_done(i) := entry.exe_done_bits(i).orR
-    entry.exe_rd_val(i) := dataMux(entry.exe_done_bits(i), exe_rd_val.asBits)
+    entry.exe_done_bits(i)  := entry.exe_rd_equal(i) & exe_executed.asBits
+    entry.isq_issue_bits(i) := entry.isq_rd_equal(i)  & isq_issued.asBits
+    entry.isq_issue(i)      := entry.isq_issue_bits(i).orR
+    entry.exe_done(i)       := entry.exe_done_bits(i).orR
+    entry.exe_rd_val(i)     := dataMux(entry.exe_done_bits(i), exe_rd_val.asBits)
 
     // when become oldest and no exception, commit
     entry.commit(i) :=  (entry.busy(i) && 
@@ -164,7 +161,7 @@ case class ReorderBuffer(p : ReorderBufferConfig) extends Component{
     
 
     // ============== busy of ROB entry ==============
-    when(entry_flush_real(i)){
+    when(flush_all || entry.flush(i)){
       entry.busy(i) := False
     }
     .elsewhen(entry.en_rob(i)){
@@ -175,7 +172,7 @@ case class ReorderBuffer(p : ReorderBufferConfig) extends Component{
     }
 
     // ============== state trans of ROB entry ==============
-    when(flush_all || entry_flush_real(i)){
+    when(flush_all || entry.flush(i)){
       entry.state(i) := ROBStateEnum.IDLE
     }
     .otherwise{
@@ -192,7 +189,7 @@ case class ReorderBuffer(p : ReorderBufferConfig) extends Component{
         }
       }
       is(ROBStateEnum.ISSUE){
-        when(entry.iq_issue(i)){
+        when(entry.isq_issue(i)){
           entry.state_nxt(i) := ROBStateEnum.EXECUTE
         }
         .otherwise{
@@ -227,16 +224,16 @@ case class ReorderBuffer(p : ReorderBufferConfig) extends Component{
 
     // ============== pc/u_op/rd_addr/exception of ROB entry==============
     when(en_rob_a.fire && tail_addr===U(i)){
-      entry.pc(i) := en_rob_a.pc
-      entry.micro_op(i) := en_rob_a.micro_op
-      entry.rd_addr(i) := en_rob_a.rd_addr
-      entry.exception(i) := en_rob_a.exception
+      entry.pc(i)         := en_rob_a.pc
+      entry.micro_op(i)   := en_rob_a.micro_op
+      entry.rd_addr(i)    := en_rob_a.rd_addr
+      entry.exception(i)  := en_rob_a.exception
     }
     .elsewhen(en_rob_b.fire && tail_addr_add_one===U(i)){
-      entry.pc(i) := en_rob_b.pc
-      entry.micro_op(i) := en_rob_b.micro_op
-      entry.rd_addr(i) := en_rob_b.rd_addr
-      entry.exception(i) := en_rob_b.exception
+      entry.pc(i)         := en_rob_b.pc
+      entry.micro_op(i)   := en_rob_b.micro_op
+      entry.rd_addr(i)    := en_rob_b.rd_addr
+      entry.exception(i)  := en_rob_b.exception
     }
 
     // ============== rd value of ROB entry==============
@@ -253,20 +250,20 @@ case class ReorderBuffer(p : ReorderBufferConfig) extends Component{
   }
 
   // ============== output ==============
-  en_rob_a.ready := !rob_full
-  en_rob_b.ready := (empty_entry_cnt >= U(2))
+  en_rob_a.ready    := !rob_full
+  en_rob_b.ready    := (empty_entry_cnt >= U(2))
 
-  de_rob_a.valid  := (entry.state(head_addr) === ROBStateEnum.COMMIT)
-  de_rob_a.rd_addr := entry.rd_addr(head_addr)
-  de_rob_a.rd_val  := entry.rd_val(head_addr)
+  de_rob_a.valid    := (entry.state(head_addr) === ROBStateEnum.COMMIT)
+  de_rob_a.rd_addr  := entry.rd_addr(head_addr)
+  de_rob_a.rd_val   := entry.rd_val(head_addr)
 
-  de_rob_b.valid  := (entry.state(head_addr_add_one) === ROBStateEnum.COMMIT)
-  de_rob_b.rd_addr := entry.rd_addr(head_addr_add_one)
-  de_rob_b.rd_val  := entry.rd_val(head_addr_add_one)
+  de_rob_b.valid    := (entry.state(head_addr_add_one) === ROBStateEnum.COMMIT)
+  de_rob_b.rd_addr  := entry.rd_addr(head_addr_add_one)
+  de_rob_b.rd_val   := entry.rd_val(head_addr_add_one)
   
 }
 
 object GenROB extends App {
-  val ROBConfig = ReorderBufferConfig(DEPTH=8, PC_WIDTH=32)
+  val ROBConfig = ReorderBufferConfig(DEPTH=8)
   GenConfig.spinal.generateVerilog(ReorderBuffer(ROBConfig))
 }

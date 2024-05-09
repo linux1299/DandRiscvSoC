@@ -670,6 +670,10 @@
 [0m[[0m[0mdebug[0m] [0m[0m	  D:\MyWork\DandRiscvSoC\target\scala-2.13\classes\dandriscv\super_scalar\CpuConfig$.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	dandriscv\super_scalar\CpuConfig.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  D:\MyWork\DandRiscvSoC\target\scala-2.13\classes\dandriscv\super_scalar\CpuConfig.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	dandriscv\super_scalar\Decode$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  D:\MyWork\DandRiscvSoC\target\scala-2.13\classes\dandriscv\super_scalar\Decode$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	dandriscv\super_scalar\Decode.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  D:\MyWork\DandRiscvSoC\target\scala-2.13\classes\dandriscv\super_scalar\Decode.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	dandriscv\super_scalar\DeQueue$.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  D:\MyWork\DandRiscvSoC\target\scala-2.13\classes\dandriscv\super_scalar\DeQueue$.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	dandriscv\super_scalar\DeQueue.class[0m

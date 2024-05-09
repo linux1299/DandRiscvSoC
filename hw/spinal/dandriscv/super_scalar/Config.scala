@@ -51,20 +51,20 @@ case class IssueQueueConfig(
   def PTR_WIDTH = log2Up(DEPTH)+1
 }
 
-object AluMicroOp extends SpinalEnum(binarySequential){
+object AluCtrlEnum extends SpinalEnum(binarySequential){
   val IDLE, ADD, SUB, SLT, SLTU, XOR, SLL, SRL, SRA, AND, OR, LUI, 
       MUL, MULH, MULHSU, MULHU, DIV, DIVU, REM, REMU, MULW, DIVW, DIVUW, REMW, REMUW = newElement()
 }
 
-object BjuMicroOp extends SpinalEnum(binarySequential){
+object BjuCtrlEnum extends SpinalEnum(binarySequential){
   val IDLE, AUIPC, JAL, JALR, BEQ, BNE, BLT, BGE, BLTU, BGEU, CSR = newElement()
 }
 
-object LsuMicroOp extends SpinalEnum(binarySequential){
+object LsuCtrlEnum extends SpinalEnum(binarySequential){
   val IDLE, LB, LBU, LH, LHU, LW, LWU, LD, SB, SH, SW, SD = newElement()
 }
 
-object ExpMicroOp extends SpinalEnum(binarySequential){
+object ExpCtrlEnum extends SpinalEnum(binarySequential){
   val IDLE, ECALL, EBREAK, MRET, CSRRW, CSRRS, CSRRC, CSRRWI, CSRRSI, CSRRCI = newElement()
 }
 
@@ -82,8 +82,7 @@ object RobMicroOp extends SpinalEnum(binarySequential){
 }
 
 case class ReorderBufferConfig(
-  DEPTH : Int,
-  PC_WIDTH : Int
+  DEPTH : Int
 ){
   def PTR_WIDTH = log2Up(DEPTH)+1
 }
@@ -93,6 +92,7 @@ object CpuConfig{
 
   def IQ_NUM = 4
   def XLEN = 64
+  def PC_WIDTH = 32
 
 }
 
@@ -115,6 +115,8 @@ object MyUtils {
   def dataMux(valid: Bits, data: Bits): Bits = {
     var data_num = valid.getWidth
     var data_len = data.getWidth / data_num
+    // println(s"data_num is $data_num")
+    // println(s"data_len is $data_len")
     val valid_extend = Vec(Bits(data_len bits), data_num)
     val data_valid = Vec(Bits(data_len bits), data_num)
     for(i <- 0 until data_num){

@@ -69,14 +69,14 @@ case class SramPorts(bankNum : Int, bankDepthBits : Int, bankWidth : Int) extend
 
 // ==================== IQ ========================
 case class IQ_MicroOp(IQ_Type: String) extends Bundle {
-  val alu_micro_op    = (IQ_Type == "ALU") generate AluMicroOp()
+  val alu_ctrl_op     = (IQ_Type == "ALU") generate AluCtrlEnum()
   val alu_is_word     = (IQ_Type == "ALU") generate Bool()
   val alu_src2_is_imm = (IQ_Type == "ALU") generate Bool()
 
-  val bju_micro_op = (IQ_Type == "BJU") generate BjuMicroOp()
-  val exp_micro_op = (IQ_Type == "BJU") generate ExpMicroOp()
+  val bju_ctrl_op = (IQ_Type == "BJU") generate BjuCtrlEnum()
+  val exp_ctrl_op = (IQ_Type == "BJU") generate ExpCtrlEnum()
 
-  val lsu_micro_op = (IQ_Type == "LSU") generate LsuMicroOp()
+  val lsu_ctrl_op  = (IQ_Type == "LSU") generate LsuCtrlEnum()
   val lsu_is_load  = (IQ_Type == "LSU") generate Bool()
   val lsu_is_store = (IQ_Type == "LSU") generate Bool()
 

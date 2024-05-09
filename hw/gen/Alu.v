@@ -1,6 +1,6 @@
 // Generator : SpinalHDL v1.8.1    git head : 2a7592004363e5b40ec43e1f122ed8641cd8965b
 // Component : Alu
-// Git hash  : ab30d1527a4a521d9eef589e5304cab7c8f34c1c
+// Git hash  : 26060883647a4520726a39e14d4f7be2c55d6aa3
 
 `timescale 1ns/1ps
 
@@ -14,7 +14,7 @@ module Alu (
   input      [63:0]   src_ports_payload_src1,
   input      [63:0]   src_ports_payload_src2,
   input      [63:0]   src_ports_payload_imm,
-  input      [4:0]    src_ports_payload_micro_op_alu_micro_op,
+  input      [4:0]    src_ports_payload_micro_op_alu_ctrl_op,
   input               src_ports_payload_micro_op_alu_is_word,
   input               src_ports_payload_micro_op_alu_src2_is_imm,
   output              dst_ports_valid,
@@ -23,31 +23,31 @@ module Alu (
   input               clk_1,
   input               resetn
 );
-  localparam AluMicroOp_IDLE = 5'd0;
-  localparam AluMicroOp_ADD = 5'd1;
-  localparam AluMicroOp_SUB = 5'd2;
-  localparam AluMicroOp_SLT = 5'd3;
-  localparam AluMicroOp_SLTU = 5'd4;
-  localparam AluMicroOp_XOR_1 = 5'd5;
-  localparam AluMicroOp_SLL_1 = 5'd6;
-  localparam AluMicroOp_SRL_1 = 5'd7;
-  localparam AluMicroOp_SRA_1 = 5'd8;
-  localparam AluMicroOp_AND_1 = 5'd9;
-  localparam AluMicroOp_OR_1 = 5'd10;
-  localparam AluMicroOp_LUI = 5'd11;
-  localparam AluMicroOp_MUL = 5'd12;
-  localparam AluMicroOp_MULH = 5'd13;
-  localparam AluMicroOp_MULHSU = 5'd14;
-  localparam AluMicroOp_MULHU = 5'd15;
-  localparam AluMicroOp_DIV = 5'd16;
-  localparam AluMicroOp_DIVU = 5'd17;
-  localparam AluMicroOp_REM_1 = 5'd18;
-  localparam AluMicroOp_REMU = 5'd19;
-  localparam AluMicroOp_MULW = 5'd20;
-  localparam AluMicroOp_DIVW = 5'd21;
-  localparam AluMicroOp_DIVUW = 5'd22;
-  localparam AluMicroOp_REMW = 5'd23;
-  localparam AluMicroOp_REMUW = 5'd24;
+  localparam AluCtrlEnum_IDLE = 5'd0;
+  localparam AluCtrlEnum_ADD = 5'd1;
+  localparam AluCtrlEnum_SUB = 5'd2;
+  localparam AluCtrlEnum_SLT = 5'd3;
+  localparam AluCtrlEnum_SLTU = 5'd4;
+  localparam AluCtrlEnum_XOR_1 = 5'd5;
+  localparam AluCtrlEnum_SLL_1 = 5'd6;
+  localparam AluCtrlEnum_SRL_1 = 5'd7;
+  localparam AluCtrlEnum_SRA_1 = 5'd8;
+  localparam AluCtrlEnum_AND_1 = 5'd9;
+  localparam AluCtrlEnum_OR_1 = 5'd10;
+  localparam AluCtrlEnum_LUI = 5'd11;
+  localparam AluCtrlEnum_MUL = 5'd12;
+  localparam AluCtrlEnum_MULH = 5'd13;
+  localparam AluCtrlEnum_MULHSU = 5'd14;
+  localparam AluCtrlEnum_MULHU = 5'd15;
+  localparam AluCtrlEnum_DIV = 5'd16;
+  localparam AluCtrlEnum_DIVU = 5'd17;
+  localparam AluCtrlEnum_REM_1 = 5'd18;
+  localparam AluCtrlEnum_REMU = 5'd19;
+  localparam AluCtrlEnum_MULW = 5'd20;
+  localparam AluCtrlEnum_DIVW = 5'd21;
+  localparam AluCtrlEnum_DIVUW = 5'd22;
+  localparam AluCtrlEnum_REMW = 5'd23;
+  localparam AluCtrlEnum_REMUW = 5'd24;
 
   wire                mul_io_src1_is_signed;
   wire                mul_io_src2_is_signed;
@@ -106,13 +106,13 @@ module Alu (
   wire                alu_is_div;
   wire                tmp_src_ports_ready;
   reg                 tmp_src_ports_ready_1;
-  wire       [4:0]    tmp_src_stream_payload_micro_op_alu_micro_op;
+  wire       [4:0]    tmp_src_stream_payload_micro_op_alu_ctrl_op;
   reg                 src_stream_valid;
   wire                src_stream_ready;
   wire       [63:0]   src_stream_payload_src1;
   wire       [63:0]   src_stream_payload_src2;
   wire       [63:0]   src_stream_payload_imm;
-  wire       [4:0]    src_stream_payload_micro_op_alu_micro_op;
+  wire       [4:0]    src_stream_payload_micro_op_alu_ctrl_op;
   wire                src_stream_payload_micro_op_alu_is_word;
   wire                src_stream_payload_micro_op_alu_src2_is_imm;
   wire                dst_stream_valid;
@@ -123,16 +123,16 @@ module Alu (
   wire       [63:0]   mul_result;
   wire                tmp_mul_result;
   reg        [31:0]   tmp_mul_result_1;
-  wire                src_ports_fire;
+  wire                src_stream_fire;
   wire                dst_stream_m2sPipe_valid;
   wire                dst_stream_m2sPipe_ready;
   wire       [63:0]   dst_stream_m2sPipe_payload_result;
   reg                 dst_stream_rValid;
   reg        [63:0]   dst_stream_rData_result;
   `ifndef SYNTHESIS
-  reg [47:0] src_ports_payload_micro_op_alu_micro_op_string;
-  reg [47:0] tmp_src_stream_payload_micro_op_alu_micro_op_string;
-  reg [47:0] src_stream_payload_micro_op_alu_micro_op_string;
+  reg [47:0] src_ports_payload_micro_op_alu_ctrl_op_string;
+  reg [47:0] tmp_src_stream_payload_micro_op_alu_ctrl_op_string;
+  reg [47:0] src_stream_payload_micro_op_alu_ctrl_op_string;
   `endif
 
 
@@ -159,7 +159,7 @@ module Alu (
     .io_clk          (clk                                   ), //i
     .io_rst_n        (rst_n                                 ), //i
     .io_flush        (flush                                 ), //i
-    .io_start        (src_ports_fire                        ), //i
+    .io_start        (src_stream_fire                       ), //i
     .io_busy         (div_1_io_busy                         ), //o
     .io_done_valid   (div_1_io_done_valid                   ), //o
     .io_done_ready   (dst_stream_ready                      ), //i
@@ -172,93 +172,93 @@ module Alu (
   );
   `ifndef SYNTHESIS
   always @(*) begin
-    case(src_ports_payload_micro_op_alu_micro_op)
-      AluMicroOp_IDLE : src_ports_payload_micro_op_alu_micro_op_string = "IDLE  ";
-      AluMicroOp_ADD : src_ports_payload_micro_op_alu_micro_op_string = "ADD   ";
-      AluMicroOp_SUB : src_ports_payload_micro_op_alu_micro_op_string = "SUB   ";
-      AluMicroOp_SLT : src_ports_payload_micro_op_alu_micro_op_string = "SLT   ";
-      AluMicroOp_SLTU : src_ports_payload_micro_op_alu_micro_op_string = "SLTU  ";
-      AluMicroOp_XOR_1 : src_ports_payload_micro_op_alu_micro_op_string = "XOR_1 ";
-      AluMicroOp_SLL_1 : src_ports_payload_micro_op_alu_micro_op_string = "SLL_1 ";
-      AluMicroOp_SRL_1 : src_ports_payload_micro_op_alu_micro_op_string = "SRL_1 ";
-      AluMicroOp_SRA_1 : src_ports_payload_micro_op_alu_micro_op_string = "SRA_1 ";
-      AluMicroOp_AND_1 : src_ports_payload_micro_op_alu_micro_op_string = "AND_1 ";
-      AluMicroOp_OR_1 : src_ports_payload_micro_op_alu_micro_op_string = "OR_1  ";
-      AluMicroOp_LUI : src_ports_payload_micro_op_alu_micro_op_string = "LUI   ";
-      AluMicroOp_MUL : src_ports_payload_micro_op_alu_micro_op_string = "MUL   ";
-      AluMicroOp_MULH : src_ports_payload_micro_op_alu_micro_op_string = "MULH  ";
-      AluMicroOp_MULHSU : src_ports_payload_micro_op_alu_micro_op_string = "MULHSU";
-      AluMicroOp_MULHU : src_ports_payload_micro_op_alu_micro_op_string = "MULHU ";
-      AluMicroOp_DIV : src_ports_payload_micro_op_alu_micro_op_string = "DIV   ";
-      AluMicroOp_DIVU : src_ports_payload_micro_op_alu_micro_op_string = "DIVU  ";
-      AluMicroOp_REM_1 : src_ports_payload_micro_op_alu_micro_op_string = "REM_1 ";
-      AluMicroOp_REMU : src_ports_payload_micro_op_alu_micro_op_string = "REMU  ";
-      AluMicroOp_MULW : src_ports_payload_micro_op_alu_micro_op_string = "MULW  ";
-      AluMicroOp_DIVW : src_ports_payload_micro_op_alu_micro_op_string = "DIVW  ";
-      AluMicroOp_DIVUW : src_ports_payload_micro_op_alu_micro_op_string = "DIVUW ";
-      AluMicroOp_REMW : src_ports_payload_micro_op_alu_micro_op_string = "REMW  ";
-      AluMicroOp_REMUW : src_ports_payload_micro_op_alu_micro_op_string = "REMUW ";
-      default : src_ports_payload_micro_op_alu_micro_op_string = "??????";
+    case(src_ports_payload_micro_op_alu_ctrl_op)
+      AluCtrlEnum_IDLE : src_ports_payload_micro_op_alu_ctrl_op_string = "IDLE  ";
+      AluCtrlEnum_ADD : src_ports_payload_micro_op_alu_ctrl_op_string = "ADD   ";
+      AluCtrlEnum_SUB : src_ports_payload_micro_op_alu_ctrl_op_string = "SUB   ";
+      AluCtrlEnum_SLT : src_ports_payload_micro_op_alu_ctrl_op_string = "SLT   ";
+      AluCtrlEnum_SLTU : src_ports_payload_micro_op_alu_ctrl_op_string = "SLTU  ";
+      AluCtrlEnum_XOR_1 : src_ports_payload_micro_op_alu_ctrl_op_string = "XOR_1 ";
+      AluCtrlEnum_SLL_1 : src_ports_payload_micro_op_alu_ctrl_op_string = "SLL_1 ";
+      AluCtrlEnum_SRL_1 : src_ports_payload_micro_op_alu_ctrl_op_string = "SRL_1 ";
+      AluCtrlEnum_SRA_1 : src_ports_payload_micro_op_alu_ctrl_op_string = "SRA_1 ";
+      AluCtrlEnum_AND_1 : src_ports_payload_micro_op_alu_ctrl_op_string = "AND_1 ";
+      AluCtrlEnum_OR_1 : src_ports_payload_micro_op_alu_ctrl_op_string = "OR_1  ";
+      AluCtrlEnum_LUI : src_ports_payload_micro_op_alu_ctrl_op_string = "LUI   ";
+      AluCtrlEnum_MUL : src_ports_payload_micro_op_alu_ctrl_op_string = "MUL   ";
+      AluCtrlEnum_MULH : src_ports_payload_micro_op_alu_ctrl_op_string = "MULH  ";
+      AluCtrlEnum_MULHSU : src_ports_payload_micro_op_alu_ctrl_op_string = "MULHSU";
+      AluCtrlEnum_MULHU : src_ports_payload_micro_op_alu_ctrl_op_string = "MULHU ";
+      AluCtrlEnum_DIV : src_ports_payload_micro_op_alu_ctrl_op_string = "DIV   ";
+      AluCtrlEnum_DIVU : src_ports_payload_micro_op_alu_ctrl_op_string = "DIVU  ";
+      AluCtrlEnum_REM_1 : src_ports_payload_micro_op_alu_ctrl_op_string = "REM_1 ";
+      AluCtrlEnum_REMU : src_ports_payload_micro_op_alu_ctrl_op_string = "REMU  ";
+      AluCtrlEnum_MULW : src_ports_payload_micro_op_alu_ctrl_op_string = "MULW  ";
+      AluCtrlEnum_DIVW : src_ports_payload_micro_op_alu_ctrl_op_string = "DIVW  ";
+      AluCtrlEnum_DIVUW : src_ports_payload_micro_op_alu_ctrl_op_string = "DIVUW ";
+      AluCtrlEnum_REMW : src_ports_payload_micro_op_alu_ctrl_op_string = "REMW  ";
+      AluCtrlEnum_REMUW : src_ports_payload_micro_op_alu_ctrl_op_string = "REMUW ";
+      default : src_ports_payload_micro_op_alu_ctrl_op_string = "??????";
     endcase
   end
   always @(*) begin
-    case(tmp_src_stream_payload_micro_op_alu_micro_op)
-      AluMicroOp_IDLE : tmp_src_stream_payload_micro_op_alu_micro_op_string = "IDLE  ";
-      AluMicroOp_ADD : tmp_src_stream_payload_micro_op_alu_micro_op_string = "ADD   ";
-      AluMicroOp_SUB : tmp_src_stream_payload_micro_op_alu_micro_op_string = "SUB   ";
-      AluMicroOp_SLT : tmp_src_stream_payload_micro_op_alu_micro_op_string = "SLT   ";
-      AluMicroOp_SLTU : tmp_src_stream_payload_micro_op_alu_micro_op_string = "SLTU  ";
-      AluMicroOp_XOR_1 : tmp_src_stream_payload_micro_op_alu_micro_op_string = "XOR_1 ";
-      AluMicroOp_SLL_1 : tmp_src_stream_payload_micro_op_alu_micro_op_string = "SLL_1 ";
-      AluMicroOp_SRL_1 : tmp_src_stream_payload_micro_op_alu_micro_op_string = "SRL_1 ";
-      AluMicroOp_SRA_1 : tmp_src_stream_payload_micro_op_alu_micro_op_string = "SRA_1 ";
-      AluMicroOp_AND_1 : tmp_src_stream_payload_micro_op_alu_micro_op_string = "AND_1 ";
-      AluMicroOp_OR_1 : tmp_src_stream_payload_micro_op_alu_micro_op_string = "OR_1  ";
-      AluMicroOp_LUI : tmp_src_stream_payload_micro_op_alu_micro_op_string = "LUI   ";
-      AluMicroOp_MUL : tmp_src_stream_payload_micro_op_alu_micro_op_string = "MUL   ";
-      AluMicroOp_MULH : tmp_src_stream_payload_micro_op_alu_micro_op_string = "MULH  ";
-      AluMicroOp_MULHSU : tmp_src_stream_payload_micro_op_alu_micro_op_string = "MULHSU";
-      AluMicroOp_MULHU : tmp_src_stream_payload_micro_op_alu_micro_op_string = "MULHU ";
-      AluMicroOp_DIV : tmp_src_stream_payload_micro_op_alu_micro_op_string = "DIV   ";
-      AluMicroOp_DIVU : tmp_src_stream_payload_micro_op_alu_micro_op_string = "DIVU  ";
-      AluMicroOp_REM_1 : tmp_src_stream_payload_micro_op_alu_micro_op_string = "REM_1 ";
-      AluMicroOp_REMU : tmp_src_stream_payload_micro_op_alu_micro_op_string = "REMU  ";
-      AluMicroOp_MULW : tmp_src_stream_payload_micro_op_alu_micro_op_string = "MULW  ";
-      AluMicroOp_DIVW : tmp_src_stream_payload_micro_op_alu_micro_op_string = "DIVW  ";
-      AluMicroOp_DIVUW : tmp_src_stream_payload_micro_op_alu_micro_op_string = "DIVUW ";
-      AluMicroOp_REMW : tmp_src_stream_payload_micro_op_alu_micro_op_string = "REMW  ";
-      AluMicroOp_REMUW : tmp_src_stream_payload_micro_op_alu_micro_op_string = "REMUW ";
-      default : tmp_src_stream_payload_micro_op_alu_micro_op_string = "??????";
+    case(tmp_src_stream_payload_micro_op_alu_ctrl_op)
+      AluCtrlEnum_IDLE : tmp_src_stream_payload_micro_op_alu_ctrl_op_string = "IDLE  ";
+      AluCtrlEnum_ADD : tmp_src_stream_payload_micro_op_alu_ctrl_op_string = "ADD   ";
+      AluCtrlEnum_SUB : tmp_src_stream_payload_micro_op_alu_ctrl_op_string = "SUB   ";
+      AluCtrlEnum_SLT : tmp_src_stream_payload_micro_op_alu_ctrl_op_string = "SLT   ";
+      AluCtrlEnum_SLTU : tmp_src_stream_payload_micro_op_alu_ctrl_op_string = "SLTU  ";
+      AluCtrlEnum_XOR_1 : tmp_src_stream_payload_micro_op_alu_ctrl_op_string = "XOR_1 ";
+      AluCtrlEnum_SLL_1 : tmp_src_stream_payload_micro_op_alu_ctrl_op_string = "SLL_1 ";
+      AluCtrlEnum_SRL_1 : tmp_src_stream_payload_micro_op_alu_ctrl_op_string = "SRL_1 ";
+      AluCtrlEnum_SRA_1 : tmp_src_stream_payload_micro_op_alu_ctrl_op_string = "SRA_1 ";
+      AluCtrlEnum_AND_1 : tmp_src_stream_payload_micro_op_alu_ctrl_op_string = "AND_1 ";
+      AluCtrlEnum_OR_1 : tmp_src_stream_payload_micro_op_alu_ctrl_op_string = "OR_1  ";
+      AluCtrlEnum_LUI : tmp_src_stream_payload_micro_op_alu_ctrl_op_string = "LUI   ";
+      AluCtrlEnum_MUL : tmp_src_stream_payload_micro_op_alu_ctrl_op_string = "MUL   ";
+      AluCtrlEnum_MULH : tmp_src_stream_payload_micro_op_alu_ctrl_op_string = "MULH  ";
+      AluCtrlEnum_MULHSU : tmp_src_stream_payload_micro_op_alu_ctrl_op_string = "MULHSU";
+      AluCtrlEnum_MULHU : tmp_src_stream_payload_micro_op_alu_ctrl_op_string = "MULHU ";
+      AluCtrlEnum_DIV : tmp_src_stream_payload_micro_op_alu_ctrl_op_string = "DIV   ";
+      AluCtrlEnum_DIVU : tmp_src_stream_payload_micro_op_alu_ctrl_op_string = "DIVU  ";
+      AluCtrlEnum_REM_1 : tmp_src_stream_payload_micro_op_alu_ctrl_op_string = "REM_1 ";
+      AluCtrlEnum_REMU : tmp_src_stream_payload_micro_op_alu_ctrl_op_string = "REMU  ";
+      AluCtrlEnum_MULW : tmp_src_stream_payload_micro_op_alu_ctrl_op_string = "MULW  ";
+      AluCtrlEnum_DIVW : tmp_src_stream_payload_micro_op_alu_ctrl_op_string = "DIVW  ";
+      AluCtrlEnum_DIVUW : tmp_src_stream_payload_micro_op_alu_ctrl_op_string = "DIVUW ";
+      AluCtrlEnum_REMW : tmp_src_stream_payload_micro_op_alu_ctrl_op_string = "REMW  ";
+      AluCtrlEnum_REMUW : tmp_src_stream_payload_micro_op_alu_ctrl_op_string = "REMUW ";
+      default : tmp_src_stream_payload_micro_op_alu_ctrl_op_string = "??????";
     endcase
   end
   always @(*) begin
-    case(src_stream_payload_micro_op_alu_micro_op)
-      AluMicroOp_IDLE : src_stream_payload_micro_op_alu_micro_op_string = "IDLE  ";
-      AluMicroOp_ADD : src_stream_payload_micro_op_alu_micro_op_string = "ADD   ";
-      AluMicroOp_SUB : src_stream_payload_micro_op_alu_micro_op_string = "SUB   ";
-      AluMicroOp_SLT : src_stream_payload_micro_op_alu_micro_op_string = "SLT   ";
-      AluMicroOp_SLTU : src_stream_payload_micro_op_alu_micro_op_string = "SLTU  ";
-      AluMicroOp_XOR_1 : src_stream_payload_micro_op_alu_micro_op_string = "XOR_1 ";
-      AluMicroOp_SLL_1 : src_stream_payload_micro_op_alu_micro_op_string = "SLL_1 ";
-      AluMicroOp_SRL_1 : src_stream_payload_micro_op_alu_micro_op_string = "SRL_1 ";
-      AluMicroOp_SRA_1 : src_stream_payload_micro_op_alu_micro_op_string = "SRA_1 ";
-      AluMicroOp_AND_1 : src_stream_payload_micro_op_alu_micro_op_string = "AND_1 ";
-      AluMicroOp_OR_1 : src_stream_payload_micro_op_alu_micro_op_string = "OR_1  ";
-      AluMicroOp_LUI : src_stream_payload_micro_op_alu_micro_op_string = "LUI   ";
-      AluMicroOp_MUL : src_stream_payload_micro_op_alu_micro_op_string = "MUL   ";
-      AluMicroOp_MULH : src_stream_payload_micro_op_alu_micro_op_string = "MULH  ";
-      AluMicroOp_MULHSU : src_stream_payload_micro_op_alu_micro_op_string = "MULHSU";
-      AluMicroOp_MULHU : src_stream_payload_micro_op_alu_micro_op_string = "MULHU ";
-      AluMicroOp_DIV : src_stream_payload_micro_op_alu_micro_op_string = "DIV   ";
-      AluMicroOp_DIVU : src_stream_payload_micro_op_alu_micro_op_string = "DIVU  ";
-      AluMicroOp_REM_1 : src_stream_payload_micro_op_alu_micro_op_string = "REM_1 ";
-      AluMicroOp_REMU : src_stream_payload_micro_op_alu_micro_op_string = "REMU  ";
-      AluMicroOp_MULW : src_stream_payload_micro_op_alu_micro_op_string = "MULW  ";
-      AluMicroOp_DIVW : src_stream_payload_micro_op_alu_micro_op_string = "DIVW  ";
-      AluMicroOp_DIVUW : src_stream_payload_micro_op_alu_micro_op_string = "DIVUW ";
-      AluMicroOp_REMW : src_stream_payload_micro_op_alu_micro_op_string = "REMW  ";
-      AluMicroOp_REMUW : src_stream_payload_micro_op_alu_micro_op_string = "REMUW ";
-      default : src_stream_payload_micro_op_alu_micro_op_string = "??????";
+    case(src_stream_payload_micro_op_alu_ctrl_op)
+      AluCtrlEnum_IDLE : src_stream_payload_micro_op_alu_ctrl_op_string = "IDLE  ";
+      AluCtrlEnum_ADD : src_stream_payload_micro_op_alu_ctrl_op_string = "ADD   ";
+      AluCtrlEnum_SUB : src_stream_payload_micro_op_alu_ctrl_op_string = "SUB   ";
+      AluCtrlEnum_SLT : src_stream_payload_micro_op_alu_ctrl_op_string = "SLT   ";
+      AluCtrlEnum_SLTU : src_stream_payload_micro_op_alu_ctrl_op_string = "SLTU  ";
+      AluCtrlEnum_XOR_1 : src_stream_payload_micro_op_alu_ctrl_op_string = "XOR_1 ";
+      AluCtrlEnum_SLL_1 : src_stream_payload_micro_op_alu_ctrl_op_string = "SLL_1 ";
+      AluCtrlEnum_SRL_1 : src_stream_payload_micro_op_alu_ctrl_op_string = "SRL_1 ";
+      AluCtrlEnum_SRA_1 : src_stream_payload_micro_op_alu_ctrl_op_string = "SRA_1 ";
+      AluCtrlEnum_AND_1 : src_stream_payload_micro_op_alu_ctrl_op_string = "AND_1 ";
+      AluCtrlEnum_OR_1 : src_stream_payload_micro_op_alu_ctrl_op_string = "OR_1  ";
+      AluCtrlEnum_LUI : src_stream_payload_micro_op_alu_ctrl_op_string = "LUI   ";
+      AluCtrlEnum_MUL : src_stream_payload_micro_op_alu_ctrl_op_string = "MUL   ";
+      AluCtrlEnum_MULH : src_stream_payload_micro_op_alu_ctrl_op_string = "MULH  ";
+      AluCtrlEnum_MULHSU : src_stream_payload_micro_op_alu_ctrl_op_string = "MULHSU";
+      AluCtrlEnum_MULHU : src_stream_payload_micro_op_alu_ctrl_op_string = "MULHU ";
+      AluCtrlEnum_DIV : src_stream_payload_micro_op_alu_ctrl_op_string = "DIV   ";
+      AluCtrlEnum_DIVU : src_stream_payload_micro_op_alu_ctrl_op_string = "DIVU  ";
+      AluCtrlEnum_REM_1 : src_stream_payload_micro_op_alu_ctrl_op_string = "REM_1 ";
+      AluCtrlEnum_REMU : src_stream_payload_micro_op_alu_ctrl_op_string = "REMU  ";
+      AluCtrlEnum_MULW : src_stream_payload_micro_op_alu_ctrl_op_string = "MULW  ";
+      AluCtrlEnum_DIVW : src_stream_payload_micro_op_alu_ctrl_op_string = "DIVW  ";
+      AluCtrlEnum_DIVUW : src_stream_payload_micro_op_alu_ctrl_op_string = "DIVUW ";
+      AluCtrlEnum_REMW : src_stream_payload_micro_op_alu_ctrl_op_string = "REMW  ";
+      AluCtrlEnum_REMUW : src_stream_payload_micro_op_alu_ctrl_op_string = "REMUW ";
+      default : src_stream_payload_micro_op_alu_ctrl_op_string = "??????";
     endcase
   end
   `endif
@@ -464,13 +464,13 @@ module Alu (
   end
 
   assign sraw_result = {tmp_sraw_result_1,sraw_temp}; // @ BaseType.scala l299
-  assign alu_is_mul = (((((src_ports_payload_micro_op_alu_micro_op == AluMicroOp_MUL) || (src_ports_payload_micro_op_alu_micro_op == AluMicroOp_MULH)) || (src_ports_payload_micro_op_alu_micro_op == AluMicroOp_MULHSU)) || (src_ports_payload_micro_op_alu_micro_op == AluMicroOp_MULHU)) || (src_ports_payload_micro_op_alu_micro_op == AluMicroOp_MULW)); // @ BaseType.scala l305
-  assign alu_is_quo = ((((src_ports_payload_micro_op_alu_micro_op == AluMicroOp_DIV) || (src_ports_payload_micro_op_alu_micro_op == AluMicroOp_DIVU)) || (src_ports_payload_micro_op_alu_micro_op == AluMicroOp_DIVW)) || (src_ports_payload_micro_op_alu_micro_op == AluMicroOp_DIVUW)); // @ BaseType.scala l305
-  assign alu_is_rem = ((((src_ports_payload_micro_op_alu_micro_op == AluMicroOp_REM_1) || (src_ports_payload_micro_op_alu_micro_op == AluMicroOp_REMU)) || (src_ports_payload_micro_op_alu_micro_op == AluMicroOp_REMW)) || (src_ports_payload_micro_op_alu_micro_op == AluMicroOp_REMUW)); // @ BaseType.scala l305
+  assign alu_is_mul = (((((src_ports_payload_micro_op_alu_ctrl_op == AluCtrlEnum_MUL) || (src_ports_payload_micro_op_alu_ctrl_op == AluCtrlEnum_MULH)) || (src_ports_payload_micro_op_alu_ctrl_op == AluCtrlEnum_MULHSU)) || (src_ports_payload_micro_op_alu_ctrl_op == AluCtrlEnum_MULHU)) || (src_ports_payload_micro_op_alu_ctrl_op == AluCtrlEnum_MULW)); // @ BaseType.scala l305
+  assign alu_is_quo = ((((src_ports_payload_micro_op_alu_ctrl_op == AluCtrlEnum_DIV) || (src_ports_payload_micro_op_alu_ctrl_op == AluCtrlEnum_DIVU)) || (src_ports_payload_micro_op_alu_ctrl_op == AluCtrlEnum_DIVW)) || (src_ports_payload_micro_op_alu_ctrl_op == AluCtrlEnum_DIVUW)); // @ BaseType.scala l305
+  assign alu_is_rem = ((((src_ports_payload_micro_op_alu_ctrl_op == AluCtrlEnum_REM_1) || (src_ports_payload_micro_op_alu_ctrl_op == AluCtrlEnum_REMU)) || (src_ports_payload_micro_op_alu_ctrl_op == AluCtrlEnum_REMW)) || (src_ports_payload_micro_op_alu_ctrl_op == AluCtrlEnum_REMUW)); // @ BaseType.scala l305
   assign alu_is_div = (alu_is_quo || alu_is_rem); // @ BaseType.scala l305
   assign tmp_src_ports_ready = (! stall); // @ BaseType.scala l299
   assign src_ports_ready = (tmp_src_ports_ready_1 && tmp_src_ports_ready); // @ Stream.scala l427
-  assign tmp_src_stream_payload_micro_op_alu_micro_op = src_ports_payload_micro_op_alu_micro_op; // @ Stream.scala l428
+  assign tmp_src_stream_payload_micro_op_alu_ctrl_op = src_ports_payload_micro_op_alu_ctrl_op; // @ Stream.scala l428
   always @(*) begin
     src_stream_valid = (src_ports_valid && tmp_src_ports_ready); // @ Stream.scala l294
     if(flush) begin
@@ -488,74 +488,74 @@ module Alu (
   assign src_stream_payload_src1 = src_ports_payload_src1; // @ Stream.scala l296
   assign src_stream_payload_src2 = src_ports_payload_src2; // @ Stream.scala l296
   assign src_stream_payload_imm = src_ports_payload_imm; // @ Stream.scala l296
-  assign src_stream_payload_micro_op_alu_micro_op = tmp_src_stream_payload_micro_op_alu_micro_op; // @ Stream.scala l296
+  assign src_stream_payload_micro_op_alu_ctrl_op = tmp_src_stream_payload_micro_op_alu_ctrl_op; // @ Stream.scala l296
   assign src_stream_payload_micro_op_alu_is_word = src_ports_payload_micro_op_alu_is_word; // @ Stream.scala l296
   assign src_stream_payload_micro_op_alu_src2_is_imm = src_ports_payload_micro_op_alu_src2_is_imm; // @ Stream.scala l296
   always @(*) begin
-    case(src_ports_payload_micro_op_alu_micro_op)
-      AluMicroOp_ADD : begin
-        if((src_ports_payload_micro_op_alu_is_word == 1'b1)) begin
-          alu_result = addw_result; // @ Alu.scala l74
+    case(src_ports_payload_micro_op_alu_ctrl_op)
+      AluCtrlEnum_ADD : begin
+        if(src_ports_payload_micro_op_alu_is_word) begin
+          alu_result = addw_result; // @ Alu.scala l76
         end else begin
-          alu_result = add_result; // @ Alu.scala l76
+          alu_result = add_result; // @ Alu.scala l78
         end
       end
-      AluMicroOp_SUB : begin
-        if((src_ports_payload_micro_op_alu_is_word == 1'b1)) begin
-          alu_result = subw_result; // @ Alu.scala l81
+      AluCtrlEnum_SUB : begin
+        if(src_ports_payload_micro_op_alu_is_word) begin
+          alu_result = subw_result; // @ Alu.scala l83
         end else begin
-          alu_result = sub_result; // @ Alu.scala l83
+          alu_result = sub_result; // @ Alu.scala l85
         end
       end
-      AluMicroOp_SLT : begin
-        alu_result = {tmp_alu_result,slt_result}; // @ Alu.scala l87
+      AluCtrlEnum_SLT : begin
+        alu_result = {tmp_alu_result,slt_result}; // @ Alu.scala l89
       end
-      AluMicroOp_SLTU : begin
-        alu_result = {tmp_alu_result_1,sltu_result}; // @ Alu.scala l90
+      AluCtrlEnum_SLTU : begin
+        alu_result = {tmp_alu_result_1,sltu_result}; // @ Alu.scala l92
       end
-      AluMicroOp_XOR_1 : begin
-        alu_result = xor_result; // @ Alu.scala l93
+      AluCtrlEnum_XOR_1 : begin
+        alu_result = xor_result; // @ Alu.scala l95
       end
-      AluMicroOp_SLL_1 : begin
-        if((src_ports_payload_micro_op_alu_is_word == 1'b1)) begin
-          alu_result = sllw_result; // @ Alu.scala l97
+      AluCtrlEnum_SLL_1 : begin
+        if(src_ports_payload_micro_op_alu_is_word) begin
+          alu_result = sllw_result; // @ Alu.scala l99
         end else begin
-          alu_result = sll_result; // @ Alu.scala l99
+          alu_result = sll_result; // @ Alu.scala l101
         end
       end
-      AluMicroOp_SRL_1 : begin
-        if((src_ports_payload_micro_op_alu_is_word == 1'b1)) begin
-          alu_result = srlw_result; // @ Alu.scala l104
+      AluCtrlEnum_SRL_1 : begin
+        if(src_ports_payload_micro_op_alu_is_word) begin
+          alu_result = srlw_result; // @ Alu.scala l106
         end else begin
-          alu_result = srl_result; // @ Alu.scala l106
+          alu_result = srl_result; // @ Alu.scala l108
         end
       end
-      AluMicroOp_SRA_1 : begin
-        if((src_ports_payload_micro_op_alu_is_word == 1'b1)) begin
-          alu_result = sraw_result; // @ Alu.scala l111
+      AluCtrlEnum_SRA_1 : begin
+        if(src_ports_payload_micro_op_alu_is_word) begin
+          alu_result = sraw_result; // @ Alu.scala l113
         end else begin
-          alu_result = sra_result; // @ Alu.scala l113
+          alu_result = sra_result; // @ Alu.scala l115
         end
       end
-      AluMicroOp_AND_1 : begin
-        alu_result = and_result; // @ Alu.scala l117
+      AluCtrlEnum_AND_1 : begin
+        alu_result = and_result; // @ Alu.scala l119
       end
-      AluMicroOp_OR_1 : begin
-        alu_result = or_result; // @ Alu.scala l120
+      AluCtrlEnum_OR_1 : begin
+        alu_result = or_result; // @ Alu.scala l122
       end
-      AluMicroOp_LUI : begin
-        alu_result = src_ports_payload_imm; // @ Alu.scala l123
+      AluCtrlEnum_LUI : begin
+        alu_result = src_ports_payload_imm; // @ Alu.scala l125
       end
       default : begin
-        alu_result = 64'h0; // @ Alu.scala l126
+        alu_result = 64'h0; // @ Alu.scala l128
       end
     endcase
   end
 
   assign tmp_alu_result[62 : 0] = 63'h0; // @ Literal.scala l88
   assign tmp_alu_result_1[62 : 0] = 63'h0; // @ Literal.scala l88
-  assign mul_io_src1_is_signed = (((src_ports_payload_micro_op_alu_micro_op == AluMicroOp_MUL) || (src_ports_payload_micro_op_alu_micro_op == AluMicroOp_MULH)) || (src_ports_payload_micro_op_alu_micro_op == AluMicroOp_MULHSU)); // @ Alu.scala l133
-  assign mul_io_src2_is_signed = ((src_ports_payload_micro_op_alu_micro_op == AluMicroOp_MUL) || (src_ports_payload_micro_op_alu_micro_op == AluMicroOp_MULH)); // @ Alu.scala l137
+  assign mul_io_src1_is_signed = (((src_ports_payload_micro_op_alu_ctrl_op == AluCtrlEnum_MUL) || (src_ports_payload_micro_op_alu_ctrl_op == AluCtrlEnum_MULH)) || (src_ports_payload_micro_op_alu_ctrl_op == AluCtrlEnum_MULHSU)); // @ Alu.scala l135
+  assign mul_io_src2_is_signed = ((src_ports_payload_micro_op_alu_ctrl_op == AluCtrlEnum_MUL) || (src_ports_payload_micro_op_alu_ctrl_op == AluCtrlEnum_MULH)); // @ Alu.scala l139
   assign tmp_mul_result = mul_io_result_low[31]; // @ BaseType.scala l305
   always @(*) begin
     tmp_mul_result_1[31] = tmp_mul_result; // @ Literal.scala l87
@@ -592,9 +592,9 @@ module Alu (
     tmp_mul_result_1[0] = tmp_mul_result; // @ Literal.scala l87
   end
 
-  assign mul_result = (src_ports_payload_micro_op_alu_is_word ? {tmp_mul_result_1,mul_io_result_low[31 : 0]} : (((src_ports_payload_micro_op_alu_micro_op == AluMicroOp_MUL) || (src_ports_payload_micro_op_alu_micro_op == AluMicroOp_MULH)) ? mul_io_result_low : mul_io_result_high)); // @ Alu.scala l146
-  assign src_ports_fire = (src_ports_valid && src_ports_ready); // @ BaseType.scala l305
-  assign div_1_io_op_is_signed = ((((src_ports_payload_micro_op_alu_micro_op == AluMicroOp_DIV) || (src_ports_payload_micro_op_alu_micro_op == AluMicroOp_REM_1)) || (src_ports_payload_micro_op_alu_micro_op == AluMicroOp_DIVW)) || (src_ports_payload_micro_op_alu_micro_op == AluMicroOp_REMW)); // @ Alu.scala l159
+  assign mul_result = (src_ports_payload_micro_op_alu_is_word ? {tmp_mul_result_1,mul_io_result_low[31 : 0]} : (((src_ports_payload_micro_op_alu_ctrl_op == AluCtrlEnum_MUL) || (src_ports_payload_micro_op_alu_ctrl_op == AluCtrlEnum_MULH)) ? mul_io_result_low : mul_io_result_high)); // @ Alu.scala l148
+  assign src_stream_fire = (src_stream_valid && src_stream_ready); // @ BaseType.scala l305
+  assign div_1_io_op_is_signed = ((((src_ports_payload_micro_op_alu_ctrl_op == AluCtrlEnum_DIV) || (src_ports_payload_micro_op_alu_ctrl_op == AluCtrlEnum_REM_1)) || (src_ports_payload_micro_op_alu_ctrl_op == AluCtrlEnum_DIVW)) || (src_ports_payload_micro_op_alu_ctrl_op == AluCtrlEnum_REMW)); // @ Alu.scala l159
   assign src_stream_ready = dst_stream_ready; // @ Alu.scala l169
   assign dst_stream_valid = ((((! alu_is_div) && (! div_1_io_busy)) && src_stream_valid) || div_1_io_done_valid); // @ Alu.scala l170
   assign dst_stream_payload_result = (alu_is_mul ? mul_result : (alu_is_quo ? div_1_io_quotient : (alu_is_rem ? div_1_io_remainder : alu_result))); // @ Alu.scala l171

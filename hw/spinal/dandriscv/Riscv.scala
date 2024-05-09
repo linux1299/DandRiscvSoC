@@ -12,6 +12,7 @@ object Riscv{
   def csrRange = 31 downto 20
   def opcodeRange = 6 downto 0
 
+  def OP_ALU = B"0110011"
   def OP_IMM = B"0010011"
   def OP_IMM_WORD = B"0011011"
   def OP_ALU_WORD = B"0111011"
@@ -23,6 +24,7 @@ object Riscv{
   def OP_LUI = B"0110111"
   def OP_AUIPC = B"0010111"
   def OP_FENCE = B"0001111"
+  def OP_SYS = B"1110011"
 
   case class IMM_ALL(instruction : Bits, XLEN : Int = 64) extends Area{
     // immediates
