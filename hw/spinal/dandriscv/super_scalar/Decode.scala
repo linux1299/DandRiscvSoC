@@ -17,11 +17,10 @@ case class Decode() extends Component {
   val instr = in Bits(32 bits)
   val rs1_addr = out UInt(5 bits)
   val rs2_addr = out UInt(5 bits)
-  val rs1_ren = out Bool()
-  val rs2_ren = out Bool()
+  val rs1_ren = out Bool() // read reg enable
+  val rs2_ren = out Bool() // read reg enable
   val rs1_val = in Bits(64 bits)
   val rs2_val = in Bits(64 bits)
-  val rd_wen = out Bool()
   val rd_addr = out UInt(5 bits)
   val imm = out Bits(64 bits)
   val alu_micro_op = out(IQ_MicroOp("ALU"))
@@ -177,10 +176,6 @@ case class Decode() extends Component {
                   imm_all.s_type_imm ##
                   imm_all.i_type_imm ##
                   csri
-  var imm_type_len = imm_type.getWidth
-  var imm_data_len = imm_data.getWidth
-  println(s"imm_type len is $imm_type_len")
-  println(s"imm_data_len is $imm_data_len")
   imm := dataMux(imm_type, imm_data)
 
   // ------------alu micro op ------------
@@ -230,6 +225,8 @@ case class Decode() extends Component {
   val lsu_ctrl_op = dataMux(lsu_ctrl_sel, lsu_ctrl_data)
 
   // =================== output ===================
+  val rd_wen = Bool()
+  val src2_is_imm = Bool()
   rs1_addr := rs1.asUInt
   rs2_addr := rs2.asUInt
   rs1_ren  := !(imm_all.u_type_imm || imm_all.j_type_imm)
@@ -241,21 +238,29 @@ case class Decode() extends Component {
               !mret && 
               !op_is_fence
   rd_addr  := rd.asUInt
+  src2_is_imm :=  imm_all.i_type_imm || 
+                  imm_all.s_type_imm ||
+                  imm_all.u_type_imm ||
+                  imm_all.j_type_imm
 
   alu_micro_op.alu_ctrl_op.assignFromBits(alu_ctrl_op)
   alu_micro_op.alu_is_word := op_is_word || op_is_wordi
-  alu_micro_op.alu_src2_is_imm := imm_all.i_type_imm || 
-                                  imm_all.s_type_imm ||
-                                  imm_all.u_type_imm ||
-                                  imm_all.j_type_imm
-
+  alu_micro_op.src2_is_imm := src2_is_imm
+  alu_micro_op.rd_wen := rd_wen
 
   lsu_micro_op.lsu_ctrl_op.assignFromBits(lsu_ctrl_op)
   lsu_micro_op.lsu_is_load := load
   lsu_micro_op.lsu_is_store := store
+  lsu_micro_op.src2_is_imm := src2_is_imm
+  lsu_micro_op.rd_wen := rd_wen
 
   bju_micro_op.bju_ctrl_op.assignFromBits(bju_ctrl_op)
   bju_micro_op.exp_ctrl_op.assignFromBits(exp_ctrl_op)
+  bju_micro_op.bju_rd_eq_rs1 := (rd===rs1)
+  bju_micro_op.bju_rd_is_link := (rd===B(0, 5 bits) || rd===B(5, 5 bits))
+  bju_micro_op.bju_rs1_is_link := (rs1===B(0, 5 bits) || rs1===B(5, 5 bits))
+  bju_micro_op.src2_is_imm := src2_is_imm
+  bju_micro_op.rd_wen := rd_wen
 }
 
 object GenDecode extends App {

@@ -1,6 +1,6 @@
 // Generator : SpinalHDL v1.8.1    git head : 2a7592004363e5b40ec43e1f122ed8641cd8965b
 // Component : Decode
-// Git hash  : 26060883647a4520726a39e14d4f7be2c55d6aa3
+// Git hash  : 18119d788dc0be80a01b6f7e3353d83903c3293f
 
 `timescale 1ns/1ps
 
@@ -13,17 +13,24 @@ module Decode (
   output              rs2_ren,
   input      [63:0]   rs1_val,
   input      [63:0]   rs2_val,
-  output              rd_wen,
   output     [4:0]    rd_addr,
   output     [63:0]   imm,
+  output              alu_micro_op_rd_wen,
+  output              alu_micro_op_src2_is_imm,
   output     [4:0]    alu_micro_op_alu_ctrl_op,
   output              alu_micro_op_alu_is_word,
-  output              alu_micro_op_alu_src2_is_imm,
+  output              lsu_micro_op_rd_wen,
+  output              lsu_micro_op_src2_is_imm,
   output     [3:0]    lsu_micro_op_lsu_ctrl_op,
   output              lsu_micro_op_lsu_is_load,
   output              lsu_micro_op_lsu_is_store,
+  output              bju_micro_op_rd_wen,
+  output              bju_micro_op_src2_is_imm,
   output     [3:0]    bju_micro_op_bju_ctrl_op,
-  output     [3:0]    bju_micro_op_exp_ctrl_op
+  output     [3:0]    bju_micro_op_exp_ctrl_op,
+  output              bju_micro_op_bju_rd_eq_rs1,
+  output              bju_micro_op_bju_rd_is_link,
+  output              bju_micro_op_bju_rs1_is_link
 );
   localparam AluCtrlEnum_IDLE = 5'd0;
   localparam AluCtrlEnum_ADD = 5'd1;
@@ -786,6 +793,8 @@ module Decode (
   wire                tmp_lsu_ctrl_op_9;
   wire                tmp_lsu_ctrl_op_10;
   wire       [3:0]    lsu_ctrl_op;
+  wire                rd_wen;
+  wire                src2_is_imm;
   wire       [4:0]    tmp_alu_micro_op_alu_ctrl_op;
   wire       [3:0]    tmp_lsu_micro_op_lsu_ctrl_op;
   wire       [3:0]    tmp_bju_micro_op_bju_ctrl_op;
@@ -3039,7 +3048,7 @@ module Decode (
   assign tmp_imm_3 = imm_type[3]; // @ BaseType.scala l305
   assign tmp_imm_4 = imm_type[4]; // @ BaseType.scala l305
   assign tmp_imm_5 = imm_type[5]; // @ BaseType.scala l305
-  assign imm = (((((tmp_imm_6 | tmp_imm_47) | (tmp_imm_88 & tmp_imm_89)) | (imm_data[255 : 192] & {tmp_imm_130,tmp_imm_131})) | (imm_data[319 : 256] & {tmp_imm_4,{tmp_imm_172,tmp_imm_173}})) | (imm_data[383 : 320] & {tmp_imm_5,{tmp_imm_5,{tmp_imm_214,tmp_imm_215}}})); // @ Decode.scala l184
+  assign imm = (((((tmp_imm_6 | tmp_imm_47) | (tmp_imm_88 & tmp_imm_89)) | (imm_data[255 : 192] & {tmp_imm_130,tmp_imm_131})) | (imm_data[319 : 256] & {tmp_imm_4,{tmp_imm_172,tmp_imm_173}})) | (imm_data[383 : 320] & {tmp_imm_5,{tmp_imm_5,{tmp_imm_214,tmp_imm_215}}})); // @ Decode.scala l183
   assign alu_ctrl_sel = {{{{{{{{{{{tmp_alu_ctrl_sel,tmp_alu_ctrl_sel_3},alu_or},alu_and},alu_sra},alu_srl},alu_sll},alu_xor},alu_sltu},alu_slt},alu_sub},alu_add}; // @ BaseType.scala l299
   assign tmp_alu_ctrl_data = AluCtrlEnum_REMUW; // @ Enum.scala l47
   assign tmp_alu_ctrl_data_1 = AluCtrlEnum_REMW; // @ Enum.scala l47
@@ -3160,23 +3169,32 @@ module Decode (
   assign tmp_lsu_ctrl_op_9 = lsu_ctrl_sel[9]; // @ BaseType.scala l305
   assign tmp_lsu_ctrl_op_10 = lsu_ctrl_sel[10]; // @ BaseType.scala l305
   assign lsu_ctrl_op = (((((tmp_lsu_ctrl_op_11 | tmp_lsu_ctrl_op_28) | (tmp_lsu_ctrl_op_31 & tmp_lsu_ctrl_op_32)) | (lsu_ctrl_data[35 : 32] & {tmp_lsu_ctrl_op_35,tmp_lsu_ctrl_op_36})) | (lsu_ctrl_data[39 : 36] & {tmp_lsu_ctrl_op_9,{tmp_lsu_ctrl_op_37,tmp_lsu_ctrl_op_38}})) | (lsu_ctrl_data[43 : 40] & {tmp_lsu_ctrl_op_10,{tmp_lsu_ctrl_op_10,{tmp_lsu_ctrl_op_39,tmp_lsu_ctrl_op_40}}})); // @ BaseType.scala l299
-  assign rs1_addr = rs1; // @ Decode.scala l233
-  assign rs2_addr = rs2; // @ Decode.scala l234
-  assign rs1_ren = (! (((instr[6 : 0] == 7'h37) || (instr[6 : 0] == 7'h17)) || (instr[6 : 0] == 7'h6f))); // @ Decode.scala l235
-  assign rs2_ren = (! ((((instr[6 : 0] == 7'h37) || (instr[6 : 0] == 7'h17)) || (instr[6 : 0] == 7'h6f)) || ((((instr[6 : 0] == 7'h13) || (instr[6 : 0] == 7'h1b)) || (instr[6 : 0] == 7'h03)) || (instr[6 : 0] == 7'h67)))); // @ Decode.scala l236
-  assign rd_wen = ((((((! (instr[6 : 0] == 7'h23)) && (! (instr[6 : 0] == 7'h63))) && (! ebreak)) && (! ecall)) && (! mret)) && (! op_is_fence)); // @ Decode.scala l237
-  assign rd_addr = rd; // @ Decode.scala l243
+  assign rs1_addr = rs1; // @ Decode.scala l234
+  assign rs2_addr = rs2; // @ Decode.scala l235
+  assign rs1_ren = (! (((instr[6 : 0] == 7'h37) || (instr[6 : 0] == 7'h17)) || (instr[6 : 0] == 7'h6f))); // @ Decode.scala l236
+  assign rs2_ren = (! ((((instr[6 : 0] == 7'h37) || (instr[6 : 0] == 7'h17)) || (instr[6 : 0] == 7'h6f)) || ((((instr[6 : 0] == 7'h13) || (instr[6 : 0] == 7'h1b)) || (instr[6 : 0] == 7'h03)) || (instr[6 : 0] == 7'h67)))); // @ Decode.scala l237
+  assign rd_wen = ((((((! (instr[6 : 0] == 7'h23)) && (! (instr[6 : 0] == 7'h63))) && (! ebreak)) && (! ecall)) && (! mret)) && (! op_is_fence)); // @ Decode.scala l238
+  assign rd_addr = rd; // @ Decode.scala l244
+  assign src2_is_imm = (((((((instr[6 : 0] == 7'h13) || (instr[6 : 0] == 7'h1b)) || (instr[6 : 0] == 7'h03)) || (instr[6 : 0] == 7'h67)) || (instr[6 : 0] == 7'h23)) || ((instr[6 : 0] == 7'h37) || (instr[6 : 0] == 7'h17))) || (instr[6 : 0] == 7'h6f)); // @ Decode.scala l245
   assign tmp_alu_micro_op_alu_ctrl_op = alu_ctrl_op; // @ Enum.scala l189
   assign alu_micro_op_alu_ctrl_op = tmp_alu_micro_op_alu_ctrl_op; // @ Enum.scala l191
-  assign alu_micro_op_alu_is_word = (op_is_word || op_is_wordi); // @ Decode.scala l246
-  assign alu_micro_op_alu_src2_is_imm = (((((((instr[6 : 0] == 7'h13) || (instr[6 : 0] == 7'h1b)) || (instr[6 : 0] == 7'h03)) || (instr[6 : 0] == 7'h67)) || (instr[6 : 0] == 7'h23)) || ((instr[6 : 0] == 7'h37) || (instr[6 : 0] == 7'h17))) || (instr[6 : 0] == 7'h6f)); // @ Decode.scala l247
+  assign alu_micro_op_alu_is_word = (op_is_word || op_is_wordi); // @ Decode.scala l251
+  assign alu_micro_op_src2_is_imm = src2_is_imm; // @ Decode.scala l252
+  assign alu_micro_op_rd_wen = rd_wen; // @ Decode.scala l253
   assign tmp_lsu_micro_op_lsu_ctrl_op = lsu_ctrl_op; // @ Enum.scala l189
   assign lsu_micro_op_lsu_ctrl_op = tmp_lsu_micro_op_lsu_ctrl_op; // @ Enum.scala l191
-  assign lsu_micro_op_lsu_is_load = op_is_load; // @ Decode.scala l254
-  assign lsu_micro_op_lsu_is_store = op_is_store; // @ Decode.scala l255
+  assign lsu_micro_op_lsu_is_load = op_is_load; // @ Decode.scala l256
+  assign lsu_micro_op_lsu_is_store = op_is_store; // @ Decode.scala l257
+  assign lsu_micro_op_src2_is_imm = src2_is_imm; // @ Decode.scala l258
+  assign lsu_micro_op_rd_wen = rd_wen; // @ Decode.scala l259
   assign tmp_bju_micro_op_bju_ctrl_op = bju_ctrl_op; // @ Enum.scala l189
   assign bju_micro_op_bju_ctrl_op = tmp_bju_micro_op_bju_ctrl_op; // @ Enum.scala l191
   assign tmp_bju_micro_op_exp_ctrl_op = exp_ctrl_op; // @ Enum.scala l189
   assign bju_micro_op_exp_ctrl_op = tmp_bju_micro_op_exp_ctrl_op; // @ Enum.scala l191
+  assign bju_micro_op_bju_rd_eq_rs1 = (rd == rs1); // @ Decode.scala l263
+  assign bju_micro_op_bju_rd_is_link = ((rd == 5'h0) || (rd == 5'h05)); // @ Decode.scala l264
+  assign bju_micro_op_bju_rs1_is_link = ((rs1 == 5'h0) || (rs1 == 5'h05)); // @ Decode.scala l265
+  assign bju_micro_op_src2_is_imm = src2_is_imm; // @ Decode.scala l266
+  assign bju_micro_op_rd_wen = rd_wen; // @ Decode.scala l267
 
 endmodule

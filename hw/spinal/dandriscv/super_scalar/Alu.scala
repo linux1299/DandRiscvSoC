@@ -19,7 +19,6 @@ case class Alu() extends Component {
   // =================== signals ===================
   val src1       = src_ports.src1
   val src2       = src_ports.src2
-  val imm        = src_ports.imm
   val src1_word  = src1(31 downto 0)
   val src2_word  = src2(31 downto 0)
   val shift_bits = src2(5 downto 0).asUInt
@@ -43,27 +42,26 @@ case class Alu() extends Component {
   val sraw_result= B((31 downto 0) -> sraw_temp(31)) ## sraw_temp
   val alu_result = Bits(64 bits)
 
-  val alu_ctrl_op     = src_ports.micro_op.alu_ctrl_op
-  val alu_is_word     = src_ports.micro_op.alu_is_word
-  val alu_src2_is_imm = src_ports.micro_op.alu_src2_is_imm
+  val alu_ctrl_op = src_ports.micro_op.alu_ctrl_op
+  val alu_is_word = src_ports.micro_op.alu_is_word
   
-  val alu_is_mul      = (alu_ctrl_op===MUL) ||
-                        (alu_ctrl_op===MULH) ||
-                        (alu_ctrl_op===MULHSU) ||
-                        (alu_ctrl_op===MULHU) ||
-                        (alu_ctrl_op===MULW)
+  val alu_is_mul  = (alu_ctrl_op===MUL) ||
+                    (alu_ctrl_op===MULH) ||
+                    (alu_ctrl_op===MULHSU) ||
+                    (alu_ctrl_op===MULHU) ||
+                    (alu_ctrl_op===MULW)
 
-  val alu_is_quo      = (alu_ctrl_op===DIV)  ||
-                        (alu_ctrl_op===DIVU) ||
-                        (alu_ctrl_op===DIVW) ||
-                        (alu_ctrl_op===DIVUW)
+  val alu_is_quo  = (alu_ctrl_op===DIV)  ||
+                    (alu_ctrl_op===DIVU) ||
+                    (alu_ctrl_op===DIVW) ||
+                    (alu_ctrl_op===DIVUW)
 
-  val alu_is_rem      = (alu_ctrl_op===REM) ||
-                        (alu_ctrl_op===REMU) ||
-                        (alu_ctrl_op===REMW) ||
-                        (alu_ctrl_op===REMUW)
-                        
-  val alu_is_div      = alu_is_quo || alu_is_rem
+  val alu_is_rem  = (alu_ctrl_op===REM) ||
+                    (alu_ctrl_op===REMU) ||
+                    (alu_ctrl_op===REMW) ||
+                    (alu_ctrl_op===REMUW)
+
+  val alu_is_div  = alu_is_quo || alu_is_rem
                         
 
   val src_stream = src_ports.haltWhen(stall).throwWhen(flush)
@@ -122,7 +120,7 @@ case class Alu() extends Component {
       alu_result := or_result
     }
     is(LUI){
-      alu_result := imm
+      alu_result := src2
     }
     default{
       alu_result := B(0)

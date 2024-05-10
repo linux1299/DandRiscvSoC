@@ -107,3 +107,4 @@
 1714392676353:runMain dandriscv.super_scalar.GenALU\\
 1715154271440:compile
 1715154295961:runMain  dandriscv.super_scalar.GenROB
+1715309989405:;set _root_.scala.collection.Seq(historyPath := None,shellPrompt := { _ => "" },SettingKey[_root_.scala.Option[_root_.sbt.File]]("sbtStructureOutputFile") in _root_.sbt.Global := _root_.scala.Some(_root_.sbt.file("C:/Users/TsinghuaIC/AppData/Local/Temp/sbt-structure.xml")),SettingKey[_root_.java.lang.String]("sbtStructureOptions") in _root_.sbt.Global := "download, resolveClassifiers");apply -cp "C:/Users/TsinghuaIC/AppData/Roaming/JetBrains/IntelliJIdea2023.1/plugins/Scala/repo/org/jetbrains/scala/sbt-structure-extractor_2.12_1.0/2023.1.0/sbt-structure-extractor-2023.1.0.jar" org.jetbrains.sbt.CreateTasks;preferScala2;*/*:dumpStructure
