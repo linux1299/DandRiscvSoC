@@ -1,12 +1,10 @@
 // Generator : SpinalHDL v1.8.1    git head : 2a7592004363e5b40ec43e1f122ed8641cd8965b
 // Component : Alu
-// Git hash  : b12c5d09be2cdbf1f67b23027a28f60be470414c
+// Git hash  : b42fa440e7a1abbd51dbed7262b08265330ea2ed
 
 `timescale 1ns/1ps
 
 module Alu (
-  input               clk,
-  input               rst_n,
   input               flush,
   input               stall,
   input               src_ports_valid,
@@ -24,8 +22,8 @@ module Alu (
   output     [63:0]   dst_ports_payload_result,
   output              dst_ports_payload_rd_wen,
   output     [3:0]    dst_ports_payload_rd_rob_ptr,
-  input               clk_1,
-  input               resetn
+  input               resetn,
+  input               clk
 );
   localparam AluCtrlEnum_IDLE = 5'd0;
   localparam AluCtrlEnum_ADD = 5'd1;
@@ -168,8 +166,6 @@ module Alu (
     .io_result_low     (mul_io_result_low[63:0]               )  //o
   );
   Divider div_1 (
-    .io_clk          (clk                                   ), //i
-    .io_rst_n        (rst_n                                 ), //i
     .io_flush        (flush                                 ), //i
     .io_start        (src_stream_fire                       ), //i
     .io_busy         (div_1_io_busy                         ), //o
@@ -180,7 +176,9 @@ module Alu (
     .io_dividend     (src_ports_payload_src1[63:0]          ), //i
     .io_divisor      (src_ports_payload_src2[63:0]          ), //i
     .io_quotient     (div_1_io_quotient[63:0]               ), //o
-    .io_remainder    (div_1_io_remainder[63:0]              )  //o
+    .io_remainder    (div_1_io_remainder[63:0]              ), //o
+    .resetn          (resetn                                ), //i
+    .clk             (clk                                   )  //i
   );
   `ifndef SYNTHESIS
   always @(*) begin
@@ -608,12 +606,12 @@ module Alu (
 
   assign mul_result = (src_ports_payload_micro_op_alu_is_word ? {tmp_mul_result_1,mul_io_result_low[31 : 0]} : (((src_ports_payload_micro_op_alu_ctrl_op == AluCtrlEnum_MUL) || (src_ports_payload_micro_op_alu_ctrl_op == AluCtrlEnum_MULH)) ? mul_io_result_low : mul_io_result_high)); // @ Alu.scala l146
   assign src_stream_fire = (src_stream_valid && src_stream_ready); // @ BaseType.scala l305
-  assign div_1_io_op_is_signed = ((((src_ports_payload_micro_op_alu_ctrl_op == AluCtrlEnum_DIV) || (src_ports_payload_micro_op_alu_ctrl_op == AluCtrlEnum_REM_1)) || (src_ports_payload_micro_op_alu_ctrl_op == AluCtrlEnum_DIVW)) || (src_ports_payload_micro_op_alu_ctrl_op == AluCtrlEnum_REMW)); // @ Alu.scala l159
-  assign src_stream_ready = dst_stream_ready; // @ Alu.scala l169
-  assign dst_stream_valid = ((((! alu_is_div) && (! div_1_io_busy)) && src_stream_valid) || div_1_io_done_valid); // @ Alu.scala l170
-  assign dst_stream_payload_rd_wen = src_stream_payload_rd_wen; // @ Alu.scala l171
-  assign dst_stream_payload_rd_rob_ptr = src_stream_payload_rd_rob_ptr; // @ Alu.scala l172
-  assign dst_stream_payload_result = (alu_is_mul ? mul_result : (alu_is_quo ? div_1_io_quotient : (alu_is_rem ? div_1_io_remainder : alu_result))); // @ Alu.scala l173
+  assign div_1_io_op_is_signed = ((((src_ports_payload_micro_op_alu_ctrl_op == AluCtrlEnum_DIV) || (src_ports_payload_micro_op_alu_ctrl_op == AluCtrlEnum_REM_1)) || (src_ports_payload_micro_op_alu_ctrl_op == AluCtrlEnum_DIVW)) || (src_ports_payload_micro_op_alu_ctrl_op == AluCtrlEnum_REMW)); // @ Alu.scala l157
+  assign src_stream_ready = dst_stream_ready; // @ Alu.scala l167
+  assign dst_stream_valid = ((((! alu_is_div) && (! div_1_io_busy)) && src_stream_valid) || div_1_io_done_valid); // @ Alu.scala l168
+  assign dst_stream_payload_rd_wen = src_stream_payload_rd_wen; // @ Alu.scala l169
+  assign dst_stream_payload_rd_rob_ptr = src_stream_payload_rd_rob_ptr; // @ Alu.scala l170
+  assign dst_stream_payload_result = (alu_is_mul ? mul_result : (alu_is_quo ? div_1_io_quotient : (alu_is_rem ? div_1_io_remainder : alu_result))); // @ Alu.scala l171
   always @(*) begin
     dst_stream_ready = dst_stream_m2sPipe_ready; // @ Stream.scala l367
     if((! dst_stream_m2sPipe_valid)) begin
@@ -630,7 +628,7 @@ module Alu (
   assign dst_ports_payload_result = dst_stream_m2sPipe_payload_result; // @ Stream.scala l296
   assign dst_ports_payload_rd_wen = dst_stream_m2sPipe_payload_rd_wen; // @ Stream.scala l296
   assign dst_ports_payload_rd_rob_ptr = dst_stream_m2sPipe_payload_rd_rob_ptr; // @ Stream.scala l296
-  always @(posedge clk_1 or negedge resetn) begin
+  always @(posedge clk or negedge resetn) begin
     if(!resetn) begin
       dst_stream_rValid <= 1'b0; // @ Data.scala l400
     end else begin
@@ -640,7 +638,7 @@ module Alu (
     end
   end
 
-  always @(posedge clk_1) begin
+  always @(posedge clk) begin
     if(dst_stream_ready) begin
       dst_stream_rData_result <= dst_stream_payload_result; // @ Stream.scala l362
       dst_stream_rData_rd_wen <= dst_stream_payload_rd_wen; // @ Stream.scala l362
@@ -652,8 +650,6 @@ module Alu (
 endmodule
 
 module Divider (
-  input               io_clk,
-  input               io_rst_n,
   input               io_flush,
   input               io_start,
   output              io_busy,
@@ -664,7 +660,9 @@ module Divider (
   input      [63:0]   io_dividend,
   input      [63:0]   io_divisor,
   output     [63:0]   io_quotient,
-  output     [63:0]   io_remainder
+  output     [63:0]   io_remainder,
+  input               resetn,
+  input               clk
 );
 
   wire                u_div_o_busy;
@@ -673,8 +671,8 @@ module Divider (
   wire       [63:0]   u_div_o_remainder;
 
   div u_div (
-    .i_clk       (io_clk                 ), //i
-    .i_rst_n     (io_rst_n               ), //i
+    .i_clk       (clk                    ), //i
+    .i_rst_n     (resetn                 ), //i
     .i_flush     (io_flush               ), //i
     .i_start     (io_start               ), //i
     .o_busy      (u_div_o_busy           ), //o
@@ -687,10 +685,10 @@ module Divider (
     .o_quotient  (u_div_o_quotient[63:0] ), //o
     .o_remainder (u_div_o_remainder[63:0])  //o
   );
-  assign io_busy = u_div_o_busy; // @ Div.scala l51
-  assign io_done_valid = u_div_o_end_valid; // @ Div.scala l52
-  assign io_quotient = u_div_o_quotient; // @ Div.scala l57
-  assign io_remainder = u_div_o_remainder; // @ Div.scala l58
+  assign io_busy = u_div_o_busy; // @ Div.scala l49
+  assign io_done_valid = u_div_o_end_valid; // @ Div.scala l50
+  assign io_quotient = u_div_o_quotient; // @ Div.scala l55
+  assign io_remainder = u_div_o_remainder; // @ Div.scala l56
 
 endmodule
 

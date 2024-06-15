@@ -22,13 +22,13 @@ case class div() extends BlackBox {
 
   addRTLPath("hw/verilog/exu/div.sv")
 
+  mapClockDomain(clock=i_clk, reset=i_rst_n, resetActiveLevel=LOW)
+
 }
 
 
 case class Divider() extends Component {
   val io = new Bundle {
-    val clk   = in Bool()
-    val rst_n = in Bool()
     val flush = in Bool()
     val start = in Bool()
     val busy = out Bool()
@@ -42,9 +42,7 @@ case class Divider() extends Component {
     val remainder = out Bits(64 bits)
   }
 
-  val u_div = new div()
-  u_div.i_clk := io.clk
-  u_div.i_rst_n := io.rst_n
+  val u_div = div()
   u_div.i_flush := io.flush
   u_div.i_divw := io.op_is_word
   u_div.i_start := io.start
@@ -60,5 +58,16 @@ case class Divider() extends Component {
 
 
 object GenDiv extends App {
+  val clk = Bool()
+  val rst_n = Bool()
+  val clkDomain = ClockDomain(
+    clock = clk,
+    reset = rst_n,
+    config = ClockDomainConfig(
+      clockEdge = RISING,
+      resetKind = ASYNC,
+      resetActiveLevel = LOW
+    )
+  )
   GenConfig.spinal.generateVerilog(Divider()).mergeRTLSource("div")
 }
