@@ -4,6 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/DandRiscvSoC.iml" filepath="$PROJECT_DIR$/.idea/modules/DandRiscvSoC.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/DandRiscvSoC-build.iml" filepath="$PROJECT_DIR$/.idea/modules/DandRiscvSoC-build.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SpinalProjects.DandRiscvSoC.iml" filepath="$PROJECT_DIR$/.idea/modules/SpinalProjects.DandRiscvSoC.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/project.DandRiscvSoC-build.iml" filepath="$PROJECT_DIR$/.idea/modules/project.DandRiscvSoC-build.iml" />
     </modules>
   </component>
 </project>

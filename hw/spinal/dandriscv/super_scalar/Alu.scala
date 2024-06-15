@@ -143,8 +143,10 @@ case class Alu() extends Component {
   val mul_result_low = mul.io.result_low
   val mul_result_high = mul.io.result_high
   val mul_result = Bits(64 bits)
-  mul_result :=  alu_is_word ? (B((31 downto 0) -> mul_result_low(31)) ## mul_result_low(31 downto 0)) |
-                ((alu_ctrl_op===MUL || alu_ctrl_op===MULH) ? mul_result_low | mul_result_high)
+  mul_result :=  alu_is_word ?
+                (B((31 downto 0) -> mul_result_low(31)) ## mul_result_low(31 downto 0)) |
+                ((alu_ctrl_op===MUL || alu_ctrl_op===MULH) ?
+                  mul_result_low | mul_result_high)
 
   // ================= caclulate div =====================
   val div = Divider()
@@ -166,6 +168,8 @@ case class Alu() extends Component {
   // ================= stream control =====================
   src_stream.ready := dst_stream.ready
   dst_stream.valid := (!alu_is_div && !div.io.busy && src_stream.valid) || div.io.done_valid
+  dst_stream.rd_wen := src_stream.rd_wen
+  dst_stream.rd_rob_ptr := src_stream.rd_rob_ptr
   dst_stream.result := alu_is_mul ? mul_result | 
                         (alu_is_quo ? div_result_quotient | 
                         (alu_is_rem ? div_result_remainder | alu_result)

@@ -12,5 +12,10 @@
         <plugin path="C:\Users\TsinghuaIC\AppData\Local\Coursier\Cache\v1\https\repo1.maven.org\maven2\com\github\spinalhdl\spinalhdl-idsl-plugin_2.13\1.8.1\spinalhdl-idsl-plugin_2.13-1.8.1.jar" />
       </plugins>
     </profile>
+    <profile name="sbt 4" modules="SpinalProjects.DandRiscvSoC">
+      <plugins>
+        <plugin path="$USER_HOME$/.cache/coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-idsl-plugin_2.13/1.8.1/spinalhdl-idsl-plugin_2.13-1.8.1.jar" />
+      </plugins>
+    </profile>
   </component>
 </project>
