@@ -3,7 +3,7 @@ package dandriscv.super_scalar
 import spinal.core._
 import spinal.lib._
 import math._
-import dandriscv.super_scalar.CpuConfig._
+import CpuConfig._
 
 // ================ ICache ===============
 // cpu and icache ports

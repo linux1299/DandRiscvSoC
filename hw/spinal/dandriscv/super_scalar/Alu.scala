@@ -4,6 +4,8 @@ import spinal.core._
 import spinal.lib._
 import math._
 
+import scala.util.Random
+
 case class Alu() extends Component {
   import CpuConfig._
   import AluCtrlEnum._
@@ -45,18 +47,21 @@ case class Alu() extends Component {
   val alu_ctrl_op = src_ports.micro_op.alu_ctrl_op
   val alu_is_word = src_ports.micro_op.alu_is_word
 
-  val alu_is_mul = (alu_ctrl_op === MUL) ||
+  val alu_is_mul =
+    (alu_ctrl_op === MUL) ||
     (alu_ctrl_op === MULH) ||
     (alu_ctrl_op === MULHSU) ||
     (alu_ctrl_op === MULHU) ||
     (alu_ctrl_op === MULW)
 
-  val alu_is_quo = (alu_ctrl_op === DIV) ||
+  val alu_is_quo =
+    (alu_ctrl_op === DIV) ||
     (alu_ctrl_op === DIVU) ||
     (alu_ctrl_op === DIVW) ||
     (alu_ctrl_op === DIVUW)
 
-  val alu_is_rem = (alu_ctrl_op === REM) ||
+  val alu_is_rem =
+    (alu_ctrl_op === REM) ||
     (alu_ctrl_op === REMU) ||
     (alu_ctrl_op === REMW) ||
     (alu_ctrl_op === REMUW)
@@ -130,11 +135,13 @@ case class Alu() extends Component {
   // ================= caclulate multiply =====================
   val mul = Multiplier()
   mul.io.op_is_word := alu_is_word
-  mul.io.src1_is_signed := (alu_ctrl_op === MUL) ||
+  mul.io.src1_is_signed :=
+    (alu_ctrl_op === MUL) ||
     (alu_ctrl_op === MULH) ||
     (alu_ctrl_op === MULHSU)
 
-  mul.io.src2_is_signed := (alu_ctrl_op === MUL) ||
+  mul.io.src2_is_signed :=
+    (alu_ctrl_op === MUL) ||
     (alu_ctrl_op === MULH)
 
   mul.io.src1 := src1
@@ -154,7 +161,8 @@ case class Alu() extends Component {
   div.io.start := src_stream.fire
   div.io.done_ready := dst_stream.ready
   div.io.op_is_word := alu_is_word
-  div.io.op_is_signed := (alu_ctrl_op === DIV) ||
+  div.io.op_is_signed :=
+    (alu_ctrl_op === DIV) ||
     (alu_ctrl_op === REM) ||
     (alu_ctrl_op === DIVW) ||
     (alu_ctrl_op === REMW)
@@ -182,22 +190,43 @@ object GenALU extends App {
 
 import spinal.sim._
 import spinal.core.sim._
-/*
+
 object TestALU {
   def main(args: Array[String]): Unit = {
-    val spinalConfig = SpinalConfig(defaultClockDomainFrequency = FixedFrequency(10 MHz))
 
-    SimConfig
-      .withConfig(spinalConfig)
-      .withWave
-      .withVCS
-      .allOptimisation
-      .workspacePath("~/simWorkspace/test_alu")
-      .compile(Alu())
-      .doSim { dut =>
-        //sim code
-
+    SimConfig.withConfig(GenConfig.spinal).withFstWave.compile(Alu()).doSim { dut =>
+      // rst
+      fork {
+        dut.clockDomain.assertReset()
+        dut.clockDomain.fallingEdge()
+        sleep(15)
+        dut.clockDomain.deassertReset()
       }
+      // clk
+      fork {
+        while (true) {
+          dut.clockDomain.clockToggle()
+          sleep(5)
+        }
+      }
+      // sim
+      for (idx <- 0 until 10) {
+        val src1, src2 = Random.nextInt(256)
+        // Drive the dut inputs with random values
+        dut.flush #= false
+        dut.stall #= false
+        dut.src_ports.valid #= true
+        dut.src_ports.micro_op.alu_ctrl_op #= AluCtrlEnum.MUL
+        dut.src_ports.micro_op.src2_is_imm #= false
+        dut.src_ports.micro_op.alu_is_word #= false
+        dut.src_ports.src1 #= src1
+        dut.src_ports.src2 #= src2
+        dut.dst_ports.ready #= true
+        // Wait a rising edge on the clock
+        dut.clockDomain.waitRisingEdge()
+      }
+
+      SimTimeout(1000 * 100)
+    }
   }
 }
-*/
