@@ -68,6 +68,14 @@ case class SramPorts(bankNum : Int, bankDepthBits : Int, bankWidth : Int) extend
   }
 }
 
+// ========================= Fetch =======================
+case class FetchDst() extends Bundle {
+  val pc = UInt(PC_WIDTH bits)
+  val pc_next = UInt(PC_WIDTH bits)
+  val instruction = Bits(32 bits)
+  val predict_taken = Bool()
+}
+
 // ==================== IQ ========================
 case class IQ_MicroOp(IQ_Type: String) extends Bundle {
 
