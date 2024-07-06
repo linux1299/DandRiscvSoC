@@ -150,14 +150,12 @@ case class ReorderBuffer(p : ReorderBufferConfig) extends Component{
     entry.exe_rd_val(i)     := dataMux(entry.exe_done_bits(i), exe_rd_val.asBits)
 
     // when become oldest and no exception, commit
-    entry.commit(i) :=  (entry.busy(i) && 
-                          head_addr===U(i) && 
-                          entry.state(i)===ROBStateEnum.COMPLETE && 
-                          entry.exception(i)===ExceptionEnum.IDLE) ||
-                        (entry.busy(i) && 
-                          head_addr_add_one===U(i) && 
-                          entry.state(head_addr)===ROBStateEnum.COMMIT &&
-                          entry.exception(i)===ExceptionEnum.IDLE)
+    entry.commit(i) :=  (entry.busy(i) && entry.exception(i)===ExceptionEnum.IDLE) &&
+                          ((head_addr===U(i) && 
+                            entry.state(i)===ROBStateEnum.COMPLETE) ||
+                           (head_addr_add_one===U(i) && 
+                            entry.state(i)===ROBStateEnum.COMMIT)
+                          )
     
 
     // ============== busy of ROB entry ==============

@@ -76,6 +76,31 @@ case class FetchDst() extends Bundle {
   val predict_taken = Bool()
 }
 
+// ====================== reg file ports ====================
+case class ARFReadPorts() extends Bundle with IMasterSlave{
+  val rs1_value = Bits(64 bits)
+  val rs2_value = Bits(64 bits)
+  val rs1_addr  = UInt(5 bits)
+  val rs2_addr  = UInt(5 bits)
+  val rs1_req   = Bool()
+  val rs2_req   = Bool()
+
+  override def asMaster(): Unit = {
+    out(rs1_req, rs2_req, rs1_addr, rs2_addr)
+    in(rs1_value, rs2_value)
+  }
+}
+case class ARFWritePorts() extends Bundle with IMasterSlave{
+  val rd_value = Bits(64 bits)
+  val rd_addr  = UInt(5 bits)
+  val rd_wen   = Bool()
+
+  override def asMaster(): Unit = {
+    out(rd_addr, rd_wen, rd_value)
+  }
+}
+
+
 // ==================== IQ ========================
 case class IQ_MicroOp(IQ_Type: String) extends Bundle {
 

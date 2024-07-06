@@ -5,7 +5,7 @@ import spinal.lib._
 import math._
 import dandriscv.ip._
 
-case class Fetch(resetVector : BigInt = 0x80000000l, p : ICacheConfig) extends Component {
+case class Fetch(resetVector : Int = 0x30000000, p : ICacheConfig) extends Component {
   import p._
   import CpuConfig._
 
@@ -20,25 +20,22 @@ case class Fetch(resetVector : BigInt = 0x80000000l, p : ICacheConfig) extends C
   val bpu_predict_pc = out UInt(PC_WIDTH bits)
   val bpu_predict_valid = out Bool()
   val bpu_predict_taken = in Bool()
-  val bpu_predict_pc_next = in UInt(PC_WIDTH bits)
+  val bpu_target_pc = in UInt(PC_WIDTH bits)
   val dst_ports = master(Stream(FetchDst()))
   
 
   // ==================== internal signals =============================
-  val pc_next = Reg(UInt(PC_WIDTH bits)) init(resetVector)
+  val pc = Reg(UInt(PC_WIDTH bits)) init(resetVector)
   val fetch_valid = RegInit(False)
   val rsp_flush = RegInit(False)
   
   val pc_in_stream =  Stream(UInt(PC_WIDTH bits))
   val pc_out_stream = Stream(UInt(PC_WIDTH bits))
-  val pc_stream_fifo = FIFO(UInt(PC_WIDTH bits), 4, true)
-  val predict_taken_in  = Stream(Bool())
-  val predict_taken_out = Stream(Bool())
-  val predict_taken_fifo = FIFO(Bool(), 4)
-  val instruction_in_stream = Stream(Bits(32 bits))
-  val instruction_out_stream =Stream(Bits(32 bits))
-  val instruction_stream_fifo = FIFO(Bits(32 bits), 4)
-  val fifo_all_valid = pc_out_stream.valid && instruction_out_stream.valid && pc_stream_fifo.next_valid
+  val pc_stream_fifo = FIFO(UInt(PC_WIDTH bits), 4)
+  val instr_in_stream = Stream(Bits(32 bits))
+  val instr_out_stream =Stream(Bits(32 bits))
+  val instr_stream_fifo = FIFO(Bits(32 bits), 4)
+  val fifo_all_valid = pc_out_stream.valid && instr_out_stream.valid
 
   val fetchFSM = new Area{
     object FetchEnum extends SpinalEnum(binarySequential) {
@@ -46,36 +43,36 @@ case class Fetch(resetVector : BigInt = 0x80000000l, p : ICacheConfig) extends C
     }
     import FetchEnum._
 
-    val fetch_state_next = FetchEnum()
-    val fetch_state = RegNext(fetch_state_next) init(IDLE)
+    val state_next = FetchEnum()
+    val state_curr = RegNext(state_next) init(IDLE)
 
-    switch(fetch_state){
+    switch(state_curr){
       is(IDLE) {
         when(!dst_ports.isStall){
-          fetch_state_next := FETCH
+          state_next := FETCH
         }
         .otherwise{
-          fetch_state_next := IDLE
+          state_next := IDLE
         }
       }
       is(FETCH) {
         when(icache_ports.cmd.isStall || dst_ports.isStall){
-          fetch_state_next := HALT
+          state_next := HALT
         }
         .otherwise{
-          fetch_state_next := FETCH
+          state_next := FETCH
         }
       }
       is(HALT){
         when(icache_ports.cmd.ready && !dst_ports.isStall){
-          fetch_state_next := FETCH
+          state_next := FETCH
         }
         .otherwise{
-          fetch_state_next := HALT
+          state_next := HALT
         }
       }
       default{
-        fetch_state_next := IDLE
+        state_next := IDLE
       }
     }
 
@@ -95,8 +92,8 @@ case class Fetch(resetVector : BigInt = 0x80000000l, p : ICacheConfig) extends C
       rsp_flush := False
     }
     
-    // use pc_next to fetch instrution
-    when(fetch_state_next===FETCH){
+    // use pc to fetch instrution
+    when(state_next===FETCH){
       fetch_valid := True
     }
     .otherwise{
@@ -104,55 +101,48 @@ case class Fetch(resetVector : BigInt = 0x80000000l, p : ICacheConfig) extends C
     }
 
     when(interrupt_vld){
-      pc_next := interrupt_pc
+      pc := interrupt_pc
     }
     .elsewhen(redirect_vld){
-      pc_next := redirect_pc
+      pc := redirect_pc
     }
     .elsewhen(bpu_predict_taken) {
-      pc_next := bpu_predict_pc_next
+      pc := bpu_target_pc
     }
     .elsewhen(icache_ports.cmd.fire){
-      pc_next := pc_next + 4
+      pc := pc + 4
     }
 
   }
 
   // output pc and instruction from FIFO or icache_ports
   pc_in_stream.valid   := icache_ports.cmd.fire //all pc stream into FIFO
-  pc_in_stream.payload := pc_next
+  pc_in_stream.payload := pc
   pc_out_stream.ready  := dst_ports.fire
   pc_in_stream <> pc_stream_fifo.ports.s_ports
   pc_out_stream <> pc_stream_fifo.ports.m_ports
   pc_stream_fifo.flush := flush
 
-  predict_taken_in.valid := icache_ports.cmd.fire
-  predict_taken_in.payload := bpu_predict_taken
-  predict_taken_out.ready := dst_ports.fire
-  predict_taken_in <> predict_taken_fifo.ports.s_ports
-  predict_taken_out <> predict_taken_fifo.ports.m_ports
-  predict_taken_fifo.flush := flush
-
-  instruction_in_stream.valid   := icache_ports.rsp.valid && !rsp_flush && !flush
-  instruction_in_stream.payload := icache_ports.rsp.payload.data
-  instruction_out_stream.ready  := dst_ports.fire
-  instruction_in_stream <> instruction_stream_fifo.ports.s_ports
-  instruction_out_stream <> instruction_stream_fifo.ports.m_ports
-  instruction_stream_fifo.flush := flush
+  instr_in_stream.valid   := icache_ports.rsp.valid && !rsp_flush && !flush
+  instr_in_stream.payload := icache_ports.rsp.payload.data
+  instr_out_stream.ready  := dst_ports.fire
+  instr_in_stream <> instr_stream_fifo.ports.s_ports
+  instr_out_stream <> instr_stream_fifo.ports.m_ports
+  instr_stream_fifo.flush := flush
 
   // output
   dst_ports.pc := pc_out_stream.payload
-  dst_ports.pc_next := pc_stream_fifo.next_payload // for exe redirect
-  dst_ports.instruction := instruction_out_stream.payload
+  dst_ports.pc := pc_stream_fifo.next_payload // for exe redirect
+  dst_ports.instruction := instr_out_stream.payload
   bpu_predict_valid := icache_ports.cmd.fire // for BPU
-  bpu_predict_pc := pc_next // for BPU
+  bpu_predict_pc := pc // for BPU
   dst_ports.predict_taken := predict_taken_out.payload //for exe redirect
-  dst_ports.pc_next := pc_stream_fifo.next_payload
+  dst_ports.pc := pc_stream_fifo.next_payload
   dst_ports.valid := fifo_all_valid && !dst_ports.isStall && !flush
 
   // send cmd to icache_ports
   icache_ports.cmd.valid := fetch_valid && !flush
-  icache_ports.cmd.addr  := pc_next
+  icache_ports.cmd.addr  := pc
 
 }
 
