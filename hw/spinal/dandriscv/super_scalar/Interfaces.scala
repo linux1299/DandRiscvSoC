@@ -101,9 +101,9 @@ case class IQ_MicroOp(IQ_Type: String) extends Bundle {
 }
 
 case class EnQueue(ROB_AW: Int, IQ_Type: String) extends Bundle {
-  val rd_addr = UInt(ROB_AW bits)
-  val src1_addr = UInt(ROB_AW bits)
-  val src2_addr = UInt(ROB_AW bits)
+  val rd_rob_ptr = UInt(ROB_AW bits)
+  val src1_rob_ptr = UInt(ROB_AW bits)
+  val src2_rob_ptr = UInt(ROB_AW bits)
   val micro_op = IQ_MicroOp(IQ_Type)
   val src1_vld = Bool()
   val src2_vld = Bool()
@@ -115,9 +115,9 @@ case class EnQueue(ROB_AW: Int, IQ_Type: String) extends Bundle {
 
 
 case class DeQueue(ROB_AW: Int, IQ_Type: String) extends Bundle {
-  val rd_addr = UInt(ROB_AW bits)
-  val src1_addr = UInt(ROB_AW bits)
-  val src2_addr = UInt(ROB_AW bits)
+  val rd_rob_ptr = UInt(ROB_AW bits)
+  val src1_rob_ptr = UInt(ROB_AW bits)
+  val src2_rob_ptr = UInt(ROB_AW bits)
   val micro_op = IQ_MicroOp(IQ_Type)
   val src1_val   = Bits(64 bits)
   val src2_val   = Bits(64 bits)
