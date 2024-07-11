@@ -26,6 +26,11 @@ case class ReorderBuffer(p : ReorderBufferConfig) extends Component{
   val interrupt_vld = in Bool()
   val redirect_vld = in Bool()
   val redirect_rob_ptr = in UInt(PTR_WIDTH bits)
+  // for RAT
+  val rob_head_ptr = out UInt(PTR_WIDTH bits)
+  val rob_head_ptr_next = out UInt(PTR_WIDTH bits)
+  val rob_tail_ptr = out UInt(PTR_WIDTH bits)
+  val rob_tail_ptr_next = out UInt(PTR_WIDTH bits)
 
   // =============== Entries of ROB =================
   val entry = new Area{
@@ -258,6 +263,9 @@ case class ReorderBuffer(p : ReorderBufferConfig) extends Component{
   de_rob_b.valid    := (entry.state(head_addr_add_one) === ROBStateEnum.COMMIT)
   de_rob_b.rd_addr  := entry.rd_addr(head_addr_add_one)
   de_rob_b.rd_val   := entry.rd_val(head_addr_add_one)
+
+  rob_head_ptr      := head_ptr
+  rob_head_ptr_next := head_ptr_add_one
   
 }
 

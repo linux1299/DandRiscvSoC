@@ -87,4 +87,62 @@ case class ARF() extends Component{
   read_ports_b.rs2_value := reg_file(read_ports_b.rs2_addr)
 }
 
-// Regsters Alias Table
+// Registers Alias Table
+case class RAT(p : ReorderBufferConfig) extends Component{
+  import p._
+  // =================== IO ===================
+  // write
+  val en_rob_vld_a = in Bool() // write enable a
+  val en_rob_rd_addr_a = in UInt(5 bits) // write addr a
+  val en_rob_ptr_a = in UInt(PTR_WIDTH bits) // write data a
+  val de_rob_vld_a = in Bool() // delete busy bit of addr a
+  val de_rob_rd_addr_a = in UInt(5 bits)// delete busy bit of addr a
+  val en_rob_vld_b = in Bool() // write enable b
+  val en_rob_rd_addr_b = in UInt(5 bits) // write addr b
+  val en_rob_ptr_b = in UInt(PTR_WIDTH bits) // write data b
+  val de_rob_vld_b = in Bool() // delete busy bit of addr b
+  val de_rob_rd_addr_b = in UInt(5 bits)// delete busy bit of addr b
+  // read
+  val rs1_addr_inst0 = in UInt(5 bits)
+  val rs2_addr_inst0 = in UInt(5 bits)
+  val rs1_ptr_inst0 = out Bits(64 bits)
+  val rs2_ptr_inst0 = out Bits(64 bits)
+  val rs1_addr_inst1 = in UInt(5 bits)
+  val rs2_addr_inst1 = in UInt(5 bits)
+  val rs1_ptr_inst1 = out Bits(64 bits)
+  val rs2_ptr_inst1 = out Bits(64 bits)
+
+  // =============== entry =================
+  val busy = Vec(RegInit(False), 32)
+  val rob_ptr_xn = Vec(Reg(UInt(PTR_WIDTH bits)) init(0), 32)
+  val write_enable = Vec(Bool(), 32)
+  val write_data = Vec(UInt(PTR_WIDTH bits), 32)
+  val clear_enable = Vec(Bool(), 32)
+  for(i <- 0 until DEPTH){
+    write_enable(i) := (en_rob_vld_a && en_rob_rd_addr_a===U(i)) ||
+                       (en_rob_vld_b && en_rob_rd_addr_b===U(i))
+
+    write_data(i) := (en_rob_vld_a && en_rob_rd_addr_a===U(i)) ?
+                      en_rob_ptr_a | en_rob_ptr_b
+
+    clear_enable(i) :=(de_rob_vld_a && de_rob_rd_addr_a===U(i)) ||
+                      (de_rob_vld_b && de_rob_rd_addr_b===U(i))
+
+    when(clear_enable(i)){
+      busy(i) := False
+    }
+    .elsewhen(write_enable(i)){
+      busy(i) := True
+    }
+
+    when(write_enable(i)){
+      rob_ptr_xn(i) := write_data(i)
+    }
+  }
+
+  // =============== output =================
+  rs1_ptr_inst0 := rob_ptr_xn(rs1_addr_inst0)
+  rs2_ptr_inst0 := rob_ptr_xn(rs2_addr_inst0)
+  rs1_ptr_inst1 := rob_ptr_xn(rs1_addr_inst1)
+  rs2_ptr_inst1 := rob_ptr_xn(rs2_addr_inst1)
+}
