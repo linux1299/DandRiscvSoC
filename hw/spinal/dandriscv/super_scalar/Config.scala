@@ -42,6 +42,7 @@ case class ICacheConfig(cacheSize : Int,
   
 }
 
+// ================ DCache ==================
 case class DCacheConfig(cacheSize : Int,
                         bytePerLine : Int,
                         wayCount : Int,
@@ -81,6 +82,19 @@ case class DCacheConfig(cacheSize : Int,
   
 }
 
+
+// ================ Gshare ==================
+case class PredictorConfig(predictorType : String = "GSHARE",
+                          addressWidth : Int=64, 
+                          RAS_ENTRIES : Int=4, 
+                          BTB_ENTRIES : Int=4, 
+                          PHT_ENTRIES : Int=128
+                          ){
+  def PHT_address_width = log2Up(PHT_ENTRIES)
+  def BTB_ENTRIES_WIDTH = log2Up(BTB_ENTRIES)
+  def RAS_ENTRIES_WIDTH = log2Up(RAS_ENTRIES)
+  def historyLen        = log2Up(PHT_ENTRIES)
+}
 
 // ================ IQ ==================
 case class IssueQueueConfig(
