@@ -4,7 +4,7 @@ import spinal.core._
 import spinal.lib._
 import math._
 
-case class Bju() extends Component {
+case class BJU() extends Component {
   import CpuConfig._
   import BjuCtrlEnum._
   import ExpCtrlEnum._
@@ -131,6 +131,6 @@ case class Bju() extends Component {
 
 }
 
-object GenBju extends App {
-  GenConfig.spinal.generateVerilog(Bju())
+object GenBJU extends App {
+  GenConfig.spinal.generateVerilog(BJU())
 }

@@ -6,7 +6,7 @@ import math._
 
 import scala.util.Random
 
-case class Alu() extends Component {
+case class ALU() extends Component {
   import CpuConfig._
   import AluCtrlEnum._
 
@@ -185,7 +185,7 @@ case class Alu() extends Component {
 }
 
 object GenALU extends App {
-  GenConfig.spinal.generateVerilog(Alu())
+  GenConfig.spinal.generateVerilog(ALU())
 }
 
 import spinal.sim._
@@ -194,7 +194,7 @@ import spinal.core.sim._
 object TestALU {
   def main(args: Array[String]): Unit = {
 
-    SimConfig.withConfig(GenConfig.spinal).withFstWave.compile(Alu()).doSim { dut =>
+    SimConfig.withConfig(GenConfig.spinal).withFstWave.compile(ALU()).doSim { dut =>
       // rst
       fork {
         dut.clockDomain.assertReset()

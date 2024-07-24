@@ -70,3 +70,4 @@ project/
 ysyx-workbench
 novas.conf
 novas.rc
+hw/tmp_gen/*

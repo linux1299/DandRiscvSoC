@@ -5,7 +5,7 @@ import spinal.lib._
 import math._
 import dandriscv.Riscv._
 
-case class Lsu(AW:Int=64, DW:Int=64) extends Component {
+case class LSU(AW:Int=64, DW:Int=64) extends Component {
   import CpuConfig._
   import LsuCtrlEnum._
   import CSR._
@@ -128,5 +128,5 @@ case class Lsu(AW:Int=64, DW:Int=64) extends Component {
 }
 
 object GenLSU extends App {
-  GenConfig.spinal.generateVerilog(Lsu(64, 64))
+  GenConfig.spinal.generateVerilog(LSU(64, 64))
 }

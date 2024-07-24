@@ -266,11 +266,11 @@ case class DCacheTop(val config : DCacheConfig, val axiConfig : Axi4Config){
   // ==================== AXI output, has burst ================
   if (!config.directOutput && !noBurst){
     val dcache = new DCache(config)
-    val srambanks   = new SramBanks(false, config.wayCount, config.bankNum, config.bankWidth, config.bankDepthBits)
+    val srambanks   = new SramBanks(true, config.wayCount, config.bankNum, config.bankWidth, config.bankDepthBits)
     // impl dcache access logic
     dcache_ports.cmd <> dcache.cpu.cmd
     dcache_ports.rsp <> dcache.cpu.rsp
-    dcache.flush := False // TODO:
+    dcache.flush := flush
     dcache_ports.stall <> dcache.stall
     // sram ports
     val connect_sram = for(i<-0 until config.wayCount) yield new Area{
@@ -367,11 +367,11 @@ case class DCacheTop(val config : DCacheConfig, val axiConfig : Axi4Config){
   // ======================= AXI noburst output =======================
   else if(!config.directOutput && noBurst){
     val dcache = new DCache(config)
-    val srambanks   = new SramBanks(false, config.wayCount, config.bankNum, config.bankWidth, config.bankDepthBits)
+    val srambanks   = new SramBanks(true, config.wayCount, config.bankNum, config.bankWidth, config.bankDepthBits)
     // impl dcache access logic
     dcache_ports.cmd <> dcache.cpu.cmd
     dcache_ports.rsp <> dcache.cpu.rsp
-    dcache.flush := False // TODO:
+    dcache.flush := flush
     dcache_ports.stall <> dcache.stall
     // sram ports
     val connect_sram = for(i<-0 until config.wayCount) yield new Area{

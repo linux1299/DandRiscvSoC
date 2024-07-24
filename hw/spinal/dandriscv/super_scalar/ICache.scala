@@ -10,7 +10,7 @@ case class ICache(p : ICacheConfig) extends Component{
 
   val flush = in Bool()
   val cpu = slave(ICacheAccess(addressWidth, cpuDataWidth))
-  val sram = for(i<-0 until bankNum) yield new Area{
+  val sram = for(i<-0 until wayCount) yield new Area{
     val ports = master(SramPorts(bankNum, bankDepthBits, bankWidth))
   }
   val next_level = master(ICacheNextLevelPorts(p))
@@ -66,7 +66,7 @@ case class ICache(p : ICacheConfig) extends Component{
   // next level related
   val next_level_cmd_valid = RegInit(False)
   val next_level_data_cnt = Counter(0 to lineBusDataNum-1)
-  val next_level_bank_addr= cpu_addr_d1(nextLevelBankAddrRange)
+  val bankAddrRange= cpu_addr_d1(nextLevelBankAddrRange)
   val next_level_done = RegNext(next_level.rsp.valid && next_level_data_cnt===(lineBusDataNum-1))
 
   when(is_miss){
@@ -119,7 +119,7 @@ case class ICache(p : ICacheConfig) extends Component{
     cache_lru_d1(wayId)   := !ways(wayId).metas(cpu_set_d1).mru
     cache_victim(wayId)   := cache_invld_d1(wayId) & cache_lru_d1(wayId)
 
-    // sram TODO:timing maybe bad
+    // sram logic
     sram_banks_data(wayId) := sram(wayId).ports.rsp.payload.data
     sram_banks_valid(wayId):= sram(wayId).ports.rsp.valid
     when(is_hit && U(wayId)===hit_id){
@@ -137,10 +137,10 @@ case class ICache(p : ICacheConfig) extends Component{
       sram(wayId).ports.cmd.payload.wstrb:= B(0, bankNum*bankWidth/8 bits)
     }
     .elsewhen(next_level.rsp.valid && U(wayId)===evict_id){ // when read miss, read next level data, write to banks
-      sram(wayId).ports.cmd.payload.addr := next_level_bank_addr
+      sram(wayId).ports.cmd.payload.addr := bankAddrRange
       sram(wayId).ports.cmd.valid        := True
-      sram(wayId).ports.cmd.payload.wen  := B(bankNum bits, (bankWriteBits-1 downto 0) -> True, default -> False) |<< (next_level_data_cnt*bankWriteBits)
-      sram(wayId).ports.cmd.payload.wdata:= (B(0, bankNum*bankWidth-busDataWidth bits) ## next_level.rsp.data) |<< (next_level_data_cnt*busDataWidth)
+      sram(wayId).ports.cmd.payload.wen  := B(bankNum bits, (bankNum-1 downto 0) -> True)
+      sram(wayId).ports.cmd.payload.wdata:= next_level.rsp.data
       sram(wayId).ports.cmd.payload.wstrb:= (B(0, bankNum*bankWidth/8-busDataWidth/8 bits) ## B(busDataWidth/8 bits, default -> True)) |<< (next_level_data_cnt*busDataWidth/8)
     }
     .otherwise {

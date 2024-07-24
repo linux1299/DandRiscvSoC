@@ -9,7 +9,7 @@ case class SuperScalar() extends Component {
 
   // ================= Config ===============
   val icache_config = ICacheConfig(
-    cacheSize = 32*1024, // 32KB
+    cacheSize = 32*1024, // 32 KB
     bytePerLine = 64,
     wayCount = 4,
     addressWidth = 32,
@@ -20,12 +20,9 @@ case class SuperScalar() extends Component {
     noBurst=true
   )
   val dcache_config = DCacheConfig(
-    // cacheSize = 32*1024, // 32KB
-    // cacheSize = 1*1024, // 1KB
-    cacheSize = 512, // 512B
+    cacheSize = 32*1024, // 16 KB
     bytePerLine =64,
     wayCount = 2,
-    // addressWidth = 64,
     addressWidth = 32,
     cpuDataWidth = 64,
     bankWidth = 64,
@@ -74,6 +71,24 @@ case class SuperScalar() extends Component {
     BTB_ENTRIES = 4, 
     PHT_ENTRIES = 128
   )
+  val rob_config = ReorderBufferConfig(
+    DEPTH = 8
+  )
+  val iq_bju_config = IssueQueueConfig(
+    DEPTH = 2,
+    ROB_PTR_W = rob_config.PTR_WIDTH
+    IQ_Type = "BJU"
+  )
+  val iq_alu_config = IssueQueueConfig(
+    DEPTH = 2,
+    ROB_PTR_W = rob_config.PTR_WIDTH
+    IQ_Type = "ALU"
+  )
+  val iq_lsu_config = IssueQueueConfig(
+    DEPTH = 2,
+    ROB_PTR_W = rob_config.PTR_WIDTH
+    IQ_Type = "LSU"
+  )
 
   // ================= Instance ===============
   val fetch = new Fetch(0x30000000, icache_config)
@@ -83,5 +98,18 @@ case class SuperScalar() extends Component {
   val PTAB = new PTAB(4)
   val decode_0 = new Decode()
   val decode_1 = new Decode()
+  val rob = new ReorderBuffer(rob_config)
+  val ARF = new ARF()
+  val RAT = new RAT(rob_config)
+  val iq_bju = new IssueQueue(iq_bju_config)
+  val iq_alu_0 = new IssueQueue(iq_alu_config)
+  val iq_alu_1 = new IssueQueue(iq_alu_config)
+  val iq_lsu = new IssueQueue(iq_lsu_config)
+  val bju = new BJU()
+  val alu_0 = new ALU()
+  val alu_1 = new ALU()
+  val lsu = new LSU()
+
+  // ================= Connect ===============
   
 }
