@@ -11,7 +11,10 @@ case class ICacheConfig(cacheSize : Int,
                         addressWidth : Int,
                         cpuDataWidth : Int,
                         bankWidth : Int,
-                        busDataWidth : Int){
+                        busDataWidth : Int,
+                        directOutput : Boolean,
+                        noBurst : Boolean
+                        ){
 
   def lineCount = cacheSize/bytePerLine
   def wayLineCount = lineCount/wayCount

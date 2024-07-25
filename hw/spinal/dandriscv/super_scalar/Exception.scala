@@ -1,11 +1,7 @@
-package dandriscv.plugin_simple
+package dandriscv.super_scalar
 
 import spinal.core._
 import spinal.lib._
-
-import dandriscv._
-import dandriscv.ip._
-import dandriscv.plugin._
 import dandriscv.Riscv.CSR._
 
 // ====================== csr reg file ports ====================

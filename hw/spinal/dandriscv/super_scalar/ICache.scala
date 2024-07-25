@@ -3,6 +3,9 @@ package dandriscv.super_scalar
 import spinal.core._
 import spinal.lib._
 import math._
+import spinal.core.sim._
+
+import spinal.lib.bus.amba4.axi._
 
 // ==================== CACHE =============================
 case class ICache(p : ICacheConfig) extends Component{
@@ -10,8 +13,8 @@ case class ICache(p : ICacheConfig) extends Component{
 
   val flush = in Bool()
   val cpu = slave(ICacheAccess(addressWidth, cpuDataWidth))
-  val sram = for(i<-0 until wayCount) yield new Area{
-    val ports = master(SramPorts(bankNum, bankDepthBits, bankWidth))
+  val sram = for(i<-0 until wayCount*bankNum) yield new Area{
+    val ports = master(SramPorts(bankDepthBits, bankWidth))
   }
   val next_level = master(ICacheNextLevelPorts(p))
 
@@ -66,7 +69,7 @@ case class ICache(p : ICacheConfig) extends Component{
   // next level related
   val next_level_cmd_valid = RegInit(False)
   val next_level_data_cnt = Counter(0 to lineBusDataNum-1)
-  val bankAddrRange= cpu_addr_d1(nextLevelBankAddrRange)
+  val next_level_bank_addr = cpu_addr_d1(bankAddrRange)
   val next_level_done = RegNext(next_level.rsp.valid && next_level_data_cnt===(lineBusDataNum-1))
 
   when(is_miss){
@@ -120,35 +123,41 @@ case class ICache(p : ICacheConfig) extends Component{
     cache_victim(wayId)   := cache_invld_d1(wayId) & cache_lru_d1(wayId)
 
     // sram logic
-    sram_banks_data(wayId) := sram(wayId).ports.rsp.payload.data
-    sram_banks_valid(wayId):= sram(wayId).ports.rsp.valid
-    when(is_hit && U(wayId)===hit_id){
-      sram(wayId).ports.cmd.payload.addr := cpu_bank_addr
-      sram(wayId).ports.cmd.valid        := True
-      sram(wayId).ports.cmd.payload.wen  := B(0, bankNum bits)
-      sram(wayId).ports.cmd.payload.wdata:= B(0, bankNum*bankWidth bits)
-      sram(wayId).ports.cmd.payload.wstrb:= B(0, bankNum*bankWidth/8 bits)
-    } 
-    .elsewhen(next_level_done && U(wayId)===evict_id){ // when read next level data done, read data from victim way
-      sram(wayId).ports.cmd.payload.addr := cpu_bank_addr_d1
-      sram(wayId).ports.cmd.valid        := True
-      sram(wayId).ports.cmd.payload.wen  := B(0, bankNum bits)
-      sram(wayId).ports.cmd.payload.wdata:= B(0, bankNum*bankWidth bits)
-      sram(wayId).ports.cmd.payload.wstrb:= B(0, bankNum*bankWidth/8 bits)
-    }
-    .elsewhen(next_level.rsp.valid && U(wayId)===evict_id){ // when read miss, read next level data, write to banks
-      sram(wayId).ports.cmd.payload.addr := bankAddrRange
-      sram(wayId).ports.cmd.valid        := True
-      sram(wayId).ports.cmd.payload.wen  := B(bankNum bits, (bankNum-1 downto 0) -> True)
-      sram(wayId).ports.cmd.payload.wdata:= next_level.rsp.data
-      sram(wayId).ports.cmd.payload.wstrb:= (B(0, bankNum*bankWidth/8-busDataWidth/8 bits) ## B(busDataWidth/8 bits, default -> True)) |<< (next_level_data_cnt*busDataWidth/8)
-    }
-    .otherwise {
-      sram(wayId).ports.cmd.payload.addr := U(0, bankDepthBits bits)
-      sram(wayId).ports.cmd.valid        := False
-      sram(wayId).ports.cmd.payload.wen  := B(0, bankNum bits)
-      sram(wayId).ports.cmd.payload.wdata:= B(0, bankNum*bankWidth bits)
-      sram(wayId).ports.cmd.payload.wstrb:= B(0, bankNum*bankWidth/8 bits)
+
+    sram_banks_data(wayId) := (cpu_bank_index_d1===U(0)) ?  (sram(wayId*bankNum+1).ports.rsp.data ## sram(wayId*bankNum).ports.rsp.data) |
+                                                            (sram(wayId*bankNum).ports.rsp.data ## sram(wayId*bankNum+1).ports.rsp.data)
+    sram_banks_valid(wayId):= sram(wayId*bankNum).ports.rsp.valid
+
+    for (bankId <- 0 until bankNum){
+
+      when(is_hit && U(wayId)===hit_id){ // when hit, read sram
+        sram(wayId*bankNum + bankId).ports.cmd.addr  := cpu_bank_addr + ((U(bankId)===U(0)) ? cpu_bank_index | 0)
+        sram(wayId*bankNum + bankId).ports.cmd.valid := True
+        sram(wayId*bankNum + bankId).ports.cmd.wen   := False
+        sram(wayId*bankNum + bankId).ports.cmd.wdata := B(0, bankWidth bits)
+        sram(wayId*bankNum + bankId).ports.cmd.wstrb := B(0, bankWidth/8 bits)
+      } 
+      .elsewhen(next_level_done && U(wayId)===evict_id){ // when read next level data done, read data from victim way
+        sram(wayId*bankNum + bankId).ports.cmd.addr  := cpu_bank_addr_d1 + ((U(bankId)===U(0)) ? cpu_bank_index_d1 | 0)
+        sram(wayId*bankNum + bankId).ports.cmd.valid := True
+        sram(wayId*bankNum + bankId).ports.cmd.wen   := False
+        sram(wayId*bankNum + bankId).ports.cmd.wdata := B(0, bankWidth bits)
+        sram(wayId*bankNum + bankId).ports.cmd.wstrb := B(0, bankWidth/8 bits)
+      }
+      .elsewhen(next_level.rsp.valid && U(wayId)===evict_id){ // when read miss, read next level data, write to banks
+        sram(wayId*bankNum + bankId).ports.cmd.addr  := next_level_bank_addr + next_level_data_cnt
+        sram(wayId*bankNum + bankId).ports.cmd.valid := True
+        sram(wayId*bankNum + bankId).ports.cmd.wen   := True
+        sram(wayId*bankNum + bankId).ports.cmd.wdata := next_level.rsp.data(bankId*bankWidth+bankWidth-1 downto bankId*bankWidth)
+        sram(wayId*bankNum + bankId).ports.cmd.wstrb := B(bankWidth/8 bits, default -> True)
+      }
+      .otherwise {
+        sram(wayId*bankNum + bankId).ports.cmd.addr  := U(0, bankDepthBits bits)
+        sram(wayId*bankNum + bankId).ports.cmd.valid := False
+        sram(wayId*bankNum + bankId).ports.cmd.wen   := False
+        sram(wayId*bankNum + bankId).ports.cmd.wdata := B(0, bankWidth bits)
+        sram(wayId*bankNum + bankId).ports.cmd.wstrb := B(0, bankWidth/8 bits)
+      }
     }
 
     // ================= metas update =================
@@ -187,80 +196,69 @@ case class ICache(p : ICacheConfig) extends Component{
   }
 
   // resp to cpu ports
-  cpu.rsp.payload.data := is_hit_d1 ? sram_banks_data(hit_id_d1).subdivideIn(cpuDataWidth bits)(cpu_bank_index_d1) | sram_banks_data(evict_id).subdivideIn(cpuDataWidth bits)(cpu_bank_index_d1)
-  cpu.rsp.valid        := is_hit_d1 ? sram_banks_valid(hit_id_d1) | sram_banks_valid(evict_id_d1)
-  cpu.cmd.ready        := cpu_cmd_ready
+  cpu.rsp.data  := is_hit_d1 ? sram_banks_data(hit_id_d1)  | sram_banks_data(evict_id)
+  cpu.rsp.valid := is_hit_d1 ? sram_banks_valid(hit_id_d1) | sram_banks_valid(evict_id_d1)
+  cpu.cmd.ready := cpu_cmd_ready
 
   // cmd to next level cache
-  next_level.cmd.payload.addr := (cpu_addr_d1(addressWidth-1 downto offsetWidth) ## U(0, offsetWidth bits)).asUInt
-  next_level.cmd.payload.len  := (busBurstLen-1)
-  next_level.cmd.payload.size := busDataSize
-  next_level.cmd.valid        := next_level_cmd_valid
+  next_level.cmd.addr  := (cpu_addr_d1(addressWidth-1 downto offsetWidth) ## U(0, offsetWidth bits)).asUInt
+  next_level.cmd.len   := (busBurstLen-1)
+  next_level.cmd.size  := busDataSize
+  next_level.cmd.valid := next_level_cmd_valid
 
 }
 
- class ICacheTop(val config : ICacheConfig, val axiConfig : Axi4Config){
+
+class ICacheTop(val config : ICacheConfig, val axiConfig : Axi4Config){
 
   import config._
 
   // ====================== IO ==================
   val flush = in Bool()
   val icache_ports = slave(ICacheAccess(addressWidth, cpuDataWidth))
-  val next_level = master(ICacheNextLevelPorts(p))
+  val next_level = master(ICacheNextLevelPorts(config))
   // next level AXI ports/ direct ports
-  if(directOutput){
-    val icacheMaster = master(ICacheAccess(config.addressWidth, config.cpuDataWidth)).setName("icache")
-  }
-  else{
-    val icacheReader = master(Axi4ReadOnly(axiConfig)).setName("icache")
-  }
+  val icacheMaster = ifGen(directOutput){master(ICacheAccess(config.addressWidth, config.cpuDataWidth)).setName("icache")}
+  val icacheReader = ifGen(!directOutput){master(Axi4ReadOnly(axiConfig)).setName("icache")}
   
+  // connect icache and cpu ports
+  val icache = new ICache(config)
+  icache_ports.cmd <> icache.cpu.cmd
+  icache_ports.rsp <> icache.cpu.rsp
+  icache.flush := flush
+  // sram ports
+  val sram_area = for(i<-0 until config.wayCount*bankNum) yield new Area{
+    val sram = new Sram(config.bankWidth, config.bankDepthBits)
+  }
+  for(i<-0 until config.wayCount*bankNum) {
+    icache.sram(i).ports <> sram_area(i).sram.ports
+  }
 
   // ==================== AXI output, has burst ================
-  if (!config.directOutput && !noBurst){
-    val icache = new ICache(config)
-    val srambanks = new SramBanks(true, config.wayCount, config.bankNum, config.bankWidth, config.bankDepthBits)
-    // connect icache and cpu ports
-    icache_ports.cmd <> icache.cpu.cmd
-    icache_ports.rsp <> icache.cpu.rsp
-    icache.flush := False // TODO:
-    // sram ports
-    val connect_sram = for(i<-0 until config.wayCount) yield new Area{
-      icache.sram(i).ports <> srambanks.sram(i).ports
-    }
+  if (!config.directOutput && !noBurst && (icacheReader!=null)){
     // ar channel
     icacheReader.ar.valid := icache.next_level.cmd.valid
-    icacheReader.ar.payload.id := U(0)
-    icacheReader.ar.payload.len := icache.next_level.cmd.payload.len.resized
-    icacheReader.ar.payload.size := icache.next_level.cmd.payload.size
-    icacheReader.ar.payload.burst := B(1) // INCR
-    icacheReader.ar.payload.addr := icache.next_level.cmd.payload.addr.resize(config.addressWidth)
+    icacheReader.ar.id := U(0)
+    icacheReader.ar.len := icache.next_level.cmd.len.resized
+    icacheReader.ar.size := icache.next_level.cmd.size
+    icacheReader.ar.burst := B(1) // INCR
+    icacheReader.ar.addr := icache.next_level.cmd.addr.resize(config.addressWidth)
     icache.next_level.cmd.ready := icacheReader.ar.ready
     // r channel
     icacheReader.r.ready := True
     icache.next_level.rsp.valid := icacheReader.r.valid && (icacheReader.r.id===U(0))
-    icache.next_level.rsp.payload.data := icacheReader.r.payload.data
+    icache.next_level.rsp.data := icacheReader.r.data
   }
 
   // ======================= AXI noburst output =======================
   else if(!config.directOutput && config.noBurst){
-    val icache = new ICache(config)
-    val srambanks = new SramBanks(true, config.wayCount, config.bankNum, config.bankWidth, config.bankDepthBits)
-    // connect icache and cpu ports
-    icache_ports.cmd <> icache.cpu.cmd
-    icache_ports.rsp <> icache.cpu.rsp
-    icache.flush := False // TODO:
-    // sram ports
-    val connect_sram = for(i<-0 until config.wayCount) yield new Area{
-      icache.sram(i).ports <> srambanks.sram(i).ports
-    }
 
     icacheReader.ar.valid.setAsReg() init(False)
-    icacheReader.ar.payload.id.setAsReg() init(0)
-    icacheReader.ar.payload.len.setAsReg() init(0)
-    icacheReader.ar.payload.size.setAsReg() init(0)
-    icacheReader.ar.payload.burst.setAsReg() init(0)
-    icacheReader.ar.payload.addr.setAsReg() init(0)
+    icacheReader.ar.id.setAsReg() init(0)
+    icacheReader.ar.len.setAsReg() init(0)
+    icacheReader.ar.size.setAsReg() init(0)
+    icacheReader.ar.burst.setAsReg() init(0)
+    icacheReader.ar.addr.setAsReg() init(0)
     val ar_len_cnt = (Reg(UInt(4 bits)) init(0)).setName("ar_len_cnt")
     // ar channel
     when(icache.next_level.cmd.valid){
@@ -278,21 +276,21 @@ case class ICache(p : ICacheConfig) extends Component{
         icacheReader.ar.valid    := False
       }
     }
-    icacheReader.ar.payload.id := U(0)
-    icacheReader.ar.payload.len := U(0)
-    icacheReader.ar.payload.size := icache.next_level.cmd.payload.size
-    icacheReader.ar.payload.burst := B(1) // INCR
+    icacheReader.ar.id := U(0)
+    icacheReader.ar.len := U(0)
+    icacheReader.ar.size := icache.next_level.cmd.size
+    icacheReader.ar.burst := B(1) // INCR
     icache.next_level.cmd.ready := icacheReader.ar.ready
     // ar addr unburst
     when(icache.next_level.cmd.valid){
-      icacheReader.ar.payload.addr := icache.next_level.cmd.payload.addr.resize(config.addressWidth)
+      icacheReader.ar.addr := icache.next_level.cmd.addr.resize(config.addressWidth)
     }.elsewhen(icacheReader.ar.fire){
-      icacheReader.ar.payload.addr := icacheReader.ar.payload.addr + U(config.busDataWidth/8)
+      icacheReader.ar.addr := icacheReader.ar.addr + U(config.busDataWidth/8)
     }
     // r channel
     icacheReader.r.ready := True
     icache.next_level.rsp.valid := icacheReader.r.valid && (icacheReader.r.id===U(0))
-    icache.next_level.rsp.payload.data := icacheReader.r.payload.data
+    icache.next_level.rsp.data := icacheReader.r.data
   }
 
   else {
@@ -300,4 +298,56 @@ case class ICache(p : ICacheConfig) extends Component{
     icache_ports.cmd <> icacheMaster.cmd
     icache_ports.rsp <> icacheMaster.rsp
   }
+}
+
+object SimICache extends App {
+  val icache_config = ICacheConfig(
+    cacheSize = 32*1024, // 32 KB
+    bytePerLine = 64,
+    wayCount = 2,
+    addressWidth = 32,
+    cpuDataWidth = 64,
+    bankWidth = 32,
+    busDataWidth = 64,
+    directOutput = false,
+    noBurst=true
+  )
+
+  SimConfig.withConfig(GenConfig.spinal).withFstWave.compile(ICache(icache_config)).doSim { dut =>
+    // Fork a process to generate the reset and the clock on the dut
+    //dut.clockDomain.forkStimulus(period = 10)
+    fork {
+      dut.clockDomain.assertReset()
+      dut.clockDomain.fallingEdge()
+      sleep(15)
+      dut.clockDomain.deassertReset()
+      
+    }
+    fork {
+    while(true) {
+        dut.clockDomain.clockToggle()
+        sleep(5)
+      }
+    }
+
+    //for (idx <- 0 until 10) {
+      // Drive the dut inputs with random values
+      dut.flush #= false
+      dut.cpu.cmd.valid #= true
+      dut.cpu.cmd.addr #= 0
+      dut.next_level.rsp.valid #= false
+
+      // Wait a rising edge on the clock
+      dut.clockDomain.waitRisingEdge(5)
+      dut.next_level.rsp.valid #= true
+
+      dut.clockDomain.waitRisingEdge()
+      dut.next_level.rsp.valid #= false
+      dut.clockDomain.waitRisingEdge(5)
+    //}
+
+    SimTimeout(1000 * 100)
+  }
+
+  GenConfig.spinal.generateVerilog(ICache(icache_config))
 }

@@ -1,3 +1,4 @@
+/*
 package dandriscv.super_scalar
 
 import spinal.core._
@@ -527,4 +528,4 @@ case class DCacheTop(val config : DCacheConfig, val axiConfig : Axi4Config){
   }
   
  }
-
+*/

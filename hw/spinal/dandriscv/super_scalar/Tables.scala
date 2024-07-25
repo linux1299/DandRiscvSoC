@@ -5,7 +5,7 @@ import spinal.lib._
 import math._
 import scala.annotation.switch
 import MyUtils._
-import dandriscv.ip._
+import CpuConfig._
 
 // Predict Target Address Buffer
 case class PTAB(DEPTH : Int) extends Component{
@@ -69,7 +69,6 @@ case class ARF() extends Component{
   val reg_file_wen_b = Vec(Bool(), 32)
   val reg_file_wdata = Vec(Bits(64 bits), 32)
 
-  reg_file_wen(0) := False
   for(i <- 1 until 32){
     reg_file_wen_a(i) :=(write_ports_a.rd_wen && write_ports_a.rd_addr===U(i))
     reg_file_wen_b(i) :=(write_ports_b.rd_wen && write_ports_b.rd_addr===U(i))
@@ -105,12 +104,12 @@ case class RAT(p : ReorderBufferConfig) extends Component{
   // read
   val rs1_addr_inst0 = in UInt(5 bits)
   val rs2_addr_inst0 = in UInt(5 bits)
-  val rs1_ptr_inst0 = out Bits(64 bits)
-  val rs2_ptr_inst0 = out Bits(64 bits)
+  val rs1_ptr_inst0 = out UInt(PTR_WIDTH bits)
+  val rs2_ptr_inst0 = out UInt(PTR_WIDTH bits)
   val rs1_addr_inst1 = in UInt(5 bits)
   val rs2_addr_inst1 = in UInt(5 bits)
-  val rs1_ptr_inst1 = out Bits(64 bits)
-  val rs2_ptr_inst1 = out Bits(64 bits)
+  val rs1_ptr_inst1 = out UInt(PTR_WIDTH bits)
+  val rs2_ptr_inst1 = out UInt(PTR_WIDTH bits)
 
   // =============== entry =================
   val busy = Vec(RegInit(False), 32)

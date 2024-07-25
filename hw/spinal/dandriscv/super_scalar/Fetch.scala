@@ -3,7 +3,6 @@ package dandriscv.super_scalar
 import spinal.core._
 import spinal.lib._
 import math._
-import dandriscv.ip._
 
 case class Fetch(resetVector : Int = 0x30000000, p : ICacheConfig) extends Component {
   import p._
@@ -136,7 +135,7 @@ case class Fetch(resetVector : Int = 0x30000000, p : ICacheConfig) extends Compo
   dst_ports.instruction := instr_out_stream.payload
   bpu_predict_valid := icache_ports.cmd.fire // for BPU
   bpu_predict_pc := pc // for BPU
-  dst_ports.predict_taken := predict_taken_out.payload //for exe redirect
+  dst_ports.predict_taken := bpu_predict_taken //for exe redirect
   dst_ports.pc := pc_stream_fifo.next_payload
   dst_ports.valid := fifo_all_valid && !dst_ports.isStall && !flush
 
@@ -147,5 +146,15 @@ case class Fetch(resetVector : Int = 0x30000000, p : ICacheConfig) extends Compo
 }
 
 object GenFetch extends App {
-  GenConfig.spinal.generateVerilog(Fetch())
+  GenConfig.spinal.generateVerilog(Fetch(0x30000000, ICacheConfig(
+    cacheSize = 32*1024, // 32 KB
+    bytePerLine = 64,
+    wayCount = 2,
+    addressWidth = 32,
+    cpuDataWidth = 64,
+    bankWidth = 32,
+    busDataWidth = 64,
+    directOutput = false,
+    noBurst=true
+  )))
 }

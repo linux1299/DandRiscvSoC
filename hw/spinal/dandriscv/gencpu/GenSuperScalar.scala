@@ -1,19 +1,18 @@
 package dandriscv.gencpu
 
-import dandriscv.ip._
 import dandriscv.super_scalar._
 import spinal.core._
-
+import spinal.lib.bus.amba4.axi._
 
 case class SuperScalar() extends Component {
 
   // ================= Config ===============
   val icache_config = ICacheConfig(
-    cacheSize = 32*1024, // 32 KB
+    cacheSize = 16*1024, // 16 KB
     bytePerLine = 64,
-    wayCount = 4,
+    wayCount = 2,
     addressWidth = 32,
-    cpuDataWidth = 32,
+    cpuDataWidth = 64,
     bankWidth = 32,
     busDataWidth = 64,
     directOutput = false,
@@ -76,24 +75,24 @@ case class SuperScalar() extends Component {
   )
   val iq_bju_config = IssueQueueConfig(
     DEPTH = 2,
-    ROB_PTR_W = rob_config.PTR_WIDTH
+    ROB_PTR_W = rob_config.PTR_WIDTH,
     IQ_Type = "BJU"
   )
   val iq_alu_config = IssueQueueConfig(
     DEPTH = 2,
-    ROB_PTR_W = rob_config.PTR_WIDTH
+    ROB_PTR_W = rob_config.PTR_WIDTH,
     IQ_Type = "ALU"
   )
   val iq_lsu_config = IssueQueueConfig(
     DEPTH = 2,
-    ROB_PTR_W = rob_config.PTR_WIDTH
+    ROB_PTR_W = rob_config.PTR_WIDTH,
     IQ_Type = "LSU"
   )
 
   // ================= Instance ===============
   val fetch = new Fetch(0x30000000, icache_config)
   val icache = new ICacheTop(icache_config, icache_axi_config)
-  val dcache = new DCacheTop(dcache_config, dcache_axi_config)
+  // val dcache = new DCacheTop(dcache_config, dcache_axi_config)
   val bpu = new gshare_predictor(gshare_config)
   val PTAB = new PTAB(4)
   val decode_0 = new Decode()

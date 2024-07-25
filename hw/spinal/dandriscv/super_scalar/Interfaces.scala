@@ -44,18 +44,18 @@ case class ICacheNextLevelPorts(p : ICacheConfig) extends Bundle with IMasterSla
   }
 }
 // sram ports as master
-case class SramCmd(bankNum : Int, bankDepthBits : Int, bankWidth : Int) extends Bundle{
+case class SramCmd(bankDepthBits : Int, bankWidth : Int) extends Bundle{
   val addr = UInt(bankDepthBits bits)
-  val wen = Bits(bankNum bits)
-  val wdata = Bits(bankNum*bankWidth bits)
-  val wstrb = Bits(bankNum*bankWidth/8 bits)
+  val wen = Bool()
+  val wdata = Bits(bankWidth bits)
+  val wstrb = Bits(bankWidth/8 bits)
 }
-case class SramRsp(bankNum : Int, bankWidth : Int) extends Bundle{
-  val data = Bits(bankNum*bankWidth bits)
+case class SramRsp(bankWidth : Int) extends Bundle{
+  val data = Bits(bankWidth bits)
 }
-case class SramPorts(bankNum : Int, bankDepthBits : Int, bankWidth : Int) extends Bundle with IMasterSlave{
-  val cmd = Flow(SramCmd(bankNum, bankDepthBits, bankWidth))
-  val rsp = Flow(SramRsp(bankNum, bankWidth))
+case class SramPorts(bankDepthBits : Int, bankWidth : Int) extends Bundle with IMasterSlave{
+  val cmd = Flow(SramCmd(bankDepthBits, bankWidth))
+  val rsp = Flow(SramRsp(bankWidth))
 
   override def asMaster(): Unit = {
     master(cmd)
@@ -246,51 +246,4 @@ case class LsuDst() extends Bundle {
   val rd_rob_ptr = UInt(ROB_PTR_W bits)
 }
 
-// ================ Dcache next level ports ==============
-case class DCacheNextLevelCmd(p : DCacheConfig) extends Bundle{
-  val addr = UInt(p.addressWidth bits)
-  val len  = UInt(4 bits)
-  val size = UInt(3 bits)
-  val wen  = Bool()
-  val wdata= Bits(p.busDataWidth bits)
-  val wstrb= Bits(p.busDataWidth/8 bits)
-}
-case class DCacheNextLevelRsp(p : DCacheConfig) extends Bundle{
-  val data = Bits(p.busDataWidth bits)
-  val bresp= Bits(2 bits)
-  val rvalid = Bool()
-}
-case class DCacheNextLevelPorts(p : DCacheConfig) extends Bundle with IMasterSlave{
-  val cmd = Stream(DCacheNextLevelCmd(p))
-  val rsp = Flow(DCacheNextLevelRsp(p))
 
-  override def asMaster(): Unit = {
-    master(cmd)
-    slave(rsp)
-  }
-}
-
-// ================ cpu and dcache ports ===============
-case class DCacheAccessCmd(AW: Int, DW: Int) extends Bundle {
-  val addr = UInt(AW bits)
-  val wen  = Bool()
-  val wdata= Bits(DW bits)
-  val wstrb= Bits(DW/8 bits)
-  val size = UInt(3 bits)
-}
-case class DCacheAccessRsp(DW: Int) extends Bundle {
-  val data = Bits(DW bits)
-}
-case class DCacheAccess(AW: Int, DW: Int) extends Bundle with IMasterSlave{
-  val cmd = Stream(DCacheAccessCmd(AW, DW))
-  val rsp = Flow(DCacheAccessRsp(DW))
-  val stall = Bool()
-  override def asMaster(): Unit = {
-    master(cmd)
-    slave(rsp)
-  }
-  override def asSlave(): Unit = {
-    slave(cmd)
-    master(rsp)
-  }
-}
