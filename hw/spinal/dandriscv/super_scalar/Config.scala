@@ -56,28 +56,22 @@ case class DCacheConfig(cacheSize : Int,
   def wayLineCount = lineCount/wayCount
   def busBurstLen = bytePerLine*8/busDataWidth // 2
   def busDataSize = log2Up(busDataWidth/8) // 5
-  def bankNum = bytePerLine/(bankWidth/8)
-  def bankDepth = cacheSize*8/wayCount/bankNum/bankWidth
+  def bankDepth = cacheSize*8/wayCount/bankWidth
   def bankDepthBits = log2Up(bankDepth)
   def offsetWidth = log2Up(bytePerLine) // 6
   def setWidth = log2Up(wayLineCount)
   def tagWidth = addressWidth-setWidth-offsetWidth
   def cpuDataBytesWidth = log2Up(cpuDataWidth/8)
-  def lineBusDataNum = bytePerLine/(busDataWidth/8) 
-  def bankWriteBits = bankNum/lineBusDataNum
+  def lineBusDataNum = bytePerLine/(busDataWidth/8)
   // range
   def offsetRange = (offsetWidth-1) downto 0
   def setRange = (offsetWidth+setWidth-1) downto offsetWidth
   def tagRange = (addressWidth-1) downto (offsetWidth+setWidth)
-  def bankAddrRange  = (bankDepthBits+offsetWidth-1) downto offsetWidth
-  def bankIndexRange = (offsetWidth-1) downto cpuDataBytesWidth
-  def nextLevelBankAddrRange = bankAddrRange
-  def cpuDataOnBusRange = (busDataSize-1) downto cpuDataBytesWidth // [4:3]
+  def bankAddrRange  = (bankDepthBits+cpuDataBytesWidth-1) downto cpuDataBytesWidth
 
   assert(wayCount>=2)
   assert(bankWidth==cpuDataWidth)
-  // assert(busDataWidth/bankWidth>=2 && busDataWidth%bankWidth==0)
-  assert(bytePerLine*8/busDataWidth>=2 && (bytePerLine*8)%busDataWidth==0)
+  assert(busDataWidth==cpuDataWidth)
   
 }
 
