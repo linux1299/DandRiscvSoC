@@ -5,7 +5,7 @@ import spinal.lib._
 import math._
 import dandriscv.Riscv._
 
-case class LSU(AW:Int=64, DW:Int=64) extends Component {
+case class LSU(AW:Int=32, DW:Int=64) extends Component {
   import CpuConfig._
   import LsuCtrlEnum._
   import CSR._

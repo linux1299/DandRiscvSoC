@@ -142,6 +142,7 @@ object CpuConfig{
   def PC_WIDTH = 32
   def PredictorHistoryLen = 5
   def ROB_PTR_W = 4
+  def MEM_AW = 32
 }
 
 object GenConfig {

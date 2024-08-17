@@ -267,25 +267,26 @@ case class DCacheTop(val config : DCacheConfig, val axiConfig : Axi4Config){
   val flush = in Bool()
   val dcache_ports = slave(DCacheAccess(addressWidth, cpuDataWidth))
   // next level AXI ports/ or direct ports
-  // next level AXI ports/ direct ports
-  val dcacheMaster = ifGen(directOutput){master(ICacheAccess(config.addressWidth, config.cpuDataWidth)).setName("icache")}
-  val dcacheReader = ifGen(!directOutput){master(Axi4ReadOnly(axiConfig)).setName("icache")}
+  val dcacheMaster = ifGen(directOutput){master(DCacheAccess(config.addressWidth, config.cpuDataWidth)).setName("dcache")}
+  val dcacheReader = ifGen(!directOutput){master(Axi4ReadOnly(axiConfig)).setName("dcache")}
   
+  // connect dcache and cpu ports
+  val dcache = new DCache(config)
+  dcache_ports.cmd <> dcache.cpu.cmd
+  dcache_ports.rsp <> dcache.cpu.rsp
+  dcache.flush := flush
+  dcache_ports.stall <> dcache.stall
+  // sram ports
+  val sram_area = for(i<-0 until config.wayCount) yield new Area{
+    val sram = new Sram(config.bankWidth, config.bankDepthBits)
+  }
+  for(i<-0 until config.wayCount) {
+    dcache.sram(i).ports <> sram_area(i).sram.ports
+  }
+
 
   // ==================== AXI output, has burst ================
   if (!config.directOutput && !noBurst){
-    val dcache = new DCache(config)
-    val srambanks   = new SramBanks(true, config.wayCount, config.bankNum, config.bankWidth, config.bankDepthBits)
-    // impl dcache access logic
-    dcache_ports.cmd <> dcache.cpu.cmd
-    dcache_ports.rsp <> dcache.cpu.rsp
-    dcache.flush := flush
-    dcache_ports.stall <> dcache.stall
-    // sram ports
-    val connect_sram = for(i<-0 until config.wayCount) yield new Area{
-      dcache.sram(i).ports <> srambanks.sram(i).ports
-    }
-    
     val handshake_cnt = RegInit(False)
     val nextlevel_read = dcache.next_level.cmd.valid && !dcache.next_level.cmd.wen
     val nextlevel_write= dcache.next_level.cmd.valid && dcache.next_level.cmd.wen
@@ -375,17 +376,6 @@ case class DCacheTop(val config : DCacheConfig, val axiConfig : Axi4Config){
 
   // ======================= AXI noburst output =======================
   else if(!config.directOutput && noBurst){
-    val dcache = new DCache(config)
-    val srambanks   = new SramBanks(true, config.wayCount, config.bankNum, config.bankWidth, config.bankDepthBits)
-    // impl dcache access logic
-    dcache_ports.cmd <> dcache.cpu.cmd
-    dcache_ports.rsp <> dcache.cpu.rsp
-    dcache.flush := flush
-    dcache_ports.stall <> dcache.stall
-    // sram ports
-    val connect_sram = for(i<-0 until config.wayCount) yield new Area{
-      dcache.sram(i).ports <> srambanks.sram(i).ports
-    }
     val handshake_cnt = RegInit(False)
     val ar_len_cnt = Reg(UInt(4 bits)) init(0)
     val nextlevel_read = dcache.next_level.cmd.valid && !dcache.next_level.cmd.wen
@@ -440,7 +430,7 @@ case class DCacheTop(val config : DCacheConfig, val axiConfig : Axi4Config){
     .elsewhen(dcache.next_level.cmd.valid){
       dcacheReader.ar.size := dcache.next_level.cmd.size
     }
-    // dcacheReader.ar.size := bypass_read ? dcache.cpu_bypass.cmd.size | dcache.next_level.cmd.size
+    
     dcacheReader.ar.burst := B(1) // INCR
     // ar addr unburst
     when(nextlevel_read){
@@ -466,20 +456,20 @@ case class DCacheTop(val config : DCacheConfig, val axiConfig : Axi4Config){
       dcacheWriter.aw.valid := False
     }
     dcacheWriter.aw.id := U(2)
-    // dcacheWriter.aw.len := bypass_write ? U(0, 8 bits) | dcache.next_level.cmd.len.resized
+    
     when(bypass_write){
       dcacheWriter.aw.len := U(0, 8 bits)
     }.elsewhen(nextlevel_write){
       dcacheWriter.aw.len := dcache.next_level.cmd.len.resized
     }
-    // dcacheWriter.aw.size := bypass_write ? dcache.cpu_bypass.cmd.size | dcache.next_level.cmd.size
+    
     when(bypass_write){
       dcacheWriter.aw.size := dcache.cpu_bypass.cmd.size
     }.elsewhen(nextlevel_write){
       dcacheWriter.aw.size := dcache.next_level.cmd.size
     }
     dcacheWriter.aw.burst := B(1) // INCR
-    // dcacheWriter.aw.addr := bypass_write ? dcache.cpu_bypass.cmd.addr.resize(config.addressWidth) | dcache.next_level.cmd.addr.resize(config.addressWidth)
+    
     when(bypass_write){
       dcacheWriter.aw.addr := dcache.cpu_bypass.cmd.addr.resize(config.addressWidth)
     }.elsewhen(nextlevel_write){
@@ -521,7 +511,6 @@ case class DCacheTop(val config : DCacheConfig, val axiConfig : Axi4Config){
     dcache.next_level.rsp.bresp := dcacheWriter.b.resp
     dcache.next_level.rsp.data := dcacheReader.r.data
     dcache.next_level.rsp.rvalid := dcacheReader.r.valid && (dcacheReader.r.id===U(1))
-    // dcache.cpu_bypass.cmd.ready := dcache.cpu_bypass.cmd.wen ? aw_and_w_fire | dcacheReader.ar.ready
     dcache.cpu_bypass.cmd.ready := True
     dcache.cpu_bypass.rsp.valid := bypass_reg ? (bypass_write_reg ? dcacheWriter.b.valid | (dcacheReader.r.valid && (dcacheReader.r.id===U(1)))) | False
     dcache.cpu_bypass.rsp.data  := dcacheReader.r.data

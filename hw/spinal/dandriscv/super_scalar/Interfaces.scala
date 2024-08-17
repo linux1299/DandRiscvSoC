@@ -246,4 +246,35 @@ case class LsuDst() extends Bundle {
   val rd_rob_ptr = UInt(ROB_PTR_W bits)
 }
 
+// ====================== csr reg file ports ====================
+case class CsrCpuPorts(MXLEN : Int = 64) extends Bundle with IMasterSlave{
+  val waddr = UInt(12 bits)
+  val wen   = Bool()
+  val wdata = Bits(MXLEN bits)
+  val raddr = UInt(12 bits)
+  val rdata = Bits(MXLEN bits)
 
+  override def asMaster(): Unit = {
+    in(rdata)
+    out(waddr, wen, wdata, raddr)
+  }
+}
+case class CsrClintPorts(MXLEN : Int = 64) extends Bundle with IMasterSlave{
+  val mepc_wen = Bool()
+  val mepc_wdata = Bits(MXLEN bits)
+  val mcause_wen = Bool()
+  val mcause_wdata = Bits(MXLEN bits)
+  val mstatus_wen = Bool()
+  val mstatus_wdata = Bits(MXLEN bits)
+  val mtvec = Bits(MXLEN bits)
+  val mepc  = Bits(MXLEN bits)
+  val mstatus = Bits(MXLEN bits)
+  val global_int_en = Bool()
+  val mtime_int_en = Bool()
+  val mtime_int_pend = Bool()
+
+  override def asMaster(): Unit = {
+    in(mtvec, mepc, mstatus, global_int_en, mtime_int_en, mtime_int_pend)
+    out(mepc_wen, mepc_wdata, mcause_wen, mcause_wdata, mstatus_wen, mstatus_wdata)
+  }
+}

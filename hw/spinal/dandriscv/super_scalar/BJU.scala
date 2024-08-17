@@ -20,7 +20,19 @@ case class BJU() extends Component {
   val bpu_pred_taken = in Bool()
   val bpu_pred_pc_next = in UInt(PC_WIDTH bits)
   val redirect_valid = out Bool()
-  val redirect_pc_next = out UInt(PC_WIDTH bits)
+  val redirect_pc = out UInt(PC_WIDTH bits)
+  // for BPU train
+  val train_valid = out Bool()
+  val train_pc = out UInt(PC_WIDTH bits)
+  val train_taken = out Bool()
+  val train_mispred = out Bool()
+  val train_history = out UInt(PredictorHistoryLen bits)
+  val train_pc_next = out UInt(PC_WIDTH bits)
+  val train_is_call = out Bool()
+  val train_is_ret = out Bool()
+  val train_is_jmp = out Bool()
+  // for PTAB
+  val brc_or_jmp = out Bool()
 
   // --------------branch/jump related signals--------------
   val pc_next = UInt(PC_WIDTH bits)
@@ -67,18 +79,18 @@ case class BJU() extends Component {
   }
   // redirect if predict wrong
   redirect_valid := False
-  redirect_pc_next := 0
+  redirect_pc := 0
   when(branch_or_jump){
     when(branch_taken){ // real: branch taken; predict: not taken or taken wrong pc
       when(!bpu_pred_taken || (bpu_pred_pc_next=/=pc_next)){
         redirect_valid := in_valid
-        redirect_pc_next := pc_next
+        redirect_pc := pc_next
       }
     }
     .otherwise{ // real: not taken; predict: taken
       when(bpu_pred_taken){
         redirect_valid := in_valid
-        redirect_pc_next := pc + 4
+        redirect_pc := pc + 4
       }
     }
   }
@@ -128,6 +140,21 @@ case class BJU() extends Component {
   val src1 = pc
   val src2 = (jal || jalr) ? U(4, 64 bits) | rs2_val.asUInt
   rd_val := (src1 + src2).asBits
+
+  // ================= for BPU ==================
+  train_valid := in_valid && branch_or_jump
+  train_pc := pc
+  train_taken := branch_taken
+  train_mispred := redirect_valid
+  train_history := branch_history
+  train_pc_next := redirect_pc
+  train_is_call := is_call
+  train_is_ret  := is_ret
+  train_is_jmp  := is_jmp
+
+  brc_or_jmp := branch_or_jump
+
+
 
 }
 

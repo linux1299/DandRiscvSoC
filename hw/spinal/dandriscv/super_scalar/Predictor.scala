@@ -12,7 +12,7 @@ case class gshare_predictor(val p : PredictorConfig) extends Component {
   val predict_valid = in Bool()
   val predict_taken = out Bool()
   val predict_history = out UInt(historyLen bits)
-  val predict_pc_next = out UInt(addressWidth bits)
+  val target_pc = out UInt(addressWidth bits)
 
   val train_valid = in Bool()
   val train_taken = in Bool()
@@ -214,7 +214,7 @@ case class gshare_predictor(val p : PredictorConfig) extends Component {
   // ============================= output =============================
   predict_history := GSHARE.global_branch_history.asUInt
   predict_taken   := BTB.is_matched && (GSHARE.pht_predict_taken || BTB.is_jmp || BTB.is_call || BTB.is_ret)
-  predict_pc_next := RAS.ras_ret_matched ? RAS.ras_predict_pc | ((BTB.is_matched && (GSHARE.pht_predict_taken || BTB.is_jmp || BTB.is_call)) ? BTB.target_pc_read | (predict_pc+4))
+  target_pc := RAS.ras_ret_matched ? RAS.ras_predict_pc | ((BTB.is_matched && (GSHARE.pht_predict_taken || BTB.is_jmp || BTB.is_call)) ? BTB.target_pc_read | (predict_pc+4))
 }
 
 // ================ static predictor =================
@@ -227,19 +227,19 @@ case class static_predictor(val p : PredictorConfig) extends Component {
   val predict_jal = in Bool()
   val predict_branch = in Bool()
   val predict_taken = out Bool()
-  val predict_pc_next = out UInt(addressWidth bits)
+  val target_pc = out UInt(addressWidth bits)
 
   when(predict_valid && predict_jal){
     predict_taken := True
-    predict_pc_next := (predict_pc.asSInt + predict_imm.asSInt).asUInt
+    target_pc := (predict_pc.asSInt + predict_imm.asSInt).asUInt
   }
   .elsewhen(predict_valid && predict_branch){
     predict_taken := predict_imm(addressWidth-1)
-    predict_pc_next := (predict_pc.asSInt + predict_imm.asSInt).asUInt
+    target_pc := (predict_pc.asSInt + predict_imm.asSInt).asUInt
   }
   .otherwise{
     predict_taken := False
-    predict_pc_next := U(0)
+    target_pc := U(0)
   }
 
 }
