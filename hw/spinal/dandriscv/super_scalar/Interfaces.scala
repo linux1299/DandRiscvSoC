@@ -122,9 +122,7 @@ case class DCacheAccess(AW: Int, DW: Int) extends Bundle with IMasterSlave{
 // ========================= Fetch =======================
 case class FetchDst() extends Bundle {
   val pc = UInt(PC_WIDTH bits)
-  val pc_next = UInt(PC_WIDTH bits)
   val instruction = Bits(32 bits)
-  val predict_taken = Bool()
 }
 
 // ====================== reg file ports ====================

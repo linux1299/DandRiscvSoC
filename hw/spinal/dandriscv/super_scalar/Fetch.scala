@@ -135,13 +135,53 @@ case class Fetch(resetVector : Int = 0x30000000, p : ICacheConfig) extends Compo
   dst_ports.instruction := instr_out_stream.payload
   bpu_predict_valid := icache_ports.cmd.fire // for BPU
   bpu_predict_pc := pc // for BPU
-  dst_ports.predict_taken := bpu_predict_taken //for exe redirect
   dst_ports.pc := pc_stream_fifo.next_payload
   dst_ports.valid := fifo_all_valid && !dst_ports.isStall && !flush
 
   // send cmd to icache_ports
   icache_ports.cmd.valid := fetch_valid && !flush
   icache_ports.cmd.addr  := pc
+
+}
+
+case class FetchStage(resetVector : Int = 0x30000000, p : ICacheConfig) extends Component {
+  import p._
+  import CpuConfig._
+
+  // ==================== IO =============================
+  val flush = in Bool()
+  val stall = in Bool()
+  val interrupt_vld = in Bool()
+  val interrupt_pc = in UInt(PC_WIDTH bits)
+  val redirect_vld = in Bool()
+  val redirect_pc = in UInt(PC_WIDTH bits)
+  val icache_ports = master(Stream(ICacheAccess(PC_WIDTH, cpuDataWidth)))
+  val bpu_predict_pc = out UInt(PC_WIDTH bits)
+  val bpu_predict_valid = out Bool()
+  val bpu_predict_taken = in Bool()
+  val bpu_target_pc = in UInt(PC_WIDTH bits)
+  val dst_ports_0 = master(Stream(FetchDst()))
+  val dst_ports_1 = master(Stream(FetchDst()))
+
+  // ==================== inst =============================
+  val fetch = new Fetch(resetVector, p)
+
+  // ==================== to stream =============================
+  val src_stream = fetch.dst_ports.haltWhen(stall).throwWhen(flush)
+
+  // fork to 2 stream
+  val (dst_stream_0, dst_stream_1_tmp) = StreamFork2(src_stream, synchronous=false)
+
+  // change stream1's pc
+  val dst_stream_1 = Stream(FetchDst())
+  dst_stream_1.valid := dst_stream_1_tmp.valid
+  dst_stream_1.pc := dst_stream_1_tmp.pc + 4
+  dst_stream_1_tmp.ready := dst_stream_1.ready
+
+  // output
+  dst_stream_0 >-> dst_ports_0
+  dst_stream_1 >-> dst_ports_1
+  
 
 }
 

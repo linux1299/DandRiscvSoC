@@ -263,6 +263,28 @@ case class Decode() extends Component {
   bju_micro_op.rd_wen := rd_wen
 }
 
+case class DecodeStage(p : ReorderBufferConfig) extends Component {
+  import p._
+
+  // ==================== IO =============================
+  val flush = in Bool()
+  val stall = in Bool()
+  val src_ports_0 = slave(Stream(FetchDst()))
+  val src_ports_1 = slave(Stream(FetchDst()))
+  val rob_ports_0 = master(Stream(EnROB(PC_WIDTH)))
+  val rob_ports_1 = master(Stream(EnROB(PC_WIDTH)))
+
+  // ==================== inst =============================
+  val decode_0 = new Decode()
+  val decode_1 = new Decode()
+  
+
+  // ==================== connect =============================
+  val arf = new ARF()
+  val rat = new RAT(p)
+
+}
+
 object GenDecode extends App {
   GenConfig.spinal.generateVerilog(Decode())
 }

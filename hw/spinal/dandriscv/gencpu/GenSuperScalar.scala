@@ -90,16 +90,14 @@ case class SuperScalar() extends Component {
   )
 
   // ================= Instance ===============
-  val fetch = new Fetch(0x30000000, icache_config)
+  val fetch = new FetchStage(0x30000000, icache_config)
   val icache = new ICacheTop(icache_config, icache_axi_config)
   val dcache = new DCacheTop(dcache_config, dcache_axi_config)
   val bpu = new gshare_predictor(gshare_config)
   val ptab = new PTAB(DEPTH=4)
-  val decode_0 = new Decode()
-  val decode_1 = new Decode()
+  
   val rob = new ReorderBuffer(rob_config)
-  val arf = new ARF()
-  val rat = new RAT(rob_config)
+  
   val iq_bju = new IssueQueue(iq_bju_config)
   val iq_alu_0 = new IssueQueue(iq_alu_config)
   val iq_alu_1 = new IssueQueue(iq_alu_config)
@@ -146,6 +144,5 @@ case class SuperScalar() extends Component {
   ptab.bpu_target_pc := bpu.predict_pc_next
   ptab.exe_brc_or_jmp := bju.brc_or_jmp
 
-  decode_0.pc := 
 
 }

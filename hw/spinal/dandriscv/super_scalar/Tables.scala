@@ -93,23 +93,23 @@ case class RAT(p : ReorderBufferConfig) extends Component{
   // write
   val en_rob_vld_a = in Bool() // write enable a
   val en_rob_rd_addr_a = in UInt(5 bits) // write addr a
-  val en_rob_ptr_a = in UInt(PTR_WIDTH bits) // write data a
-  val de_rob_vld_a = in Bool() // delete busy bit of addr a
+  val en_rob_ptr_a = in UInt(PTR_WIDTH bits) // write rob tail ptr a
+  val de_rob_vld_a = in Bool() // delete busy bit of a
   val de_rob_rd_addr_a = in UInt(5 bits)// delete busy bit of addr a
   val en_rob_vld_b = in Bool() // write enable b
   val en_rob_rd_addr_b = in UInt(5 bits) // write addr b
-  val en_rob_ptr_b = in UInt(PTR_WIDTH bits) // write data b
-  val de_rob_vld_b = in Bool() // delete busy bit of addr b
+  val en_rob_ptr_b = in UInt(PTR_WIDTH bits) // write rob tail ptr b
+  val de_rob_vld_b = in Bool() // delete busy bit of b
   val de_rob_rd_addr_b = in UInt(5 bits)// delete busy bit of addr b
   // read
   val rs1_addr_inst0 = in UInt(5 bits)
   val rs2_addr_inst0 = in UInt(5 bits)
-  val rs1_ptr_inst0 = out UInt(PTR_WIDTH bits)
-  val rs2_ptr_inst0 = out UInt(PTR_WIDTH bits)
+  val rs1_ptr_inst0 = out Reg(UInt(PTR_WIDTH bits))
+  val rs2_ptr_inst0 = out Reg(UInt(PTR_WIDTH bits))
   val rs1_addr_inst1 = in UInt(5 bits)
   val rs2_addr_inst1 = in UInt(5 bits)
-  val rs1_ptr_inst1 = out UInt(PTR_WIDTH bits)
-  val rs2_ptr_inst1 = out UInt(PTR_WIDTH bits)
+  val rs1_ptr_inst1 = out Reg(UInt(PTR_WIDTH bits))
+  val rs2_ptr_inst1 = out Reg(UInt(PTR_WIDTH bits))
 
   // =============== entry =================
   val busy = Vec(RegInit(False), 32)
