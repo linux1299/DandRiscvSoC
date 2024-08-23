@@ -139,10 +139,14 @@ case class SuperScalar() extends Component {
   bpu.train_is_jmp  := bju.train_is_jmp
 
   ptab.flush := False // TODO:
-  ptab.bpu_predict_pc := fetch.bpu_predict_pc
+  ptab.bpu_predict_valid := fetch.bpu_predict_valid
   ptab.bpu_predict_taken := bpu.predict_taken
   ptab.bpu_target_pc := bpu.predict_pc_next
   ptab.exe_brc_or_jmp := bju.brc_or_jmp
+
+  
+  bju.bpu_pred_taken := ptab.exe_branch_taken
+  bju.bpu_target_pc := ptab.exe_target_pc
 
 
 }

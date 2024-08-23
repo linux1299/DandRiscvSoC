@@ -15,6 +15,11 @@ case class ReorderBuffer(p : ReorderBufferConfig) extends Component{
   val en_rob_b = slave(Stream(EnROB(PC_WIDTH)))
   val de_rob_a = master(Stream(DeROB()))
   val de_rob_b = master(Stream(DeROB()))
+  // to issue queue
+  val en_queue_0 = master(Stream(EnQueue(ROB_PTR_W, "BJU")))
+  val en_queue_1 = master(Stream(EnQueue(ROB_PTR_W, "ALU")))
+  val en_queue_2 = master(Stream(EnQueue(ROB_PTR_W, "ALU")))
+  val en_queue_3 = master(Stream(EnQueue(ROB_PTR_W, "LSU")))
   // for instruction wake up
   val exe_rob_ptr = in Vec(UInt(PTR_WIDTH bits), IQ_NUM)
   val exe_rd_val  = in Vec(Bits(64 bits), IQ_NUM)
@@ -26,11 +31,10 @@ case class ReorderBuffer(p : ReorderBufferConfig) extends Component{
   val interrupt_vld = in Bool()
   val redirect_vld = in Bool()
   val redirect_rob_ptr = in UInt(PTR_WIDTH bits)
-  // for RAT
-  val rob_head_ptr = out UInt(PTR_WIDTH bits)
-  val rob_head_ptr_next = out UInt(PTR_WIDTH bits)
-  val rob_tail_ptr = out UInt(PTR_WIDTH bits)
-  val rob_tail_ptr_next = out UInt(PTR_WIDTH bits)
+
+  // ==================== inst =============================
+  val arf = new ARF()
+  val rat = new RAT(p)
 
   // =============== Entries of ROB =================
   val entry = new Area{
@@ -240,17 +244,54 @@ case class ReorderBuffer(p : ReorderBufferConfig) extends Component{
     }
 
     // ============== rd value of ROB entry==============
-    when(en_rob_a.fire && tail_addr===U(i)){
-      entry.rd_val(i) := en_rob_a.rd_val
-    }
-    .elsewhen(en_rob_b.fire && tail_addr_add_one===U(i)){
-      entry.rd_val(i) := en_rob_b.rd_val
-    }
-    .elsewhen(entry.exe_done(i)){
+    // when(en_rob_a.fire && tail_addr===U(i)){
+    //   entry.rd_val(i) := en_rob_a.rd_val
+    // }
+    // .elsewhen(en_rob_b.fire && tail_addr_add_one===U(i)){
+    //   entry.rd_val(i) := en_rob_b.rd_val
+    // }
+    // .elsewhen(entry.exe_done(i)){
+    //   entry.rd_val(i) := entry.exe_rd_val(i)
+    // }
+    // rd not from EnROB
+    when(entry.exe_done(i)){
       entry.rd_val(i) := entry.exe_rd_val(i)
     }
 
   }
+
+  // ==================== connect =============================
+  arf.read_ports_a.rs1_req := en_rob_a.rs1_rd_en
+  arf.read_ports_a.rs2_req := en_rob_a.rs2_rd_en
+  arf.read_ports_a.rs1_addr := en_rob_a.rs1_addr
+  arf.read_ports_a.rs2_addr := en_rob_a.rs2_addr
+  arf.write_ports_a.rd_wen := de_rob_a.fire
+  arf.write_ports_a.rd_addr := de_rob_a.rd_addr
+  arf.write_ports_a.rd_value := de_rob_a.rd_val
+
+  arf.read_ports_b.rs1_req := en_rob_b.rs1_rd_en
+  arf.read_ports_b.rs2_req := en_rob_b.rs2_rd_en
+  arf.read_ports_b.rs1_addr := en_rob_b.rs1_addr
+  arf.read_ports_b.rs2_addr := en_rob_b.rs2_addr
+  arf.write_ports_b.rd_wen := de_rob_b.valid
+  arf.write_ports_b.rd_addr := de_rob_b.rd_addr
+  arf.write_ports_b.rd_value := de_rob_b.rd_val
+
+  rat.en_rob_vld_a := en_rob_a.fire
+  rat.en_rob_rd_addr_a := en_rob_a.rd_addr
+  rat.en_rob_ptr_a := tail_ptr
+  rat.de_rob_vld_a := de_rob_a.fire
+  rat.de_rob_rd_addr_a := de_rob_a.rd_addr
+  rat.en_rob_vld_b := en_rob_b.fire
+  rat.en_rob_rd_addr_b := en_rob_b.rd_addr
+  rat.en_rob_ptr_b := tail_ptr_add_one
+  rat.de_rob_vld_b := de_rob_b.fire
+  rat.de_rob_rd_addr_b := de_rob_b.rd_addr
+  rat.rs1_addr_inst0 := en_rob_a.rs1_addr
+  rat.rs2_addr_inst0 := en_rob_a.rs2_addr
+  rat.rs1_addr_inst1 := en_rob_b.rs1_addr
+  rat.rs2_addr_inst1 := en_rob_b.rs2_addr
+
 
   // ============== output ==============
   en_rob_a.ready    := !rob_full
@@ -264,8 +305,6 @@ case class ReorderBuffer(p : ReorderBufferConfig) extends Component{
   de_rob_b.rd_addr  := entry.rd_addr(head_addr_add_one)
   de_rob_b.rd_val   := entry.rd_val(head_addr_add_one)
 
-  rob_head_ptr      := head_ptr
-  rob_head_ptr_next := head_ptr_add_one
   
 }
 

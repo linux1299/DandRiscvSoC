@@ -204,8 +204,14 @@ case class EnROB(PC_WIDTH: Int) extends Bundle {
   val pc = UInt(PC_WIDTH bits)
   val micro_op = RobMicroOp()
   val rd_addr = UInt(5 bits)
-  val rd_val = Bits(64 bits)
+  // val rd_val = Bits(64 bits)
   val exception = ExceptionEnum()
+  val rs1_rd_en = Bool()
+  val rs2_rd_en = Bool()
+  val rs1_addr = UInt(5 bits)
+  val rs2_addr = UInt(5 bits)
+  // for issue queue
+  val imm_val  = Bits(64 bits)
 }
 
 case class DeROB() extends Bundle {

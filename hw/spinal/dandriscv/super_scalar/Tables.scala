@@ -7,18 +7,19 @@ import scala.annotation.switch
 import MyUtils._
 import CpuConfig._
 
-// Predict Target Address Buffer
+// ============================================================================
+// ===================Predict Target Address Buffer===================
+  // ============================================================================
 case class PTAB(DEPTH : Int) extends Component{
   var PTR_WIDTH = log2Up(DEPTH)+1
   // =================== IO ===================
   val flush = in Bool()
-  val bpu_predict_pc = in UInt(PC_WIDTH bits)
-  val bpu_predict_taken = in Bool()
-  val bpu_target_pc = in UInt(PC_WIDTH bits)
-  val exe_brc_or_jmp = in Bool()
-  val exe_target_pc = in UInt(PC_WIDTH bits)
-  val redirect_vld = out Bool()
-  val redirect_pc = out UInt(PC_WIDTH bits)
+  val bpu_predict_valid = in Bool() // write valid
+  val bpu_predict_taken = in Bool() // write
+  val bpu_target_pc = in UInt(PC_WIDTH bits) // write
+  val exe_brc_or_jmp = in Bool() // read valid
+  val exe_branch_taken = out Bool() //read out
+  val exe_target_pc = out UInt(PC_WIDTH bits) //read out
 
   // =================== Internal Signal ===================
   val read_ptr = Reg(UInt(PTR_WIDTH bits)) init(0)
@@ -28,34 +29,41 @@ case class PTAB(DEPTH : Int) extends Component{
 
   // =============== Entries of PTAB =================
   val entry = new Area{
-    val busy = Vec(RegInit(False), DEPTH)
+    val branch_taken = Vec(RegInit(False), DEPTH)
     val target_pc = Vec(Reg(UInt(PC_WIDTH bits)) init(0), DEPTH)
-    val next_pc = Vec(Reg(UInt(PC_WIDTH bits)) init(0), DEPTH)
+  }
+
+  // update read pointer
+  when(flush){
+    read_ptr := 0
+  }.elsewhen(exe_brc_or_jmp){
+    read_ptr := read_ptr + 1
+  }
+  // update write pointer
+  when(flush){
+    write_ptr := 0
+  }.elsewhen(bpu_predict_valid){
+    write_ptr := write_ptr + 1
   }
 
   // update Entries
   for(i <- 0 until DEPTH){
-    when(flush){
-      entry.busy(i) := False
-    }
-    .elsewhen(bpu_predict_taken && write_addr===U(i)){
-      entry.busy(i) := True
+    when(bpu_predict_valid && write_addr===U(i)){
+      entry.branch_taken(i) := bpu_predict_taken
       entry.target_pc(i) := bpu_target_pc
-    }
-    .elsewhen(exe_brc_or_jmp && read_addr===U(i)){
-      entry.busy(i) := False
-      entry.next_pc(i) := bpu_predict_pc + 4
     }
   }
 
   // output
-  redirect_vld := exe_brc_or_jmp && 
-                  entry.busy(read_addr) && 
-                  (entry.target_pc(read_addr) =/= exe_target_pc)
-  redirect_pc := entry.next_pc(read_addr)
+  exe_branch_taken := entry.branch_taken(read_addr)
+  exe_target_pc := entry.target_pc(read_addr)
 }
 
-// Arch Register File
+
+
+// ============================================================================
+// ===================Arch Register File===================
+  // ============================================================================
 case class ARF() extends Component{
   // =================== IO ===================
   val read_ports_a = slave(ARFReadPorts())
@@ -86,7 +94,12 @@ case class ARF() extends Component{
   read_ports_b.rs2_value := reg_file(read_ports_b.rs2_addr)
 }
 
-// Registers Alias Table
+
+
+
+// ============================================================================
+// ===================Registers Alias Table===================
+// ============================================================================
 case class RAT(p : ReorderBufferConfig) extends Component{
   import p._
   // =================== IO ===================
@@ -101,15 +114,20 @@ case class RAT(p : ReorderBufferConfig) extends Component{
   val en_rob_ptr_b = in UInt(PTR_WIDTH bits) // write rob tail ptr b
   val de_rob_vld_b = in Bool() // delete busy bit of b
   val de_rob_rd_addr_b = in UInt(5 bits)// delete busy bit of addr b
-  // read
+  // read port 0
   val rs1_addr_inst0 = in UInt(5 bits)
   val rs2_addr_inst0 = in UInt(5 bits)
-  val rs1_ptr_inst0 = out Reg(UInt(PTR_WIDTH bits))
-  val rs2_ptr_inst0 = out Reg(UInt(PTR_WIDTH bits))
+  val rs1_ptr_inst0 = out UInt(PTR_WIDTH bits)
+  val rs2_ptr_inst0 = out UInt(PTR_WIDTH bits)
+  val rs1_busy_inst0 = out Bool()
+  val rs2_busy_inst0 = out Bool()
+  // read port 1
   val rs1_addr_inst1 = in UInt(5 bits)
   val rs2_addr_inst1 = in UInt(5 bits)
-  val rs1_ptr_inst1 = out Reg(UInt(PTR_WIDTH bits))
-  val rs2_ptr_inst1 = out Reg(UInt(PTR_WIDTH bits))
+  val rs1_ptr_inst1 = out UInt(PTR_WIDTH bits)
+  val rs2_ptr_inst1 = out UInt(PTR_WIDTH bits)
+  val rs1_busy_inst1 = out Bool()
+  val rs2_busy_inst1 = out Bool()
 
   // =============== entry =================
   val busy = Vec(RegInit(False), 32)
@@ -140,8 +158,11 @@ case class RAT(p : ReorderBufferConfig) extends Component{
   }
 
   // =============== output =================
-  rs1_ptr_inst0 := rob_ptr_xn(rs1_addr_inst0)
-  rs2_ptr_inst0 := rob_ptr_xn(rs2_addr_inst0)
-  rs1_ptr_inst1 := rob_ptr_xn(rs1_addr_inst1)
-  rs2_ptr_inst1 := rob_ptr_xn(rs2_addr_inst1)
+  // port 0
+  rs1_ptr_inst0 :=  rob_ptr_xn(rs1_addr_inst0)
+  rs2_ptr_inst0 :=  rob_ptr_xn(rs2_addr_inst0)
+
+  rs1_ptr_inst1 :=  rob_ptr_xn(rs1_addr_inst1)
+  rs2_ptr_inst1 :=  rob_ptr_xn(rs2_addr_inst1)
+
 }

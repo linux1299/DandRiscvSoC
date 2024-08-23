@@ -3,6 +3,7 @@ package dandriscv.super_scalar
 import spinal.core._
 import spinal.lib._
 import dandriscv.Riscv.CSR._
+import ExceptionEnum._
 
 // ========================= csr register file moudle =========================
 case class CsrRegfile(MXLEN : Int = 64) extends Component{
@@ -126,31 +127,26 @@ case class Clint(MXLEN : Int = 64, addressWidth : Int = 64) extends Component{
   val ebreak = in Bool()
   val mret = in Bool()
 
-  object IntTypeEnum extends SpinalEnum(binarySequential){
-    val IDLE, EXPT, TIME, MRET= newElement()
-  }
-  object CsrEnum extends SpinalEnum(binarySequential){
-    val IDLE, EXPT_TIME, MRET, WRITE= newElement()
-  }
-
-  val int_state = Bits(IntTypeEnum.IDLE.asBits.getWidth bits)
+  val int_state = ExceptionEnum()
   val pc_next_d1 = RegNextWhen(pc_next, pc_next_valid) init(0)
   val mepc_wdata = Bits(MXLEN bits)
   val mcause_wdata = Bits(MXLEN bits)
 
   // interrupt type
-  when(ecall || ebreak){
-    int_state := IntTypeEnum.EXPT.asBits
+  when(ecall){
+    int_state := ECALL
+  }.elsewhen(ebreak){
+    int_state := EBREAK
   }.elsewhen(csr_ports.global_int_en && csr_ports.mtime_int_en && timer_int){
-    int_state := IntTypeEnum.TIME.asBits
+    int_state := TIME
   }.elsewhen(mret){
-    int_state := IntTypeEnum.MRET.asBits
+    int_state := MRET
   }.otherwise{
-    int_state := IntTypeEnum.IDLE.asBits
+    int_state := IDLE
   }
 
   // mepc wdata
-  when(int_state===IntTypeEnum.TIME.asBits){ // exact async exception
+  when(int_state===TIME){ // exact async exception
     when(instruction_valid){
       mepc_wdata := pc_next.asBits
     }
@@ -167,15 +163,11 @@ case class Clint(MXLEN : Int = 64, addressWidth : Int = 64) extends Component{
   }
   
   // mcause wdata
-  when(int_state===IntTypeEnum.EXPT.asBits){
-    when(ecall){
-      mcause_wdata := B(11, MXLEN bits)
-    }.elsewhen(ebreak){
-      mcause_wdata := B(3, MXLEN bits)
-    }.otherwise{
-      mcause_wdata := B(10, MXLEN bits)
-    }
-  }.elsewhen(int_state===IntTypeEnum.TIME.asBits){
+  when(int_state===ECALL){
+    mcause_wdata := B(11, MXLEN bits)
+  }.elsewhen(int_state===EBREAK){
+    mcause_wdata := B(3, MXLEN bits)
+  }.elsewhen(int_state===TIME){
     mcause_wdata := B"64'h8000_0000_0000_0007"
   }.otherwise{
     mcause_wdata := 0
@@ -183,7 +175,7 @@ case class Clint(MXLEN : Int = 64, addressWidth : Int = 64) extends Component{
 
   // write to csr
   switch(int_state){
-    is(IntTypeEnum.EXPT.asBits , IntTypeEnum.TIME.asBits){
+    is(ECALL, EBREAK, TIME){
       int_en := True
       int_pc := csr_ports.mtvec.asUInt
       csr_ports.mepc_wen := True
@@ -194,7 +186,7 @@ case class Clint(MXLEN : Int = 64, addressWidth : Int = 64) extends Component{
       csr_ports.mstatus_wdata := csr_ports.mstatus(63 downto 8) ## csr_ports.mstatus(3) ## csr_ports.mstatus(6 downto 4) ## False ## csr_ports.mstatus(2 downto 0)
       //                                                            MPIE[7]=MIE[3]                                          MIE[3]=0
     }
-    is(IntTypeEnum.MRET.asBits){
+    is(MRET){
       int_en := True
       int_pc := csr_ports.mepc.asUInt
       csr_ports.mepc_wen := False

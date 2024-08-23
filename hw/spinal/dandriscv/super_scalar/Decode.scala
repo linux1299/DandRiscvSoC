@@ -17,15 +17,15 @@ case class Decode() extends Component {
   val instr = in Bits(32 bits)
   val rs1_addr = out UInt(5 bits)
   val rs2_addr = out UInt(5 bits)
-  val rs1_ren = out Bool() // read reg enable
-  val rs2_ren = out Bool() // read reg enable
-  val rs1_val = in Bits(64 bits)
-  val rs2_val = in Bits(64 bits)
+  val rs1_rd_en = out Bool() // read reg enable
+  val rs2_rd_en = out Bool() // read reg enable
   val rd_addr = out UInt(5 bits)
   val imm = out Bits(64 bits)
   val alu_micro_op = out(IQ_MicroOp("ALU"))
   val lsu_micro_op = out(IQ_MicroOp("LSU"))
   val bju_micro_op = out(IQ_MicroOp("BJU"))
+  val exception = out(ExceptionEnum())
+  val rob_micro_op = out(RobMicroOp())
 
   // =================== inter signals ===================
   // pre decode
@@ -229,8 +229,8 @@ case class Decode() extends Component {
   val src2_is_imm = Bool()
   rs1_addr := rs1.asUInt
   rs2_addr := rs2.asUInt
-  rs1_ren  := !(imm_all.u_type_imm || imm_all.j_type_imm)
-  rs2_ren  := !(imm_all.u_type_imm || imm_all.j_type_imm || imm_all.i_type_imm)
+  rs1_rd_en  := !(imm_all.u_type_imm || imm_all.j_type_imm)
+  rs2_rd_en  := !(imm_all.u_type_imm || imm_all.j_type_imm || imm_all.i_type_imm)
   rd_wen   := !imm_all.s_type_imm && 
               !imm_all.b_type_imm && 
               !ebreak && 
@@ -261,28 +261,83 @@ case class Decode() extends Component {
   bju_micro_op.bju_rs1_is_link := (rs1===B(0, 5 bits) || rs1===B(5, 5 bits))
   bju_micro_op.src2_is_imm := src2_is_imm
   bju_micro_op.rd_wen := rd_wen
+
+  when(ecall){
+    exception := ExceptionEnum.ECALL
+  }.elsewhen(ebreak){
+    exception := ExceptionEnum.EBREAK
+  }.elsewhen(mret){
+    exception := ExceptionEnum.MRET
+  }.otherwise{
+    exception := ExceptionEnum.IDLE
+  }
+
+  when(load || store){
+    rob_micro_op := RobMicroOp.LSU
+  }.elsewhen(op_is_imm || op_is_alu || op_is_lui || op_is_word || op_is_wordi){
+    rob_micro_op := RobMicroOp.ALU
+  }.elsewhen(op_is_jal || op_is_jalr || op_is_branch || op_is_auipc || op_is_sys){
+    rob_micro_op := RobMicroOp.BJU
+  }
+
 }
 
 case class DecodeStage(p : ReorderBufferConfig) extends Component {
   import p._
+  import CpuConfig._
 
   // ==================== IO =============================
   val flush = in Bool()
   val stall = in Bool()
   val src_ports_0 = slave(Stream(FetchDst()))
   val src_ports_1 = slave(Stream(FetchDst()))
-  val rob_ports_0 = master(Stream(EnROB(PC_WIDTH)))
-  val rob_ports_1 = master(Stream(EnROB(PC_WIDTH)))
+  val en_rob_ports_0 = master(Stream(EnROB(PC_WIDTH)))
+  val en_rob_ports_1 = master(Stream(EnROB(PC_WIDTH)))
 
   // ==================== inst =============================
   val decode_0 = new Decode()
   val decode_1 = new Decode()
   
+  
+  // ==================== stream =============================
+  val src_stream_0 = src_ports_0.haltWhen(stall).throwWhen(flush)
+  val src_stream_1 = src_ports_1.haltWhen(stall).throwWhen(flush)
+  val en_rob_stream_0 = Stream(EnROB(PC_WIDTH))
+  val en_rob_stream_1 = Stream(EnROB(PC_WIDTH))
 
   // ==================== connect =============================
-  val arf = new ARF()
-  val rat = new RAT(p)
+ 
 
+  decode_0.pc := src_stream_0.pc
+  decode_0.instr := src_stream_0.instruction
+  decode_1.pc := src_stream_1.pc
+  decode_1.instr := src_stream_1.instruction
+
+  // ==================== output =============================
+  en_rob_stream_0.valid := src_stream_0.valid
+  en_rob_stream_0.pc := src_stream_0.pc
+  en_rob_stream_0.micro_op := decode_0.rob_micro_op
+  en_rob_stream_0.rd_addr := decode_0.rd_addr
+  en_rob_stream_0.exception := decode_0.exception
+  en_rob_stream_0.rs1_rd_en := decode_0.rs1_rd_en
+  en_rob_stream_0.rs2_rd_en := decode_0.rs2_rd_en
+  en_rob_stream_0.rs1_addr := decode_0.rs1_addr
+  en_rob_stream_0.rs2_addr := decode_0.rs2_addr
+  en_rob_stream_0.imm_val := decode_0.imm
+
+  en_rob_stream_1.valid := src_stream_1.valid
+  en_rob_stream_1.pc := src_stream_1.pc
+  en_rob_stream_1.micro_op := decode_1.rob_micro_op
+  en_rob_stream_1.rd_addr := decode_1.rd_addr
+  en_rob_stream_1.exception := decode_1.exception
+  en_rob_stream_1.rs1_rd_en := decode_1.rs1_rd_en
+  en_rob_stream_1.rs2_rd_en := decode_1.rs2_rd_en
+  en_rob_stream_1.rs1_addr := decode_1.rs1_addr
+  en_rob_stream_1.rs2_addr := decode_1.rs2_addr
+  en_rob_stream_1.imm_val := decode_1.imm
+
+  en_rob_stream_0 >-> en_rob_ports_0
+  en_rob_stream_1 >-> en_rob_ports_1
 }
 
 object GenDecode extends App {

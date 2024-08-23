@@ -125,7 +125,7 @@ object ExceptionEnum extends SpinalEnum(binarySequential){
 }
 
 object RobMicroOp extends SpinalEnum(binarySequential){
-  val IDLE, ALU, BLU, LSU = newElement()
+  val IDLE, ALU, BJU, LSU = newElement()
 }
 
 case class ReorderBufferConfig(
