@@ -324,6 +324,9 @@ case class DecodeStage(p : ReorderBufferConfig) extends Component {
   en_rob_stream_0.rs1_addr := decode_0.rs1_addr
   en_rob_stream_0.rs2_addr := decode_0.rs2_addr
   en_rob_stream_0.imm_val := decode_0.imm
+  en_rob_stream_0.bju_micro_op := decode_0.bju_micro_op
+  en_rob_stream_0.alu_micro_op := decode_0.alu_micro_op
+  en_rob_stream_0.lsu_micro_op := decode_0.lsu_micro_op
 
   en_rob_stream_1.valid := src_stream_1.valid
   en_rob_stream_1.pc := src_stream_1.pc
@@ -335,6 +338,9 @@ case class DecodeStage(p : ReorderBufferConfig) extends Component {
   en_rob_stream_1.rs1_addr := decode_1.rs1_addr
   en_rob_stream_1.rs2_addr := decode_1.rs2_addr
   en_rob_stream_1.imm_val := decode_1.imm
+  en_rob_stream_1.bju_micro_op := decode_1.bju_micro_op
+  en_rob_stream_1.alu_micro_op := decode_1.alu_micro_op
+  en_rob_stream_1.lsu_micro_op := decode_1.lsu_micro_op
 
   en_rob_stream_0 >-> en_rob_ports_0
   en_rob_stream_1 >-> en_rob_ports_1

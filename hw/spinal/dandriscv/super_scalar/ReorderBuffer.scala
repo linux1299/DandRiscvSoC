@@ -27,8 +27,9 @@ case class ReorderBuffer(p : ReorderBufferConfig) extends Component{
   // for state trans
   val isq_rob_ptr = in Vec(UInt(PTR_WIDTH bits), IQ_NUM)
   val isq_issued = in Vec(Bool(), IQ_NUM)
-  // interrupt or redirect, flush newest instruction
+  // interrupt flush all
   val interrupt_vld = in Bool()
+  // redirect, flush newest instruction which is newer than redirect_rob_ptr
   val redirect_vld = in Bool()
   val redirect_rob_ptr = in UInt(PTR_WIDTH bits)
 
@@ -80,16 +81,14 @@ case class ReorderBuffer(p : ReorderBufferConfig) extends Component{
   val busy_entry_cnt_next = U(DEPTH, PTR_WIDTH bits) - empty_entry_cnt_next
 
   // =============== flush logic ===============
-  val flush = redirect_vld
+  val flush_new = redirect_vld
   val flush_all = interrupt_vld
   val flush_start_ptr = redirect_rob_ptr
   val entry_flush_len =  UInt(PTR_WIDTH bits)
   val entry_flush_bits = Bits(DEPTH*2 bits)
   val entry_flush_bits_full = Bits(DEPTH*4 bits)
   val entry_flush_bits_full_end = UInt(PTR_WIDTH+1 bits)
-
-  // when need flush, count length of flush, compute end position
-  // entry_flush_len=0 means flush 1 entry
+  // when need flush, count length of flush, compute end position. entry_flush_len=0 means flush 1 entry
   entry_flush_len :=  (tail_ptr_sub_one >= flush_start_ptr) ? 
                       (tail_ptr_sub_one - flush_start_ptr) |
                       (U(DEPTH*2, PTR_WIDTH+1 bits) - (flush_start_ptr - tail_ptr_sub_one).resize(PTR_WIDTH+1)).resized
@@ -101,7 +100,7 @@ case class ReorderBuffer(p : ReorderBufferConfig) extends Component{
                                 (U(i, PTR_WIDTH+1 bits) <= entry_flush_bits_full_end)
   }
   for(i <- 0 until DEPTH*2){
-    entry_flush_bits(i) := flush && (entry_flush_bits_full(i) || entry_flush_bits_full(i+DEPTH*2))
+    entry_flush_bits(i) := flush_new && (entry_flush_bits_full(i) || entry_flush_bits_full(i+DEPTH*2))
   }
 
   // =============== update head pointer of ROB(oldest) ===============
@@ -116,7 +115,7 @@ case class ReorderBuffer(p : ReorderBufferConfig) extends Component{
   when(flush_all){
     tail_ptr := head_ptr
   }
-  .elsewhen(flush){
+  .elsewhen(flush_new){
     tail_ptr := redirect_rob_ptr + 1
   }
   .elsewhen(en_rob_a.fire && en_rob_b.fire){
@@ -129,7 +128,7 @@ case class ReorderBuffer(p : ReorderBufferConfig) extends Component{
 
   // =============== count of empty entry ===============
   empty_entry_cnt_next := flush_all ? U(DEPTH, PTR_WIDTH bits) |
-                          (flush ? (empty_entry_cnt + entry_flush_len) |
+                          (flush_new ? (empty_entry_cnt + entry_flush_len) |
                             (empty_entry_cnt.resized + 
                             de_rob_a.fire.asUInt.resized + 
                             de_rob_b.fire.asUInt.resized - 
@@ -304,6 +303,91 @@ case class ReorderBuffer(p : ReorderBufferConfig) extends Component{
   de_rob_b.valid    := (entry.state(head_addr_add_one) === ROBStateEnum.COMMIT)
   de_rob_b.rd_addr  := entry.rd_addr(head_addr_add_one)
   de_rob_b.rd_val   := entry.rd_val(head_addr_add_one)
+
+  // ============== to issue queue ==============
+  val iq_stream_0 = Stream(EnQueue(ROB_PTR_W, "BJU"))
+  val iq_stream_1 = Stream(EnQueue(ROB_PTR_W, "ALU"))
+  val iq_stream_2 = Stream(EnQueue(ROB_PTR_W, "ALU"))
+  val iq_stream_3 = Stream(EnQueue(ROB_PTR_W, "LSU"))
+
+  val en_rob_a_is_bju = (en_rob_a.micro_op===RobMicroOp.BJU)
+  val en_rob_a_is_alu = (en_rob_a.micro_op===RobMicroOp.ALU)
+  val en_rob_a_is_lsu = (en_rob_a.micro_op===RobMicroOp.LSU)
+  val en_rob_b_is_bju = (en_rob_a.micro_op===RobMicroOp.BJU)
+  val en_rob_b_is_alu = (en_rob_a.micro_op===RobMicroOp.ALU)
+  val en_rob_b_is_lsu = (en_rob_a.micro_op===RobMicroOp.LSU)
+
+  val iq_sel_bits_a = Bits(4 bits)
+  val iq_sel_bits_b = Bits(4 bits)
+  val alu_sel_a = RegInit(False) // False sel ALU iq 1, True sel ALU iq 2
+  val alu_sel_b = RegInit(False) // False sel ALU iq 1, True sel ALU iq 2
+
+  when(en_rob_a.fire && en_rob_a_is_alu){
+    alu_sel_a := !alu_sel_a
+  }
+
+  when(en_rob_b.fire && en_rob_b_is_alu){
+    alu_sel_b := !alu_sel_b
+  }
+
+  iq_sel_bits_a(0) := en_rob_a_is_bju
+  iq_sel_bits_a(1) := en_rob_a_is_alu && (alu_sel_a===False)
+  iq_sel_bits_a(2) := en_rob_a_is_alu && (alu_sel_a===True)
+  iq_sel_bits_a(3) := en_rob_a_is_lsu
+
+  iq_sel_bits_b(0) := en_rob_b_is_bju
+  iq_sel_bits_b(1) := en_rob_b_is_alu && (alu_sel_b===False)
+  iq_sel_bits_b(2) := en_rob_b_is_alu && (alu_sel_b===True)
+  iq_sel_bits_b(3) := en_rob_b_is_lsu
+
+  iq_stream_0.valid := (en_rob_a.valid && iq_sel_bits_a(0)) || (en_rob_b.valid && iq_sel_bits_b(0))
+  iq_stream_0.rd_rob_ptr := iq_sel_bits_a(0) ? tail_ptr | tail_ptr_add_one
+  iq_stream_0.src1_rob_ptr := iq_sel_bits_a(0) ? rat.rs1_ptr_inst0 | rat.rs1_ptr_inst1
+  iq_stream_0.src2_rob_ptr := iq_sel_bits_a(0) ? rat.rs2_ptr_inst0 | rat.rs2_ptr_inst1
+  iq_stream_0.micro_op := iq_sel_bits_a(0) ? en_rob_a.bju_micro_op | en_rob_b.bju_micro_op
+  iq_stream_0.src1_vld := iq_sel_bits_a(0) ? !rat.rs1_busy_inst0 | !rat.rs1_busy_inst1
+  iq_stream_0.src1_val := iq_sel_bits_a(0) ? arf.read_ports_a.rs1_value | arf.read_ports_b.rs1_value
+  iq_stream_0.src2_vld := iq_sel_bits_a(0) ? !rat.rs2_busy_inst0 | !rat.rs2_busy_inst1
+  iq_stream_0.src2_val := iq_sel_bits_a(0) ? arf.read_ports_a.rs2_value | arf.read_ports_b.rs2_value
+  iq_stream_0.imm_val := iq_sel_bits_a(0) ? en_rob_a.imm_val | en_rob_b.imm_val
+
+  iq_stream_1.valid := (en_rob_a.valid && iq_sel_bits_a(1)) || (en_rob_b.valid && iq_sel_bits_b(1))
+  iq_stream_1.rd_rob_ptr := iq_sel_bits_a(1) ? tail_ptr | tail_ptr_add_one
+  iq_stream_1.src1_rob_ptr := iq_sel_bits_a(1) ? rat.rs1_ptr_inst0 | rat.rs1_ptr_inst1
+  iq_stream_1.src2_rob_ptr := iq_sel_bits_a(1) ? rat.rs2_ptr_inst0 | rat.rs2_ptr_inst1
+  iq_stream_1.micro_op := iq_sel_bits_a(1) ? en_rob_a.bju_micro_op | en_rob_b.bju_micro_op
+  iq_stream_1.src1_vld := iq_sel_bits_a(1) ? !rat.rs1_busy_inst0 | !rat.rs1_busy_inst1
+  iq_stream_1.src1_val := iq_sel_bits_a(1) ? arf.read_ports_a.rs1_value | arf.read_ports_b.rs1_value
+  iq_stream_1.src2_vld := iq_sel_bits_a(1) ? !rat.rs2_busy_inst0 | !rat.rs2_busy_inst1
+  iq_stream_1.src2_val := iq_sel_bits_a(1) ? arf.read_ports_a.rs2_value | arf.read_ports_b.rs2_value
+  iq_stream_1.imm_val := iq_sel_bits_a(1) ? en_rob_a.imm_val | en_rob_b.imm_val
+
+  iq_stream_2.valid := (en_rob_a.valid && iq_sel_bits_a(2)) || (en_rob_b.valid && iq_sel_bits_b(2))
+  iq_stream_2.rd_rob_ptr := iq_sel_bits_a(2) ? tail_ptr | tail_ptr_add_one
+  iq_stream_2.src1_rob_ptr := iq_sel_bits_a(2) ? rat.rs1_ptr_inst0 | rat.rs1_ptr_inst1
+  iq_stream_2.src2_rob_ptr := iq_sel_bits_a(2) ? rat.rs2_ptr_inst0 | rat.rs2_ptr_inst1
+  iq_stream_2.micro_op := iq_sel_bits_a(2) ? en_rob_a.bju_micro_op | en_rob_b.bju_micro_op
+  iq_stream_2.src1_vld := iq_sel_bits_a(2) ? !rat.rs1_busy_inst0 | !rat.rs1_busy_inst1
+  iq_stream_2.src1_val := iq_sel_bits_a(2) ? arf.read_ports_a.rs1_value | arf.read_ports_b.rs1_value
+  iq_stream_2.src2_vld := iq_sel_bits_a(2) ? !rat.rs2_busy_inst0 | !rat.rs2_busy_inst1
+  iq_stream_2.src2_val := iq_sel_bits_a(2) ? arf.read_ports_a.rs2_value | arf.read_ports_b.rs2_value
+  iq_stream_2.imm_val := iq_sel_bits_a(2) ? en_rob_a.imm_val | en_rob_b.imm_val
+
+  iq_stream_3.valid := (en_rob_a.valid && iq_sel_bits_a(3)) || (en_rob_b.valid && iq_sel_bits_b(3))
+  iq_stream_3.rd_rob_ptr := iq_sel_bits_a(3) ? tail_ptr | tail_ptr_add_one
+  iq_stream_3.src1_rob_ptr := iq_sel_bits_a(3) ? rat.rs1_ptr_inst0 | rat.rs1_ptr_inst1
+  iq_stream_3.src2_rob_ptr := iq_sel_bits_a(3) ? rat.rs2_ptr_inst0 | rat.rs2_ptr_inst1
+  iq_stream_3.micro_op := iq_sel_bits_a(3) ? en_rob_a.bju_micro_op | en_rob_b.bju_micro_op
+  iq_stream_3.src1_vld := iq_sel_bits_a(3) ? !rat.rs1_busy_inst0 | !rat.rs1_busy_inst1
+  iq_stream_3.src1_val := iq_sel_bits_a(3) ? arf.read_ports_a.rs1_value | arf.read_ports_b.rs1_value
+  iq_stream_3.src2_vld := iq_sel_bits_a(3) ? !rat.rs2_busy_inst0 | !rat.rs2_busy_inst1
+  iq_stream_3.src2_val := iq_sel_bits_a(3) ? arf.read_ports_a.rs2_value | arf.read_ports_b.rs2_value
+  iq_stream_3.imm_val := iq_sel_bits_a(3) ? en_rob_a.imm_val | en_rob_b.imm_val
+
+  iq_stream_0 >-> en_queue_0
+  iq_stream_1 >-> en_queue_1
+  iq_stream_2 >-> en_queue_2
+  iq_stream_3 >-> en_queue_3
 
   
 }
