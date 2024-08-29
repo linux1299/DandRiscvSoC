@@ -214,6 +214,9 @@ case class EnROB(PC_WIDTH: Int) extends Bundle {
   val rs2_addr = UInt(5 bits)
   // for issue queue
   val imm_val  = Bits(64 bits)
+  val bju_micro_op = IQ_MicroOp("BJU")
+  val alu_micro_op = IQ_MicroOp("ALU")
+  val lsu_micro_op = IQ_MicroOp("LSU")
 }
 
 case class DeROB() extends Bundle {
