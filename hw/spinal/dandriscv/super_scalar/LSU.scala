@@ -15,6 +15,10 @@ case class LSU(AW:Int=32, DW:Int=64) extends Component {
   val src_ports = slave(Stream(LsuSrc()))
   val dst_ports = master(Stream(LsuDst()))
   val dcache_ports = master(DCacheAccess(AW, DW))
+  val timer_cen = out Bool()
+  val timer_wen = out Bool()
+  val timer_addr= out UInt(AW bits)
+  val timer_wdata = out Bits(64 bits)
 
   // =========== stream control ================
   val src_stream = src_ports.throwWhen(flush)
@@ -125,6 +129,12 @@ case class LSU(AW:Int=32, DW:Int=64) extends Component {
   dst_stream.rd_wen := False // TODO:
   dst_stream.rd_rob_ptr := 0 // TODO:
   dst_stream >> dst_ports
+
+  // =========== timer ================
+  timer_cen := lsu_addr_is_timer && lsu_cen
+  timer_wen := micro_op.lsu_is_store
+  timer_addr:= dcache_addr
+  timer_wdata := dcache_wdata
 }
 
 object GenLSU extends App {

@@ -255,12 +255,14 @@ case class Decode() extends Component {
   lsu_micro_op.rd_wen := rd_wen
 
   bju_micro_op.bju_ctrl_op.assignFromBits(bju_ctrl_op)
-  bju_micro_op.exp_ctrl_op.assignFromBits(exp_ctrl_op)
   bju_micro_op.bju_rd_eq_rs1 := (rd===rs1)
   bju_micro_op.bju_rd_is_link := (rd===B(0, 5 bits) || rd===B(5, 5 bits))
   bju_micro_op.bju_rs1_is_link := (rs1===B(0, 5 bits) || rs1===B(5, 5 bits))
   bju_micro_op.src2_is_imm := src2_is_imm
   bju_micro_op.rd_wen := rd_wen
+  bju_micro_op.exp_ctrl_op.assignFromBits(exp_ctrl_op)
+  bju_micro_op.exp_csr_addr := csr.asUInt
+  bju_micro_op.exp_csr_wen  := csrrw || csrrs || csrrc
 
   when(ecall){
     exception := ExceptionEnum.ECALL

@@ -162,10 +162,12 @@ case class IQ_MicroOp(IQ_Type: String) extends Bundle {
   val alu_is_word     = (IQ_Type == "ALU") generate Bool()
   // bju
   val bju_ctrl_op = (IQ_Type == "BJU") generate BjuCtrlEnum()
-  val exp_ctrl_op = (IQ_Type == "BJU") generate ExpCtrlEnum()
   val bju_rd_eq_rs1 = (IQ_Type == "BJU") generate Bool()
   val bju_rd_is_link = (IQ_Type == "BJU") generate Bool()
   val bju_rs1_is_link = (IQ_Type == "BJU") generate Bool()
+  val exp_ctrl_op = (IQ_Type == "BJU") generate ExpCtrlEnum()
+  val exp_csr_addr = (IQ_Type == "BJU") generate UInt(12 bits)
+  val exp_csr_wen = (IQ_Type == "BJU") generate Bool()
   // lsu
   val lsu_ctrl_op  = (IQ_Type == "LSU") generate LsuCtrlEnum()
   val lsu_is_load  = (IQ_Type == "LSU") generate Bool()

@@ -5,6 +5,7 @@ import spinal.core._
 import spinal.lib.bus.amba4.axi._
 
 case class SuperScalar() extends Component {
+  import CpuConfig._
 
   // ================= Config ===============
   val icache_config = ICacheConfig(
@@ -106,15 +107,13 @@ case class SuperScalar() extends Component {
   val alu_0 = new ALU()
   val alu_1 = new ALU()
   val lsu = new LSU(AW=MEM_AW, DW=64)
-  val csr_regfile = new CsrRegfile(MXLEN=64)
-  val clint = Clint(MXLEN=64, addressWidth=PC_WIDTH)
-  val timer = (MXLEN=64, addressWidth=MEM_AW)
+  val timer = new Timer(MXLEN=64, addressWidth=MEM_AW)
 
   // ================= Connect ===============
   fetch.flush := False // TODO:
   fetch.stall := False // TODO:
-  fetch.interrupt_vld := clint.int_en
-  fetch.interrupt_pc  := clint.int_pc
+  fetch.interrupt_vld := bju.interrupt_valid
+  fetch.interrupt_pc  := bju.interrupt_pc
   fetch.redirect_vld  := bju.redirect_valid
   fetch.redirect_pc   := bju.redirect_pc
   fetch.bpu_predict_taken := bpu.predict_taken
@@ -141,7 +140,7 @@ case class SuperScalar() extends Component {
   ptab.flush := False // TODO:
   ptab.bpu_predict_valid := fetch.bpu_predict_valid
   ptab.bpu_predict_taken := bpu.predict_taken
-  ptab.bpu_target_pc := bpu.predict_pc_next
+  ptab.bpu_target_pc := bpu.target_pc
   ptab.exe_brc_or_jmp := bju.brc_or_jmp
 
   

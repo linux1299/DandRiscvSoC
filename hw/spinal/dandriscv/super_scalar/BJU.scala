@@ -33,6 +33,10 @@ case class BJU() extends Component {
   val train_is_jmp = out Bool()
   // for PTAB
   val brc_or_jmp = out Bool()
+  // for interrupt/exception
+  val interrupt_valid = out Bool()
+  val interrupt_pc = out UInt(PC_WIDTH bits)
+  val timer_int = in Bool()
 
   // --------------branch/jump related signals--------------
   val pc_next = UInt(PC_WIDTH bits)
@@ -151,11 +155,62 @@ case class BJU() extends Component {
   train_is_call := is_call
   train_is_ret  := is_ret
   train_is_jmp  := is_jmp
-
   brc_or_jmp := branch_or_jump
 
+  // ================= for exception ==================
+  val csr_regfile = new CsrRegfile(64)
+  val clint = new Clint(64, MEM_AW)
+  val csr_rdata = Bits(64 bits)
 
+  clint.csr_ports <> csr_regfile.clint_ports
+  csr_regfile.timer_int := timer_int
+  clint.timer_int := timer_int
+  csr_rdata := csr_regfile.cpu_ports.rdata
+  csr_regfile.cpu_ports.raddr := bju_micro_op.exp_csr_addr
+  clint.pc := pc
+  clint.ecall :=  in_valid && (bju_micro_op.exp_ctrl_op===ECALL)
+  clint.ebreak := in_valid && (bju_micro_op.exp_ctrl_op===EBREAK)
+  clint.mret   := in_valid && (bju_micro_op.exp_ctrl_op===MRET)
+  val csr_wdata = Bits(64 bits)
+  val csrrw_wdata = rs1_val
+  val csrrs_wdata = rs1_val | csr_rdata
+  val csrrc_wdata = ~rs1_val & csr_rdata
+  val csrrwi_wdata = imm
+  val csrrsi_wdata = imm | csr_rdata
+  val csrrci_wdata = ~imm & csr_rdata
+  val csr_wen = in_valid && bju_micro_op.exp_csr_wen
 
+  switch(bju_micro_op.exp_ctrl_op){
+    is(CSRRW){
+      csr_wdata := csrrw_wdata
+    }
+    is(CSRRS){
+      csr_wdata := csrrs_wdata
+    }
+    is(CSRRC){
+      csr_wdata := csrrc_wdata
+    }
+    is(CSRRWI){
+      csr_wdata := csrrwi_wdata
+    }
+    is(CSRRSI){
+      csr_wdata := csrrsi_wdata
+    }
+    is(CSRRCI){
+      csr_wdata := csrrci_wdata
+    }
+    default{
+      csr_wdata := 0
+    }
+  }
+
+  csr_regfile.cpu_ports.wdata := csr_wdata
+  csr_regfile.cpu_ports.wen := csr_wen
+  csr_regfile.cpu_ports.waddr := bju_micro_op.exp_csr_addr
+
+  clint.instruction_valid := in_valid
+  clint.pc_next := redirect_pc
+  clint.pc_next_valid := redirect_valid
 }
 
 object GenBJU extends App {
