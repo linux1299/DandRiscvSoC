@@ -3,19 +3,21 @@ package dandriscv.super_scalar
 import spinal.core._
 import spinal.lib._
 import math._
+import MyUtils._
 
 // issue 1 instructino/cycle in FIFO order
 case class IssueQueue(p : IssueQueueConfig) extends Component{
   import p._
+  import CpuConfig._
 
   // =================== IO ===================
   val flush = in Bool()
   val en_queue = slave(Stream(EnQueue(ROB_PTR_W, IQ_Type)))
   val de_queue = master(Stream(DeQueue(ROB_PTR_W, IQ_Type)))
   // for instruction wake up
-  val exe_rob_ptr  = in UInt(ROB_PTR_W bits)
-  val exe_rd_val   = in Bits(64 bits)
-  val exe_executed = in Bool()
+  val exe_rob_ptr  = in Vec(UInt(ROB_PTR_W bits), IQ_NUM)
+  val exe_rd_val   = in Vec(Bits(64 bits), IQ_NUM)
+  val exe_executed = in Vec(Bool(), IQ_NUM)
 
   // =============== Entries of IQ =================
   val entry = new Area{
@@ -29,6 +31,12 @@ case class IssueQueue(p : IssueQueueConfig) extends Component{
     val src1_val = Vec(Reg(Bits(64 bits)) init(0), DEPTH)
     val src2_val = Vec(Reg(Bits(64 bits)) init(0), DEPTH)
     val imm_val = Vec(Reg(Bits(64 bits)) init(0), DEPTH)
+    val pc = (IQ_Type == "BJU") generate Vec(Reg(UInt(PC_WIDTH bits)) init(0), DEPTH)
+    // comb logic
+    val exe_rd_equal = Vec(Bits(IQ_NUM bits), DEPTH)
+    val exe_done_bits = Vec(Bits(IQ_NUM bits), DEPTH)
+    val exe_rd_val = Vec(Bits(64 bits), DEPTH)
+    val exe_done = Vec(Bool(), DEPTH)
   }
   val read_ptr = Reg(UInt(PTR_WIDTH bits)) init(0)
   val write_ptr= Reg(UInt(PTR_WIDTH bits)) init(0)
@@ -71,25 +79,36 @@ case class IssueQueue(p : IssueQueueConfig) extends Component{
       entry.src2_rob_ptr(i) := en_queue.src2_rob_ptr
       entry.micro_op(i)  := en_queue.micro_op
       entry.imm_val(i)   := en_queue.imm_val
+      if(IQ_Type == "BJU"){
+        entry.pc(i)      := en_queue.pc
+      }
     }
+
+    // exe rd equal to iq entry index?
+    for(j <- 0 until IQ_NUM){
+      entry.exe_rd_equal(i)(j) := exe_rob_ptr(j)(PTR_WIDTH-2 downto 0)===U(i)
+    }
+    entry.exe_done_bits(i)  := entry.exe_rd_equal(i) & exe_executed.asBits
+    entry.exe_done(i)       := entry.exe_done_bits(i).orR
+    entry.exe_rd_val(i)     := dataMux(entry.exe_done_bits(i), exe_rd_val.asBits)
     
     // src1_vld /src2_vld of iq entry
     when(en_queue.fire && (write_addr===U(i))){
       entry.src1_vld(i) := en_queue.src1_vld
       entry.src1_val(i) := en_queue.src1_val
     }
-    .elsewhen(entry.busy(i) && (read_addr===U(i)) && (exe_rob_ptr===entry.src1_rob_ptr(i) && exe_executed)){
+    .elsewhen(entry.busy(i) && (read_addr===U(i)) && entry.exe_done(i)){
       entry.src1_vld(i) := True
-      entry.src1_val(i) := exe_rd_val
+      entry.src1_val(i) := entry.exe_rd_val(i)
     }
 
     when(en_queue.fire && (write_addr===U(i))){
       entry.src2_vld(i) := en_queue.src2_vld
       entry.src2_val(i) := en_queue.micro_op.src2_is_imm ? en_queue.imm_val | en_queue.src2_val
     }
-    .elsewhen(entry.busy(i) && (read_addr===U(i)) && (exe_rob_ptr===entry.src2_rob_ptr(i) && exe_executed)){
+    .elsewhen(entry.busy(i) && (read_addr===U(i)) && entry.exe_done(i)){
       entry.src2_vld(i) := True
-      entry.src2_val(i) := exe_rd_val
+      entry.src2_val(i) := entry.exe_rd_val(i)
     }
     
   }
@@ -105,6 +124,9 @@ case class IssueQueue(p : IssueQueueConfig) extends Component{
   de_queue.src2_val := entry.src2_val(read_addr)
   if(IQ_Type != "ALU"){
     de_queue.imm_val  := entry.imm_val(read_addr)
+  }
+  if(IQ_Type == "BJU"){
+    de_queue.pc := entry.pc(read_addr)
   }
   
 }

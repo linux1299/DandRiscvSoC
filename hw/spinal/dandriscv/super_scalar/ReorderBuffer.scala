@@ -350,6 +350,7 @@ case class ReorderBuffer(p : ReorderBufferConfig) extends Component{
   iq_stream_0.src2_vld := iq_sel_bits_a(0) ? !rat.rs2_busy_inst0 | !rat.rs2_busy_inst1
   iq_stream_0.src2_val := iq_sel_bits_a(0) ? arf.read_ports_a.rs2_value | arf.read_ports_b.rs2_value
   iq_stream_0.imm_val := iq_sel_bits_a(0) ? en_rob_a.imm_val | en_rob_b.imm_val
+  iq_stream_0.pc := iq_sel_bits_a(0) ? en_rob_a.pc | en_rob_b.pc
 
   iq_stream_1.valid := (en_rob_a.valid && iq_sel_bits_a(1)) || (en_rob_b.valid && iq_sel_bits_b(1))
   iq_stream_1.rd_rob_ptr := iq_sel_bits_a(1) ? tail_ptr | tail_ptr_add_one

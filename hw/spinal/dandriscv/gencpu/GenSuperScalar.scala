@@ -76,17 +76,14 @@ case class SuperScalar() extends Component {
   )
   val iq_bju_config = IssueQueueConfig(
     DEPTH = 2,
-    ROB_PTR_W = rob_config.PTR_WIDTH,
     IQ_Type = "BJU"
   )
   val iq_alu_config = IssueQueueConfig(
     DEPTH = 2,
-    ROB_PTR_W = rob_config.PTR_WIDTH,
     IQ_Type = "ALU"
   )
   val iq_lsu_config = IssueQueueConfig(
     DEPTH = 2,
-    ROB_PTR_W = rob_config.PTR_WIDTH,
     IQ_Type = "LSU"
   )
 
@@ -96,7 +93,7 @@ case class SuperScalar() extends Component {
   val dcache = new DCacheTop(dcache_config, dcache_axi_config)
   val bpu = new gshare_predictor(gshare_config)
   val ptab = new PTAB(DEPTH=4)
-  
+  val decode = new DecodeStage(rob_config)
   val rob = new ReorderBuffer(rob_config)
   
   val iq_bju = new IssueQueue(iq_bju_config)
@@ -143,6 +140,13 @@ case class SuperScalar() extends Component {
   ptab.bpu_target_pc := bpu.target_pc
   ptab.exe_brc_or_jmp := bju.brc_or_jmp
 
+  decode.flush := False // TODO:
+  decode.stall := False // TODO:
+  decode.src_ports_0 <> fetch.dst_ports_0
+  decode.src_ports_1 <> fetch.dst_ports_1
+
+  rob.en_rob_a <> decode.en_rob_ports_0
+  rob.en_rob_b <> decode.en_rob_ports_1
   
   bju.bpu_pred_taken := ptab.exe_branch_taken
   bju.bpu_target_pc := ptab.exe_target_pc

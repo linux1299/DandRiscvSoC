@@ -92,7 +92,6 @@ case class PredictorConfig(predictorType : String = "GSHARE",
 // ================ IQ ==================
 case class IssueQueueConfig(
   DEPTH : Int,
-  ROB_PTR_W : Int,
   IQ_Type: String
 ){
   def PTR_WIDTH = log2Up(DEPTH)+1

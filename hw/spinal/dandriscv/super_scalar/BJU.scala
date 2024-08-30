@@ -4,7 +4,7 @@ import spinal.core._
 import spinal.lib._
 import math._
 
-case class BJU() extends Component {
+case class BJU_kernel() extends Component {
   import CpuConfig._
   import BjuCtrlEnum._
   import ExpCtrlEnum._
@@ -211,6 +211,74 @@ case class BJU() extends Component {
   clint.instruction_valid := in_valid
   clint.pc_next := redirect_pc
   clint.pc_next_valid := redirect_valid
+}
+
+case class BJU() extends Component {
+  import CpuConfig._
+  import BjuCtrlEnum._
+  import ExpCtrlEnum._
+
+  // =================== IO ===================
+  val flush = in Bool()
+  val stall = in Bool()
+  val src_ports = slave(Stream(BjuSrc()))
+  val dst_ports = master(Stream(BjuDst()))
+  val bpu_pred_taken = in Bool()
+  val bpu_target_pc = in UInt(PC_WIDTH bits)
+  val redirect_valid = out Bool()
+  val redirect_pc = out UInt(PC_WIDTH bits)
+  // for BPU train
+  val train_valid = out Bool()
+  val train_pc = out UInt(PC_WIDTH bits)
+  val train_taken = out Bool()
+  val train_mispred = out Bool()
+  val train_history = out UInt(PredictorHistoryLen bits)
+  val train_pc_next = out UInt(PC_WIDTH bits)
+  val train_is_call = out Bool()
+  val train_is_ret = out Bool()
+  val train_is_jmp = out Bool()
+  // for PTAB
+  val brc_or_jmp = out Bool()
+  // for interrupt/exception
+  val interrupt_valid = out Bool()
+  val interrupt_pc = out UInt(PC_WIDTH bits)
+  val timer_int = in Bool()
+
+  // =================== Stream ===================
+  val src_stream = src_ports.haltWhen(stall).throwWhen(flush)
+  val dst_stream = Stream(BjuDst())
+
+  val bju_kernel = new BJU_kernel()
+  bju_kernel.in_valid := src_stream.fire
+  bju_kernel.bju_micro_op := src_stream.micro_op
+  bju_kernel.pc := src_stream.pc
+  bju_kernel.imm := src_stream.imm
+  bju_kernel.rs1_val := src_stream.src1
+  bju_kernel.rs2_val := src_stream.src2
+  bju_kernel.bpu_pred_taken := bpu_pred_taken
+  bju_kernel.bpu_target_pc := bpu_target_pc
+  redirect_valid := bju_kernel.redirect_valid
+  redirect_pc := bju_kernel.redirect_pc
+  train_valid := bju_kernel.train_valid
+  train_pc := bju_kernel.train_pc
+  train_taken := bju_kernel.train_taken
+  train_mispred := bju_kernel.train_mispred
+  train_history := bju_kernel.train_history
+  train_pc_next := bju_kernel.train_pc_next
+  train_is_call := bju_kernel.train_is_call
+  train_is_ret  := bju_kernel.train_is_ret
+  train_is_jmp  := bju_kernel.train_is_jmp
+  brc_or_jmp := bju_kernel.brc_or_jmp
+  interrupt_valid := bju_kernel.interrupt_valid
+  interrupt_pc := bju_kernel.interrupt_pc
+  bju_kernel.timer_int := timer_int
+
+  // =================== output ===================
+  src_stream.ready := dst_stream.ready
+  dst_stream.result := bju_kernel.rd_val
+  dst_stream.rd_wen := src_stream.rd_wen
+  dst_stream.rd_rob_ptr := src_stream.rd_rob_ptr
+  dst_stream >-> dst_ports
 }
 
 object GenBJU extends App {

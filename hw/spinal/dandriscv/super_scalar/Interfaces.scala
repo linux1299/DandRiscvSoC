@@ -186,6 +186,7 @@ case class EnQueue(ROB_AW: Int, IQ_Type: String) extends Bundle {
   val src1_val = Bits(64 bits)
   val src2_val = Bits(64 bits)
   val imm_val  = Bits(64 bits)
+  val pc = (IQ_Type == "BJU") generate UInt(PC_WIDTH bits)
 }
 
 
@@ -198,6 +199,7 @@ case class DeQueue(ROB_AW: Int, IQ_Type: String) extends Bundle {
   val src1_val   = Bits(64 bits)
   val src2_val   = Bits(64 bits)
   val imm_val    = (IQ_Type != "ALU") generate Bits(64 bits)
+  val pc = (IQ_Type == "BJU") generate UInt(PC_WIDTH bits)
 }
 
 
@@ -222,6 +224,23 @@ case class EnROB(PC_WIDTH: Int) extends Bundle {
 case class DeROB() extends Bundle {
   val rd_addr = UInt(5 bits)
   val rd_val = Bits(64 bits)
+}
+
+// ========================= BJU =======================
+case class BjuSrc() extends Bundle {
+  val src1 = Bits(64 bits)
+  val src2 = Bits(64 bits)
+  val imm  = Bits(64 bits)
+  val pc = UInt(PC_WIDTH bits)
+  val micro_op = IQ_MicroOp("BJU")
+  val rd_wen = Bool()
+  val rd_rob_ptr = UInt(ROB_PTR_W bits)
+}
+
+case class BjuDst() extends Bundle {
+  val result = Bits(64 bits)
+  val rd_wen = Bool()
+  val rd_rob_ptr = UInt(ROB_PTR_W bits)
 }
 
 // ========================= ALU =======================
