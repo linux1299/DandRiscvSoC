@@ -280,6 +280,8 @@ case class Decode() extends Component {
     rob_micro_op := RobMicroOp.ALU
   }.elsewhen(op_is_jal || op_is_jalr || op_is_branch || op_is_auipc || op_is_sys){
     rob_micro_op := RobMicroOp.BJU
+  }.otherwise{
+    rob_micro_op :=RobMicroOp.IDLE
   }
 
 }
@@ -291,8 +293,8 @@ case class DecodeStage(p : ReorderBufferConfig) extends Component {
   // ==================== IO =============================
   val flush = in Bool()
   val stall = in Bool()
-  val src_ports_0 = slave(Stream(FetchDst()))
-  val src_ports_1 = slave(Stream(FetchDst()))
+  val src_ports_0 = slave(Stream(FetchDst(32)))
+  val src_ports_1 = slave(Stream(FetchDst(32)))
   val en_rob_ports_0 = master(Stream(EnROB(PC_WIDTH)))
   val en_rob_ports_1 = master(Stream(EnROB(PC_WIDTH)))
 
@@ -329,6 +331,7 @@ case class DecodeStage(p : ReorderBufferConfig) extends Component {
   en_rob_stream_0.bju_micro_op := decode_0.bju_micro_op
   en_rob_stream_0.alu_micro_op := decode_0.alu_micro_op
   en_rob_stream_0.lsu_micro_op := decode_0.lsu_micro_op
+  src_stream_0.ready := en_rob_stream_0.ready
 
   en_rob_stream_1.valid := src_stream_1.valid
   en_rob_stream_1.pc := src_stream_1.pc
@@ -343,6 +346,7 @@ case class DecodeStage(p : ReorderBufferConfig) extends Component {
   en_rob_stream_1.bju_micro_op := decode_1.bju_micro_op
   en_rob_stream_1.alu_micro_op := decode_1.alu_micro_op
   en_rob_stream_1.lsu_micro_op := decode_1.lsu_micro_op
+  src_stream_1.ready := en_rob_stream_1.ready
 
   en_rob_stream_0 >-> en_rob_ports_0
   en_rob_stream_1 >-> en_rob_ports_1

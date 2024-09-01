@@ -209,14 +209,13 @@ case class ICache(p : ICacheConfig) extends Component{
 }
 
 
-class ICacheTop(val config : ICacheConfig, val axiConfig : Axi4Config){
+case class ICacheTop(val config : ICacheConfig, val axiConfig : Axi4Config) extends Component {
 
   import config._
 
   // ====================== IO ==================
   val flush = in Bool()
   val icache_ports = slave(ICacheAccess(addressWidth, cpuDataWidth))
-  val next_level = master(ICacheNextLevelPorts(config))
   // next level AXI ports/ direct ports
   val icacheMaster = ifGen(directOutput){master(ICacheAccess(config.addressWidth, config.cpuDataWidth)).setName("icache")}
   val icacheReader = ifGen(!directOutput){master(Axi4ReadOnly(axiConfig)).setName("icache")}
@@ -350,4 +349,37 @@ object SimICache extends App {
   }
 
   GenConfig.spinal.generateVerilog(ICache(icache_config))
+}
+
+object GenICacheTop extends App {
+  val icache_config = ICacheConfig(
+    cacheSize = 32 * 1024, // 32 KB
+    bytePerLine = 64,
+    wayCount = 2,
+    addressWidth = 32,
+    cpuDataWidth = 64,
+    bankWidth = 32,
+    busDataWidth = 64,
+    directOutput = false,
+    noBurst = true
+  )
+
+  val icache_axi_config = Axi4Config(
+    addressWidth = icache_config.addressWidth,
+    dataWidth = icache_config.busDataWidth,
+    idWidth = 2,
+    useId = true,
+    useLast = true,
+    useRegion = false,
+    useBurst = true,
+    useLock = false,
+    useCache = false,
+    useSize = true,
+    useQos = false,
+    useLen = true,
+    useResp = true,
+    useProt = false,
+    useStrb = false
+  )
+  GenConfig.spinal.generateVerilog(ICacheTop(icache_config, icache_axi_config))
 }

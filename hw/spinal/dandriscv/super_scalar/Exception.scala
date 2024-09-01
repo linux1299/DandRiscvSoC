@@ -148,17 +148,17 @@ case class Clint(MXLEN : Int = 64, addressWidth : Int = 64) extends Component{
   // mepc wdata
   when(int_state===TIME){ // exact async exception
     when(instruction_valid){
-      mepc_wdata := pc_next.asBits
+      mepc_wdata := pc_next.asBits.resized
     }
     .otherwise{
-      mepc_wdata := pc_next_d1.asBits
+      mepc_wdata := pc_next_d1.asBits.resized
     }
   }
   .otherwise{ // sync exception
     when(instruction_valid){
-      mepc_wdata := pc.asBits
+      mepc_wdata := pc.asBits.resized
     }.otherwise{
-      mepc_wdata := pc_next_d1.asBits
+      mepc_wdata := pc_next_d1.asBits.resized
     }
   }
   
@@ -177,7 +177,7 @@ case class Clint(MXLEN : Int = 64, addressWidth : Int = 64) extends Component{
   switch(int_state){
     is(ECALL, EBREAK, TIME){
       int_en := True
-      int_pc := csr_ports.mtvec.asUInt
+      int_pc := csr_ports.mtvec.asUInt.resized
       csr_ports.mepc_wen := True
       csr_ports.mcause_wen := True
       csr_ports.mstatus_wen := True
@@ -188,7 +188,7 @@ case class Clint(MXLEN : Int = 64, addressWidth : Int = 64) extends Component{
     }
     is(MRET){
       int_en := True
-      int_pc := csr_ports.mepc.asUInt
+      int_pc := csr_ports.mepc.asUInt.resized
       csr_ports.mepc_wen := False
       csr_ports.mcause_wen := False
       csr_ports.mstatus_wen := True

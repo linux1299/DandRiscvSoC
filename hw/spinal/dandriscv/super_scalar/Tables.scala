@@ -77,7 +77,7 @@ case class ARF() extends Component{
   val reg_file_wen_b = Vec(Bool(), 32)
   val reg_file_wdata = Vec(Bits(64 bits), 32)
 
-  for(i <- 1 until 32){
+  for(i <- 0 until 32){
     reg_file_wen_a(i) :=(write_ports_a.rd_wen && write_ports_a.rd_addr===U(i))
     reg_file_wen_b(i) :=(write_ports_b.rd_wen && write_ports_b.rd_addr===U(i))
     reg_file_wdata(i) :=  (B(reg_file_wen_a(i), 64 bits) & write_ports_a.rd_value) |
@@ -135,7 +135,7 @@ case class RAT(p : ReorderBufferConfig) extends Component{
   val write_enable = Vec(Bool(), 32)
   val write_data = Vec(UInt(PTR_WIDTH bits), 32)
   val clear_enable = Vec(Bool(), 32)
-  for(i <- 0 until DEPTH){
+  for(i <- 0 until 32){
     write_enable(i) := (en_rob_vld_a && en_rob_rd_addr_a===U(i)) ||
                        (en_rob_vld_b && en_rob_rd_addr_b===U(i))
 
@@ -161,8 +161,12 @@ case class RAT(p : ReorderBufferConfig) extends Component{
   // port 0
   rs1_ptr_inst0 :=  rob_ptr_xn(rs1_addr_inst0)
   rs2_ptr_inst0 :=  rob_ptr_xn(rs2_addr_inst0)
+  rs1_busy_inst0 := busy(rs1_addr_inst0)
+  rs2_busy_inst0 := busy(rs2_addr_inst0)
 
   rs1_ptr_inst1 :=  rob_ptr_xn(rs1_addr_inst1)
   rs2_ptr_inst1 :=  rob_ptr_xn(rs2_addr_inst1)
+  rs1_busy_inst1 := busy(rs1_addr_inst1)
+  rs2_busy_inst1 := busy(rs2_addr_inst1)
 
 }

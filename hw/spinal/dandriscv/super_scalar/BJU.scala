@@ -11,7 +11,7 @@ case class BJU_kernel() extends Component {
 
   // =================== IO ===================
   val in_valid = in Bool()
-  val bju_micro_op = in(IQ_MicroOp("BJU"))
+  val micro_op = in(IQ_MicroOp("BJU"))
   val pc = in UInt(PC_WIDTH bits)
   val imm = in Bits(64 bits)
   val rs1_val = in Bits(64 bits)
@@ -40,23 +40,23 @@ case class BJU_kernel() extends Component {
 
   // --------------branch/jump related signals--------------
   val pc_next = UInt(PC_WIDTH bits)
-  val auipc = (bju_micro_op.bju_ctrl_op===AUIPC)
-  val jal = (bju_micro_op.bju_ctrl_op===JAL)
-  val jalr= (bju_micro_op.bju_ctrl_op===JALR)
-  val beq = (bju_micro_op.bju_ctrl_op===BEQ)
-  val bne = (bju_micro_op.bju_ctrl_op===BNE)
-  val blt = (bju_micro_op.bju_ctrl_op===BLT)
-  val bge = (bju_micro_op.bju_ctrl_op===BGE)
-  val bltu= (bju_micro_op.bju_ctrl_op===BLTU)
-  val bgeu= (bju_micro_op.bju_ctrl_op===BGEU) 
+  val auipc = (micro_op.bju_ctrl_op===AUIPC)
+  val jal = (micro_op.bju_ctrl_op===JAL)
+  val jalr= (micro_op.bju_ctrl_op===JALR)
+  val beq = (micro_op.bju_ctrl_op===BEQ)
+  val bne = (micro_op.bju_ctrl_op===BNE)
+  val blt = (micro_op.bju_ctrl_op===BLT)
+  val bge = (micro_op.bju_ctrl_op===BGE)
+  val bltu= (micro_op.bju_ctrl_op===BLTU)
+  val bgeu= (micro_op.bju_ctrl_op===BGEU) 
   val branch_or_jalr = jalr || beq || bne || blt || bge || bltu || bgeu
   val branch_or_jump = branch_or_jalr || jal
   val branch_src1 = rs1_val
   val branch_src2 = rs2_val
-  val rd_eq_rs1   = bju_micro_op.bju_rd_eq_rs1
-  val rd_is_link  = bju_micro_op.bju_rd_is_link
-  val rs1_is_link = bju_micro_op.bju_rs1_is_link
-  val src2_is_imm = bju_micro_op.src2_is_imm
+  val rd_eq_rs1   = micro_op.bju_rd_eq_rs1
+  val rd_is_link  = micro_op.bju_rd_is_link
+  val rs1_is_link = micro_op.bju_rs1_is_link
+  val src2_is_imm = micro_op.src2_is_imm
   val is_call= False
   val is_ret = False
   val is_jmp = False
@@ -160,17 +160,17 @@ case class BJU_kernel() extends Component {
   // ================= for exception ==================
   val csr_regfile = new CsrRegfile(64)
   val clint = new Clint(64, MEM_AW)
-  val csr_rdata = Bits(64 bits)
+  val csr_rdata = Reg(Bits(64 bits)) init(0) // TODO:
 
   clint.csr_ports <> csr_regfile.clint_ports
   csr_regfile.timer_int := timer_int
   clint.timer_int := timer_int
   csr_rdata := csr_regfile.cpu_ports.rdata
-  csr_regfile.cpu_ports.raddr := bju_micro_op.exp_csr_addr
+  csr_regfile.cpu_ports.raddr := micro_op.exp_csr_addr
   clint.pc := pc
-  clint.ecall :=  in_valid && (bju_micro_op.exp_ctrl_op===ECALL)
-  clint.ebreak := in_valid && (bju_micro_op.exp_ctrl_op===EBREAK)
-  clint.mret   := in_valid && (bju_micro_op.exp_ctrl_op===MRET)
+  clint.ecall :=  in_valid && (micro_op.exp_ctrl_op===ECALL)
+  clint.ebreak := in_valid && (micro_op.exp_ctrl_op===EBREAK)
+  clint.mret   := in_valid && (micro_op.exp_ctrl_op===MRET)
   val csr_wdata = Bits(64 bits)
   val csrrw_wdata = rs1_val
   val csrrs_wdata = rs1_val | csr_rdata
@@ -178,9 +178,9 @@ case class BJU_kernel() extends Component {
   val csrrwi_wdata = imm
   val csrrsi_wdata = imm | csr_rdata
   val csrrci_wdata = ~imm & csr_rdata
-  val csr_wen = in_valid && bju_micro_op.exp_csr_wen
+  val csr_wen = in_valid && micro_op.exp_csr_wen
 
-  switch(bju_micro_op.exp_ctrl_op){
+  switch(micro_op.exp_ctrl_op){
     is(CSRRW){
       csr_wdata := csrrw_wdata
     }
@@ -206,11 +206,13 @@ case class BJU_kernel() extends Component {
 
   csr_regfile.cpu_ports.wdata := csr_wdata
   csr_regfile.cpu_ports.wen := csr_wen
-  csr_regfile.cpu_ports.waddr := bju_micro_op.exp_csr_addr
+  csr_regfile.cpu_ports.waddr := micro_op.exp_csr_addr
 
   clint.instruction_valid := in_valid
   clint.pc_next := redirect_pc
   clint.pc_next_valid := redirect_valid
+  interrupt_valid := clint.int_en
+  interrupt_pc := clint.int_pc
 }
 
 case class BJU() extends Component {
@@ -250,7 +252,7 @@ case class BJU() extends Component {
 
   val bju_kernel = new BJU_kernel()
   bju_kernel.in_valid := src_stream.fire
-  bju_kernel.bju_micro_op := src_stream.micro_op
+  bju_kernel.micro_op := src_stream.micro_op
   bju_kernel.pc := src_stream.pc
   bju_kernel.imm := src_stream.imm
   bju_kernel.rs1_val := src_stream.src1
@@ -275,8 +277,9 @@ case class BJU() extends Component {
 
   // =================== output ===================
   src_stream.ready := dst_stream.ready
+  dst_stream.valid := src_stream.valid
   dst_stream.result := bju_kernel.rd_val
-  dst_stream.rd_wen := src_stream.rd_wen
+  dst_stream.rd_wen := src_stream.micro_op.rd_wen
   dst_stream.rd_rob_ptr := src_stream.rd_rob_ptr
   dst_stream >-> dst_ports
 }

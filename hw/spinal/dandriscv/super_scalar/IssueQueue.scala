@@ -33,10 +33,14 @@ case class IssueQueue(p : IssueQueueConfig) extends Component{
     val imm_val = Vec(Reg(Bits(64 bits)) init(0), DEPTH)
     val pc = (IQ_Type == "BJU") generate Vec(Reg(UInt(PC_WIDTH bits)) init(0), DEPTH)
     // comb logic
-    val exe_rd_equal = Vec(Bits(IQ_NUM bits), DEPTH)
-    val exe_done_bits = Vec(Bits(IQ_NUM bits), DEPTH)
-    val exe_rd_val = Vec(Bits(64 bits), DEPTH)
-    val exe_done = Vec(Bool(), DEPTH)
+    val exe_rd_equal_src1 = Vec(Bits(IQ_NUM bits), DEPTH)
+    val exe_done_bits_src1 = Vec(Bits(IQ_NUM bits), DEPTH)
+    val exe_rd_val_src1 = Vec(Bits(64 bits), DEPTH)
+    val exe_done_src1 = Vec(Bool(), DEPTH)
+    val exe_rd_equal_src2 = Vec(Bits(IQ_NUM bits), DEPTH)
+    val exe_done_bits_src2 = Vec(Bits(IQ_NUM bits), DEPTH)
+    val exe_rd_val_src2 = Vec(Bits(64 bits), DEPTH)
+    val exe_done_src2 = Vec(Bool(), DEPTH)
   }
   val read_ptr = Reg(UInt(PTR_WIDTH bits)) init(0)
   val write_ptr= Reg(UInt(PTR_WIDTH bits)) init(0)
@@ -84,31 +88,35 @@ case class IssueQueue(p : IssueQueueConfig) extends Component{
       }
     }
 
-    // exe rd equal to iq entry index?
+    // exe rd ptr equal to src ptr?
     for(j <- 0 until IQ_NUM){
-      entry.exe_rd_equal(i)(j) := exe_rob_ptr(j)(PTR_WIDTH-2 downto 0)===U(i)
+      entry.exe_rd_equal_src1(i)(j) := exe_rob_ptr(j)===entry.src1_rob_ptr(i)
+      entry.exe_rd_equal_src2(i)(j) := exe_rob_ptr(j)===entry.src2_rob_ptr(i)
     }
-    entry.exe_done_bits(i)  := entry.exe_rd_equal(i) & exe_executed.asBits
-    entry.exe_done(i)       := entry.exe_done_bits(i).orR
-    entry.exe_rd_val(i)     := dataMux(entry.exe_done_bits(i), exe_rd_val.asBits)
+    entry.exe_done_bits_src1(i)  := entry.exe_rd_equal_src1(i) & exe_executed.asBits
+    entry.exe_done_src1(i)       := entry.exe_done_bits_src1(i).orR
+    entry.exe_rd_val_src1(i)     := dataMux(entry.exe_done_bits_src1(i), exe_rd_val.asBits)
+    entry.exe_done_bits_src2(i)  := entry.exe_rd_equal_src2(i) & exe_executed.asBits
+    entry.exe_done_src2(i)       := entry.exe_done_bits_src2(i).orR
+    entry.exe_rd_val_src2(i)     := dataMux(entry.exe_done_bits_src2(i), exe_rd_val.asBits)
     
     // src1_vld /src2_vld of iq entry
     when(en_queue.fire && (write_addr===U(i))){
       entry.src1_vld(i) := en_queue.src1_vld
       entry.src1_val(i) := en_queue.src1_val
     }
-    .elsewhen(entry.busy(i) && (read_addr===U(i)) && entry.exe_done(i)){
+    .elsewhen(entry.busy(i) && (read_addr===U(i)) && entry.exe_done_src1(i)){
       entry.src1_vld(i) := True
-      entry.src1_val(i) := entry.exe_rd_val(i)
+      entry.src1_val(i) := entry.exe_rd_val_src1(i)
     }
 
     when(en_queue.fire && (write_addr===U(i))){
       entry.src2_vld(i) := en_queue.src2_vld
       entry.src2_val(i) := en_queue.micro_op.src2_is_imm ? en_queue.imm_val | en_queue.src2_val
     }
-    .elsewhen(entry.busy(i) && (read_addr===U(i)) && entry.exe_done(i)){
+    .elsewhen(entry.busy(i) && (read_addr===U(i)) && entry.exe_done_src2(i)){
       entry.src2_vld(i) := True
-      entry.src2_val(i) := entry.exe_rd_val(i)
+      entry.src2_val(i) := entry.exe_rd_val_src2(i)
     }
     
   }
@@ -117,8 +125,8 @@ case class IssueQueue(p : IssueQueueConfig) extends Component{
   en_queue.ready := !iq_full
   de_queue.valid := !iq_empty && entry.busy(read_addr) && entry.src1_vld(read_addr) && entry.src2_vld(read_addr)
   de_queue.rd_rob_ptr := entry.rd_rob_ptr(read_addr)
-  de_queue.src1_rob_ptr := entry.src1_rob_ptr(read_addr)
-  de_queue.src2_rob_ptr := entry.src2_rob_ptr(read_addr)
+//  de_queue.src1_rob_ptr := entry.src1_rob_ptr(read_addr)
+//  de_queue.src2_rob_ptr := entry.src2_rob_ptr(read_addr)
   de_queue.micro_op := entry.micro_op(read_addr)
   de_queue.src1_val := entry.src1_val(read_addr)
   de_queue.src2_val := entry.src2_val(read_addr)

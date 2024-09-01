@@ -174,7 +174,7 @@ case class ALU() extends Component {
   // ================= stream control =====================
   src_stream.ready := dst_stream.ready
   dst_stream.valid := (!alu_is_div && !div.io.busy && src_stream.valid) || div.io.done_valid
-  dst_stream.rd_wen := src_stream.rd_wen
+  dst_stream.rd_wen := src_stream.micro_op.rd_wen
   dst_stream.rd_rob_ptr := src_stream.rd_rob_ptr
   dst_stream.result := alu_is_mul ? mul_result |
     (alu_is_quo ? div_result_quotient |

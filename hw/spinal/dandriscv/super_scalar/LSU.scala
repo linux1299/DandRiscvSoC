@@ -127,7 +127,7 @@ case class LSU(AW:Int=32, DW:Int=64) extends Component {
   src_stream.ready := dcache_cmd_stream.ready
   dst_stream.valid := dcache_ports.rsp.valid
   dst_stream.result := lsu_rdata
-  dst_stream.rd_wen := src_ports.rd_wen
+  dst_stream.rd_wen := src_ports.micro_op.rd_wen
   dst_stream.rd_rob_ptr := src_ports.rd_rob_ptr
   dst_stream >> dst_ports
 

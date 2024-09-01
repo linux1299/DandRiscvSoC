@@ -120,9 +120,9 @@ case class DCacheAccess(AW: Int, DW: Int) extends Bundle with IMasterSlave{
 
 
 // ========================= Fetch =======================
-case class FetchDst() extends Bundle {
+case class FetchDst(DW: Int) extends Bundle {
   val pc = UInt(PC_WIDTH bits)
-  val instruction = Bits(32 bits)
+  val instruction = Bits(DW bits)
 }
 
 // ====================== reg file ports ====================
@@ -150,59 +150,6 @@ case class ARFWritePorts() extends Bundle with IMasterSlave{
 }
 
 
-// ==================== IQ ========================
-case class IQ_MicroOp(IQ_Type: String) extends Bundle {
-
-  // common
-  val rd_wen = Bool()
-  val src2_is_imm = Bool()
-
-  // alu
-  val alu_ctrl_op     = (IQ_Type == "ALU") generate AluCtrlEnum()
-  val alu_is_word     = (IQ_Type == "ALU") generate Bool()
-  // bju
-  val bju_ctrl_op = (IQ_Type == "BJU") generate BjuCtrlEnum()
-  val bju_rd_eq_rs1 = (IQ_Type == "BJU") generate Bool()
-  val bju_rd_is_link = (IQ_Type == "BJU") generate Bool()
-  val bju_rs1_is_link = (IQ_Type == "BJU") generate Bool()
-  val exp_ctrl_op = (IQ_Type == "BJU") generate ExpCtrlEnum()
-  val exp_csr_addr = (IQ_Type == "BJU") generate UInt(12 bits)
-  val exp_csr_wen = (IQ_Type == "BJU") generate Bool()
-  // lsu
-  val lsu_ctrl_op  = (IQ_Type == "LSU") generate LsuCtrlEnum()
-  val lsu_is_load  = (IQ_Type == "LSU") generate Bool()
-  val lsu_is_store = (IQ_Type == "LSU") generate Bool()
-
-  
-}
-
-case class EnQueue(ROB_AW: Int, IQ_Type: String) extends Bundle {
-  val rd_rob_ptr = UInt(ROB_AW bits)
-  val src1_rob_ptr = UInt(ROB_AW bits)
-  val src2_rob_ptr = UInt(ROB_AW bits)
-  val micro_op = IQ_MicroOp(IQ_Type)
-  val src1_vld = Bool()
-  val src2_vld = Bool()
-  val src1_val = Bits(64 bits)
-  val src2_val = Bits(64 bits)
-  val imm_val  = Bits(64 bits)
-  val pc = (IQ_Type == "BJU") generate UInt(PC_WIDTH bits)
-}
-
-
-
-case class DeQueue(ROB_AW: Int, IQ_Type: String) extends Bundle {
-  val rd_rob_ptr = UInt(ROB_AW bits)
-  val src1_rob_ptr = UInt(ROB_AW bits)
-  val src2_rob_ptr = UInt(ROB_AW bits)
-  val micro_op = IQ_MicroOp(IQ_Type)
-  val src1_val   = Bits(64 bits)
-  val src2_val   = Bits(64 bits)
-  val imm_val    = (IQ_Type != "ALU") generate Bits(64 bits)
-  val pc = (IQ_Type == "BJU") generate UInt(PC_WIDTH bits)
-}
-
-
 // ========================= ROB =======================
 case class EnROB(PC_WIDTH: Int) extends Bundle {
   val pc = UInt(PC_WIDTH bits)
@@ -226,6 +173,58 @@ case class DeROB() extends Bundle {
   val rd_val = Bits(64 bits)
 }
 
+
+// ==================== IQ ========================
+case class IQ_MicroOp(IQ_Type: String) extends Bundle {
+
+  // common
+  val rd_wen = Bool()
+  val src2_is_imm = Bool()
+
+  // alu
+  val alu_ctrl_op     = (IQ_Type == "ALU") generate AluCtrlEnum()
+  val alu_is_word     = (IQ_Type == "ALU") generate Bool()
+  // bju
+  val bju_ctrl_op = (IQ_Type == "BJU") generate BjuCtrlEnum()
+  val bju_rd_eq_rs1 = (IQ_Type == "BJU") generate Bool()
+  val bju_rd_is_link = (IQ_Type == "BJU") generate Bool()
+  val bju_rs1_is_link = (IQ_Type == "BJU") generate Bool()
+  val exp_ctrl_op = (IQ_Type == "BJU") generate ExpCtrlEnum()
+  val exp_csr_addr = (IQ_Type == "BJU") generate UInt(12 bits)
+  val exp_csr_wen = (IQ_Type == "BJU") generate Bool()
+  // lsu
+  val lsu_ctrl_op  = (IQ_Type == "LSU") generate LsuCtrlEnum()
+  val lsu_is_load  = (IQ_Type == "LSU") generate Bool()
+  val lsu_is_store = (IQ_Type == "LSU") generate Bool()
+
+}
+
+case class EnQueue(ROB_AW: Int, IQ_Type: String) extends Bundle {
+  val rd_rob_ptr = UInt(ROB_AW bits)
+  val src1_rob_ptr = UInt(ROB_AW bits)
+  val src2_rob_ptr = UInt(ROB_AW bits)
+  val micro_op = IQ_MicroOp(IQ_Type)
+  val src1_vld = Bool()
+  val src2_vld = Bool()
+  val src1_val = Bits(64 bits)
+  val src2_val = Bits(64 bits)
+  val imm_val  = Bits(64 bits)
+  val pc = (IQ_Type == "BJU") generate UInt(PC_WIDTH bits)
+}
+
+
+
+case class DeQueue(ROB_AW: Int, IQ_Type: String) extends Bundle {
+  val rd_rob_ptr = UInt(ROB_AW bits)
+  // val src1_rob_ptr = UInt(ROB_AW bits)
+  // val src2_rob_ptr = UInt(ROB_AW bits)
+  val micro_op = IQ_MicroOp(IQ_Type)
+  val src1_val   = Bits(64 bits)
+  val src2_val   = Bits(64 bits)
+  val imm_val    = (IQ_Type != "ALU") generate Bits(64 bits)
+  val pc = (IQ_Type == "BJU") generate UInt(PC_WIDTH bits)
+}
+
 // ========================= BJU =======================
 case class BjuSrc() extends Bundle {
   val src1 = Bits(64 bits)
@@ -233,7 +232,6 @@ case class BjuSrc() extends Bundle {
   val imm  = Bits(64 bits)
   val pc = UInt(PC_WIDTH bits)
   val micro_op = IQ_MicroOp("BJU")
-  val rd_wen = Bool()
   val rd_rob_ptr = UInt(ROB_PTR_W bits)
 }
 
@@ -248,7 +246,6 @@ case class AluSrc() extends Bundle {
   val src1 = Bits(64 bits)
   val src2 = Bits(64 bits)
   val micro_op = IQ_MicroOp("ALU")
-  val rd_wen = Bool()
   val rd_rob_ptr = UInt(ROB_PTR_W bits)
 }
 
@@ -264,7 +261,6 @@ case class LsuSrc() extends Bundle {
   val src2 = Bits(64 bits)
   val imm  = Bits(64 bits)
   val micro_op = IQ_MicroOp("LSU")
-  val rd_wen = Bool()
   val rd_rob_ptr = UInt(ROB_PTR_W bits)
 }
 

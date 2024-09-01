@@ -259,7 +259,7 @@ case class DCache(p : DCacheConfig) extends Component{
 // ===============================================
 // Dcache Top Module
 // ===============================================
-case class DCacheTop(val config : DCacheConfig, val axiConfig : Axi4Config){
+case class DCacheTop(val config : DCacheConfig, val axiConfig : Axi4Config) extends Component {
 
   import config._
   // ============================= IO =============================
@@ -267,9 +267,9 @@ case class DCacheTop(val config : DCacheConfig, val axiConfig : Axi4Config){
   val flush = in Bool()
   val dcache_ports = slave(DCacheAccess(addressWidth, cpuDataWidth))
   // next level AXI ports/ or direct ports
-  val dcacheMaster = ifGen(directOutput){master(DCacheAccess(config.addressWidth, config.cpuDataWidth))}
-  val dcacheReader = ifGen(!directOutput){master(Axi4ReadOnly(axiConfig))}
-  val dcacheWriter = ifGen(!directOutput){master(Axi4WriteOnly(axiConfig))}
+  val dcacheMaster = ifGen(directOutput){master(DCacheAccess(config.addressWidth, config.cpuDataWidth)).setName("dcache")}
+  val dcacheReader = ifGen(!directOutput){master(Axi4ReadOnly(axiConfig)).setName("dcache")}
+  val dcacheWriter = ifGen(!directOutput){master(Axi4WriteOnly(axiConfig)).setName("dcache")}
 
   // connect dcache and cpu ports
   val dcache = new DCache(config)
