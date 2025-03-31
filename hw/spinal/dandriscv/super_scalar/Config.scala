@@ -116,7 +116,7 @@ object ExpCtrlEnum extends SpinalEnum(binarySequential){
 
 // ============== ROB ===============
 object ROBStateEnum extends SpinalEnum(binarySequential){
-  val IDLE, ISSUE, EXECUTE, COMPLETE, COMMIT = newElement()
+  val IDLE, ENQUEUE, EXECUTING, COMPLETE, COMMIT = newElement()
 }
 
 object ExceptionEnum extends SpinalEnum(binarySequential){
@@ -140,8 +140,10 @@ object CpuConfig{
   def XLEN = 64
   def PC_WIDTH = 32
   def PredictorHistoryLen = 5
-  def ROB_PTR_W = 4
+  def ROB_PTR_W = 3
   def MEM_AW = 32
+  def DIFFTEST = true
+  // def DIFFTEST = false
 }
 
 object GenConfig {

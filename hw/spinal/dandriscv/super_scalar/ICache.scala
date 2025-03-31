@@ -38,7 +38,6 @@ case class ICache(p : ICacheConfig) extends Component{
   val hit_id = UInt(log2Up(wayCount) bits)
   val hit_id_d1 = RegNext(hit_id)
   val evict_id  = UInt(log2Up(wayCount) bits)
-  val evict_id_d1 = RegNext(evict_id)
   val invld_id  = UInt(log2Up(wayCount) bits)
   val victim_id  = UInt(log2Up(wayCount) bits)
   val mru_full = cache_mru.asBits.andR
@@ -49,6 +48,7 @@ case class ICache(p : ICacheConfig) extends Component{
   val flush_busy = RegInit(False)
   val flush_cnt  = Counter(0 to wayLineCount-1)
   val flush_done = flush_busy && flush_cnt===(wayLineCount-1)
+  val evict_id_miss = RegNextWhen(evict_id, is_miss)
 
   // cpu related
   val cpu_tag = cpu.cmd.addr(tagRange)
@@ -137,14 +137,14 @@ case class ICache(p : ICacheConfig) extends Component{
         sram(wayId*bankNum + bankId).ports.cmd.wdata := B(0, bankWidth bits)
         sram(wayId*bankNum + bankId).ports.cmd.wstrb := B(0, bankWidth/8 bits)
       } 
-      .elsewhen(next_level_done && U(wayId)===evict_id){ // when read next level data done, read data from victim way
+      .elsewhen(next_level_done && U(wayId)===evict_id_miss){ // when read next level data done, read data from victim way
         sram(wayId*bankNum + bankId).ports.cmd.addr  := cpu_bank_addr_d1 + ((U(bankId)===U(0)) ? cpu_bank_index_d1 | 0)
         sram(wayId*bankNum + bankId).ports.cmd.valid := True
         sram(wayId*bankNum + bankId).ports.cmd.wen   := False
         sram(wayId*bankNum + bankId).ports.cmd.wdata := B(0, bankWidth bits)
         sram(wayId*bankNum + bankId).ports.cmd.wstrb := B(0, bankWidth/8 bits)
       }
-      .elsewhen(next_level.rsp.valid && U(wayId)===evict_id){ // when read miss, read next level data, write to banks
+      .elsewhen(next_level.rsp.valid && U(wayId)===evict_id_miss){ // when read miss, read next level data, write to banks
         sram(wayId*bankNum + bankId).ports.cmd.addr  := next_level_bank_addr + next_level_data_cnt
         sram(wayId*bankNum + bankId).ports.cmd.valid := True
         sram(wayId*bankNum + bankId).ports.cmd.wen   := True
@@ -177,12 +177,12 @@ case class ICache(p : ICacheConfig) extends Component{
       .elsewhen(is_hit && cache_hit(wayId)){
         ways(wayId).metas(cpu_set).mru := True
       } // miss and next_level data read done
-      .elsewhen(next_level_done && U(wayId)===evict_id){
+      .elsewhen(next_level_done && U(wayId)===evict_id_miss){
         ways(wayId).metas(cpu_set_d1).vld := True
       }
     }
     // tags
-    when(next_level_done && U(wayId)===evict_id){
+    when(next_level_done && U(wayId)===evict_id_miss){
       ways(wayId).metas(cpu_set_d1).tag := cpu_tag_d1
     }
 
@@ -196,8 +196,8 @@ case class ICache(p : ICacheConfig) extends Component{
   }
 
   // resp to cpu ports
-  cpu.rsp.data  := is_hit_d1 ? sram_banks_data(hit_id_d1)  | sram_banks_data(evict_id)
-  cpu.rsp.valid := is_hit_d1 ? sram_banks_valid(hit_id_d1) | sram_banks_valid(evict_id_d1)
+  cpu.rsp.data  := is_hit_d1 ? sram_banks_data(hit_id_d1)  | sram_banks_data(evict_id_miss)
+  cpu.rsp.valid := is_hit_d1 ? sram_banks_valid(hit_id_d1) | sram_banks_valid(evict_id_miss)
   cpu.cmd.ready := cpu_cmd_ready
 
   // cmd to next level cache
@@ -259,12 +259,15 @@ case class ICacheTop(val config : ICacheConfig, val axiConfig : Axi4Config) exte
     icacheReader.ar.burst.setAsReg() init(0)
     icacheReader.ar.addr.setAsReg() init(0)
     val ar_len_cnt = (Reg(UInt(4 bits)) init(0)).setName("ar_len_cnt")
+    
     // ar channel
-    when(icache.next_level.cmd.valid){
-      ar_len_cnt := icache.next_level.cmd.len
-    }.elsewhen(icacheReader.ar.fire && ar_len_cnt>U(0)){
+    when(icacheReader.ar.fire && ar_len_cnt>U(0)){
       ar_len_cnt := ar_len_cnt - U(1)
     }
+    .elsewhen(icache.next_level.cmd.valid){
+      ar_len_cnt := icache.next_level.cmd.len
+    }
+
     when(icache.next_level.cmd.valid){
       icacheReader.ar.valid      := True
     }
@@ -280,12 +283,15 @@ case class ICacheTop(val config : ICacheConfig, val axiConfig : Axi4Config) exte
     icacheReader.ar.size := icache.next_level.cmd.size
     icacheReader.ar.burst := B(1) // INCR
     icache.next_level.cmd.ready := icacheReader.ar.ready
+    
     // ar addr unburst
-    when(icache.next_level.cmd.valid){
-      icacheReader.ar.addr := icache.next_level.cmd.addr.resize(config.addressWidth)
-    }.elsewhen(icacheReader.ar.fire){
+    when(icacheReader.ar.fire){
       icacheReader.ar.addr := icacheReader.ar.addr + U(config.busDataWidth/8)
     }
+    .elsewhen(icache.next_level.cmd.valid){
+      icacheReader.ar.addr := icache.next_level.cmd.addr.resize(config.addressWidth)
+    }
+
     // r channel
     icacheReader.r.ready := True
     icache.next_level.rsp.valid := icacheReader.r.valid && (icacheReader.r.id===U(0))

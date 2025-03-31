@@ -45,22 +45,6 @@ logic [DataWidth-1:0]   ram_d_mem_rdata;
 logic                   ram_d_mem_rsp_valid;
 logic [DataWidth-1:0]   ram_d_mem_rsp_rdata;
 
-//              (__name,         __addr_t,             __id_t,           __data_t,         __strb_t,                __user_t)
-// `AXI_TYPEDEF_ALL(icache_axi, logic [AxiAddrWidth-1:0], logic [3:0], logic [DataWidth-1:0], logic [DataWidth/8-1:0], logic [3:0])
-// icache_axi_req_t  icache_axi_req;
-// icache_axi_rsp_t  icache_axi_rsp;
-
-// `AXI_TYPEDEF_ALL(axi, logic [AxiAddrWidth-1:0], logic [3:0], logic [DataWidth-1:0], logic [DataWidth/8-1:0], logic [3:0])
-// axi_req_t icache_axi_req;
-// axi_resp_t icache_axi_rsp;
-
-//              (__name,         __addr_t,             __id_t,           __data_t,         __strb_t,                __user_t)
-// `AXI_TYPEDEF_ALL(dcache_axi, logic [AxiAddrWidth-1:0], logic [3:0], logic [DataWidth-1:0], logic [DataWidth/8-1:0], logic [3:0])
-// dcache_axi_req_t  dcache_axi_req;
-// dcache_axi_rsp_t  dcache_axi_rsp;
-// axi_req_t dcache_axi_req;
-// axi_resp_t dcache_axi_rsp;
-
 reg [DataWidth-1:0] ram_i   [0:(1<<size)-1];
 reg [DataWidth-1:0] ram_d   [0:(1<<size)-1];
 reg [7:0] ram_tmp [0:(1<<size)*DataWidth/8-1];
@@ -122,9 +106,8 @@ end
 // ==================== initial program in ram =======================
 initial begin
 
-  fd = $fopen ("../../oscpu/bin/non-output/coremark/coremark.bin", "rb");
-  // fd = $fopen ("../../oscpu/bin/non-output/dhrystone/dhrystone.bin", "rb");
-  // fd = $fopen ("./ysyx-workbench/am-kernels/tests/cpu-tests/build/add-longlong-riscv64-nemu.bin", "rb");
+  fd = $fopen ("/home/lin/oscpu/bin/non-output/cpu-tests/shift-cpu-tests.bin", "rb");
+
   tmp = $fread(ram_tmp, fd);
 
   for (i = 0; i < (1<<size); i = i + 1) begin
@@ -242,54 +225,6 @@ DandRiscvSimple u_DandRiscvSimple(
     .reset                   ( !rst_n                         )
 );
 
-
-// axi_to_mem#(
-//     .axi_req_t             ( axi_req_t),
-//     .axi_resp_t            ( axi_resp_t),
-//     .AddrWidth             ( AddrWidth    ),
-//     .DataWidth             ( DataWidth ),
-//     .IdWidth               ( 4  ),
-//     .NumBanks              ( NumBanks ) 
-// )icache_axi_to_mem(
-//     .clk_i                 ( clk_axi_in          ),
-//     .rst_ni                ( rst_n               ),
-//     .busy_o                ( ram_i_busy_o        ),
-//     .axi_req_i             ( icache_axi_req      ),
-//     .axi_resp_o            ( icache_axi_rsp      ),
-//     .mem_req_o             ( ram_i_mem_read       ),
-//     .mem_gnt_i             ( ram_i_mem_gnt       ),
-//     .mem_addr_o            ( ram_i_mem_addr      ),
-//     .mem_wdata_o           ( ram_i_mem_wdata     ),
-//     .mem_strb_o            ( ram_i_mem_strb      ),
-//     .mem_atop_o            (       ),
-//     .mem_we_o              ( ram_i_mem_write        ),
-//     .mem_rvalid_i          ( ram_i_mem_rsp_valid ),
-//     .mem_rdata_i           ( ram_i_mem_rsp_rdata )
-// );
-
-// axi_to_mem#(
-//     .axi_req_t             ( axi_req_t),
-//     .axi_resp_t            ( axi_resp_t),
-//     .AddrWidth             ( AddrWidth    ),
-//     .DataWidth             ( DataWidth ),
-//     .IdWidth               ( 4  ),
-//     .NumBanks              ( NumBanks ) 
-// )dcache_axi_to_mem(
-//     .clk_i                 ( clk_axi_in          ),
-//     .rst_ni                ( rst_n               ),
-//     .busy_o                ( ram_d_busy_o        ),
-//     .axi_req_i             ( dcache_axi_req      ),
-//     .axi_resp_o            ( dcache_axi_rsp      ),
-//     .mem_req_o             ( ram_d_mem_read       ),
-//     .mem_gnt_i             ( ram_d_mem_gnt       ),
-//     .mem_addr_o            ( ram_d_mem_addr      ),
-//     .mem_wdata_o           ( ram_d_mem_wdata     ),
-//     .mem_strb_o            ( ram_d_mem_strb      ),
-//     .mem_atop_o            (       ),
-//     .mem_we_o              ( ram_d_mem_write        ),
-//     .mem_rvalid_i          ( ram_d_mem_rsp_valid ),
-//     .mem_rdata_i           ( ram_d_mem_rsp_rdata )
-// );
 
 
 axi_slave_mem#(
@@ -426,5 +361,18 @@ always@(posedge clk_axi_in) begin
   if(u_DandRiscvSimple.writeback_arbitration_isFiring)
     instrCnt <= instrCnt+1;
 end
+
+always@(posedge clk_axi_in) begin
+  if (u_DandRiscvSimple.writeback_arbitration_isFiring) begin
+    $display("pc:%h, inst:%h, cmt_wen:%b rd_addr:%h, rd_data:%h", u_DandRiscvSimple.writeback_PC, u_DandRiscvSimple.writeback_INSTRUCTION[31:0], 
+    u_DandRiscvSimple.writeback_RD_WEN & u_DandRiscvSimple.writeback_arbitration_isValid, u_DandRiscvSimple.writeback_RD_ADDR, u_DandRiscvSimple.writeback_RD);
+  end
+end
+
+// always@(posedge clk_axi_in) begin
+//   if ()
+//     $display("lsu read is %h", tb_DandRiscvSimple.u_DandRiscvSimple);
+// end
+
 
 endmodule

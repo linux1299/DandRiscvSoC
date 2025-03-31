@@ -127,25 +127,25 @@ case class FetchDst(DW: Int) extends Bundle {
 
 // ====================== reg file ports ====================
 case class ARFReadPorts() extends Bundle with IMasterSlave{
-  val rs1_value = Bits(64 bits)
-  val rs2_value = Bits(64 bits)
-  val rs1_addr  = UInt(5 bits)
-  val rs2_addr  = UInt(5 bits)
-  val rs1_req   = Bool()
-  val rs2_req   = Bool()
+  val rs1_data = Bits(64 bits)
+  val rs2_data = Bits(64 bits)
+  val rs1_addr = UInt(5 bits)
+  val rs2_addr = UInt(5 bits)
+  val rs1_req  = Bool()
+  val rs2_req  = Bool()
 
   override def asMaster(): Unit = {
     out(rs1_req, rs2_req, rs1_addr, rs2_addr)
-    in(rs1_value, rs2_value)
+    in(rs1_data, rs2_data)
   }
 }
 case class ARFWritePorts() extends Bundle with IMasterSlave{
-  val rd_value = Bits(64 bits)
-  val rd_addr  = UInt(5 bits)
-  val rd_wen   = Bool()
+  val rd_data = Bits(64 bits)
+  val rd_addr = UInt(5 bits)
+  val rd_wen  = Bool()
 
   override def asMaster(): Unit = {
-    out(rd_addr, rd_wen, rd_value)
+    out(rd_addr, rd_wen, rd_data)
   }
 }
 
@@ -155,22 +155,34 @@ case class EnROB(PC_WIDTH: Int) extends Bundle {
   val pc = UInt(PC_WIDTH bits)
   val micro_op = RobMicroOp()
   val rd_addr = UInt(5 bits)
-  // val rd_val = Bits(64 bits)
+  // val rd_data = Bits(64 bits)
   val exception = ExceptionEnum()
-  val rs1_rd_en = Bool()
-  val rs2_rd_en = Bool()
+  val rs1_ren = Bool()
+  val rs2_ren = Bool()
   val rs1_addr = UInt(5 bits)
   val rs2_addr = UInt(5 bits)
   // for issue queue
-  val imm_val  = Bits(64 bits)
+  val imm  = Bits(64 bits)
   val bju_micro_op = IQ_MicroOp("BJU")
   val alu_micro_op = IQ_MicroOp("ALU")
   val lsu_micro_op = IQ_MicroOp("LSU")
+  // for difftest
+  val instruction = (DIFFTEST) generate Bits(32 bits)
 }
 
 case class DeROB() extends Bundle {
   val rd_addr = UInt(5 bits)
-  val rd_val = Bits(64 bits)
+  val rd_data = Bits(64 bits)
+  val rd_wen  = Bool()
+  val rob_ptr = UInt(ROB_PTR_W bits)
+  // for difftest
+  val pc = (DIFFTEST) generate UInt(PC_WIDTH bits)
+  val instruction = (DIFFTEST) generate Bits(32 bits)
+}
+
+case class Wakeup() extends Bundle {
+  val exe_rd_data  = Bits(64 bits)
+  val exe_rob_ptr  = UInt(ROB_PTR_W bits)
 }
 
 
@@ -199,75 +211,40 @@ case class IQ_MicroOp(IQ_Type: String) extends Bundle {
 
 }
 
-case class EnQueue(ROB_AW: Int, IQ_Type: String) extends Bundle {
-  val rd_rob_ptr = UInt(ROB_AW bits)
-  val src1_rob_ptr = UInt(ROB_AW bits)
-  val src2_rob_ptr = UInt(ROB_AW bits)
+case class EnQueue(IQ_Type: String) extends Bundle {
+  val rd_rob_ptr = UInt(ROB_PTR_W bits)
+  val src1_rob_ptr = UInt(ROB_PTR_W bits)
+  val src2_rob_ptr = UInt(ROB_PTR_W bits)
   val micro_op = IQ_MicroOp(IQ_Type)
   val src1_vld = Bool()
   val src2_vld = Bool()
-  val src1_val = Bits(64 bits)
-  val src2_val = Bits(64 bits)
-  val imm_val  = Bits(64 bits)
-  val pc = (IQ_Type == "BJU") generate UInt(PC_WIDTH bits)
+  val src1_data = Bits(64 bits)
+  val src2_data = Bits(64 bits)
+  val imm  = Bits(64 bits)
+  val pc = ((IQ_Type=="BJU") || DIFFTEST) generate UInt(PC_WIDTH bits)
+  // for difftest
+  val instruction = (DIFFTEST) generate Bits(32 bits)
 }
 
-
-
-case class DeQueue(ROB_AW: Int, IQ_Type: String) extends Bundle {
-  val rd_rob_ptr = UInt(ROB_AW bits)
-  // val src1_rob_ptr = UInt(ROB_AW bits)
-  // val src2_rob_ptr = UInt(ROB_AW bits)
+case class DeQueue(IQ_Type: String) extends Bundle {
+  val rd_rob_ptr = UInt(ROB_PTR_W bits)
   val micro_op = IQ_MicroOp(IQ_Type)
-  val src1_val   = Bits(64 bits)
-  val src2_val   = Bits(64 bits)
-  val imm_val    = (IQ_Type != "ALU") generate Bits(64 bits)
-  val pc = (IQ_Type == "BJU") generate UInt(PC_WIDTH bits)
+  val src1_data   = Bits(64 bits)
+  val src2_data   = Bits(64 bits)
+  val imm    = (IQ_Type != "ALU") generate Bits(64 bits)
+  val pc = ((IQ_Type=="BJU") || DIFFTEST) generate UInt(PC_WIDTH bits)
+  // for difftest
+  val instruction = (DIFFTEST) generate Bits(32 bits)
 }
 
-// ========================= BJU =======================
-case class BjuSrc() extends Bundle {
-  val src1 = Bits(64 bits)
-  val src2 = Bits(64 bits)
-  val imm  = Bits(64 bits)
-  val pc = UInt(PC_WIDTH bits)
-  val micro_op = IQ_MicroOp("BJU")
-  val rd_rob_ptr = UInt(ROB_PTR_W bits)
-}
-
-case class BjuDst() extends Bundle {
+// ========================= Exe =======================
+case class ExeDst() extends Bundle {
   val result = Bits(64 bits)
   val rd_wen = Bool()
   val rd_rob_ptr = UInt(ROB_PTR_W bits)
-}
-
-// ========================= ALU =======================
-case class AluSrc() extends Bundle {
-  val src1 = Bits(64 bits)
-  val src2 = Bits(64 bits)
-  val micro_op = IQ_MicroOp("ALU")
-  val rd_rob_ptr = UInt(ROB_PTR_W bits)
-}
-
-case class AluDst() extends Bundle {
-  val result = Bits(64 bits)
-  val rd_wen = Bool()
-  val rd_rob_ptr = UInt(ROB_PTR_W bits)
-}
-
-// ========================= LSU =======================
-case class LsuSrc() extends Bundle {
-  val src1 = Bits(64 bits)
-  val src2 = Bits(64 bits)
-  val imm  = Bits(64 bits)
-  val micro_op = IQ_MicroOp("LSU")
-  val rd_rob_ptr = UInt(ROB_PTR_W bits)
-}
-
-case class LsuDst() extends Bundle {
-  val result = Bits(64 bits)
-  val rd_wen = Bool()
-  val rd_rob_ptr = UInt(ROB_PTR_W bits)
+  // for difftest
+  val pc = (DIFFTEST) generate UInt(PC_WIDTH bits)
+  val instruction = (DIFFTEST) generate Bits(32 bits)
 }
 
 // ====================== csr reg file ports ====================

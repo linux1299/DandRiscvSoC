@@ -4,7 +4,7 @@ import spinal.core._
 import spinal.lib._
 import math._
 
-case class Fetch(resetVector : Int = 0x30000000, p : ICacheConfig) extends Component {
+case class Fetch(resetVector : BigInt, p : ICacheConfig) extends Component {
   import p._
   import CpuConfig._
 
@@ -24,7 +24,8 @@ case class Fetch(resetVector : Int = 0x30000000, p : ICacheConfig) extends Compo
   
 
   // ==================== internal signals =============================
-  val pc = Reg(UInt(PC_WIDTH bits)) init(resetVector)
+  val pc = Reg(UInt(32 bits)) init(resetVector)
+//val pc = RegInit(U("32'h8000_0000"))
   val fetch_valid = RegInit(False)
   val rsp_flush = RegInit(False)
   
@@ -109,7 +110,7 @@ case class Fetch(resetVector : Int = 0x30000000, p : ICacheConfig) extends Compo
       pc := bpu_target_pc
     }
     .elsewhen(icache_ports.cmd.fire){
-      pc := pc + 4
+      pc := pc + 8
     }
 
   }
@@ -142,7 +143,7 @@ case class Fetch(resetVector : Int = 0x30000000, p : ICacheConfig) extends Compo
 
 }
 
-case class FetchStage(resetVector : Int = 0x30000000, p : ICacheConfig) extends Component {
+case class FetchStage(resetVector : BigInt, p : ICacheConfig) extends Component {
   import p._
   import CpuConfig._
 

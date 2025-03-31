@@ -66,6 +66,27 @@ sim3:
 ver3:
 	verdi  ./simWorkspace/tb_DandRiscvYsyx3rd/tb_DandRiscvYsyx3rd.fsdb -f ./hw/verilog/tb/tb_DandRiscvYsyx3rd.f -ssf -sv -v2k &
 
+all4: clean com4 sim4
+re4: com4 sim4
+com4:
+	vcs -sverilog +v2k -timescale=1ns/1ns  -full64 -cpp g++ -cc gcc -LDFLAGS -Wl,--no-as-needed \
+	-f ./hw/verilog/tb/tb_SuperScalar.f                       \
+	-debug_all                                 \
+	-o ./simWorkspace/tb_SuperScalar/tb_SuperScalar.simv  \
+	-l ./simWorkspace/tb_SuperScalar/compile.log                             \
+	-fsdb                                      \
+	-top tb_SuperScalar
+
+
+sim4:
+	./simWorkspace/tb_SuperScalar/tb_SuperScalar.simv -l ./simWorkspace/tb_SuperScalar/sim.log  +nospecify +notimingcheck +fsdb+autoflush \
+	-lca -cm line+tgl+cond+fsm \
+  urg -dir ./simWorkspace/tb_SuperScalar/tb_SuperScalar.simv.vdb/ -report both  
+
+
+ver4:
+	verdi  ./simWorkspace/tb_SuperScalar/tb_SuperScalar.fsdb -f ./hw/verilog/tb/tb_SuperScalar.f -ssf -sv -v2k &
+
 soc: clean com_soc sim_soc
 re_soc: com_soc cp_bin sim_soc rm_bin
 com_soc:

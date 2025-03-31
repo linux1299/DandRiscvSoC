@@ -13,14 +13,14 @@ case class ALU() extends Component {
   // =================== IO ===================
   val flush = in Bool()
   val stall = in Bool()
-  val src_ports = slave(Stream(AluSrc()))
-  val dst_ports = master(Stream(AluDst()))
+  val src_ports = slave(Stream(DeQueue("ALU")))
+  val dst_ports = master(Stream(ExeDst()))
 
 
 
   // =================== signals ===================
-  val src1 = src_ports.src1
-  val src2 = src_ports.src2
+  val src1 = src_ports.src1_data
+  val src2 = src_ports.src2_data
   val src1_word = src1(31 downto 0)
   val src2_word = src2(31 downto 0)
   val shift_bits = src2(5 downto 0).asUInt
@@ -70,7 +70,7 @@ case class ALU() extends Component {
 
 
   val src_stream = src_ports.haltWhen(stall).throwWhen(flush)
-  val dst_stream = Stream(AluDst())
+  val dst_stream = Stream(ExeDst())
 
   // ================= caclulate alu result =====================
   switch(alu_ctrl_op) {
@@ -158,12 +158,21 @@ case class ALU() extends Component {
   // ================= caclulate div =====================
   val div = Divider()
   div.io.flush := flush
-  div.io.start := src_stream.fire
+  div.io.start := src_stream.fire && (
+    (alu_ctrl_op === DIV)   ||
+    (alu_ctrl_op === DIVU)  ||
+    (alu_ctrl_op === REM)   ||
+    (alu_ctrl_op === REMU)  ||
+    (alu_ctrl_op === DIVW)  ||
+    (alu_ctrl_op === DIVUW) ||
+    (alu_ctrl_op === REMW)  ||
+    (alu_ctrl_op === REMUW)
+  )
   div.io.done_ready := dst_stream.ready
   div.io.op_is_word := alu_is_word
   div.io.op_is_signed :=
-    (alu_ctrl_op === DIV) ||
-    (alu_ctrl_op === REM) ||
+    (alu_ctrl_op === DIV)  ||
+    (alu_ctrl_op === REM)  ||
     (alu_ctrl_op === DIVW) ||
     (alu_ctrl_op === REMW)
   div.io.dividend := src1
@@ -180,6 +189,10 @@ case class ALU() extends Component {
     (alu_is_quo ? div_result_quotient |
       (alu_is_rem ? div_result_remainder | alu_result)
       )
+  if(DIFFTEST){
+    dst_stream.pc := src_stream.pc
+    dst_stream.instruction := src_stream.instruction
+  }
   dst_stream >-> dst_ports
 
 }
@@ -219,8 +232,8 @@ object TestALU {
         dut.src_ports.micro_op.alu_ctrl_op #= AluCtrlEnum.MUL
         dut.src_ports.micro_op.src2_is_imm #= false
         dut.src_ports.micro_op.alu_is_word #= false
-        dut.src_ports.src1 #= src1
-        dut.src_ports.src2 #= src2
+        dut.src_ports.src1_data #= src1
+        dut.src_ports.src2_data #= src2
         dut.dst_ports.ready #= true
         // Wait a rising edge on the clock
         dut.clockDomain.waitRisingEdge()

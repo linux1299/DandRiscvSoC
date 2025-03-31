@@ -88,6 +88,7 @@ case class DCache(p : DCacheConfig) extends Component{
   val cache_invld_gnt = Vec(Bool(), wayCount)
   val evict_id_miss = RegNextWhen(evict_id, is_miss)
 
+  val cpu_wen_d1      = RegNextWhen(cpu.cmd.wen,   cpu.cmd.fire) init(false)
   val cpu_wstrb_d1    = RegNextWhen(cpu.cmd.wstrb, cpu.cmd.fire) init(0)
   val cpu_wdata_d1    = RegNextWhen(cpu.cmd.wdata, cpu.cmd.fire) init(0)
   val cpu_addr_d1     = RegNextWhen(cpu.cmd.addr, cpu.cmd.fire) init(0)
@@ -235,19 +236,20 @@ case class DCache(p : DCacheConfig) extends Component{
   val refill_data   = sram_banks_data(evict_id_miss)
   val refill_valid  = sram_banks_valid(evict_id_miss)
   cpu.rsp.data     := (bypass_reg ? bypass_rsp_data_d1  | (is_hit_d1 ? hit_data  | refill_data))
-  cpu.rsp.valid    := (bypass_reg ? bypass_rsp_valid_d1 | (is_hit_d1 ? hit_valid | refill_valid))
+  cpu.rsp.valid    := (bypass_reg ? bypass_rsp_valid_d1 | (is_hit_d1 ? hit_valid | refill_valid)) || next_level.rsp.valid
   cpu.cmd.ready    := cpu_cmd_ready
   val bypass_stall  = (!cpu.cmd.ready && !bypass_rsp_valid_d1) || bypass
   val dcache_stall  = (is_miss || is_write || bypass_stall) && !next_level_wdone
   stall            := dcache_stall
 
   // cmd to next level cache
-  val waddr = (cpu_addr(addressWidth-1 downto busDataSize) ## U(0, busDataSize bits)).asUInt
-  val raddr = (cpu_addr(addressWidth-1 downto offsetWidth) ## U(0, offsetWidth bits)).asUInt
-  next_level.cmd.addr := (cpu_wen ? waddr | raddr)
-  next_level.cmd.len  := (cpu_wen ? U(0, 4 bits) | U(busBurstLen-1, 4 bits))
+  // val waddr = (cpu_addr(addressWidth-1 downto busDataSize) ## U(0, busDataSize bits)).asUInt
+  // val raddr = (cpu_addr(addressWidth-1 downto offsetWidth) ## U(0, offsetWidth bits)).asUInt
+  // next_level.cmd.addr := (cpu_wen ? waddr | raddr)
+  next_level.cmd.addr := cpu_addr_d1
+  next_level.cmd.len  := (cpu_wen_d1 ? U(0, 4 bits) | U(busBurstLen-1, 4 bits))
   next_level.cmd.size := busDataSize
-  next_level.cmd.wen  := cpu_wen
+  next_level.cmd.wen  := cpu_wen_d1
   next_level.cmd.wdata:= next_level_wdata
   next_level.cmd.wstrb:= next_level_wstrb
   next_level.cmd.valid:= next_level_cmd_valid

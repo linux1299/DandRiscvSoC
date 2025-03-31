@@ -17,8 +17,8 @@ case class Decode() extends Component {
   val instr = in Bits(32 bits)
   val rs1_addr = out UInt(5 bits)
   val rs2_addr = out UInt(5 bits)
-  val rs1_rd_en = out Bool() // read reg enable
-  val rs2_rd_en = out Bool() // read reg enable
+  val rs1_ren = out Bool() // read reg enable
+  val rs2_ren = out Bool() // read reg enable
   val rd_addr = out UInt(5 bits)
   val imm = out Bits(64 bits)
   val alu_micro_op = out(IQ_MicroOp("ALU"))
@@ -229,8 +229,8 @@ case class Decode() extends Component {
   val src2_is_imm = Bool()
   rs1_addr := rs1.asUInt
   rs2_addr := rs2.asUInt
-  rs1_rd_en  := !(imm_all.u_type_imm || imm_all.j_type_imm)
-  rs2_rd_en  := !(imm_all.u_type_imm || imm_all.j_type_imm || imm_all.i_type_imm)
+  rs1_ren  := !(imm_all.u_type_imm || imm_all.j_type_imm)
+  rs2_ren  := !(imm_all.u_type_imm || imm_all.j_type_imm || imm_all.i_type_imm)
   rd_wen   := !imm_all.s_type_imm && 
               !imm_all.b_type_imm && 
               !ebreak && 
@@ -312,41 +312,47 @@ case class DecodeStage(p : ReorderBufferConfig) extends Component {
   // ==================== connect =============================
  
 
-  decode_0.pc := src_stream_0.pc
+  decode_0.pc    := src_stream_0.pc
   decode_0.instr := src_stream_0.instruction
-  decode_1.pc := src_stream_1.pc
+  decode_1.pc    := src_stream_1.pc
   decode_1.instr := src_stream_1.instruction
 
   // ==================== output =============================
-  en_rob_stream_0.valid := src_stream_0.valid
-  en_rob_stream_0.pc := src_stream_0.pc
-  en_rob_stream_0.micro_op := decode_0.rob_micro_op
-  en_rob_stream_0.rd_addr := decode_0.rd_addr
-  en_rob_stream_0.exception := decode_0.exception
-  en_rob_stream_0.rs1_rd_en := decode_0.rs1_rd_en
-  en_rob_stream_0.rs2_rd_en := decode_0.rs2_rd_en
-  en_rob_stream_0.rs1_addr := decode_0.rs1_addr
-  en_rob_stream_0.rs2_addr := decode_0.rs2_addr
-  en_rob_stream_0.imm_val := decode_0.imm
+  en_rob_stream_0.valid        := src_stream_0.valid
+  en_rob_stream_0.pc           := src_stream_0.pc
+  en_rob_stream_0.micro_op     := decode_0.rob_micro_op
+  en_rob_stream_0.rd_addr      := decode_0.rd_addr
+  en_rob_stream_0.exception    := decode_0.exception
+  en_rob_stream_0.rs1_ren      := decode_0.rs1_ren
+  en_rob_stream_0.rs2_ren      := decode_0.rs2_ren
+  en_rob_stream_0.rs1_addr     := decode_0.rs1_addr
+  en_rob_stream_0.rs2_addr     := decode_0.rs2_addr
+  en_rob_stream_0.imm          := decode_0.imm
   en_rob_stream_0.bju_micro_op := decode_0.bju_micro_op
   en_rob_stream_0.alu_micro_op := decode_0.alu_micro_op
   en_rob_stream_0.lsu_micro_op := decode_0.lsu_micro_op
-  src_stream_0.ready := en_rob_stream_0.ready
+  src_stream_0.ready           := en_rob_stream_0.ready
 
-  en_rob_stream_1.valid := src_stream_1.valid
-  en_rob_stream_1.pc := src_stream_1.pc
-  en_rob_stream_1.micro_op := decode_1.rob_micro_op
-  en_rob_stream_1.rd_addr := decode_1.rd_addr
-  en_rob_stream_1.exception := decode_1.exception
-  en_rob_stream_1.rs1_rd_en := decode_1.rs1_rd_en
-  en_rob_stream_1.rs2_rd_en := decode_1.rs2_rd_en
-  en_rob_stream_1.rs1_addr := decode_1.rs1_addr
-  en_rob_stream_1.rs2_addr := decode_1.rs2_addr
-  en_rob_stream_1.imm_val := decode_1.imm
+  en_rob_stream_1.valid        := src_stream_1.valid
+  en_rob_stream_1.pc           := src_stream_1.pc
+  en_rob_stream_1.micro_op     := decode_1.rob_micro_op
+  en_rob_stream_1.rd_addr      := decode_1.rd_addr
+  en_rob_stream_1.exception    := decode_1.exception
+  en_rob_stream_1.rs1_ren      := decode_1.rs1_ren
+  en_rob_stream_1.rs2_ren      := decode_1.rs2_ren
+  en_rob_stream_1.rs1_addr     := decode_1.rs1_addr
+  en_rob_stream_1.rs2_addr     := decode_1.rs2_addr
+  en_rob_stream_1.imm          := decode_1.imm
   en_rob_stream_1.bju_micro_op := decode_1.bju_micro_op
   en_rob_stream_1.alu_micro_op := decode_1.alu_micro_op
   en_rob_stream_1.lsu_micro_op := decode_1.lsu_micro_op
-  src_stream_1.ready := en_rob_stream_1.ready
+  src_stream_1.ready           := en_rob_stream_1.ready
+
+  // difftest
+  if(DIFFTEST){
+    en_rob_stream_0.instruction := src_stream_0.instruction
+    en_rob_stream_1.instruction := src_stream_1.instruction
+  }
 
   en_rob_stream_0 >-> en_rob_ports_0
   en_rob_stream_1 >-> en_rob_ports_1

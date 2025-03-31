@@ -13,8 +13,8 @@ case class LSU(AW:Int=32, DW:Int=64) extends Component {
   // =================== IO ===================
   val flush = in Bool()
   val stall = in Bool()
-  val src_ports = slave(Stream(LsuSrc()))
-  val dst_ports = master(Stream(LsuDst()))
+  val src_ports = slave(Stream(DeQueue("LSU")))
+  val dst_ports = master(Stream(ExeDst()))
   val dcache_ports = master(DCacheAccess(AW, DW))
   val timer_cen = out Bool()
   val timer_wen = out Bool()
@@ -23,12 +23,12 @@ case class LSU(AW:Int=32, DW:Int=64) extends Component {
 
   // =========== stream control ================
   val src_stream = src_ports.haltWhen(stall).throwWhen(flush)
-  val dst_stream = Stream(LsuDst())
+  val dst_stream = Stream(ExeDst())
   val dcache_cmd_stream = Stream(DCacheAccessCmd(AW, DW))
 
   // =================== stage 0 logic ===================
-  val src1 = src_ports.src1
-  val src2 = src_ports.src2
+  val src1 = src_ports.src1_data
+  val src2 = src_ports.src2_data
   val imm  = src_ports.imm
   val micro_op = src_ports.micro_op
 
@@ -124,17 +124,43 @@ case class LSU(AW:Int=32, DW:Int=64) extends Component {
   dcache_cmd_stream >-> dcache_ports.cmd
 
   // =========== output ================
+  val rd_wen_reg = Reg(Bool()) init(false)
+  val rd_rob_ptr_reg = Reg(UInt(ROB_PTR_W bits)) init(0)
+
+  when(flush){
+    rd_wen_reg := False
+    rd_rob_ptr_reg := 0
+  }
+  .elsewhen(src_stream.fire){
+    rd_wen_reg := src_ports.micro_op.rd_wen
+    rd_rob_ptr_reg := src_ports.rd_rob_ptr
+  }
+
   src_stream.ready := dcache_cmd_stream.ready
   dst_stream.valid := dcache_ports.rsp.valid
   dst_stream.result := lsu_rdata
-  dst_stream.rd_wen := src_ports.micro_op.rd_wen
-  dst_stream.rd_rob_ptr := src_ports.rd_rob_ptr
+  dst_stream.rd_wen := rd_wen_reg
+  dst_stream.rd_rob_ptr := rd_rob_ptr_reg
+  if(DIFFTEST){
+    val pc_reg = Reg(UInt(32 bits)) init(0)
+    val instruction_reg = Reg(Bits(32 bits)) init(0)
+    when(flush){
+      pc_reg := 0
+      instruction_reg := 0
+    }
+    .elsewhen(src_stream.fire){
+      pc_reg := src_ports.pc
+      instruction_reg := src_ports.instruction
+    }
+    dst_stream.pc := pc_reg
+    dst_stream.instruction := instruction_reg
+  }
   dst_stream >> dst_ports
 
   // =========== timer ================
-  timer_cen := lsu_addr_is_timer && lsu_cen
-  timer_wen := micro_op.lsu_is_store
-  timer_addr:= dcache_addr
+  timer_cen   := lsu_addr_is_timer && lsu_cen
+  timer_wen   := micro_op.lsu_is_store
+  timer_addr  := dcache_addr
   timer_wdata := dcache_wdata
 }
 

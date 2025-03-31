@@ -14,9 +14,9 @@ case class BJU_kernel() extends Component {
   val micro_op = in(IQ_MicroOp("BJU"))
   val pc = in UInt(PC_WIDTH bits)
   val imm = in Bits(64 bits)
-  val rs1_val = in Bits(64 bits)
-  val rs2_val = in Bits(64 bits)
-  val rd_val  = out Bits(64 bits)
+  val rs1_data = in Bits(64 bits)
+  val rs2_data = in Bits(64 bits)
+  val rd_data  = out Bits(64 bits)
   val bpu_pred_taken = in Bool()
   val bpu_target_pc = in UInt(PC_WIDTH bits)
   val redirect_valid = out Bool()
@@ -51,8 +51,8 @@ case class BJU_kernel() extends Component {
   val bgeu= (micro_op.bju_ctrl_op===BGEU) 
   val branch_or_jalr = jalr || beq || bne || blt || bge || bltu || bgeu
   val branch_or_jump = branch_or_jalr || jal
-  val branch_src1 = rs1_val
-  val branch_src2 = rs2_val
+  val branch_src1 = rs1_data
+  val branch_src2 = rs2_data
   val rd_eq_rs1   = micro_op.bju_rd_eq_rs1
   val rd_is_link  = micro_op.bju_rd_is_link
   val rs1_is_link = micro_op.bju_rs1_is_link
@@ -142,8 +142,8 @@ case class BJU_kernel() extends Component {
 
   // ================ for rd value ======================
   val src1 = pc
-  val src2 = (jal || jalr) ? U(4, 64 bits) | rs2_val.asUInt
-  rd_val := (src1 + src2).asBits
+  val src2 = (jal || jalr) ? U(4, 64 bits) | rs2_data.asUInt
+  rd_data := (src1 + src2).asBits
 
   // ================= for BPU ==================
   train_valid := in_valid && branch_or_jump
@@ -172,9 +172,9 @@ case class BJU_kernel() extends Component {
   clint.ebreak := in_valid && (micro_op.exp_ctrl_op===EBREAK)
   clint.mret   := in_valid && (micro_op.exp_ctrl_op===MRET)
   val csr_wdata = Bits(64 bits)
-  val csrrw_wdata = rs1_val
-  val csrrs_wdata = rs1_val | csr_rdata
-  val csrrc_wdata = ~rs1_val & csr_rdata
+  val csrrw_wdata = rs1_data
+  val csrrs_wdata = rs1_data | csr_rdata
+  val csrrc_wdata = ~rs1_data & csr_rdata
   val csrrwi_wdata = imm
   val csrrsi_wdata = imm | csr_rdata
   val csrrci_wdata = ~imm & csr_rdata
@@ -223,8 +223,8 @@ case class BJU() extends Component {
   // =================== IO ===================
   val flush = in Bool()
   val stall = in Bool()
-  val src_ports = slave(Stream(BjuSrc()))
-  val dst_ports = master(Stream(BjuDst()))
+  val src_ports = slave(Stream(DeQueue("BJU")))
+  val dst_ports = master(Stream(ExeDst()))
   val bpu_pred_taken = in Bool()
   val bpu_target_pc = in UInt(PC_WIDTH bits)
   val redirect_valid = out Bool()
@@ -247,19 +247,19 @@ case class BJU() extends Component {
   val timer_int = in Bool()
 
   // =================== Stream ===================
-  val src_stream = src_ports.haltWhen(stall).throwWhen(flush)
-  val dst_stream = Stream(BjuDst())
+  val src_stream = src_ports.throwWhen(flush)
+  val dst_stream = Stream(ExeDst())
 
   val bju_kernel = new BJU_kernel()
   bju_kernel.in_valid := src_stream.fire
   bju_kernel.micro_op := src_stream.micro_op
   bju_kernel.pc := src_stream.pc
   bju_kernel.imm := src_stream.imm
-  bju_kernel.rs1_val := src_stream.src1
-  bju_kernel.rs2_val := src_stream.src2
+  bju_kernel.rs1_data := src_stream.src1_data
+  bju_kernel.rs2_data := src_stream.src2_data
   bju_kernel.bpu_pred_taken := bpu_pred_taken
   bju_kernel.bpu_target_pc := bpu_target_pc
-  redirect_valid := bju_kernel.redirect_valid
+  redirect_valid := bju_kernel.redirect_valid && !stall
   redirect_pc := bju_kernel.redirect_pc
   train_valid := bju_kernel.train_valid
   train_pc := bju_kernel.train_pc
@@ -271,16 +271,20 @@ case class BJU() extends Component {
   train_is_ret  := bju_kernel.train_is_ret
   train_is_jmp  := bju_kernel.train_is_jmp
   brc_or_jmp := bju_kernel.brc_or_jmp
-  interrupt_valid := bju_kernel.interrupt_valid
+  interrupt_valid := bju_kernel.interrupt_valid && !stall
   interrupt_pc := bju_kernel.interrupt_pc
   bju_kernel.timer_int := timer_int
 
   // =================== output ===================
   src_stream.ready := dst_stream.ready
   dst_stream.valid := src_stream.valid
-  dst_stream.result := bju_kernel.rd_val
+  dst_stream.result := bju_kernel.rd_data
   dst_stream.rd_wen := src_stream.micro_op.rd_wen
   dst_stream.rd_rob_ptr := src_stream.rd_rob_ptr
+  if(DIFFTEST){
+    dst_stream.pc := src_stream.pc
+    dst_stream.instruction := src_stream.instruction
+  }
   dst_stream >-> dst_ports
 }
 
